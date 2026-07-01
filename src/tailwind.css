@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+/* ── SPY Brand Tokens ────────────────────────────────────────────────
+   These extend Tailwind's color/font palette so you can use
+   utility classes like: text-spy-orange, bg-spy-slate, etc.
+   ──────────────────────────────────────────────────────────────────── */
+@theme {
+  /* Brand colors */
+  --color-spy-orange:  #f57f29;
+  --color-spy-slate:   #2c393e;
+  --color-spy-gray:    #6a6c77;
+  --color-spy-border:  #e5e5e5;
+  --color-spy-sale:    #e53935;
+
+  /* Spacing overrides */
+  --spacing-page: 1.5rem;   /* default page gutter */
+
+  /* Typography */
+  --font-spy: "Barlow Condensed", "Barlow", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ── Scan all Liquid theme files for class names ─────────────────── */
+@source "../theme/**/*.liquid";
+@source "../theme/assets/*.js";
+
+/* ── Global Shopify / Horizon overrides ─────────────────────────────
+   SPY-specific overrides that must survive Tailwind's base reset.
+   Component-level CSS should live in spy-theme.css.
+   ──────────────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    --spy-orange: #f57f29;
+    --spy-slate:  #2c393e;
+  }
+}

@@ -1,0 +1,179 @@
+{%- liquid
+  assign p = closest.product
+  assign s = p.metafields.spec
+  assign g = p.metafields.goggle
+  assign h = p.metafields.helmet
+
+  # Determine whether goggle / helmet sections should render
+  assign show_goggle = false
+  if g.base.value != blank or g.fit_system.value != blank or g.ventilation.value != blank
+    assign show_goggle = true
+  endif
+  assign show_helmet = false
+  if h.fit_system.value != blank or h.sizes.value != blank or h.mips.value != nil
+    assign show_helmet = true
+  endif
+-%}
+
+<details class="spy-spec-table" {{ block.shopify_attributes }}>
+  <summary>{{ block.settings.heading }}</summary>
+  <table class="spy-spec-table__table">
+    <tbody>
+
+      {%- comment -%}── Identification ─────────────────────────────{%- endcomment -%}
+      {%- if s.reference.value != blank -%}
+        <tr><th>Style #</th><td>{{ s.reference.value }}</td></tr>
+      {%- endif -%}
+
+      {%- comment -%}── Frame ──────────────────────────────────────{%- endcomment -%}
+      {%- if s.fit.value != blank -%}
+        <tr><th>Fit</th><td>{{ s.fit.value }}</td></tr>
+      {%- endif -%}
+      {%- if s.dimensions.value != blank -%}
+        <tr><th>Dimensions</th><td>{{ s.dimensions.value }}</td></tr>
+      {%- endif -%}
+      {%- if s.weight_g.value != blank -%}
+        <tr><th>Weight</th><td>{{ s.weight_g.value }}&thinsp;g</td></tr>
+      {%- endif -%}
+      {%- if s.frame_material.value != blank -%}
+        <tr><th>Frame Material</th><td>{{ s.frame_material.value }}</td></tr>
+      {%- endif -%}
+      {%- if s.frame_color.value != blank -%}
+        <tr><th>Frame Color</th><td>{{ s.frame_color.value }}</td></tr>
+      {%- endif -%}
+
+      {%- comment -%}── Lens ───────────────────────────────────────{%- endcomment -%}
+      {%- if s.lens_name.value != blank -%}
+        <tr><th>Lens</th><td>{{ s.lens_name.value }}</td></tr>
+      {%- endif -%}
+      {%- if s.lens_material.value != blank -%}
+        <tr><th>Lens Material</th><td>{{ s.lens_material.value }}</td></tr>
+      {%- endif -%}
+      {%- if s.lens_shape.value != blank -%}
+        <tr><th>Lens Shape</th><td>{{ s.lens_shape.value }}</td></tr>
+      {%- endif -%}
+      {%- if s.lens_category.value != blank -%}
+        <tr><th>Lens Category</th><td>{{ s.lens_category.value }}</td></tr>
+      {%- endif -%}
+      {%- if s.vlt_percent.value != blank -%}
+        <tr><th>VLT</th><td>{{ s.vlt_percent.value }}%</td></tr>
+      {%- endif -%}
+      {%- if s.base_tint.value != blank -%}
+        <tr><th>Base Tint</th><td>{{ s.base_tint.value }}</td></tr>
+      {%- endif -%}
+      {%- if s.mirror_tint.value != blank -%}
+        <tr><th>Mirror Tint</th><td>{{ s.mirror_tint.value }}</td></tr>
+      {%- endif -%}
+      {%- if s.polarized.value != nil -%}
+        <tr>
+          <th>Polarized</th>
+          <td>{%- if s.polarized.value -%}Yes{%- else -%}No{%- endif -%}</td>
+        </tr>
+      {%- endif -%}
+      {%- if s.photochromic.value -%}
+        <tr><th>Photochromic</th><td>Yes</td></tr>
+      {%- endif -%}
+      {%- if s.high_contrast.value -%}
+        <tr><th>High Contrast</th><td>Yes</td></tr>
+      {%- endif -%}
+      {%- if s.lens_coating.value != blank -%}
+        <tr><th>Lens Coating</th><td>{{ s.lens_coating.value }}</td></tr>
+      {%- endif -%}
+
+      {%- comment -%}── Accessories & Certs ────────────────────────{%- endcomment -%}
+      {%- if s.included_accessories.value != blank -%}
+        <tr><th>Includes</th><td>{{ s.included_accessories.value | join: ', ' }}</td></tr>
+      {%- endif -%}
+      {%- if s.certifications.value != blank -%}
+        <tr><th>Certifications</th><td>{{ s.certifications.value | join: ', ' }}</td></tr>
+      {%- endif -%}
+
+      {%- comment -%}── Technologies ───────────────────────────────{%- endcomment -%}
+      {%- if s.technologies.value != blank -%}
+        {%- assign tech_names = '' -%}
+        {%- for tech in s.technologies.value -%}
+          {%- assign tn = tech.fields.name.value -%}
+          {%- if tn != blank -%}
+            {%- unless forloop.first -%}{%- assign tech_names = tech_names | append: ', ' -%}{%- endunless -%}
+            {%- assign tech_names = tech_names | append: tn -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if tech_names != blank -%}
+          <tr><th>Technologies</th><td>{{ tech_names }}</td></tr>
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- comment -%}── Goggle-specific ────────────────────────────{%- endcomment -%}
+      {%- if show_goggle -%}
+        {%- if g.base.value != blank -%}
+          <tr><th>Base / Fit</th><td>{{ g.base.value }}</td></tr>
+        {%- endif -%}
+        {%- if g.fit_system.value != blank -%}
+          <tr><th>Fit System</th><td>{{ g.fit_system.value }}</td></tr>
+        {%- endif -%}
+        {%- if g.ventilation.value != blank -%}
+          <tr><th>Ventilation</th><td>{{ g.ventilation.value }}</td></tr>
+        {%- endif -%}
+        {%- if g.removable_padding.value -%}
+          <tr><th>Removable Padding</th><td>Yes</td></tr>
+        {%- endif -%}
+        {%- if g.otg.value -%}
+          <tr><th>OTG Compatible</th><td><span class="spy-spec-table__badge">OTG</span></td></tr>
+        {%- endif -%}
+        {%- if g.interchangeable_lens.value -%}
+          <tr><th>Interchangeable Lens</th><td>Yes</td></tr>
+        {%- endif -%}
+        {%- if g.extra_lens_included.value -%}
+          <tr><th>Extra Lens Included</th><td>Yes</td></tr>
+          {%- if g.extra_lens_name.value != blank -%}
+            <tr><th>Extra Lens</th><td>{{ g.extra_lens_name.value }}</td></tr>
+          {%- endif -%}
+          {%- if g.extra_lens_vlt_percent.value != blank -%}
+            <tr><th>Extra Lens VLT</th><td>{{ g.extra_lens_vlt_percent.value }}%</td></tr>
+          {%- endif -%}
+          {%- if g.extra_lens_category.value != blank -%}
+            <tr><th>Extra Lens Category</th><td>{{ g.extra_lens_category.value }}</td></tr>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- comment -%}── Helmet-specific ────────────────────────────{%- endcomment -%}
+      {%- if show_helmet -%}
+        {%- if h.fit_system.value != blank -%}
+          <tr><th>Fit System</th><td>{{ h.fit_system.value }}</td></tr>
+        {%- endif -%}
+        {%- if h.sizes.value != blank -%}
+          <tr><th>Sizes</th><td>{{ h.sizes.value | join: ', ' }}</td></tr>
+        {%- endif -%}
+        {%- if h.mips.value -%}
+          <tr><th>MIPS</th><td><span class="spy-spec-table__badge">MIPS</span></td></tr>
+        {%- endif -%}
+        {%- if h.certifications.value != blank -%}
+          <tr><th>Certifications</th><td>{{ h.certifications.value | join: ', ' }}</td></tr>
+        {%- endif -%}
+      {%- endif -%}
+
+    </tbody>
+  </table>
+</details>
+
+{% schema %}
+{
+  "name": "Technical Information",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Technical Information"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Technical Information",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

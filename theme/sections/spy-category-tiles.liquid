@@ -1,0 +1,141 @@
+{%- liquid
+  assign tile_count = 0
+  for block in section.blocks
+    if block.settings.image != blank or block.settings.label != blank
+      assign tile_count = tile_count | plus: 1
+    endif
+  endfor
+  if tile_count == 0
+    assign skip_section = true
+  endif
+-%}
+
+{%- unless skip_section -%}
+<div
+  class="spy-category-tiles py-8"
+  style="--tile-cols: {{ section.settings.columns }};"
+  {{ section.shopify_attributes }}
+>
+  {%- if section.settings.heading != blank -%}
+    <p class="page-width text-[11px] font-bold uppercase tracking-widest text-spy-gray mb-4">
+      {{ section.settings.heading }}
+    </p>
+  {%- endif -%}
+
+  <div
+    class="page-width grid gap-1"
+    style="grid-template-columns: repeat({{ section.settings.columns }}, minmax(0, 1fr));"
+  >
+    {%- for block in section.blocks -%}
+      {%- assign img   = block.settings.image -%}
+      {%- assign label = block.settings.label -%}
+      {%- assign link  = block.settings.link -%}
+
+      {%- if img == blank and label == blank -%}{%- continue -%}{%- endif -%}
+
+      <a
+        class="group relative block overflow-hidden aspect-square no-underline"
+        href="{{ link | default: '#' }}"
+        {{ block.shopify_attributes }}
+      >
+        {%- if img != blank -%}
+          {%- assign tile_alt = label | escape -%}
+          {{
+            img
+            | image_url: width: 800
+            | image_tag:
+              loading: 'lazy',
+              alt: tile_alt,
+              sizes: '(max-width: 749px) 50vw, 25vw',
+              widths: '375, 550, 800',
+              class: 'spy-category-tiles__img w-full h-full object-cover transition-transform duration-400 ease-in-out group-hover:scale-[1.04]'
+          }}
+        {%- else -%}
+          <div class="w-full h-full bg-spy-slate"></div>
+        {%- endif -%}
+
+        <div class="absolute inset-0 flex flex-col justify-end p-5 bg-gradient-to-t from-black/60 to-transparent pointer-events-none">
+          {%- if label != blank -%}
+            <span class="text-white font-bold uppercase tracking-wide leading-tight text-lg md:text-xl lg:text-2xl">
+              {{ label }}
+            </span>
+          {%- endif -%}
+          {%- if block.settings.sublabel != blank -%}
+            <span class="text-white/75 text-xs font-medium uppercase tracking-wide mt-0.5">
+              {{ block.settings.sublabel }}
+            </span>
+          {%- endif -%}
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Category Tiles",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Desktop columns"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "text",
+          "id": "sublabel",
+          "label": "Sub-label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Category Tiles",
+      "category": "SPY",
+      "blocks": [
+        { "type": "tile", "settings": { "label": "Snow" } },
+        { "type": "tile", "settings": { "label": "Sunglasses" } },
+        { "type": "tile", "settings": { "label": "Fishing" } },
+        { "type": "tile", "settings": { "label": "Lifestyle" } },
+        { "type": "tile", "settings": { "label": "Classics" } },
+        { "type": "tile", "settings": { "label": "Moto" } },
+        { "type": "tile", "settings": { "label": "Trail" } },
+        { "type": "tile", "settings": { "label": "Blue Light" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,25 @@
+{%- liquid
+  assign seo_meta = collection.metafields.collection.seo_content
+  if seo_meta == blank or seo_meta.value == blank
+    assign skip_section = true
+  endif
+-%}
+
+{%- unless skip_section -%}
+<div class="border-t border-spy-border py-12" {{ section.shopify_attributes }}>
+  <div class="page-width max-w-[720px] rte text-[14px] leading-[1.6] text-spy-gray">
+    {{ seo_meta | metafield_tag }}
+  </div>
+</div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Collection SEO Copy",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [],
+  "presets": []
+}
+{% endschema %}

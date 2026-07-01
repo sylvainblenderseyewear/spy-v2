@@ -1,0 +1,32 @@
+{%- liquid
+  assign hero_img = collection.metafields.collection.hero_image.value
+  if hero_img == blank
+    assign skip_section = true
+  endif
+-%}
+
+{%- unless skip_section -%}
+<div class="w-full leading-[0]" {{ section.shopify_attributes }}>
+  {{
+    hero_img
+    | image_url: width: 2000
+    | image_tag:
+      loading: 'eager',
+      alt: collection.title,
+      sizes: '100vw',
+      widths: '750, 1100, 1500, 2000',
+      class: 'w-full h-auto block max-h-[400px] object-cover'
+  }}
+</div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Collection Hero",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [],
+  "presets": []
+}
+{% endschema %}

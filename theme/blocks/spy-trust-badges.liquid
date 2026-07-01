@@ -1,0 +1,135 @@
+{%- liquid
+  assign badge_count = 0
+  if block.settings.badge_1_text != blank
+    assign badge_count = badge_count | plus: 1
+  endif
+  if block.settings.badge_2_text != blank
+    assign badge_count = badge_count | plus: 1
+  endif
+  if block.settings.badge_3_text != blank
+    assign badge_count = badge_count | plus: 1
+  endif
+  if block.settings.badge_4_text != blank
+    assign badge_count = badge_count | plus: 1
+  endif
+  if block.settings.badge_5_text != blank
+    assign badge_count = badge_count | plus: 1
+  endif
+-%}
+
+{%- if badge_count > 0 -%}
+<div class="flex flex-wrap gap-x-4 gap-y-2 py-3.5 border-t border-b border-spy-border" {{ block.shopify_attributes }}>
+  {%- for i in (1..5) -%}
+    {%- liquid
+      assign text_key = 'badge_' | append: i | append: '_text'
+      assign icon_key = 'badge_' | append: i | append: '_icon'
+      assign badge_text = block.settings[text_key]
+      assign badge_icon = block.settings[icon_key]
+    -%}
+    {%- if badge_text != blank -%}
+    <div class="flex items-center gap-1.5 basis-[140px] flex-1 max-md:basis-[calc(50%-8px)]">
+      {%- if badge_icon != blank -%}
+        <span class="flex items-center flex-shrink-0 text-spy-orange w-[18px] h-[18px]" aria-hidden="true">{{ badge_icon }}</span>
+      {%- else -%}
+        <span class="flex items-center flex-shrink-0 text-spy-orange w-[18px] h-[18px]" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 1l1.545 3.13L13 4.854l-2.5 2.435.59 3.441L8 9.13l-3.09 1.6.59-3.44L3 4.853l3.455-.724L8 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      {%- endif -%}
+      <span class="text-[11px] font-semibold text-spy-slate leading-snug">{{ badge_text }}</span>
+    </div>
+    {%- endif -%}
+  {%- endfor -%}
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Trust Badges",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Badge 1"
+    },
+    {
+      "type": "text",
+      "id": "badge_1_text",
+      "label": "Text",
+      "default": "Free shipping on orders $50+"
+    },
+    {
+      "type": "text",
+      "id": "badge_1_icon",
+      "label": "Icon (emoji or SVG text)"
+    },
+    {
+      "type": "header",
+      "content": "Badge 2"
+    },
+    {
+      "type": "text",
+      "id": "badge_2_text",
+      "label": "Text",
+      "default": "30-day hassle-free returns"
+    },
+    {
+      "type": "text",
+      "id": "badge_2_icon",
+      "label": "Icon (emoji or SVG text)"
+    },
+    {
+      "type": "header",
+      "content": "Badge 3"
+    },
+    {
+      "type": "text",
+      "id": "badge_3_text",
+      "label": "Text",
+      "default": "2-year warranty"
+    },
+    {
+      "type": "text",
+      "id": "badge_3_icon",
+      "label": "Icon (emoji or SVG text)"
+    },
+    {
+      "type": "header",
+      "content": "Badge 4"
+    },
+    {
+      "type": "text",
+      "id": "badge_4_text",
+      "label": "Text",
+      "default": "Pay in 4 with PayPal"
+    },
+    {
+      "type": "text",
+      "id": "badge_4_icon",
+      "label": "Icon (emoji or SVG text)"
+    },
+    {
+      "type": "header",
+      "content": "Badge 5"
+    },
+    {
+      "type": "text",
+      "id": "badge_5_text",
+      "label": "Text",
+      "default": "Lifetime warranty on frames"
+    },
+    {
+      "type": "text",
+      "id": "badge_5_icon",
+      "label": "Icon (emoji or SVG text)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Badges",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

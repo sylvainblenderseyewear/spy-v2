@@ -1,0 +1,97 @@
+{%- liquid
+  assign p = closest.product
+  assign size_chart_ref = p.metafields.pdp.size_chart.value
+-%}
+
+{%- if size_chart_ref != blank or block.settings.fallback_label != blank -%}
+<div class="spy-size-chart" {{ block.shopify_attributes }}>
+  {%- liquid
+    if size_chart_ref != blank
+      assign chart_image = size_chart_ref.fields.image.value
+      assign chart_name  = size_chart_ref.fields.name.value
+      if chart_name == blank
+        assign chart_name = block.settings.fallback_label
+      endif
+    else
+      assign chart_name = block.settings.fallback_label
+    endif
+  -%}
+
+  <button
+    type="button"
+    class="spy-size-chart__trigger"
+    aria-haspopup="dialog"
+    data-spy-size-chart-open
+  >
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <rect x="1" y="4" width="14" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/>
+      <path d="M4 4V3m4 1V3m4 1V3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+    <span>{{ chart_name | default: 'Size Chart' }}</span>
+  </button>
+
+  {%- if size_chart_ref != blank and chart_image != blank -%}
+  <div
+    class="spy-size-chart__modal"
+    role="dialog"
+    aria-modal="true"
+    aria-label="{{ chart_name | escape }}"
+    aria-hidden="true"
+    data-spy-size-chart-modal
+  >
+    <div class="spy-size-chart__overlay" data-spy-size-chart-close></div>
+    <div class="spy-size-chart__panel">
+      <button type="button" class="spy-size-chart__close" aria-label="Close size chart" data-spy-size-chart-close>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <p class="spy-size-chart__heading">{{ chart_name }}</p>
+      <img
+        src="{{ chart_image | image_url: width: 800 }}"
+        alt="{{ chart_name | escape }}"
+        width="800"
+        loading="lazy"
+        class="spy-size-chart__image"
+      >
+    </div>
+  </div>
+  {%- endif -%}
+</div>
+{%- endif -%}
+
+<script>
+  (() => {
+    const wrap = document.currentScript.closest('.spy-size-chart');
+    if (!wrap) return;
+    const trigger = wrap.querySelector('[data-spy-size-chart-open]');
+    const modal   = wrap.querySelector('[data-spy-size-chart-modal]');
+    if (!trigger || !modal) return;
+    const open  = () => { modal.setAttribute('aria-hidden', 'false'); modal.dataset.open = ''; document.body.style.overflow = 'hidden'; };
+    const close = () => { modal.setAttribute('aria-hidden', 'true');  delete modal.dataset.open;  document.body.style.overflow = ''; };
+    trigger.addEventListener('click', open);
+    wrap.querySelectorAll('[data-spy-size-chart-close]').forEach(el => el.addEventListener('click', close));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.dataset.open !== undefined) close(); });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Size Chart",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "fallback_label",
+      "label": "Button label (fallback)",
+      "default": "Size Chart"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Size Chart",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,571 @@
+{
+  "sections": {
+    "spy_hero_A1": {
+      "type": "hero",
+      "name": "Campaign Hero",
+      "settings": {
+        "media_type_1": "image",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": true,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "open_in_new_tab": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "flex-end",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "flex-end",
+        "gap": 16,
+        "section_width": "full-width",
+        "section_height": "large",
+        "section_height_custom": 70,
+        "background_color": "rgba(0,0,0,0)",
+        "toggle_overlay": true,
+        "overlay_color": "#00000040",
+        "overlay_style": "gradient",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "padding-block-start": 0,
+        "padding-block-end": 48
+      },
+      "blocks": {
+        "eyebrow_A1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>New Arrivals</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "eyebrow",
+            "font": "var(--font-primary--family)",
+            "font_size": "0.75rem",
+            "line_height": "normal",
+            "letter_spacing": "heading-normal",
+            "case": "uppercase",
+            "wrap": "pretty",
+            "text_color": "#ffffff",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "heading_A1": {
+          "type": "text",
+          "settings": {
+            "text": "<h1>Shop the Latest</h1>",
+            "width": "fit-content",
+            "max_width": "wide",
+            "alignment": "left",
+            "type_preset": "h1",
+            "font": "var(--font-primary--family)",
+            "font_size": "1rem",
+            "line_height": "display-tight",
+            "letter_spacing": "heading-normal",
+            "case": "uppercase",
+            "wrap": "pretty",
+            "text_color": "#ffffff",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_A1": {
+          "type": "button",
+          "settings": {
+            "label": "Shop Now",
+            "link": "/collections/all",
+            "style_class": "button",
+            "open_in_new_tab": false,
+            "padding-block-start": 8,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "eyebrow_A1",
+        "heading_A1",
+        "button_A1"
+      ]
+    },
+    "spy_category_tiles_A1": {
+      "type": "spy-category-tiles",
+      "settings": {
+        "columns": 4
+      },
+      "blocks": {
+        "tile_snow": {
+          "type": "tile",
+          "settings": {
+            "label": "Snow",
+            "link": "/collections/snow-goggles"
+          }
+        },
+        "tile_sunglasses": {
+          "type": "tile",
+          "settings": {
+            "label": "Sunglasses",
+            "link": "/collections/sunglasses"
+          }
+        },
+        "tile_fishing": {
+          "type": "tile",
+          "settings": {
+            "label": "Fishing",
+            "link": "/collections/fishing"
+          }
+        },
+        "tile_lifestyle": {
+          "type": "tile",
+          "settings": {
+            "label": "Lifestyle",
+            "link": "/collections/lifestyle"
+          }
+        },
+        "tile_classics": {
+          "type": "tile",
+          "settings": {
+            "label": "Classics",
+            "link": "/collections/classics"
+          }
+        },
+        "tile_moto": {
+          "type": "tile",
+          "settings": {
+            "label": "Moto",
+            "link": "/collections/moto-goggles"
+          }
+        },
+        "tile_trail": {
+          "type": "tile",
+          "settings": {
+            "label": "Trail",
+            "link": "/collections/trail"
+          }
+        },
+        "tile_blue_light": {
+          "type": "tile",
+          "settings": {
+            "label": "Blue Light",
+            "link": "/collections/blue-light"
+          }
+        }
+      },
+      "block_order": [
+        "tile_snow",
+        "tile_sunglasses",
+        "tile_fishing",
+        "tile_lifestyle",
+        "tile_classics",
+        "tile_moto",
+        "tile_trail",
+        "tile_blue_light"
+      ]
+    },
+    "spy_region_xl_A1": {
+      "type": "spy-feature-link-banner",
+      "name": "Feature Banner — Region XL",
+      "settings": {
+        "heading": "Region XL",
+        "cta_label": "Shop Now",
+        "link": "/collections/region-xl",
+        "content_align": "left"
+      }
+    },
+    "spy_new_arrivals_A1": {
+      "type": "product-list",
+      "name": "New Arrivals Carousel",
+      "settings": {
+        "layout_type": "carousel",
+        "carousel_on_mobile": false,
+        "max_products": 8,
+        "columns": 4,
+        "mobile_columns": "2",
+        "section_width": "page-width",
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 48,
+        "padding-block-end": 32
+      },
+      "blocks": {
+        "heading_na": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>New Arrivals</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h3",
+            "font": "var(--font-primary--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "heading-normal",
+            "case": "uppercase",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": ["heading_na"]
+    },
+    "spy_watermen_A1": {
+      "type": "product-list",
+      "name": "Watermen Carousel",
+      "settings": {
+        "layout_type": "carousel",
+        "carousel_on_mobile": false,
+        "max_products": 8,
+        "columns": 4,
+        "mobile_columns": "2",
+        "section_width": "page-width",
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 32,
+        "padding-block-end": 48
+      },
+      "blocks": {
+        "heading_wm": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Watermen</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h3",
+            "font": "var(--font-primary--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "heading-normal",
+            "case": "uppercase",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": ["heading_wm"]
+    },
+    "spy_loyalty_cta_A1": {
+      "type": "hero",
+      "name": "Loyalty CTA",
+      "settings": {
+        "media_type_1": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": false,
+        "content_direction": "column",
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "flex-end",
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "flex-end",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "medium",
+        "background_color": "{{ settings.color_palette.background }}",
+        "toggle_overlay": false,
+        "overlay_color": "#00000040",
+        "overlay_style": "gradient",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      },
+      "blocks": {
+        "eyebrow_loyalty": {
+          "type": "text",
+          "settings": {
+            "text": "<p>SPY Rewards</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "eyebrow",
+            "font": "var(--font-primary--family)",
+            "font_size": "0.75rem",
+            "line_height": "normal",
+            "letter_spacing": "heading-normal",
+            "case": "uppercase",
+            "wrap": "pretty",
+            "text_color": "#f57f29",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "heading_loyalty": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Join the Crew</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "heading-normal",
+            "case": "uppercase",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "body_loyalty": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Earn points on every purchase. Get early access to new products, exclusive discounts, and more.</p>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "paragraph",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 8,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "cta_loyalty": {
+          "type": "button",
+          "settings": {
+            "label": "Join Now",
+            "link": "/account/register",
+            "style_class": "button",
+            "open_in_new_tab": false,
+            "padding-block-start": 16,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "eyebrow_loyalty",
+        "heading_loyalty",
+        "body_loyalty",
+        "cta_loyalty"
+      ]
+    },
+    "spy_happy_boost_A1": {
+      "type": "spy-feature-link-banner",
+      "name": "Feature Banner — Happy Boost",
+      "settings": {
+        "heading": "Happy Boost",
+        "eyebrow": "Technology",
+        "cta_label": "Shop Happy Boost",
+        "link": "/pages/happyboost",
+        "content_align": "left"
+      }
+    },
+    "spy_trust_row_A1": {
+      "type": "section",
+      "name": "Trust Values",
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": false,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "gap": 32,
+        "section_width": "page-width",
+        "section_height": "fit",
+        "background_media": "none",
+        "background_color": "{{ settings.color_palette.background }}",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 32,
+        "padding-block-end": 32
+      },
+      "blocks": {
+        "trust_ship": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Free shipping on orders $50+</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "0.875rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "trust_returns": {
+          "type": "text",
+          "settings": {
+            "text": "<p>30-day hassle-free returns</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "0.875rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "trust_warranty": {
+          "type": "text",
+          "settings": {
+            "text": "<p>2-year warranty</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "0.875rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "trust_pay": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Secure checkout</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "0.875rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "trust_ship",
+        "trust_returns",
+        "trust_warranty",
+        "trust_pay"
+      ]
+    },
+    "spy_journal_A1": {
+      "type": "featured-blog-posts",
+      "name": "Journal",
+      "settings": {
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "post_limit": 3,
+        "columns": 3,
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    }
+  },
+  "order": [
+    "spy_hero_A1",
+    "spy_category_tiles_A1",
+    "spy_region_xl_A1",
+    "spy_new_arrivals_A1",
+    "spy_watermen_A1",
+    "spy_loyalty_cta_A1",
+    "spy_happy_boost_A1",
+    "spy_trust_row_A1",
+    "spy_journal_A1"
+  ]
+}

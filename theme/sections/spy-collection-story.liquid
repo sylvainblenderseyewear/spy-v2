@@ -1,0 +1,106 @@
+{%- liquid
+  assign story = collection.metafields.collection.story.value
+  assign hero_desktop = story.fields.hero.value
+  assign hero_mobile  = story.fields.hero_mobile.value
+  assign headline     = story.fields.headline.value
+  assign body_copy    = story.fields.body.value
+  assign products     = story.fields.featured_products.value
+-%}
+
+<div {{ section.shopify_attributes }}>
+
+  {%- if hero_desktop != blank or hero_mobile != blank -%}
+  <div class="relative w-full overflow-hidden">
+    <picture>
+      {%- if hero_mobile != blank -%}
+        <source media="(max-width: 749px)" srcset="{{ hero_mobile | image_url: width: 800 }}">
+      {%- endif -%}
+      {%- if hero_desktop != blank -%}
+        <img
+          src="{{ hero_desktop | image_url: width: 1440 }}"
+          alt="{{ headline | default: collection.title | escape }}"
+          width="1440"
+          loading="eager"
+          fetchpriority="high"
+          class="block w-full h-auto max-h-[600px] object-cover md:max-h-[600px] max-h-[420px]"
+        >
+      {%- else -%}
+        <img
+          src="{{ hero_mobile | image_url: width: 800 }}"
+          alt="{{ headline | default: collection.title | escape }}"
+          width="800"
+          loading="eager"
+          class="block w-full h-auto max-h-[420px] object-cover"
+        >
+      {%- endif -%}
+    </picture>
+
+    {%- if headline != blank -%}
+    <div class="absolute inset-0 flex items-end px-6 py-10 md:px-12 bg-gradient-to-t from-black/55 to-transparent">
+      <h1 class="text-white text-[clamp(2rem,5vw,3.5rem)] font-bold tracking-[-0.02em] leading-[1.1] m-0 uppercase">{{ headline }}</h1>
+    </div>
+    {%- endif -%}
+  </div>
+  {%- elsif headline != blank -%}
+  <div class="page-width py-8">
+    <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold tracking-[-0.02em] leading-[1.1] m-0 uppercase py-8">{{ headline }}</h1>
+  </div>
+  {%- endif -%}
+
+  {%- if body_copy != blank -%}
+  <div class="page-width py-12">
+    <div class="max-w-[72ch] mx-auto text-[1.0625rem] leading-[1.7] rte">
+      {{ body_copy }}
+    </div>
+  </div>
+  {%- endif -%}
+
+  {%- if products != blank and products.size > 0 -%}
+  <div class="page-width py-8 pb-16">
+    <h2 class="text-xl font-semibold uppercase tracking-[0.08em] mb-6">{{ section.settings.products_heading | default: 'Featured Products' }}</h2>
+    <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 list-none m-0 p-0" role="list">
+      {%- for product in products limit: 12 -%}
+      <li>
+        <a href="{{ product.url }}" class="block no-underline text-inherit group">
+          {%- if product.featured_image != blank -%}
+          <div class="aspect-square overflow-hidden bg-[#f5f5f5] mb-3">
+            <img
+              src="{{ product.featured_image | image_url: width: 600 }}"
+              alt="{{ product.featured_image.alt | default: product.title | escape }}"
+              width="600"
+              loading="lazy"
+              class="w-full h-full object-cover transition-transform duration-[350ms] ease-in-out group-hover:scale-[1.04]"
+            >
+          </div>
+          {%- endif -%}
+          <p class="text-[0.9375rem] font-semibold m-0 mb-1">{{ product.title }}</p>
+          <p class="text-[0.875rem] text-[#555] m-0">{{ product.price | money }}</p>
+        </a>
+      </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+  {%- endif -%}
+
+</div>
+
+{% schema %}
+{
+  "name": "Collection Story",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "products_heading",
+      "label": "Featured products heading",
+      "default": "Featured Products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Story",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

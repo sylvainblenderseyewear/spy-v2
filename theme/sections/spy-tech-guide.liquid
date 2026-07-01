@@ -1,0 +1,69 @@
+{%- liquid
+  assign tech = page.metafields.guide.technology.value
+  if tech == blank
+    assign skip_section = true
+  endif
+-%}
+
+{%- unless skip_section -%}
+{%- liquid
+  assign tech_name     = tech.fields.name.value
+  assign tech_icon     = tech.fields.icon.value
+  assign tech_blurb    = tech.fields.short_blurb.value
+  assign tech_body     = tech.fields.long_description.value
+  assign tech_link     = tech.fields.link.value
+  assign icon_src      = tech_icon | image_url: width: 120
+  if icon_src == blank
+    assign icon_src = tech_icon.url
+  endif
+-%}
+<div class="py-16" {{ section.shopify_attributes }}>
+  <div class="page-width max-w-[760px] mx-auto flex flex-col gap-6">
+
+    {%- if icon_src != blank -%}
+      <div>
+        <img
+          src="{{ icon_src }}"
+          alt="{{ tech_name }}"
+          width="60"
+          height="60"
+          loading="eager"
+          class="w-[60px] h-[60px] object-contain"
+        >
+      </div>
+    {%- endif -%}
+
+    {%- if tech_name != blank -%}
+      <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.1] text-spy-slate m-0 uppercase">{{ tech_name }}</h1>
+    {%- endif -%}
+
+    {%- if tech_blurb != blank -%}
+      <p class="text-lg font-semibold text-spy-orange m-0">{{ tech_blurb }}</p>
+    {%- endif -%}
+
+    {%- if tech_body != blank -%}
+      <div class="text-base leading-[1.7] text-spy-slate rte">
+        {{ tech_body }}
+      </div>
+    {%- endif -%}
+
+    {%- if tech_link != blank -%}
+      <div class="pt-2">
+        <a href="{{ tech_link }}" class="button">Shop Now</a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Tech Guide",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [],
+  "presets": []
+}
+{% endschema %}

@@ -1,0 +1,61 @@
+<div
+  class="spy-compare-bar fixed bottom-0 inset-x-0 z-50 bg-spy-slate text-white translate-y-full transition-transform duration-300 ease-in-out"
+  id="spy-compare-bar"
+  aria-hidden="true"
+  aria-live="polite"
+>
+  <div class="page-width flex items-center justify-between gap-4 py-3 flex-wrap">
+    <div class="spy-compare-bar__slots flex gap-3 flex-wrap" id="spy-compare-slots"></div>
+    <div class="flex items-center gap-3 flex-shrink-0">
+      <span class="spy-compare-bar__count text-xs font-bold uppercase tracking-wide opacity-70" id="spy-compare-count"></span>
+      <button
+        type="button"
+        class="bg-spy-orange text-white text-xs font-bold uppercase tracking-widest px-5 py-2.5 hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+        id="spy-compare-submit"
+        disabled
+      >Compare</button>
+      <button
+        type="button"
+        class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-wide transition-colors"
+        id="spy-compare-clear"
+      >Clear</button>
+    </div>
+  </div>
+</div>
+
+<div
+  class="spy-compare-modal fixed inset-0 z-[1100] hidden"
+  id="spy-compare-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Product Comparison"
+  aria-hidden="true"
+>
+  <div class="spy-compare-modal__overlay absolute inset-0 bg-black/60" id="spy-compare-modal-overlay"></div>
+  <div class="spy-compare-modal__panel absolute inset-x-0 bottom-0 top-16 md:top-12 bg-white overflow-y-auto flex flex-col">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-spy-border flex-shrink-0">
+      <h2 class="text-sm font-bold uppercase tracking-widest text-spy-slate m-0">Compare Products</h2>
+      <button
+        type="button"
+        class="text-spy-gray hover:text-spy-orange transition-colors p-1"
+        id="spy-compare-modal-close"
+        aria-label="Close comparison"
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="spy-compare-modal__body overflow-x-auto flex-1 p-6" id="spy-compare-modal-body">
+    </div>
+  </div>
+</div>
+
+{{ 'spy-compare.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "Compare Bar",
+  "settings": []
+}
+{% endschema %}

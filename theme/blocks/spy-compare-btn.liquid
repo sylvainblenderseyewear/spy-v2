@@ -1,0 +1,38 @@
+{%- if closest.product -%}
+{%- assign p = closest.product -%}
+<label
+  class="spy-compare-label flex items-center gap-1.5 cursor-pointer mt-1 select-none"
+  {{ block.shopify_attributes }}
+>
+  <input
+    type="checkbox"
+    class="spy-compare-checkbox sr-only"
+    data-spy-compare="{{ p.handle }}"
+    data-product-title="{{ p.title | escape }}"
+    data-product-url="{{ p.url }}"
+    data-product-price="{{ p.price | money }}"
+    data-product-image="{% if p.featured_image %}{{ p.featured_image | image_url: width: 200 }}{% endif %}"
+    aria-label="Compare {{ p.title | escape }}"
+  >
+  <span class="spy-compare-box w-3.5 h-3.5 border border-spy-border flex-shrink-0 flex items-center justify-center transition-colors">
+    <svg class="spy-compare-check hidden w-2.5 h-2.5 text-spy-orange" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+      <path d="M1.5 5l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </span>
+  <span class="text-[10px] font-bold uppercase tracking-wide text-spy-gray">Compare</span>
+</label>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Compare Button",
+  "tag": null,
+  "settings": [],
+  "presets": [
+    {
+      "name": "Compare Button",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

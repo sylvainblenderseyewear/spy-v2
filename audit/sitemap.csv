@@ -1,0 +1,79 @@
+URL,Page Type,Template Candidate,Parent,Notes
+https://www.spyoptic.com/,Homepage,index,—,Root
+https://www.spyoptic.com/us/sunglasses/,PLP – Eyewear,collection.default,Sunglasses,Main sunglasses category
+https://www.spyoptic.com/us/mens-sunglasses/,PLP – Eyewear,collection.default,Sunglasses,Men's filter PLP
+https://www.spyoptic.com/us/sunglasses/womens-sunglasses/,PLP – Eyewear,collection.default,Sunglasses,Women's filter PLP
+https://www.spyoptic.com/us/sunglasses/safety-sunglasses/,PLP – Eyewear,collection.default,Sunglasses,Safety sub-category
+https://www.spyoptic.com/us/sunglasses/fishing-sunglasses/,PLP – Eyewear,collection.default,Sunglasses,Fishing/Watermen sub-category
+https://www.spyoptic.com/us/eyeglasses/,PLP – Eyewear,collection.default,Eyeglasses,Main eyeglasses category
+https://www.spyoptic.com/us/eyeglasses/mens-eyeglasses/,PLP – Eyewear,collection.default,Eyeglasses,Men's eyeglasses
+https://www.spyoptic.com/us/eyeglasses/womens-eyeglasses/,PLP – Eyewear,collection.default,Eyeglasses,Women's eyeglasses
+https://www.spyoptic.com/us/eyeglasses/blue-light-glasses/,PLP – Eyewear,collection.default,Eyeglasses,Blue light glasses sub-category
+https://www.spyoptic.com/us/goggles/,PLP – Goggles,collection.default,Goggles,Parent goggles category
+https://www.spyoptic.com/us/goggles/snow-goggles/,PLP – Snow Goggles,collection.default,Goggles,Snow goggles category
+https://www.spyoptic.com/us/goggles/motocross-goggles/,PLP – Moto Goggles,collection.default,Goggles,Motocross goggles category
+https://www.spyoptic.com/us/snow-helmets/,PLP – Snow Helmets,collection.default,Snow Helmets,Snow helmets category
+https://www.spyoptic.com/us/gear/,PLP – Gear/Apparel,collection.default,Gear,Main gear category
+https://www.spyoptic.com/us/gear/accessories/,PLP – Accessories,collection.default,Gear,Accessories sub-category
+https://www.spyoptic.com/us/sale/,PLP – Sale,collection.default,Sale,Sale landing page
+https://www.spyoptic.com/us/sale/sunglasses/,PLP – Sale,collection.default,Sale,Sunglasses on sale
+https://www.spyoptic.com/us/sale/goggles/snow-goggles/,PLP – Sale,collection.default,Sale,Snow goggles on sale
+https://www.spyoptic.com/us/collections/sunglasses/happy-boost-sun-collection/,Collection – Curated,collection.story,Collections,Happy Boost Sun curated
+https://www.spyoptic.com/us/collections/sunglasses/discord-series/,Collection – Curated,collection.story,Collections,Discord Series curated
+https://www.spyoptic.com/us/collections/sunglasses/helm-series/,Collection – Curated,collection.story,Collections,Helm Series curated
+https://www.spyoptic.com/us/collections/sunglasses/trail-collection/,Collection – Curated,collection.story,Collections,Trail curated
+https://www.spyoptic.com/us/collections/sunglasses/classics-collection/,Collection – Curated,collection.story,Collections,Classics curated
+https://www.spyoptic.com/us/collections/sunglasses/lifestyle-collection/,Collection – Curated,collection.story,Collections,Lifestyle curated
+https://www.spyoptic.com/us/collections/sunglasses/flag-collection/,Collection – Curated,collection.story,Collections,Flag collection curated
+https://www.spyoptic.com/us/collections/goggles-ski-snowboard/happy-boost-snow-collection/,Collection – Curated,collection.story,Collections,Happy Boost Snow curated
+https://www.spyoptic.com/us/collections/spy-merch/,Collection – Curated,collection.story,Collections,Spy+ Merch
+https://www.spyoptic.com/us/sunglasses/cyrus-switch-257654.html,PDP – Eyewear Default,product.default,Sunglasses,Rep. sunglass PDP (Cyrus Switch)
+https://www.spyoptic.com/us/sunglasses/fishing-sunglasses/region-xl-212511.html,PDP – Eyewear Default,product.default,Sunglasses,Watermen/fishing sunglass
+https://www.spyoptic.com/us/sunglasses/mainline-ansi-{PID}.html,PDP – Eyewear Default,product.default,Sunglasses,ANSI safety sunglass
+https://www.spyoptic.com/us/eyeglasses/renley-56-192010.html,PDP – Eyeglasses,product.default,Eyeglasses,Rep. eyeglasses PDP (Renley 56)
+https://www.spyoptic.com/us/eyeglasses/mens-eyeglasses/cyrus-optical-58-103610.html,PDP – Eyeglasses,product.default,Eyeglasses,Men's optical PDP
+https://www.spyoptic.com/us/goggles/snow-goggles/marauder-36615.html,PDP – Snow Goggle,product.snow-goggle,Snow Goggles,Rep. snow goggle PDP (Marauder)
+https://www.spyoptic.com/us/goggles/snow-goggles/marauder-elite-eco-185519.html,PDP – Snow Goggle,product.snow-goggle,Snow Goggles,Marauder Elite ECO
+https://www.spyoptic.com/us/goggles/snow-goggles/megalith-145220.html,PDP – Snow Goggle,product.snow-goggle,Snow Goggles,Megalith
+https://www.spyoptic.com/us/goggles/snow-goggles/marshall-2.0-145219.html,PDP – Snow Goggle,product.snow-goggle,Snow Goggles,Marshall 2.0
+https://www.spyoptic.com/us/goggles/snow-goggles/waypoint-225603.html,PDP – Snow Goggle,product.snow-goggle,Snow Goggles,Waypoint
+https://www.spyoptic.com/us/goggles/motocross-goggles/foundation-105963.html,PDP – Moto Goggle,product.moto-goggle,Moto Goggles,Rep. moto goggle PDP (Foundation)
+https://www.spyoptic.com/us/goggles/motocross-goggles/foundation-plus-105961.html,PDP – Moto Goggle,product.moto-goggle,Moto Goggles,Foundation Plus
+https://www.spyoptic.com/us/goggles/motocross-goggles/woot-mx-36618.html,PDP – Moto Goggle,product.moto-goggle,Moto Goggles,Woot MX
+https://www.spyoptic.com/us/snow-helmets/neutron-mips-234847.html,PDP – Snow Helmet,product.helmet,Snow Helmets,Rep. helmet PDP (Neutron MIPS)
+https://www.spyoptic.com/us/snow-helmets/stargazer-mips-225825.html,PDP – Snow Helmet,product.helmet,Snow Helmets,Stargazer MIPS
+https://www.spyoptic.com/us/snow-helmets/galactic-mips-74013.html,PDP – Snow Helmet,product.helmet,Snow Helmets,Galactic MIPS
+https://www.spyoptic.com/us/goggles/snow-goggles/replacement-lenses/replacement-lens-marauder-43902.html,PDP – Replacement Lens,product.lens,Snow Goggles,Rep. lens PDP
+https://www.spyoptic.com/us/goggles/snow-goggles/replacement-lenses/replacement-lens-marauder-elite-159727.html,PDP – Replacement Lens,product.lens,Snow Goggles,Marauder Elite lens
+https://www.spyoptic.com/us/goggles/snow-goggles/replacement-lenses/marshall-lens-161699.html,PDP – Replacement Lens,product.lens,Snow Goggles,Marshall Lens
+https://www.spyoptic.com/us/goggles/snow-goggles/replacement-lenses/bravo-lens-161598.html,PDP – Replacement Lens,product.lens,Snow Goggles,Bravo Lens
+https://www.spyoptic.com/us/gear/apparel/shirts/ss25-spy-palms-ss-tee-269473.html,PDP – Apparel,product.apparel,Gear,Rep. apparel PDP (tee)
+https://www.spyoptic.com/us/gear/apparel/hats-and-beanies/spy--staple-beanie-159943.html,PDP – Apparel,product.apparel,Gear,Beanie/hat PDP
+https://www.spyoptic.com/us/SnowTech.html,Tech Guide,page.tech-guide,Goggles,Snow goggle technology guide
+https://www.spyoptic.com/us/SnowHelmetTech.html,Tech Guide,page.tech-guide,Snow Helmets,Snow helmet technology guide
+https://www.spyoptic.com/us/HappyLens.html,Tech Guide,page.tech-guide,Sunglasses,Happy Lens technology guide (URL TBC)
+https://www.spyoptic.com/us/HappyBoost.html,Tech Guide,page.tech-guide,Sunglasses,Happy Boost technology guide (URL TBC)
+https://www.spyoptic.com/us/spy-blog/,Blog – Listing,blog,Journal,Blog/Journal listing
+https://www.spyoptic.com/us/spy-blog/mainline.html,Blog – Article,article,Journal,Article: Mainline
+https://www.spyoptic.com/us/spy-blog/what-are-polarized-sunglasses.html,Blog – Article,article,Journal,Article: Polarized sunglasses
+https://www.spyoptic.com/us/spy-blog/how-to-choose-the-best-snow-goggle-lens-type.html,Blog – Article,article,Journal,Article: Snow goggle lens guide
+https://www.spyoptic.com/us/about-us.html,Editorial – Brand,page.editorial,Company,About Us
+https://www.spyoptic.com/us/team.html,Editorial – Brand,page.editorial,Company,Team/Athletes (URL TBC)
+https://www.spyoptic.com/us/loyalty-program.html,Editorial – Brand,page.editorial,Programs,Loyalty program page
+https://www.spyoptic.com/us/warranty.html,Policy/Support,page.default,Services,Warranty policy
+https://www.spyoptic.com/us/spy_optic_return_policy.html,Policy/Support,page.default,Services,Return policy
+https://www.spyoptic.com/us/shipping/shipping.html,Policy/Support,page.default,Services,Shipping info
+https://www.spyoptic.com/us/contactus,Policy/Support,page.default,Services,Contact Us
+https://www.spyoptic.com/us/faq.html,Policy/Support,page.default,Services,FAQ (URL TBC)
+https://www.spyoptic.com/us/privacy-policy.html,Policy/Support,page.default,Policy,Privacy policy (URL TBC)
+https://www.spyoptic.com/us/terms-of-use.html,Policy/Support,page.default,Policy,Terms of use (URL TBC)
+https://www.spyoptic.com/us/accessibility.html,Policy/Support,page.default,Policy,Accessibility statement (URL TBC)
+https://www.spyoptic.com/us/login,Account,page.account-login,Account,Login / Register
+https://www.spyoptic.com/us/account,Account,page.account,Account,My Account (authenticated)
+https://www.spyoptic.com/us/cart,Cart,page.cart,—,Cart page
+https://www.spyoptic.com/us/search,Search,page.search,—,Search results
+stores.spyoptic.com,External – Link Out,—,—,Store locator (DO NOT REBUILD)
+https://www.b2b-bollebrands.com/,External – Link Out,—,—,Dealer Portal (DO NOT REBUILD)
+https://www.sportrx.com/,External – Link Out,—,—,Prescription glasses (DO NOT REBUILD)
+https://www.avantlink.com/,External – Link Out,—,—,Affiliate program (DO NOT REBUILD)
+https://govx.com/,External – Link Out,—,—,Military/GovX discount (DO NOT REBUILD)

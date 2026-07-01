@@ -1,0 +1,18 @@
+{%- assign p = closest.product -%}
+<div class="spy-yotpo-reviews" {{ block.shopify_attributes }}>
+  {% render 'yotpo-reviews', product: p %}
+</div>
+
+{% schema %}
+{
+  "name": "Yotpo Reviews",
+  "tag": null,
+  "settings": [],
+  "presets": [
+    {
+      "name": "Yotpo Reviews",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

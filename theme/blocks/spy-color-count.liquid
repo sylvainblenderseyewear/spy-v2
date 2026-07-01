@@ -1,0 +1,34 @@
+{%- liquid
+  assign p = closest.product
+  assign color_option = nil
+  for opt in p.options_with_values
+    assign opt_lower = opt.name | downcase
+    if opt_lower == 'frame color' or opt_lower == 'color' or opt_lower == 'colour'
+      assign color_option = opt
+      break
+    endif
+  endfor
+  if color_option != nil
+    assign color_count = color_option.values.size
+  endif
+-%}
+
+{%- if color_count > 1 -%}
+<p class="spy-color-count text-[10px] font-semibold text-spy-gray mt-0.5 m-0" {{ block.shopify_attributes }}>
+  {{ color_count }} colors available
+</p>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Color Count",
+  "tag": null,
+  "settings": [],
+  "presets": [
+    {
+      "name": "Color Count",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

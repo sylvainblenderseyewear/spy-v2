@@ -1,0 +1,65 @@
+{%- liquid
+  assign desktop = closest.product.metafields.pdp.feature_banner_desktop.value
+  assign mobile  = closest.product.metafields.pdp.feature_banner_mobile.value
+  if desktop == blank and mobile == blank
+    assign skip_banner = true
+  endif
+-%}
+
+{%- unless skip_banner -%}
+<div class="w-full leading-[0]" {{ section.shopify_attributes }}>
+  {%- if desktop != blank -%}
+    <div class="hidden md:block">
+      {{
+        desktop
+        | image_url: width: 2000
+        | image_tag:
+          loading: 'lazy',
+          alt: closest.product.title,
+          sizes: '100vw',
+          widths: '750, 1100, 1500, 2000',
+          class: 'w-full h-auto block'
+      }}
+    </div>
+  {%- endif -%}
+
+  {%- if mobile != blank -%}
+    <div class="block md:hidden">
+      {{
+        mobile
+        | image_url: width: 800
+        | image_tag:
+          loading: 'lazy',
+          alt: closest.product.title,
+          sizes: '100vw',
+          widths: '375, 550, 750, 800',
+          class: 'w-full h-auto block'
+      }}
+    </div>
+  {%- elsif desktop != blank -%}
+    <div class="block md:hidden">
+      {{
+        desktop
+        | image_url: width: 800
+        | image_tag:
+          loading: 'lazy',
+          alt: closest.product.title,
+          sizes: '100vw',
+          widths: '375, 550, 750, 800',
+          class: 'w-full h-auto block'
+      }}
+    </div>
+  {%- endif -%}
+</div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "SPY Feature Banner",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [],
+  "presets": []
+}
+{% endschema %}

@@ -1,0 +1,132 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "header_announcements_9jGBFp": {
+      "type": "header-announcements",
+      "blocks": {
+        "announcement_1": {
+          "type": "_announcement",
+          "settings": {
+            "text": "Free Shipping on Orders $50+",
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.75rem",
+            "letter_spacing": "0.05em",
+            "case": "none"
+          },
+          "blocks": {}
+        },
+        "announcement_2": {
+          "type": "_announcement",
+          "settings": {
+            "text": "30-Day Hassle-Free Returns",
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.75rem",
+            "letter_spacing": "0.05em",
+            "case": "none"
+          },
+          "blocks": {}
+        },
+        "announcement_3": {
+          "type": "_announcement",
+          "settings": {
+            "text": "Shop Happy Boost\u2122 \u2014 See Brighter",
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.75rem",
+            "letter_spacing": "0.05em",
+            "case": "none"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "announcement_1",
+        "announcement_2",
+        "announcement_3"
+      ],
+      "name": "Announcement Bar",
+      "settings": {
+        "speed": 5,
+        "section_width": "page-width",
+        "background_color": "#f57f29",
+        "divider_width": 1,
+        "divider_color": "#f79050",
+        "padding-block-start": 12,
+        "padding-block-end": 12
+      }
+    },
+    "header_section": {
+      "type": "header",
+      "blocks": {
+        "header-logo": {
+          "type": "_header-logo",
+          "static": true,
+          "settings": {
+            "hide_logo_on_home_page": false,
+            "padding-block-start": 0,
+            "padding-block-end": 0
+          },
+          "blocks": {}
+        },
+        "header-menu": {
+          "type": "_header-menu",
+          "static": true,
+          "settings": {
+            "menu": "main-menu",
+            "type_font_primary_size": "0.8125rem",
+            "menu_font_style": "inverse",
+            "type_font_primary_link": "heading",
+            "type_case_primary_link": "uppercase",
+            "menu_style": "featured_products",
+            "featured_products_aspect_ratio": "4 / 5",
+            "featured_collections_aspect_ratio": "16 / 9",
+            "image_border_radius": 0,
+            "navigation_bar": false,
+            "drawer_accordion": false,
+            "drawer_accordion_expand_first": false,
+            "drawer_dividers": false
+          },
+          "blocks": {}
+        }
+      },
+      "settings": {
+        "logo_position": "left",
+        "menu_position": "center",
+        "menu_row": "top",
+        "show_search": true,
+        "search_position": "right",
+        "search_row": "top",
+        "show_country": false,
+        "country_selector_style": false,
+        "show_language": false,
+        "localization_font": "heading",
+        "localization_font_size": "0.875rem",
+        "localization_position": "right",
+        "localization_row": "top",
+        "section_width": "page-width",
+        "section_height": "tall",
+        "enable_sticky_header": "always",
+        "divider_width": 0,
+        "divider_size": "page-width",
+        "border_width": 0,
+        "background_color_top": "{{ settings.color_palette.background }}",
+        "enable_transparent_header_home": false,
+        "enable_transparent_header_product": false,
+        "enable_transparent_header_collection": false
+      }
+    }
+  },
+  "order": [
+    "header_section",
+    "header_announcements_9jGBFp"
+  ]
+}
