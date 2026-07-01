@@ -1125,6 +1125,20 @@
           }
         ],
         "default": "narrow"
+      },
+      {
+        "type": "header",
+        "content": "Navigation"
+      },
+      {
+        "type": "range",
+        "id": "spy_nav_gap",
+        "label": "Nav item spacing",
+        "min": 16,
+        "max": 64,
+        "step": 4,
+        "unit": "px",
+        "default": 36
       }
     ]
   },

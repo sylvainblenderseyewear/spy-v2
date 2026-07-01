@@ -8,7 +8,7 @@
   ></script>
 {% endif %}
 
-{% render 'contrast-override', background_color: section.settings.background_color, section_id: section.id %}
+{% render 'contrast-override', background_color: section.settings.background_color, text_color: section.settings.text_color, section_id: section.id %}
 
 <div class="section-background color-custom-{{ section.id }}"></div>
 <aside
@@ -119,6 +119,11 @@
       opacity: 0;
       visibility: hidden;
     }
+  }
+
+  /* Safety net: never show arrows unless multiple slides are present */
+  .announcement-bar__slider:not(.announcement-bar__slider--has-arrows) slideshow-arrows {
+    display: none;
   }
 
   .announcement-bar__slider slideshow-arrows {
@@ -232,7 +237,13 @@
       "type": "color",
       "id": "background_color",
       "label": "t:settings.background_color",
-      "placeholder": "t:settings.default"
+      "default": "#f57f29"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:settings.text_color",
+      "default": "#ffffff"
     },
     {
       "type": "checkbox",

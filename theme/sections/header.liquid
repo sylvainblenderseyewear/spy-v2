@@ -128,6 +128,13 @@
       endif
     endif
   endif
+  # Insert journal slot just before search in every order variant
+  assign order = order | replace: ',search', ',journal,search'
+
+  capture journal
+    render 'header-journal'
+  endcapture
+
   capture search
     render 'search', style: search_style, class: search_class, display_style: section.settings.actions_display_style
   endcapture
@@ -435,6 +442,7 @@
         logo: logo,
         menu: menu,
         actions: actions,
+        journal: journal,
         localization: localization_markup,
         search: search,
         drawer_search: drawer_search

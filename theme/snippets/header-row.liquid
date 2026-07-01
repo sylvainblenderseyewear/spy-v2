@@ -33,6 +33,8 @@
     case item
       when 'actions'
         assign item_column = 'right'
+      when 'journal'
+        assign item_column = 'right'
     endcase
 
     if item_row == row
@@ -84,6 +86,8 @@
               {{ search }}
             {% when 'drawer_search' %}
               {{ drawer_search }}
+            {% when 'journal' %}
+              {{ journal }}
             {% when 'actions' %}
               {{ actions }}
           {% endcase %}

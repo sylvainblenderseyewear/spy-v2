@@ -20,6 +20,7 @@
           src="{{ hero_desktop | image_url: width: 1440 }}"
           alt="{{ headline | default: collection.title | escape }}"
           width="1440"
+          height="600"
           loading="eager"
           fetchpriority="high"
           class="block w-full h-auto max-h-[600px] object-cover md:max-h-[600px] max-h-[420px]"
@@ -29,6 +30,7 @@
           src="{{ hero_mobile | image_url: width: 800 }}"
           alt="{{ headline | default: collection.title | escape }}"
           width="800"
+          height="420"
           loading="eager"
           class="block w-full h-auto max-h-[420px] object-cover"
         >
@@ -68,6 +70,7 @@
               src="{{ product.featured_image | image_url: width: 600 }}"
               alt="{{ product.featured_image.alt | default: product.title | escape }}"
               width="600"
+              height="600"
               loading="lazy"
               class="w-full h-full object-cover transition-transform duration-[350ms] ease-in-out group-hover:scale-[1.04]"
             >

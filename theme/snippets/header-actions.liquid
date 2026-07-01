@@ -63,6 +63,18 @@
   {% endif %}
   {{- block.shopify_attributes -}}
 >
+  <a
+    href="https://stores.spyoptic.com"
+    class="header-actions__action header-actions__store-locator mobile:hidden"
+    aria-label="Find a Store"
+    target="_blank"
+    rel="noopener"
+  >
+    <span class="svg-wrapper">
+      {{- 'icon-store-locator.svg' | inline_asset_content -}}
+    </span>
+  </a>
+
   {% if shop.customer_accounts_enabled %}
     {% liquid
       assign account_actions_style = ''

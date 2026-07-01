@@ -274,6 +274,34 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   letter-spacing: 0.02em;
 }
 
+.header-actions__journal {
+  font-family: var(--font-heading--family);
+  font-weight: var(--font-heading--weight);
+  font-size: var(--menu-top-level-font-size-desktop, 1rem);
+  text-transform: uppercase;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  color: inherit;
+  margin-inline-end: calc(var(--spy-nav-gap, 36px) - 8px);
+  padding-inline: 4px;
+}
+
+/* Force header right-column icons to black */
+@media screen and (min-width: 750px) {
+  .header__column--right {
+    --color-foreground: 0 0 0;
+    --color-foreground-rgb: 0 0 0;
+    --color-account-icon: #000;
+    color: #000;
+  }
+  .header__column--right svg {
+    color: #000 !important;
+  }
+}
+
 /* ── Responsive overrides ── */
 @media screen and (max-width: 749px) {
   .section--trust_values .section__inner,
@@ -357,11 +385,174 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   }
 
   .header .header__column--center .overflow-menu::part(list) {
-    justify-content: space-between !important;
+    justify-content: center !important;
+    gap: var(--spy-nav-gap, 36px) !important;
     width: 100% !important;
+  }
+
+  /* Remove Journal from the centered desktop nav — it renders in the right column instead */
+  .header .header-menu .menu-list__list-item:has(.menu-list__link[href*="/blogs/journal"]) {
+    display: none !important;
   }
 
   .header .header__column--right {
     gap: 8px;
   }
+
+  /* Cancel Horizon's negative pull, then give all icons — search, locator, account, cart — the same 8px gap */
+  .header .header__column--right header-actions {
+    margin-inline-start: 0 !important;
+    gap: 8px;
+  }
+}
+
+/* ── Lens Info (2×2 stat grid + category scale) ─────────────────────── */
+.spy-lens-info {
+  padding: 16px 0 4px;
+  border-top: 1px solid var(--color-spy-border, #e5e5e5);
+}
+
+.spy-lens-info__header {
+  margin-bottom: 10px;
+}
+
+.spy-lens-info__title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-foreground, #2c393e);
+}
+
+.spy-lens-info__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--color-spy-border, #e5e5e5);
+  border: 2px solid var(--color-spy-border, #e5e5e5);
+  margin-bottom: 16px;
+}
+
+.spy-lens-info__cell {
+  background: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 10px;
+  gap: 6px;
+  text-align: center;
+}
+
+.spy-lens-info__value {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--color-foreground, #2c393e);
+  line-height: 1;
+}
+
+.spy-lens-info__value--md {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.spy-lens-info__value--tech {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-spy-orange, #f57f29);
+}
+
+.spy-lens-info__tech-img {
+  max-width: 80px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.spy-lens-info__label {
+  font-size: 11px;
+  color: var(--color-foreground-secondary, #6a6c77);
+  line-height: 1.3;
+}
+
+.spy-lens-info__scale {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 14px;
+  padding-bottom: 12px;
+  border-top: 1px solid var(--color-spy-border, #e5e5e5);
+}
+
+.spy-lens-info__scale-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.spy-lens-info__scale-icon {
+  color: #c0c0c0;
+  line-height: 0;
+}
+
+.spy-lens-info__scale-step--active .spy-lens-info__scale-icon {
+  color: var(--color-foreground, #2c393e);
+}
+
+.spy-lens-info__scale-bar {
+  display: block;
+  width: 28px;
+  height: 3px;
+  background: transparent;
+  border-radius: 2px;
+}
+
+.spy-lens-info__scale-step--active .spy-lens-info__scale-bar {
+  background: var(--color-spy-orange, #f57f29);
+}
+
+.spy-lens-info__scale-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #c0c0c0;
+  white-space: nowrap;
+}
+
+.spy-lens-info__scale-step--active .spy-lens-info__scale-label {
+  color: var(--color-foreground, #2c393e);
+  font-weight: 700;
+}
+
+/* ── Trust Badges (vertical bordered list) ──────────────────────────── */
+.spy-trust-badges {
+  border: 1px solid var(--color-spy-border, #e5e5e5);
+  border-radius: 4px;
+}
+
+.spy-trust-badges__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--color-spy-border, #e5e5e5);
+}
+
+.spy-trust-badges__item:last-child {
+  border-bottom: none;
+}
+
+.spy-trust-badges__icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--color-foreground, #2c393e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.spy-trust-badges__text {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-foreground, #2c393e);
+  line-height: 1.4;
 }
