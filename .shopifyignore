@@ -1,0 +1,8 @@
+audit/
+src/
+node_modules/
+package.json
+package-lock.json
+CLAUDE.md
+SPY_Build_Kickoff_Prompt.md
+SPY_Horizon_Build_Plan.md

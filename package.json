@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:css": "tailwindcss -i src/tailwind.css -o theme/assets/tailwind.css --minify",
-    "watch:css": "tailwindcss -i src/tailwind.css -o theme/assets/tailwind.css --watch",
+    "build:css": "tailwindcss -i src/tailwind.css -o assets/tailwind.css --minify",
+    "watch:css": "tailwindcss -i src/tailwind.css -o assets/tailwind.css --watch",
     "dev": "npm run watch:css",
     "build": "npm run build:css"
   },

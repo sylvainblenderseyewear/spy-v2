@@ -477,6 +477,41 @@
   type="module"
 ></script>
 
+{% style %}
+  /* SPY: Header spacing — driven by section settings */
+  @media screen and (min-width: 750px) {
+    .header-section .header__row > .header__columns {
+      padding-left: {{ section.settings.header_padding_vw }}vw;
+      padding-right: {{ section.settings.header_padding_vw }}vw;
+    }
+
+    /* True viewport-center: force left & right columns to equal 1fr so
+       the center column sits exactly in the middle of the page width,
+       not between asymmetric logo and icon columns. */
+    #header-component[data-menu-style='menu'] .header__columns:has(.header__column--center header-menu) {
+      --header-left: 1fr;
+      --header-right: 1fr;
+    }
+
+    #header-component[data-menu-style='menu'] .menu-list__link-title {
+      padding-inline: {{ section.settings.menu_item_gap | divided_by: 2.0 }}px;
+    }
+
+    #header-component[data-menu-style='menu'] .header__column--right {
+      gap: {{ section.settings.icon_gap }}px;
+    }
+
+    #header-component[data-menu-style='menu'] .header-actions__journal {
+      margin-inline-end: {{ section.settings.journal_icon_gap | minus: section.settings.icon_gap }}px;
+    }
+
+    #header-component[data-menu-style='menu'] .header__column--right header-actions {
+      margin-inline-start: 0;
+      gap: {{ section.settings.icon_gap }}px;
+    }
+  }
+{% endstyle %}
+
 {% stylesheet %}
   body {
     --header-height: 60px;
@@ -1175,6 +1210,7 @@
     font-family: var(--menu-localization-font);
     font-size: var(--menu-localization-font-size);
   }
+
 {% endstylesheet %}
 
 {% unless request.design_mode %}
@@ -1531,6 +1567,54 @@
       "label": "t:settings.bottom_border_color",
       "placeholder": "t:settings.default",
       "visible_if": "{{ section.settings.border_width > 0 }}"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "header_padding_vw",
+      "label": "Edge padding (left & right)",
+      "info": "Inset from viewport edge, as % of viewport width",
+      "min": 3,
+      "max": 15,
+      "step": 0.5,
+      "unit": "vw",
+      "default": 7
+    },
+    {
+      "type": "range",
+      "id": "menu_item_gap",
+      "label": "Menu item gap",
+      "info": "Space between nav items (Sunglasses, Goggles…)",
+      "min": 20,
+      "max": 120,
+      "step": 1,
+      "unit": "px",
+      "default": 65
+    },
+    {
+      "type": "range",
+      "id": "journal_icon_gap",
+      "label": "+Journal+ to icons gap",
+      "info": "Space from +Journal+ to the first header icon",
+      "min": 40,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "icon_gap",
+      "label": "Icon spacing",
+      "info": "Space between each header icon (store, account, cart)",
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 18
     },
     {
       "type": "header",
