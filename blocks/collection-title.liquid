@@ -309,14 +309,14 @@
       "type": "color",
       "id": "background_color",
       "label": "t:settings.background_color",
-      "default": "#ffffff",
+      "default": "{{ settings.color_palette.background }}",
       "visible_if": "{{ block.settings.background }}"
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "t:settings.text_color",
-      "default": "#000000"
+      "default": "{{ settings.color_palette.foreground }}"
     },
     {
       "type": "range",
