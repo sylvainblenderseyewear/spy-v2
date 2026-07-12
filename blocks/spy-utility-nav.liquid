@@ -1,0 +1,229 @@
+{% liquid
+  assign secondary_menu = block.settings.menu
+%}
+
+<div class="spy-utility-nav flex items-center gap-4 md:gap-6 lg:gap-20 max-md:flex-1 md:ml-auto" {{ block.shopify_attributes }}>
+  {% if secondary_menu != blank %}
+    <ul class="hidden md:flex items-center gap-6 list-none m-0 p-0">
+      {% for link in secondary_menu.links %}
+        <li>
+          <a
+            href="{{ link.url }}"
+            class="text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline hover:text-spy-orange whitespace-nowrap"
+            style="font-family: var(--font-heading--family);"
+            {% if link.current %}
+              aria-current="page"
+            {% endif %}
+          >
+            {{- link.title -}}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if block.settings.journal_label != blank %}
+    <a
+      href="{{ block.settings.journal_url | default: routes.root_url }}"
+      class="inline-block max-md:mx-auto text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline hover:text-spy-orange whitespace-nowrap"
+      style="font-family: var(--font-heading--family);"
+    >
+      {{- block.settings.journal_label -}}
+    </a>
+  {% endif %}
+
+  <header-actions class="flex items-center gap-0 -mr-[9px]">
+    {% if block.settings.show_search %}
+      <search-button class="block">
+        <button
+          on:click="#search-modal/showDialog"
+          class="button-unstyled flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange transition-colors"
+          aria-label="{{ 'content.search_input_label' | t }}"
+          aria-haspopup="dialog"
+        >
+          <span class="block w-[18px] h-[18px]">{{- 'spy-fa-search.svg' | inline_asset_content -}}</span>
+        </button>
+      </search-button>
+    {% endif %}
+
+    {% if block.settings.show_store_locator and block.settings.store_locator_url != blank %}
+      <a
+        href="{{ block.settings.store_locator_url }}"
+        class="hidden md:flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange transition-colors"
+        aria-label="{{ block.settings.store_locator_label }}"
+        target="_blank"
+        rel="noopener"
+      >
+        <span class="block w-[18px] h-[18px]">{{- 'spy-fa-location.svg' | inline_asset_content -}}</span>
+      </a>
+    {% endif %}
+
+    {% if block.settings.show_account and shop.customer_accounts_enabled %}
+      <div class="account-button color-custom-popover hidden md:flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange transition-colors">
+        <shopify-account
+          menu="{{ block.settings.customer_account_menu }}"
+          class="flex items-center justify-center [&:not(:defined)]:min-w-0 [&:not(:defined)]:h-auto [&::part(signed-out-avatar)]:p-0 [&::part(signed-out-avatar)]:min-w-0 [&::part(signed-out-avatar)]:min-h-0"
+        >
+          {% if customer %}
+            <div class="account-button__fallback"></div>
+          {% else %}
+            <span slot="signed-out-avatar" class="block w-[18px] h-[18px]">{{- 'spy-fa-user.svg' | inline_asset_content -}}</span>
+          {% endif %}
+        </shopify-account>
+      </div>
+    {% endif %}
+
+    {% capture cart_icon %}
+      <cart-icon
+        class="relative flex items-center{% unless cart == empty %} header-actions__cart-icon--has-cart{% endunless %}"
+        data-testid="cart-icon"
+      >
+        <span class="block w-[18px] h-[18px]">{{ 'spy-fa-bag.svg' | inline_asset_content }}</span>
+        {% render 'cart-bubble', limit: 100 %}
+      </cart-icon>
+    {% endcapture %}
+
+    {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
+      <button
+        class="button-unstyled flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange transition-colors"
+        on:click="#cart-drawer/toggle"
+        aria-haspopup="dialog"
+        aria-expanded="false"
+        aria-controls="cart-drawer"
+        aria-label="{{ 'accessibility.cart' | t }}"
+        data-testid="cart-drawer-trigger"
+      >
+        {{ cart_icon }}
+      </button>
+    {% else %}
+      <a
+        href="{{ routes.cart_url }}"
+        class="flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange transition-colors"
+        aria-label="{{ 'accessibility.cart' | t }}"
+      >
+        {{ cart_icon }}
+      </a>
+    {% endif %}
+
+    {% if block.settings.show_country and localization.available_countries.size > 1 %}
+      <dropdown-localization-component class="dropdown-localization hidden md:flex items-center relative">
+        <button
+          type="button"
+          class="button-unstyled flex items-center gap-1 h-11 px-2 text-[13px] font-bold uppercase text-spy-ink hover:text-spy-orange transition-colors"
+          aria-expanded="false"
+          aria-controls="dropdown-localization-results"
+          ref="button"
+          on:click="/toggleSelector"
+        >
+          <span>{{ localization.country.currency.iso_code }}</span>
+          <span class="visually-hidden">{{ 'accessibility.localization_region_and_language' | t }}</span>
+          <span class="block w-3 h-3">{{- 'spy-fa-caret.svg' | inline_asset_content -}}</span>
+        </button>
+        <div class="localization-wrapper right-bound color-custom-popover" hidden ref="panel">
+          {% render 'localization-form',
+            show_country: true,
+            show_language: false,
+            localization_style: 'dropdown',
+            form_id: block.id
+          %}
+        </div>
+      </dropdown-localization-component>
+    {% endif %}
+
+    <span ref="liveRegion" class="sr-only" role="status"></span>
+  </header-actions>
+</div>
+
+<script type="module" src="{{ 'cart-icon.js' | asset_url }}" fetchpriority="low"></script>
+<script type="module" src="{{ 'header-actions.js' | asset_url }}" fetchpriority="low"></script>
+
+{% schema %}
+{
+  "name": "SPY Utility Nav",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Journal link"
+    },
+    {
+      "type": "text",
+      "id": "journal_label",
+      "label": "Journal label",
+      "info": "Shown left of the icons. Leave blank to hide.",
+      "default": "+JOURNAL+"
+    },
+    {
+      "type": "url",
+      "id": "journal_url",
+      "label": "Journal link"
+    },
+    {
+      "type": "header",
+      "content": "Extra links (optional)"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Secondary menu",
+      "info": "Any additional small text links, shown before the Journal link"
+    },
+    {
+      "type": "header",
+      "content": "Icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_store_locator",
+      "label": "Show store locator",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "store_locator_url",
+      "label": "Store locator link",
+      "default": "https://stores.spyoptic.com",
+      "visible_if": "{{ block.settings.show_store_locator }}"
+    },
+    {
+      "type": "text",
+      "id": "store_locator_label",
+      "label": "Store locator label",
+      "info": "Used by screen readers",
+      "default": "Find a store",
+      "visible_if": "{{ block.settings.show_store_locator }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show account",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country",
+      "label": "Show country selector",
+      "info": "Shows only when more than one market country is active",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "customer_account_menu",
+      "label": "Account menu",
+      "default": "customer-account-main-menu",
+      "visible_if": "{{ block.settings.show_account }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Utility Nav"
+    }
+  ]
+}
+{% endschema %}

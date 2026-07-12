@@ -1,0 +1,169 @@
+{% liquid
+  assign menu = block.settings.menu
+  assign highlight_handle = block.settings.highlight_item | handleize
+%}
+
+<nav
+  class="spy-mega-menu flex items-center self-stretch max-md:order-first md:flex-1 md:justify-center"
+  aria-label="{{ 'accessibility.header_navigation_label' | t }}"
+  {{ block.shopify_attributes }}
+>
+  <ul class="hidden md:flex items-stretch h-full gap-4 lg:gap-8 list-none m-0 p-0">
+    {% for link in menu.links %}
+      {% liquid
+        assign link_handle = link.title | handleize
+        assign is_highlight = false
+        if link_handle == highlight_handle and highlight_handle != blank
+          assign is_highlight = true
+        endif
+      %}
+      <li class="group flex items-stretch">
+        <a
+          href="{{ link.url }}"
+          class="inline-flex items-center h-full px-3 lg:px-4 border-b-2 border-transparent group-hover:border-black text-[14px] font-bold uppercase tracking-[0.5px] no-underline whitespace-nowrap transition-colors duration-200 {% if is_highlight %}text-spy-orange{% else %}text-spy-ink{% endif %}"
+          style="font-family: var(--font-heading--family);"
+          {% if link.current %}
+            aria-current="page"
+          {% endif %}
+        >
+          {{- link.title -}}
+        </a>
+
+        {% if link.links != blank %}
+          {% liquid
+            assign promo = nil
+            for pb in section.blocks
+              if pb.type == 'spy-menu-promo'
+                assign pb_handle = pb.settings.menu_item | handleize
+                if pb_handle == link_handle
+                  assign promo = pb
+                endif
+              endif
+            endfor
+          %}
+          <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 absolute left-0 right-0 top-full z-40 bg-white border-t border-[#e5e5e5] shadow-lg transition-opacity duration-200">
+            <div class="px-4">
+              <div class="[display:grid] grid-cols-6 gap-x-6 lg:gap-x-8 pt-6 pb-16">
+                <div class="hidden xl:flex xl:col-span-1 justify-center pt-16">
+                  <span class="text-[26px] lg:text-[28px] leading-none font-bold uppercase text-spy-ink text-center" style="font-family: var(--font-heading--family);">{{ link.title }}</span>
+                </div>
+                <div class="col-span-4 xl:col-span-3 [display:grid] grid-cols-3 gap-x-6 lg:gap-x-10 gap-y-16 content-start pt-4">
+                  {% for child in link.links %}
+                    <div>
+                      <a href="{{ child.url }}" class="inline-block pb-2 text-[13px] font-bold uppercase tracking-[0.06em] text-spy-ink no-underline hover:text-spy-orange" style="font-family: var(--font-heading--family);">{{ child.title }}</a>
+                      {% if child.links != blank %}
+                        <ul class="flex flex-col gap-0 list-none m-0 p-0">
+                          {% for grandchild in child.links %}
+                            <li>
+                              <a href="{{ grandchild.url }}" class="inline-block py-0.5 text-[14px] text-spy-ink no-underline hover:text-spy-orange">{{ grandchild.title }}</a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
+                    </div>
+                  {% endfor %}
+                </div>
+                {% if promo %}
+                  <div class="col-span-2 [display:grid] grid-cols-2 gap-x-8 gap-y-6 content-start pt-4">
+                    {% for i in (1..4) %}
+                      {% liquid
+                        assign image_key = 'image_' | append: i
+                        assign caption_key = 'caption_' | append: i
+                        assign link_key = 'link_' | append: i
+                        assign card_image = promo.settings[image_key]
+                        assign card_caption = promo.settings[caption_key]
+                        assign card_link = promo.settings[link_key]
+                      %}
+                      {% if card_image %}
+                        <a href="{{ card_link | default: '#' }}" class="block no-underline">
+                          {{ card_image | image_url: width: 600 | image_tag: class: 'w-full aspect-[41/32] object-cover', loading: 'lazy' }}
+                          {% if card_caption != blank %}
+                            <span class="block mt-2 text-center text-[12px] font-bold uppercase tracking-[0.06em] text-spy-ink">{{ card_caption }}</span>
+                          {% endif %}
+                        </a>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+
+  <details class="spy-drawer group/dr md:hidden">
+    <summary class="flex items-center justify-center w-11 h-11 cursor-pointer list-none text-spy-ink [&::-webkit-details-marker]:hidden">
+      <span class="block w-5 h-5 group-open/dr:hidden">{{- 'spy-fa-bars.svg' | inline_asset_content -}}</span>
+      <span class="hidden w-4 h-4 group-open/dr:block">{{- 'spy-fa-xmark.svg' | inline_asset_content -}}</span>
+    </summary>
+    <div class="absolute left-0 right-0 top-full z-40 bg-white max-h-[calc(100dvh-50px)] overflow-y-auto px-[var(--page-margin)] py-4 shadow-lg">
+      <ul class="list-none m-0 p-0">
+        {% for link in menu.links %}
+          {% liquid
+            assign link_handle = link.title | handleize
+            assign is_highlight = false
+            if link_handle == highlight_handle and highlight_handle != blank
+              assign is_highlight = true
+            endif
+          %}
+          <li class="border-b border-[#e5e5e5]">
+            {% if link.links != blank %}
+              <details class="group/acc">
+                <summary class="flex items-center justify-between py-3.5 cursor-pointer list-none text-base font-semibold uppercase no-underline {% if is_highlight %}text-spy-orange{% else %}text-spy-ink{% endif %} [&::-webkit-details-marker]:hidden" style="font-family: var(--font-heading--family);">
+                  {{ link.title }}
+                  <span class="block w-3 h-3 transition-transform duration-200 group-open/acc:rotate-180">{{- 'spy-fa-caret.svg' | inline_asset_content -}}</span>
+                </summary>
+                <ul class="list-none m-0 p-0 pb-3.5">
+                  <li><a href="{{ link.url }}" class="block py-1.5 text-[15px] font-semibold text-spy-ink no-underline">{{ link.title }}</a></li>
+                  {% for child in link.links %}
+                    <li>
+                      <a href="{{ child.url }}" class="block py-1.5 text-[15px] {% if child.links != blank %}font-semibold {% endif %}text-spy-ink no-underline">{{ child.title }}</a>
+                      {% if child.links != blank %}
+                        <ul class="list-none m-0 p-0 pl-4">
+                          {% for grandchild in child.links %}
+                            <li><a href="{{ grandchild.url }}" class="block py-1.5 text-[14px] text-spy-gray no-underline">{{ grandchild.title }}</a></li>
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </details>
+            {% else %}
+              <a href="{{ link.url }}" class="block py-3.5 text-base font-semibold uppercase no-underline {% if is_highlight %}text-spy-orange{% else %}text-spy-ink{% endif %}" style="font-family: var(--font-heading--family);">{{- link.title -}}</a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </details>
+</nav>
+
+{% schema %}
+{
+  "name": "SPY Mega Menu",
+  "tag": null,
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "highlight_item",
+      "label": "Item title to highlight",
+      "info": "Menu item with this title shows in the brand orange (e.g. Sale)",
+      "default": "Sale"
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Mega Menu"
+    }
+  ]
+}
+{% endschema %}

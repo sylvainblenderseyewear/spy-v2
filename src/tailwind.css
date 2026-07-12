@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import "tailwindcss" important;
 
 /* ── SPY Brand Tokens ────────────────────────────────────────────────
    These extend Tailwind's color/font palette so you can use
@@ -8,6 +8,7 @@
   /* Brand colors */
   --color-spy-orange:  #f57f29;
   --color-spy-slate:   #2c393e;
+  --color-spy-ink:     #1d2a2b; /* header/nav text on the live site */
   --color-spy-gray:    #6a6c77;
   --color-spy-border:  #e5e5e5;
   --color-spy-sale:    #e53935;
@@ -15,13 +16,17 @@
   /* Spacing overrides */
   --spacing-page: 1.5rem;   /* default page gutter */
 
-  /* Typography */
-  --font-spy: "Barlow Condensed", "Barlow", ui-sans-serif, system-ui, sans-serif;
+  /* Typography — Barlow (normal width) stands in for DIN Next LT Pro until licensed files arrive */
+  --font-spy: "Barlow", ui-sans-serif, system-ui, sans-serif;
 }
 
 /* ── Scan all Liquid theme files for class names ─────────────────── */
-@source "../theme/**/*.liquid";
-@source "../theme/assets/*.js";
+@source "../blocks/**/*.liquid";
+@source "../sections/**/*.liquid";
+@source "../snippets/**/*.liquid";
+@source "../layout/**/*.liquid";
+@source "../templates/**/*.{liquid,json}";
+@source "../assets/*.js";
 
 /* ── Global Shopify / Horizon overrides ─────────────────────────────
    SPY-specific overrides that must survive Tailwind's base reset.

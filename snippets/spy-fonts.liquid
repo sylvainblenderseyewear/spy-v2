@@ -1,0 +1,44 @@
+{% comment %}
+  Self-hosted brand font: DIN Next LT Pro.
+  Upload the font files to assets with these exact names (woff2 preferred, woff fallback).
+  Overrides Horizon's font-family vars so the whole site uses DIN Next LT Pro.
+{% endcomment %}
+<style>
+  @font-face {
+    font-family: "DINNextLTPro";
+    src: url("{{ 'DINNextLTPro-Regular.woff2' | asset_url }}") format("woff2"),
+      url("{{ 'DINNextLTPro-Regular.woff' | asset_url }}") format("woff");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "DINNextLTPro";
+    src: url("{{ 'DINNextLTPro-Medium.woff2' | asset_url }}") format("woff2"),
+      url("{{ 'DINNextLTPro-Medium.woff' | asset_url }}") format("woff");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "DINNextLTPro";
+    src: url("{{ 'DINNextLTPro-Bold.woff2' | asset_url }}") format("woff2"),
+      url("{{ 'DINNextLTPro-Bold.woff' | asset_url }}") format("woff");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    --font-body--family: "DINNextLTPro", sans-serif;
+    --font-subheading--family: "DINNextLTPro", sans-serif;
+    --font-heading--family: "DINNextLTPro", sans-serif;
+    --font-accent--family: "DINNextLTPro", sans-serif;
+  }
+
+  body {
+    font-family: var(--font-body--family);
+  }
+</style>

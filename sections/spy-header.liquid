@@ -1,0 +1,53 @@
+<div class="{% if section.settings.sticky %}sticky{% else %}relative{% endif %} top-0 z-50 bg-white">
+  {%- if request.page_type == 'index' -%}
+    <h1 class="sr-only">{{ shop.name }}</h1>
+  {%- endif -%}
+  <div class="section section--page-width md:[--page-width:calc(87vw_+_var(--page-margin)*2)] border-b border-[#e5e5e5]">
+    <div class="flex items-center gap-3 md:gap-4 min-h-[49px]">
+      <div class="flex items-center shrink-0">
+        {% content_for 'block', type: '_header-logo', id: 'spy-header-logo' %}
+      </div>
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SPY Header",
+  "tag": "header",
+  "class": "spy-header-section",
+  "blocks": [
+    {
+      "type": "spy-mega-menu"
+    },
+    {
+      "type": "spy-utility-nav"
+    },
+    {
+      "type": "spy-menu-promo"
+    }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Sticky header",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Header",
+      "blocks": [
+        {
+          "type": "spy-mega-menu"
+        },
+        {
+          "type": "spy-utility-nav"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

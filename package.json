@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": " shopify theme dev --store=spydevsylv.myshopify.com",
     "build:css": "tailwindcss -i src/tailwind.css -o assets/tailwind.css --minify",
     "watch:css": "tailwindcss -i src/tailwind.css -o assets/tailwind.css --watch",
     "dev": "npm run watch:css",

@@ -1,0 +1,53 @@
+{% comment %}
+  Image cards for one mega-menu dropdown. Renders nothing here —
+  spy-mega-menu reads these settings and shows the cards inside the panel.
+{% endcomment %}
+<div class="hidden" {{ block.shopify_attributes }} data-menu-promo="{{ block.settings.menu_item | handleize }}"></div>
+
+{% schema %}
+{
+  "name": "Menu images",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "menu_item",
+      "label": "Menu item",
+      "info": "Exact title of the top-level menu item these images belong to (e.g. Sunglasses)"
+    },
+    {
+      "type": "header",
+      "content": "Image 1"
+    },
+    { "type": "image_picker", "id": "image_1", "label": "Image" },
+    { "type": "text", "id": "caption_1", "label": "Caption" },
+    { "type": "url", "id": "link_1", "label": "Link" },
+    {
+      "type": "header",
+      "content": "Image 2"
+    },
+    { "type": "image_picker", "id": "image_2", "label": "Image" },
+    { "type": "text", "id": "caption_2", "label": "Caption" },
+    { "type": "url", "id": "link_2", "label": "Link" },
+    {
+      "type": "header",
+      "content": "Image 3"
+    },
+    { "type": "image_picker", "id": "image_3", "label": "Image" },
+    { "type": "text", "id": "caption_3", "label": "Caption" },
+    { "type": "url", "id": "link_3", "label": "Link" },
+    {
+      "type": "header",
+      "content": "Image 4"
+    },
+    { "type": "image_picker", "id": "image_4", "label": "Image" },
+    { "type": "text", "id": "caption_4", "label": "Caption" },
+    { "type": "url", "id": "link_4", "label": "Link" }
+  ],
+  "presets": [
+    {
+      "name": "Menu images"
+    }
+  ]
+}
+{% endschema %}

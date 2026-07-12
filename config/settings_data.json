@@ -10,13 +10,13 @@
 {
   "current": {
     "logo": "shopify://shop_images/orangelogo.svg",
-    "logo_height": 36,
+    "logo_height": 40,
     "logo_height_mobile": 28,
     "page_text_color": "{{ settings.color_palette.foreground }}",
-    "type_body_font": "barlow_condensed_n4",
-    "type_subheading_font": "barlow_condensed_n5",
-    "type_heading_font": "barlow_condensed_n7",
-    "type_accent_font": "barlow_condensed_n7",
+    "type_body_font": "barlow_n4",
+    "type_subheading_font": "barlow_n5",
+    "type_heading_font": "barlow_n7",
+    "type_accent_font": "barlow_n7",
     "type_size_paragraph": "16",
     "type_line_height_paragraph": "body-normal",
     "type_font_h1": "heading",
