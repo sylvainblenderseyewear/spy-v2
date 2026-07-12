@@ -2,3 +2,8 @@ node_modules/
 .DS_Store
 *.log
 .env
+
+# Agent skills — installed content + symlinks, regenerated from skills-lock.json (~94 MB, don't vendor)
+.agents/
+.claude/skills/
+.claude/settings.local.json
