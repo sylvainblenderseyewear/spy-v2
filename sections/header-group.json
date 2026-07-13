@@ -18,7 +18,9 @@
           "type": "spy-mega-menu",
           "settings": {
             "menu": "main-menu",
-            "highlight_item": "Sale"
+            "highlight_item": "Sale",
+            "store_locator_url": "https://stores.spyoptic.com",
+            "store_locator_label": "Find a store"
           },
           "blocks": {}
         },

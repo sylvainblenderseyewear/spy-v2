@@ -39,6 +39,18 @@
     const el = document.currentScript.previousElementSibling;
     const place = () => {
       const slot = document.querySelector('[data-promo-slot="' + el.dataset.menuPromo + '"]');
+      const mobileSlot = document.querySelector('[data-promo-slot-mobile="' + el.dataset.menuPromo + '"]');
+
+      if (mobileSlot && !mobileSlot.querySelector('a')) {
+        const firstLink = el.querySelector('a');
+        if (firstLink) {
+          const copy = el.cloneNode(false);
+          copy.removeAttribute('data-shopify-editor-block');
+          copy.hidden = false;
+          copy.appendChild(firstLink.cloneNode(true));
+          mobileSlot.appendChild(copy);
+        }
+      }
       if (slot) {
         slot.appendChild(el);
         el.hidden = false;

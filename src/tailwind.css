@@ -16,8 +16,9 @@
   /* Spacing overrides */
   --spacing-page: 1.5rem;   /* default page gutter */
 
-  /* Typography — Barlow (normal width) stands in for DIN Next LT Pro until licensed files arrive */
-  --font-spy: "Barlow", ui-sans-serif, system-ui, sans-serif;
+  /* Typography — D-DIN stands in for DIN Next LT Pro until licensed files arrive */
+  --font-spy: "DINNextLTPro", "D-DIN", sans-serif;
+  --font-sans: "DINNextLTPro", "D-DIN", sans-serif;
 }
 
 /* ── Scan all Liquid theme files for class names ─────────────────── */

@@ -1,16 +1,53 @@
-<div class="{% if section.settings.sticky %}sticky{% else %}relative{% endif %} top-0 z-50 bg-white">
+<div
+  class="relative z-50 bg-white"
+  {% if section.settings.sticky %}
+    data-spy-sticky
+  {% endif %}
+>
   {%- if request.page_type == 'index' -%}
     <h1 class="sr-only">{{ shop.name }}</h1>
   {%- endif -%}
   <div class="section section--page-width md:[--page-width:calc(87vw_+_var(--page-margin)*2)] border-b border-[#e5e5e5]">
     <div class="flex items-center gap-3 md:gap-4 min-h-[49px]">
       <div class="flex items-center shrink-0">
-        {% content_for 'block', type: '_header-logo', id: 'spy-header-logo' %}
+        <a
+          href="{{ routes.root_url }}"
+          class="svg-logo-container spy-logo-link inline-flex items-center"
+          style="--spy-logo-h: {{ settings.logo_height | default: 36 }}px; --spy-logo-h-m: {{ settings.logo_height_mobile | default: 28 }}px;"
+          aria-label="{{ shop.name }}"
+        >
+          {{- 'spy-logo.svg' | inline_asset_content -}}
+        </a>
       </div>
       {% content_for 'blocks' %}
     </div>
   </div>
 </div>
+
+{% stylesheet %}
+  #header-group:has(.spy-header-section [data-spy-sticky]) {
+    display: contents;
+  }
+
+  .spy-header-section:has([data-spy-sticky]) {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .spy-logo-link svg {
+    display: block;
+    height: var(--spy-logo-h-m, 28px);
+    width: calc(var(--spy-logo-h-m, 28px) * 66 / 28);
+  }
+
+  @media screen and (min-width: 750px) {
+    .spy-logo-link svg {
+      height: var(--spy-logo-h, 36px);
+      width: calc(var(--spy-logo-h, 36px) * 79 / 36);
+    }
+  }
+{% endstylesheet %}
 
 {% schema %}
 {

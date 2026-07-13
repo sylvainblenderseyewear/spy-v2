@@ -39,12 +39,12 @@
                 <div class="col-span-4 xl:col-span-3 [display:grid] grid-cols-3 gap-x-6 lg:gap-x-10 gap-y-16 content-start pt-4">
                   {% for child in link.links %}
                     <div>
-                      <a href="{{ child.url }}" class="inline-block pb-2 text-[13px] font-bold uppercase tracking-[0.06em] text-spy-ink no-underline hover:text-spy-orange" style="font-family: var(--font-heading--family);">{{ child.title }}</a>
+                      <a href="{{ child.url }}" class="inline-block pb-2 text-[14px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline hover:text-spy-orange" style="font-family: var(--font-heading--family);">{{ child.title }}</a>
                       {% if child.links != blank %}
                         <ul class="flex flex-col gap-0 list-none m-0 p-0">
                           {% for grandchild in child.links %}
                             <li>
-                              <a href="{{ grandchild.url }}" class="inline-block py-0.5 text-[14px] text-spy-ink no-underline hover:text-spy-orange">{{ grandchild.title }}</a>
+                              <a href="{{ grandchild.url }}" class="inline-block py-[1px] text-[14px] leading-[22.4px] tracking-[0.5px] text-spy-ink no-underline hover:text-spy-orange">{{ grandchild.title }}</a>
                             </li>
                           {% endfor %}
                         </ul>
@@ -65,53 +65,375 @@
     {% endfor %}
   </ul>
 
-  <details class="spy-drawer group/dr md:hidden">
-    <summary class="flex items-center justify-center w-11 h-11 cursor-pointer list-none text-spy-ink [&::-webkit-details-marker]:hidden">
-      <span class="block w-5 h-5 group-open/dr:hidden">{{- 'spy-fa-bars.svg' | inline_asset_content -}}</span>
-      <span class="hidden w-4 h-4 group-open/dr:block">{{- 'spy-fa-xmark.svg' | inline_asset_content -}}</span>
-    </summary>
-    <div class="absolute left-0 right-0 top-full z-40 bg-white max-h-[calc(100dvh-50px)] overflow-y-auto px-[var(--page-margin)] py-4 shadow-lg">
-      <ul class="list-none m-0 p-0">
-        {% for link in menu.links %}
-          {% liquid
-            assign link_handle = link.title | handleize
-            assign is_highlight = false
-            if link_handle == highlight_handle and highlight_handle != blank
-              assign is_highlight = true
-            endif
-          %}
-          <li class="border-b border-[#e5e5e5]">
-            {% if link.links != blank %}
-              <details class="group/acc">
-                <summary class="flex items-center justify-between py-3.5 cursor-pointer list-none text-base font-semibold uppercase no-underline {% if is_highlight %}text-spy-orange{% else %}text-spy-ink{% endif %} [&::-webkit-details-marker]:hidden" style="font-family: var(--font-heading--family);">
-                  {{ link.title }}
-                  <span class="block w-3 h-3 transition-transform duration-200 group-open/acc:rotate-180">{{- 'spy-fa-caret.svg' | inline_asset_content -}}</span>
-                </summary>
-                <ul class="list-none m-0 p-0 pb-3.5">
-                  <li><a href="{{ link.url }}" class="block py-1.5 text-[15px] font-semibold text-spy-ink no-underline">{{ link.title }}</a></li>
-                  {% for child in link.links %}
-                    <li>
-                      <a href="{{ child.url }}" class="block py-1.5 text-[15px] {% if child.links != blank %}font-semibold {% endif %}text-spy-ink no-underline">{{ child.title }}</a>
-                      {% if child.links != blank %}
-                        <ul class="list-none m-0 p-0 pl-4">
-                          {% for grandchild in child.links %}
-                            <li><a href="{{ grandchild.url }}" class="block py-1.5 text-[14px] text-spy-gray no-underline">{{ grandchild.title }}</a></li>
-                          {% endfor %}
-                        </ul>
-                      {% endif %}
-                    </li>
-                  {% endfor %}
-                </ul>
-              </details>
-            {% else %}
-              <a href="{{ link.url }}" class="block py-3.5 text-base font-semibold uppercase no-underline {% if is_highlight %}text-spy-orange{% else %}text-spy-ink{% endif %}" style="font-family: var(--font-heading--family);">{{- link.title -}}</a>
+  <button
+    type="button"
+    class="spy-nav-toggle relative z-[70] flex items-center justify-center w-11 h-11 cursor-pointer text-spy-ink md:hidden button-unstyled"
+    aria-label="{{ 'accessibility.menu' | t }}"
+    aria-expanded="false"
+    aria-controls="spy-mobile-nav"
+  >
+    <span class="block w-5 h-5">{{- 'spy-fa-bars.svg' | inline_asset_content -}}</span>
+  </button>
+
+  <div id="spy-mobile-nav" class="spy-nav md:hidden" aria-hidden="true">
+    <div class="spy-nav__overlay" data-nav-close></div>
+
+    <div class="spy-nav__panel">
+      <div class="spy-nav__screens">
+        {% comment %} ROOT SCREEN {% endcomment %}
+        <div class="spy-nav__screen is-root" data-screen="root">
+          <ul class="list-none m-0 p-0 pt-1">
+            {% for link in menu.links %}
+              {% liquid
+                assign is_highlight = false
+                assign lh = link.title | handleize
+                if lh == highlight_handle and highlight_handle != blank
+                  assign is_highlight = true
+                endif
+              %}
+              <li>
+                {% if link.links != blank %}
+                  <button
+                    type="button"
+                    data-nav-forward="scr-{{ forloop.index }}"
+                    class="button-unstyled flex items-center justify-between w-full px-5 py-[16px] text-left cursor-pointer text-[13px] font-bold uppercase tracking-[0.5px] {% if is_highlight %}text-spy-orange{% else %}text-spy-ink{% endif %}"
+                    style="font-family: var(--font-heading--family);"
+                  >
+                    {{ link.title }}
+                    <span class="spy-caret-right block w-2.5 h-2.5">{{- 'spy-fa-angle.svg' | inline_asset_content -}}</span>
+                  </button>
+                {% else %}
+                  <a href="{{ link.url }}" class="block px-5 py-[16px] text-[13px] font-bold uppercase tracking-[0.5px] no-underline {% if is_highlight %}text-spy-orange{% else %}text-spy-ink{% endif %}" style="font-family: var(--font-heading--family);">{{- link.title -}}</a>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+
+          <div class="border-t border-[#efefef] mt-1 pt-1">
+            {% if shop.customer_accounts_enabled %}
+              <a href="{{ routes.account_url }}" class="flex items-center gap-2.5 px-5 py-3 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">
+                <span class="block w-[14px] h-[14px]">{{- 'spy-fa-user.svg' | inline_asset_content -}}</span>
+                {% if customer %}{{ 'content.account_title' | t }}{% else %}{{ 'actions.log_in' | t }}{% endif %}
+              </a>
             {% endif %}
-          </li>
+            {% if block.settings.store_locator_url != blank %}
+              <a href="{{ block.settings.store_locator_url }}" target="_blank" rel="noopener" class="flex items-center gap-2.5 px-5 py-3 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">
+                <span class="block w-[14px] h-[14px]">{{- 'spy-fa-location.svg' | inline_asset_content -}}</span>
+                {{ block.settings.store_locator_label }}
+              </a>
+            {% endif %}
+            {% if localization.available_countries.size > 1 %}
+              <a href="#" class="flex items-center justify-between gap-2.5 px-5 py-3 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">
+                {{ localization.country.name }} ({{ localization.language.iso_code | upcase }})
+                <span class="spy-caret-right block w-2.5 h-2.5 text-[#9a9a9a]">{{- 'spy-fa-angle.svg' | inline_asset_content -}}</span>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+
+        {% comment %} CATEGORY SCREENS {% endcomment %}
+        {% for link in menu.links %}
+          {% if link.links != blank %}
+            {% liquid
+              assign link_handle = link.title | handleize
+              assign opened_one = false
+            %}
+            <div class="spy-nav__screen" data-screen="scr-{{ forloop.index }}">
+              <button
+                type="button"
+                data-nav-back
+                class="button-unstyled flex items-center gap-3 w-full px-5 py-[15px] text-left cursor-pointer text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink"
+                style="font-family: var(--font-heading--family);"
+              >
+                <span class="spy-caret-back block w-2.5 h-2.5 text-spy-ink">{{- 'spy-fa-angle.svg' | inline_asset_content -}}</span>
+                {{ link.title }}
+              </button>
+
+              <div class="spy-nav__body">
+                <a href="{{ link.url }}" class="block px-5 py-3 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">See all {{ link.title }}</a>
+
+                {% for child in link.links %}
+                  {% if child.links != blank %}
+                    {% liquid
+                      assign is_open = false
+                      if opened_one == false
+                        assign is_open = true
+                        assign opened_one = true
+                      endif
+                    %}
+                    <details class="spy-l2" {% if is_open %}open{% endif %}>
+                      <summary class="flex items-center justify-between px-5 py-3 cursor-pointer list-none text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink [&::-webkit-details-marker]:hidden" style="font-family: var(--font-heading--family);">
+                        {{ child.title }}
+                        <span class="spy-caret block w-2.5 h-2.5 text-[#9a9a9a]">{{- 'spy-fa-angle.svg' | inline_asset_content -}}</span>
+                      </summary>
+                      <div class="spy-acc__wrap"><div class="spy-acc__inner">
+                        <a href="{{ child.url }}" class="spy-acc__row block px-5 pt-1 pb-2.5 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">See all {{ child.title }}</a>
+                        {% for grandchild in child.links %}
+                          <a href="{{ grandchild.url }}" class="spy-acc__row block px-5 py-2.5 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">{{ grandchild.title }}</a>
+                        {% endfor %}
+                      </div></div>
+                    </details>
+                  {% else %}
+                    <a href="{{ child.url }}" class="block px-5 py-3 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">{{ child.title }}</a>
+                  {% endif %}
+                {% endfor %}
+
+                <div class="[display:grid] grid-cols-1 gap-y-5 pt-5 pb-6" data-promo-slot-mobile="{{ link_handle }}"></div>
+              </div>
+            </div>
+          {% endif %}
         {% endfor %}
-      </ul>
+      </div>
     </div>
-  </details>
+  </div>
+
+  <script>
+    (() => {
+      const nav = document.getElementById('spy-mobile-nav');
+      const toggle = document.querySelector('.spy-nav-toggle');
+      if (!nav || !toggle) return;
+
+      if (nav.parentElement !== document.body) document.body.appendChild(nav);
+      const root = document.documentElement;
+      const screens = nav.querySelectorAll('[data-screen]');
+
+      const resetScreens = () =>
+        screens.forEach((s) => {
+          if (!s.classList.contains('is-root')) s.classList.remove('is-active');
+        });
+
+
+        const setNavTop = () => {
+        const header = document.querySelector('.spy-header-section');
+        const h = header ? Math.round(header.getBoundingClientRect().height) : 50;
+        root.style.setProperty('--spy-nav-top', h + 'px');
+      };
+
+      const open = () => {
+        setNavTop();
+        root.classList.add('spy-nav-open');
+        toggle.setAttribute('aria-expanded', 'true');
+        nav.setAttribute('aria-hidden', 'false');
+      };
+      const close = () => {
+        root.classList.remove('spy-nav-open');
+        toggle.setAttribute('aria-expanded', 'false');
+        nav.setAttribute('aria-hidden', 'true');
+        setTimeout(resetScreens, 300);
+      };
+
+      toggle.addEventListener('click', () =>
+        root.classList.contains('spy-nav-open') ? close() : open()
+      );
+
+      nav.addEventListener('click', (e) => {
+        const fwd = e.target.closest('[data-nav-forward]');
+        if (fwd) {
+          const target = nav.querySelector('[data-screen="' + fwd.dataset.navForward + '"]');
+          if (target) {
+            target.classList.add('is-active');
+            target.scrollTop = 0;
+          }
+          return;
+        }
+        const back = e.target.closest('[data-nav-back]');
+        if (back) {
+          back.closest('[data-screen]').classList.remove('is-active');
+          return;
+        }
+        if (e.target.closest('[data-nav-close]')) close();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && root.classList.contains('spy-nav-open')) close();
+      });
+    })();
+  </script>
 </nav>
+
+{% stylesheet %}
+  :root {
+    --spy-nav-width: 280px;
+    --spy-nav-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .spy-nav {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .spy-nav__overlay,
+  .spy-nav__panel {
+    pointer-events: auto;
+  }
+
+  .spy-nav__overlay {
+    position: absolute;
+    top: var(--spy-nav-top, 50px);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transition: opacity 0.35s var(--spy-nav-ease);
+    touch-action: none;
+    overscroll-behavior: contain;
+  }
+
+  .spy-nav__panel {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--spy-nav-width);
+    background: #fff;
+    overflow: hidden;
+    transform: translateX(-100%);
+    transition: transform 0.35s var(--spy-nav-ease);
+  }
+
+  html.spy-nav-open .spy-nav {
+    visibility: visible;
+  }
+
+  html.spy-nav-open .spy-nav__overlay {
+    opacity: 1;
+  }
+
+  html.spy-nav-open .spy-nav__panel {
+    transform: translateX(0);
+  }
+
+  .page-wrapper {
+    transition: transform 0.35s var(--spy-nav-ease);
+  }
+
+  html.spy-nav-open .page-wrapper {
+    transform: translateX(var(--spy-nav-width));
+    overflow: hidden;
+  }
+
+  html.spy-nav-open,
+  html.spy-nav-open body {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    html.spy-nav-open .page-wrapper {
+      transform: none;
+    }
+  }
+
+  .spy-nav__screens {
+    position: absolute;
+    inset: 0;
+  }
+
+  .spy-nav__screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform 0.35s var(--spy-nav-ease), visibility 0s linear 0.35s;
+  }
+
+  .spy-nav__screen.is-root {
+    transform: none;
+    visibility: visible;
+    transition: none;
+  }
+
+  .spy-nav__screen.is-active {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.35s var(--spy-nav-ease), visibility 0s;
+  }
+
+  /* Sticky category header stays put while the body scrolls */
+  .spy-nav__screen > [data-nav-back] {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #fff;
+    flex: 0 0 auto;
+  }
+
+  .spy-nav__body {
+    flex: 1 1 auto;
+  }
+
+  /* --- Level-2 accordion: expand in place, smooth height (grid 0fr -> 1fr) --- */
+  .spy-l2[open] {
+    background: #f5f5f5;
+  }
+
+  .spy-l2 > .spy-acc__wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s var(--spy-nav-ease);
+    will-change: grid-template-rows;
+  }
+
+  .spy-l2[open] > .spy-acc__wrap {
+    grid-template-rows: 1fr;
+  }
+
+  .spy-acc__inner {
+    overflow: hidden;
+    min-height: 0;
+    padding-bottom: 0.5rem;
+  }
+
+  .spy-acc__inner {
+    opacity: 0;
+    transition: opacity 0.3s var(--spy-nav-ease) 0.05s;
+  }
+
+  .spy-l2[open] > .spy-acc__wrap > .spy-acc__inner {
+    opacity: 1;
+  }
+
+  [data-promo-slot-mobile] [data-menu-promo] > a ~ a,
+  [data-promo-slot-mobile] > [data-menu-promo] ~ [data-menu-promo] {
+    display: none;
+  }
+
+  /* Caret: points down when closed, flips up when open */
+  .spy-l2 > summary .spy-caret {
+    transition: transform 0.25s var(--spy-nav-ease);
+  }
+
+  .spy-l2[open] > summary .spy-caret {
+    transform: rotate(180deg);
+  }
+
+  /* Root forward carets point right; back caret points left */
+  .spy-caret-right { transform: rotate(-90deg); }
+  .spy-caret-back  { transform: rotate(90deg); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spy-nav,
+    .spy-nav__overlay,
+    .spy-nav__panel,
+    .spy-nav__screen,
+    .page-wrapper,
+    .spy-l2 > .spy-acc__wrap,
+    .spy-acc__inner,
+    .spy-l2 > summary .spy-caret {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -130,6 +452,23 @@
       "label": "Item title to highlight",
       "info": "Menu item with this title shows in the brand orange (e.g. Sale)",
       "default": "Sale"
+    },
+    {
+      "type": "header",
+      "content": "Mobile drawer footer"
+    },
+    {
+      "type": "text",
+      "id": "store_locator_url",
+      "label": "Store locator link",
+      "info": "Shown as \"Find a store\" in the mobile menu. Leave blank to hide.",
+      "default": "https://stores.spyoptic.com"
+    },
+    {
+      "type": "text",
+      "id": "store_locator_label",
+      "label": "Store locator label",
+      "default": "Find a store"
     }
   ],
   "presets": [
