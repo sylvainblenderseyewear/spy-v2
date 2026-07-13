@@ -52,23 +52,11 @@
                     </div>
                   {% endfor %}
                 </div>
-                {% comment %} one fixed image-block slot per top-level menu item {% endcomment %}
-                {% case link_handle %}
-                  {% when 'sunglasses' %}
-                    {% content_for 'block', type: 'spy-menu-promo', id: 'promo-sunglasses', in_panel: true %}
-                  {% when 'goggles' %}
-                    {% content_for 'block', type: 'spy-menu-promo', id: 'promo-goggles', in_panel: true %}
-                  {% when 'snow-helmets' %}
-                    {% content_for 'block', type: 'spy-menu-promo', id: 'promo-snow-helmets', in_panel: true %}
-                  {% when 'eyeglasses' %}
-                    {% content_for 'block', type: 'spy-menu-promo', id: 'promo-eyeglasses', in_panel: true %}
-                  {% when 'gear' %}
-                    {% content_for 'block', type: 'spy-menu-promo', id: 'promo-gear', in_panel: true %}
-                  {% when 'collections' %}
-                    {% content_for 'block', type: 'spy-menu-promo', id: 'promo-collections', in_panel: true %}
-                  {% when 'sale' %}
-                    {% content_for 'block', type: 'spy-menu-promo', id: 'promo-sale', in_panel: true %}
-                {% endcase %}
+                {% comment %} Menu-images blocks get placed in here by their own script {% endcomment %}
+                <div
+                  class="col-span-2 [display:grid] grid-cols-2 gap-x-8 gap-y-6 content-start pt-4"
+                  data-promo-slot="{{ link_handle }}"
+                ></div>
               </div>
             </div>
           </div>

@@ -20,27 +20,7 @@
             "menu": "main-menu",
             "highlight_item": "Sale"
           },
-          "blocks": {
-            "promo-sunglasses": {
-              "type": "spy-menu-promo",
-              "static": true,
-              "settings": {
-                "image_1": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SNOW-HOVER_jpg.webp",
-                "caption_1": "DISCORD COLLECTION",
-                "link_1": "",
-                "image_2": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SAFETY-HOVER_jpg.webp",
-                "caption_2": "DISCORD COLLECTION",
-                "link_2": "",
-                "image_3": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-FISHING-HOVER_jpg.webp",
-                "caption_3": "DISCORD COLLECTION",
-                "link_3": "",
-                "image_4": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-LIFESTYLE-HOVER_jpg.webp",
-                "caption_4": "DISCORD COLLECTION",
-                "link_4": ""
-              },
-              "blocks": {}
-            }
-          }
+          "blocks": {}
         },
         "utility_nav": {
           "type": "spy-utility-nav",
@@ -67,11 +47,32 @@
             "padding-block-end": 0
           },
           "blocks": {}
+        },
+        "menu_images_sunglasses": {
+          "type": "spy-menu-promo",
+          "name": "Menu images",
+          "settings": {
+            "menu_item": "Sunglasses",
+            "image_1": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SNOW-HOVER_jpg.webp",
+            "caption_1": "DISCORD COLLECTION",
+            "link_1": "",
+            "image_2": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SAFETY-HOVER_jpg.webp",
+            "caption_2": "DISCORD COLLECTION",
+            "link_2": "",
+            "image_3": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-FISHING-HOVER_jpg.webp",
+            "caption_3": "DISCORD COLLECTION",
+            "link_3": "",
+            "image_4": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-LIFESTYLE-HOVER_jpg.webp",
+            "caption_4": "DISCORD COLLECTION",
+            "link_4": ""
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "mega_menu",
-        "utility_nav"
+        "utility_nav",
+        "menu_images_sunglasses"
       ],
       "settings": {
         "sticky": true
