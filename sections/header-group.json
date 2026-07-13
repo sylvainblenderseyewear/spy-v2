@@ -38,16 +38,6 @@
           },
           "blocks": {}
         },
-        "spy-header-logo": {
-          "type": "_header-logo",
-          "static": true,
-          "settings": {
-            "hide_logo_on_home_page": false,
-            "padding-block-start": 0,
-            "padding-block-end": 0
-          },
-          "blocks": {}
-        },
         "menu_images_sunglasses": {
           "type": "spy-menu-promo",
           "name": "Menu images — Sunglasses",
@@ -67,12 +57,40 @@
             "link_4": ""
           },
           "blocks": {}
+        },
+        "spy_menu_promo_QLN7Hy": {
+          "type": "spy-menu-promo",
+          "name": "Menu images",
+          "settings": {
+            "menu_item": "Goggles",
+            "image_1": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SAFETY-HOVER_jpg.webp",
+            "caption_1": "HAPPY BOOSY SNOW GOGGLES",
+            "link_1": "",
+            "caption_2": "",
+            "link_2": "",
+            "caption_3": "",
+            "link_3": "",
+            "caption_4": "",
+            "link_4": ""
+          },
+          "blocks": {}
+        },
+        "spy-header-logo": {
+          "type": "_header-logo",
+          "static": true,
+          "settings": {
+            "hide_logo_on_home_page": false,
+            "padding-block-start": 0,
+            "padding-block-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "mega_menu",
         "utility_nav",
-        "menu_images_sunglasses"
+        "menu_images_sunglasses",
+        "spy_menu_promo_QLN7Hy"
       ],
       "settings": {
         "sticky": true
