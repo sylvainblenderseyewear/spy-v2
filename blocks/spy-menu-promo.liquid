@@ -1,20 +1,43 @@
-{% comment %}
-  Image cards for one mega-menu dropdown. Renders nothing here —
-  spy-mega-menu reads these settings and shows the cards inside the panel.
-{% endcomment %}
-<div class="hidden" {{ block.shopify_attributes }} data-menu-promo="{{ block.settings.menu_item | handleize }}"></div>
+{% doc %}
+  Image cards for one mega-menu dropdown. Rendered statically inside each panel's
+  reserved right zone by spy-mega-menu (one fixed id per top-level menu item).
+
+  @param {boolean} [in_panel] - True when rendered inside a dropdown panel
+
+  @example
+  {% content_for 'block', type: 'spy-menu-promo', id: 'promo-sunglasses', in_panel: true %}
+{% enddoc %}
+
+{% if in_panel %}
+  <div class="col-span-2 [display:grid] grid-cols-2 gap-x-8 gap-y-6 content-start pt-4" {{ block.shopify_attributes }}>
+    {% for i in (1..4) %}
+      {% liquid
+        assign image_key = 'image_' | append: i
+        assign caption_key = 'caption_' | append: i
+        assign link_key = 'link_' | append: i
+        assign card_image = block.settings[image_key]
+        assign card_caption = block.settings[caption_key]
+        assign card_link = block.settings[link_key]
+      %}
+      {% if card_image %}
+        <a href="{{ card_link | default: '#' }}" class="block no-underline">
+          {{ card_image | image_url: width: 600 | image_tag: class: 'w-full aspect-[41/32] object-cover', loading: 'lazy' }}
+          {% if card_caption != blank %}
+            <span class="block mt-2 text-center text-[12px] font-bold uppercase tracking-[0.06em] text-spy-ink">{{ card_caption }}</span>
+          {% endif %}
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="hidden" {{ block.shopify_attributes }}></div>
+{% endif %}
 
 {% schema %}
 {
   "name": "Menu images",
   "tag": null,
   "settings": [
-    {
-      "type": "text",
-      "id": "menu_item",
-      "label": "Menu item",
-      "info": "Exact title of the top-level menu item these images belong to (e.g. Sunglasses)"
-    },
     {
       "type": "header",
       "content": "Image 1"
@@ -43,11 +66,6 @@
     { "type": "image_picker", "id": "image_4", "label": "Image" },
     { "type": "text", "id": "caption_4", "label": "Caption" },
     { "type": "url", "id": "link_4", "label": "Link" }
-  ],
-  "presets": [
-    {
-      "name": "Menu images"
-    }
   ]
 }
 {% endschema %}

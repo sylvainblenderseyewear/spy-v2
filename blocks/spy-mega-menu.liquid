@@ -30,17 +30,6 @@
         </a>
 
         {% if link.links != blank %}
-          {% liquid
-            assign promo = nil
-            for pb in section.blocks
-              if pb.type == 'spy-menu-promo'
-                assign pb_handle = pb.settings.menu_item | handleize
-                if pb_handle == link_handle
-                  assign promo = pb
-                endif
-              endif
-            endfor
-          %}
           <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 absolute left-0 right-0 top-full z-40 bg-white border-t border-[#e5e5e5] shadow-lg transition-opacity duration-200">
             <div class="px-4">
               <div class="[display:grid] grid-cols-6 gap-x-6 lg:gap-x-8 pt-6 pb-16">
@@ -63,28 +52,23 @@
                     </div>
                   {% endfor %}
                 </div>
-                {% if promo %}
-                  <div class="col-span-2 [display:grid] grid-cols-2 gap-x-8 gap-y-6 content-start pt-4">
-                    {% for i in (1..4) %}
-                      {% liquid
-                        assign image_key = 'image_' | append: i
-                        assign caption_key = 'caption_' | append: i
-                        assign link_key = 'link_' | append: i
-                        assign card_image = promo.settings[image_key]
-                        assign card_caption = promo.settings[caption_key]
-                        assign card_link = promo.settings[link_key]
-                      %}
-                      {% if card_image %}
-                        <a href="{{ card_link | default: '#' }}" class="block no-underline">
-                          {{ card_image | image_url: width: 600 | image_tag: class: 'w-full aspect-[41/32] object-cover', loading: 'lazy' }}
-                          {% if card_caption != blank %}
-                            <span class="block mt-2 text-center text-[12px] font-bold uppercase tracking-[0.06em] text-spy-ink">{{ card_caption }}</span>
-                          {% endif %}
-                        </a>
-                      {% endif %}
-                    {% endfor %}
-                  </div>
-                {% endif %}
+                {% comment %} one fixed image-block slot per top-level menu item {% endcomment %}
+                {% case link_handle %}
+                  {% when 'sunglasses' %}
+                    {% content_for 'block', type: 'spy-menu-promo', id: 'promo-sunglasses', in_panel: true %}
+                  {% when 'goggles' %}
+                    {% content_for 'block', type: 'spy-menu-promo', id: 'promo-goggles', in_panel: true %}
+                  {% when 'snow-helmets' %}
+                    {% content_for 'block', type: 'spy-menu-promo', id: 'promo-snow-helmets', in_panel: true %}
+                  {% when 'eyeglasses' %}
+                    {% content_for 'block', type: 'spy-menu-promo', id: 'promo-eyeglasses', in_panel: true %}
+                  {% when 'gear' %}
+                    {% content_for 'block', type: 'spy-menu-promo', id: 'promo-gear', in_panel: true %}
+                  {% when 'collections' %}
+                    {% content_for 'block', type: 'spy-menu-promo', id: 'promo-collections', in_panel: true %}
+                  {% when 'sale' %}
+                    {% content_for 'block', type: 'spy-menu-promo', id: 'promo-sale', in_panel: true %}
+                {% endcase %}
               </div>
             </div>
           </div>
