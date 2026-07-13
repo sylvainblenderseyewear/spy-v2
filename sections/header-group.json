@@ -14,6 +14,26 @@
     "header_section": {
       "type": "spy-header",
       "blocks": {
+        "spy_menu_promo_3443g4": {
+          "type": "spy-menu-promo",
+          "name": "Menu images",
+          "settings": {
+            "menu_item": "Sunglasses",
+            "image_1": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SNOW-HOVER_jpg.webp",
+            "caption_1": "DISCORD COLLECTION",
+            "link_1": "",
+            "image_2": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SAFETY-HOVER_jpg.webp",
+            "caption_2": "DISCORD COLLECTION",
+            "link_2": "",
+            "image_3": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-FISHING-HOVER_jpg.webp",
+            "caption_3": "DISCORD COLLECTION",
+            "link_3": "",
+            "image_4": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-LIFESTYLE-HOVER_jpg.webp",
+            "caption_4": "DISCORD COLLECTION",
+            "link_4": ""
+          },
+          "blocks": {}
+        },
         "mega_menu": {
           "type": "spy-mega-menu",
           "settings": {
@@ -27,17 +47,30 @@
           "settings": {
             "journal_label": "+JOURNAL+",
             "journal_url": "shopify://blogs/journal",
+            "menu": "",
             "show_search": true,
             "show_store_locator": true,
             "store_locator_url": "https://stores.spyoptic.com",
             "store_locator_label": "Find a store",
             "show_account": true,
+            "show_country": true,
             "customer_account_menu": "customer-account-main-menu"
+          },
+          "blocks": {}
+        },
+        "spy-header-logo": {
+          "type": "_header-logo",
+          "static": true,
+          "settings": {
+            "hide_logo_on_home_page": false,
+            "padding-block-start": 0,
+            "padding-block-end": 0
           },
           "blocks": {}
         }
       },
       "block_order": [
+        "spy_menu_promo_3443g4",
         "mega_menu",
         "utility_nav"
       ],
