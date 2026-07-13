@@ -50,7 +50,7 @@
         },
         "menu_images_sunglasses": {
           "type": "spy-menu-promo",
-          "name": "Menu images",
+          "name": "Menu images — Sunglasses",
           "settings": {
             "menu_item": "Sunglasses",
             "image_1": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SNOW-HOVER_jpg.webp",
