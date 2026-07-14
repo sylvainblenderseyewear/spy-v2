@@ -23,7 +23,7 @@
     {{ block_settings.style_class }}
     {{ block_settings.style_class }}--{{ block.id }}
   "
-  style="{% render 'size-style', settings: block_settings %}"
+  style="{% render 'size-style', settings: block_settings %}{% if block_settings.padding_block > 0 %}padding-block:{{ block_settings.padding_block }}px;{% endif %}{% if block_settings.padding_inline > 0 %}padding-inline:{{ block_settings.padding_inline }}px;{% endif %}"
   {%- if block_settings.open_in_new_tab -%}
     target="_blank"
     rel="noopener noreferrer"

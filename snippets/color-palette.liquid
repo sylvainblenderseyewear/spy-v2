@@ -181,8 +181,8 @@
     --color-primary-button-background: rgb({{ settings.palette_primary_button_background.rgba }});
     --color-primary-button-border: rgb({{ settings.palette_primary_button_border.rgba }});
     --color-primary-button-focus-outline: rgb({{ effective_primary_button_focus_outline.rgb }});
-    --color-primary-button-hover-text: rgb({{ effective_primary_button_hover_text.rgba }});
-    --color-primary-button-hover-background: {{ effective_primary_button_hover_background }};
+    --color-primary-button-hover-text: {% if settings.primary_button_hover_text != blank %}rgb({{ settings.primary_button_hover_text.rgba }}){% else %}rgb({{ effective_primary_button_hover_text.rgba }}){% endif %};
+    --color-primary-button-hover-background: {% if settings.primary_button_hover_background != blank %}rgb({{ settings.primary_button_hover_background.rgba }}){% else %}{{ effective_primary_button_hover_background }}{% endif %};
     --color-primary-button-hover-border: {{ effective_primary_button_hover_border }};
 
     --color-secondary-button-text: rgb({{ settings.palette_secondary_button_text.rgba }});
@@ -233,5 +233,14 @@
   body {
     color: var(--color-foreground);
     background-color: var(--color-background);
+  }
+
+  {% comment %} primary button hover transition {% endcomment %}
+  .button {
+    transition:
+      background-color {{ settings.primary_button_hover_transition | default: 0.3 }}s ease,
+      color {{ settings.primary_button_hover_transition | default: 0.3 }}s ease,
+      border-color {{ settings.primary_button_hover_transition | default: 0.3 }}s ease,
+      transform var(--hover-transition-duration, 0.25s) var(--hover-transition-timing, ease);
   }
 {% endstyle %}

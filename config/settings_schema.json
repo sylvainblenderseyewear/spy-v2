@@ -1377,6 +1377,28 @@
         "default": "default"
       },
       {
+        "type": "color",
+        "id": "primary_button_hover_background",
+        "label": "Hover background",
+        "alpha": true
+      },
+      {
+        "type": "color",
+        "id": "primary_button_hover_text",
+        "label": "Hover text",
+        "alpha": true
+      },
+      {
+        "type": "range",
+        "id": "primary_button_hover_transition",
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "unit": "s",
+        "label": "Hover transition",
+        "default": 0.3
+      },
+      {
         "type": "header",
         "content": "t:options.button_secondary"
       },
