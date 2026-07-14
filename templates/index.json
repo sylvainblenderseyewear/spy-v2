@@ -89,8 +89,8 @@
                 "custom_button_text": "{{ settings.color_palette.background }}",
                 "custom_button_border": "{{ settings.color_palette.background }}",
                 "link_text_color": "",
-                "width": "fit-content",
-                "custom_width": 100,
+                "width": "custom",
+                "custom_width": 20,
                 "width_mobile": "fit-content",
                 "custom_width_mobile": 100
               },
@@ -108,8 +108,8 @@
                 "custom_button_text": "{{ settings.color_palette.background }}",
                 "custom_button_border": "{{ settings.color_palette.background }}",
                 "link_text_color": "",
-                "width": "fit-content",
-                "custom_width": 100,
+                "width": "custom",
+                "custom_width": 20,
                 "width_mobile": "fit-content",
                 "custom_width_mobile": 100
               },
