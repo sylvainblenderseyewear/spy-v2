@@ -16,9 +16,9 @@
           "type": "text",
           "settings": {
             "text": "<h1>GEAR UP & ROLL OUT</h1>",
-            "width": "fit-content",
+            "width": "100%",
             "max_width": "wide",
-            "alignment": "left",
+            "alignment": "center",
             "type_preset": "h1",
             "font": "var(--font-primary--family)",
             "font_size": "1rem",
