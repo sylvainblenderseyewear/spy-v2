@@ -133,7 +133,7 @@
       "name": "Campaign Hero",
       "settings": {
         "media_type_1": "image",
-        "image_1": "shopify://shop_images/26-SPY-Digital-Homepage-Banner-MainlineDirt-Week26-Desktop-1920x800.jpg",
+        "image_1": "shopify://shop_images/SPY_Optic___Sunglasses_Goggles_for_Men_Women_Kids_-_Google_Chrome_7_15_2026_12_53_47_AM.png",
         "media_type_2": "image",
         "stack_media_on_mobile": false,
         "custom_mobile_media": true,
@@ -151,8 +151,8 @@
         "vertical_alignment_flex_direction_column": "flex-end",
         "gap": 16,
         "section_width": "full-width",
-        "section_height": "large",
-        "section_height_custom": 70,
+        "section_height": "custom",
+        "section_height_custom": 80,
         "background_color": "rgba(0,0,0,0)",
         "toggle_overlay": true,
         "overlay_color": "#00000040",
@@ -164,87 +164,269 @@
         "padding-block-end": 48
       }
     },
-    "spy_category_tiles_A1": {
-      "type": "spy-category-tiles",
+    "collection_list_WFw8DD": {
+      "type": "collection-list",
       "blocks": {
-        "tile_snow": {
-          "type": "tile",
+        "group_VyKidQ": {
+          "type": "group",
+          "name": "t:names.header",
           "settings": {
-            "label": "Snow",
-            "sublabel": "",
-            "link": "/collections/snow-goggles"
-          }
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_jHnP4w": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<h3>Shop by collection</h3>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 16,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_jHnP4w"
+          ]
         },
-        "tile_sunglasses": {
-          "type": "tile",
+        "static-collection-card": {
+          "type": "_collection-card",
+          "name": "t:names.collection_card",
+          "static": true,
           "settings": {
-            "label": "Sunglasses",
-            "sublabel": "",
-            "link": "/collections/sunglasses"
-          }
-        },
-        "tile_fishing": {
-          "type": "tile",
-          "settings": {
-            "label": "Fishing",
-            "sublabel": "",
-            "link": "/collections/fishing"
-          }
-        },
-        "tile_lifestyle": {
-          "type": "tile",
-          "settings": {
-            "label": "Lifestyle",
-            "sublabel": "",
-            "link": "/collections/lifestyle"
-          }
-        },
-        "tile_classics": {
-          "type": "tile",
-          "settings": {
-            "label": "Classics",
-            "sublabel": "",
-            "link": "/collections/classics"
-          }
-        },
-        "tile_moto": {
-          "type": "tile",
-          "settings": {
-            "label": "Moto",
-            "sublabel": "",
-            "link": "/collections/moto-goggles"
-          }
-        },
-        "tile_trail": {
-          "type": "tile",
-          "settings": {
-            "label": "Trail",
-            "sublabel": "",
-            "link": "/collections/trail"
-          }
-        },
-        "tile_blue_light": {
-          "type": "tile",
-          "settings": {
-            "label": "Blue Light",
-            "sublabel": "",
-            "link": "/collections/blue-light"
-          }
+            "placement": "below_image",
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "collection_card_gap": 8,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0
+          },
+          "blocks": {
+            "collection_title_CXeVQ4": {
+              "type": "collection-title",
+              "name": "t:names.collection_title",
+              "settings": {
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "background_color": "{{ settings.color_palette.background }}",
+                "text_color": "{{ settings.color_palette.foreground }}",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "collection-card-image": {
+              "type": "_collection-card-image",
+              "name": "t:names.collection_card_image",
+              "static": true,
+              "settings": {
+                "image_ratio": "adapt",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "collection_title_CXeVQ4"
+          ]
         }
       },
       "block_order": [
-        "tile_snow",
-        "tile_sunglasses",
-        "tile_fishing",
-        "tile_lifestyle",
-        "tile_classics",
-        "tile_moto",
-        "tile_trail",
-        "tile_blue_light"
+        "group_VyKidQ"
       ],
+      "name": "t:names.collections_carousel",
       "settings": {
-        "heading": "",
-        "columns": 4
+        "collection_list": [],
+        "layout_type": "carousel",
+        "carousel_on_mobile": false,
+        "columns": 3,
+        "mobile_columns": "2",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 8,
+        "bento_gap": 8,
+        "rows_gap": 8,
+        "max_collections": 4,
+        "icons_style": "arrow",
+        "icons_shape": "circle",
+        "section_width": "page-width",
+        "gap": 12,
+        "background_color": "",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "collection_list_bczjpV": {
+      "type": "collection-list",
+      "blocks": {
+        "static-collection-card": {
+          "type": "_collection-card",
+          "name": "t:names.collection_card",
+          "static": true,
+          "settings": {
+            "placement": "below_image",
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "collection_card_gap": 8,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0
+          },
+          "blocks": {
+            "collection_title_eFXMmp": {
+              "type": "collection-title",
+              "name": "t:names.collection_title",
+              "settings": {
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "background_color": "{{ settings.color_palette.background }}",
+                "text_color": "{{ settings.color_palette.foreground }}",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "collection-card-image": {
+              "type": "_collection-card-image",
+              "name": "t:names.collection_card_image",
+              "static": true,
+              "settings": {
+                "image_ratio": "adapt",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "collection_title_eFXMmp"
+          ]
+        }
+      },
+      "custom_css": [
+        ".section--full-width {padding: 0 30px;}"
+      ],
+      "name": "t:names.collections_carousel",
+      "settings": {
+        "collection_list": [
+          "sunglasses",
+          "snow-helmets",
+          "snow-goggles",
+          "new-arrivals",
+          "moto-goggles",
+          "frontpage",
+          "happy-boost"
+        ],
+        "layout_type": "carousel",
+        "carousel_on_mobile": false,
+        "columns": 4,
+        "mobile_columns": "2",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 12,
+        "bento_gap": 8,
+        "rows_gap": 10,
+        "max_collections": 4,
+        "icons_style": "arrow",
+        "icons_shape": "circle",
+        "section_width": "page-width",
+        "gap": 14,
+        "background_color": "",
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
     },
     "spy_region_xl_A1": {
@@ -901,7 +1083,8 @@
   },
   "order": [
     "spy_hero_A1",
-    "spy_category_tiles_A1",
+    "collection_list_WFw8DD",
+    "collection_list_bczjpV",
     "spy_region_xl_A1",
     "spy_new_arrivals_A1",
     "spy_watermen_A1",
