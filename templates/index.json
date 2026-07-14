@@ -89,10 +89,12 @@
                 "custom_button_text": "{{ settings.color_palette.background }}",
                 "custom_button_border": "{{ settings.color_palette.background }}",
                 "link_text_color": "",
-                "width": "custom",
+                "width": "fit-content",
                 "custom_width": 20,
                 "width_mobile": "fit-content",
-                "custom_width_mobile": 100
+                "custom_width_mobile": 100,
+                "padding_block": 6,
+                "padding_inline": 15
               },
               "blocks": {}
             },
@@ -108,10 +110,12 @@
                 "custom_button_text": "{{ settings.color_palette.background }}",
                 "custom_button_border": "{{ settings.color_palette.background }}",
                 "link_text_color": "",
-                "width": "custom",
+                "width": "fit-content",
                 "custom_width": 20,
                 "width_mobile": "fit-content",
-                "custom_width_mobile": 100
+                "custom_width_mobile": 100,
+                "padding_block": 6,
+                "padding_inline": 15
               },
               "blocks": {}
             }
@@ -129,10 +133,12 @@
       "name": "Campaign Hero",
       "settings": {
         "media_type_1": "image",
+        "image_1": "shopify://shop_images/26-SPY-Digital-Homepage-Banner-MainlineDirt-Week26-Desktop-1920x800.jpg",
         "media_type_2": "image",
         "stack_media_on_mobile": false,
         "custom_mobile_media": true,
         "media_type_1_mobile": "image",
+        "image_1_mobile": "shopify://shop_images/snow.webp",
         "media_type_2_mobile": "image",
         "link": "",
         "open_in_new_tab": false,
@@ -554,7 +560,9 @@
             "width": "fit-content",
             "custom_width": 100,
             "width_mobile": "fit-content",
-            "custom_width_mobile": 100
+            "custom_width_mobile": 100,
+            "padding_block": 0,
+            "padding_inline": 0
           },
           "blocks": {}
         }
