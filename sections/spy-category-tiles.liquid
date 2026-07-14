@@ -1,4 +1,5 @@
 {%- liquid
+  # Count only tiles that have something to show
   assign tile_count = 0
   for block in section.blocks
     if block.settings.image != blank or block.settings.label != blank
@@ -8,68 +9,335 @@
   if tile_count == 0
     assign skip_section = true
   endif
+
+  assign display_count = section.settings.columns
+  assign gap = section.settings.gap
+
+  # Arrows + loop only kick in when there are more tiles than fit in one view
+  assign show_arrows = false
+  if tile_count > display_count
+    assign show_arrows = true
+  endif
+
+  # Desktop card width = one slice of the row minus the gaps between them
+  assign gap_total = display_count | minus: 1 | times: gap
+  assign col_vw = 100 | divided_by: display_count
+  assign sizes = '(max-width: 749px) 82vw, ' | append: col_vw | append: 'vw'
 -%}
 
 {%- unless skip_section -%}
 <div
-  class="spy-category-tiles py-8"
-  style="--tile-cols: {{ section.settings.columns }};"
+  class="spy-category-tiles"
+  style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px; padding-inline: {{ section.settings.padding_left }}px {{ section.settings.padding_right }}px;"
   {{ section.shopify_attributes }}
 >
   {%- if section.settings.heading != blank -%}
-    <p class="page-width text-[11px] font-bold uppercase tracking-widest text-spy-gray mb-4">
+    <p class="text-[11px] font-bold uppercase tracking-widest text-spy-gray mb-4">
       {{ section.settings.heading }}
     </p>
   {%- endif -%}
 
-  <div
-    class="page-width grid gap-1"
-    style="grid-template-columns: repeat({{ section.settings.columns }}, minmax(0, 1fr));"
+  <spy-tile-carousel
+    class="spy-category-tiles__carousel block relative"
+    data-loop="{{ show_arrows }}"
+    data-display="{{ display_count }}"
   >
-    {%- for block in section.blocks -%}
-      {%- assign img   = block.settings.image -%}
-      {%- assign label = block.settings.label -%}
-      {%- assign link  = block.settings.link -%}
-
-      {%- if img == blank and label == blank -%}{%- continue -%}{%- endif -%}
-
-      <a
-        class="group relative block overflow-hidden aspect-square no-underline"
-        href="{{ link | default: '#' }}"
-        {{ block.shopify_attributes }}
+    {%- if show_arrows -%}
+      <button
+        type="button"
+        data-prev
+        aria-label="Previous"
+        class="absolute top-1/2 left-1 md:left-2 z-10 -translate-y-1/2 flex items-center justify-center h-9 w-9 md:h-11 md:w-11 rounded-full bg-spy-ink text-white shadow-md transition-colors hover:bg-spy-orange focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-spy-orange"
       >
-        {%- if img != blank -%}
-          {%- assign tile_alt = label | escape -%}
-          {{
-            img
-            | image_url: width: 800
-            | image_tag:
-              loading: 'lazy',
-              alt: tile_alt,
-              sizes: '(max-width: 749px) 50vw, 25vw',
-              widths: '375, 550, 800',
-              class: 'spy-category-tiles__img w-full h-full object-cover transition-transform duration-400 ease-in-out group-hover:scale-[1.04]'
-          }}
-        {%- else -%}
-          <div class="w-full h-full bg-spy-slate"></div>
-        {%- endif -%}
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    {%- endif -%}
 
-        <div class="absolute inset-0 flex flex-col justify-end p-5 bg-gradient-to-t from-black/60 to-transparent pointer-events-none">
-          {%- if label != blank -%}
-            <span class="text-white font-bold uppercase tracking-wide leading-tight text-lg md:text-xl lg:text-2xl">
-              {{ label }}
-            </span>
-          {%- endif -%}
-          {%- if block.settings.sublabel != blank -%}
-            <span class="text-white/75 text-xs font-medium uppercase tracking-wide mt-0.5">
-              {{ block.settings.sublabel }}
-            </span>
-          {%- endif -%}
-        </div>
-      </a>
-    {%- endfor -%}
-  </div>
+    <div
+      data-track
+      class="spy-category-tiles__track flex overflow-x-auto snap-x snap-mandatory select-none gap-[var(--gap)] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden{% if show_arrows %} cursor-grab{% endif %}"
+      style="--gap: {{ gap }}px; --card-basis: calc((100% - {{ gap_total }}px) / {{ display_count }}); --card-basis-mobile: 82%;"
+    >
+      {%- for block in section.blocks -%}
+        {%- assign img   = block.settings.image -%}
+        {%- assign label = block.settings.label -%}
+        {%- assign link  = block.settings.link -%}
+        {%- if img == blank and label == blank -%}{%- continue -%}{%- endif -%}
+
+        {%- liquid
+          case block.settings.aspect_ratio
+            when '1:1'
+              assign ratio = '1 / 1'
+            when '16:9'
+              assign ratio = '16 / 9'
+            when 'custom'
+              assign ratio = block.settings.custom_aspect_ratio | default: '3 / 4'
+            else
+              assign ratio = '3 / 4'
+          endcase
+          assign tile_alt = label | escape
+        -%}
+
+        <a
+          data-card
+          class="spy-category-tiles__card group relative shrink-0 grow-0 min-w-0 basis-[var(--card-basis)] max-[749px]:basis-[var(--card-basis-mobile)] snap-start no-underline"
+          href="{{ link | default: '#' }}"
+          {{ block.shopify_attributes }}
+        >
+          <div class="relative w-full overflow-hidden bg-spy-slate" style="aspect-ratio: {{ ratio }};">
+            {%- if img != blank -%}
+              {{
+                img
+                | image_url: width: 1000
+                | image_tag:
+                  loading: 'lazy',
+                  alt: tile_alt,
+                  sizes: sizes,
+                  widths: '300, 450, 600, 800, 1000',
+                  class: 'spy-category-tiles__img absolute inset-0 w-full h-full object-cover'
+              }}
+            {%- endif -%}
+
+            {%- if block.settings.hover_image != blank -%}
+              {{
+                block.settings.hover_image
+                | image_url: width: 1000
+                | image_tag:
+                  loading: 'lazy',
+                  alt: '',
+                  sizes: sizes,
+                  widths: '300, 450, 600, 800, 1000',
+                  class: 'spy-category-tiles__img absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-focus-visible:opacity-100'
+              }}
+            {%- endif -%}
+
+            {%- comment %} Subtle scrim so the white title stays readable {% endcomment -%}
+            <div class="absolute inset-0 bg-black/20 pointer-events-none"></div>
+
+            {%- if label != blank -%}
+              <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+                <span class="text-white font-bold uppercase tracking-wide text-center text-xl md:text-2xl lg:text-3xl [text-shadow:0_1px_10px_rgb(0_0_0/45%)]">
+                  {{ label }}
+                </span>
+              </div>
+            {%- endif -%}
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+
+    {%- if show_arrows -%}
+      <button
+        type="button"
+        data-next
+        aria-label="Next"
+        class="absolute top-1/2 right-1 md:right-2 z-10 -translate-y-1/2 flex items-center justify-center h-9 w-9 md:h-11 md:w-11 rounded-full bg-spy-ink text-white shadow-md transition-colors hover:bg-spy-orange focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-spy-orange"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    {%- endif -%}
+  </spy-tile-carousel>
 </div>
+
+<script>
+  // Category tiles carousel: native swipe + seamless infinite loop + arrows.
+  // Loop only turns on when there are more tiles than the display count.
+  if (!customElements.get('spy-tile-carousel')) {
+    customElements.define(
+      'spy-tile-carousel',
+      class SpyTileCarousel extends HTMLElement {
+        connectedCallback() {
+          this.track = this.querySelector('[data-track]');
+          if (!this.track) return;
+
+          this.loop = this.dataset.loop === 'true';
+          this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+          this.querySelector('[data-prev]')?.addEventListener('click', () => this.step(-1));
+          this.querySelector('[data-next]')?.addEventListener('click', () => this.step(1));
+
+          this.setupDrag();
+          if (this.loop) this.setupLoop();
+        }
+
+        // Click-drag to scroll on mouse; touch/pen keep native scrolling
+        setupDrag() {
+          const track = this.track;
+          let down = false;
+          let startX = 0;
+          let startScroll = 0;
+          let moved = false;
+          let lastX = 0;
+          let lastT = 0;
+          let velocity = 0;
+
+          track.addEventListener('pointerdown', (e) => {
+            if (e.pointerType !== 'mouse') return;
+            this.clearSnapRestore();
+            down = true;
+            moved = false;
+            velocity = 0;
+            startX = e.clientX;
+            startScroll = track.scrollLeft;
+            lastX = e.clientX;
+            lastT = performance.now();
+            track.style.cursor = 'grabbing';
+            track.style.scrollSnapType = 'none';
+            track.setPointerCapture(e.pointerId);
+          });
+
+          track.addEventListener('pointermove', (e) => {
+            if (!down) return;
+            const dx = e.clientX - startX;
+            if (Math.abs(dx) > 3) moved = true;
+            track.scrollLeft = startScroll - dx;
+
+            const now = performance.now();
+            const dt = now - lastT;
+            if (dt > 0) velocity = (e.clientX - lastX) / dt;
+            lastX = e.clientX;
+            lastT = now;
+          });
+
+          const end = () => {
+            if (!down) return;
+            down = false;
+            track.style.cursor = '';
+            // Glide a little in the flick direction, then ease onto the nearest card
+            const projected = track.scrollLeft - velocity * 150;
+            this.snapToNearest(projected);
+            // Snap stays off during the glide; restore it once the scroll settles
+            // so the release eases in instead of jumping, and touch keeps snapping
+            this.restoreSnapAfterSettle();
+          };
+          track.addEventListener('pointerup', end);
+          track.addEventListener('pointercancel', end);
+
+          // Swallow the click after a real drag so the card link does not open
+          track.addEventListener(
+            'click',
+            (e) => {
+              if (moved) {
+                e.preventDefault();
+                e.stopPropagation();
+                moved = false;
+              }
+            },
+            true
+          );
+
+          // Stop the browser's native image ghost-drag
+          track.addEventListener('dragstart', (e) => e.preventDefault());
+        }
+
+        restoreSnapAfterSettle() {
+          this.clearSnapRestore();
+          this._restoreSnap = () => {
+            this.track.style.scrollSnapType = '';
+            this.clearSnapRestore();
+          };
+          this._restoreTimer = setTimeout(this._restoreSnap, 700);
+          if ('onscrollend' in window) this.track.addEventListener('scrollend', this._restoreSnap);
+        }
+
+        clearSnapRestore() {
+          if (this._restoreTimer) {
+            clearTimeout(this._restoreTimer);
+            this._restoreTimer = null;
+          }
+          if (this._restoreSnap) {
+            this.track.removeEventListener('scrollend', this._restoreSnap);
+            this._restoreSnap = null;
+          }
+        }
+
+        // Ease onto whichever card is closest to pos, same feel as an arrow click
+        snapToNearest(pos) {
+          const cards = this.track.querySelectorAll('[data-card]');
+          const x = pos == null ? this.track.scrollLeft : pos;
+          let target = null;
+          let best = Infinity;
+          cards.forEach((c) => {
+            const d = Math.abs(c.offsetLeft - x);
+            if (d < best) {
+              best = d;
+              target = c;
+            }
+          });
+          if (target) {
+            this.track.scrollTo({ left: target.offsetLeft, behavior: this.reduceMotion ? 'auto' : 'smooth' });
+          }
+        }
+
+        // Clone a screenful of tiles on each end so scrolling never hits a dead edge
+        setupLoop() {
+          this.reals = Array.from(this.track.children);
+          const cloneCount = Math.min(parseInt(this.dataset.display, 10) || 4, this.reals.length);
+
+          this.reals.slice(-cloneCount).forEach((card) => {
+            this.track.insertBefore(this.markClone(card), this.reals[0]);
+          });
+          this.reals.slice(0, cloneCount).forEach((card) => {
+            this.track.appendChild(this.markClone(card));
+          });
+
+          this.firstTail = this.reals[this.reals.length - 1].nextElementSibling;
+
+          requestAnimationFrame(() => {
+            this.track.scrollLeft = this.reals[0].offsetLeft;
+          });
+
+          let idle;
+          this.track.addEventListener('scroll', () => {
+            clearTimeout(idle);
+            idle = setTimeout(() => this.normalize(), 120);
+          });
+
+          let resize;
+          window.addEventListener('resize', () => {
+            clearTimeout(resize);
+            resize = setTimeout(() => this.normalize(), 150);
+          });
+        }
+
+        markClone(card) {
+          const clone = card.cloneNode(true);
+          clone.setAttribute('data-clone', '');
+          clone.setAttribute('aria-hidden', 'true');
+          clone.setAttribute('tabindex', '-1');
+          return clone;
+        }
+
+        // One card + gap per click
+        step(dir) {
+          const card = this.track.querySelector('[data-card]');
+          if (!card) return;
+          const gap = parseFloat(getComputedStyle(this.track).columnGap) || 0;
+          const amount = (card.getBoundingClientRect().width + gap) * dir;
+          this.track.scrollBy({ left: amount, behavior: this.reduceMotion ? 'auto' : 'smooth' });
+        }
+
+        // Silently jump between clones and their real twins for a seamless loop
+        normalize() {
+          if (!this.loop) return;
+          const start = this.reals[0].offsetLeft;
+          const shift = this.firstTail.offsetLeft - start;
+          const x = this.track.scrollLeft;
+
+          if (x < start - 1) {
+            this.track.scrollTo({ left: x + shift, behavior: 'auto' });
+          } else if (x >= start + shift - 1) {
+            this.track.scrollTo({ left: x - shift, behavior: 'auto' });
+          }
+        }
+      }
+    );
+  }
+</script>
 {%- endunless -%}
 
 {% schema %}
@@ -80,7 +348,7 @@
     {
       "type": "text",
       "id": "heading",
-      "label": "Section heading"
+      "label": "Section title"
     },
     {
       "type": "range",
@@ -89,7 +357,62 @@
       "max": 6,
       "step": 1,
       "default": 4,
-      "label": "Desktop columns"
+      "label": "Cards visible (desktop)",
+      "info": "Extra cards turn on the carousel with looping arrows."
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 16,
+      "label": "Gap between cards"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 32,
+      "label": "Top"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 32,
+      "label": "Bottom"
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 16,
+      "label": "Left"
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 16,
+      "label": "Right"
     }
   ],
   "blocks": [
@@ -100,37 +423,60 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Card image"
+        },
+        {
+          "type": "image_picker",
+          "id": "hover_image",
+          "label": "Card hover image"
         },
         {
           "type": "text",
           "id": "label",
-          "label": "Label"
-        },
-        {
-          "type": "text",
-          "id": "sublabel",
-          "label": "Sub-label"
+          "label": "Card title"
         },
         {
           "type": "url",
           "id": "link",
           "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "aspect_ratio",
+          "label": "Card aspect ratio",
+          "options": [
+            { "value": "1:1", "label": "Square (1:1)" },
+            { "value": "3:4", "label": "Portrait (3:4)" },
+            { "value": "16:9", "label": "Landscape (16:9)" },
+            { "value": "custom", "label": "Custom" }
+          ],
+          "default": "3:4"
+        },
+        {
+          "type": "text",
+          "id": "custom_aspect_ratio",
+          "label": "Custom aspect ratio",
+          "info": "Use CSS format, e.g. 4 / 5",
+          "placeholder": "4 / 5",
+          "visible_if": "{{ block.settings.aspect_ratio == 'custom' }}"
         }
       ]
     }
   ],
-  "max_blocks": 8,
+  "max_blocks": 12,
   "presets": [
     {
       "name": "Category Tiles",
       "category": "SPY",
+      "settings": {
+        "columns": 4
+      },
       "blocks": [
         { "type": "tile", "settings": { "label": "Snow" } },
-        { "type": "tile", "settings": { "label": "Sunglasses" } },
+        { "type": "tile", "settings": { "label": "Safety" } },
         { "type": "tile", "settings": { "label": "Fishing" } },
         { "type": "tile", "settings": { "label": "Lifestyle" } },
-        { "type": "tile", "settings": { "label": "Classics" } },
+        { "type": "tile", "settings": { "label": "Sunglasses" } },
         { "type": "tile", "settings": { "label": "Moto" } },
         { "type": "tile", "settings": { "label": "Trail" } },
         { "type": "tile", "settings": { "label": "Blue Light" } }
