@@ -15,13 +15,13 @@
         "heading_A1": {
           "type": "text",
           "settings": {
-            "text": "<h1>GEAR UP & ROLL OUT</h1>",
+            "text": "<h1><strong>GEAR UP & ROLL OUT</strong></h1>",
             "width": "100%",
             "max_width": "wide",
             "alignment": "center",
-            "type_preset": "h1",
+            "type_preset": "custom",
             "font": "var(--font-primary--family)",
-            "font_size": "1rem",
+            "font_size": "3rem",
             "line_height": "display-tight",
             "letter_spacing": "heading-normal",
             "case": "uppercase",
