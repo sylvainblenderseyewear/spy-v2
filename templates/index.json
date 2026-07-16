@@ -364,7 +364,7 @@
             "button_inB3tr": {
               "type": "button",
               "settings": {
-                "label": "Join Now",
+                "label": "shop now",
                 "link": "/account/register",
                 "open_in_new_tab": false,
                 "style_class": "button-custom",
