@@ -296,7 +296,7 @@
             "letter_spacing": "heading-normal",
             "case": "uppercase",
             "wrap": "pretty",
-            "text_color": "",
+            "text_color": "{{ settings.color_palette.background }}",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -335,6 +335,7 @@
       "name": "Loyalty CTA",
       "settings": {
         "media_type_1": "image",
+        "image_1": "shopify://shop_images/region_xl.webp",
         "media_type_2": "image",
         "stack_media_on_mobile": false,
         "custom_mobile_media": false,
