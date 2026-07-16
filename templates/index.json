@@ -339,7 +339,7 @@
             "text_eRJPfj": {
               "type": "text",
               "settings": {
-                "text": "<h2>Join the Crew</h2>",
+                "text": "<h1>region xl</h1>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -347,7 +347,7 @@
                 "font": "var(--font-heading--family)",
                 "font_size": "3.5rem",
                 "line_height": "normal",
-                "letter_spacing": "heading-normal",
+                "letter_spacing": "normal",
                 "case": "uppercase",
                 "wrap": "pretty",
                 "text_color": "{{ settings.color_palette.background }}",
@@ -367,9 +367,9 @@
                 "label": "Join Now",
                 "link": "/account/register",
                 "open_in_new_tab": false,
-                "style_class": "button",
-                "custom_button_background": "{{ settings.color_palette.foreground }}",
-                "custom_button_text": "{{ settings.color_palette.background }}",
+                "style_class": "button-custom",
+                "custom_button_background": "{{ settings.color_palette.background }}",
+                "custom_button_text": "{{ settings.color_palette.foreground }}",
                 "custom_button_border": "{{ settings.color_palette.background }}",
                 "link_text_color": "",
                 "width": "fit-content",
@@ -407,6 +407,7 @@
         "group_bV7reM",
         "spacer_dfTgct"
       ],
+      "custom_css": [],
       "name": "Loyalty CTA",
       "settings": {
         "media_type_1": "image",
@@ -449,146 +450,6 @@
         "cta_label": "Shop Happy Boost",
         "link": "/pages/happyboost",
         "content_align": "left"
-      }
-    },
-    "spy_trust_row_A1": {
-      "type": "section",
-      "blocks": {
-        "trust_ship": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Free shipping on orders $50+</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "0.875rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "text_color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "trust_returns": {
-          "type": "text",
-          "settings": {
-            "text": "<p>30-day hassle-free returns</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "0.875rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "text_color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "trust_warranty": {
-          "type": "text",
-          "settings": {
-            "text": "<p>2-year warranty</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "0.875rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "text_color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "trust_pay": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Secure checkout</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "0.875rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "text_color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "trust_ship",
-        "trust_returns",
-        "trust_warranty",
-        "trust_pay"
-      ],
-      "name": "Trust Values",
-      "settings": {
-        "content_direction": "row",
-        "vertical_on_mobile": false,
-        "horizontal_alignment": "center",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 32,
-        "section_width": "page-width",
-        "section_height": "fit",
-        "section_height_custom": 50,
-        "background_media": "none",
-        "background_color": "{{ settings.color_palette.background }}",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 32,
-        "padding-block-end": 32
       }
     },
     "spy_journal_A1": {
@@ -740,7 +601,6 @@
     "spy_region_xl_A1",
     "spy_loyalty_cta_A1",
     "spy_happy_boost_A1",
-    "spy_trust_row_A1",
     "spy_journal_A1"
   ]
 }
