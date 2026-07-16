@@ -15,7 +15,7 @@
         "heading_A1": {
           "type": "text",
           "settings": {
-            "text": "<h1><strong>GEAR UP & ROLL OUT</strong></h1>",
+            "text": "<h3><strong>GEAR UP & ROLL OUT</strong></h3>",
             "width": "100%",
             "max_width": "wide",
             "alignment": "center",
