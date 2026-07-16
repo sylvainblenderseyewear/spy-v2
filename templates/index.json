@@ -170,6 +170,8 @@
         "tile_dFjizK": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/snow.webp",
+            "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SNOW-HOVER_jpg.webp",
             "label": "Snow",
             "link": "",
             "aspect_ratio": "3:4",
@@ -179,6 +181,7 @@
         "tile_Xyd7Pd": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/safety.webp",
             "label": "Safety",
             "link": "",
             "aspect_ratio": "3:4",
@@ -188,6 +191,8 @@
         "tile_AkPFxa": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/fishing.webp",
+            "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-FISHING-HOVER_jpg.webp",
             "label": "Fishing",
             "link": "",
             "aspect_ratio": "3:4",
@@ -197,6 +202,8 @@
         "tile_ypbPi3": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/lifestyle.webp",
+            "hover_image": "shopify://shop_images/lifestyle-hover.webp",
             "label": "Lifestyle",
             "link": "",
             "aspect_ratio": "3:4",
