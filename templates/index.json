@@ -20,7 +20,7 @@
             "max_width": "wide",
             "alignment": "center",
             "type_preset": "custom",
-            "font": "var(--font-primary--family)",
+            "font": "var(--font-heading--family)",
             "font_size": "3rem",
             "line_height": "display-tight",
             "letter_spacing": "heading-normal",
