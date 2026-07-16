@@ -164,168 +164,101 @@
         "padding-block-end": 48
       }
     },
-    "collection_list_WFw8DD": {
-      "type": "collection-list",
+    "spy_category_tiles_npxaN3": {
+      "type": "spy-category-tiles",
       "blocks": {
-        "group_VyKidQ": {
-          "type": "group",
-          "name": "t:names.header",
+        "tile_dFjizK": {
+          "type": "tile",
           "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "background_color": "",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
+            "label": "Snow",
             "link": "",
-            "open_in_new_tab": false,
-            "placeholder": "",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "text_jHnP4w": {
-              "type": "text",
-              "name": "t:names.text",
-              "settings": {
-                "text": "<h3>Shop by collection</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 16,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "text_jHnP4w"
-          ]
+            "aspect_ratio": "3:4",
+            "custom_aspect_ratio": ""
+          }
         },
-        "static-collection-card": {
-          "type": "_collection-card",
-          "name": "t:names.collection_card",
-          "static": true,
+        "tile_Xyd7Pd": {
+          "type": "tile",
           "settings": {
-            "placement": "below_image",
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "collection_card_gap": 8,
-            "background_color": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0
-          },
-          "blocks": {
-            "collection_title_CXeVQ4": {
-              "type": "collection-title",
-              "name": "t:names.collection_title",
-              "settings": {
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "{{ settings.color_palette.background }}",
-                "text_color": "{{ settings.color_palette.foreground }}",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "collection-card-image": {
-              "type": "_collection-card-image",
-              "name": "t:names.collection_card_image",
-              "static": true,
-              "settings": {
-                "image_ratio": "adapt",
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_color": "",
-                "border_radius": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "collection_title_CXeVQ4"
-          ]
+            "label": "Safety",
+            "link": "",
+            "aspect_ratio": "3:4",
+            "custom_aspect_ratio": ""
+          }
+        },
+        "tile_AkPFxa": {
+          "type": "tile",
+          "settings": {
+            "label": "Fishing",
+            "link": "",
+            "aspect_ratio": "3:4",
+            "custom_aspect_ratio": ""
+          }
+        },
+        "tile_ypbPi3": {
+          "type": "tile",
+          "settings": {
+            "label": "Lifestyle",
+            "link": "",
+            "aspect_ratio": "3:4",
+            "custom_aspect_ratio": ""
+          }
+        },
+        "tile_aydk6r": {
+          "type": "tile",
+          "settings": {
+            "label": "Sunglasses",
+            "link": "",
+            "aspect_ratio": "3:4",
+            "custom_aspect_ratio": ""
+          }
+        },
+        "tile_PtCzT4": {
+          "type": "tile",
+          "settings": {
+            "label": "Moto",
+            "link": "",
+            "aspect_ratio": "3:4",
+            "custom_aspect_ratio": ""
+          }
+        },
+        "tile_b7znmT": {
+          "type": "tile",
+          "settings": {
+            "label": "Trail",
+            "link": "",
+            "aspect_ratio": "3:4",
+            "custom_aspect_ratio": ""
+          }
+        },
+        "tile_TRD7Kn": {
+          "type": "tile",
+          "settings": {
+            "label": "Blue Light",
+            "link": "",
+            "aspect_ratio": "3:4",
+            "custom_aspect_ratio": ""
+          }
         }
       },
       "block_order": [
-        "group_VyKidQ"
+        "tile_dFjizK",
+        "tile_Xyd7Pd",
+        "tile_AkPFxa",
+        "tile_ypbPi3",
+        "tile_aydk6r",
+        "tile_PtCzT4",
+        "tile_b7znmT",
+        "tile_TRD7Kn"
       ],
-      "name": "t:names.collections_carousel",
+      "name": "Category Tiles",
       "settings": {
-        "collection_list": [],
-        "layout_type": "carousel",
-        "carousel_on_mobile": false,
-        "columns": 3,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "bento_gap": 8,
-        "rows_gap": 8,
-        "max_collections": 4,
-        "icons_style": "arrow",
-        "icons_shape": "circle",
-        "section_width": "page-width",
-        "gap": 12,
-        "background_color": "",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "heading": "",
+        "columns": 4,
+        "gap": 32,
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "padding_left": 16,
+        "padding_right": 16
       }
     },
     "collection_list_bczjpV": {
@@ -1083,7 +1016,7 @@
   },
   "order": [
     "spy_hero_A1",
-    "collection_list_WFw8DD",
+    "spy_category_tiles_npxaN3",
     "collection_list_bczjpV",
     "spy_region_xl_A1",
     "spy_new_arrivals_A1",
