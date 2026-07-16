@@ -114,8 +114,8 @@
                 "custom_width": 20,
                 "width_mobile": "fit-content",
                 "custom_width_mobile": 100,
-                "padding_block": 6,
-                "padding_inline": 15
+                "padding_block": 8,
+                "padding_inline": 20
               },
               "blocks": {}
             }
