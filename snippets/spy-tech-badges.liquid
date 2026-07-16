@@ -1,0 +1,59 @@
+{%- doc -%}
+  Renders the top-right tech badges for a product card:
+  a Happy Boost icon (from a `technology` metaobject) and an ANSI cert label.
+  Reads product-level spec metafields, so combined-listing children pass their own data.
+
+  @param {object} product - product to read `spec` metafields from
+{%- enddoc -%}
+
+{%- liquid
+  assign specs = product.metafields.spec
+
+  # Happy Boost technology -> colourful HB icon
+  assign hb_icon = nil
+  if specs.technologies.value != blank
+    for tech in specs.technologies.value
+      assign tname = tech.fields.name.value | downcase
+      if tname contains 'happy boost'
+        assign hb_icon = tech.fields.icon.value
+        break
+      endif
+    endfor
+  endif
+
+  # ANSI certification -> Z87 / Z87-2+ label
+  assign ansi_label = nil
+  if specs.certifications.value != blank
+    for cert in specs.certifications.value
+      assign c = cert | downcase
+      if c contains 'z87'
+        if c contains '2+' or c contains 'z87-2' or c contains 'z87.2'
+          assign ansi_label = 'Z87-2+'
+        else
+          assign ansi_label = 'Z87'
+        endif
+        break
+      endif
+    endfor
+  endif
+-%}
+
+{%- if hb_icon != blank -%}
+  {%- assign hb_src = hb_icon | image_url: width: 120 -%}
+  {%- if hb_src == blank -%}{%- assign hb_src = hb_icon.url -%}{%- endif -%}
+  <img
+    src="{{ hb_src }}"
+    alt="Happy Boost"
+    width="60"
+    height="28"
+    loading="lazy"
+    class="spy-tech-badge__hb h-6 w-auto object-contain"
+  >
+{%- endif -%}
+
+{%- if ansi_label != blank -%}
+  <span class="spy-tech-badge__ansi flex flex-col items-center leading-none">
+    <span class="text-[15px] font-bold tracking-tight text-spy-ink">ANSI</span>
+    <span class="mt-px text-[8px] font-bold tracking-wide text-white bg-spy-ink rounded-[2px] px-1 py-px">{{ ansi_label }}</span>
+  </span>
+{%- endif -%}

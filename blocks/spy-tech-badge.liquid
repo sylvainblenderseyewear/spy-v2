@@ -1,0 +1,54 @@
+{%- liquid
+  assign product = closest.product
+  assign skip = false
+  if product == blank
+    assign skip = true
+  endif
+
+  # Find the colour option so we can key a badge set per swatch
+  assign color_option = nil
+  for opt in product.options_with_values
+    assign opt_lower = opt.name | downcase
+    if opt_lower == 'frame color' or opt_lower == 'color' or opt_lower == 'colour'
+      assign color_option = opt
+      break
+    endif
+  endfor
+-%}
+
+{%- unless skip -%}
+<spy-tech-badge
+  class="spy-tech-badge absolute top-2.5 right-2.5 z-10 flex items-start gap-1.5 pointer-events-none"
+  {{ block.shopify_attributes }}
+>
+  <span class="spy-tech-badge__current flex items-start gap-1.5" data-tech-current>
+    {%- render 'spy-tech-badges', product: product -%}
+  </span>
+
+  {%- comment -%} Hidden badge sets — one per colour, swapped in on hover {%- endcomment -%}
+  {%- if color_option != nil -%}
+    <template data-tech-store>
+      {%- for ov in color_option.values -%}
+        {%- assign ov_product = ov.variant.product | default: product -%}
+        <span data-tech-key="{{ ov.id }}">{%- render 'spy-tech-badges', product: ov_product -%}</span>
+      {%- endfor -%}
+    </template>
+  {%- endif -%}
+</spy-tech-badge>
+
+<script src="{{ 'spy-tech-badge.js' | asset_url }}" defer></script>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Tech Badge",
+  "tag": null,
+  "settings": [],
+  "presets": [
+    {
+      "name": "Tech Badge",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

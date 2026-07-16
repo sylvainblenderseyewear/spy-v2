@@ -19,7 +19,7 @@
     assign show_arrows = true
   endif
 
-  # Desktop card width = one slice of the row minus the gaps between them
+  # Desktop shows exactly the display-count cards, no peek; mobile keeps its peek
   assign gap_total = display_count | minus: 1 | times: gap
   assign col_vw = 100 | divided_by: display_count
   assign sizes = '(max-width: 749px) 82vw, ' | append: col_vw | append: 'vw'
@@ -82,6 +82,7 @@
 
         <a
           data-card
+          draggable="false"
           class="spy-category-tiles__card group relative shrink-0 grow-0 min-w-0 basis-[var(--card-basis)] max-[749px]:basis-[var(--card-basis-mobile)] snap-start no-underline"
           href="{{ link | default: '#' }}"
           {{ block.shopify_attributes }}
@@ -96,7 +97,7 @@
                   alt: tile_alt,
                   sizes: sizes,
                   widths: '300, 450, 600, 800, 1000',
-                  class: 'spy-category-tiles__img absolute inset-0 w-full h-full object-cover'
+                  class: 'spy-category-tiles__img absolute inset-0 w-full h-full object-cover pointer-events-none'
               }}
             {%- endif -%}
 
@@ -109,7 +110,7 @@
                   alt: '',
                   sizes: sizes,
                   widths: '300, 450, 600, 800, 1000',
-                  class: 'spy-category-tiles__img absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-focus-visible:opacity-100'
+                  class: 'spy-category-tiles__img absolute inset-0 w-full h-full object-cover pointer-events-none opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-focus-visible:opacity-100'
               }}
             {%- endif -%}
 
@@ -118,7 +119,10 @@
 
             {%- if label != blank -%}
               <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
-                <span class="text-white font-bold uppercase tracking-wide text-center text-xl md:text-2xl lg:text-3xl [text-shadow:0_1px_10px_rgb(0_0_0/45%)]">
+                <span
+                  class="text-white font-bold uppercase tracking-wide text-center [text-shadow:0_1px_10px_rgb(0_0_0/45%)]"
+                  style="font-family: {{ section.settings.title_font }}; font-size: {{ section.settings.title_font_size }}px;"
+                >
                   {{ label }}
                 </span>
               </div>
@@ -185,8 +189,9 @@
             startScroll = track.scrollLeft;
             lastX = e.clientX;
             lastT = performance.now();
-            track.style.cursor = 'grabbing';
-            track.style.scrollSnapType = 'none';
+            // Utilities are compiled !important, so inline styles need the priority flag to win
+            track.style.setProperty('cursor', 'grabbing', 'important');
+            track.style.setProperty('scroll-snap-type', 'none', 'important');
             track.setPointerCapture(e.pointerId);
           });
 
@@ -206,7 +211,7 @@
           const end = () => {
             if (!down) return;
             down = false;
-            track.style.cursor = '';
+            track.style.removeProperty('cursor');
             // Glide a little in the flick direction, then ease onto the nearest card
             const projected = track.scrollLeft - velocity * 150;
             this.snapToNearest(projected);
@@ -237,7 +242,7 @@
         restoreSnapAfterSettle() {
           this.clearSnapRestore();
           this._restoreSnap = () => {
-            this.track.style.scrollSnapType = '';
+            this.track.style.removeProperty('scroll-snap-type');
             this.clearSnapRestore();
           };
           this._restoreTimer = setTimeout(this._restoreSnap, 700);
@@ -413,6 +418,32 @@
       "unit": "px",
       "default": 16,
       "label": "Right"
+    },
+    {
+      "type": "header",
+      "content": "Card title"
+    },
+    {
+      "type": "select",
+      "id": "title_font",
+      "label": "Font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-heading--family)"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "min": 12,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 24,
+      "label": "Font size"
     }
   ],
   "blocks": [

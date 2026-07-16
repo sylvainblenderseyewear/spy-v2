@@ -1,0 +1,69 @@
+{%- doc -%}
+  SPY color preview — a row of small product-image thumbnails (always ≥1).
+  Uses each colour variant's image when present, else falls back to the product's
+  own media, so a preview always shows. Hovering a thumbnail swaps the card image
+  (handled by spy-card.js). Shows an arrow when more colours exist than fit.
+{%- enddoc -%}
+
+{%- liquid
+  assign p = closest.product
+  assign max_shown = 4
+  assign color_option = nil
+  if p != blank
+    for opt in p.options_with_values
+      assign opt_lower = opt.name | downcase
+      if opt_lower == 'frame color' or opt_lower == 'color' or opt_lower == 'colour'
+        assign color_option = opt
+        break
+      endif
+    endfor
+  endif
+-%}
+
+{%- if p != blank -%}
+<div class="spy-swatches" data-spy-swatches {{ block.shopify_attributes }}>
+  {%- if color_option != nil and color_option.values.size > 0 -%}
+    {%- for v in color_option.values limit: max_shown -%}
+      {%- assign media = v.variant.featured_media | default: p.media[forloop.index0] | default: p.featured_media -%}
+      {%- if media != blank -%}
+        <button
+          type="button"
+          class="spy-swatches__item"
+          data-full="{{ media | image_url: width: 640 }}"
+          aria-label="{{ v.name | escape }}"
+        >
+          <img src="{{ media | image_url: width: 96 }}" alt="{{ v.name | escape }}" width="42" height="26" loading="lazy">
+        </button>
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if color_option.values.size > max_shown -%}
+      <a href="{{ p.url }}" class="spy-swatches__more" aria-label="View all {{ color_option.values.size }} colors">&rarr;</a>
+    {%- endif -%}
+  {%- elsif p.featured_media != blank -%}
+    <button
+      type="button"
+      class="spy-swatches__item"
+      data-full="{{ p.featured_media | image_url: width: 640 }}"
+      aria-label="{{ p.title | escape }}"
+    >
+      <img src="{{ p.featured_media | image_url: width: 96 }}" alt="{{ p.title | escape }}" width="42" height="26" loading="lazy">
+    </button>
+  {%- endif -%}
+</div>
+{%- endif -%}
+
+<script src="{{ 'spy-card.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Color Preview",
+  "tag": null,
+  "settings": [],
+  "presets": [
+    {
+      "name": "Color Preview",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

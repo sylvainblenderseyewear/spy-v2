@@ -1,0 +1,38 @@
+{%- liquid
+  assign p = closest.product
+  assign is_new = false
+
+  # Metafield wins, then fall back to a "new" product tag
+  if p.metafields.pdp.badge_new.value == true
+    assign is_new = true
+  else
+    for t in p.tags
+      assign t_lower = t | downcase
+      if t_lower == 'new'
+        assign is_new = true
+        break
+      endif
+    endfor
+  endif
+-%}
+
+{%- if is_new -%}
+<span
+  class="spy-new-badge border border-spy-orange text-spy-orange text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 leading-none"
+  {{ block.shopify_attributes }}
+>New</span>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "New Badge",
+  "tag": null,
+  "settings": [],
+  "presets": [
+    {
+      "name": "New Badge",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

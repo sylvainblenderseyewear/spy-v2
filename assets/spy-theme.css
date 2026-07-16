@@ -556,3 +556,161 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   color: var(--color-foreground, #2c393e);
   line-height: 1.4;
 }
+
+/* ── PLP product-card — SPY reference look (hover reveal + centred) ─────
+   Note: Tailwind runs in `important` mode, so display toggles here need
+   !important to beat the utility classes on the elements. */
+
+/* Centre everything under the image */
+:is(collection-component, .section-resource-list) .product-card__content {
+  text-align: center;
+}
+
+/* Tech badges sit on top but never eat clicks */
+:is(collection-component, .section-resource-list) .product-card .spy-tech-badge {
+  pointer-events: none;
+}
+
+/* Keep ANSI text + Z87 pill as one tight stacked unit */
+:is(collection-component, .section-resource-list) .product-card .spy-tech-badge__ansi {
+  gap: 0 !important;
+}
+
+/* Product image: full product, centred, no crop — matches the source card's airy square zone */
+:is(collection-component, .section-resource-list) .product-card .card-gallery img {
+  object-fit: contain !important;
+  object-position: center;
+}
+
+/* ~10% inset around the image, like the source image-wrapper (36px @ 359px) */
+:is(collection-component, .section-resource-list) .product-card .card-gallery {
+  padding: 9% !important;
+}
+
+/* Title + price use ink (#1d2a2b), matching the source tile-body colour */
+:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] p,
+:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"],
+:is(collection-component, .section-resource-list) .product-card .price {
+  color: var(--color-spy-ink);
+}
+
+/* Quick View: reserved in the flow, revealed on card hover via opacity — no layout shift */
+:is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+:is(collection-component, .section-resource-list) .product-card:hover .spy-quick-view-btn {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* New badge: compact centred pill — align-self stops the flex column stretching it */
+:is(collection-component, .section-resource-list) .product-card .spy-new-badge {
+  display: inline-block;
+  align-self: center;
+}
+
+/* Card title: bold uppercase, like the SPY reference */
+:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"],
+:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] p {
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+}
+
+/* Drop Horizon's quick-add bag and slideshow arrows — not in the SPY card */
+:is(collection-component, .section-resource-list) .product-card :is(quick-add-component, .quick-add, slideshow-arrows, .slideshow-control) {
+  display: none !important;
+}
+
+/* Swatches read as small glasses thumbnails, not colour dots */
+:is(collection-component, .section-resource-list) .product-card .swatch--variant-image {
+  width: 44px !important;
+  height: 26px !important;
+  border-radius: 0 !important;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Overflow control becomes an arrow instead of "+N" */
+:is(collection-component, .section-resource-list) .product-card .hidden-swatches__count::before {
+  content: "\2192";
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* Swatch row: reserved in the flow, revealed only when hovering above the title (JS adds .spy-above).
+   It overlaps the colour-count slot so the title/price never move. Renders only when the product
+   has swatch/variant-image data. */
+@media screen and (min-width: 750px) {
+  :is(collection-component, .section-resource-list) .product-card swatches-variant-picker-component {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+  }
+
+  :is(collection-component, .section-resource-list) .product-card.spy-above swatches-variant-picker-component {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* ── SPY color preview (spy-swatches) — overlaps the colour-count slot, no reflow ── */
+:is(collection-component, .section-resource-list) .product-card .spy-color-count {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-swatches {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 28px;
+  margin-top: -28px; /* sit on top of the colour-count slot */
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-swatches__item {
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  line-height: 0;
+  display: inline-flex;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-swatches__item img {
+  width: 42px;
+  height: 26px;
+  object-fit: contain;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-swatches__more {
+  margin-inline-start: 4px;
+  color: var(--color-spy-gray);
+  font-size: 15px;
+  line-height: 1;
+  text-decoration: none;
+}
+
+/* Reveal the preview only when the cursor is above the title (desktop) */
+@media screen and (min-width: 750px) {
+  :is(collection-component, .section-resource-list) .product-card.spy-above .spy-swatches {
+    opacity: 1;
+    visibility: visible;
+  }
+  :is(collection-component, .section-resource-list) .product-card.spy-above .spy-color-count {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
