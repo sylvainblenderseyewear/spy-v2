@@ -340,7 +340,7 @@
               "type": "text",
               "settings": {
                 "text": "<h1>region xl</h1>",
-                "width": "fit-content",
+                "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
                 "type_preset": "custom",
@@ -439,17 +439,6 @@
         "reflection_opacity": 75,
         "padding-block-start": 48,
         "padding-block-end": 48
-      }
-    },
-    "spy_happy_boost_A1": {
-      "type": "spy-feature-link-banner",
-      "name": "Feature Banner — Happy Boost",
-      "settings": {
-        "eyebrow": "Technology",
-        "heading": "Happy Boost",
-        "cta_label": "Shop Happy Boost",
-        "link": "/pages/happyboost",
-        "content_align": "left"
       }
     },
     "spy_journal_A1": {
@@ -600,7 +589,6 @@
     "spy_category_tiles_npxaN3",
     "spy_region_xl_A1",
     "spy_loyalty_cta_A1",
-    "spy_happy_boost_A1",
     "spy_journal_A1"
   ]
 }
