@@ -282,55 +282,130 @@
     "spy_loyalty_cta_A1": {
       "type": "hero",
       "blocks": {
-        "heading_loyalty": {
-          "type": "text",
+        "spacer_mV6DdD": {
+          "type": "spacer",
+          "name": "t:names.spacer",
           "settings": {
-            "text": "<h2>Join the Crew</h2>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "custom",
-            "font": "var(--font-heading--family)",
-            "font_size": "3.5rem",
-            "line_height": "normal",
-            "letter_spacing": "heading-normal",
-            "case": "uppercase",
-            "wrap": "pretty",
-            "text_color": "{{ settings.color_palette.background }}",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "size": "percent",
+            "percent_size": 47,
+            "pixel_size": 120,
+            "custom_mobile_size": false,
+            "size_mobile": "percent",
+            "percent_size_mobile": 100,
+            "pixel_size_mobile": 120
           },
           "blocks": {}
         },
-        "cta_loyalty": {
-          "type": "button",
+        "group_bV7reM": {
+          "type": "group",
+          "name": "t:names.group",
           "settings": {
-            "label": "Join Now",
-            "link": "/account/register",
-            "open_in_new_tab": false,
-            "style_class": "button",
-            "custom_button_background": "{{ settings.color_palette.foreground }}",
-            "custom_button_text": "{{ settings.color_palette.background }}",
-            "custom_button_border": "{{ settings.color_palette.background }}",
-            "link_text_color": "",
-            "width": "fit-content",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
             "custom_width": 100,
-            "width_mobile": "fit-content",
+            "width_mobile": "fill",
             "custom_width_mobile": 100,
-            "padding_block": 8,
-            "padding_inline": 20
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 100,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_eRJPfj": {
+              "type": "text",
+              "settings": {
+                "text": "<h2>Join the Crew</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-heading--family)",
+                "font_size": "3.5rem",
+                "line_height": "normal",
+                "letter_spacing": "heading-normal",
+                "case": "uppercase",
+                "wrap": "pretty",
+                "text_color": "{{ settings.color_palette.background }}",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "button_inB3tr": {
+              "type": "button",
+              "settings": {
+                "label": "Join Now",
+                "link": "/account/register",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "custom_button_background": "{{ settings.color_palette.foreground }}",
+                "custom_button_text": "{{ settings.color_palette.background }}",
+                "custom_button_border": "{{ settings.color_palette.background }}",
+                "link_text_color": "",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "padding_block": 8,
+                "padding_inline": 20
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_eRJPfj",
+            "button_inB3tr"
+          ]
+        },
+        "spacer_dfTgct": {
+          "type": "spacer",
+          "name": "t:names.spacer",
+          "settings": {
+            "size": "percent",
+            "percent_size": 59,
+            "pixel_size": 120,
+            "custom_mobile_size": false,
+            "size_mobile": "percent",
+            "percent_size_mobile": 100,
+            "pixel_size_mobile": 120
           },
           "blocks": {}
         }
       },
       "block_order": [
-        "heading_loyalty",
-        "cta_loyalty"
+        "spacer_mV6DdD",
+        "group_bV7reM",
+        "spacer_dfTgct"
       ],
       "name": "Loyalty CTA",
       "settings": {
