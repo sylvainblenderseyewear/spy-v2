@@ -561,15 +561,15 @@
               },
               "blocks": {}
             },
-            "spy_new_badge_iEXewE": {
-              "type": "spy-new-badge",
-              "name": "New Badge",
-              "settings": {},
-              "blocks": {}
-            },
             "spy_quick_view_btn_TppTmt": {
               "type": "spy-quick-view-btn",
               "name": "Quick View Button",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_new_badge_iEXewE": {
+              "type": "spy-new-badge",
+              "name": "New Badge",
               "settings": {},
               "blocks": {}
             },
@@ -631,8 +631,8 @@
           "block_order": [
             "spy_tech_badge_pypXzk",
             "product_card_gallery_VHLzAk",
-            "spy_new_badge_iEXewE",
             "spy_quick_view_btn_TppTmt",
+            "spy_new_badge_iEXewE",
             "spy_swatches_qAzhNx",
             "product_title_fdpLnW",
             "price_HYhEhA"
