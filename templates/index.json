@@ -1052,7 +1052,7 @@
             "background_image_position": "cover",
             "toggle_overlay": false,
             "overlay_color": "#00000026",
-            "overlay_style": "solid",
+            "overlay_style": "gradient",
             "gradient_direction": "to top",
             "border": "none",
             "border_width": 1,
