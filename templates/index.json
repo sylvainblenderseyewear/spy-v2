@@ -1048,6 +1048,7 @@
             "background_media": "image",
             "background_color": "",
             "video_position": "cover",
+            "background_image": "shopify://shop_images/download.webp",
             "background_image_position": "cover",
             "toggle_overlay": false,
             "overlay_color": "#00000026",
@@ -1061,10 +1062,10 @@
             "link": "",
             "open_in_new_tab": false,
             "placeholder": "hero-apparel-2",
-            "padding-block-start": 40,
-            "padding-block-end": 40,
-            "padding-inline-start": 40,
-            "padding-inline-end": 40
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
           },
           "blocks": {
             "spacer_gaznbd": {
@@ -1077,31 +1078,6 @@
                 "size_mobile": "percent",
                 "percent_size_mobile": 100,
                 "pixel_size_mobile": 120
-              },
-              "blocks": {}
-            },
-            "text_LpzmaP": {
-              "type": "text",
-              "settings": {
-                "text": "<h3>New arrivals</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "center",
-                "type_preset": "h3",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
               },
               "blocks": {}
             },
@@ -1128,7 +1104,6 @@
           },
           "block_order": [
             "spacer_gaznbd",
-            "text_LpzmaP",
             "button_LYK6cq"
           ]
         },
@@ -1152,6 +1127,7 @@
             "background_media": "image",
             "background_color": "",
             "video_position": "cover",
+            "background_image": "shopify://shop_images/download.jpg",
             "background_image_position": "cover",
             "toggle_overlay": false,
             "overlay_color": "#00000026",
@@ -1184,31 +1160,6 @@
               },
               "blocks": {}
             },
-            "text_p6VVpR": {
-              "type": "text",
-              "settings": {
-                "text": "<h3>Bestsellers</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "center",
-                "type_preset": "h3",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
             "button_KPVpph": {
               "type": "button",
               "settings": {
@@ -1232,7 +1183,6 @@
           },
           "block_order": [
             "spacer_QRHBLW",
-            "text_p6VVpR",
             "button_KPVpph"
           ]
         }
