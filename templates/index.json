@@ -485,7 +485,7 @@
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
-                "text_color": "#F27E37",
+                "text_color": "#f27e37",
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
@@ -629,7 +629,7 @@
       },
       "name": "New arrivals collection: Grid",
       "settings": {
-        "collection": "new-arrivals",
+        "collection": "sunglasses",
         "layout_type": "carousel",
         "carousel_on_mobile": false,
         "max_products": 16,
