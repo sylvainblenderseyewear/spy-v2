@@ -1081,13 +1081,14 @@
               },
               "blocks": {}
             },
-            "button_LYK6cq": {
+            "button_8brwiM": {
               "type": "button",
+              "name": "t:names.button",
               "settings": {
-                "label": "Shop now",
+                "label": "Learn more",
                 "link": "shopify://collections/all",
                 "open_in_new_tab": false,
-                "style_class": "button-unstyled",
+                "style_class": "button",
                 "custom_button_background": "{{ settings.color_palette.foreground }}",
                 "custom_button_text": "{{ settings.color_palette.background }}",
                 "custom_button_border": "{{ settings.color_palette.background }}",
@@ -1096,7 +1097,7 @@
                 "custom_width": 100,
                 "width_mobile": "fit-content",
                 "custom_width_mobile": 100,
-                "padding_block": 0,
+                "padding_block": 8,
                 "padding_inline": 0
               },
               "blocks": {}
@@ -1104,7 +1105,7 @@
           },
           "block_order": [
             "spacer_gaznbd",
-            "button_LYK6cq"
+            "button_8brwiM"
           ]
         },
         "group_YQ8bKM": {
@@ -1160,13 +1161,14 @@
               },
               "blocks": {}
             },
-            "button_KPVpph": {
+            "button_ELzqrG": {
               "type": "button",
+              "name": "t:names.button",
               "settings": {
-                "label": "Shop now",
+                "label": "Shop happy boost",
                 "link": "shopify://collections/all",
                 "open_in_new_tab": false,
-                "style_class": "button-unstyled",
+                "style_class": "button",
                 "custom_button_background": "{{ settings.color_palette.foreground }}",
                 "custom_button_text": "{{ settings.color_palette.background }}",
                 "custom_button_border": "{{ settings.color_palette.background }}",
@@ -1175,7 +1177,7 @@
                 "custom_width": 100,
                 "width_mobile": "fit-content",
                 "custom_width_mobile": 100,
-                "padding_block": 0,
+                "padding_block": 6,
                 "padding_inline": 0
               },
               "blocks": {}
@@ -1183,7 +1185,7 @@
           },
           "block_order": [
             "spacer_QRHBLW",
-            "button_KPVpph"
+            "button_ELzqrG"
           ]
         }
       },
