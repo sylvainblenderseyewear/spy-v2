@@ -567,6 +567,12 @@
               "settings": {},
               "blocks": {}
             },
+            "spy_color_count_YGg4PE": {
+              "type": "spy-color-count",
+              "name": "Color Count",
+              "settings": {},
+              "blocks": {}
+            },
             "spy_new_badge_iEXewE": {
               "type": "spy-new-badge",
               "name": "New Badge",
@@ -632,6 +638,7 @@
             "spy_tech_badge_pypXzk",
             "product_card_gallery_VHLzAk",
             "spy_quick_view_btn_TppTmt",
+            "spy_color_count_YGg4PE",
             "spy_new_badge_iEXewE",
             "spy_swatches_qAzhNx",
             "product_title_fdpLnW",
