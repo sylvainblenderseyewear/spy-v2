@@ -443,8 +443,8 @@
           "settings": {
             "content_direction": "row",
             "vertical_on_mobile": false,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-end",
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
             "align_baseline": true,
             "horizontal_alignment_flex_direction_column": "flex-start",
             "vertical_alignment_flex_direction_column": "center",
@@ -453,7 +453,7 @@
             "custom_width": 100,
             "width_mobile": "fill",
             "custom_width_mobile": 100,
-            "height": "fit",
+            "height": "fill",
             "custom_height": 100,
             "background_media": "none",
             "background_color": "",
@@ -475,17 +475,17 @@
               "name": "t:names.collection_title",
               "settings": {
                 "text": "<h3>{{ closest.collection.title }}</h3>",
-                "width": "fit-content",
+                "width": "100%",
                 "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
+                "alignment": "center",
+                "type_preset": "h3",
                 "font": "var(--font-body--family)",
                 "font_size": "",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
-                "text_color": "",
+                "text_color": "#F27E37",
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
@@ -495,29 +495,10 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
-            },
-            "product_list_button_UqUtRp": {
-              "type": "_product-list-button",
-              "name": "t:names.product_list_button",
-              "settings": {
-                "label": "View all",
-                "open_in_new_tab": false,
-                "style_class": "button-unstyled",
-                "custom_button_background": "{{ settings.color_palette.foreground }}",
-                "custom_button_text": "{{ settings.color_palette.background }}",
-                "custom_button_border": "{{ settings.color_palette.background }}",
-                "link_text_color": "",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
             }
           },
           "block_order": [
-            "product_list_text_nVNmiz",
-            "product_list_button_UqUtRp"
+            "product_list_text_nVNmiz"
           ]
         },
         "static-product-card": {
@@ -648,7 +629,7 @@
       },
       "name": "New arrivals collection: Grid",
       "settings": {
-        "collection": "sunglasses",
+        "collection": "new-arrivals",
         "layout_type": "carousel",
         "carousel_on_mobile": false,
         "max_products": 16,
