@@ -268,7 +268,7 @@
         "padding_left": 16,
         "padding_right": 16,
         "title_font": "var(--font-heading--family)",
-        "title_font_size": 24
+        "title_font_size": 32
       }
     },
     "spy_loyalty_cta_A1": {
