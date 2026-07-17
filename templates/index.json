@@ -611,7 +611,7 @@
           ]
         }
       },
-      "name": "t:names.products_grid",
+      "name": "New arrivals collection: Grid",
       "settings": {
         "collection": "",
         "layout_type": "grid",
