@@ -8,16 +8,21 @@
       break
     endif
   endfor
+
+  # Many colours -> count; single colour -> its name; none -> empty but reserved
+  assign label = ''
   if color_option != nil
-    assign color_count = color_option.values.size
+    assign cc = color_option.values.size
+    if cc > 1
+      assign label = cc | append: ' colors available'
+    else
+      assign label = color_option.values.first.name
+    endif
   endif
 -%}
 
-{%- if color_count > 1 -%}
-<p class="spy-color-count text-[10px] font-semibold text-spy-gray mt-0.5 m-0" {{ block.shopify_attributes }}>
-  {{ color_count }} colors available
-</p>
-{%- endif -%}
+{%- comment -%} Always rendered so the slot keeps its height, even with no colour data {%- endcomment -%}
+<p class="spy-color-count text-[10px] font-semibold text-spy-gray m-0" {{ block.shopify_attributes }}>{{ label }}</p>
 
 {% schema %}
 {

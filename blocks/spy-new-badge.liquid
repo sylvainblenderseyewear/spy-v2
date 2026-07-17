@@ -1,36 +1,50 @@
 {%- liquid
   assign p = closest.product
-  assign is_new = false
+  assign badge_text = ''
 
-  # Metafield wins, then fall back to a "new" product tag
-  if p.metafields.pdp.badge_new.value == true
-    assign is_new = true
+  # Custom per-product badge wins (e.g. a value offer), then sale %, then "New"
+  assign custom = p.metafields.pdp.badge_text.value
+  assign cmp = p.compare_at_price_max
+
+  if custom != blank
+    assign badge_text = custom
+  elsif cmp > p.price
+    assign pct = cmp | minus: p.price | times: 100.0 | divided_by: cmp | round
+    assign badge_text = 'On Sale ' | append: pct | append: '% Off'
   else
-    for t in p.tags
-      assign t_lower = t | downcase
-      if t_lower == 'new'
-        assign is_new = true
-        break
-      endif
-    endfor
+    assign is_new = false
+    if p.metafields.pdp.badge_new.value == true
+      assign is_new = true
+    else
+      for t in p.tags
+        assign t_lower = t | downcase
+        if t_lower == 'new'
+          assign is_new = true
+          break
+        endif
+      endfor
+    endif
+    if is_new
+      assign badge_text = 'New'
+    endif
   endif
 -%}
 
-{%- if is_new -%}
-<span
-  class="spy-new-badge border border-spy-orange text-spy-orange text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 leading-none"
-  {{ block.shopify_attributes }}
->New</span>
-{%- endif -%}
+{%- comment -%} Slot always renders so the card keeps its shape when a product has no badge {%- endcomment -%}
+<div class="spy-new-badge" {{ block.shopify_attributes }}>
+  {%- if badge_text != blank -%}
+    <span class="spy-badge-pill border border-spy-orange text-spy-orange text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 leading-none">{{ badge_text }}</span>
+  {%- endif -%}
+</div>
 
 {% schema %}
 {
-  "name": "New Badge",
+  "name": "Badge",
   "tag": null,
   "settings": [],
   "presets": [
     {
-      "name": "New Badge",
+      "name": "Badge",
       "category": "SPY"
     }
   ]

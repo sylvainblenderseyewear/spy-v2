@@ -221,7 +221,7 @@
             },
             "spy_new_badge_A1": {
               "type": "spy-new-badge",
-              "name": "New Badge",
+              "name": "Badge",
               "settings": {}
             }
           },

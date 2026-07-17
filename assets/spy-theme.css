@@ -580,11 +580,20 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 :is(collection-component, .section-resource-list) .product-card .card-gallery img {
   object-fit: contain !important;
   object-position: center;
+  transition: transform 0.35s ease;
 }
 
-/* ~10% inset around the image, like the source image-wrapper (36px @ 359px) */
+/* ~10% inset around the image, like the source image-wrapper (36px @ 359px).
+   Locked to a square so every card keeps the same image box; scales by ratio. */
 :is(collection-component, .section-resource-list) .product-card .card-gallery {
   padding: 9% !important;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+/* Gentle zoom on hover, like the source */
+:is(collection-component, .section-resource-list) .product-card:hover .card-gallery img {
+  transform: scale(1.06);
 }
 
 /* Title + price use ink (#1d2a2b), matching the source tile-body colour */
@@ -594,8 +603,14 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   color: var(--color-spy-ink);
 }
 
-/* Quick View: reserved in the flow, revealed on card hover via opacity — no layout shift */
+/* Quick View: inset outline box (like the source mx-3), revealed on card hover via opacity.
+   Negative top pulls it over the image bottom so it reserves no space at rest. */
 :is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn {
+  display: block;
+  position: relative;
+  z-index: 2;
+  margin: -43px 16px 8px;
+  border: 1px solid var(--color-spy-orange);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
@@ -605,10 +620,13 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   visibility: visible;
 }
 
-/* New badge: compact centred pill — align-self stops the flex column stretching it */
+/* Badge slot: always holds its height so cards align whether or not a badge shows */
 :is(collection-component, .section-resource-list) .product-card .spy-new-badge {
-  display: inline-block;
-  align-self: center;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
 }
 
 /* Card title: bold uppercase, like the SPY reference */
@@ -640,7 +658,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   line-height: 1;
 }
 
-/* Swatch row: reserved in the flow, revealed only when hovering above the title (JS adds .spy-above).
+/* Swatch row: reserved in the flow, revealed on card hover.
    It overlaps the colour-count slot so the title/price never move. Renders only when the product
    has swatch/variant-image data. */
 @media screen and (min-width: 750px) {
@@ -650,7 +668,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     transition: opacity 0.2s ease;
   }
 
-  :is(collection-component, .section-resource-list) .product-card.spy-above swatches-variant-picker-component {
+  :is(collection-component, .section-resource-list) .product-card:hover swatches-variant-picker-component {
     opacity: 1;
     visibility: visible;
   }
@@ -669,7 +687,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   min-height: 28px;
   margin-top: -28px; /* sit on top of the colour-count slot */
   position: relative;
@@ -687,6 +705,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   cursor: pointer;
   line-height: 0;
   display: inline-flex;
+  text-decoration: none;
 }
 
 :is(collection-component, .section-resource-list) .product-card .spy-swatches__item img {
@@ -703,13 +722,14 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   text-decoration: none;
 }
 
-/* Reveal the preview only when the cursor is above the title (desktop) */
+/* On card hover: swatches fade in; badge and colour-count fade out (slots stay reserved). */
 @media screen and (min-width: 750px) {
-  :is(collection-component, .section-resource-list) .product-card.spy-above .spy-swatches {
+  :is(collection-component, .section-resource-list) .product-card:hover .spy-swatches {
     opacity: 1;
     visibility: visible;
   }
-  :is(collection-component, .section-resource-list) .product-card.spy-above .spy-color-count {
+  :is(collection-component, .section-resource-list) .product-card:hover .spy-color-count,
+  :is(collection-component, .section-resource-list) .product-card:hover .spy-new-badge {
     opacity: 0;
     visibility: hidden;
   }

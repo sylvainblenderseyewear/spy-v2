@@ -1,21 +1,11 @@
 (() => {
   'use strict';
 
-  // Printed once per card; wire the delegated listeners a single time.
+  // Wire the delegated listeners a single time.
   if (window.__spyCardInit) return;
   window.__spyCardInit = true;
 
   const mainImg = (card) => card.querySelector('.card-gallery img');
-
-  // Top of the title, in viewport coords — used to tell "above" vs "below" the title.
-  // The title link is display:contents (no box), so measure its inner text node.
-  const titleTop = (card) => {
-    const t =
-      card.querySelector('[ref="productTitleLink"] p, [ref="productTitleLink"] *') ||
-      card.querySelector('.spy-color-count');
-    const rect = t && t.getBoundingClientRect();
-    return rect && rect.height ? rect.top : card.getBoundingClientRect().bottom;
-  };
 
   function saveOriginal(img) {
     if (img.dataset.spySaved) return;
@@ -40,34 +30,26 @@
     img.setAttribute('src', url);
   }
 
+  // Hovering a colour thumbnail previews that colour on the main image.
   document.addEventListener('pointerover', (e) => {
-    const card = e.target.closest?.('product-card');
-    if (!card) return;
-    card.classList.add('spy-hover');
-    card.classList.toggle('spy-above', e.clientY < titleTop(card));
     const item = e.target.closest?.('.spy-swatches__item');
-    if (item) swapImage(card, item.getAttribute('data-full'));
-  });
-
-  document.addEventListener('pointermove', (e) => {
-    const card = e.target.closest?.('product-card');
-    if (!card) return;
-    card.classList.toggle('spy-above', e.clientY < titleTop(card));
+    if (!item) return;
+    const card = item.closest('product-card');
+    if (card) swapImage(card, item.getAttribute('data-full'));
   });
 
   document.addEventListener('pointerout', (e) => {
     const card = e.target.closest?.('product-card');
     if (!card) return;
 
-    // Left a thumbnail (and not landing on another) → back to the default image
+    // Left a thumbnail (and not landing on another) → back to default image
     const item = e.target.closest?.('.spy-swatches__item');
     if (item && !e.relatedTarget?.closest?.('.spy-swatches__item')) {
       restoreImage(card);
     }
 
-    // Left the whole card → reset everything
+    // Left the whole card → reset
     if (e.relatedTarget?.closest?.('product-card') !== card) {
-      card.classList.remove('spy-hover', 'spy-above');
       restoreImage(card);
     }
   });
