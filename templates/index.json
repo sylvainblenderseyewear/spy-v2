@@ -1028,7 +1028,7 @@
     "section_gpMr7q": {
       "type": "section",
       "blocks": {
-        "group_VpE6Vb": {
+        "group_KaHrxT": {
           "type": "group",
           "settings": {
             "content_direction": "column",
@@ -1061,14 +1061,14 @@
             "border_radius": 0,
             "link": "",
             "open_in_new_tab": false,
-            "placeholder": "hero-apparel-2",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "placeholder": "hero-apparel-1",
+            "padding-block-start": 40,
+            "padding-block-end": 40,
+            "padding-inline-start": 40,
+            "padding-inline-end": 40
           },
           "blocks": {
-            "spacer_gaznbd": {
+            "spacer_7QNUWK": {
               "type": "spacer",
               "settings": {
                 "size": "pixel",
@@ -1081,11 +1081,11 @@
               },
               "blocks": {}
             },
-            "button_8brwiM": {
+            "button_3aRw9b": {
               "type": "button",
               "name": "t:names.button",
               "settings": {
-                "label": "Learn more",
+                "label": "learn more",
                 "link": "shopify://collections/all",
                 "open_in_new_tab": false,
                 "style_class": "button",
@@ -1097,15 +1097,15 @@
                 "custom_width": 100,
                 "width_mobile": "fit-content",
                 "custom_width_mobile": 100,
-                "padding_block": 8,
+                "padding_block": 6,
                 "padding_inline": 0
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "spacer_gaznbd",
-            "button_8brwiM"
+            "spacer_7QNUWK",
+            "button_3aRw9b"
           ]
         },
         "group_YQ8bKM": {
@@ -1190,19 +1190,19 @@
         }
       },
       "block_order": [
-        "group_VpE6Vb",
+        "group_KaHrxT",
         "group_YQ8bKM"
       ],
       "name": "t:names.split_showcase",
       "settings": {
         "content_direction": "row",
         "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
+        "horizontal_alignment": "space-between",
+        "vertical_alignment": "flex-end",
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 32,
+        "gap": 28,
         "section_width": "full-width",
         "section_height": "large",
         "section_height_custom": 50,
