@@ -1006,7 +1006,7 @@
       },
       "name": "New arrivals collection: Grid",
       "settings": {
-        "collection": "watermen",
+        "collection": "sunglasses",
         "layout_type": "grid",
         "carousel_on_mobile": false,
         "max_products": 5,
