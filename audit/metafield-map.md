@@ -40,11 +40,12 @@ Same as default PDP, plus:
 | Collection Header | Horizon `section` with text blocks | `collection.title`, `collection.description` (Liquid vars) |
 | Product Grid | Horizon `main-collection` | — |
 | Color Count | `blocks/spy-color-count.liquid` | `product.options_with_values` (counts Frame Color / Color / Colour option values) |
+| Tech Badge | `blocks/spy-tech-badge.liquid` + `snippets/spy-tech-badges.liquid` | `spec.technologies` → `technology.name`, `.icon` (Happy Boost); `spec.certifications` (ANSI Z87 / Z87-2+). Per-swatch set resolved from each colour option value's product (combined-listing child, else product-level). Hover swap via `assets/spy-tech-badge.js`. |
 | Quick View Button | `blocks/spy-quick-view-btn.liquid` | `closest.product.handle` |
-| Compare Button | `blocks/spy-compare-btn.liquid` | `closest.product.handle`, `.title`, `.url`, `.price`, `.featured_image` |
+| ~~Compare Button~~ (removed from card) | `blocks/spy-compare-btn.liquid` | `closest.product.handle`, `.title`, `.url`, `.price`, `.featured_image` |
 | Collection SEO Copy | `sections/spy-collection-seo.liquid` | `collection.seo_content` (rich_text) |
 | Collection Story | `sections/spy-collection-story.liquid` | `collection.story` → `collection_story.hero`, `.hero_mobile`, `.headline`, `.body`, `.featured_products` |
-| Compare Bar | `sections/spy-compare.liquid` | localStorage (JS-driven) |
+| ~~Compare Bar~~ (removed from `collection.json`) | `sections/spy-compare.liquid` | localStorage (JS-driven) |
 | Quick View Modal | `sections/spy-quick-view.liquid` | — (modal shell; content fetched via section rendering API) |
 | Quick View Content | `sections/spy-quick-view-content.liquid` | `spec.vlt_percent`, `spec.lens_category`, `spec.base_tint`, `spec.mirror_tint`, `spec.polarized`, `spec.technologies`, `product.options_with_values`, `product.variants` |
 

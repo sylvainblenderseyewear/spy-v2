@@ -1932,7 +1932,7 @@
       "block_order": [
         "group_giMTa7"
       ],
-      "name": "t:names.custom_section",
+      "name": "t:names.email_signup",
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
