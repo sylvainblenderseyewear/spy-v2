@@ -1,0 +1,151 @@
+{%- comment -%}
+  SPY Footer — full-bleed band that lays out footer blocks in a page-width grid.
+  Adds an optional background image (with overlay) the stock footer lacks.
+  Columns auto-fit the block count; content is built from stock footer blocks.
+{%- endcomment -%}
+
+{%- liquid
+  assign n = section.blocks.size
+  assign cols_lg = n | at_most: 6
+  assign cols_md = n | at_most: 2
+  assign bg = section.settings.background_color
+  assign img = section.settings.background_image
+
+  if bg != blank
+    render 'contrast-override', background_color: bg, section_id: section.id
+  endif
+-%}
+
+<div
+  class="spy-footer relative w-full{% if bg != blank %} color-custom-{{ section.id }}{% endif %}"
+  style="{% if bg != blank %}background-color: {{ bg }};{% endif %}"
+  {{ section.shopify_attributes }}
+>
+  {%- if img != blank -%}
+    <div
+      class="absolute inset-0 bg-center bg-cover bg-no-repeat"
+      style="background-image: url({{ img | image_url: width: 3000 }});"
+      role="presentation"
+    ></div>
+    {%- if section.settings.overlay -%}
+      <div class="absolute inset-0" style="background-color: {{ section.settings.overlay_color }};"></div>
+    {%- endif -%}
+  {%- endif -%}
+
+  <div
+    class="spy-footer__inner relative mx-auto grid grid-cols-1 items-start md:[grid-template-columns:repeat(var(--cols-md),minmax(0,1fr))] lg:[grid-template-columns:repeat(var(--cols-lg),minmax(0,1fr))] px-4 md:px-10"
+    style="max-width: {{ section.settings.max_width }}px; gap: {{ section.settings.gap }}px; --cols-md: {{ cols_md }}; --cols-lg: {{ cols_lg }}; padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;"
+  >
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SPY Footer",
+  "class": "section-wrapper",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" },
+    { "type": "_divider" },
+    { "type": "group" },
+    { "type": "icon" },
+    { "type": "image" },
+    { "type": "menu" },
+    { "type": "payment-icons" },
+    { "type": "text" },
+    { "type": "logo" },
+    { "type": "social-links" },
+    { "type": "custom-liquid" },
+    { "type": "email-signup" }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Band"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#1d2a2b"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay",
+      "label": "Darken image with overlay",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "alpha": true,
+      "default": "#1d2a2bb3",
+      "visible_if": "{{ section.settings.overlay }}"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width",
+      "min": 800,
+      "max": 2400,
+      "step": 20,
+      "unit": "px",
+      "default": 1600
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between columns",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Footer",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

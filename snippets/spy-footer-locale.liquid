@@ -1,0 +1,61 @@
+{%- comment -%}
+  Compact country + language picker for the footer brand column.
+  Rendered from a custom-liquid block. Falls back to a static label
+  when the store has a single market/language.
+{%- endcomment -%}
+{%- liquid
+  assign has_countries = false
+  if localization.available_countries.size > 1
+    assign has_countries = true
+  endif
+  assign has_languages = false
+  if localization.available_languages.size > 1
+    assign has_languages = true
+  endif
+-%}
+<div class="spy-locale flex flex-wrap items-center gap-x-4 gap-y-1" style="color: var(--color-foreground);">
+  {%- form 'localization', id: 'FooterLocalization', class: 'spy-locale__form flex flex-wrap items-center gap-x-4 gap-y-1' -%}
+    {%- if has_countries -%}
+      <label class="sr-only" for="FooterLocaleCountry">Country/region</label>
+      <span class="relative inline-flex items-center">
+        <select
+          id="FooterLocaleCountry"
+          name="country_code"
+          onchange="this.form.submit()"
+          class="appearance-none bg-transparent border-0 cursor-pointer uppercase font-bold tracking-wide text-[13px] leading-none pr-5 text-current focus:outline-none"
+        >
+          {%- for country in localization.available_countries -%}
+            <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+              {{ country.name }}{% unless has_languages %} ({{ localization.language.endonym_name | capitalize }}){% endunless %}
+            </option>
+          {%- endfor -%}
+        </select>
+        <span class="pointer-events-none absolute right-0 flex w-3 [&_svg]:w-3 [&_svg]:h-3">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+      </span>
+    {%- else -%}
+      <span class="inline-flex items-center gap-1 uppercase font-bold tracking-wide text-[13px] leading-none">
+        {{ localization.country.name }} ({{ localization.language.endonym_name | capitalize }})
+        <span class="flex w-3 [&_svg]:w-3 [&_svg]:h-3">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+      </span>
+    {%- endif -%}
+
+    {%- if has_languages -%}
+      <label class="sr-only" for="FooterLocaleLanguage">Language</label>
+      <span class="relative inline-flex items-center">
+        <select
+          id="FooterLocaleLanguage"
+          name="language_code"
+          onchange="this.form.submit()"
+          class="appearance-none bg-transparent border-0 cursor-pointer uppercase font-bold tracking-wide text-[13px] leading-none pr-5 text-current focus:outline-none"
+        >
+          {%- for language in localization.available_languages -%}
+            <option value="{{ language.iso_code }}" lang="{{ language.iso_code }}"{% if language.iso_code == localization.language.iso_code %} selected{% endif %}>
+              {{ language.endonym_name | capitalize }}
+            </option>
+          {%- endfor -%}
+        </select>
+        <span class="pointer-events-none absolute right-0 flex w-3 [&_svg]:w-3 [&_svg]:h-3">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+      </span>
+    {%- endif -%}
+  {%- endform -%}
+</div>

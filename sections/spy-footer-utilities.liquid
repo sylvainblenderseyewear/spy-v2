@@ -1,0 +1,152 @@
+{%- comment -%}
+  SPY Footer Utilities — the light bottom bar (secure note + payments,
+  divider, copyright + legal links). Full-bleed band with an optional
+  full-width top line; content is built from stock blocks.
+{%- endcomment -%}
+
+{%- liquid
+  assign bg = section.settings.background_color
+  assign img = section.settings.background_image
+
+  if bg != blank
+    render 'contrast-override', background_color: bg, section_id: section.id
+  endif
+-%}
+
+<div
+  class="spy-footer-utilities relative w-full{% if bg != blank %} color-custom-{{ section.id }}{% endif %}{% if section.settings.show_top_border %} border-t{% endif %}"
+  style="{% if bg != blank %}background-color: {{ bg }};{% endif %}{% if section.settings.show_top_border %} border-top-color: {{ section.settings.top_border_color }};{% endif %}"
+  {{ section.shopify_attributes }}
+>
+  {%- if img != blank -%}
+    <div
+      class="absolute inset-0 bg-center bg-cover bg-no-repeat"
+      style="background-image: url({{ img | image_url: width: 3000 }});"
+      role="presentation"
+    ></div>
+    {%- if section.settings.overlay -%}
+      <div class="absolute inset-0" style="background-color: {{ section.settings.overlay_color }};"></div>
+    {%- endif -%}
+  {%- endif -%}
+
+  <div
+    class="spy-footer-utilities__inner relative mx-auto px-4 md:px-10"
+    style="max-width: {{ section.settings.max_width }}px; padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;"
+  >
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SPY Footer Utilities",
+  "class": "section-wrapper",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" },
+    { "type": "_divider" },
+    { "type": "group" },
+    { "type": "icon" },
+    { "type": "image" },
+    { "type": "text" },
+    { "type": "payment-icons" },
+    { "type": "custom-liquid" },
+    { "type": "social-links" }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Band"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f2f2f2"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay",
+      "label": "Darken image with overlay",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "alpha": true,
+      "default": "#00000040",
+      "visible_if": "{{ section.settings.overlay }}"
+    },
+    {
+      "type": "header",
+      "content": "Top line"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_top_border",
+      "label": "Show top line",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "top_border_color",
+      "label": "Line color",
+      "default": "#d9d9d9",
+      "visible_if": "{{ section.settings.show_top_border }}"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width",
+      "min": 800,
+      "max": 2400,
+      "step": 20,
+      "unit": "px",
+      "default": 1600
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Footer Utilities",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

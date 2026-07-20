@@ -1,0 +1,16 @@
+{%- comment -%}
+  Footer payment icons. Uses the store's enabled payment types when set,
+  otherwise falls back to the common card set so staging matches the design.
+{%- endcomment -%}
+{%- liquid
+  assign types = shop.enabled_payment_types
+  assign type_count = types.size | default: 0
+  if type_count == 0
+    assign types = 'visa,master,paypal,american_express,apple_pay,google_pay' | split: ','
+  endif
+-%}
+<ul class="spy-payments flex flex-wrap items-center gap-2 m-0 p-0" role="list">
+  {%- for type in types -%}
+    <li class="flex items-center">{{ type | payment_type_svg_tag: class: 'h-6 w-auto block' }}</li>
+  {%- endfor -%}
+</ul>

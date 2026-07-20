@@ -6,250 +6,395 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "type": "footer",
   "name": "Footer",
   "sections": {
-    "footer_spy": {
-      "type": "footer",
+    "spy_footer_top": {
+      "type": "spy-footer",
       "blocks": {
-        "menu_shop": {
-          "type": "menu",
-          "settings": {
-            "menu": "footer-shop",
-            "heading": "Shop",
-            "menu_spacing": 10,
-            "show_as_accordion": true,
-            "accordion_icon": "plus",
-            "accordion_dividers": true,
-            "heading_preset": "h6",
-            "link_preset": "paragraph",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "menu_support": {
-          "type": "menu",
-          "settings": {
-            "menu": "footer-support",
-            "heading": "Support",
-            "menu_spacing": 10,
-            "show_as_accordion": true,
-            "accordion_icon": "plus",
-            "accordion_dividers": true,
-            "heading_preset": "h6",
-            "link_preset": "paragraph",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "menu_about": {
-          "type": "menu",
-          "settings": {
-            "menu": "footer-about",
-            "heading": "About",
-            "menu_spacing": 10,
-            "show_as_accordion": true,
-            "accordion_icon": "plus",
-            "accordion_dividers": true,
-            "heading_preset": "h6",
-            "link_preset": "paragraph",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "newsletter_group": {
+        "brand": {
           "type": "group",
+          "name": "Brand",
           "settings": {
             "content_direction": "column",
             "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "flex-start",
-            "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "flex-start",
             "vertical_alignment_flex_direction_column": "flex-start",
-            "gap": 16,
+            "gap": 20,
             "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "open_in_new_tab": false,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "height": "fit"
           },
           "blocks": {
-            "newsletter_heading": {
-              "type": "text",
+            "locale": {
+              "type": "custom-liquid",
               "settings": {
-                "text": "<h3>Stay in the loop</h3>",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h6",
-                "font": "var(--font-primary--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "0.05em",
-                "case": "uppercase",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
+                "custom_liquid": "{% render 'spy-footer-locale' %}"
+              }
             },
-            "newsletter_body": {
+            "logo": {
+              "type": "logo",
+              "settings": {
+                "unit": "pixel",
+                "pixel_height": 40
+              }
+            },
+            "social": {
+              "type": "social-links",
+              "settings": {
+                "icon_color": "#ffffff",
+                "facebook_url": "https://www.facebook.com/SPYOptic/",
+                "twitter_url": "https://twitter.com/spyoptic",
+                "instagram_url": "https://www.instagram.com/spyoptic/"
+              }
+            }
+          },
+          "block_order": ["locale", "logo", "social"]
+        },
+        "col_company": {
+          "type": "group",
+          "name": "Company",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 12,
+            "width": "fill",
+            "height": "fit"
+          },
+          "blocks": {
+            "heading": {
               "type": "text",
               "settings": {
-                "text": "<p>New drops, exclusive deals, and tech guides delivered to your inbox.</p>",
+                "text": "<p>COMPANY</p>",
+                "type_preset": "h6",
                 "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
+                "max_width": "none",
+                "alignment": "left"
+              }
+            },
+            "links": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"/pages/about-us\">About Us</a><br><a href=\"/blogs/journal\">Blog</a><br><a href=\"/pages/careers\">Careers</a><br><a href=\"/pages/team\">Team</a><br><a href=\"https://stores.spyoptic.com\">Store Locator</a></p>",
+                "type_preset": "custom",
                 "font": "var(--font-body--family)",
                 "font_size": "0.875rem",
-                "line_height": "normal",
+                "line_height": "loose",
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "newsletter_email": {
-              "type": "email-signup",
-              "settings": {
-                "width": "fill",
-                "custom_width": 100,
-                "heading_preset": "h3",
-                "border_style": "all",
-                "input_style": "custom",
-                "border_width": 1,
-                "border_radius": 0,
-                "input_background_color": "transparent",
-                "input_text_color": "#ffffff",
-                "input_border_color": "#f27e37",
-                "input_type_preset": "paragraph",
-                "style_class": "button",
-                "display_type": "arrow",
-                "label": "Subscribe",
-                "integrated_button": true,
-                "button_type_preset": "paragraph",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "left"
+              }
             }
           },
-          "block_order": [
-            "newsletter_heading",
-            "newsletter_body",
-            "newsletter_email"
-          ]
+          "block_order": ["heading", "links"]
+        },
+        "col_services": {
+          "type": "group",
+          "name": "Services",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 12,
+            "width": "fill",
+            "height": "fit"
+          },
+          "blocks": {
+            "heading": {
+              "type": "text",
+              "settings": {
+                "text": "<p>SERVICES</p>",
+                "type_preset": "h6",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "left"
+              }
+            },
+            "links": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"/pages/contact\">Contact us</a><br><a href=\"/account\">My Account</a><br><a href=\"/account\">My Orders</a><br><a href=\"/pages/faq\">FAQ</a><br><a href=\"/pages/warranty\">Warranty</a><br><a href=\"#\">Dealer Portal</a></p>",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.875rem",
+                "line_height": "loose",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "left"
+              }
+            }
+          },
+          "block_order": ["heading", "links"]
+        },
+        "col_policy": {
+          "type": "group",
+          "name": "Policy",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 12,
+            "width": "fill",
+            "height": "fit"
+          },
+          "blocks": {
+            "heading": {
+              "type": "text",
+              "settings": {
+                "text": "<p>POLICY</p>",
+                "type_preset": "h6",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "left"
+              }
+            },
+            "links": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"/policies/privacy-policy\">Privacy Policy</a><br><a href=\"/policies/refund-policy\">Return Policy</a><br><a href=\"/pages/map-policy\">MAP Policy</a><br><a href=\"/policies/terms-of-service\">Terms of Use</a><br><a href=\"/pages/retail-sales-agreement\">Retail Sales Agreement</a><br><a href=\"/pages/accessibility-statement\">Accessibility Statement</a><br><a href=\"/pages/esg\">Our ESG program</a><br><a href=\"/pages/military-discount\">Military &amp; First Responders Discount</a></p>",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.875rem",
+                "line_height": "loose",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "left"
+              }
+            }
+          },
+          "block_order": ["heading", "links"]
+        },
+        "col_programs": {
+          "type": "group",
+          "name": "Programs",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 12,
+            "width": "fill",
+            "height": "fit"
+          },
+          "blocks": {
+            "heading": {
+              "type": "text",
+              "settings": {
+                "text": "<p>PROGRAMS</p>",
+                "type_preset": "h6",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "left"
+              }
+            },
+            "links": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"/pages/military-discount\">Military &amp; First Responders Discount</a><br><a href=\"/pages/affiliate-program\">Affiliate Program</a><br><a href=\"/pages/rewards\">Rewards Program</a></p>",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.875rem",
+                "line_height": "loose",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "left"
+              }
+            }
+          },
+          "block_order": ["heading", "links"]
         }
       },
-      "block_order": [
-        "menu_shop",
-        "menu_support",
-        "menu_about",
-        "newsletter_group"
-      ],
+      "block_order": ["brand", "col_company", "col_services", "col_policy", "col_programs"],
       "name": "Footer",
       "settings": {
-        "section_width": "page-width",
-        "gap": 40,
         "background_color": "#1d2a2b",
-        "padding-block-start": 56,
-        "padding-block-end": 40
+        "overlay": true,
+        "overlay_color": "#1d2a2bb3",
+        "max_width": 1600,
+        "gap": 32,
+        "padding_top": 56,
+        "padding_bottom": 48
       }
     },
-    "footer_utilities_jLGE8U": {
-      "type": "footer-utilities",
+    "spy_footer_utilities": {
+      "type": "spy-footer-utilities",
       "blocks": {
-        "footer_copyright_jweRK8": {
-          "type": "footer-copyright",
+        "light_wrap": {
+          "type": "group",
+          "name": "Bottom rows",
           "settings": {
-            "show_powered_by": false,
-            "font_size": "0.75rem",
-            "case": "none"
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "flex-start",
+            "gap": 20,
+            "width": "fill",
+            "height": "fit"
           },
-          "blocks": {}
-        },
-        "footer_policy_list_VCdnpa": {
-          "type": "footer-policy-list",
-          "settings": {
-            "font_size": "0.75rem",
-            "case": "none"
+          "blocks": {
+            "row_a": {
+              "type": "group",
+              "name": "Secure + payments",
+              "settings": {
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "space-between",
+                "vertical_alignment": "center",
+                "gap": 16,
+                "width": "fill",
+                "height": "fit"
+              },
+              "blocks": {
+                "secure": {
+                  "type": "group",
+                  "settings": {
+                    "content_direction": "row",
+                    "vertical_on_mobile": false,
+                    "horizontal_alignment": "flex-start",
+                    "vertical_alignment": "center",
+                    "gap": 8,
+                    "width": "fit-content",
+                    "height": "fit"
+                  },
+                  "blocks": {
+                    "lock": {
+                      "type": "icon",
+                      "settings": {
+                        "icon": "lock",
+                        "width": 16
+                      }
+                    },
+                    "text": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>We guarantee every transaction is 100% secure.</p>",
+                        "type_preset": "custom",
+                        "font": "var(--font-body--family)",
+                        "font_size": "0.875rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "width": "fit-content",
+                        "max_width": "none",
+                        "alignment": "left"
+                      }
+                    }
+                  },
+                  "block_order": ["lock", "text"]
+                },
+                "payments_wrap": {
+                  "type": "group",
+                  "settings": {
+                    "content_direction": "row",
+                    "vertical_on_mobile": false,
+                    "horizontal_alignment": "flex-end",
+                    "vertical_alignment": "center",
+                    "gap": 0,
+                    "width": "fit-content",
+                    "height": "fit"
+                  },
+                  "blocks": {
+                    "payments": {
+                      "type": "custom-liquid",
+                      "settings": {
+                        "custom_liquid": "{% render 'spy-payment-icons' %}"
+                      }
+                    }
+                  },
+                  "block_order": ["payments"]
+                }
+              },
+              "block_order": ["secure", "payments_wrap"]
+            },
+            "divider": {
+              "type": "_divider",
+              "settings": {
+                "thickness": 1,
+                "divider_color": "#d9d9d9"
+              }
+            },
+            "row_b": {
+              "type": "group",
+              "name": "Copyright + legal",
+              "settings": {
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "space-between",
+                "vertical_alignment": "center",
+                "gap": 16,
+                "width": "fill",
+                "height": "fit"
+              },
+              "blocks": {
+                "copyright": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Copyright &copy; 2026 SPY Optic. All rights Reserved.</p>",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "0.875rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "width": "fit-content",
+                    "max_width": "none",
+                    "alignment": "left"
+                  }
+                },
+                "legal": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p><a href=\"/policies/terms-of-service\">Terms &amp; Conditions</a> &nbsp; <a href=\"/policies/privacy-policy\">Privacy Policy</a> &nbsp; <a href=\"#\">Privacy Preferences</a> &nbsp; <a href=\"/pages/legal-notices\">Legal Notices</a></p>",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "0.875rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "width": "fit-content",
+                    "max_width": "none",
+                    "alignment": "left"
+                  }
+                }
+              },
+              "block_order": ["copyright", "legal"]
+            }
           },
-          "blocks": {}
-        },
-        "social_links_Ew63Kq": {
-          "type": "social-links",
-          "settings": {
-            "facebook_url": "https://www.facebook.com/SPYOptic/",
-            "instagram_url": "https://www.instagram.com/spyoptic/",
-            "youtube_url": "https://www.youtube.com/user/SPYOptic",
-            "tiktok_url": "https://www.tiktok.com/@spyoptic",
-            "twitter_url": ""
-          },
-          "blocks": {}
+          "block_order": ["row_a", "divider", "row_b"]
         }
       },
-      "block_order": [
-        "footer_copyright_jweRK8",
-        "footer_policy_list_VCdnpa",
-        "social_links_Ew63Kq"
-      ],
+      "block_order": ["light_wrap"],
       "name": "Footer Utilities",
       "settings": {
-        "section_width": "page-width",
-        "gap": 24,
-        "divider_thickness": 1,
-        "divider_color": "#2e4043",
-        "background_color": "#1d2a2b",
-        "padding-block-start": 20,
-        "padding-block-end": 40
+        "background_color": "#f2f2f2",
+        "overlay": false,
+        "show_top_border": true,
+        "top_border_color": "#d9d9d9",
+        "max_width": 1600,
+        "padding_top": 24,
+        "padding_bottom": 32
       }
     }
   },
-  "order": [
-    "footer_spy",
-    "footer_utilities_jLGE8U"
-  ]
+  "order": ["spy_footer_top", "spy_footer_utilities"]
 }

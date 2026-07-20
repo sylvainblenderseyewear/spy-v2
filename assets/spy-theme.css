@@ -734,3 +734,14 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     visibility: hidden;
   }
 }
+
+/* Footer links: plain, inherit colour, subtle hover */
+:is(.spy-footer, .spy-footer-utilities) a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+:is(.spy-footer, .spy-footer-utilities) a:hover {
+  opacity: 0.7;
+}
