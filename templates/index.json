@@ -410,7 +410,7 @@
         "vertical_alignment_flex_direction_column": "center",
         "gap": 32,
         "section_width": "page-width",
-        "section_height": "small",
+        "section_height": "medium",
         "section_height_custom": 50,
         "background_media": "image",
         "background_color": "",
@@ -645,33 +645,24 @@
         "padding-block-end": 48
       }
     },
-    "section_JYwxe6": {
+    "section_QGBQym": {
       "type": "section",
       "blocks": {
-        "image_Y9Xee7": {
-          "type": "image",
+        "spacer_WcF3bw": {
+          "type": "spacer",
+          "name": "t:names.spacer",
           "settings": {
-            "image": "shopify://shop_images/region_xl.webp",
-            "link": "",
-            "image_ratio": "square",
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "size": "pixel",
+            "percent_size": 100,
+            "pixel_size": 88,
+            "custom_mobile_size": false,
+            "size_mobile": "percent",
+            "percent_size_mobile": 100,
+            "pixel_size_mobile": 120
           },
           "blocks": {}
         },
-        "group_8fdwtA": {
+        "group_6htMry": {
           "type": "group",
           "settings": {
             "content_direction": "column",
@@ -710,22 +701,22 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_EHweM3": {
+            "text_dLEftc": {
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Our signature product</h2>",
+                "text": "<h2>Watermen collection</h2>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "h3",
+                "type_preset": "h2",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
-                "text_color": "",
+                "text_color": "{{ settings.color_palette.background }}",
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
@@ -736,32 +727,7 @@
               },
               "blocks": {}
             },
-            "text_GaPndb": {
-              "type": "text",
-              "settings": {
-                "text": "<p>Made with care and unconditionally loved by our customers, this signature bestseller exceeds all expectations.</p>",
-                "width": "fit-content",
-                "max_width": "narrow",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "button_mBkQU4": {
+            "button_LXbWjq": {
               "type": "button",
               "settings": {
                 "label": "Shop now",
@@ -776,22 +742,36 @@
                 "custom_width": 100,
                 "width_mobile": "fit-content",
                 "custom_width_mobile": 100,
-                "padding_block": 0,
-                "padding_inline": 0
+                "padding_block": 8,
+                "padding_inline": 20
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "text_EHweM3",
-            "text_GaPndb",
-            "button_mBkQU4"
+            "text_dLEftc",
+            "button_LXbWjq"
           ]
+        },
+        "spacer_PJGgTj": {
+          "type": "spacer",
+          "name": "t:names.spacer",
+          "settings": {
+            "size": "percent",
+            "percent_size": 100,
+            "pixel_size": 120,
+            "custom_mobile_size": false,
+            "size_mobile": "percent",
+            "percent_size_mobile": 100,
+            "pixel_size_mobile": 120
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "image_Y9Xee7",
-        "group_8fdwtA"
+        "spacer_WcF3bw",
+        "group_6htMry",
+        "spacer_PJGgTj"
       ],
       "name": "t:names.image_with_text",
       "settings": {
@@ -804,12 +784,12 @@
         "vertical_alignment_flex_direction_column": "center",
         "gap": 32,
         "section_width": "page-width",
-        "section_height": "",
+        "section_height": "medium",
         "section_height_custom": 50,
         "background_media": "image",
         "background_color": "",
         "video_position": "cover",
-        "background_image": "shopify://shop_images/download.webp",
+        "background_image": "shopify://shop_images/watermen_collection.webp",
         "background_image_position": "cover",
         "toggle_overlay": false,
         "overlay_color": "#00000026",
@@ -2018,7 +1998,7 @@
     "spy_category_tiles_npxaN3",
     "section_tRkEMM",
     "product_list_PdnycH",
-    "section_JYwxe6",
+    "section_QGBQym",
     "product_list_ikCdrT",
     "section_gpMr7q",
     "spy_value_props_dMXTzf",
