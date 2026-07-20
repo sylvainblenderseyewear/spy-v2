@@ -7,3 +7,5 @@ node_modules/
 .agents/
 .claude/skills/
 .claude/settings.local.json
+
+reference/

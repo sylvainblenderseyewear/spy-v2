@@ -128,6 +128,17 @@ metafields. `collection.story` for curated collections (Discord, Happy Boost, SL
 Tech guides (`page.tech-guide`, reuse `technology` metaobjects) · editorial · policy/support · Blog · Account/
 Cart/Search (Horizon defaults re-skinned) · external link-outs.
 
+## Commit Messages
+- Use a single optimized one-line commit message — no body, no trailers
+- Pass via git commit -m "<prefix>: <short summary>" (no HEREDOC, no multi-line bodies)
+- Use conventional commit prefixes: feat:, fix:, chore:, style:, refactor:, docs:, test:
+- Do not include Co-Authored-By or any AI attribution lines
+
+## Comments while Coding/Editing
+- Use the B2 Level English
+- Must be human style with short and high-hint message
+- Don't make comment too long
+
 ## Cross-cutting
 - Maintain `/audit/redirect-urls.csv` (old SFCC URL → new Shopify URL) for the 301 workstream.
 - Accessibility WCAG 2.1 AA from the start. Performance/CWV budget. SEO meta + structured data + canonicals.
