@@ -278,9 +278,9 @@
           "type": "spacer",
           "name": "t:names.spacer",
           "settings": {
-            "size": "pixel",
-            "percent_size": 100,
-            "pixel_size": 88,
+            "size": "percent",
+            "percent_size": 52,
+            "pixel_size": 228,
             "custom_mobile_size": false,
             "size_mobile": "percent",
             "percent_size_mobile": 100,
@@ -378,26 +378,11 @@
             "text_w8xEcb",
             "button_TiNQpz"
           ]
-        },
-        "spacer_E98cKU": {
-          "type": "spacer",
-          "name": "t:names.spacer",
-          "settings": {
-            "size": "percent",
-            "percent_size": 100,
-            "pixel_size": 120,
-            "custom_mobile_size": false,
-            "size_mobile": "percent",
-            "percent_size_mobile": 100,
-            "pixel_size_mobile": 120
-          },
-          "blocks": {}
         }
       },
       "block_order": [
         "spacer_7B4gta",
-        "group_cnh7k7",
-        "spacer_E98cKU"
+        "group_cnh7k7"
       ],
       "name": "t:names.image_with_text",
       "settings": {
@@ -652,8 +637,8 @@
           "type": "spacer",
           "name": "t:names.spacer",
           "settings": {
-            "size": "pixel",
-            "percent_size": 100,
+            "size": "percent",
+            "percent_size": 68,
             "pixel_size": 88,
             "custom_mobile_size": false,
             "size_mobile": "percent",
@@ -752,26 +737,11 @@
             "text_dLEftc",
             "button_LXbWjq"
           ]
-        },
-        "spacer_PJGgTj": {
-          "type": "spacer",
-          "name": "t:names.spacer",
-          "settings": {
-            "size": "percent",
-            "percent_size": 100,
-            "pixel_size": 120,
-            "custom_mobile_size": false,
-            "size_mobile": "percent",
-            "percent_size_mobile": 100,
-            "pixel_size_mobile": 120
-          },
-          "blocks": {}
         }
       },
       "block_order": [
         "spacer_WcF3bw",
-        "group_6htMry",
-        "spacer_PJGgTj"
+        "group_6htMry"
       ],
       "name": "t:names.image_with_text",
       "settings": {
