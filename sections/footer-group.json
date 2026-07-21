@@ -651,13 +651,13 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p><strong>Sign up for news, exclusive sales, and 20% off your first order</strong></p>",
+            "text": "<p>Sign up for news, exclusive sales, and 20% off your first order</p>",
             "width": "100%",
             "max_width": "narrow",
             "alignment": "center",
             "type_preset": "custom",
             "font": "var(--font-heading--family)",
-            "font_size": "1.25rem",
+            "font_size": "1.5rem",
             "line_height": "tight",
             "letter_spacing": "loose",
             "case": "uppercase",
@@ -884,8 +884,8 @@
                 "width": "100%",
                 "max_width": "none",
                 "alignment": "left",
-                "type_preset": "h6",
-                "font": "var(--font-body--family)",
+                "type_preset": "custom",
+                "font": "var(--font-heading--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
                 "letter_spacing": "normal",
@@ -976,11 +976,11 @@
             "heading": {
               "type": "text",
               "settings": {
-                "text": "<p>SERVICES</p>",
+                "text": "<p><strong>SERVICES</strong></p>",
                 "width": "100%",
                 "max_width": "none",
                 "alignment": "left",
-                "type_preset": "h6",
+                "type_preset": "custom",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
@@ -1072,11 +1072,11 @@
             "heading": {
               "type": "text",
               "settings": {
-                "text": "<p>POLICY</p>",
+                "text": "<p><strong>POLICY</strong></p>",
                 "width": "100%",
                 "max_width": "none",
                 "alignment": "left",
-                "type_preset": "h6",
+                "type_preset": "custom",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
@@ -1168,11 +1168,11 @@
             "heading": {
               "type": "text",
               "settings": {
-                "text": "<p>PROGRAMS</p>",
+                "text": "<p><strong>PROGRAMS</strong></p>",
                 "width": "100%",
                 "max_width": "none",
                 "alignment": "left",
-                "type_preset": "h6",
+                "type_preset": "custom",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
@@ -1367,7 +1367,7 @@
                       "type": "icon",
                       "settings": {
                         "icon": "lock",
-                        "width": 16,
+                        "width": 12,
                         "link": "",
                         "open_in_new_tab": false,
                         "icon_color": ""
@@ -1382,8 +1382,8 @@
                         "max_width": "none",
                         "alignment": "left",
                         "type_preset": "custom",
-                        "font": "var(--font-body--family)",
-                        "font_size": "0.875rem",
+                        "font": "var(--font-subheading--family)",
+                        "font_size": "0.75rem",
                         "line_height": "normal",
                         "letter_spacing": "normal",
                         "case": "none",
@@ -1467,7 +1467,7 @@
               "settings": {
                 "thickness": 1,
                 "corner_radius": "square",
-                "divider_color": "#d9d9d9",
+                "divider_color": "#272727",
                 "width_percent": 100,
                 "padding-block-start": 0,
                 "padding-block-end": 0
@@ -1517,13 +1517,13 @@
                 "copyright": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Copyright &copy; 2026 SPY Optic. All rights Reserved.</p>",
+                    "text": "<p>Copyright © 2026 SPY Optic. All rights Reserved.</p>",
                     "width": "fit-content",
                     "max_width": "none",
                     "alignment": "left",
                     "type_preset": "custom",
-                    "font": "var(--font-body--family)",
-                    "font_size": "0.875rem",
+                    "font": "var(--font-subheading--family)",
+                    "font_size": "0.75rem",
                     "line_height": "normal",
                     "letter_spacing": "normal",
                     "case": "none",
@@ -1542,13 +1542,13 @@
                 "legal": {
                   "type": "text",
                   "settings": {
-                    "text": "<p><a href=\"/policies/terms-of-service\">Terms &amp; Conditions</a> &nbsp; <a href=\"/policies/privacy-policy\">Privacy Policy</a> &nbsp; <a href=\"#\">Privacy Preferences</a> &nbsp; <a href=\"/pages/legal-notices\">Legal Notices</a></p>",
+                    "text": "<p><a href=\"/policies/terms-of-service\">Terms & Conditions</a>   <a href=\"/policies/privacy-policy\">Privacy Policy</a>   <a href=\"#\">Privacy Preferences</a>   <a href=\"/pages/legal-notices\">Legal Notices</a></p>",
                     "width": "fit-content",
                     "max_width": "none",
                     "alignment": "left",
                     "type_preset": "custom",
-                    "font": "var(--font-body--family)",
-                    "font_size": "0.875rem",
+                    "font": "var(--font-subheading--family)",
+                    "font_size": "0.75rem",
                     "line_height": "normal",
                     "letter_spacing": "normal",
                     "case": "none",
@@ -1587,10 +1587,10 @@
         "overlay": false,
         "overlay_color": "#00000040",
         "show_top_border": true,
-        "top_border_color": "#d9d9d9",
-        "max_width": 1600,
-        "padding_top": 24,
-        "padding_bottom": 32
+        "top_border_color": "#F2F2F2",
+        "max_width": 1900,
+        "padding_top": 26,
+        "padding_bottom": 20
       }
     }
   },
