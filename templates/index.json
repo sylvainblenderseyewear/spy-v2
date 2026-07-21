@@ -268,7 +268,7 @@
         "padding_left": 16,
         "padding_right": 16,
         "title_font": "var(--font-heading--family)",
-        "title_font_size": 32
+        "title_font_size": 36
       }
     },
     "section_tRkEMM": {
@@ -278,8 +278,8 @@
           "type": "spacer",
           "name": "t:names.spacer",
           "settings": {
-            "size": "pixel",
-            "percent_size": 39,
+            "size": "percent",
+            "percent_size": 20,
             "pixel_size": 224,
             "custom_mobile_size": false,
             "size_mobile": "percent",
@@ -298,8 +298,8 @@
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "flex-start",
             "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "custom",
+            "gap": 28,
+            "width": "fill",
             "custom_width": 100,
             "width_mobile": "fill",
             "custom_width_mobile": 100,
@@ -637,8 +637,8 @@
           "type": "spacer",
           "name": "t:names.spacer",
           "settings": {
-            "size": "pixel",
-            "percent_size": 68,
+            "size": "percent",
+            "percent_size": 20,
             "pixel_size": 224,
             "custom_mobile_size": false,
             "size_mobile": "percent",
@@ -657,8 +657,8 @@
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "flex-start",
             "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "custom",
+            "gap": 28,
+            "width": "fill",
             "custom_width": 100,
             "width_mobile": "fill",
             "custom_width_mobile": 100,
@@ -690,7 +690,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h2>Watermen collection</h2>",
+                "text": "<h3>Watermen collection</h3>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
