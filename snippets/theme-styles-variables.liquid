@@ -591,6 +591,13 @@
     --button-font-family-primary: var(--font-{{ settings.type_font_button_primary }}--family);
     --button-font-family-secondary: var(--font-{{ settings.type_font_button_secondary }}--family);
 
+    /* Button font-weight (primary) — falls back to theme weight when Default */
+    {%- if settings.type_font_weight_button_primary == 'default' -%}
+      --button-font-weight-primary: var(--font-paragraph--weight);
+    {%- else -%}
+      --button-font-weight-primary: {{ settings.type_font_weight_button_primary }};
+    {%- endif -%}
+
     /* Button text case */
     --button-text-case: {{ settings.button_text_case }};
     --button-text-case-primary: {{ settings.button_text_case_primary }};
