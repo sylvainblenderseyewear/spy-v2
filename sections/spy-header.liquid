@@ -24,27 +24,6 @@
   </div>
 </div>
 
-{% stylesheet %}
-  #header-group:has(.spy-header-section [data-spy-sticky]) {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-  }
-
-  .spy-logo-link svg {
-    display: block;
-    height: var(--spy-logo-h-m, 28px);
-    width: calc(var(--spy-logo-h-m, 28px) * 66 / 28);
-  }
-
-  @media screen and (min-width: 750px) {
-    .spy-logo-link svg {
-      height: var(--spy-logo-h, 36px);
-      width: calc(var(--spy-logo-h, 36px) * 79 / 36);
-    }
-  }
-{% endstylesheet %}
-
 {% schema %}
 {
   "name": "SPY Header",

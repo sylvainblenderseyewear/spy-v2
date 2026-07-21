@@ -1,4 +1,3 @@
-{{ 'tailwind.css' | asset_url | stylesheet_tag }}
 {{ 'overflow-list.css' | asset_url | preload_tag: as: 'style' }}
 {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
-{{ 'spy-theme.css' | asset_url | stylesheet_tag }}
+{{ 'tailwind.css' | asset_url | stylesheet_tag }}

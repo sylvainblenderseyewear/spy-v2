@@ -9,7 +9,7 @@
 -%}
 
 {%- if badge_count > 0 -%}
-<div class="spy-trust-badges" {{ block.shopify_attributes }}>
+<div class="border border-spy-border rounded-[4px]" {{ block.shopify_attributes }}>
   {%- for i in (1..5) -%}
     {%- liquid
       assign text_key = 'badge_' | append: i | append: '_text'
@@ -18,8 +18,8 @@
       assign badge_icon = block.settings[icon_key]
     -%}
     {%- if badge_text != blank -%}
-      <div class="spy-trust-badges__item">
-        <span class="spy-trust-badges__icon" aria-hidden="true">
+      <div class="flex items-center gap-3 px-3.5 py-[11px] border-b border-spy-border last:border-b-0">
+        <span class="shrink-0 w-5 h-5 flex items-center justify-center leading-[0] text-[color:var(--color-foreground,#2c393e)]" aria-hidden="true">
           {%- if badge_icon != blank -%}
             {{ badge_icon }}
           {%- else -%}
@@ -37,7 +37,7 @@
             {%- endcase -%}
           {%- endif -%}
         </span>
-        <span class="spy-trust-badges__text">{{ badge_text }}</span>
+        <span class="text-xs font-medium leading-[1.4] text-[color:var(--color-foreground,#2c393e)]">{{ badge_text }}</span>
       </div>
     {%- endif -%}
   {%- endfor -%}
