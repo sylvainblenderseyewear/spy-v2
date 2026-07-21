@@ -1,7 +1,7 @@
-<div class="spy-qv-wrapper" {{ section.shopify_attributes }}>
-  <div class="spy-qv-overlay"></div>
+<div class="spy-qv-wrapper group" {{ section.shopify_attributes }}>
+  <div class="spy-qv-overlay fixed inset-0 bg-black/55 z-[999] opacity-0 pointer-events-none transition-opacity duration-200 ease-[ease] group-data-[open]:opacity-100 group-data-[open]:pointer-events-auto"></div>
   <div
-    class="spy-qv-modal"
+    class="spy-qv-modal fixed z-[1000] bg-white overflow-y-auto opacity-0 pointer-events-none transition-[opacity,translate] duration-200 ease-[ease] [-webkit-overflow-scrolling:touch] group-data-[open]:opacity-100 group-data-[open]:pointer-events-auto min-[750px]:top-1/2 min-[750px]:left-1/2 min-[750px]:-translate-x-1/2 min-[750px]:translate-y-[calc(-50%_+_16px)] min-[750px]:w-[min(660px,95vw)] min-[750px]:max-h-[90vh] min-[750px]:pt-10 min-[750px]:px-8 min-[750px]:pb-8 min-[750px]:group-data-[open]:translate-y-[-50%] max-[750px]:top-auto max-[750px]:right-0 max-[750px]:bottom-0 max-[750px]:left-0 max-[750px]:w-full max-[750px]:max-h-[92vh] max-[750px]:translate-y-[20px] max-[750px]:rounded-t-xl max-[750px]:pt-10 max-[750px]:px-5 max-[750px]:pb-8 max-[750px]:group-data-[open]:translate-y-0"
     role="dialog"
     aria-modal="true"
     aria-label="Quick View"

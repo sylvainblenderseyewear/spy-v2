@@ -32,16 +32,16 @@
 
   {%- if size_chart_ref != blank and chart_image != blank -%}
   <div
-    class="spy-size-chart__modal"
+    class="hidden fixed inset-0 z-[1001] data-[open]:block"
     role="dialog"
     aria-modal="true"
     aria-label="{{ chart_name | escape }}"
     aria-hidden="true"
     data-spy-size-chart-modal
   >
-    <div class="spy-size-chart__overlay" data-spy-size-chart-close></div>
-    <div class="spy-size-chart__panel">
-      <button type="button" class="spy-size-chart__close" aria-label="Close size chart" data-spy-size-chart-close>
+    <div class="absolute inset-0 bg-black/55" data-spy-size-chart-close></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[min(560px,95vw)] max-h-[90vh] overflow-y-auto pt-10 px-7 pb-7 max-[750px]:top-auto max-[750px]:bottom-0 max-[750px]:left-0 max-[750px]:translate-x-0 max-[750px]:translate-y-0 max-[750px]:w-full max-[750px]:rounded-t-xl max-[750px]:px-5 max-[750px]:pb-8">
+      <button type="button" class="absolute top-3 right-3 bg-transparent border-none cursor-pointer p-1.5 flex items-center text-[color:var(--color-foreground,#2c393e)] hover:text-spy-orange" aria-label="Close size chart" data-spy-size-chart-close>
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
           <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
         </svg>

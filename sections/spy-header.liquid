@@ -12,7 +12,7 @@
       <div class="flex items-center shrink-0">
         <a
           href="{{ routes.root_url }}"
-          class="svg-logo-container spy-logo-link inline-flex items-center"
+          class="svg-logo-container inline-flex items-center [&_svg]:block [&_svg]:h-[var(--spy-logo-h-m,28px)] [&_svg]:w-[calc(var(--spy-logo-h-m,28px)*66/28)] min-[750px]:[&_svg]:h-[var(--spy-logo-h,36px)] min-[750px]:[&_svg]:w-[calc(var(--spy-logo-h,36px)*79/36)]"
           style="--spy-logo-h: {{ settings.logo_height | default: 36 }}px; --spy-logo-h-m: {{ settings.logo_height_mobile | default: 28 }}px;"
           aria-label="{{ shop.name }}"
         >

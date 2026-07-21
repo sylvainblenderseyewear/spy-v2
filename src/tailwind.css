@@ -19,6 +19,14 @@
   /* Typography — D-DIN stands in for DIN Next LT Pro until licensed files arrive */
   --font-spy: "DINNextLTPro", "D-DIN", sans-serif;
   --font-sans: "DINNextLTPro", "D-DIN", sans-serif;
+
+  /* Legacy brand var aliases (kept for rules that reference var(--spy-orange/--spy-slate)) */
+  --spy-orange: #f57f29;
+  --spy-slate:  #2c393e;
+
+  /* Mobile nav drawer (was :root in spy-mega-menu) */
+  --spy-nav-width: 280px;
+  --ease-spy-nav:  cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ── Scan all Liquid theme files for class names ─────────────────── */
@@ -44,211 +52,19 @@
    ═══════════════════════════════════════════════════════════════════════ */
 
 
-/* ── Spec Table accordion (details/summary pseudo-elements can't be Tailwind) ── */
-.spy-spec-table {
-  border-top: 1px solid var(--color-border, #e5e5e5);
-  margin-top: 8px;
-}
+/* Spec Table is inlined as Tailwind utilities on its markup (spy-spec-table.liquid):
+   the +/− marker uses group-open toggle spans; row/cell styling uses [&_tr]/[&_th]/[&_td]. */
 
-.spy-spec-table summary {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 0;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-foreground, #2c393e);
-  list-style: none;
-  user-select: none;
-}
+/* Quick View modal is inlined as Tailwind utilities on spy-quick-view.liquid +
+   spy-quick-view-content.liquid — group-data-[open]: for the open state (JS sets
+   [data-open] on .spy-qv-wrapper), min-[750px]/max-[750px] split for desktop dialog
+   vs mobile sheet, transition-[opacity,translate] (v4 translate is its own property),
+   and [&.is-selected]: for the JS-toggled swatch. Classnames kept as JS hooks. */
 
-.spy-spec-table summary::-webkit-details-marker { display: none; }
+/* Size Chart (trigger/heading/image AND modal/overlay/panel/close) is fully inlined
+   as Tailwind utilities on spy-size-chart.liquid — data-[open]:block + max-[749px]: variants. */
 
-.spy-spec-table summary::after {
-  content: '+';
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 1;
-  transition: transform 0.2s ease;
-}
-
-.spy-spec-table[open] summary::after {
-  content: '−';
-}
-
-.spy-spec-table__table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  padding-bottom: 16px;
-}
-
-.spy-spec-table__table tr {
-  border-top: 1px solid var(--color-border, #e5e5e5);
-}
-
-.spy-spec-table__table th {
-  text-align: left;
-  padding: 8px 12px 8px 0;
-  font-weight: 600;
-  color: var(--color-foreground-secondary, #6a6c77);
-  width: 45%;
-  vertical-align: top;
-}
-
-.spy-spec-table__table td {
-  padding: 8px 0;
-  color: var(--color-foreground, #2c393e);
-  vertical-align: top;
-}
-
-.spy-spec-table__badge {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 2px 6px;
-  background: #f57f29;
-  color: #fff;
-  margin-right: 4px;
-}
-
-.spy-spec-table__badge--muted {
-  background: #2c393e;
-}
-
-/* Feature Banner and Collection Story migrated to Tailwind */
-
-/* ── Quick View Modal — positioning + JS-driven transitions ── */
-.spy-qv-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  z-index: 999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-
-.spy-qv-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, calc(-50% + 16px));
-  z-index: 1000;
-  background: #fff;
-  width: min(660px, 95vw);
-  max-height: 90vh;
-  overflow-y: auto;
-  padding: 40px 32px 32px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  -webkit-overflow-scrolling: touch;
-}
-
-.spy-qv-wrapper[data-open] .spy-qv-overlay {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.spy-qv-wrapper[data-open] .spy-qv-modal {
-  opacity: 1;
-  pointer-events: all;
-  transform: translate(-50%, -50%);
-}
-
-/* Selected swatch state (toggled by JS) */
-.spy-qv-content__swatch.is-selected {
-  background: #2c393e !important;
-  color: #fff !important;
-  border-color: #2c393e !important;
-}
-
-@media (max-width: 749px) {
-  .spy-qv-modal {
-    position: fixed;
-    inset: auto 0 0;
-    top: auto;
-    left: 0;
-    width: 100%;
-    max-height: 92vh;
-    transform: translateY(20px);
-    border-radius: 12px 12px 0 0;
-    padding: 40px 20px 32px;
-  }
-
-  .spy-qv-wrapper[data-open] .spy-qv-modal {
-    transform: translateY(0);
-  }
-}
-
-/* ── Size Chart (trigger / heading / image inlined on the markup) ── */
-.spy-size-chart__modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 1001;
-}
-
-.spy-size-chart__modal[data-open] { display: block; }
-
-.spy-size-chart__overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-}
-
-.spy-size-chart__panel {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  width: min(560px, 95vw);
-  max-height: 90vh;
-  overflow-y: auto;
-  padding: 40px 28px 28px;
-}
-
-.spy-size-chart__close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 6px;
-  display: flex;
-  align-items: center;
-  color: var(--color-foreground, #2c393e);
-}
-
-.spy-size-chart__close:hover { color: var(--spy-orange, #f57f29); }
-
-@media (max-width: 749px) {
-  .spy-size-chart__panel {
-    top: auto;
-    left: 0;
-    bottom: 0;
-    transform: none;
-    width: 100%;
-    max-height: 90vh;
-    border-radius: 12px 12px 0 0;
-    padding: 40px 20px 32px;
-  }
-}
-
-
-/* ── Global brand vars ── */
-:root {
-  --spy-orange: #f57f29;
-  --spy-slate:  #2c393e;
-}
+/* Brand vars --spy-orange/--spy-slate + nav vars moved into @theme (top of file). */
 
 .color-scheme-announcement a,
 .color-scheme-announcement { color: #fff; }
@@ -323,14 +139,6 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 @media screen and (max-width: 749px) {
   .collection-list__item { min-width: 140px; }
-}
-
-/* Edge case: very small phones (< 375px) lens info goes 2-col */
-@media screen and (max-width: 374px) {
-  .spy-qv-content .flex.flex-wrap.gap-x-4 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
 @media screen and (max-width: 749px) {
@@ -624,84 +432,25 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 }
 
 
-/* ── Header: sticky + logo sizing (from spy-header.liquid) ── */
+/* ── Header sticky (from spy-header.liquid) — stays: :has() targets #header-group,
+   an ancestor we don't render. Logo-svg sizing is now inlined via [&_svg]: on the link. ── */
   #header-group:has(.spy-header-section [data-spy-sticky]) {
     position: sticky;
     top: 0;
     z-index: 50;
   }
 
-  .spy-logo-link svg {
-    display: block;
-    height: var(--spy-logo-h-m, 28px);
-    width: calc(var(--spy-logo-h-m, 28px) * 66 / 28);
-  }
-
-  @media screen and (min-width: 750px) {
-    .spy-logo-link svg {
-      height: var(--spy-logo-h, 36px);
-      width: calc(var(--spy-logo-h, 36px) * 79 / 36);
-    }
-  }
-
-/* ── Mobile mega-menu drawer (from spy-mega-menu.liquid) ── */
-  :root {
-    --spy-nav-width: 280px;
-    --spy-nav-ease: cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .spy-nav {
-    position: fixed;
-    inset: 0;
-    z-index: 60;
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  .spy-nav__overlay,
-  .spy-nav__panel {
-    pointer-events: auto;
-  }
-
-  .spy-nav__overlay {
-    position: absolute;
-    top: var(--spy-nav-top, 50px);
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
-    opacity: 0;
-    transition: opacity 0.35s var(--spy-nav-ease);
-    touch-action: none;
-    overscroll-behavior: contain;
-  }
-
-  .spy-nav__panel {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: var(--spy-nav-width);
-    background: #fff;
-    overflow: hidden;
-    transform: translateX(-100%);
-    transition: transform 0.35s var(--spy-nav-ease);
-  }
-
-  html.spy-nav-open .spy-nav {
-    visibility: visible;
-  }
-
-  html.spy-nav-open .spy-nav__overlay {
-    opacity: 1;
-  }
-
-  html.spy-nav-open .spy-nav__panel {
-    transform: translateX(0);
-  }
+/* ── Mobile mega-menu drawer — remaining rules (from spy-mega-menu.liquid) ──
+   The drawer container/overlay/panel/screens/body, carets, .spy-l2[open] and
+   .spy-acc__wrap/__inner are now inlined as utilities on the markup. What stays
+   below can't be a clean utility: Horizon layout (.page-wrapper) + global
+   <html>/<body> state; the .spy-nav__screen state machine (base / .is-root /
+   JS-toggled .is-active, a two-property transition utilities can't express
+   safely); the L2 summary caret [open]/.acc-collapsing state; and the
+   [data-promo-slot-mobile] sibling-combinator rule on script-injected content. ── */
 
   .page-wrapper {
-    transition: transform 0.35s var(--spy-nav-ease);
+    transition: transform 0.35s var(--ease-spy-nav);
   }
 
   html.spy-nav-open .page-wrapper {
@@ -721,11 +470,6 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     }
   }
 
-  .spy-nav__screens {
-    position: absolute;
-    inset: 0;
-  }
-
   .spy-nav__screen {
     position: absolute;
     inset: 0;
@@ -737,7 +481,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     -webkit-overflow-scrolling: touch;
     transform: translateX(-100%);
     visibility: hidden;
-    transition: transform 0.35s var(--spy-nav-ease), visibility 0s linear 0.35s;
+    transition: transform 0.35s var(--ease-spy-nav), visibility 0s linear 0.35s;
   }
 
   .spy-nav__screen.is-root {
@@ -749,7 +493,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   .spy-nav__screen.is-active {
     transform: none;
     visibility: visible;
-    transition: transform 0.35s var(--spy-nav-ease), visibility 0s;
+    transition: transform 0.35s var(--ease-spy-nav), visibility 0s;
   }
 
   /* Sticky category header stays put while the body scrolls */
@@ -761,37 +505,6 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     flex: 0 0 auto;
   }
 
-  .spy-nav__body {
-    flex: 1 1 auto;
-  }
-
-  /* --- Level-2 accordion: expand in place, smooth height (grid 0fr -> 1fr) --- */
-  .spy-l2[open] {
-    background: #f5f5f5;
-  }
-
-  /* Height-based expand/collapse driven by JS (see script) so the motion eases
-     BOTH ways. A native <details> shows/hides its content instantly when [open]
-     toggles, so a pure-CSS transition can't play — it jumped open and shut. */
-  .spy-l2 > .spy-acc__wrap {
-    overflow: hidden;
-    transition: height 0.35s var(--spy-nav-ease);
-    will-change: height;
-  }
-
-  .spy-acc__inner {
-    padding-bottom: 0.5rem;
-  }
-
-  .spy-acc__inner {
-    opacity: 0;
-    transition: opacity 0.3s var(--spy-nav-ease) 0.05s;
-  }
-
-  .spy-l2[open] > .spy-acc__wrap > .spy-acc__inner {
-    opacity: 1;
-  }
-
   [data-promo-slot-mobile] [data-menu-promo] > a ~ a,
   [data-promo-slot-mobile] > [data-menu-promo] ~ [data-menu-promo] {
     display: none;
@@ -799,7 +512,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
   /* Caret: points down when closed, flips up when open */
   .spy-l2 > summary .spy-caret {
-    transition: transform 0.25s var(--spy-nav-ease);
+    transition: transform 0.25s var(--ease-spy-nav);
   }
 
   .spy-l2[open] > summary .spy-caret {
@@ -812,18 +525,9 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     transform: none;
   }
 
-  /* Root forward carets point right; back caret points left */
-  .spy-caret-right { transform: rotate(-90deg); }
-  .spy-caret-back  { transform: rotate(90deg); }
-
   @media (prefers-reduced-motion: reduce) {
-    .spy-nav,
-    .spy-nav__overlay,
-    .spy-nav__panel,
     .spy-nav__screen,
     .page-wrapper,
-    .spy-l2 > .spy-acc__wrap,
-    .spy-acc__inner,
     .spy-l2 > summary .spy-caret {
       transition: none;
     }

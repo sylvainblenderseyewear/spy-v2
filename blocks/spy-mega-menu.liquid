@@ -75,11 +75,11 @@
     <span class="block w-5 h-5">{{- 'spy-fa-bars.svg' | inline_asset_content -}}</span>
   </button>
 
-  <div id="spy-mobile-nav" class="spy-nav md:hidden" aria-hidden="true">
-    <div class="spy-nav__overlay" data-nav-close></div>
+  <div id="spy-mobile-nav" class="spy-nav md:hidden fixed inset-0 z-[60] invisible pointer-events-none [html.spy-nav-open_&]:visible" aria-hidden="true">
+    <div class="spy-nav__overlay absolute top-[var(--spy-nav-top,50px)] left-0 right-0 bottom-0 bg-black/40 opacity-0 transition-opacity duration-[350ms] ease-spy-nav touch-none overscroll-contain pointer-events-auto [html.spy-nav-open_&]:opacity-100 motion-reduce:transition-none" data-nav-close></div>
 
-    <div class="spy-nav__panel">
-      <div class="spy-nav__screens">
+    <div class="spy-nav__panel absolute left-0 top-0 bottom-0 w-[var(--spy-nav-width)] bg-white overflow-hidden -translate-x-full transition-[translate] duration-[350ms] ease-spy-nav pointer-events-auto [html.spy-nav-open_&]:translate-x-0 motion-reduce:transition-none">
+      <div class="spy-nav__screens absolute inset-0">
         {% comment %} ROOT SCREEN {% endcomment %}
         <div class="spy-nav__screen is-root" data-screen="root">
           <ul class="list-none m-0 p-0 pt-1">
@@ -100,7 +100,7 @@
                     style="font-family: var(--font-heading--family);"
                   >
                     {{ link.title }}
-                    <span class="spy-caret-right block w-2.5 h-2.5">{{- 'spy-fa-angle.svg' | inline_asset_content -}}</span>
+                    <span class="spy-caret-right -rotate-90 block w-2.5 h-2.5">{{- 'spy-fa-angle.svg' | inline_asset_content -}}</span>
                   </button>
                 {% else %}
                   <a href="{{ link.url }}" class="block px-5 py-[16px] text-[13px] font-bold uppercase tracking-[0.5px] no-underline {% if is_highlight %}text-spy-orange{% else %}text-spy-ink{% endif %}" style="font-family: var(--font-heading--family);">{{- link.title -}}</a>
@@ -125,7 +125,7 @@
             {% if localization.available_countries.size > 1 %}
               <a href="#" class="flex items-center justify-between gap-2.5 px-5 py-3 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">
                 {{ localization.country.name }} ({{ localization.language.iso_code | upcase }})
-                <span class="spy-caret-right block w-2.5 h-2.5 text-[#9a9a9a]">{{- 'spy-fa-angle.svg' | inline_asset_content -}}</span>
+                <span class="spy-caret-right -rotate-90 block w-2.5 h-2.5 text-[#9a9a9a]">{{- 'spy-fa-angle.svg' | inline_asset_content -}}</span>
               </a>
             {% endif %}
           </div>
@@ -145,11 +145,11 @@
                 class="button-unstyled flex items-center gap-3 w-full px-5 py-[15px] text-left cursor-pointer text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink"
                 style="font-family: var(--font-heading--family);"
               >
-                <span class="spy-caret-back block w-2.5 h-2.5 text-spy-ink">{{- 'spy-fa-angle.svg' | inline_asset_content -}}</span>
+                <span class="spy-caret-back rotate-90 block w-2.5 h-2.5 text-spy-ink">{{- 'spy-fa-angle.svg' | inline_asset_content -}}</span>
                 {{ link.title }}
               </button>
 
-              <div class="spy-nav__body">
+              <div class="spy-nav__body flex-auto">
                 <a href="{{ link.url }}" class="block px-5 py-3 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">See all {{ link.title }}</a>
 
                 {% for child in link.links %}
@@ -161,12 +161,12 @@
                         assign opened_one = true
                       endif
                     %}
-                    <details class="spy-l2" {% if is_open %}open{% endif %}>
+                    <details class="spy-l2 group/l2 open:bg-[#f5f5f5]" {% if is_open %}open{% endif %}>
                       <summary class="flex items-center justify-between px-5 py-3 cursor-pointer list-none text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink [&::-webkit-details-marker]:hidden" style="font-family: var(--font-heading--family);">
                         {{ child.title }}
                         <span class="spy-caret block w-2.5 h-2.5 text-[#9a9a9a]">{{- 'spy-fa-angle.svg' | inline_asset_content -}}</span>
                       </summary>
-                      <div class="spy-acc__wrap"><div class="spy-acc__inner">
+                      <div class="spy-acc__wrap overflow-hidden transition-[height] duration-[350ms] ease-spy-nav [will-change:height] motion-reduce:transition-none"><div class="spy-acc__inner pb-2 opacity-0 transition-opacity duration-300 ease-spy-nav delay-[50ms] group-open/l2:opacity-100 motion-reduce:transition-none">
                         <a href="{{ child.url }}" class="spy-acc__row block px-5 pt-1 pb-2.5 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">See all {{ child.title }}</a>
                         {% for grandchild in child.links %}
                           <a href="{{ grandchild.url }}" class="spy-acc__row block px-5 py-2.5 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">{{ grandchild.title }}</a>

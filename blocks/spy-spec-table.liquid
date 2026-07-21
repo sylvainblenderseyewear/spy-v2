@@ -15,9 +15,12 @@
   endif
 -%}
 
-<details class="spy-spec-table" {{ block.shopify_attributes }}>
-  <summary>{{ block.settings.heading }}</summary>
-  <table class="spy-spec-table__table">
+<details class="group border-t border-solid border-t-[color:var(--color-border,#e5e5e5)] mt-2" {{ block.shopify_attributes }}>
+  <summary class="flex justify-between items-center py-3.5 cursor-pointer text-[13px] font-bold uppercase tracking-[0.08em] text-[color:var(--color-foreground,#2c393e)] list-none select-none [&::-webkit-details-marker]:hidden">
+    {{ block.settings.heading }}
+    <span class="text-[18px] font-light leading-none transition-transform"><span class="group-open:hidden">+</span><span class="hidden group-open:block">−</span></span>
+  </summary>
+  <table class="w-full border-collapse text-[13px] pb-4 [&_tr]:border-t [&_tr]:border-solid [&_tr]:border-t-[color:var(--color-border,#e5e5e5)] [&_th]:text-left [&_th]:py-2 [&_th]:pr-3 [&_th]:pl-0 [&_th]:font-semibold [&_th]:w-[45%] [&_th]:align-top [&_th]:text-[color:var(--color-foreground-secondary,#6a6c77)] [&_td]:py-2 [&_td]:align-top [&_td]:text-[color:var(--color-foreground,#2c393e)]">
     <tbody>
 
       {%- comment -%}── Identification ─────────────────────────────{%- endcomment -%}
@@ -118,7 +121,7 @@
           <tr><th>Removable Padding</th><td>Yes</td></tr>
         {%- endif -%}
         {%- if g.otg.value -%}
-          <tr><th>OTG Compatible</th><td><span class="spy-spec-table__badge">OTG</span></td></tr>
+          <tr><th>OTG Compatible</th><td><span class="inline-block text-[10px] font-bold uppercase tracking-[0.05em] px-1.5 py-0.5 bg-spy-orange text-white mr-1">OTG</span></td></tr>
         {%- endif -%}
         {%- if g.interchangeable_lens.value -%}
           <tr><th>Interchangeable Lens</th><td>Yes</td></tr>
@@ -146,7 +149,7 @@
           <tr><th>Sizes</th><td>{{ h.sizes.value | join: ', ' }}</td></tr>
         {%- endif -%}
         {%- if h.mips.value -%}
-          <tr><th>MIPS</th><td><span class="spy-spec-table__badge">MIPS</span></td></tr>
+          <tr><th>MIPS</th><td><span class="inline-block text-[10px] font-bold uppercase tracking-[0.05em] px-1.5 py-0.5 bg-spy-orange text-white mr-1">MIPS</span></td></tr>
         {%- endif -%}
         {%- if h.certifications.value != blank -%}
           <tr><th>Certifications</th><td>{{ h.certifications.value | join: ', ' }}</td></tr>
