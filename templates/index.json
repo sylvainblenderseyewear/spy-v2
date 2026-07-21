@@ -279,7 +279,7 @@
           "name": "t:names.spacer",
           "settings": {
             "size": "percent",
-            "percent_size": 20,
+            "percent_size": 16,
             "pixel_size": 224,
             "custom_mobile_size": false,
             "size_mobile": "percent",
@@ -638,7 +638,7 @@
           "name": "t:names.spacer",
           "settings": {
             "size": "percent",
-            "percent_size": 20,
+            "percent_size": 16,
             "pixel_size": 224,
             "custom_mobile_size": false,
             "size_mobile": "percent",
