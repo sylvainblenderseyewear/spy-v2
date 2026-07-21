@@ -576,31 +576,39 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   gap: 0 !important;
 }
 
-/* Product image: full product, centred, no crop — matches the source card's airy square zone */
+/* Product image: full product, always centred in the box, no crop, no hover zoom */
 :is(collection-component, .section-resource-list) .product-card .card-gallery img {
+  width: 100% !important;
+  height: 100% !important;
   object-fit: contain !important;
-  object-position: center;
-  transition: transform 0.35s ease;
+  object-position: center center !important;
+  transform: none !important;
 }
 
-/* ~10% inset around the image, like the source image-wrapper (36px @ 359px).
-   Locked to a square so every card keeps the same image box; scales by ratio. */
+/* 10% inset around the image; locked to a square so every card keeps the same box (source: image-wrapper) */
 :is(collection-component, .section-resource-list) .product-card .card-gallery {
-  padding: 9% !important;
-  overflow: hidden;
+  padding: 10% !important;
   aspect-ratio: 1 / 1;
 }
 
-/* Gentle zoom on hover, like the source */
-:is(collection-component, .section-resource-list) .product-card:hover .card-gallery img {
-  transform: scale(1.06);
+/* Fill the square box down the slideshow chain so wide photos (e.g. Hielo) sit
+   vertically centred instead of top-anchored — object-fit then centres them. */
+:is(collection-component, .section-resource-list) .product-card .card-gallery slideshow-component,
+:is(collection-component, .section-resource-list) .product-card .card-gallery slideshow-slides,
+:is(collection-component, .section-resource-list) .product-card .card-gallery slideshow-slide,
+:is(collection-component, .section-resource-list) .product-card .card-gallery .product-media-container {
+  height: 100% !important;
 }
 
-/* Title + price use ink (#1d2a2b), matching the source tile-body colour */
+/* Title uses ink (#1d2a2b); price is the source tile-body grey */
 :is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] p,
-:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"],
-:is(collection-component, .section-resource-list) .product-card .price {
+:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] {
   color: var(--color-spy-ink);
+}
+:is(collection-component, .section-resource-list) .product-card .price {
+  color: #565656; /* matched from source .tile-body .price */
+  font-weight: 600;
+  font-size: 15px;
 }
 
 /* Quick View: inset outline box (like the source mx-3), revealed on card hover via opacity.
@@ -629,11 +637,25 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   transition: opacity 0.2s ease;
 }
 
-/* Card title: bold uppercase, like the SPY reference */
+/* New pill: match source — square, 13px, no extra tracking, tight vertical */
+:is(collection-component, .section-resource-list) .product-card .spy-new-badge .spy-badge-pill {
+  font-size: 13px !important;
+  letter-spacing: normal !important;
+  border-radius: 0 !important;
+  padding: 0 0.8rem !important;
+  line-height: 1.1rem !important;
+}
+
+/* Card title: heavy uppercase, single line, like the SPY reference */
 :is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"],
 :is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] p {
   text-transform: uppercase !important;
-  font-weight: 700 !important;
+  font-weight: 900 !important;
+  font-size: 1.2rem !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 /* Drop Horizon's quick-add bag and slideshow arrows — not in the SPY card */
@@ -680,6 +702,8 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 0.9rem !important; /* source swatches-label */
+  font-weight: 400 !important;
   transition: opacity 0.2s ease;
 }
 
