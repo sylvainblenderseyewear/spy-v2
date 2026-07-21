@@ -1001,7 +1001,7 @@
             "links": {
               "type": "text",
               "settings": {
-                "text": "<p><a href=\"/pages/contact\">Contact us</a><br><a href=\"/account\">My Account</a><br><a href=\"/account\">My Orders</a><br><a href=\"/pages/faq\">FAQ</a><br><a href=\"/pages/warranty\">Warranty</a><br><a href=\"#\">Dealer Portal</a></p>",
+                "text": "<p><a href=\"/pages/contact\">Contact us</a><br/><a href=\"/account\">My Account</a><br/><a href=\"/account\">My Orders</a><br/><a href=\"/pages/faq\">FAQ</a><br/><a href=\"/pages/warranty\">Warranty</a><br/><a href=\"#\">Dealer Portal</a></p>",
                 "width": "100%",
                 "max_width": "none",
                 "alignment": "left",
@@ -1234,9 +1234,9 @@
         "background_color": "#1d2a2b",
         "background_image": "shopify://shop_images/footer-background.webp",
         "overlay": true,
-        "overlay_color": "#1D2A2B00",
+        "overlay_color": "rgba(0,0,0,0)",
         "max_width": 1600,
-        "gap": 32,
+        "gap": 0,
         "padding_top": 56,
         "padding_bottom": 48
       }
