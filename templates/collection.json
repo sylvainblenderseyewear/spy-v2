@@ -13,93 +13,6 @@
       "type": "spy-collection-hero",
       "settings": {}
     },
-    "collection_header": {
-      "type": "section",
-      "blocks": {
-        "text_collection_title": {
-          "type": "text",
-          "name": "Title",
-          "settings": {
-            "text": "<h1>{{ closest.collection.title }}</h1>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-primary--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "text_color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "text_collection_desc": {
-          "type": "text",
-          "name": "Description",
-          "settings": {
-            "text": "{{ closest.collection.description }}",
-            "width": "100%",
-            "max_width": "narrow",
-            "alignment": "left",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "text_color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "text_collection_title",
-        "text_collection_desc"
-      ],
-      "name": "Collection Heading",
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
-        "section_width": "page-width",
-        "section_height": "fit",
-        "background_media": "none",
-        "background_color": "{{ settings.color_palette.background }}",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 32,
-        "padding-block-end": 16
-      }
-    },
     "main": {
       "type": "main-collection",
       "blocks": {
@@ -115,6 +28,8 @@
             "show_filter_label": false,
             "enable_sorting": true,
             "enable_grid_density": false,
+            "background_color": "",
+            "text_color": "",
             "padding-block-start": 8,
             "padding-block-end": 8,
             "padding-inline-start": 0,
@@ -129,9 +44,11 @@
           "static": true,
           "settings": {
             "product_card_gap": 4,
+            "background_color": "",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
+            "border_color": "",
             "border_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 8,
@@ -139,6 +56,12 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "spy_tech_badge_A1": {
+              "type": "spy-tech-badge",
+              "name": "Tech Badge",
+              "settings": {},
+              "blocks": {}
+            },
             "card-gallery": {
               "type": "_product-card-gallery",
               "settings": {
@@ -146,6 +69,7 @@
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
+                "border_color": "",
                 "border_radius": 0,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
@@ -154,10 +78,29 @@
               },
               "blocks": {}
             },
+            "spy_quick_view_btn_A1": {
+              "type": "spy-quick-view-btn",
+              "name": "Quick View Button",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_new_badge_A1": {
+              "type": "spy-new-badge",
+              "name": "Badge",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_color_count_A1": {
+              "type": "spy-color-count",
+              "name": "Color Count",
+              "settings": {},
+              "blocks": {}
+            },
             "swatches_card": {
               "type": "spy-swatches",
               "name": "Color Preview",
-              "settings": {}
+              "settings": {},
+              "blocks": {}
             },
             "product_title_card": {
               "type": "product-title",
@@ -173,6 +116,7 @@
                 "letter_spacing": "normal",
                 "case": "uppercase",
                 "wrap": "pretty",
+                "text_color": "",
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
@@ -197,32 +141,13 @@
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
+                "text_color": "",
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
               "blocks": {}
-            },
-            "spy_quick_view_btn_A1": {
-              "type": "spy-quick-view-btn",
-              "name": "Quick View Button",
-              "settings": {}
-            },
-            "spy_color_count_A1": {
-              "type": "spy-color-count",
-              "name": "Color Count",
-              "settings": {}
-            },
-            "spy_tech_badge_A1": {
-              "type": "spy-tech-badge",
-              "name": "Tech Badge",
-              "settings": {}
-            },
-            "spy_new_badge_A1": {
-              "type": "spy-new-badge",
-              "name": "Badge",
-              "settings": {}
             }
           },
           "block_order": [
@@ -265,7 +190,6 @@
   },
   "order": [
     "spy_collection_hero_A1",
-    "collection_header",
     "main",
     "spy_collection_seo_A1",
     "spy_quick_view_modal_A1"
