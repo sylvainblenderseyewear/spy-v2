@@ -373,8 +373,8 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 28px;
-  margin-top: -28px; /* sit on top of the colour-count slot */
+  min-height: 52px;
+  margin-top: -52px; /* sit on top of BOTH the badge (24) + colour-count (28) slots, centred */
   position: relative;
   z-index: 2;
   opacity: 0;
