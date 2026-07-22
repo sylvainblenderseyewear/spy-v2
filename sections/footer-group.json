@@ -677,7 +677,7 @@
           "type": "email-signup",
           "settings": {
             "width": "custom",
-            "custom_width": 35,
+            "custom_width": 28,
             "heading": "",
             "heading_text_color": "",
             "heading_preset": "h3",
