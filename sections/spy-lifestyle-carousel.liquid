@@ -1,0 +1,31 @@
+{%- liquid
+  assign p = product
+  if p == blank and request.visual_preview_mode
+    assign p = collections.all.products.first
+  endif
+  assign imgs = p.metafields.pdp.feature_carousel.value
+-%}
+{%- if imgs != blank and imgs.size > 0 -%}
+<div class="my-8" data-spy-lifestyle {{ section.shopify_attributes }}>
+  <div class="flex gap-3 overflow-x-auto snap-x snap-mandatory px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    {%- for img in imgs -%}
+      <div class="snap-start shrink-0 basis-[80%] md:basis-1/3 xl:basis-1/4">
+        <img
+          src="{{ img | image_url: width: 900 }}"
+          alt="{{ img.alt | default: p.title | escape }}"
+          width="900" height="900" loading="lazy"
+          class="w-full h-auto aspect-square object-cover bg-white"
+        >
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SPY Lifestyle Carousel",
+  "settings": [],
+  "presets": [{ "name": "SPY Lifestyle Carousel" }]
+}
+{% endschema %}

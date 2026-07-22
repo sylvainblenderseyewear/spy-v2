@@ -385,6 +385,10 @@
         "padding-block-end": 0
       }
     },
+    "spy_lifestyle_carousel": {
+      "type": "spy-lifestyle-carousel",
+      "settings": {}
+    },
     "spy_feature_banner_A1": {
       "type": "spy-feature-banner",
       "settings": {}
@@ -534,6 +538,7 @@
   },
   "order": [
     "main",
+    "spy_lifestyle_carousel",
     "spy_feature_banner_A1",
     "product_recommendations_qggXJq"
   ]
