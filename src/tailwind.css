@@ -12,6 +12,9 @@
   --color-spy-gray:    #6a6c77;
   --color-spy-border:  #e5e5e5;
   --color-spy-sale:    #e53935;
+  --color-spy-text:    #242424; /* source content-primary */
+  --color-spy-text-2:  #393939; /* source content-secondary */
+  --color-spy-muted:   #a6a6a6; /* source content-muted */
 
   /* Spacing overrides */
   --spacing-page: 1.5rem;   /* default page gutter */
@@ -576,4 +579,47 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 /* White stage behind gallery images, like the source */
 [data-testid="product-information"] .product-information__media img {
   background: #fff;
+}
+
+/* Frame color swatches: 56px photo swatch, dark selected border (source) */
+[data-testid="product-information"] .variant-option--swatches .variant-option__swatch-value {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 2px;
+  border: 1px solid var(--color-spy-border);
+  background-size: 90%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+[data-testid="product-information"] .variant-option--swatches input:checked + .variant-option__button-label .variant-option__swatch-value,
+[data-testid="product-information"] .variant-option--swatches .variant-option__button-label[aria-checked="true"] .variant-option__swatch-value {
+  border-width: 2px;
+  border-color: var(--color-spy-text);
+}
+
+/* Buttons: square + uppercase (source) */
+[data-testid="product-information"] .button,
+[data-testid="product-information"] .add-to-cart-button,
+.sticky-add-to-cart__button {
+  border-radius: 0;
+  text-transform: uppercase;
+}
+
+/* Title / inventory in source tokens */
+[data-testid="product-information"] .product-title,
+[data-testid="product-information"] h1 {
+  color: var(--color-spy-text);
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+}
+[data-testid="product-information"] .product-inventory__status {
+  color: var(--color-spy-text-2);
+}
+
+/* Accordion headers: label-l (bold uppercase) like the source panels */
+[data-testid="product-information"] .accordion .details__header {
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  padding-block: 1.25rem;
+  color: var(--color-spy-text);
 }
