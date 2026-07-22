@@ -684,7 +684,7 @@
             "border_style": "all",
             "input_style": "custom",
             "border_width": 0,
-            "border_radius": 4,
+            "border_radius": 5,
             "input_background_color": "#ffffff",
             "input_text_color": "#1d2a2b",
             "input_border_color": "#ffffff",
