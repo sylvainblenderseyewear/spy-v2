@@ -598,6 +598,13 @@
       --button-font-weight-primary: {{ settings.type_font_weight_button_primary }};
     {%- endif -%}
 
+    /* Button font-size (primary) — falls back to theme size when Default */
+    {%- if settings.type_font_size_button_primary == 'default' -%}
+      --button-font-size-primary: var(--font-paragraph--size);
+    {%- else -%}
+      --button-font-size-primary: {{ settings.type_font_size_button_primary }}px;
+    {%- endif -%}
+
     /* Button text case */
     --button-text-case: {{ settings.button_text_case }};
     --button-text-case-primary: {{ settings.button_text_case_primary }};

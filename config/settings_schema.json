@@ -1398,6 +1398,46 @@
       },
       {
         "type": "select",
+        "id": "type_font_size_button_primary",
+        "label": "Font size",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "12",
+            "label": "12px"
+          },
+          {
+            "value": "13",
+            "label": "13px"
+          },
+          {
+            "value": "14",
+            "label": "14px"
+          },
+          {
+            "value": "15",
+            "label": "15px"
+          },
+          {
+            "value": "16",
+            "label": "16px"
+          },
+          {
+            "value": "18",
+            "label": "18px"
+          },
+          {
+            "value": "20",
+            "label": "20px"
+          }
+        ],
+        "default": "default"
+      },
+      {
+        "type": "select",
         "id": "button_text_case_primary",
         "label": "t:settings.button_text_case",
         "options": [
