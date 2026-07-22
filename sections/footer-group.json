@@ -686,7 +686,7 @@
             "border_width": 0,
             "border_radius": 4,
             "input_background_color": "#ffffff",
-            "input_text_color": "#333333",
+            "input_text_color": "#1D2A2B",
             "input_border_color": "#ffffff",
             "input_type_preset": "paragraph",
             "style_class": "button-custom",
