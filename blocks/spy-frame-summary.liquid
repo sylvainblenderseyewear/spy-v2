@@ -1,0 +1,32 @@
+{%- liquid
+  assign p = closest.product
+  assign frame = p.metafields.spec.frame_color.value
+  assign ref   = p.metafields.spec.reference.value
+  assign lens  = p.metafields.spec.lens_name.value
+  assign has_any = false
+  if frame != blank or ref != blank or lens != blank
+    assign has_any = true
+  endif
+-%}
+{%- if has_any -%}
+<div class="pt-3 pb-1 text-[13px] leading-[1.5]" {{ block.shopify_attributes }}>
+  {%- if frame != blank -%}
+    <div><span class="font-bold uppercase tracking-[0.06em] text-[color:var(--color-spy-text)]">Frame:</span> <span class="text-[color:var(--color-spy-text-2)]">{{ frame }}</span></div>
+  {%- endif -%}
+  {%- if lens != blank -%}
+    <div><span class="font-bold uppercase tracking-[0.06em] text-[color:var(--color-spy-text)]">Lens:</span> <span class="text-[color:var(--color-spy-text-2)]">{{ lens }}</span></div>
+  {%- endif -%}
+  {%- if ref != blank -%}
+    <div class="text-[color:var(--color-spy-muted)] mt-1">Ref {{ ref }}</div>
+  {%- endif -%}
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Frame Summary",
+  "tag": null,
+  "settings": [],
+  "presets": [{ "name": "Frame Summary", "category": "SPY" }]
+}
+{% endschema %}

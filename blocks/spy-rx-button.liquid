@@ -1,0 +1,27 @@
+{%- liquid
+  assign p = closest.product
+  assign rx = p.metafields.spec.available_rx.value
+-%}
+{%- if rx -%}
+<a
+  href="{{ block.settings.rx_url | default: 'https://www.sportrx.com' }}"
+  class="flex items-center justify-center w-full py-3 mt-2 border border-spy-orange text-spy-orange uppercase font-bold text-[0.8125rem] tracking-[0.06em] no-underline hover:bg-spy-orange hover:text-white transition-colors"
+  {% if block.settings.open_new_tab %}target="_blank" rel="noopener"{% endif %}
+  {{ block.shopify_attributes }}
+>
+  {{ block.settings.label | default: 'Buy in Prescription' }}
+</a>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "RX Button",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "label", "label": "Label", "default": "Buy in Prescription" },
+    { "type": "url", "id": "rx_url", "label": "RX partner URL" },
+    { "type": "checkbox", "id": "open_new_tab", "label": "Open in new tab", "default": true }
+  ],
+  "presets": [{ "name": "RX Button", "category": "SPY" }]
+}
+{% endschema %}

@@ -15,12 +15,8 @@
   endif
 -%}
 
-<details class="group border-t border-solid border-t-[color:var(--color-border,#e5e5e5)] mt-2" {{ block.shopify_attributes }}>
-  <summary class="flex justify-between items-center py-3.5 cursor-pointer text-[13px] font-bold uppercase tracking-[0.08em] text-[color:var(--color-foreground,#2c393e)] list-none select-none [&::-webkit-details-marker]:hidden">
-    {{ block.settings.heading }}
-    <span class="text-[18px] font-light leading-none transition-transform"><span class="group-open:hidden">+</span><span class="hidden group-open:block">−</span></span>
-  </summary>
-  <table class="w-full border-collapse text-[13px] pb-4 [&_tr]:border-t [&_tr]:border-solid [&_tr]:border-t-[color:var(--color-border,#e5e5e5)] [&_th]:text-left [&_th]:py-2 [&_th]:pr-3 [&_th]:pl-0 [&_th]:font-semibold [&_th]:w-[45%] [&_th]:align-top [&_th]:text-[color:var(--color-foreground-secondary,#6a6c77)] [&_td]:py-2 [&_td]:align-top [&_td]:text-[color:var(--color-foreground,#2c393e)]">
+<div {{ block.shopify_attributes }}>
+  <table class="w-full border-collapse text-[13px] py-1 [&_tr]:border-t [&_tr]:border-solid [&_tr]:border-t-[color:var(--color-spy-border)] [&_th]:text-left [&_th]:py-2 [&_th]:pr-3 [&_th]:pl-0 [&_th]:font-semibold [&_th]:w-[45%] [&_th]:align-top [&_th]:text-[color:var(--color-spy-text-2)] [&_td]:py-2 [&_td]:align-top [&_td]:text-[color:var(--color-spy-text)]">
     <tbody>
 
       {%- comment -%}── Identification ─────────────────────────────{%- endcomment -%}
@@ -158,7 +154,7 @@
 
     </tbody>
   </table>
-</details>
+</div>
 
 {% schema %}
 {
