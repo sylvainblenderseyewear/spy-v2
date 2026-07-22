@@ -679,7 +679,7 @@
             "width": "custom",
             "custom_width": 24,
             "heading": "",
-            "heading_text_color": "",
+            "heading_text_color": "#1D2A2B",
             "heading_preset": "h4",
             "border_style": "all",
             "input_style": "custom",
