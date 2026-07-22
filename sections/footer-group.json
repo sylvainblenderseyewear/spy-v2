@@ -639,7 +639,7 @@
         "show_border": true,
         "border_color": "#e0e0e0",
         "max_width": 1400,
-        "column_gap": 32,
+        "column_gap": 80,
         "padding_top": 56,
         "padding_bottom": 56
       }
