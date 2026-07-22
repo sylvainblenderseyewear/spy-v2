@@ -544,3 +544,36 @@ header-component .menu-list__link[href*="/blogs/journal"] {
       transition: none;
     }
   }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PDP (product.default) — match the SPY Cyrus Switch source layout.
+   Scoped to the product-information section so the rest of the site is safe.
+   Uses Horizon's own 750px two-column breakpoint to avoid a ratio jump.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* 58/42 columns. `product-component` in the selector lifts specificity above
+   Horizon's own ratio rules so this wins regardless of stylesheet order. */
+@media (min-width: 750px) {
+  [data-testid="product-information"] product-component.product-information__grid.product-information--media-left {
+    grid-template-columns: 7fr 5fr;
+  }
+  /* Pin the shorter gallery; let the taller info column scroll (source behavior) */
+  [data-testid="product-information"] .product-information__media {
+    position: sticky;
+    top: var(--header-height, 1rem);
+    align-self: start;
+    height: fit-content;
+  }
+}
+
+/* Keep 58/42 past Horizon's 1200px `2fr 1fr` rule */
+@media (min-width: 1200px) {
+  [data-testid="product-information"] product-component.product-information__grid.product-information--media-left {
+    grid-template-columns: 7fr 5fr;
+  }
+}
+
+/* White stage behind gallery images, like the source */
+[data-testid="product-information"] .product-information__media img {
+  background: #fff;
+}
