@@ -418,6 +418,18 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     opacity: 0;
     visibility: hidden;
   }
+
+  /* Hovering only the title/price area: show Quick View but keep swatches hidden
+     and colour-count/badge as at rest (.text-block = title & price only). */
+  :is(collection-component, .section-resource-list) .product-card:hover:has(.text-block:hover) .spy-swatches {
+    opacity: 0;
+    visibility: hidden;
+  }
+  :is(collection-component, .section-resource-list) .product-card:hover:has(.text-block:hover) .spy-color-count,
+  :is(collection-component, .section-resource-list) .product-card:hover:has(.text-block:hover) .spy-new-badge {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 /* Footer links: plain, inherit colour, subtle hover */
