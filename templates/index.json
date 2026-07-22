@@ -611,7 +611,7 @@
       },
       "name": "New arrivals collection: Grid",
       "settings": {
-        "collection": "sunglasses",
+        "collection": "new-arrivals",
         "layout_type": "grid",
         "carousel_on_mobile": false,
         "max_products": 5,
