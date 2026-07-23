@@ -676,3 +676,12 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 [data-testid="product-information"] .product-information__media img {
   filter: brightness(0.96);
 }
+
+/* Gallery thumbnail rail: transparent 2px border → dark on active (source) */
+[data-testid="product-information"] .slideshow-controls__thumbnail {
+  border: 2px solid transparent;
+  border-radius: 2px;
+}
+[data-testid="product-information"] .slideshow-controls__thumbnail[aria-selected="true"] {
+  border-color: var(--color-spy-text);
+}
