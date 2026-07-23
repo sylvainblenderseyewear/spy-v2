@@ -616,10 +616,56 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   color: var(--color-spy-text-2);
 }
 
-/* Accordion headers: label-l (bold uppercase) like the source panels */
+/* Accordion headers: label-l (bold 1rem uppercase) like the source panels */
 [data-testid="product-information"] .accordion .details__header {
   text-transform: uppercase;
   letter-spacing: 0.02em;
+  font-size: 1rem;
+  font-weight: 700;
   padding-block: 1.25rem;
   color: var(--color-spy-text);
+}
+
+/* ── PDP pixel pass — exact values from source detail.css / global.css ─── */
+
+/* Product name: DIN 700, 1.5rem mobile → 2rem desktop, tight, uppercase.
+   !important beats the text block's inline font_size. */
+[data-testid="product-information"] .product-details h1 {
+  font-size: 1.5rem !important;
+  line-height: 1.15 !important;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+@media (min-width: 750px) {
+  [data-testid="product-information"] .product-details h1 {
+    font-size: 2rem !important;
+    line-height: 1.1 !important;
+  }
+}
+
+/* Price: source "lead" — 1.125rem / 1.75rem, dark */
+[data-testid="product-information"] .product-details .price {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: var(--color-spy-text);
+}
+
+/* In Stock: source margins */
+[data-testid="product-information"] .product-inventory {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Swatch row gap + sold-out fade (source) */
+[data-testid="product-information"] .variant-option--swatches {
+  gap: 0.5rem;
+}
+[data-testid="product-information"] .variant-option--swatches [disabled] + .variant-option__button-label .variant-option__swatch-value,
+[data-testid="product-information"] .variant-option--swatches .variant-option__button-label[aria-disabled="true"] .variant-option__swatch-value {
+  opacity: 0.5;
+}
+
+/* Gallery stage tint like the source (brightness .96) */
+[data-testid="product-information"] .product-information__media img {
+  filter: brightness(0.96);
 }
