@@ -19,15 +19,15 @@
 
   <button
     type="button"
-    class="inline-flex items-center gap-1.5 bg-transparent border-none p-0 cursor-pointer text-[12px] font-bold uppercase tracking-[0.06em] underline underline-offset-[3px] text-[color:var(--color-foreground,#2c393e)] hover:text-spy-orange"
+    class="inline-flex items-center gap-2 mt-3 bg-transparent border-none p-0 cursor-pointer text-[0.875rem] font-medium leading-[1.25rem] text-[color:var(--color-spy-text)] hover:text-spy-orange"
     aria-haspopup="dialog"
     data-spy-size-chart-open
   >
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true">
       <rect x="1" y="4" width="14" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/>
       <path d="M4 4V3m4 1V3m4 1V3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
     </svg>
-    <span>{{ chart_name | default: 'Size Chart' }}</span>
+    <span class="underline underline-offset-[3px]">{{ chart_name | default: 'Size Chart' }}</span>
   </button>
 
   {%- if size_chart_ref != blank and chart_image != blank -%}

@@ -590,6 +590,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   background-size: 90%;
   background-position: center;
   background-repeat: no-repeat;
+  background-clip: content-box;
 }
 [data-testid="product-information"] .variant-option--swatches input:checked + .variant-option__button-label .variant-option__swatch-value,
 [data-testid="product-information"] .variant-option--swatches .variant-option__button-label[aria-checked="true"] .variant-option__swatch-value {
@@ -603,6 +604,11 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 .sticky-add-to-cart__button {
   border-radius: 0;
   text-transform: uppercase;
+}
+/* ATC exact: DIN 400, 0.875rem (source .pdp-checkout-button .add-to-cart) */
+[data-testid="product-information"] .add-to-cart-button {
+  font-size: 0.875rem;
+  font-weight: 400;
 }
 
 /* Title / inventory in source tokens */
@@ -619,10 +625,11 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 /* Accordion headers: label-l (bold 1rem uppercase) like the source panels */
 [data-testid="product-information"] .accordion .details__header {
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
   font-size: 1rem;
+  line-height: 1.5rem;
   font-weight: 700;
-  padding-block: 1.25rem;
+  padding: 1.25rem 0.75rem;
   color: var(--color-spy-text);
 }
 
