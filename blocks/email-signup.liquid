@@ -134,7 +134,7 @@
 {% stylesheet %}
   .email-signup-block {
     --arrow-button-size: 58px;
-    --arrow-button-size-integrated: 42px;
+    --arrow-button-size-integrated: 42px; 
     --arrow-button-size-small: 20px;
     --arrow-icon-size: 32px;
     --arrow-icon-size-small: 24px;
@@ -211,6 +211,9 @@
   .email-signup__button {
     white-space: nowrap;
     padding: 0;
+    border-radius: 5px;
+    font-size: 13px;
+
 
     @media screen and (max-width: 749px) {
       width: 100%;
@@ -250,7 +253,7 @@
   }
 
   .email-signup__input::placeholder {
-    color: rgb(var(--color-input-text-rgb) / var(--opacity-70));
+    color: rgb(var(--color-input-text-rgb) / var(--opacity-40));
   }
 
   .email-signup__input-group .email-signup__input--none {
