@@ -21,7 +21,7 @@
 -%}
 
 {%- if p != blank -%}
-<div class="spy-swatches" data-spy-swatches {{ block.shopify_attributes }}>
+<div class="spy-swatches flex flex-wrap items-center gap-2 pt-3 pb-1" data-spy-swatches {{ block.shopify_attributes }}>
   {%- if color_option != nil and color_option.values.size > 0 -%}
     {%- for v in color_option.values limit: max_shown -%}
       {%- assign media = v.variant.featured_media | default: p.media[forloop.index0] | default: p.featured_media -%}
@@ -29,25 +29,25 @@
         {%- assign v_url = v.variant.url | default: p.url -%}
         <a
           href="{{ v_url }}"
-          class="spy-swatches__item"
+          class="spy-swatches__item block w-[72px] h-[52px] border border-[color:var(--color-spy-border)] overflow-hidden hover:border-[color:var(--color-foreground,#2c393e)]"
           data-full="{{ media | image_url: width: 640 }}"
           aria-label="{{ p.title | escape }} – {{ v.name | escape }}"
         >
-          <img src="{{ media | image_url: width: 96 }}" alt="{{ v.name | escape }}" width="42" height="26" loading="lazy">
+          <img src="{{ media | image_url: width: 160 }}" alt="{{ v.name | escape }}" width="72" height="52" loading="lazy" class="w-full h-full object-cover block">
         </a>
       {%- endif -%}
     {%- endfor -%}
     {%- if color_option.values.size > max_shown -%}
-      <a href="{{ p.url }}" class="spy-swatches__more" aria-label="View all {{ color_option.values.size }} colors">&rarr;</a>
+      <a href="{{ p.url }}" class="spy-swatches__more inline-flex items-center justify-center w-7 h-7 text-spy-gray hover:text-spy-orange no-underline" aria-label="View all {{ color_option.values.size }} colors">&rarr;</a>
     {%- endif -%}
   {%- elsif p.featured_media != blank -%}
     <a
       href="{{ p.url }}"
-      class="spy-swatches__item"
+      class="spy-swatches__item block w-[72px] h-[52px] border border-[color:var(--color-foreground,#2c393e)] overflow-hidden"
       data-full="{{ p.featured_media | image_url: width: 640 }}"
       aria-label="{{ p.title | escape }}"
     >
-      <img src="{{ p.featured_media | image_url: width: 96 }}" alt="{{ p.title | escape }}" width="42" height="26" loading="lazy">
+      <img src="{{ p.featured_media | image_url: width: 160 }}" alt="{{ p.title | escape }}" width="72" height="52" loading="lazy" class="w-full h-full object-cover block">
     </a>
   {%- endif -%}
 </div>

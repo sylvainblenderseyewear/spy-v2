@@ -1,31 +1,44 @@
+{%- doc -%}
+  PDP breadcrumb — matches the source: a single category item (e.g. "Sunglasses"),
+  uppercase + gray, linked to that category collection. No Home, no product name.
+  Uses product.type for the label and links to the same-handle collection when it
+  exists, falling back to the first real collection.
+{%- enddoc -%}
+
 {%- liquid
   assign p = closest.product
-  assign bc_collection = null
-  for col in p.collections
-    if col.handle != 'frontpage' and col.handle != 'all'
-      assign bc_collection = col
-      break
+  assign cat_label = p.type
+  assign cat_url = ''
+
+  if p.type != blank
+    assign cat_handle = p.type | handleize
+    assign cat_col = collections[cat_handle]
+    if cat_col.url != blank
+      assign cat_url = cat_col.url
     endif
-  endfor
+  endif
+
+  # Fallback: first collection that is not the homepage / catch-all
+  if cat_label == blank
+    for col in p.collections
+      if col.handle != 'frontpage' and col.handle != 'all'
+        assign cat_label = col.title
+        assign cat_url = col.url
+        break
+      endif
+    endfor
+  endif
 -%}
 
-<nav class="text-[13px] text-spy-gray pb-2" aria-label="Breadcrumb" {{ block.shopify_attributes }}>
-  <ol class="flex flex-wrap items-center gap-1 list-none m-0 p-0">
-    <li>
-      <a href="/" class="text-spy-gray no-underline hover:text-spy-orange hover:underline">Home</a>
-    </li>
-    {%- if bc_collection != null -%}
-    <li class="select-none text-[#ccc]" aria-hidden="true">/</li>
-    <li>
-      <a href="{{ bc_collection.url }}" class="text-spy-gray no-underline hover:text-spy-orange hover:underline">
-        {{- bc_collection.title -}}
-      </a>
-    </li>
-    {%- endif -%}
-    <li class="select-none text-[#ccc]" aria-hidden="true">/</li>
-    <li class="text-[#333] font-medium" aria-current="page">{{ p.title }}</li>
-  </ol>
+{%- if cat_label != blank -%}
+<nav class="pb-2" aria-label="Breadcrumb" {{ block.shopify_attributes }}>
+  {%- if cat_url != blank -%}
+    <a href="{{ cat_url }}" class="text-[12px] font-medium uppercase tracking-[0.08em] text-spy-gray no-underline hover:text-spy-orange">{{ cat_label }}</a>
+  {%- else -%}
+    <span class="text-[12px] font-medium uppercase tracking-[0.08em] text-spy-gray">{{ cat_label }}</span>
+  {%- endif -%}
 </nav>
+{%- endif -%}
 
 {% schema %}
 {

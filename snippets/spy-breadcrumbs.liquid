@@ -1,0 +1,41 @@
+{%- doc -%}
+  PDP breadcrumb, rendered above the product grid (top-left, content column).
+  Category collection first, then the next collection (line/subcategory) — up to
+  two levels, uppercase + gray with a "/" separator. On staging the real category
+  data is thin (e.g. eyeglasses tagged "Sunglasses"); proper hierarchy comes with
+  the data migration.
+{%- enddoc -%}
+
+{%- liquid
+  assign category_handles = 'sunglasses,eyeglasses,goggles,snow-goggles,moto-goggles,snow-helmets,gear,accessories' | split: ','
+  assign cat_col = null
+  assign sub_col = null
+  for col in product.collections
+    if col.handle == 'frontpage' or col.handle == 'all'
+      continue
+    endif
+    if category_handles contains col.handle
+      if cat_col == null
+        assign cat_col = col
+      endif
+    elsif sub_col == null
+      assign sub_col = col
+    endif
+  endfor
+-%}
+
+{%- if cat_col != null or sub_col != null -%}
+<nav class="pt-2 -mb-7" aria-label="Breadcrumb">
+  <ol class="flex flex-wrap items-center gap-1.5 list-none m-0 p-0 text-[12px] font-semibold uppercase tracking-[0.05em]">
+    {%- if cat_col != null -%}
+      <li><a href="{{ cat_col.url }}" class="text-spy-gray no-underline hover:text-spy-orange">{{ cat_col.title }}</a></li>
+    {%- endif -%}
+    {%- if sub_col != null -%}
+      {%- if cat_col != null -%}
+        <li class="text-[color:var(--color-spy-muted)] select-none" aria-hidden="true">/</li>
+      {%- endif -%}
+      <li><a href="{{ sub_col.url }}" class="text-spy-gray no-underline hover:text-spy-orange">{{ sub_col.title }}</a></li>
+    {%- endif -%}
+  </ol>
+</nav>
+{%- endif -%}

@@ -1,0 +1,35 @@
+{%- doc -%}
+  "Notify me when back in stock" button. Renders only when the current variant
+  is sold out. Needs a back-in-stock app to actually send the alert — the button
+  carries data hooks so the app (or a later custom form) can bind to it.
+{%- enddoc -%}
+
+{%- liquid
+  assign p = closest.product
+  assign variant = p.selected_or_first_available_variant
+-%}
+
+{%- unless variant.available -%}
+<div class="spy-notify-me mt-2" {{ block.shopify_attributes }}>
+  <button
+    type="button"
+    class="w-full py-3 border border-spy-orange text-spy-orange uppercase font-bold text-[0.8125rem] tracking-[0.06em] bg-transparent cursor-pointer hover:bg-spy-orange hover:text-white transition-colors"
+    data-spy-notify
+    data-variant-id="{{ variant.id }}"
+    data-product-id="{{ p.id }}"
+  >
+    {{ block.settings.label | default: 'Notify me when back in stock' }}
+  </button>
+</div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Notify Me",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "label", "label": "Label", "default": "Notify me when back in stock" }
+  ],
+  "presets": [{ "name": "Notify Me", "category": "SPY" }]
+}
+{% endschema %}

@@ -1,24 +1,69 @@
+{%- doc -%}
+  Read-only frame/lens summary shown under the swatches (Ref / COLOR / LENS).
+  Values come from metafields first, then fall back to the selected variant's
+  options + SKU so it still renders on combined-listing products where the
+  spec.* metafields are not filled yet.
+{%- enddoc -%}
+
 {%- liquid
   assign p = closest.product
-  assign frame = p.metafields.spec.frame_color.value
-  assign ref   = p.metafields.spec.reference.value
-  assign lens  = p.metafields.spec.lens_name.value
+  assign variant = p.selected_or_first_available_variant
+
+  # Pull the matching option values off the selected variant (by option name)
+  assign color_opt = ''
+  assign lens_opt = ''
+  assign extra_opt = ''
+  for opt in p.options_with_values
+    assign n = opt.name | downcase
+    if n contains 'extra'
+      assign extra_opt = opt.selected_value
+    elsif n contains 'lens'
+      assign lens_opt = opt.selected_value
+    elsif n contains 'color' or n contains 'colour' or n contains 'frame'
+      assign color_opt = opt.selected_value
+    endif
+  endfor
+
+  # Metafield first, variant option / SKU as fallback
+  assign color_val = p.metafields.spec.frame_color.value | default: color_opt
+  assign lens_val  = lens_opt | default: p.metafields.spec.lens_name.value
+  assign extra_val = extra_opt
+  assign ref_val   = p.metafields.spec.reference.value | default: variant.sku
+
   assign has_any = false
-  if frame != blank or ref != blank or lens != blank
+  if color_val != blank or lens_val != blank or ref_val != blank
     assign has_any = true
   endif
 -%}
+
 {%- if has_any -%}
-<div class="pt-3 pb-1 text-[13px] leading-[1.5]" {{ block.shopify_attributes }}>
-  {%- if frame != blank -%}
-    <div><span class="font-bold uppercase tracking-[0.06em] text-[color:var(--color-spy-text)]">Frame:</span> <span class="text-[color:var(--color-spy-text-2)]">{{ frame }}</span></div>
+<div class="pt-3 pb-1 text-[color:var(--color-spy-text)]" {{ block.shopify_attributes }}>
+
+  {%- if ref_val != blank -%}
+    <div class="text-[15px] text-[color:var(--color-spy-muted)]">Ref : {{ ref_val }}</div>
   {%- endif -%}
-  {%- if lens != blank -%}
-    <div><span class="font-bold uppercase tracking-[0.06em] text-[color:var(--color-spy-text)]">Lens:</span> <span class="text-[color:var(--color-spy-text-2)]">{{ lens }}</span></div>
+
+  {%- if color_val != blank -%}
+    <div class="mt-3">
+      <div class="text-[13px] font-bold uppercase tracking-[0.04em]">{{ block.settings.color_label | default: 'Color' }}</div>
+      <div class="text-[15px] leading-[1.4] text-[color:var(--color-spy-text-2)]">{{ color_val }}</div>
+    </div>
   {%- endif -%}
-  {%- if ref != blank -%}
-    <div class="text-[color:var(--color-spy-muted)] mt-1">Ref {{ ref }}</div>
+
+  {%- if lens_val != blank -%}
+    <div class="mt-3">
+      <div class="text-[13px] font-bold uppercase tracking-[0.04em]">Lens</div>
+      <div class="text-[15px] leading-[1.4] text-[color:var(--color-spy-text-2)]">{{ lens_val }}</div>
+    </div>
   {%- endif -%}
+
+  {%- if extra_val != blank -%}
+    <div class="mt-3">
+      <div class="text-[13px] font-bold uppercase tracking-[0.04em]">Extra Lens</div>
+      <div class="text-[15px] leading-[1.4] text-[color:var(--color-spy-text-2)]">{{ extra_val }}</div>
+    </div>
+  {%- endif -%}
+
 </div>
 {%- endif -%}
 
@@ -26,7 +71,9 @@
 {
   "name": "Frame Summary",
   "tag": null,
-  "settings": [],
+  "settings": [
+    { "type": "text", "id": "color_label", "label": "Color label", "default": "Color" }
+  ],
   "presets": [{ "name": "Frame Summary", "category": "SPY" }]
 }
 {% endschema %}

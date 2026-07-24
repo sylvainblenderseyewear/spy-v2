@@ -110,7 +110,7 @@
             </div>
           {%- endif -%}
 
-          {% content_for 'block', type: 'quantity', id: 'quantity' %}
+          {%- comment -%} Quantity counter not used in this project {%- endcomment -%}
 
           {%- if has_quantity_rules -%}
             <div
@@ -228,12 +228,7 @@
             add_to_cart_text: add_to_cart_text
           %}
 
-          {% content_for 'block',
-            type: 'accelerated-checkout',
-            id: 'accelerated-checkout',
-            can_add_to_cart: can_add_to_cart,
-            form_obj: form
-          %}
+          {%- comment -%} Buy-it-now (dynamic checkout) not used in this project {%- endcomment -%}
         </div>
         {%- if block_settings.gift_card_form and product.gift_card? -%}
           </span>
@@ -621,20 +616,12 @@
       "name": "t:names.product_buy_buttons",
       "category": "t:categories.product",
       "blocks": {
-        "quantity": {
-          "type": "quantity",
-          "static": true
-        },
         "add-to-cart": {
           "type": "add-to-cart",
           "static": true,
           "settings": {
             "style_class": "button-secondary"
           }
-        },
-        "accelerated-checkout": {
-          "type": "accelerated-checkout",
-          "static": true
         }
       }
     }

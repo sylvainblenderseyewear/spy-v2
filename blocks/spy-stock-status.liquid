@@ -1,0 +1,30 @@
+{%- doc -%}
+  Stock line under the price: green "In Stock" when the current variant is
+  available, red "Sold Out" when not. Mirrors the source PDP.
+{%- enddoc -%}
+
+{%- liquid
+  assign p = closest.product
+  assign variant = p.selected_or_first_available_variant
+  assign available = variant.available
+-%}
+
+<div class="spy-stock-status text-[13px] font-medium mt-1" {{ block.shopify_attributes }}>
+  {%- if available -%}
+    <span class="text-green-700">{{ block.settings.in_stock_label | default: 'In Stock' }}</span>
+  {%- else -%}
+    <span class="text-red-600">{{ block.settings.sold_out_label | default: 'Sold Out' }}</span>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Stock Status",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "in_stock_label", "label": "In stock label", "default": "In Stock" },
+    { "type": "text", "id": "sold_out_label", "label": "Sold out label", "default": "Sold Out" }
+  ],
+  "presets": [{ "name": "Stock Status", "category": "SPY" }]
+}
+{% endschema %}
