@@ -9,3 +9,8 @@ node_modules/
 .claude/settings.local.json
 
 reference/
+
+# Playwright MCP verification output — screenshots/logs, not part of the theme
+.playwright-mcp/
+# Any PNG at the repo root is a verification shot; real theme images live in assets/
+/*.png
