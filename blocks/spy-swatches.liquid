@@ -1,13 +1,26 @@
 {%- doc -%}
-  SPY color preview — a row of small product-image thumbnails (always ≥1).
-  Each thumb links to that colour's variant PDP; hovering it swaps the card image
-  (spy-card.js). Falls back to product media when a variant has no image, so a
-  preview always shows. Shows an arrow to the PDP when more colours exist than fit.
+  SPY colour preview — a row of small product-image thumbnails (always ≥1).
+
+  Two looks, set by the `display` setting:
+  - card: small thumbs for PLP / carousel cards. Hovering swaps the card image
+    (spy-card.js) and an arrow appears when more colours exist than fit.
+  - pdp: the 56px colour picker from the product page. Shows every colourway,
+    marks the current one, and links out to its PDP.
+
+  Colours come from the product's colour option when it has more than one value
+  (combined listing). Staging has one product per colourway instead, so the pdp
+  look falls back to the model collection — the same collection the breadcrumb
+  uses. Both paths disappear once the migration brings real combined listings.
 {%- enddoc -%}
 
 {%- liquid
   assign p = closest.product
   assign max_shown = 4
+  assign is_pdp = false
+  if block.settings.display == 'pdp'
+    assign is_pdp = true
+  endif
+
   assign color_option = nil
   if p != blank
     for opt in p.options_with_values
@@ -18,48 +31,158 @@
       endif
     endfor
   endif
+
+  assign has_option_colors = false
+  if color_option != nil and color_option.values.size > 1
+    assign has_option_colors = true
+  endif
+
+  comment
+    No real colour option — find the model collection (first one that is not a
+    broad category), same rule as the breadcrumb.
+  endcomment
+  assign model_col = nil
+  if is_pdp and has_option_colors == false and p != blank
+    assign category_handles = 'sunglasses,eyeglasses,goggles,snow-goggles,moto-goggles,snow-helmets,gear,accessories' | split: ','
+    for col in p.collections
+      if col.handle == 'frontpage' or col.handle == 'all'
+        continue
+      endif
+      unless category_handles contains col.handle
+        assign model_col = col
+        break
+      endunless
+    endfor
+  endif
 -%}
 
 {%- if p != blank -%}
-<div class="spy-swatches flex flex-wrap items-center gap-2 pt-3 pb-1" data-spy-swatches {{ block.shopify_attributes }}>
-  {%- if color_option != nil and color_option.values.size > 0 -%}
-    {%- for v in color_option.values limit: max_shown -%}
-      {%- assign media = v.variant.featured_media | default: p.media[forloop.index0] | default: p.featured_media -%}
-      {%- if media != blank -%}
-        {%- assign v_url = v.variant.url | default: p.url -%}
+  {%- if is_pdp -%}
+    {%- liquid
+      assign swatch_base = 'spy-swatches__item block h-14 w-14 rounded-[2px] bg-white overflow-hidden'
+      assign swatch_off = swatch_base | append: ' border border-[color:var(--color-spy-border)]'
+      assign swatch_on = swatch_base | append: ' border-2 border-[color:var(--color-spy-text)]'
+    -%}
+    <div class="spy-swatches flex flex-wrap items-center gap-2 pt-3 pb-1" {{ block.shopify_attributes }}>
+      {%- if has_option_colors -%}
+        {%- for v in color_option.values -%}
+          {%- assign media = v.variant.featured_media | default: p.featured_media -%}
+          {%- if media != blank -%}
+            {%- if v.selected -%}
+              {%- assign cls = swatch_on -%}
+            {%- else -%}
+              {%- assign cls = swatch_off -%}
+            {%- endif -%}
+            <a
+              href="{{ v.variant.url | default: p.url }}"
+              class="{{ cls }}"
+              {% if v.selected %}aria-current="true"{% endif %}
+              aria-label="{{ p.title | escape }} – {{ v.name | escape }}"
+            >
+              <img
+                src="{{ media | image_url: width: 160 }}"
+                alt="{{ v.name | escape }}"
+                width="56"
+                height="56"
+                loading="lazy"
+                class="m-auto block h-[90%] w-[90%] object-contain"
+              >
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- elsif model_col != nil -%}
+        {%- for sp in model_col.products -%}
+          {%- if sp.featured_media != blank -%}
+            {%- if sp.id == p.id -%}
+              {%- assign cls = swatch_on -%}
+            {%- else -%}
+              {%- assign cls = swatch_off -%}
+            {%- endif -%}
+            <a
+              href="{{ sp.url }}"
+              class="{{ cls }}"
+              {% if sp.id == p.id %}aria-current="true"{% endif %}
+              aria-label="{{ sp.title | escape }}"
+            >
+              <img
+                src="{{ sp.featured_media | image_url: width: 160 }}"
+                alt="{{ sp.title | escape }}"
+                width="56"
+                height="56"
+                loading="lazy"
+                class="m-auto block h-[90%] w-[90%] object-contain"
+              >
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- elsif p.featured_media != blank -%}
+        {%- comment -%} single colourway — still show it, marked as current {%- endcomment -%}
+        <span class="{{ swatch_on }}" aria-label="{{ p.title | escape }}">
+          <img
+            src="{{ p.featured_media | image_url: width: 160 }}"
+            alt="{{ p.title | escape }}"
+            width="56"
+            height="56"
+            loading="lazy"
+            class="m-auto block h-[90%] w-[90%] object-contain"
+          >
+        </span>
+      {%- endif -%}
+    </div>
+  {%- else -%}
+    <div class="spy-swatches flex flex-wrap items-center gap-2 pt-3 pb-1" data-spy-swatches {{ block.shopify_attributes }}>
+      {%- if color_option != nil and color_option.values.size > 0 -%}
+        {%- for v in color_option.values limit: max_shown -%}
+          {%- assign media = v.variant.featured_media | default: p.media[forloop.index0] | default: p.featured_media -%}
+          {%- if media != blank -%}
+            {%- assign v_url = v.variant.url | default: p.url -%}
+            <a
+              href="{{ v_url }}"
+              class="spy-swatches__item block w-[72px] h-[52px] border border-[color:var(--color-spy-border)] overflow-hidden hover:border-[color:var(--color-foreground,#2c393e)]"
+              data-full="{{ media | image_url: width: 640 }}"
+              aria-label="{{ p.title | escape }} – {{ v.name | escape }}"
+            >
+              <img src="{{ media | image_url: width: 160 }}" alt="{{ v.name | escape }}" width="72" height="52" loading="lazy" class="w-full h-full object-cover block">
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if color_option.values.size > max_shown -%}
+          <a href="{{ p.url }}" class="spy-swatches__more inline-flex items-center justify-center w-7 h-7 text-spy-gray hover:text-spy-orange no-underline" aria-label="View all {{ color_option.values.size }} colors">&rarr;</a>
+        {%- endif -%}
+      {%- elsif p.featured_media != blank -%}
         <a
-          href="{{ v_url }}"
-          class="spy-swatches__item block w-[72px] h-[52px] border border-[color:var(--color-spy-border)] overflow-hidden hover:border-[color:var(--color-foreground,#2c393e)]"
-          data-full="{{ media | image_url: width: 640 }}"
-          aria-label="{{ p.title | escape }} – {{ v.name | escape }}"
+          href="{{ p.url }}"
+          class="spy-swatches__item block w-[72px] h-[52px] border border-[color:var(--color-foreground,#2c393e)] overflow-hidden"
+          data-full="{{ p.featured_media | image_url: width: 640 }}"
+          aria-label="{{ p.title | escape }}"
         >
-          <img src="{{ media | image_url: width: 160 }}" alt="{{ v.name | escape }}" width="72" height="52" loading="lazy" class="w-full h-full object-cover block">
+          <img src="{{ p.featured_media | image_url: width: 160 }}" alt="{{ p.title | escape }}" width="72" height="52" loading="lazy" class="w-full h-full object-cover block">
         </a>
       {%- endif -%}
-    {%- endfor -%}
-    {%- if color_option.values.size > max_shown -%}
-      <a href="{{ p.url }}" class="spy-swatches__more inline-flex items-center justify-center w-7 h-7 text-spy-gray hover:text-spy-orange no-underline" aria-label="View all {{ color_option.values.size }} colors">&rarr;</a>
-    {%- endif -%}
-  {%- elsif p.featured_media != blank -%}
-    <a
-      href="{{ p.url }}"
-      class="spy-swatches__item block w-[72px] h-[52px] border border-[color:var(--color-foreground,#2c393e)] overflow-hidden"
-      data-full="{{ p.featured_media | image_url: width: 640 }}"
-      aria-label="{{ p.title | escape }}"
-    >
-      <img src="{{ p.featured_media | image_url: width: 160 }}" alt="{{ p.title | escape }}" width="72" height="52" loading="lazy" class="w-full h-full object-cover block">
-    </a>
+    </div>
   {%- endif -%}
-</div>
 {%- endif -%}
 
-<script src="{{ 'spy-card.js' | asset_url }}" defer></script>
+{%- unless is_pdp -%}
+  <script src="{{ 'spy-card.js' | asset_url }}" defer></script>
+{%- endunless -%}
 
 {% schema %}
 {
   "name": "Color Preview",
   "tag": null,
-  "settings": [],
+  "settings": [
+    {
+      "type": "select",
+      "id": "display",
+      "label": "Display",
+      "options": [
+        { "value": "card", "label": "Card thumbnails" },
+        { "value": "pdp", "label": "Product page colour picker" }
+      ],
+      "default": "card"
+    }
+  ],
   "presets": [
     {
       "name": "Color Preview",

@@ -34,7 +34,7 @@
       {%- if cat_col != null -%}
         <li class="text-[color:var(--color-spy-muted)] select-none" aria-hidden="true">/</li>
       {%- endif -%}
-      <li><a href="{{ sub_col.url }}" class="text-spy-gray no-underline hover:text-spy-orange">{{ sub_col.title }}</a></li>
+      <li><a href="{{ sub_col.url }}" class="text-[color:var(--color-spy-muted)] no-underline hover:text-spy-orange">{{ sub_col.title }}</a></li>
     {%- endif -%}
   </ol>
 </nav>

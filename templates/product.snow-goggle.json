@@ -309,10 +309,12 @@
                 "badge_1_icon": "",
                 "badge_2_text": "Easy Returns for 30 days",
                 "badge_2_icon": "",
-                "badge_3_text": "Discount calculated on the original price. See conditions",
+                "badge_3_text": "Discount calculated on the original price.",
                 "badge_3_icon": "",
-                "badge_4_text": "Pay in 4 installments with no fees using PayPal",
+                "badge_3_link_text": "See conditions",
+                "badge_4_text": "Pay in 4 installments with no fees using",
                 "badge_4_icon": "",
+                "badge_4_logo": "paypal",
                 "badge_5_text": "Lifetime warranty on all sunglasses",
                 "badge_5_icon": ""
               },
@@ -344,7 +346,9 @@
             "spy_swatches_A1": {
               "type": "spy-swatches",
               "name": "Color Preview",
-              "settings": {},
+              "settings": {
+                "display": "pdp"
+              },
               "blocks": {}
             },
             "spy_frame_summary_A1": {

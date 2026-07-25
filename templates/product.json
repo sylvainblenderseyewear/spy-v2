@@ -235,18 +235,6 @@
               "settings": {},
               "blocks": {}
             },
-            "divider_after_lens": {
-              "type": "_divider",
-              "settings": {
-                "thickness": 1,
-                "corner_radius": "square",
-                "divider_color": "{{ settings.color_palette.color2 }}",
-                "width_percent": 100,
-                "padding-block-start": 0,
-                "padding-block-end": 0
-              },
-              "blocks": {}
-            },
             "buy_buttons_eYQEYi": {
               "type": "buy-buttons",
               "settings": {
@@ -296,10 +284,12 @@
                 "badge_1_icon": "",
                 "badge_2_text": "Easy Returns for 30 days",
                 "badge_2_icon": "",
-                "badge_3_text": "Discount calculated on the original price. See conditions",
+                "badge_3_text": "Discount calculated on the original price.",
                 "badge_3_icon": "",
-                "badge_4_text": "Pay in 4 installments with no fees using PayPal",
+                "badge_3_link_text": "See conditions",
+                "badge_4_text": "Pay in 4 installments with no fees using",
                 "badge_4_icon": "",
+                "badge_4_logo": "paypal",
                 "badge_5_text": "Lifetime warranty on all sunglasses",
                 "badge_5_icon": ""
               },
@@ -331,7 +321,9 @@
             "spy_swatches_A1": {
               "type": "spy-swatches",
               "name": "Color Preview",
-              "settings": {},
+              "settings": {
+                "display": "pdp"
+              },
               "blocks": {}
             },
             "spy_frame_summary_A1": {
@@ -359,7 +351,6 @@
             "spy_frame_summary_A1",
             "spy_size_chart_A1",
             "spy_lens_info_A1",
-            "divider_after_lens",
             "buy_buttons_eYQEYi",
             "spy_rx_button_A1",
             "spy_notify_A1",
