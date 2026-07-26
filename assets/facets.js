@@ -612,6 +612,29 @@ if (!customElements.get('facet-remove-component')) {
 }
 
 /**
+ * Shows/hides the vertical filters panel referenced by `data-target`.
+ * Panel starts with the `hidden` class; base.css reflows `.main-collection-grid`
+ * to full width or squeezed based on that same class (see collection-wrapper rules).
+ * @extends {Component}
+ */
+class VerticalFiltersToggleComponent extends Component {
+  toggle() {
+    const target = document.getElementById(this.dataset.target ?? '');
+    if (!(target instanceof HTMLElement)) return;
+
+    const willShow = target.classList.contains('hidden');
+    target.classList.toggle('hidden', !willShow);
+
+    const button = this.querySelector('button');
+    if (button instanceof HTMLElement) button.setAttribute('aria-expanded', String(willShow));
+  }
+}
+
+if (!customElements.get('vertical-filters-toggle-component')) {
+  customElements.define('vertical-filters-toggle-component', VerticalFiltersToggleComponent);
+}
+
+/**
  * Handles sorting filter functionality
  *
  * @typedef {Object} SortingFilterRefs

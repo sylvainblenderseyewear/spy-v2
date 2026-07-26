@@ -90,13 +90,15 @@
         >
           {{- 'actions.sort' | t -}}
         </span>
-        <span
-          class="facets__status h6 desktop:hidden"
-        >
-          {{- status -}}
-        </span>
-        <span class="svg-wrapper icon-caret icon-animated">
-          {{- 'icon-caret.svg' | inline_asset_content -}}
+        <span class="sorting-filter__value">
+          <span
+            class="facets__status h6"
+          >
+            {{- status -}}
+          </span>
+          <span class="svg-wrapper icon-caret icon-animated">
+            {{- 'icon-caret.svg' | inline_asset_content -}}
+          </span>
         </span>
       </summary>
       <floating-panel-component
@@ -352,6 +354,68 @@
   .facets--drawer .sorting-filter {
     @media screen and (min-width: 750px) {
       display: none;
+    }
+  }
+
+  /* Horizontal bar sort control - boxed trigger, pinned to the right */
+  .facets--horizontal .sorting-filter {
+    @media screen and (min-width: 750px) {
+      margin-inline-start: auto;
+    }
+  }
+
+  .facets--horizontal .sorting-filter .facets__label {
+    @media screen and (min-width: 750px) {
+      font-weight: var(--font-h5--weight);
+      text-transform: uppercase;
+      color: var(--color-foreground);
+    }
+  }
+
+  .sorting-filter__value {
+    display: contents;
+  }
+
+  .facets--horizontal .sorting-filter__value {
+    @media screen and (min-width: 750px) {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--gap-2xs);
+      height: var(--minimum-touch-target);
+      padding-inline: var(--padding-sm);
+      border: var(--style-border-width-inputs) solid var(--color-input-border);
+      border-radius: var(--style-border-radius-inputs);
+      background-color: var(--color-background);
+    }
+  }
+
+  .facets--horizontal .sorting-filter .facets__status {
+    @media screen and (min-width: 750px) {
+      display: block;
+    }
+  }
+
+  .facets--horizontal .sorting-filter__options {
+    @media screen and (min-width: 750px) {
+      min-width: 100%;
+    }
+  }
+
+  .facets--horizontal .sorting-filter__option {
+    @media screen and (min-width: 750px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .facets--horizontal .sorting-filter__checkmark {
+    @media screen and (min-width: 750px) {
+      display: none;
+    }
+  }
+
+  .facets--horizontal .sorting-filter__option[aria-selected='true'] {
+    @media screen and (min-width: 750px) {
+      background-color: rgb(var(--color-foreground-rgb) / var(--opacity-8));
     }
   }
 {% endstylesheet %}

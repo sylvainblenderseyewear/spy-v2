@@ -111,21 +111,18 @@
       style="{% render 'spacing-style', settings: block_settings %}{% if block_settings.text_label_case == 'uppercase' %} --facet-label-transform: uppercase;{% endif %}"
     >
       {% if block_settings.enable_filtering %}
-        <h4 class="facets--filters-title">{{ 'content.filters' | t }}</h4>
+        <vertical-filters-toggle-component data-target="vertical-filters-panel">
+          <button
+            class="button"
+            type="button"
+            on:click="/toggle"
+            aria-expanded="false"
+            aria-controls="vertical-filters-panel"
+          >
+            <h5 class="facets--filters-title">{{ 'content.filters' | t }}</h5>
+          </button>
+        </vertical-filters-toggle-component>
       {% endif %}
-
-      <div
-        class="products-count-wrapper"
-        data-testid="products-count"
-      >
-        <span role="status">
-          {% if products_count > 25000 %}
-            {{- 'content.item_count_cutoff' | t: count: 25000 -}}
-          {% else %}
-            {{- 'content.item_count' | t: count: products_count -}}
-          {% endif %}
-        </span>
-      </div>
 
       {% if block_settings.enable_sorting %}
         {% render 'sorting',
@@ -146,8 +143,11 @@
   {% endif %}
 
   <div
+    {% if block_settings.filter_style == 'vertical' %}
+      id="vertical-filters-panel"
+    {% endif %}
     class="
-      {% if should_show_pane == false %}
+      {% if should_show_pane == false or block_settings.filter_style == 'vertical' %}
         hidden
       {% endif %}
       facets-block-wrapper
@@ -276,18 +276,6 @@
               {% endif %}
             {% endif %}
             {% if block_settings.filter_style == 'horizontal' %}
-              <div
-                class="products-count-wrapper"
-                data-testid="products-count"
-              >
-                <span role="status">
-                  {% if products_count > 25000 %}
-                    {{- 'content.item_count_cutoff' | t: count: 25000 -}}
-                  {% else %}
-                    {{- 'content.item_count' | t: count: products_count -}}
-                  {% endif %}
-                </span>
-              </div>
 
               {% if block_settings.enable_sorting %}
                 {% render 'sorting',
@@ -553,6 +541,24 @@
   .facets-block-wrapper--vertical {
     @media screen and (min-width: 750px) {
       grid-column: var(--grid-column--desktop);
+    }
+  }
+
+  #vertical-filters-panel {
+    @media screen and (min-width: 750px) {
+      width: 100%;
+      opacity: 1;
+      visibility: visible;
+      overflow: hidden;
+      transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+    }
+  }
+
+  #vertical-filters-panel.hidden {
+    @media screen and (min-width: 750px) {
+      display: block !important;
+      opacity: 0;
+      visibility: hidden;
     }
   }
 
@@ -1205,7 +1211,8 @@
 
   .facets--filters-title {
     margin-block-end: 0;
-    color: var(--color-foreground);
+    --color: var(--button-color);
+    text-transform: var(--button-text-case-primary);
     height: fit-content;
 
     @media screen and (max-width: 749px) {
