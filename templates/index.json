@@ -214,7 +214,9 @@
         "tile_aydk6r": {
           "type": "tile",
           "settings": {
-            "label": "Sunglasses",
+            "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-CLASSICS.webp",
+            "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-CLASSICS-HOVER.webp",
+            "label": "Classics",
             "link": "",
             "aspect_ratio": "3:4",
             "custom_aspect_ratio": ""
@@ -223,6 +225,8 @@
         "tile_PtCzT4": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-MOTO.webp",
+            "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-MOTO-HOVER.jpg",
             "label": "Moto",
             "link": "",
             "aspect_ratio": "3:4",
@@ -232,6 +236,8 @@
         "tile_b7znmT": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-TRAILV2.webp",
+            "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-TRAIL-HOVER.webp",
             "label": "Trail",
             "link": "",
             "aspect_ratio": "3:4",
@@ -241,6 +247,8 @@
         "tile_TRD7Kn": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-BLUE_LIGHTV2.webp",
+            "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-BLUELIGHT-HOVER.webp",
             "label": "Blue Light",
             "link": "",
             "aspect_ratio": "3:4",
