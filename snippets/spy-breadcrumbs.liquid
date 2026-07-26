@@ -25,10 +25,14 @@
 -%}
 
 {%- if cat_col != null or sub_col != null -%}
-<nav class="pt-2 -mb-7" aria-label="Breadcrumb">
-  <ol class="flex flex-wrap items-center gap-1.5 list-none m-0 p-0 text-[12px] font-semibold uppercase tracking-[0.05em]">
+{%- comment -%}
+  Spacing lives here, not in the section: 16px above the text, 5px below. The
+  section's row gap must stay 0 or it adds on top of this and drops the gallery.
+{%- endcomment -%}
+<nav class="pt-4 pb-[5px]" aria-label="Breadcrumb">
+  <ol class="flex flex-wrap items-center gap-1.5 list-none m-0 p-0 text-[12px] font-semibold uppercase tracking-[0.02em]">
     {%- if cat_col != null -%}
-      <li><a href="{{ cat_col.url }}" class="text-spy-gray no-underline hover:text-spy-orange">{{ cat_col.title }}</a></li>
+      <li><a href="{{ cat_col.url }}" class="text-[color:var(--color-spy-muted)] no-underline hover:text-spy-orange">{{ cat_col.title }}</a></li>
     {%- endif -%}
     {%- if sub_col != null -%}
       {%- if cat_col != null -%}
