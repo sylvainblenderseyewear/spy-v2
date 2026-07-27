@@ -3,10 +3,11 @@
   over the artwork's dark panel.
 
   The source ships a DIFFERENT crop per breakpoint, not one image scaled down:
-  desktop is a wide 6.5:1 band, mobile a taller 2.2:1 one. So each breakpoint has
-  its own image, height and focal point. A `<picture>` swaps the asset, and a
-  fixed height plus `object-fit: cover` keeps the band from collapsing into a
-  strip the way an `h-auto` image does at 390px.
+  desktop is a wide 6.5:1 band, mobile a taller 2:1 one. So each breakpoint has its
+  own image, size and focal point, and `object-fit: cover` keeps the band from
+  collapsing into a strip the way an `h-auto` image does at 390px. Mobile is sized
+  by ratio so it holds its shape across phone widths; tablet and desktop use pixel
+  heights, which is how they were measured off the source.
 
   Images resolve section setting first (Layer 2), then the collection metafield in
   either the `collection` or `custom` namespace (Layer 3), then the desktop image.
@@ -15,8 +16,8 @@
   landing on the photo. Set a per-breakpoint asset and the focal setting takes over.
 
   Metafield keys: `hero_image`, `hero_image_tablet`, `hero_image_mobile`
-  (file_reference). Only `hero_image` exists so far; the other two need defining
-  before they can hold anything.
+  (file_reference). `hero_image` and `hero_image_mobile` are defined and populated;
+  `hero_image_tablet` is not defined yet, so tablet still falls back to desktop.
 {%- endcomment -%}
 
 {%- liquid
@@ -60,7 +61,7 @@
   <div
     class="spy-collection-hero relative w-full overflow-hidden leading-[0]"
     style="
-      --hero-height-mobile: {{ section.settings.height_mobile }}px;
+      --hero-ratio-mobile: {{ section.settings.ratio_mobile }};
       --hero-height-tablet: {{ section.settings.height_tablet }}px;
       --hero-height-desktop: {{ section.settings.height_desktop }}px;
       --hero-focus-mobile: {{ focus_mobile }};
@@ -97,8 +98,8 @@
         fetchpriority="high"
         class="
           block w-full object-cover
-          h-[var(--hero-height-mobile)] object-[var(--hero-focus-mobile)_center]
-          min-[750px]:h-[var(--hero-height-tablet)] min-[750px]:object-[var(--hero-focus-tablet)_center]
+          aspect-[var(--hero-ratio-mobile)] object-[var(--hero-focus-mobile)_center]
+          min-[750px]:aspect-auto min-[750px]:h-[var(--hero-height-tablet)] min-[750px]:object-[var(--hero-focus-tablet)_center]
           min-[1100px]:h-[var(--hero-height-desktop)] min-[1100px]:object-[var(--hero-focus-desktop)_center]
         "
       >
@@ -163,7 +164,8 @@
     },
     {
       "type": "header",
-      "content": "Height"
+      "content": "Height",
+      "info": "Mobile is set by ratio, tablet and desktop by height — those two were measured against the source in pixels."
     },
     {
       "type": "range",
@@ -188,13 +190,14 @@
     },
     {
       "type": "range",
-      "id": "height_mobile",
-      "label": "Height — mobile",
-      "min": 100,
-      "max": 400,
-      "step": 5,
-      "unit": "px",
-      "default": 170
+      "id": "ratio_mobile",
+      "label": "Aspect ratio — mobile",
+      "info": "Width to height. A ratio rather than a fixed height so the band keeps its shape from a 320px phone to a 430px one.",
+      "min": 1,
+      "max": 4,
+      "step": 0.1,
+      "unit": ":1",
+      "default": 2
     },
     {
       "type": "header",

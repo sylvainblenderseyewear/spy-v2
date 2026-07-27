@@ -36,9 +36,11 @@ Same as default PDP, plus:
 
 | Block / Section | File | Metafield(s) Read |
 |---|---|---|
-| Collection Hero | `sections/spy-collection-hero.liquid` | `collection.hero_image` |
+| Collection Hero | `sections/spy-collection-hero.liquid` | `collection.hero_image` (desktop, ~6.4:1) · `collection.hero_image_mobile` (2:1) · `collection.hero_image_tablet` (⚠️ not defined yet — falls back to desktop). Also read from the `custom` namespace, and overridable per breakpoint by section settings. Title is `collection.title`. |
 | Collection Header | Horizon `section` with text blocks | `collection.title`, `collection.description` (Liquid vars) |
 | Product Grid | Horizon `main-collection` | — |
+| Grouped Product Grid | `sections/spy-grouped-collection.liquid` | Product tag `collection::MODEL` for the group; the matching model collection's `all_products_count` for the colourway count and `products.first` for the card's representative |
+| Grouped Product Card | `blocks/_spy-grouped-product-card.liquid` + `snippets/spy-grouped-product-card.liquid` | Group name + count passed in by the section; `spec.*` via `snippets/spy-tech-badges.liquid`; `pdp.badge_text` / `pdp.badge_new` via `snippets/spy-product-badge-text.liquid` |
 | Color Count | `blocks/spy-color-count.liquid` | `product.options_with_values` (counts Frame Color / Color / Colour option values) |
 | Tech Badge | `blocks/spy-tech-badge.liquid` + `snippets/spy-tech-badges.liquid` | `spec.technologies` → `technology.name`, `.icon` (Happy Boost); `spec.certifications` (ANSI Z87 / Z87-2+). Per-swatch set resolved from each colour option value's product (combined-listing child, else product-level). Hover swap via `assets/spy-tech-badge.js`. |
 | Quick View Button | `blocks/spy-quick-view-btn.liquid` | `closest.product.handle` |
