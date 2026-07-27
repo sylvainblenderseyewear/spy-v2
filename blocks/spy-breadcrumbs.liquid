@@ -3,7 +3,12 @@
   All logic and styling live in the snippet so every page renders the same trail.
 {%- endcomment -%}
 
-{%- render 'spy-breadcrumbs', shopify_attributes: block.shopify_attributes -%}
+{%- comment -%} On a product page the source uses its own small-caps category trail {%- endcomment -%}
+{%- if closest.product != blank -%}
+  {%- render 'spy-breadcrumbs', shopify_attributes: block.shopify_attributes, variant: 'pdp' -%}
+{%- else -%}
+  {%- render 'spy-breadcrumbs', shopify_attributes: block.shopify_attributes -%}
+{%- endif -%}
 
 {% schema %}
 {

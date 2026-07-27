@@ -4,6 +4,7 @@
   PDP, PLP, blog, page, search, cart, account and 404.
 
   @param {string} [shopify_attributes] - editor attributes from the calling block/section
+  @param {string} [variant] - 'pdp' for the product page trail (category + line, small caps)
 
   @example
   {%- render 'spy-breadcrumbs', shopify_attributes: block.shopify_attributes -%}
@@ -14,12 +15,46 @@
   assign crumb_titles = ''
   assign crumb_links = ''
 
+  # The PDP trail differs from every other page: the source shows the category
+  # (plus the model line) and never Home or the product title.
+  assign is_pdp = false
+  if variant == 'pdp'
+    assign is_pdp = true
+  endif
+
   assign bc_product = closest.product | default: product
   assign bc_collection = closest.collection | default: collection
   assign bc_article = closest.article | default: article
   assign bc_blog = closest.blog | default: blog
 
-  if bc_product != blank
+  if bc_product != blank and is_pdp
+    # Broad category first, then the model line. Staging data is thin (eyeglasses
+    # sit under "Sunglasses"), so real hierarchy arrives with the migration.
+    assign category_handles = 'sunglasses,eyeglasses,goggles,snow-goggles,moto-goggles,snow-helmets,gear,accessories' | split: ','
+    assign cat_col = null
+    assign line_col = null
+    for col in bc_product.collections
+      if col.handle == 'frontpage' or col.handle == 'all'
+        continue
+      endif
+      if category_handles contains col.handle
+        if cat_col == null
+          assign cat_col = col
+        endif
+      elsif line_col == null
+        assign line_col = col
+      endif
+    endfor
+    if cat_col != null
+      assign crumb_titles = crumb_titles | append: cat_col.title | append: sep
+      assign crumb_links = crumb_links | append: cat_col.url | append: sep
+    endif
+    if line_col != null
+      assign crumb_titles = crumb_titles | append: line_col.title | append: sep
+      assign crumb_links = crumb_links | append: line_col.url | append: sep
+    endif
+
+  elsif bc_product != blank
     # parent = collection from the URL, else first real collection on the product
     assign bc_parent = bc_collection
     if bc_parent == blank
@@ -81,28 +116,43 @@
 
   assign titles = crumb_titles | split: sep
   assign links = crumb_links | split: sep
+
+  # PDP measurements from the source: 12/16 bold uppercase, 1% tracking, muted,
+  # sitting 8px under the header in a 32px row with nothing below it.
+  assign nav_class = 'w-full text-[16px] font-bold uppercase leading-none tracking-[0.07em] text-spy-muted'
+  assign list_class = 'm-0 flex list-none flex-wrap items-center gap-x-1.5 gap-y-1 p-0'
+  if is_pdp
+    assign nav_class = 'w-full pt-2 text-[12px] font-bold uppercase leading-4 tracking-[0.01em] text-spy-muted'
+    assign list_class = 'm-0 flex h-8 list-none flex-wrap items-center gap-x-1.5 p-0'
+  endif
 -%}
 
 {%- comment -%} Nothing to show when Home would be the only crumb (index, password …) {%- endcomment -%}
 {%- if titles.size > 0 -%}
   <nav
-    class="w-full text-[16px] font-bold uppercase leading-none tracking-[0.07em] text-spy-muted"
+    class="{{ nav_class }}"
     aria-label="{{ 'breadcrumbs.aria_label' | t }}"
     {{ shopify_attributes }}
   >
-    <ol class="m-0 flex list-none flex-wrap items-center gap-x-1.5 gap-y-1 p-0">
-      <li>
-        <a
-          class="text-spy-muted no-underline transition-colors duration-150 hover:text-spy-orange"
-          href="{{ routes.root_url }}"
-        >
-          {{- 'breadcrumbs.home' | t -}}
-        </a>
-      </li>
-      {%- for title in titles -%}
-        <li class="select-none opacity-70" aria-hidden="true">/</li>
+    <ol class="{{ list_class }}">
+      {%- comment -%} The source PDP trail starts at the category, so no Home crumb there {%- endcomment -%}
+      {%- unless is_pdp -%}
         <li>
-          {%- if forloop.last -%}
+          <a
+            class="text-spy-muted no-underline transition-colors duration-150 hover:text-spy-orange"
+            href="{{ routes.root_url }}"
+          >
+            {{- 'breadcrumbs.home' | t -}}
+          </a>
+        </li>
+      {%- endunless -%}
+      {%- for title in titles -%}
+        {%- unless is_pdp and forloop.first -%}
+          <li class="select-none opacity-70" aria-hidden="true">/</li>
+        {%- endunless -%}
+        <li>
+          {%- comment -%} On a PDP every crumb is a collection, so none of them is the current page {%- endcomment -%}
+          {%- if forloop.last and is_pdp == false -%}
             <span aria-current="page">{{ title }}</span>
           {%- else -%}
             <a
