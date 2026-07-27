@@ -1,0 +1,142 @@
+{%- doc -%}
+  Renders the breadcrumb trail. Works in any section on any template:
+  reads closest.* first, then the page object, so one block covers
+  PDP, PLP, blog, page, search, cart, account and 404.
+
+  @param {string} [shopify_attributes] - editor attributes from the calling block/section
+
+  @example
+  {%- render 'spy-breadcrumbs', shopify_attributes: block.shopify_attributes -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign sep = '~|~'
+  assign crumb_titles = ''
+  assign crumb_links = ''
+
+  assign bc_product = closest.product | default: product
+  assign bc_collection = closest.collection | default: collection
+  assign bc_article = closest.article | default: article
+  assign bc_blog = closest.blog | default: blog
+
+  if bc_product != blank
+    # parent = collection from the URL, else first real collection on the product
+    assign bc_parent = bc_collection
+    if bc_parent == blank
+      for col in bc_product.collections
+        unless col.handle == 'all' or col.handle == 'frontpage'
+          assign bc_parent = col
+          break
+        endunless
+      endfor
+    endif
+    if bc_parent != blank
+      assign crumb_titles = crumb_titles | append: bc_parent.title | append: sep
+      assign crumb_links = crumb_links | append: bc_parent.url | append: sep
+    endif
+    assign crumb_titles = crumb_titles | append: bc_product.title | append: sep
+    assign crumb_links = crumb_links | append: bc_product.url | append: sep
+
+  elsif bc_article != blank
+    if bc_blog != blank
+      assign crumb_titles = crumb_titles | append: bc_blog.title | append: sep
+      assign crumb_links = crumb_links | append: bc_blog.url | append: sep
+    endif
+    assign crumb_titles = crumb_titles | append: bc_article.title | append: sep
+    assign crumb_links = crumb_links | append: bc_article.url | append: sep
+
+  elsif bc_collection != blank
+    assign crumb_titles = bc_collection.title
+    assign crumb_links = bc_collection.url
+
+  elsif bc_blog != blank
+    assign crumb_titles = bc_blog.title
+    assign crumb_links = bc_blog.url
+
+  else
+    case template.name
+      when 'page'
+        assign crumb_titles = page.title
+        assign crumb_links = page.url
+      when 'list-collections'
+        assign crumb_titles = 'breadcrumbs.collections' | t
+        assign crumb_links = routes.collections_url
+      when 'search'
+        assign crumb_titles = 'content.search' | t
+        assign crumb_links = routes.search_url
+      when 'cart'
+        assign crumb_titles = 'content.cart_title' | t
+        assign crumb_links = routes.cart_url
+      when '404'
+        assign crumb_titles = 'breadcrumbs.not_found' | t
+        assign crumb_links = request.path
+      else
+        # customers/account, customers/login, customers/order …
+        if template.name contains 'customers'
+          assign crumb_titles = 'content.account_title' | t
+          assign crumb_links = routes.account_url
+        endif
+    endcase
+  endif
+
+  assign titles = crumb_titles | split: sep
+  assign links = crumb_links | split: sep
+-%}
+
+{%- comment -%} Nothing to show when Home would be the only crumb (index, password …) {%- endcomment -%}
+{%- if titles.size > 0 -%}
+  <nav
+    class="w-full text-[16px] font-bold uppercase leading-none tracking-[0.07em] text-spy-muted"
+    aria-label="{{ 'breadcrumbs.aria_label' | t }}"
+    {{ shopify_attributes }}
+  >
+    <ol class="m-0 flex list-none flex-wrap items-center gap-x-1.5 gap-y-1 p-0">
+      <li>
+        <a
+          class="text-spy-muted no-underline transition-colors duration-150 hover:text-spy-orange"
+          href="{{ routes.root_url }}"
+        >
+          {{- 'breadcrumbs.home' | t -}}
+        </a>
+      </li>
+      {%- for title in titles -%}
+        <li class="select-none opacity-70" aria-hidden="true">/</li>
+        <li>
+          {%- if forloop.last -%}
+            <span aria-current="page">{{ title }}</span>
+          {%- else -%}
+            <a
+              class="text-spy-muted no-underline transition-colors duration-150 hover:text-spy-orange"
+              href="{{ links[forloop.index0] }}"
+            >
+              {{- title -}}
+            </a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+  </nav>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": {{ 'breadcrumbs.home' | t | json }},
+          "item": {{ request.origin | append: routes.root_url | json }}
+        }
+        {%- for title in titles -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ forloop.index | plus: 1 }},
+            "name": {{ title | json }},
+            "item": {{ request.origin | append: links[forloop.index0] | json }}
+          }
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}

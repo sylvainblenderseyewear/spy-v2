@@ -160,6 +160,12 @@
       "success": "Comment posted"
     }
   },
+  "breadcrumbs": {
+    "aria_label": "Breadcrumb",
+    "home": "Home",
+    "collections": "Collections",
+    "not_found": "Page not found"
+  },
   "content": {
     "cancel": "Cancel",
     "discount": "Discount",

@@ -1,31 +1,9 @@
-{%- liquid
-  assign p = closest.product
-  assign bc_collection = null
-  for col in p.collections
-    if col.handle != 'frontpage' and col.handle != 'all'
-      assign bc_collection = col
-      break
-    endif
-  endfor
--%}
+{%- comment -%}
+  Breadcrumbs — add it to any section, on any template.
+  All logic and styling live in the snippet so every page renders the same trail.
+{%- endcomment -%}
 
-<nav class="text-[13px] text-spy-gray pb-2" aria-label="Breadcrumb" {{ block.shopify_attributes }}>
-  <ol class="flex flex-wrap items-center gap-1 list-none m-0 p-0">
-    <li>
-      <a href="/" class="text-spy-gray no-underline hover:text-spy-orange hover:underline">Home</a>
-    </li>
-    {%- if bc_collection != null -%}
-    <li class="select-none text-[#ccc]" aria-hidden="true">/</li>
-    <li>
-      <a href="{{ bc_collection.url }}" class="text-spy-gray no-underline hover:text-spy-orange hover:underline">
-        {{- bc_collection.title -}}
-      </a>
-    </li>
-    {%- endif -%}
-    <li class="select-none text-[#ccc]" aria-hidden="true">/</li>
-    <li class="text-[#333] font-medium" aria-current="page">{{ p.title }}</li>
-  </ol>
-</nav>
+{%- render 'spy-breadcrumbs', shopify_attributes: block.shopify_attributes -%}
 
 {% schema %}
 {
