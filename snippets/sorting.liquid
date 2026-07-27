@@ -113,7 +113,7 @@
         <span
           class="
             sorting-filter__value
-            {%- if is_desktop_bar %} flex h-9 w-[180px] items-center gap-2 self-center rounded-none border border-solid border-spy-input-border bg-white px-3{% endif %}
+            {%- if is_desktop_bar %} flex h-9 w-sort-trigger items-center gap-2 self-center rounded-none border border-solid border-spy-input-border bg-white px-3{% endif %}
           "
         >
           <span
@@ -145,18 +145,24 @@
       </summary>
       <floating-panel-component
         id="sorting-options-{{ section_id }}-{{ suffix }}"
-        class="sorting-filter__options color-custom-popover"
+        class="
+          sorting-filter__options color-custom-popover
+          {%- if is_desktop_bar %} w-sort-trigger min-w-0{% endif %}
+        "
         role="listbox"
         aria-labelledby="sort-label-{{ section_id }}"
         ref="listbox"
       >
-        <div class="sorting-filter__options-inner">
+        <div class="sorting-filter__options-inner{% if is_desktop_bar %} p-0{% endif %}">
           {% for option in results.sort_options %}
             <label
               for="sort-option-{{ option.value }}-{{ section_id }}"
             >
               <div
-                class="sorting-filter__option"
+                class="
+                  sorting-filter__option
+                  {%- if is_desktop_bar %} min-w-0 max-w-none px-3 py-2{% endif %}
+                "
                 role="option"
                 aria-selected="{% if option.value == selected_sort_by %}true{% else %}false{% endif %}"
                 tabindex="{% if option.value == selected_sort_by %}0{% else %}-1{% endif %}"
