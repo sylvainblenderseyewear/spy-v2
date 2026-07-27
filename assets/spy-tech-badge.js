@@ -22,9 +22,11 @@
     }
   }
 
-  // Badge markup stored for one colour swatch.
+  // Badge markup stored for one colour swatch. The store lives inside the badge on
+  // the variant card and next to the thumbnails on the grouped one, so look card-wide.
   function keyHTML(badge, id) {
-    const store = badge.querySelector('template[data-tech-store]');
+    const scope = badge.closest('product-card') || badge;
+    const store = scope.querySelector('template[data-tech-store]');
     const node = store?.content.querySelector(`[data-tech-key="${esc(id)}"]`);
     return node ? node.innerHTML : null;
   }
@@ -53,20 +55,31 @@
     return li.querySelector('input[data-option-value-id]')?.getAttribute('data-option-value-id') || null;
   }
 
+  // Two kinds of swatch: a variant option on the standard card, keyed by its option
+  // value, and a colourway thumbnail on the grouped card, keyed by product id.
+  function swatchFrom(target) {
+    const option = target.closest?.('.variant-option__swatch');
+    if (option) return { el: option, id: ovId(option) };
+
+    const thumb = target.closest?.('[data-tech-key]');
+    if (thumb) return { el: thumb, id: thumb.getAttribute('data-tech-key') };
+
+    return null;
+  }
+
   document.addEventListener('pointerover', (e) => {
-    const li = e.target.closest?.('.variant-option__swatch');
-    if (!li) return;
-    const badge = badgeOf(li);
-    const id = ovId(li);
-    if (badge && id) preview(badge, id);
+    const swatch = swatchFrom(e.target);
+    if (!swatch?.id) return;
+    const badge = badgeOf(swatch.el);
+    if (badge) preview(badge, swatch.id);
   });
 
   document.addEventListener('pointerout', (e) => {
-    const li = e.target.closest?.('.variant-option__swatch');
-    if (!li) return;
+    const swatch = swatchFrom(e.target);
+    if (!swatch) return;
     // Ignore moves between children of the same swatch
-    if (e.relatedTarget && li.contains(e.relatedTarget)) return;
-    const badge = badgeOf(li);
+    if (e.relatedTarget && swatch.el.contains(e.relatedTarget)) return;
+    const badge = badgeOf(swatch.el);
     if (badge) restore(badge);
   });
 

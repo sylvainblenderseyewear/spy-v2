@@ -4,6 +4,11 @@
   Reads product-level spec metafields, so combined-listing children pass their own data.
 
   @param {object} product - product to read `spec` metafields from
+  @param {boolean} [force_happy_boost] - show the icon even when this product has no
+    Happy Boost metaobject. The grouped PLP card uses it: the technology sits on
+    variants across the whole model, not on the card's representative colourway.
+  @param {object} [happy_boost_icon] - image to fall back to when forced and no
+    metaobject icon is available
 {%- enddoc -%}
 
 {%- liquid
@@ -19,6 +24,10 @@
         break
       endif
     endfor
+  endif
+
+  if hb_icon == blank and force_happy_boost
+    assign hb_icon = happy_boost_icon
   endif
 
   # ANSI certification -> Z87 / Z87-2+ label
@@ -39,15 +48,24 @@
 -%}
 
 {%- if hb_icon != blank -%}
-  {%- assign hb_src = hb_icon | image_url: width: 120 -%}
-  {%- if hb_src == blank -%}{%- assign hb_src = hb_icon.url -%}{%- endif -%}
+  {%- liquid
+    assign hb_src = hb_icon | image_url: width: 120
+    if hb_src == blank
+      assign hb_src = hb_icon.url | default: hb_icon
+    endif
+
+    # Reserve the right box while it loads. The metaobject icon knows its own size;
+    # the picto file arrives as a bare URL, and it's square.
+    assign hb_width = hb_icon.width | default: 80
+    assign hb_height = hb_icon.height | default: 80
+  -%}
   <img
     src="{{ hb_src }}"
     alt="Happy Boost"
-    width="60"
-    height="28"
+    width="{{ hb_width }}"
+    height="{{ hb_height }}"
     loading="lazy"
-    class="spy-tech-badge__hb h-6 w-auto object-contain"
+    class="spy-tech-badge__hb h-7 w-auto object-contain min-[750px]:h-10"
   >
 {%- endif -%}
 
