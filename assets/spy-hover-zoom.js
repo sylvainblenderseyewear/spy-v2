@@ -2,13 +2,14 @@
  * PDP hover zoom — magnifies the gallery image in place while the pointer is
  * over it, like the source site. No click, no lightbox.
  *
- * The scale comes from the source: a lens that measures 196px tall normally is
- * 362px tall while zoomed, so ~1.85x. The image is clipped by .product-media
- * (see src/tailwind.css), which lets the zoom grow into the 46px inset and stop
- * at the stage edge.
+ * Magnification follows the source instead of a fixed factor: it loads a zoom
+ * image at sw=1340 and paints it 1:1, so the zoom is always 1340px wide and the
+ * factor falls as the viewport grows (~2.4x at 1440, ~1.6x at 1920). The image is
+ * clipped by .product-media (see src/tailwind.css), which lets the zoom grow into
+ * the inset and stop at the stage edge.
  */
 (function () {
-  const ZOOM = 1.85;
+  const ZOOM_TARGET_PX = 1340;
   const SELECTOR = '[data-testid="product-information"] .product-media';
 
   // Desktop pointers only — touch has no hover and mobile shows dots instead.
@@ -38,6 +39,13 @@
     img.style.transformOrigin = `${(x / w) * 100}% ${(y / h) * 100}%`;
   }
 
+  /** Scale that brings the displayed image up to the source's 1340px zoom layer. */
+  function scaleFor(img) {
+    const w = img.offsetWidth;
+    if (!w) return null;
+    return Math.max(1, ZOOM_TARGET_PX / w);
+  }
+
   function reset(img) {
     img.style.transform = '';
     img.style.transformOrigin = '';
@@ -52,7 +60,8 @@
       const img = imageIn(container);
       if (!img) return;
       trackOrigin(container, img, event);
-      img.style.transform = `scale(${ZOOM})`;
+      const scale = scaleFor(img);
+      if (scale) img.style.transform = `scale(${scale})`;
     });
 
     // Also applies the scale, not just the origin: the pointer can already be
@@ -62,7 +71,10 @@
       const img = imageIn(container);
       if (!img) return;
       trackOrigin(container, img, event);
-      if (!img.style.transform) img.style.transform = `scale(${ZOOM})`;
+      if (!img.style.transform) {
+        const scale = scaleFor(img);
+        if (scale) img.style.transform = `scale(${scale})`;
+      }
     });
 
     container.addEventListener('pointerleave', () => {

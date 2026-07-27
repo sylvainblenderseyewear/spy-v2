@@ -9,12 +9,16 @@
   assign available = variant.available
 -%}
 
-{%- comment -%} Source renders this row at body-m: 16px / 22.4px, regular weight {%- endcomment -%}
-<div class="spy-stock-status text-[16px] leading-[1.4] py-[17px]" {{ block.shopify_attributes }}>
+{%- comment -%}
+  Source style is body-m (14/20, weight 500, +1% tracking) with the availability
+  list sitting 24px under the price and 12px above the swatches. Colour comes from
+  the sentiment tokens, not a Tailwind palette green.
+{%- endcomment -%}
+<div class="spy-stock-status mt-6 mb-3 text-[14px] font-medium leading-5 tracking-[0.01em]" {{ block.shopify_attributes }}>
   {%- if available -%}
-    <span class="text-green-700">{{ block.settings.in_stock_label | default: 'In Stock' }}</span>
+    <span class="text-[color:var(--color-spy-positive)]">{{ block.settings.in_stock_label | default: 'In Stock' }}</span>
   {%- else -%}
-    <span class="text-red-600">{{ block.settings.sold_out_label | default: 'Sold Out' }}</span>
+    <span class="text-[color:var(--color-spy-negative)]">{{ block.settings.sold_out_label | default: 'Sold Out' }}</span>
   {%- endif -%}
 </div>
 

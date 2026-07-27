@@ -16,6 +16,8 @@
   --color-spy-text-2:  #393939; /* source content-secondary */
   --color-spy-muted:   #a6a6a6; /* source content-muted */
   --color-spy-surface: #f9f9f9; /* source surface-primary — tiles, scale track */
+  --color-spy-positive: #4bb151; /* source sentiment-positive — In Stock */
+  --color-spy-negative: #d7403a; /* source sentiment-negative — Sold Out */
   --color-spy-input-border: #cccccc; /* source select/input outline */
 
   /* Spacing overrides */
@@ -719,20 +721,16 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   max-height: 100%;
 }
 
-/* Hover zoom (assets/spy-hover-zoom.js). Scale animates, origin does not, so
-   panning tracks the cursor with no lag. */
+/* Hover zoom (assets/spy-hover-zoom.js). The source runs a jQuery zoom clone —
+   `img.zoomImg { cursor: crosshair }` with no transition — so the magnification
+   snaps in and follows the pointer 1:1. No transition here either. */
 @media (hover: hover) and (min-width: 750px) {
   [data-testid="product-information"] .product-media:has(img.product-media__image) {
-    cursor: zoom-in;
+    cursor: crosshair;
   }
-  [data-testid="product-information"] .product-media img.product-media__image {
-    transition: transform 0.15s ease-out;
-    will-change: transform;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
   [data-testid="product-information"] .product-media img.product-media__image {
     transition: none;
+    will-change: transform;
   }
 }
 /* Arrows: 46px round buttons with an orange chevron, bottom-left of the stage.
@@ -827,8 +825,9 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   border-color: var(--color-spy-text);
 }
 
-/* Buttons: square + uppercase (source) */
-[data-testid="product-information"] .button,
+/* Buttons: square + uppercase (source). Gallery thumbnails are also .button but the
+   source gives them a 2px radius, so keep them out of this rule. */
+[data-testid="product-information"] .button:not(.slideshow-controls__thumbnail),
 [data-testid="product-information"] .add-to-cart-button,
 .sticky-add-to-cart__button {
   border-radius: 0;
@@ -882,10 +881,12 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   }
 }
 
-/* Price: source computes 16px/22.4px */
+/* Price uses the source's "lead" style: --ds-lead 1.125rem/1.75rem, 500, -1% */
 [data-testid="product-information"] .product-details .price {
-  font-size: 1rem;
-  line-height: 1.4;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   color: var(--color-spy-text);
 }
 
@@ -916,10 +917,17 @@ header-component .menu-list__link[href*="/blogs/journal"] {
      inset that leaves a 65px image in an 85px cell. */
   padding: 0.5rem !important;
   border: 2px solid transparent !important;
-  border-radius: 0.125rem;
+  /* !important like its siblings: .button-unstyled resets all four radius longhands */
+  border-radius: 0.125rem !important;
   background: #fff;
 }
-/* Active colour is the source's --custom-color-interactive-primary: #242424 */
+/* Active colour is the source's --custom-color-interactive-primary: #242424.
+   Horizon also marks the active thumb with a 1px slate outline at 1px offset, which
+   reads as a second line outside the border — the source has only the 2px border.
+   Dropped for the selected state but kept for keyboard focus. */
+[data-testid="product-information"] .slideshow-controls__thumbnail[aria-selected="true"]:not(:focus-visible) {
+  outline: none !important;
+}
 [data-testid="product-information"] .slideshow-controls__thumbnail[aria-selected="true"] {
   border-color: var(--color-spy-text) !important;
 }

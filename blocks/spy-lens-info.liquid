@@ -45,11 +45,16 @@
     assign skip_block = true
   endif
 
-  # "Read more" target: the block setting wins, else a technology metaobject link.
+  # "Read more" target: block setting first, then a technology metaobject link, then
+  # the spec table. The tech guide pages land in a later phase, so the spec panel is
+  # the only real "more" today — and a fragment link opens a closed <details>.
   assign read_more_url = block.settings.read_more_url
   if read_more_url == blank and technologies != blank
     assign first_tech_link = technologies | first
     assign read_more_url = first_tech_link.fields.link.value
+  endif
+  if read_more_url == blank
+    assign read_more_url = '#spy-spec-details'
   endif
 
   # Parse category number (handles "Cat. 3", "Cat. 1 (Clear) / Cat. 3", "3")

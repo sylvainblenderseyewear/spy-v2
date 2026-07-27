@@ -58,7 +58,9 @@
     {{ block.settings.heading | default: 'Technical Information' }}
     <svg class="w-4 h-4 shrink-0 text-[color:var(--color-spy-muted)] transition-transform duration-200 group-open:rotate-180" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </summary>
-  <table class="w-full border-collapse text-[13px] pb-4 [&_tr]:border-t [&_tr]:border-solid [&_tr]:border-t-[color:var(--color-spy-border)] [&_th]:text-left [&_th]:py-2 [&_th]:pr-3 [&_th]:pl-0 [&_th]:font-semibold [&_th]:w-[45%] [&_th]:align-top [&_th]:text-[color:var(--color-spy-text-2)] [&_td]:py-2 [&_td]:align-top [&_td]:text-[color:var(--color-spy-text)]">
+  {%- comment -%} id is the target of the lens panel's "Read more" — a fragment link
+    into a closed <details> makes the browser open it {%- endcomment -%}
+  <table id="spy-spec-details" class="w-full border-collapse text-[13px] pb-4 [&_tr]:border-t [&_tr]:border-solid [&_tr]:border-t-[color:var(--color-spy-border)] [&_th]:text-left [&_th]:py-2 [&_th]:pr-3 [&_th]:pl-0 [&_th]:font-semibold [&_th]:w-[45%] [&_th]:align-top [&_th]:text-[color:var(--color-spy-text-2)] [&_td]:py-2 [&_td]:align-top [&_td]:text-[color:var(--color-spy-text)]">
     <tbody>
 
       {%- comment -%}── Identification ─────────────────────────────{%- endcomment -%}
