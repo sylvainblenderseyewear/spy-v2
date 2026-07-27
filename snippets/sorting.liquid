@@ -11,7 +11,11 @@
 {%- enddoc -%}
 
 <sorting-filter-component
-  class="sorting-filter{% if filter_style == 'horizontal' %} sorting-filter__horizontal{% endif %}"
+  class="
+    sorting-filter
+    {%- if filter_style == 'horizontal' %} sorting-filter__horizontal{% endif %}
+    {%- if is_mobile_bar %} block w-full{% endif %}
+  "
   on:change="/updateFilterAndSorting"
   on:keydown="/handleKeyDown"
   {% if sort_position != blank %}
@@ -26,6 +30,12 @@
     assign is_desktop_bar = false
     if sort_position == 'desktop'
       assign is_desktop_bar = true
+    endif
+
+    # Mobile bar sits beside the FILTER button as a bare native select, no label
+    assign is_mobile_bar = false
+    if sort_position == 'mobile'
+      assign is_mobile_bar = true
     endif
 
     assign selected_sort_by = sort_by
@@ -45,18 +55,26 @@
     endif
   %}
 
-  <div class="sorting-filter__container {% if should_use_select_on_mobile %} desktop:hidden {% else %} hidden {% endif %}">
+  <div
+    class="
+      sorting-filter__container {% if should_use_select_on_mobile %} desktop:hidden {% else %} hidden {% endif %}
+      {%- if is_mobile_bar %} m-0 h-9 w-full items-center border border-solid border-spy-input-border bg-white p-0{% endif %}
+    "
+  >
     <label
       for="sort-select-{{ section_id }}"
-      class="facets__label"
+      class="facets__label{% if is_mobile_bar %} hidden{% endif %}"
     >
       {{- 'actions.sort' | t -}}
     </label>
-    <div class="sorting-filter__select-wrapper">
+    <div class="sorting-filter__select-wrapper{% if is_mobile_bar %} h-full w-full rounded-none px-3 py-0{% endif %}">
       <select
         id="sort-select-{{ section_id }}"
         name="sort_by"
-        class="sorting-filter__select"
+        class="
+          sorting-filter__select
+          {%- if is_mobile_bar %} pe-4 ps-0 text-left text-[14px] text-spy-text [text-align-last:left]{% endif %}
+        "
         {% if should_use_select_on_mobile == false %}
           disabled
         {% endif %}
@@ -72,16 +90,30 @@
           </option>
         {% endfor %}
       </select>
-      <svg
-        aria-hidden="true"
-        focusable="false"
-        class="icon icon-caret"
-        width="8"
-        height="13"
-        viewBox="0 0 8 13"
-      >
-        {%- render 'icon', icon: 'double-sided-caret' -%}
-      </svg>
+      {% if is_mobile_bar %}
+        {% comment %} Same solid triangle as the desktop trigger {% endcomment %}
+        <svg
+          class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-spy-text"
+          width="9"
+          height="6"
+          viewBox="0 0 9 6"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d="M0 0h9L4.5 6z" fill="currentColor" />
+        </svg>
+      {% else %}
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          class="icon icon-caret"
+          width="8"
+          height="13"
+          viewBox="0 0 8 13"
+        >
+          {%- render 'icon', icon: 'double-sided-caret' -%}
+        </svg>
+      {% endif %}
     </div>
   </div>
 
@@ -319,8 +351,7 @@
     grid-template-columns: var(--icon-size-sm) 1fr;
     gap: var(--margin-2xs);
     align-items: center;
-    min-width: 180px;
-    max-width: 16em;
+    width: 100%;
     padding: var(--padding-2xs) calc(var(--drawer-padding) / 2) var(--padding-2xs) var(--padding-2xs);
   }
 

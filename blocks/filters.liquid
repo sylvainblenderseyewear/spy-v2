@@ -293,7 +293,7 @@
 
   <div
     class="
-      facets-toggle
+      facets-toggle col-[var(--full-width)] h-auto items-center gap-2
       {%- if block_settings.enable_filtering == false %} facets-toggle--no-filters{% endif %}
       {%- if block_settings.filter_style == 'horizontal' and has_custom_color %} color-custom-{{ block.id }}{% endif %}
     "
@@ -303,17 +303,14 @@
     "
   >
     {% if block_settings.enable_filtering %}
-      <div class="facets-toggle__wrapper">
+      {% comment %} Source pairs a solid orange FILTER button with the sort select, 50/50 {% endcomment %}
+      <div class="facets-toggle__wrapper ms-0 flex-1">
         <button
-          class="button facets-toggle__button button-unstyled button-unstyled--with-icon"
+          class="flex h-9 w-full cursor-pointer items-center justify-center gap-2 rounded-none border-0 bg-spy-orange text-[11px] font-bold uppercase leading-none tracking-[0.08em] text-white"
           on:click="#filters-drawer/open"
           type="button"
           aria-haspopup="dialog"
         >
-          <span class="svg-wrapper">
-            {{ 'icon-filter.svg' | inline_asset_content }}
-          </span>
-
           {{ 'actions.show_filters' | t }}
 
           {% if total_active_values > 0 %}
@@ -337,9 +334,11 @@
       </div>
     {% endif %}
 
-    <div class="facets-mobile-wrapper facets-controls-wrapper">
-      {% if block_settings.enable_filtering == false and block_settings.enable_sorting %}
+    {% if block_settings.enable_sorting %}
+      {% comment %} Sort lives in the bar as a native select, never inside the drawer {% endcomment %}
+      <div class="facets-mobile-wrapper facets-controls-wrapper flex-1">
         <facets-form-component
+          class="block w-full"
           section-id="{{ section.id }}"
           id="FacetFiltersForm--{{ section.id }}-mobile-sorting-only"
           {{ collection_id_attribute }}
@@ -348,6 +347,7 @@
           {{ results_count_attribute }}
         >
           <form
+            class="w-full"
             action="{{ results_url }}"
             id="FacetFiltersForm--{{ section.id }}-mobile-sorting-only"
             ref="facetsForm"
@@ -358,13 +358,13 @@
               filter_style: block_settings.filter_style,
               suffix: 'mobile',
               sort_position: 'mobile',
-              should_use_select_on_mobile: should_use_select_on_mobile,
+              should_use_select_on_mobile: true,
               section_id: section.id
             %}
           </form>
         </facets-form-component>
-      {% endif %}
-    </div>
+      </div>
+    {% endif %}
   </div>
 {% else %}
   <div></div>
@@ -399,28 +399,26 @@
           class="facets__form"
           ref="facetsForm"
         >
-          {% capture filter_bubble_html %}
-            <span
-              class="theme-drawer__badge"
-              aria-hidden="true"
-              id="filters-drawer-bubble"
-              {% if total_active_values == 0 %}hidden{% endif %}
+          {% comment %} Source header is a bare close affordance — title kept for screen readers only {% endcomment %}
+          <div class="flex shrink-0 items-center justify-end border-0 border-b border-solid border-spy-border px-4 py-3">
+            <h2
+              id="filters-drawer-heading"
+              class="visually-hidden"
             >
-              {{ total_active_values }}
-            </span>
-            {% if total_active_values > 0 %}
-              <span class="visually-hidden">
-                {{ 'accessibility.filter_count' | t: count: total_active_values }}
+              {{ 'blocks.filter' | t }}
+            </h2>
+
+            <button
+              class="cursor-pointer border-0 bg-transparent p-1 leading-none text-spy-text"
+              on:click="#filters-drawer/close"
+              type="button"
+              aria-label="{{ 'actions.close' | t }}"
+            >
+              <span class="svg-wrapper block h-4 w-4">
+                {{- 'icon-close.svg' | inline_asset_content -}}
               </span>
-            {% endif %}
-          {% endcapture %}
-          {% assign filters_drawer_title = 'blocks.filter' | t %}
-          {% render 'theme-drawer-header',
-            title: filters_drawer_title,
-            drawer_id: 'filters-drawer',
-            heading_id: 'filters-drawer-heading',
-            title_append: filter_bubble_html
-          %}
+            </button>
+          </div>
 
           <scroll-hint
             class="facets-drawer__filters"
@@ -463,48 +461,37 @@
               </div>
             {% endif %}
 
-            {% if block_settings.enable_sorting %}
-              {% render 'sorting',
-                results: results,
-                sort_by: sort_by,
-                filter_style: block_settings.filter_style,
-                suffix: 'overflow',
-                should_use_select_on_mobile: should_use_select_on_mobile,
-                section_id: section.id
-              %}
-            {% endif %}
+            {% comment %}
+              Actions sit right after the facets — not pinned to the bottom — and sorting
+              is deliberately absent here; it lives in the mobile bar as a native select.
+            {% endcomment %}
+            <div class="mt-5 flex gap-0 border-0 border-t border-solid border-spy-border px-4 pt-5">
+              <button
+                class="h-11 flex-1 cursor-pointer rounded-none border-0 bg-spy-orange text-[12px] font-bold uppercase tracking-[0.08em] text-white"
+                type="button"
+                on:click="#filters-drawer/close"
+              >
+                {{- 'actions.show_filters' | t -}}
+              </button>
+
+              <facet-remove-component
+                class="flex-1"
+                data-url="{{ results_url }}"
+              >
+                <button
+                  type="button"
+                  class="h-11 w-full cursor-pointer rounded-none border border-solid border-spy-input-border bg-white text-[12px] font-bold uppercase tracking-[0.08em] text-spy-orange"
+                  ref="clearButton"
+                  on:click="/removeFilter?form={{ form_component }}"
+                  on:keydown="/removeFilter?form={{ form_component }}"
+                >
+                  {{- 'actions.reset' | t -}}
+                </button>
+              </facet-remove-component>
+            </div>
           </scroll-hint>
         </form>
       </facets-form-component>
-
-      <div
-        class="facets__drawer-actions"
-      >
-        <facet-remove-component
-          data-url="{{ results_url }}"
-          active-class="facets__clear-all--active"
-        >
-          <button
-            type="button"
-            class="button-secondary facets__clear-all{% if is_active %} facets__clear-all--active{% endif %}"
-            ref="clearButton"
-            on:click="/removeFilter?form={{ form_component }}"
-            on:keydown="/removeFilter?form={{ form_component }}"
-          >
-            {{- 'actions.clear_all' | t -}}
-          </button>
-        </facet-remove-component>
-
-        {% if products_count > 0 %}
-          <button
-            class="button facets__see-results"
-            type="button"
-            on:click="#filters-drawer/close"
-          >
-            {{- 'actions.see_items' | t: count: products_count -}}
-          </button>
-        {% endif %}
-      </div>
     </dialog>
   </theme-drawer>
 {% endif %}
