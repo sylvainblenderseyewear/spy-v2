@@ -1,15 +1,12 @@
 {%- doc -%}
   One PLP card for a whole model instead of one per colourway.
 
-  Same shell, refs and class hooks as `product-card`, so everything the SPY
-  card styling in tailwind.css does (square 10%-inset image, heavy uppercase
-  title, hover Quick View, reserved badge slot) applies here unchanged. Only
-  the two text slots differ: the title prints the model name from the group
-  tag, and the label prints how many colourways the model has.
-
-  There is no hover swatch row — the other colourways of the group are not in
-  scope at card level — so `.spy-grouped-card` keeps the label visible on
-  hover (see tailwind.css).
+  Same shell, refs and class hooks as `product-card`, so everything the SPY card
+  styling in tailwind.css does (square 10%-inset image, heavy uppercase title,
+  reserved badge slot, hover swatch row) applies here unchanged. Two things differ:
+  the title prints the model name from the group tag and the label prints the
+  colourway count, and there is no Quick View — the source's grouped card doesn't
+  offer one, since the card stands for a model rather than a buyable colourway.
 
   @param {object} product - the colourway that represents the group
   @param {string} group_name - model name from the `collection: xxx` tag
@@ -56,6 +53,22 @@
   assign image_sizes = image_sizes | default: '(min-width: 750px) 50vw, 100vw'
   assign card_gap_value = block_settings.product_card_gap | default: 16
   assign media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
+
+  assign show_swatches = block_settings.show_swatches
+  assign swatch_count = block_settings.swatch_count | default: 4
+
+  assign model_collection = nil
+  if show_swatches and group_name != blank
+    assign group_key = group_name | handleize
+    assign group_title = group_name | downcase | strip
+    for col in product.collections
+      assign col_title = col.title | downcase | strip
+      if col.handle == group_key or col_title == group_title
+        assign model_collection = col
+        break
+      endif
+    endfor
+  endif
 
   if block_settings.background_color != blank
     render 'contrast-override', background_color: block_settings.background_color, section_id: block.id
@@ -129,17 +142,6 @@
       </a>
     </div>
 
-    {%- if block_settings.show_quick_view -%}
-      <button
-        class="spy-quick-view-btn py-2 px-3 bg-white border border-spy-orange text-spy-orange text-[12px] font-bold uppercase tracking-widest cursor-pointer text-center transition-colors hover:bg-spy-orange hover:text-white"
-        data-spy-qv="{{ product.handle }}"
-        aria-label="Quick View {{ title | escape }}"
-        type="button"
-      >
-        Quick View
-      </button>
-    {%- endif -%}
-
     {%- comment -%} Badge slot always renders so every card keeps the same height {%- endcomment -%}
     {%- capture badge_text -%}{%- render 'spy-product-badge-text', product: product -%}{%- endcapture -%}
     <div class="spy-new-badge">
@@ -152,6 +154,52 @@
     </div>
 
     <p class="spy-color-count text-spy-gray m-0">{{ count_label }}</p>
+
+    {%- comment -%}
+      Colourway thumbnails, revealed on hover in place of the count (source behaviour:
+      the label fades out, this row fades in — same slot, so nothing below moves).
+      Sits after the count because the CSS pulls it up over both that and the badge.
+    {%- endcomment -%}
+    {%- if show_swatches and model_collection != blank -%}
+      <div class="spy-swatches" data-spy-swatches>
+        {%- for colourway in model_collection.products limit: swatch_count -%}
+          {%- if colourway.featured_media != blank -%}
+            <a
+              href="{{ colourway.url }}"
+              class="spy-swatches__item"
+              data-full="{{ colourway.featured_media | image_url: width: 640 }}"
+              aria-label="{{ title | escape }} — {{ colourway.title | escape }}"
+            >
+              {%- comment -%} 240 covers the widest the thumb flexes to on a 3x screen {%- endcomment -%}
+              <img
+                src="{{ colourway.featured_media | image_url: width: 240 }}"
+                alt="{{ colourway.title | escape }}"
+                width="42"
+                height="26"
+                loading="lazy"
+              >
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if count > swatch_count -%}
+          {%- comment -%}
+            The source points this at the model's own page. Each colourway is still its
+            own product here, so the model collection is the page that lists them all.
+          {%- endcomment -%}
+          <a
+            href="{{ model_collection.url }}"
+            class="spy-swatches__more"
+            aria-label="See all {{ count }} colors of {{ title | escape }}"
+          >
+            <svg width="28" height="10" viewBox="0 0 28 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+              <path d="M0.5 5H26.42" stroke="currentColor" stroke-miterlimit="10"></path>
+              <path d="M23.1 9.09L22.42 8.36L26.03 5L22.42 1.64L23.1 0.91L27.5 5L23.1 9.09Z" fill="currentColor"></path>
+            </svg>
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
 
     <a class="contents user-select-text" ref="productTitleLink" href="{{ target }}">
       <div class="text-block text-block--align-center rte pt-1" style="--width: 100%; --text-align: center;">
@@ -170,3 +218,8 @@
     {%- endif -%}
   </div>
 </product-card>
+
+{%- comment -%} Hovering a thumbnail previews that colourway on the card image {%- endcomment -%}
+{%- if show_swatches and model_collection != blank -%}
+  <script src="{{ 'spy-card.js' | asset_url }}" defer></script>
+{%- endif -%}

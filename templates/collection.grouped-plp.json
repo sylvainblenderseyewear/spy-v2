@@ -35,7 +35,8 @@
           "settings": {
             "label_colors_one": "1 color available",
             "label_colors_many": "[count] colors available",
-            "show_quick_view": true,
+            "show_swatches": true,
+            "swatch_count": 4,
             "show_price": false,
             "product_card_gap": 4,
             "background_color": "",
@@ -70,16 +71,11 @@
     "spy_collection_seo_A1": {
       "type": "spy-collection-seo",
       "settings": {}
-    },
-    "spy_quick_view_modal_A1": {
-      "type": "spy-quick-view",
-      "settings": {}
     }
   },
   "order": [
     "spy_collection_hero_A1",
     "main",
-    "spy_collection_seo_A1",
-    "spy_quick_view_modal_A1"
+    "spy_collection_seo_A1"
   ]
 }

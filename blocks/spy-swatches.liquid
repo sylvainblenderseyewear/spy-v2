@@ -130,7 +130,19 @@
       {%- endif -%}
     </div>
   {%- else -%}
-    <div class="spy-swatches flex flex-wrap items-center gap-2 pt-3 pb-1" data-spy-swatches {{ block.shopify_attributes }}>
+    {%- comment -%}
+      Square and fixed on purpose. These were 72x52 and free to wrap, so a card with four
+      colourways ran onto a second row and ended up taller than a two-colourway card beside
+      it. `shrink-0` keeps every thumb identical whatever the count; the sizes are the largest
+      that still fit all four (max_shown) plus 6px gaps on one line — the swatch row is
+      ~152px on mobile and ~239px on desktop.
+      object-contain rather than cover: product shots are wide, so a square crop would eat them.
+    {%- endcomment -%}
+    {%- liquid
+      assign card_swatch = 'spy-swatches__item block h-8 w-8 min-[750px]:h-9 min-[750px]:w-9 shrink-0 overflow-hidden border'
+      assign card_swatch_img = 'block h-full w-full object-contain'
+    -%}
+    <div class="spy-swatches flex flex-wrap items-center gap-1.5 pt-3 pb-1" data-spy-swatches {{ block.shopify_attributes }}>
       {%- if color_option != nil and color_option.values.size > 0 -%}
         {%- for v in color_option.values limit: max_shown -%}
           {%- assign media = v.variant.featured_media | default: p.media[forloop.index0] | default: p.featured_media -%}
@@ -138,25 +150,25 @@
             {%- assign v_url = v.variant.url | default: p.url -%}
             <a
               href="{{ v_url }}"
-              class="spy-swatches__item block w-[72px] h-[52px] border border-[color:var(--color-spy-border)] overflow-hidden hover:border-[color:var(--color-foreground,#2c393e)]"
+              class="{{ card_swatch }} border-[color:var(--color-spy-border)] hover:border-[color:var(--color-foreground,#2c393e)]"
               data-full="{{ media | image_url: width: 640 }}"
               aria-label="{{ p.title | escape }} – {{ v.name | escape }}"
             >
-              <img src="{{ media | image_url: width: 160 }}" alt="{{ v.name | escape }}" width="72" height="52" loading="lazy" class="w-full h-full object-cover block">
+              <img src="{{ media | image_url: width: 144 }}" alt="{{ v.name | escape }}" width="36" height="36" loading="lazy" class="{{ card_swatch_img }}">
             </a>
           {%- endif -%}
         {%- endfor -%}
         {%- if color_option.values.size > max_shown -%}
-          <a href="{{ p.url }}" class="spy-swatches__more inline-flex items-center justify-center w-7 h-7 text-spy-gray hover:text-spy-orange no-underline" aria-label="View all {{ color_option.values.size }} colors">&rarr;</a>
+          <a href="{{ p.url }}" class="spy-swatches__more inline-flex w-7 h-7 shrink-0 items-center justify-center text-spy-gray hover:text-spy-orange no-underline" aria-label="View all {{ color_option.values.size }} colors">&rarr;</a>
         {%- endif -%}
       {%- elsif p.featured_media != blank -%}
         <a
           href="{{ p.url }}"
-          class="spy-swatches__item block w-[72px] h-[52px] border border-[color:var(--color-foreground,#2c393e)] overflow-hidden"
+          class="{{ card_swatch }} border-[color:var(--color-foreground,#2c393e)]"
           data-full="{{ p.featured_media | image_url: width: 640 }}"
           aria-label="{{ p.title | escape }}"
         >
-          <img src="{{ p.featured_media | image_url: width: 160 }}" alt="{{ p.title | escape }}" width="72" height="52" loading="lazy" class="w-full h-full object-cover block">
+          <img src="{{ p.featured_media | image_url: width: 144 }}" alt="{{ p.title | escape }}" width="36" height="36" loading="lazy" class="{{ card_swatch_img }}">
         </a>
       {%- endif -%}
     </div>
