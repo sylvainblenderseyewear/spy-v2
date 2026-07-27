@@ -91,13 +91,17 @@
     >
       {{- 'actions.sort' | t -}}
     </label>
-    <div class="sorting-filter__select-wrapper{% if is_mobile_bar %} h-full w-full rounded-none px-3 py-0{% endif %}">
+    {% comment %}
+      Padding lives on the select, not this wrapper: Chrome sizes the native option popup to
+      the select element, so insetting it here made the list narrower than the visible box.
+    {% endcomment %}
+    <div class="sorting-filter__select-wrapper{% if is_mobile_bar %} h-full w-full rounded-none p-0{% endif %}">
       <select
         id="sort-select-{{ section_id }}"
         name="sort_by"
         class="
           sorting-filter__select
-          {%- if is_mobile_bar %} pe-4 ps-0 text-left text-[14px] text-spy-text [text-align-last:left]{% endif %}
+          {%- if is_mobile_bar %} h-full w-full ps-3 pe-7 text-left text-[14px] text-spy-text [text-align-last:left]{% endif %}
         "
         {% if should_use_select_on_mobile == false %}
           disabled
