@@ -1,0 +1,42 @@
+{%- doc -%}
+  Prints the model name a product is grouped under, taken from its
+  `collection: xxx` tag. Every colourway of one model carries the same tag,
+  so the value doubles as the grouping key on the grouped PLP.
+
+  Tolerates the three spellings the catalogue uses: `collection: Cyrus`,
+  `collection:Cyrus` and `collection::Cyrus`. Prints nothing when the product
+  has no group tag — the caller then treats it as a group of one.
+
+  @param {object} product - product to read tags from
+
+  @example
+  {%- capture group_name -%}
+    {%- render 'spy-group-name', product: product -%}
+  {%- endcapture -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign spy_group_name = ''
+
+  for tag in product.tags
+    assign head = tag | slice: 0, 11 | downcase
+    unless head == 'collection:'
+      continue
+    endunless
+
+    assign rest = tag | slice: 11, 255
+
+    # a second colon means the `collection::Name` spelling
+    assign lead = rest | slice: 0, 1
+    if lead == ':'
+      assign rest = rest | slice: 1, 255
+    endif
+
+    assign spy_group_name = rest | strip
+    if spy_group_name != ''
+      break
+    endif
+  endfor
+
+  echo spy_group_name
+-%}

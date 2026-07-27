@@ -1,0 +1,43 @@
+{%- doc -%}
+  Prints the badge copy for a product card, or nothing when it earns no badge.
+  Priority: a per-product badge from `pdp.badge_text`, then the sale
+  percentage, then "New" (from `pdp.badge_new` or a `new` tag).
+
+  @param {object} product - product to read price, metafields and tags from
+
+  @example
+  {%- capture badge_text -%}
+    {%- render 'spy-product-badge-text', product: product -%}
+  {%- endcapture -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign badge_text = ''
+  assign custom = product.metafields.pdp.badge_text.value
+  assign cmp = product.compare_at_price_max
+
+  if custom != blank
+    assign badge_text = custom
+  elsif cmp > product.price
+    assign pct = cmp | minus: product.price | times: 100.0 | divided_by: cmp | round
+    assign badge_text = 'On Sale ' | append: pct | append: '% Off'
+  else
+    assign is_new = false
+    if product.metafields.pdp.badge_new.value == true
+      assign is_new = true
+    else
+      for t in product.tags
+        assign t_lower = t | downcase
+        if t_lower == 'new'
+          assign is_new = true
+          break
+        endif
+      endfor
+    endif
+    if is_new
+      assign badge_text = 'New'
+    endif
+  endif
+
+  echo badge_text
+-%}

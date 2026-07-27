@@ -3217,9 +3217,52 @@ fly-to-cart.fly-to-cart--sticky {
   }
 }
 
-.collection-wrapper:has(.facets--vertical) .facets-block-wrapper--vertical:not(.hidden) ~ .main-collection-grid {
+/* The sidebar track's width is a registered (animatable) custom property, so the
+   grid reflows smoothly instead of jumping between two different track structures. */
+@property --sidebar-track-width {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+.collection-wrapper:has(.facets--vertical) {
   @media screen and (min-width: 750px) {
-    grid-column: var(--facets-vertical-col-width) / var(--full-width-column-number);
+    --sidebar-track-width: 0px;
+
+    transition: --sidebar-track-width 0.4s ease-in-out;
+    will-change: --sidebar-track-width;
+    grid-template-columns:
+      1fr
+      var(--sidebar-track-width)
+      minmax(0, calc(var(--page-width) - var(--page-margin) * 2 - var(--sidebar-track-width)))
+      1fr;
+  }
+}
+
+.collection-wrapper:has(#vertical-filters-panel:not(.hidden)) {
+  @media screen and (min-width: 750px) {
+    --sidebar-track-width: 15.625rem;
+  }
+}
+
+.collection-wrapper:has(.facets--vertical) #vertical-filters-panel {
+  @media screen and (min-width: 750px) {
+    grid-column: 2 / 3;
+  }
+}
+
+.collection-wrapper:has(.facets--vertical) .facets-block-wrapper--vertical:not(#filters-drawer) ~ .main-collection-grid {
+  @media screen and (min-width: 750px) {
+    grid-column: 3 / 4;
+  }
+}
+
+/* Fixed column count at all times (open or closed) for vertical-filter collections —
+   cards resize fluidly with the available width instead of the count dropping, and
+   there's no discrete auto-fill-to-fixed switch at the moment the panel opens. */
+.collection-wrapper:has(.facets--vertical) .product-grid--grid {
+  @media screen and (min-width: 750px) {
+    --product-grid-columns-desktop: repeat(5, 1fr);
   }
 }
 

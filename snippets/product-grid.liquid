@@ -79,6 +79,13 @@
     }
   }
 {% endstyle %}
+{% comment %}
+  Horizon's .grid class is display:flex/column below 750px, but Tailwind ships a .grid
+  utility too and important-mode makes it win — so the wrapper became a real grid on
+  mobile and the ul's `margin: auto` could no longer centre the cards, leaving them flush
+  right with all the slack on the left. Restore the flex column below 750px and pad it with
+  the same inline padding the filter bar uses, so the cards line up underneath it.
+{% endcomment %}
 <div
   id="ResultsList"
   class="
@@ -86,7 +93,7 @@
     {%- if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}
     {%- if section.settings.product_grid_width == 'full-width' %} collection-wrapper--full-width{% endif %}
     {%- if section.settings.full_width_on_mobile == true %} collection-wrapper--full-width-on-mobile{% endif %}
-    spacing-style
+    spacing-style max-[749px]:flex max-[749px]:flex-col max-[749px]:px-[var(--padding-lg)]
   "
 
   style="
@@ -124,7 +131,7 @@
         <h4 class="main-collection-grid__title">{{ title }}</h4>
       {% endif %}
       <ul
-        class="product-grid product-grid--{{ section.id }} product-grid--{{ section.settings.layout_type }} {% if section.settings.mobile_product_card_size == 'large' %} product-grid-mobile--large{% endif %}"
+        class="product-grid product-grid--{{ section.id }} product-grid--{{ section.settings.layout_type }} {% if section.settings.mobile_product_card_size == 'large' %} product-grid-mobile--large{% endif %} max-[749px]:mx-0 max-[749px]:w-full"
         data-testid="product-grid"
         product-grid-view="default"
         ref="grid"
@@ -134,31 +141,15 @@
         style="--mobile-columns: {% if section.settings.mobile_product_card_size == 'large' %}1{% else %}2{% endif %};"
       >
         {% comment %}
-          This script is used to set the grid view on the product grid stored in sessionStorage. Keeping it here helps us prevent seeing the default state.
+          The grid-density switcher is gone, so the grid always renders in the default
+          view. Any stale sessionStorage value is dropped — otherwise a shopper who
+          picked "zoom-out" before would be stuck in it with no control to switch back.
         {% endcomment %}
         {% unless request.design_mode %}
           <script>
             (() => {
-              const grid = document.querySelector('.product-grid');
-              if (!grid) return;
-
-              const storedLayoutMobile = sessionStorage.getItem('product-grid-view-mobile') || 'default';
-              const storedLayoutDesktop = sessionStorage.getItem('product-grid-view-desktop') || 'default';
-
-              // No need to read the window width if no custom layouts were saved.
-              if (storedLayoutMobile === 'default' && storedLayoutDesktop === 'default') return;
-
-              const storedLayout = window.innerWidth >= 750 ? storedLayoutDesktop : storedLayoutMobile;
-              if (storedLayout === 'default') return;
-
-              grid.setAttribute('product-grid-view', storedLayout);
-
-              const options = document.querySelectorAll(
-                'input[type="radio"][name="grid"], input[type="radio"][name="grid-mobile"]'
-              );
-              for (const option of options) {
-                option.checked = option.value === storedLayout;
-              }
+              sessionStorage.removeItem('product-grid-view-mobile');
+              sessionStorage.removeItem('product-grid-view-desktop');
             })();
           </script>
         {% endunless %}

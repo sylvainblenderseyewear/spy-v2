@@ -10,8 +10,27 @@
   @param {string} section_id - The section ID
 {%- enddoc -%}
 
+{%- liquid
+  # Assigned up here because the wrapper's own class list reads them
+  # Boxed trigger only in the horizontal bar; the drawer keeps Horizon's inline look
+  assign is_desktop_bar = false
+  if sort_position == 'desktop'
+    assign is_desktop_bar = true
+  endif
+
+  # Mobile bar sits beside the FILTER button as a bare native select, no label
+  assign is_mobile_bar = false
+  if sort_position == 'mobile'
+    assign is_mobile_bar = true
+  endif
+-%}
+
 <sorting-filter-component
-  class="sorting-filter{% if filter_style == 'horizontal' %} sorting-filter__horizontal{% endif %}"
+  class="
+    sorting-filter
+    {%- if filter_style == 'horizontal' %} sorting-filter__horizontal{% endif %}
+    {%- if is_mobile_bar %} block w-full{% endif %}
+  "
   on:change="/updateFilterAndSorting"
   on:keydown="/handleKeyDown"
   {% if sort_position != blank %}
@@ -21,50 +40,108 @@
 >
   {% liquid
     assign default_sort_by = results.default_sort_by
+
+    # Source offers three sorts under its own names, not Shopify's full nine.
+    # Built as parallel lists because Liquid can't map over objects.
+    assign sort_values = ''
+    assign sort_names = ''
     for option in results.sort_options
-      if option.value == sort_by
-        assign status = option.name
+      assign option_label = ''
+      case option.value
+        when 'best-selling'
+          assign option_label = 'actions.sort_most_popular' | t
+        when 'price-ascending'
+          assign option_label = 'actions.sort_price_low_to_high' | t
+        when 'price-descending'
+          assign option_label = 'actions.sort_price_high_to_low' | t
+      endcase
+      if option_label != ''
+        assign sort_values = sort_values | append: option.value | append: '~|~'
+        assign sort_names = sort_names | append: option_label | append: '~|~'
       endif
     endfor
+    assign sort_values = sort_values | split: '~|~'
+    assign sort_names = sort_names | split: '~|~'
+
+    assign selected_sort_by = sort_by
+    assign status = ''
+    for value in sort_values
+      if value == selected_sort_by
+        assign status = sort_names[forloop.index0]
+      endif
+    endfor
+
+    # Current sort isn't one we expose (e.g. a collection defaulting to Featured), so the
+    # trigger would render blank. Fall back to the first option we do offer.
+    if status == blank and sort_values.size > 0
+      assign selected_sort_by = sort_values[0]
+      assign status = sort_names[0]
+    endif
   %}
 
-  <div class="sorting-filter__container {% if should_use_select_on_mobile %} desktop:hidden {% else %} hidden {% endif %}">
+  <div
+    class="
+      sorting-filter__container {% if should_use_select_on_mobile %} desktop:hidden {% else %} hidden {% endif %}
+      {%- if is_mobile_bar %} m-0 h-9 w-full items-center border border-solid border-spy-input-border bg-white p-0{% endif %}
+    "
+  >
     <label
       for="sort-select-{{ section_id }}"
-      class="facets__label"
+      class="facets__label{% if is_mobile_bar %} hidden{% endif %}"
     >
       {{- 'actions.sort' | t -}}
     </label>
-    <div class="sorting-filter__select-wrapper">
+    {% comment %}
+      Padding lives on the select, not this wrapper: Chrome sizes the native option popup to
+      the select element, so insetting it here made the list narrower than the visible box.
+    {% endcomment %}
+    <div class="sorting-filter__select-wrapper{% if is_mobile_bar %} h-full w-full rounded-none p-0{% endif %}">
       <select
         id="sort-select-{{ section_id }}"
         name="sort_by"
-        class="sorting-filter__select"
+        class="
+          sorting-filter__select
+          {%- if is_mobile_bar %} h-full w-full ps-3 pe-7 text-left text-[14px] text-spy-text [text-align-last:left]{% endif %}
+        "
         {% if should_use_select_on_mobile == false %}
           disabled
         {% endif %}
       >
-        {% for option in results.sort_options %}
+        {% for value in sort_values %}
           <option
-            value="{{ option.value }}"
-            {% if option.value == sort_by %}
+            value="{{ value }}"
+            {% if value == selected_sort_by %}
               selected
             {% endif %}
           >
-            {{ option.name }}
+            {{ sort_names[forloop.index0] }}
           </option>
         {% endfor %}
       </select>
-      <svg
-        aria-hidden="true"
-        focusable="false"
-        class="icon icon-caret"
-        width="8"
-        height="13"
-        viewBox="0 0 8 13"
-      >
-        {%- render 'icon', icon: 'double-sided-caret' -%}
-      </svg>
+      {% if is_mobile_bar %}
+        {% comment %} Same solid triangle as the desktop trigger {% endcomment %}
+        <svg
+          class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-spy-text"
+          width="9"
+          height="6"
+          viewBox="0 0 9 6"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d="M0 0h9L4.5 6z" fill="currentColor" />
+        </svg>
+      {% else %}
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          class="icon icon-caret"
+          width="8"
+          height="13"
+          viewBox="0 0 8 13"
+        >
+          {%- render 'icon', icon: 'double-sided-caret' -%}
+        </svg>
+      {% endif %}
     </div>
   </div>
 
@@ -85,49 +162,83 @@
         ref="summary"
       >
         <span
-          class="facets__label"
+          class="
+            facets__label
+            {%- if is_desktop_bar %} me-2.5 self-center text-[13px] font-bold uppercase tracking-[0.06em] text-spy-text{% endif %}
+          "
           id="sort-label-{{ section_id }}"
         >
           {{- 'actions.sort' | t -}}
         </span>
         <span
-          class="facets__status h6 desktop:hidden"
+          class="
+            sorting-filter__value
+            {%- if is_desktop_bar %} flex h-9 w-sort-trigger items-center gap-2 self-center rounded-none border border-solid border-spy-input-border bg-white px-3{% endif %}
+          "
         >
-          {{- status -}}
-        </span>
-        <span class="svg-wrapper icon-caret icon-animated">
-          {{- 'icon-caret.svg' | inline_asset_content -}}
+          <span
+            class="
+              facets__status
+              {%- if is_desktop_bar %} ms-0 flex-1 text-left text-[14px] font-normal leading-none text-spy-text{% else %} h6{% endif %}
+            "
+          >
+            {{- status -}}
+          </span>
+          {% if is_desktop_bar %}
+            {% comment %} Source uses a solid triangle here, not Horizon's chevron {% endcomment %}
+            <svg
+              class="shrink-0 text-spy-text"
+              width="9"
+              height="6"
+              viewBox="0 0 9 6"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M0 0h9L4.5 6z" fill="currentColor" />
+            </svg>
+          {% else %}
+            <span class="svg-wrapper icon-caret icon-animated">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          {% endif %}
         </span>
       </summary>
       <floating-panel-component
         id="sorting-options-{{ section_id }}-{{ suffix }}"
-        class="sorting-filter__options color-custom-popover"
+        class="
+          sorting-filter__options color-custom-popover
+          {%- if is_desktop_bar %} w-sort-trigger min-w-0{% endif %}
+        "
         role="listbox"
         aria-labelledby="sort-label-{{ section_id }}"
         ref="listbox"
       >
-        <div class="sorting-filter__options-inner">
-          {% for option in results.sort_options %}
+        <div class="sorting-filter__options-inner{% if is_desktop_bar %} p-0{% endif %}">
+          {% for value in sort_values %}
+            {% assign option_name = sort_names[forloop.index0] %}
             <label
-              for="sort-option-{{ option.value }}-{{ section_id }}"
+              for="sort-option-{{ value }}-{{ section_id }}"
             >
               <div
-                class="sorting-filter__option"
+                class="
+                  sorting-filter__option
+                  {%- if is_desktop_bar %} min-w-0 max-w-none px-3 py-2{% endif %}
+                "
                 role="option"
-                aria-selected="{% if option.value == sort_by %}true{% else %}false{% endif %}"
-                tabindex="{% if option.value == sort_by %}0{% else %}-1{% endif %}"
+                aria-selected="{% if value == selected_sort_by %}true{% else %}false{% endif %}"
+                tabindex="{% if value == selected_sort_by %}0{% else %}-1{% endif %}"
               >
                 <input
                   type="radio"
                   name="sort_by"
-                  id="sort-option-{{ option.value }}-{{ section_id }}"
+                  id="sort-option-{{ value }}-{{ section_id }}"
                   {% if suffix != blank %}
                     form="FacetFiltersForm--{{ section_id }}-{{ suffix }}"
                   {% endif %}
-                  value="{{ option.value }}"
+                  value="{{ value }}"
                   class="sorting-filter__input"
-                  data-option-name="{{ option.name }}"
-                  {% if option.value == sort_by %}
+                  data-option-name="{{ option_name }}"
+                  {% if value == selected_sort_by %}
                     checked
                   {% endif %}
                   aria-hidden="true"
@@ -135,7 +246,7 @@
                 <span class="svg-wrapper icon-checkmark sorting-filter__checkmark">
                   {{- 'icon-checkmark.svg' | inline_asset_content -}}
                 </span>
-                <span class="sorting-filter__label">{{ option.name }}</span>
+                <span class="sorting-filter__label">{{ option_name }}</span>
               </div>
             </label>
           {% endfor %}
@@ -230,7 +341,6 @@
     box-shadow: var(--shadow-popover);
     border: var(--style-border-popover);
     background-color: var(--color-background);
-    border-radius: var(--style-border-radius-popover);
     width: max-content;
     min-width: var(--facets-panel-min-width);
     min-height: 0;
@@ -270,18 +380,8 @@
     grid-template-columns: var(--icon-size-sm) 1fr;
     gap: var(--margin-2xs);
     align-items: center;
-    min-width: 180px;
-    max-width: 16em;
+    width: 100%;
     padding: var(--padding-2xs) calc(var(--drawer-padding) / 2) var(--padding-2xs) var(--padding-2xs);
-
-    &:hover {
-      border-radius: calc(var(--style-border-radius-popover) / 2);
-      background-color: rgb(var(--color-foreground-rgb) / var(--opacity-8));
-    }
-
-    &:focus {
-      border-radius: calc(var(--style-border-radius-popover) / 2);
-    }
   }
 
   .sorting-filter__input {
@@ -352,6 +452,49 @@
   .facets--drawer .sorting-filter {
     @media screen and (min-width: 750px) {
       display: none;
+    }
+  }
+
+  /* Horizontal bar sort control - boxed trigger, pinned to the right */
+  .facets--horizontal .sorting-filter {
+    @media screen and (min-width: 750px) {
+      margin-inline-start: auto;
+    }
+  }
+
+  /* Drawer/mobile keeps the label and value inline; the boxed desktop trigger is
+     styled with utilities on the markup instead. */
+  .sorting-filter__value {
+    display: contents;
+  }
+
+  .facets--horizontal .sorting-filter .facets__status {
+    @media screen and (min-width: 750px) {
+      display: block;
+    }
+  }
+
+  .facets--horizontal .sorting-filter__options {
+    @media screen and (min-width: 750px) {
+      min-width: 100%;
+    }
+  }
+
+  .facets--horizontal .sorting-filter__option {
+    @media screen and (min-width: 750px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .facets--horizontal .sorting-filter__checkmark {
+    @media screen and (min-width: 750px) {
+      display: none;
+    }
+  }
+
+  .facets--horizontal .sorting-filter__option[aria-selected='true'] {
+    @media screen and (min-width: 750px) {
+      background-color: rgb(var(--color-foreground-rgb) / var(--opacity-8));
     }
   }
 {% endstylesheet %}

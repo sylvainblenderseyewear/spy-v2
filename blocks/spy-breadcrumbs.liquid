@@ -1,44 +1,9 @@
-{%- doc -%}
-  PDP breadcrumb — matches the source: a single category item (e.g. "Sunglasses"),
-  uppercase + gray, linked to that category collection. No Home, no product name.
-  Uses product.type for the label and links to the same-handle collection when it
-  exists, falling back to the first real collection.
-{%- enddoc -%}
+{%- comment -%}
+  Breadcrumbs — add it to any section, on any template.
+  All logic and styling live in the snippet so every page renders the same trail.
+{%- endcomment -%}
 
-{%- liquid
-  assign p = closest.product
-  assign cat_label = p.type
-  assign cat_url = ''
-
-  if p.type != blank
-    assign cat_handle = p.type | handleize
-    assign cat_col = collections[cat_handle]
-    if cat_col.url != blank
-      assign cat_url = cat_col.url
-    endif
-  endif
-
-  # Fallback: first collection that is not the homepage / catch-all
-  if cat_label == blank
-    for col in p.collections
-      if col.handle != 'frontpage' and col.handle != 'all'
-        assign cat_label = col.title
-        assign cat_url = col.url
-        break
-      endif
-    endfor
-  endif
--%}
-
-{%- if cat_label != blank -%}
-<nav class="pb-2" aria-label="Breadcrumb" {{ block.shopify_attributes }}>
-  {%- if cat_url != blank -%}
-    <a href="{{ cat_url }}" class="text-[12px] font-medium uppercase tracking-[0.08em] text-spy-gray no-underline hover:text-spy-orange">{{ cat_label }}</a>
-  {%- else -%}
-    <span class="text-[12px] font-medium uppercase tracking-[0.08em] text-spy-gray">{{ cat_label }}</span>
-  {%- endif -%}
-</nav>
-{%- endif -%}
+{%- render 'spy-breadcrumbs', shopify_attributes: block.shopify_attributes -%}
 
 {% schema %}
 {

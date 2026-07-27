@@ -131,13 +131,23 @@ export function startViewTransition(callback, types) {
 
     const transition = document.startViewTransition(callback);
 
+    // Aborting a transition (e.g. "timeout in DOM update" on a slow section render) rejects
+    // ready, updateCallbackDone AND finished. None of them had a rejection handler, so an
+    // abort surfaced as an uncaught page error, cleanup never ran, and this promise never
+    // settled — leaving callers that await the render hanging. The DOM update still lands
+    // either way, so swallow the rejections and treat an abort as done.
+    transition.ready.catch(() => {});
+    transition.updateCallbackDone.catch(() => {});
+    const settled = transition.finished.catch(() => {});
+
+    // Several components `await viewTransition.current`, so it must never reject.
     if (!viewTransition.current) {
-      viewTransition.current = transition.finished;
+      viewTransition.current = settled;
     }
 
     if (types) types.forEach((type) => transition.types.add(type));
 
-    transition.finished.then(() => {
+    settled.then(() => {
       viewTransition.current = undefined;
       cleanupFunctions.forEach((cleanupFunction) => cleanupFunction());
       resolve();

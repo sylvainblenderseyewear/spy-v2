@@ -1,0 +1,172 @@
+{%- doc -%}
+  One PLP card for a whole model instead of one per colourway.
+
+  Same shell, refs and class hooks as `product-card`, so everything the SPY
+  card styling in tailwind.css does (square 10%-inset image, heavy uppercase
+  title, hover Quick View, reserved badge slot) applies here unchanged. Only
+  the two text slots differ: the title prints the model name from the group
+  tag, and the label prints how many colourways the model has.
+
+  There is no hover swatch row — the other colourways of the group are not in
+  scope at card level — so `.spy-grouped-card` keeps the label visible on
+  hover (see tailwind.css).
+
+  @param {object} product - the colourway that represents the group
+  @param {string} group_name - model name from the `collection: xxx` tag
+  @param {number} group_count - how many colourways the group holds
+  @param {object} [block] - calling block, for appearance + label settings
+  @param {string} [image_sizes] - sizes attribute for the card image
+  @param {string} [product_view_context] - context passed to the view event
+
+  @example
+  {%- render 'spy-grouped-product-card',
+    product: product,
+    group_name: 'Cyrus',
+    group_count: 23,
+    block: block
+  -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign block_settings = block.settings
+
+  assign title = group_name | strip
+  if title == blank
+    assign title = product.title
+  endif
+
+  assign target = product.selected_or_first_available_variant.url
+  if target == blank
+    assign target = product.url
+  endif
+
+  # Groups always hold at least the product in hand
+  assign count = group_count | plus: 0
+  if count < 1
+    assign count = 1
+  endif
+
+  if count == 1
+    assign count_label = block_settings.label_colors_one | default: '1 color available'
+  else
+    assign count_label = block_settings.label_colors_many | default: '[count] colors available'
+  endif
+  assign count_label = count_label | replace: '[count]', count
+
+  assign image_sizes = image_sizes | default: '(min-width: 750px) 50vw, 100vw'
+  assign card_gap_value = block_settings.product_card_gap | default: 16
+  assign media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
+
+  if block_settings.background_color != blank
+    render 'contrast-override', background_color: block_settings.background_color, section_id: block.id
+  endif
+-%}
+
+<product-card
+  class="product-card spy-grouped-card size-style"
+  style="{% render 'size-style', settings: block_settings %}"
+  data-product-id="{{ product.id }}"
+  data-group-name="{{ title | escape }}"
+  data-group-count="{{ count }}"
+  id="product-card-{{ block.id }}-{{ product.id }}"
+  {{ block.shopify_attributes }}
+  {% # theme-check-disable-next-line UnknownFilter %}
+  view-event-payload="{{ product | standard_event_data: 'view', context: product_view_context | escape }}"
+>
+  <a
+    href="{{ target }}"
+    class="product-card__link"
+    ref="productCardLink"
+  >
+    <span class="visually-hidden">{{ title }}</span>
+  </a>
+
+  <div
+    class="
+      product-card__content
+      layout-panel-flex
+      layout-panel-flex--column
+      product-grid__card
+      spacing-style
+      border-style
+      gap-style
+      {% if block_settings.background_color != blank %} color-custom-{{ block.id }}{% endif %}
+    "
+    style="
+      {% render 'border-override', settings: block_settings %}
+      {% render 'layout-panel-style', settings: block_settings %}
+      {% render 'spacing-style', settings: block_settings %}
+      {% render 'gap-style', value: card_gap_value, name: 'product-card-gap' %}
+      --quick-add-display: none;
+      --quick-add-mobile-display: none;
+      --quick-add-mobile-opacity: 0;
+    "
+  >
+    <spy-tech-badge
+      class="spy-tech-badge absolute top-2.5 right-2.5 z-10 flex items-start gap-1.5 pointer-events-none"
+    >
+      <span class="spy-tech-badge__current flex items-start gap-1.5" data-tech-current>
+        {%- render 'spy-tech-badges', product: product -%}
+      </span>
+    </spy-tech-badge>
+
+    <div class="card-gallery" data-product-id="{{ product.id }}">
+      <a
+        class="contents"
+        ref="cardGalleryLink"
+        href="{{ target }}"
+        aria-label="{{ title | escape }}"
+      >
+        {%- if media != blank -%}
+          {{
+            media
+            | image_url: width: 1000
+            | image_tag: sizes: image_sizes, widths: '200,300,400,500,600,800,1000', alt: title, loading: 'lazy'
+          }}
+        {%- else -%}
+          {{ 'product-apparel-1' | placeholder_svg_tag }}
+        {%- endif -%}
+      </a>
+    </div>
+
+    {%- if block_settings.show_quick_view -%}
+      <button
+        class="spy-quick-view-btn py-2 px-3 bg-white border border-spy-orange text-spy-orange text-[12px] font-bold uppercase tracking-widest cursor-pointer text-center transition-colors hover:bg-spy-orange hover:text-white"
+        data-spy-qv="{{ product.handle }}"
+        aria-label="Quick View {{ title | escape }}"
+        type="button"
+      >
+        Quick View
+      </button>
+    {%- endif -%}
+
+    {%- comment -%} Badge slot always renders so every card keeps the same height {%- endcomment -%}
+    {%- capture badge_text -%}{%- render 'spy-product-badge-text', product: product -%}{%- endcapture -%}
+    <div class="spy-new-badge">
+      {%- if badge_text != blank -%}
+        <span
+          class="spy-badge-pill border border-spy-orange text-spy-orange text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 leading-none"
+          >{{ badge_text | strip }}</span
+        >
+      {%- endif -%}
+    </div>
+
+    <p class="spy-color-count text-spy-gray m-0">{{ count_label }}</p>
+
+    <a class="contents user-select-text" ref="productTitleLink" href="{{ target }}">
+      <div class="text-block text-block--align-center rte pt-1" style="--width: 100%; --text-align: center;">
+        <p role="heading" aria-level="3">{{ title }}</p>
+      </div>
+    </a>
+
+    {%- if block_settings.show_price -%}
+      <product-price
+        class="text-block text-block--align-center rte"
+        data-product-id="{{ product.id }}"
+        style="--width: 100%; --text-align: center;"
+      >
+        {%- render 'price', product_resource: product, show_sale_price_first: true -%}
+      </product-price>
+    {%- endif -%}
+  </div>
+</product-card>
