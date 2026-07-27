@@ -14,7 +14,7 @@
       "settings": {}
     },
     "main": {
-      "type": "main-collection",
+      "type": "spy-grouped-collection",
       "blocks": {
         "filters": {
           "type": "filters",
@@ -38,10 +38,14 @@
           },
           "blocks": {}
         },
-        "product-card": {
-          "type": "_product-card",
+        "grouped-product-card": {
+          "type": "_spy-grouped-product-card",
           "static": true,
           "settings": {
+            "label_colors_one": "1 color available",
+            "label_colors_many": "[count] colors available",
+            "show_quick_view": true,
+            "show_price": false,
             "product_card_gap": 4,
             "background_color": "",
             "border": "none",
@@ -54,119 +58,13 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {
-            "spy_tech_badge_A1": {
-              "type": "spy-tech-badge",
-              "name": "Tech Badge",
-              "settings": {},
-              "blocks": {}
-            },
-            "card-gallery": {
-              "type": "_product-card-gallery",
-              "settings": {
-                "image_ratio": "square",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_color": "",
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "spy_quick_view_btn_A1": {
-              "type": "spy-quick-view-btn",
-              "name": "Quick View Button",
-              "settings": {},
-              "blocks": {}
-            },
-            "spy_new_badge_A1": {
-              "type": "spy-new-badge",
-              "name": "Badge",
-              "settings": {},
-              "blocks": {}
-            },
-            "spy_color_count_A1": {
-              "type": "spy-color-count",
-              "name": "Color Count",
-              "settings": {},
-              "blocks": {}
-            },
-            "swatches_card": {
-              "type": "spy-swatches",
-              "name": "Color Preview",
-              "settings": {},
-              "blocks": {}
-            },
-            "product_title_card": {
-              "type": "product-title",
-              "name": "Title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "center",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "uppercase",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_card": {
-              "type": "price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "center",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "text_color": "",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "spy_tech_badge_A1",
-            "card-gallery",
-            "spy_quick_view_btn_A1",
-            "spy_new_badge_A1",
-            "spy_color_count_A1",
-            "swatches_card",
-            "product_title_card",
-            "price_card"
-          ]
+          "blocks": {}
         }
       },
       "settings": {
         "layout_type": "grid",
         "product_card_size": "large",
         "mobile_product_card_size": "small",
-        "enable_infinite_scroll": false,
-        "products_per_page": 24,
         "product_grid_width": "centered",
         "full_width_on_mobile": true,
         "columns_gap_horizontal": 16,

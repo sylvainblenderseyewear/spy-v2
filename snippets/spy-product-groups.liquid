@@ -1,0 +1,74 @@
+{%- doc -%}
+  Counts how many colourways each model has on the current collection page and
+  prints the result as a lookup table the caller can split apart.
+
+  Products are grouped by their `collection: xxx` tag; a product without one is
+  its own group of one, keyed by id. Output is two `~|~`-joined lists — group
+  keys, then counts — separated by `~#~`, so index N of one lines up with index
+  N of the other.
+
+  Scope note: Liquid never exposes more than 50 collection products per page, so
+  the counts here only cover this page. The caller prefers a model collection's
+  own product count when it can find one.
+
+  @param {object} products - the page's products (`collection.products`)
+
+  @example
+  {%- capture groups -%}
+    {%- render 'spy-product-groups', products: collection.products -%}
+  {%- endcapture -%}
+  {%- assign groups = groups | strip | split: '~#~' -%}
+  {%- assign group_keys = groups[0] | split: '~|~' -%}
+  {%- assign group_counts = groups[1] | split: '~|~' -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign sep = '~|~'
+  assign all_keys = ''
+
+  # One key per product, in page order
+  for product in products
+    capture name
+      render 'spy-group-name', product: product
+    endcapture
+    assign name = name | strip
+
+    if name == ''
+      assign key = 'ungrouped-' | append: product.id
+    else
+      assign key = name | handleize
+    endif
+
+    assign all_keys = all_keys | append: key | append: sep
+  endfor
+
+  assign keys_arr = all_keys | split: sep
+
+  # Unique keys, first-seen order. `seen` is wrapped in separators on both
+  # sides so a short key can't match inside a longer one.
+  assign seen = sep
+  assign ordered = ''
+  for key in keys_arr
+    assign probe = sep | append: key | append: sep
+    unless seen contains probe
+      assign seen = seen | append: key | append: sep
+      assign ordered = ordered | append: key | append: sep
+    endunless
+  endfor
+
+  assign ordered_arr = ordered | split: sep
+  assign counts = ''
+  for key in ordered_arr
+    assign total = 0
+    for candidate in keys_arr
+      if candidate == key
+        assign total = total | plus: 1
+      endif
+    endfor
+    assign counts = counts | append: total | append: sep
+  endfor
+
+  echo ordered
+  echo '~#~'
+  echo counts
+-%}

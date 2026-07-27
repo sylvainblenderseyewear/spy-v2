@@ -20,6 +20,9 @@
   /* Spacing overrides */
   --spacing-page: 1.5rem;   /* default page gutter */
 
+  /* Sort control: trigger box and its dropdown share one width so they can't drift */
+  --spacing-sort-trigger: 180px;
+
   /* Typography — D-DIN stands in for DIN Next LT Pro until licensed files arrive */
   --font-spy: "DINNextLTPro", "D-DIN", sans-serif;
   --font-sans: "DINNextLTPro", "D-DIN", sans-serif;
@@ -433,6 +436,32 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   :is(collection-component, .section-resource-list) .product-card:hover:has(.text-block:hover) .spy-new-badge {
     opacity: 1;
     visibility: visible;
+  }
+}
+
+/* ── Grouped PLP card ────────────────────────────────────────────────
+   Reuses every rule above (square image, heavy title, Quick View, badge
+   slot). Two differences: it has no hover swatch row, so the label and
+   badge must stay put instead of fading out to make room for one; and the
+   label holds a colourway count, which reads better without ellipsis.
+   ──────────────────────────────────────────────────────────────────── */
+@media screen and (min-width: 750px) {
+  :is(collection-component, .section-resource-list) .product-card.spy-grouped-card:hover .spy-color-count,
+  :is(collection-component, .section-resource-list) .product-card.spy-grouped-card:hover .spy-new-badge {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* base.css holds the filtered grid at 5 fixed columns from 750px up, which leaves
+   cards near 105px at tablet — narrow enough for "23 colors available" to wrap and
+   push the titles out of line. Hold it to one line at a smaller size until the
+   columns are wide enough for the full size. */
+@media screen and (min-width: 750px) and (max-width: 1100px) {
+  :is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-color-count {
+    /* stylelint-disable-next-line declaration-no-important */
+    font-size: 0.75rem !important;
+    white-space: nowrap;
   }
 }
 
