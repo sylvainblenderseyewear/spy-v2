@@ -4,8 +4,9 @@
   `collection::MODEL` tag, so this section folds them together: it counts the
   group, renders one colourway as its card, and skips the rest.
 
-  Same shell as `main-collection` (filters, sort, breadcrumb, pagination), so a
-  collection can be moved between the two templates with nothing else to change.
+  Same shell as `main-collection` (filters, sort, pagination), so a collection can
+  be moved between the two templates with nothing else to change. No breadcrumb —
+  add `spy-breadcrumbs` as a block if the grouped PLP ever wants one.
 
   Liquid never hands a page more than 50 collection products, which is the whole
   difficulty here: a model's colourways are scattered through the sort order, so
@@ -53,14 +54,6 @@
     <div
       class="collection-wrapper grid gap-style{% if section.settings.product_grid_width == 'full-width' %} collection-wrapper--grid-full-width{% endif %}"
     >
-      {% comment %}
-        Breadcrumb takes the same grid span and inline padding as .facets-toggle so both
-        left edges line up — see main-collection for the full note.
-      {% endcomment %}
-      <div class="col-[var(--full-width)] px-[var(--padding-lg)] pb-3 min-[750px]:col-[2/4] min-[750px]:px-0 min-[750px]:pb-4">
-        {% render 'spy-breadcrumbs' %}
-      </div>
-
       {% content_for 'block',
         type: 'filters',
         id: 'filters',
