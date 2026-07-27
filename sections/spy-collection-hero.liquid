@@ -8,19 +8,27 @@
   fixed height plus `object-fit: cover` keeps the band from collapsing into a
   strip the way an `h-auto` image does at 390px.
 
-  Images resolve section setting first (Layer 2), then collection metafield
-  (Layer 3), then the desktop image. When a breakpoint falls back to the desktop
-  asset there is no matching crop, so the focal point pins to the dark panel —
-  the title stays legible instead of landing on the photo. Upload a per-breakpoint
-  asset and the focal setting takes over.
+  Images resolve section setting first (Layer 2), then the collection metafield in
+  either the `collection` or `custom` namespace (Layer 3), then the desktop image.
+  When a breakpoint falls back to the desktop asset there is no matching crop, so
+  the focal point pins to the dark panel — the title stays legible instead of
+  landing on the photo. Set a per-breakpoint asset and the focal setting takes over.
+
+  Metafield keys: `hero_image`, `hero_image_tablet`, `hero_image_mobile`
+  (file_reference). Only `hero_image` exists so far; the other two need defining
+  before they can hold anything.
 {%- endcomment -%}
 
 {%- liquid
-  assign meta = collection.metafields.collection
+  # Two namespaces on purpose: `collection` is what the audit schema specifies and
+  # what the API creates, `custom` is where the admin UI puts a definition unless
+  # you override it. Reading both means the hero works whichever route was used.
+  assign mf = collection.metafields.collection
+  assign mf_custom = collection.metafields.custom
 
-  assign img_desktop = section.settings.image_desktop | default: meta.hero_image.value
-  assign img_tablet = section.settings.image_tablet | default: meta.hero_image_tablet.value
-  assign img_mobile = section.settings.image_mobile | default: meta.hero_image_mobile.value
+  assign img_desktop = section.settings.image_desktop | default: mf.hero_image.value | default: mf_custom.hero_image.value
+  assign img_tablet = section.settings.image_tablet | default: mf.hero_image_tablet.value | default: mf_custom.hero_image_tablet.value
+  assign img_mobile = section.settings.image_mobile | default: mf.hero_image_mobile.value | default: mf_custom.hero_image_mobile.value
 
   # Track the fallbacks so the focal point can favour the dark panel
   assign tablet_is_fallback = false
@@ -132,7 +140,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Falls back to the collection's `hero_image`, `hero_image_tablet` and `hero_image_mobile` metafields when no image is set here. The source uses a separate, taller crop on mobile — set one to match it exactly."
+      "content": "Falls back to the collection's `hero_image`, `hero_image_tablet` and `hero_image_mobile` metafields (namespace `collection` or `custom`) when no image is set here. The source uses a separate, taller crop on mobile — set one to match it exactly."
     },
     {
       "type": "header",
