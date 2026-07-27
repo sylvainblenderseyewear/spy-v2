@@ -1,24 +1,127 @@
+{%- comment -%}
+  Collection hero — the banner above the PLP grid, with the collection name set
+  over the artwork's dark panel.
+
+  The source ships a DIFFERENT crop per breakpoint, not one image scaled down:
+  desktop is a wide 6.5:1 band, mobile a taller 2.2:1 one. So each breakpoint has
+  its own image, height and focal point. A `<picture>` swaps the asset, and a
+  fixed height plus `object-fit: cover` keeps the band from collapsing into a
+  strip the way an `h-auto` image does at 390px.
+
+  Images resolve section setting first (Layer 2), then collection metafield
+  (Layer 3), then the desktop image. When a breakpoint falls back to the desktop
+  asset there is no matching crop, so the focal point pins to the dark panel —
+  the title stays legible instead of landing on the photo. Upload a per-breakpoint
+  asset and the focal setting takes over.
+{%- endcomment -%}
+
 {%- liquid
-  assign hero_img = collection.metafields.collection.hero_image.value
-  if hero_img == blank
-    assign skip_section = true
+  assign meta = collection.metafields.collection
+
+  assign img_desktop = section.settings.image_desktop | default: meta.hero_image.value
+  assign img_tablet = section.settings.image_tablet | default: meta.hero_image_tablet.value
+  assign img_mobile = section.settings.image_mobile | default: meta.hero_image_mobile.value
+
+  # Track the fallbacks so the focal point can favour the dark panel
+  assign tablet_is_fallback = false
+  if img_tablet == blank
+    assign img_tablet = img_desktop
+    assign tablet_is_fallback = true
   endif
+
+  assign mobile_is_fallback = false
+  if img_mobile == blank
+    assign img_mobile = img_desktop
+    assign mobile_is_fallback = true
+  endif
+
+  assign focus_desktop = section.settings.focal_desktop
+  assign focus_tablet = section.settings.focal_tablet
+  assign focus_mobile = section.settings.focal_mobile
+  if tablet_is_fallback
+    assign focus_tablet = 'left'
+  endif
+  if mobile_is_fallback
+    assign focus_mobile = 'left'
+  endif
+
+  assign heading = section.settings.heading | default: collection.title
 -%}
 
-{%- unless skip_section -%}
-<div class="w-full leading-[0]" {{ section.shopify_attributes }}>
-  {{
-    hero_img
-    | image_url: width: 2000
-    | image_tag:
-      loading: 'eager',
-      alt: collection.title,
-      sizes: '100vw',
-      widths: '750, 1100, 1500, 2000',
-      class: 'w-full h-auto block max-h-[400px] object-cover'
-  }}
-</div>
-{%- endunless -%}
+{%- if img_desktop != blank -%}
+  <div
+    class="spy-collection-hero relative w-full overflow-hidden leading-[0]"
+    style="
+      --hero-height-mobile: {{ section.settings.height_mobile }}px;
+      --hero-height-tablet: {{ section.settings.height_tablet }}px;
+      --hero-height-desktop: {{ section.settings.height_desktop }}px;
+      --hero-focus-mobile: {{ focus_mobile }};
+      --hero-focus-tablet: {{ focus_tablet }};
+      --hero-focus-desktop: {{ focus_desktop }};
+      --hero-panel-mobile: {{ section.settings.panel_width_mobile }}%;
+      --hero-panel-tablet: {{ section.settings.panel_width_tablet }}%;
+      --hero-panel-desktop: {{ section.settings.panel_width_desktop }}%;
+      --hero-title-mobile: {{ section.settings.title_size_mobile }}px;
+      --hero-title-tablet: {{ section.settings.title_size_tablet }}px;
+      --hero-title-desktop: {{ section.settings.title_size_desktop }}px;
+    "
+    {{ section.shopify_attributes }}
+  >
+    <picture>
+      <source
+        media="(min-width: 1100px)"
+        srcset="{{ img_desktop | image_url: width: 1500 }} 1500w, {{ img_desktop | image_url: width: 2000 }} 2000w, {{ img_desktop | image_url: width: 2800 }} 2800w"
+        sizes="100vw"
+      >
+      <source
+        media="(min-width: 750px)"
+        srcset="{{ img_tablet | image_url: width: 900 }} 900w, {{ img_tablet | image_url: width: 1200 }} 1200w, {{ img_tablet | image_url: width: 1600 }} 1600w"
+        sizes="100vw"
+      >
+      <img
+        src="{{ img_mobile | image_url: width: 800 }}"
+        srcset="{{ img_mobile | image_url: width: 500 }} 500w, {{ img_mobile | image_url: width: 800 }} 800w, {{ img_mobile | image_url: width: 1200 }} 1200w"
+        sizes="100vw"
+        alt="{{ heading | escape }}"
+        width="{{ img_mobile.width }}"
+        height="{{ img_mobile.height }}"
+        loading="eager"
+        fetchpriority="high"
+        class="
+          block w-full object-cover
+          h-[var(--hero-height-mobile)] object-[var(--hero-focus-mobile)_center]
+          min-[750px]:h-[var(--hero-height-tablet)] min-[750px]:object-[var(--hero-focus-tablet)_center]
+          min-[1100px]:h-[var(--hero-height-desktop)] min-[1100px]:object-[var(--hero-focus-desktop)_center]
+        "
+      >
+    </picture>
+
+    {%- if section.settings.show_heading and heading != blank -%}
+      {%- comment -%}
+        The title centres inside a zone measured from the left edge, so its position
+        tracks the artwork's dark panel per breakpoint instead of the whole banner.
+      {%- endcomment -%}
+      <div class="pointer-events-none absolute inset-0 flex items-center">
+        <h1
+          class="
+            m-0 w-[var(--hero-panel-mobile)] text-center uppercase leading-tight
+            text-[length:var(--hero-title-mobile)]
+            min-[750px]:w-[var(--hero-panel-tablet)] min-[750px]:text-[length:var(--hero-title-tablet)]
+            min-[1100px]:w-[var(--hero-panel-desktop)] min-[1100px]:text-[length:var(--hero-title-desktop)]
+          "
+          style="
+            color: {{ section.settings.heading_color }};
+            font-family: var(--font-heading--family);
+            font-weight: {{ section.settings.heading_weight }};
+            letter-spacing: {{ section.settings.heading_tracking }}em;
+          "
+        >
+          {{- heading -}}
+        </h1>
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
 
 {% schema %}
 {
@@ -26,7 +129,216 @@
   "enabled_on": {
     "templates": ["collection"]
   },
-  "settings": [],
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Falls back to the collection's `hero_image`, `hero_image_tablet` and `hero_image_mobile` metafields when no image is set here. The source uses a separate, taller crop on mobile — set one to match it exactly."
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Image — desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_tablet",
+      "label": "Image — tablet"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Image — mobile"
+    },
+    {
+      "type": "header",
+      "content": "Height"
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "label": "Height — desktop",
+      "min": 120,
+      "max": 600,
+      "step": 5,
+      "unit": "px",
+      "default": 240
+    },
+    {
+      "type": "range",
+      "id": "height_tablet",
+      "label": "Height — tablet",
+      "info": "A height taller than the image's own ratio crops it inwards and can cut the subject. 120px shows the desktop banner whole at 768px wide — raise it once a tablet image is set.",
+      "min": 100,
+      "max": 500,
+      "step": 5,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Height — mobile",
+      "min": 100,
+      "max": 400,
+      "step": 5,
+      "unit": "px",
+      "default": 170
+    },
+    {
+      "type": "header",
+      "content": "Crop focus",
+      "info": "Which part of the image to keep when it is cropped to the height above. Ignored for a breakpoint with no image of its own — that one pins to the dark panel."
+    },
+    {
+      "type": "select",
+      "id": "focal_desktop",
+      "label": "Focus — desktop",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "focal_tablet",
+      "label": "Focus — tablet",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "focal_mobile",
+      "label": "Focus — mobile",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Collection name"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_heading",
+      "label": "Show collection name",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Override text",
+      "info": "Leave empty to use the collection title."
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Text colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "700", "label": "Bold" },
+        { "value": "900", "label": "Black" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "heading_tracking",
+      "label": "Letter spacing",
+      "options": [
+        { "value": "0", "label": "None" },
+        { "value": "0.02", "label": "Tight" },
+        { "value": "0.05", "label": "Normal" },
+        { "value": "0.1", "label": "Wide" },
+        { "value": "0.15", "label": "Wider" }
+      ],
+      "default": "0.05"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Size — desktop",
+      "min": 12,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "title_size_tablet",
+      "label": "Size — tablet",
+      "min": 10,
+      "max": 56,
+      "step": 1,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Size — mobile",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Name position",
+      "info": "Width of the zone the name is centred in, measured from the left edge — set it to twice the distance from the edge to the middle of the dark panel."
+    },
+    {
+      "type": "range",
+      "id": "panel_width_desktop",
+      "label": "Zone — desktop",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "panel_width_tablet",
+      "label": "Zone — tablet",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 58
+    },
+    {
+      "type": "range",
+      "id": "panel_width_mobile",
+      "label": "Zone — mobile",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 52
+    }
+  ],
   "presets": []
 }
 {% endschema %}
