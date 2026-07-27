@@ -32,7 +32,7 @@
     </a>
   {% endif %}
 
-  <header-actions class="flex items-center gap-0 -mr-[9px]">
+  <header-actions class="flex items-center gap-0">
     {% if block.settings.show_search %}
       <search-button class="block">
         <button
@@ -105,30 +105,11 @@
       </a>
     {% endif %}
 
-    {% if block.settings.show_country and localization.available_countries.size > 1 %}
-      <dropdown-localization-component class="dropdown-localization hidden md:flex items-center relative">
-        <button
-          type="button"
-          class="button-unstyled flex items-center gap-1 h-11 px-2 text-[13px] font-bold uppercase text-spy-ink hover:text-spy-orange transition-colors"
-          aria-expanded="false"
-          aria-controls="dropdown-localization-results"
-          ref="button"
-          on:click="/toggleSelector"
-        >
-          <span>{{ localization.country.currency.iso_code }}</span>
-          <span class="visually-hidden">{{ 'accessibility.localization_region_and_language' | t }}</span>
-          <span class="block w-3 h-3">{{- 'spy-fa-caret.svg' | inline_asset_content -}}</span>
-        </button>
-        <div class="localization-wrapper right-bound color-custom-popover" hidden ref="panel">
-          {% render 'localization-form',
-            show_country: true,
-            show_language: false,
-            localization_style: 'dropdown',
-            form_id: block.id
-          %}
-        </div>
-      </dropdown-localization-component>
-    {% endif %}
+    {% comment %}
+      Country selector is intentionally NOT in this icon row. The live site keeps
+      it in the top bar and footer, and it crowds/clips the four icons. Country
+      lives in the footer instead.
+    {% endcomment %}
 
     <span ref="liveRegion" class="sr-only" role="status"></span>
   </header-actions>

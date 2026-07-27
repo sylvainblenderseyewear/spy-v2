@@ -558,11 +558,14 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    Uses Horizon's own 750px two-column breakpoint to avoid a ratio jump.
    ═══════════════════════════════════════════════════════════════════════ */
 
-/* 58/42 columns. `product-component` in the selector lifts specificity above
-   Horizon's own ratio rules so this wins regardless of stylesheet order. */
+/* Column split from the source: info column starts at x=855 of 1440, so
+   815:535 of the 1350px content box (see
+   audit/pdp-eyewear-source-column.json). `product-component` in the selector
+   lifts specificity above Horizon's own ratio rules so this wins regardless
+   of stylesheet order. */
 @media (min-width: 750px) {
   [data-testid="product-information"] product-component.product-information__grid.product-information--media-left {
-    grid-template-columns: 7fr 5fr;
+    grid-template-columns: 815fr 535fr;
   }
   /* Pin the shorter gallery; let the taller info column scroll (source behavior) */
   [data-testid="product-information"] .product-information__media {
@@ -573,16 +576,54 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   }
 }
 
-/* Keep 58/42 past Horizon's 1200px `2fr 1fr` rule */
+/* Keep the same split past Horizon's 1200px `2fr 1fr` rule */
 @media (min-width: 1200px) {
   [data-testid="product-information"] product-component.product-information__grid.product-information--media-left {
-    grid-template-columns: 7fr 5fr;
+    grid-template-columns: 815fr 535fr;
   }
 }
 
 /* White stage behind gallery images, like the source */
 [data-testid="product-information"] .product-information__media img {
   background: #fff;
+}
+
+/* ── Gallery stage geometry, measured off the source at 1739px wide ──────
+   rail 85 · 19px gap · square 832px stage holding a 740px image, so the image
+   is inset 46px on every side. 46px is exactly a 44px arrow button plus 1px
+   either side — the bottom strip of that inset is what the arrows sit in, and
+   the source never puts them over the product. */
+[data-testid="product-information"] slideshow-component {
+  column-gap: 20px;
+}
+/* Mobile swaps the arrows for dots, so nothing needs the 46px strip there —
+   keep the source's ~89% image-to-stage ratio instead of a fat white margin. */
+[data-testid="product-information"] .product-media {
+  padding: 5.53% !important;
+}
+@media (min-width: 750px) {
+  [data-testid="product-information"] .product-media {
+    padding: 46px !important;
+  }
+}
+
+/* Arrows: bottom-left strip under the image, side by side. Horizon centres them
+   over the slide with inset:0 + space-between, which covered the product. */
+[data-testid="product-information"] slideshow-arrows {
+  inset: auto auto 0 0 !important;
+  width: auto !important;
+  height: auto !important;
+  justify-content: flex-start !important;
+  gap: 4px;
+  padding-inline-start: 20px;
+}
+[data-testid="product-information"] slideshow-arrows .slideshow-control {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+  color: var(--color-spy-text) !important;
+  pointer-events: auto;
 }
 
 /* Frame color swatches: 56px photo swatch, dark selected border (source) */
@@ -676,18 +717,20 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   opacity: 0.5;
 }
 
-/* Gallery stage tint like the source (brightness .96) */
-[data-testid="product-information"] .product-information__media img {
-  filter: brightness(0.96);
-}
-
-/* Gallery thumbnail rail: transparent 2px border → dark on active (source) */
+/* Cell width comes from the `thumbnail_width` setting (85px, source value).
+   Keep the 1px border in BOTH states. Horizon drops it on the selected cell,
+   which made the thumb image jump 68px → 72px when you picked one. !important
+   because Horizon's own rules load after this file. */
 [data-testid="product-information"] .slideshow-controls__thumbnail {
-  border: 2px solid transparent;
-  border-radius: 2px;
+  aspect-ratio: 1 !important;
+  height: auto !important;
+  padding: 9px !important;
+  border: 1px solid transparent !important;
+  border-radius: 0;
+  background: #fff;
 }
 [data-testid="product-information"] .slideshow-controls__thumbnail[aria-selected="true"] {
-  border-color: var(--color-spy-text);
+  border-color: var(--color-spy-text) !important;
 }
 
 /* ── Collection filter sidebar ───────────────────────────────────────

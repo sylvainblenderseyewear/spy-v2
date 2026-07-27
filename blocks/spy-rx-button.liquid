@@ -1,8 +1,4 @@
-{%- liquid
-  assign p = closest.product
-  assign rx = p.metafields.spec.available_rx.value
--%}
-{%- if rx -%}
+{%- comment -%} Shown on the eyewear PDP by default (SPY frames are RX-eligible). {%- endcomment -%}
 <a
   href="{{ block.settings.rx_url | default: 'https://www.sportrx.com' }}"
   class="flex items-center justify-center w-full py-3 mt-2 border border-spy-orange text-spy-orange uppercase font-bold text-[0.8125rem] tracking-[0.06em] no-underline hover:bg-spy-orange hover:text-white transition-colors"
@@ -11,7 +7,6 @@
 >
   {{ block.settings.label | default: 'Buy in Prescription' }}
 </a>
-{%- endif -%}
 
 {% schema %}
 {
