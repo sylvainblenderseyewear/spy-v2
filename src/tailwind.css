@@ -439,6 +439,32 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   }
 }
 
+/* ── Grouped PLP card ────────────────────────────────────────────────
+   Reuses every rule above (square image, heavy title, Quick View, badge
+   slot). Two differences: it has no hover swatch row, so the label and
+   badge must stay put instead of fading out to make room for one; and the
+   label holds a colourway count, which reads better without ellipsis.
+   ──────────────────────────────────────────────────────────────────── */
+@media screen and (min-width: 750px) {
+  :is(collection-component, .section-resource-list) .product-card.spy-grouped-card:hover .spy-color-count,
+  :is(collection-component, .section-resource-list) .product-card.spy-grouped-card:hover .spy-new-badge {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* base.css holds the filtered grid at 5 fixed columns from 750px up, which leaves
+   cards near 105px at tablet — narrow enough for "23 colors available" to wrap and
+   push the titles out of line. Hold it to one line at a smaller size until the
+   columns are wide enough for the full size. */
+@media screen and (min-width: 750px) and (max-width: 1100px) {
+  :is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-color-count {
+    /* stylelint-disable-next-line declaration-no-important */
+    font-size: 0.75rem !important;
+    white-space: nowrap;
+  }
+}
+
 /* Footer links: plain, inherit colour, subtle hover */
 :is(.spy-footer, .spy-footer-utilities) a {
   color: inherit;

@@ -1,0 +1,52 @@
+{%- doc -%}
+  Prints two facts about the collection that holds a model's colourways, as
+  `count~^~first_product_id`.
+
+  Staging keeps one collection per model, handle-matched to the group tag
+  (`collection::CYRUS` → `cyrus`), which makes it the only page-independent
+  source of truth on the grouped PLP: `count` is the real colourway total that
+  a 50-product page can't see, and `first_product_id` names one colourway as
+  the model's representative so the same card can't appear on two pages.
+
+  Only an exact handle or title match counts — a curated collection the product
+  happens to sit in must never be mistaken for the model. Both fields come back
+  blank when there's no match, and the caller falls back to page-scoped
+  grouping.
+
+  `first_product_id` costs a product fetch, so ask for it only when needed.
+
+  @param {object} product - a colourway of the model
+  @param {string} group_name - model name from the group tag
+  @param {boolean} [want_first] - also print the representative's id
+
+  @example
+  {%- capture facts -%}
+    {%- render 'spy-model-collection-facts', product: product, group_name: name -%}
+  {%- endcapture -%}
+  {%- assign facts = facts | strip | split: '~^~' -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign total = ''
+  assign first_id = ''
+
+  if group_name != blank
+    assign group_key = group_name | handleize
+    assign group_title = group_name | downcase | strip
+
+    for col in product.collections
+      assign col_title = col.title | downcase | strip
+      if col.handle == group_key or col_title == group_title
+        assign total = col.all_products_count
+        if want_first
+          assign first_id = col.products.first.id
+        endif
+        break
+      endif
+    endfor
+  endif
+
+  echo total
+  echo '~^~'
+  echo first_id
+-%}

@@ -1,0 +1,391 @@
+{%- comment -%}
+  Grouped PLP — the category grid with one card per model instead of one per
+  colourway. Staging carries each colourway as its own product, all sharing a
+  `collection::MODEL` tag, so this section folds them together: it counts the
+  group, renders one colourway as its card, and skips the rest.
+
+  Same shell as `main-collection` (filters, sort, breadcrumb, pagination), so a
+  collection can be moved between the two templates with nothing else to change.
+
+  Liquid never hands a page more than 50 collection products, which is the whole
+  difficulty here: a model's colourways are scattered through the sort order, so
+  grouping page by page would repeat the same model on page after page (measured:
+  189 cards for 137 models across 8 pages). Two modes handle that:
+
+  - PAGE mode, when the results fit one page: that page holds every product there
+    is to group, so first-seen-wins is exact and costs nothing extra.
+  - MODEL mode, when they don't: the model's own collection names one colourway as
+    the representative, so a model renders on exactly one page whatever the sort
+    order (measured: 137 cards for 137 models, no repeats).
+
+  Known limit: in MODEL mode a filter can hide the representative colourway, and
+  the model then drops off the grid even though other colourways matched. Filters
+  usually narrow to a single page, where PAGE mode takes over and nothing is lost.
+  The real fix is the combined-listing migration, which retires this section and
+  hands everything back to `main-collection`.
+{%- endcomment -%}
+
+<script
+  src="{{ 'results-list.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
+{% liquid
+  if section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+%}
+
+<div
+  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+></div>
+{% # theme-check-disable-next-line UnknownFilter %}
+<collection-component view-event-payload="{{ collection | standard_event_data: 'view' | escape }}">
+  <results-list
+    class="section product-grid-container{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+    style="--padding-block-start: {{ section.settings.padding-block-start }}px; --padding-block-end: {{ section.settings.padding-block-end }}px;"
+    section-id="{{ section.id }}"
+    infinite-scroll="false"
+  >
+    {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
+
+    <div
+      class="collection-wrapper grid gap-style{% if section.settings.product_grid_width == 'full-width' %} collection-wrapper--grid-full-width{% endif %}"
+    >
+      {% comment %}
+        Breadcrumb takes the same grid span and inline padding as .facets-toggle so both
+        left edges line up — see main-collection for the full note.
+      {% endcomment %}
+      <div class="col-[var(--full-width)] px-[var(--padding-lg)] pb-3 min-[750px]:col-[2/4] min-[750px]:px-0 min-[750px]:pb-4">
+        {% render 'spy-breadcrumbs' %}
+      </div>
+
+      {% content_for 'block',
+        type: 'filters',
+        id: 'filters',
+        results: collection,
+        results_size: collection.products_count
+      %}
+
+      {% comment %}
+        50 is the most products Liquid will hand us per page, and every extra one is
+        another colourway the grouping can fold in — so always ask for all 50.
+      {% endcomment %}
+      {% paginate collection.products by 50 %}
+        {% capture children %}
+          {%- capture groups -%}
+            {%- render 'spy-product-groups', products: collection.products -%}
+          {%- endcapture -%}
+
+          {%- liquid
+            assign sep = '~|~'
+            assign groups = groups | strip | split: '~#~'
+            assign group_keys = groups[0] | split: sep
+            assign group_counts = groups[1] | split: sep
+
+            # One page holds every product there is to group, so first-seen-wins is
+            # exact and costs nothing. Past that, only the model collection can keep
+            # a model off a second page.
+            assign model_mode = false
+            if paginate.pages > 1
+              assign model_mode = true
+            endif
+
+            # Keys of groups holding at least one in-stock colourway, so PAGE mode
+            # can front the model with something a shopper can actually buy
+            assign in_stock_keys = sep
+            unless model_mode
+              for product in collection.products
+                unless product.available
+                  continue
+                endunless
+                capture group_name
+                  render 'spy-group-name', product: product
+                endcapture
+                assign group_name = group_name | strip
+                if group_name == ''
+                  assign group_key = 'ungrouped-' | append: product.id
+                else
+                  assign group_key = group_name | handleize
+                endif
+                assign probe = sep | append: group_key | append: sep
+                unless in_stock_keys contains probe
+                  assign in_stock_keys = in_stock_keys | append: group_key | append: sep
+                endunless
+              endfor
+            endunless
+
+            assign rendered_keys = sep
+            assign card_index = 0
+          -%}
+
+          {%- comment -%} Same auto-fill maths the stock gallery uses — worked out once, not per card {%- endcomment -%}
+          {%- capture card_size -%}
+            {%- render 'util-product-grid-card-size', section: section -%}
+          {%- endcapture -%}
+          {%- capture image_sizes -%}
+            {%- render 'util-autofill-img-size-attr',
+              card_size: card_size,
+              card_gap: section.settings.columns_gap_horizontal
+            -%}
+          {%- endcapture -%}
+          {%- assign image_sizes = image_sizes | strip -%}
+
+          {%- for product in collection.products -%}
+            {%- liquid
+              capture group_name
+                render 'spy-group-name', product: product
+              endcapture
+              assign group_name = group_name | strip
+
+              if group_name == ''
+                assign group_key = 'ungrouped-' | append: product.id
+              else
+                assign group_key = group_name | handleize
+              endif
+              assign probe = sep | append: group_key | append: sep
+
+              capture model_facts
+                render 'spy-model-collection-facts', product: product, group_name: group_name, want_first: model_mode
+              endcapture
+              assign model_facts = model_facts | strip | split: '~^~'
+              assign model_total = model_facts[0] | plus: 0
+              # plus: 0 so the captured string compares as a number; ids are never 0
+              assign model_first_id = model_facts[1] | plus: 0
+
+              # Does this colourway get to stand for the model?
+              assign is_representative = true
+              if model_mode and model_first_id > 0
+                unless model_first_id == product.id
+                  assign is_representative = false
+                endunless
+              else
+                if rendered_keys contains probe
+                  assign is_representative = false
+                elsif product.available == false and in_stock_keys contains probe
+                  assign is_representative = false
+                endif
+              endif
+            -%}
+
+            {%- unless is_representative -%}
+              {%- continue -%}
+            {%- endunless -%}
+
+            {%- liquid
+              assign rendered_keys = rendered_keys | append: group_key | append: sep
+
+              # Colourway count: the model collection knows the total a single page
+              # can't see, so it wins over what we counted here.
+              assign group_count = 1
+              for candidate_key in group_keys
+                if candidate_key == group_key
+                  assign group_count = group_counts[forloop.index0] | plus: 0
+                  break
+                endif
+              endfor
+              if model_total > group_count
+                assign group_count = model_total
+              endif
+            -%}
+
+            <li
+              id="{{ section.id }}-{{ product.id }}"
+              class="product-grid__item product-grid__item--{{ card_index }}"
+              data-page="{{ paginate.current_page }}"
+              data-product-id="{{ product.id }}"
+              data-group-key="{{ group_key }}"
+              ref="cards[]"
+            >
+              {% content_for 'block',
+                type: '_spy-grouped-product-card',
+                id: 'grouped-product-card',
+                closest.product: product,
+                group_name: group_name,
+                group_count: group_count,
+                image_sizes: image_sizes,
+                product_view_context: 'collection'
+              %}
+            </li>
+
+            {%- assign card_index = card_index | plus: 1 -%}
+          {%- endfor -%}
+        {% endcapture %}
+
+        {% render 'product-grid',
+          section: section,
+          children: children,
+          products: collection.products,
+          paginate: paginate,
+          enable_infinite_scroll: false
+        %}
+      {% endpaginate %}
+    </div>
+  </results-list>
+</collection-component>
+
+{% schema %}
+{
+  "name": "Grouped collection",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "One card per model. Colourways are matched on their `collection::MODEL` tag."
+    },
+    {
+      "type": "select",
+      "id": "layout_type",
+      "label": "t:settings.type",
+      "options": [
+        {
+          "value": "grid",
+          "label": "t:options.grid"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "product_card_size",
+      "label": "t:settings.card_size",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:options.small"
+        },
+        {
+          "value": "medium",
+          "label": "t:options.medium"
+        },
+        {
+          "value": "large",
+          "label": "t:options.large"
+        },
+        {
+          "value": "extra-large",
+          "label": "t:options.extra_large"
+        }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "select",
+      "id": "mobile_product_card_size",
+      "label": "t:settings.mobile_card_size",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:options.small"
+        },
+        {
+          "value": "large",
+          "label": "t:options.large"
+        }
+      ],
+      "default": "small"
+    },
+    {
+      "type": "header",
+      "content": "t:content.layout"
+    },
+    {
+      "type": "select",
+      "id": "product_grid_width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "centered",
+          "label": "t:options.page"
+        },
+        {
+          "value": "full-width",
+          "label": "t:options.full"
+        }
+      ],
+      "default": "centered"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width_on_mobile",
+      "label": "t:settings.full_width_on_mobile",
+      "default": true,
+      "visible_if": "{{ section.settings.product_grid_width != 'full-width' }}"
+    },
+    {
+      "type": "range",
+      "id": "columns_gap_horizontal",
+      "label": "t:settings.horizontal_gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "columns_gap_vertical",
+      "label": "t:settings.vertical_gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "t:content.section_layout"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom_padding",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": []
+}
+{% endschema %}

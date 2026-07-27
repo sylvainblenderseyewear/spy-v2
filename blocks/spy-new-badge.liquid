@@ -1,34 +1,8 @@
-{%- liquid
-  assign p = closest.product
-  assign badge_text = ''
-
-  # Custom per-product badge wins (e.g. a value offer), then sale %, then "New"
-  assign custom = p.metafields.pdp.badge_text.value
-  assign cmp = p.compare_at_price_max
-
-  if custom != blank
-    assign badge_text = custom
-  elsif cmp > p.price
-    assign pct = cmp | minus: p.price | times: 100.0 | divided_by: cmp | round
-    assign badge_text = 'On Sale ' | append: pct | append: '% Off'
-  else
-    assign is_new = false
-    if p.metafields.pdp.badge_new.value == true
-      assign is_new = true
-    else
-      for t in p.tags
-        assign t_lower = t | downcase
-        if t_lower == 'new'
-          assign is_new = true
-          break
-        endif
-      endfor
-    endif
-    if is_new
-      assign badge_text = 'New'
-    endif
-  endif
--%}
+{%- comment -%} Copy priority (custom badge, sale %, "New") lives in the shared snippet {%- endcomment -%}
+{%- capture badge_text -%}
+  {%- render 'spy-product-badge-text', product: closest.product -%}
+{%- endcapture -%}
+{%- assign badge_text = badge_text | strip -%}
 
 {%- comment -%} Slot always renders so the card keeps its shape when a product has no badge {%- endcomment -%}
 <div class="spy-new-badge" {{ block.shopify_attributes }}>
