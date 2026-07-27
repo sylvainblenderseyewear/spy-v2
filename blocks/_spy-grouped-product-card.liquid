@@ -54,9 +54,21 @@
     },
     {
       "type": "checkbox",
-      "id": "show_quick_view",
-      "label": "Show Quick View on hover",
+      "id": "show_swatches",
+      "label": "Show colourway thumbnails on hover",
+      "info": "Replaces the count on hover, the way the source card does. Read from the model's own collection.",
       "default": true
+    },
+    {
+      "type": "range",
+      "id": "swatch_count",
+      "label": "Thumbnails shown",
+      "info": "An arrow to the rest appears when the model has more.",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "visible_if": "{{ block.settings.show_swatches }}"
     },
     {
       "type": "checkbox",

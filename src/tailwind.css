@@ -401,11 +401,8 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   text-decoration: none;
 }
 
-:is(collection-component, .section-resource-list) .product-card .spy-swatches__item img {
-  width: 42px;
-  height: 26px;
-  object-fit: contain;
-}
+/* Size lives on the markup (h-8/h-9 + h-full w-full object-contain in spy-swatches.liquid)
+   so the thumb stays square. */
 
 :is(collection-component, .section-resource-list) .product-card .spy-swatches__more {
   margin-inline-start: 4px;
@@ -441,17 +438,43 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 }
 
 /* ── Grouped PLP card ────────────────────────────────────────────────
-   Reuses every rule above (square image, heavy title, Quick View, badge
-   slot). Two differences: it has no hover swatch row, so the label and
-   badge must stay put instead of fading out to make room for one; and the
-   label holds a colourway count, which reads better without ellipsis.
+   Reuses every rule above — square image, heavy title, badge slot, and the
+   hover swap of the colour-count for the swatch row.
+
+   The row used to let each thumb flex (`flex: 1 1 0`), so a two-colourway card
+   drew them at 80px while a four-colourway card beside it dropped to 51px — and
+   to 18px at tablet. Thumbs are now square and sized as if the row always held
+   the full four plus the arrow, so the size depends on the card width alone and
+   never on how many colourways a product happens to have.
+   34px reserved = 4 gaps (3px) + the arrow (20px + 2px margin).
    ──────────────────────────────────────────────────────────────────── */
-@media screen and (min-width: 750px) {
-  :is(collection-component, .section-resource-list) .product-card.spy-grouped-card:hover .spy-color-count,
-  :is(collection-component, .section-resource-list) .product-card.spy-grouped-card:hover .spy-new-badge {
-    opacity: 1;
-    visibility: visible;
-  }
+:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches {
+  gap: 3px;
+}
+
+:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches__item {
+  flex: 0 0 auto;
+  width: min(48px, calc((100% - 34px) / 4));
+  height: auto;
+  aspect-ratio: 1;
+}
+
+:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* The arrow keeps its own width so it never steals room from the thumbs. 20px is
+   the source's 28px scaled to our narrower card, so it stays in proportion. */
+:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches__more {
+  flex: 0 0 auto;
+  margin-inline-start: 2px;
+}
+
+:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches__more svg {
+  width: 20px;
+  height: 7px;
 }
 
 /* base.css holds the filtered grid at 5 fixed columns from 750px up, which leaves

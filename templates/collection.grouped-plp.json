@@ -11,7 +11,68 @@
   "sections": {
     "spy_collection_hero_A1": {
       "type": "spy-collection-hero",
-      "settings": {}
+      "settings": {
+        "height_desktop": 240,
+        "height_tablet": 120,
+        "ratio_mobile": 2,
+        "focal_desktop": "center",
+        "focal_tablet": "center",
+        "focal_mobile": "center",
+        "show_heading": true,
+        "heading": "",
+        "heading_color": "#ffffff",
+        "heading_weight": "400",
+        "heading_tracking": "0.05",
+        "title_size_desktop": 28,
+        "title_size_tablet": 22,
+        "title_size_mobile": 14,
+        "panel_width_desktop": 64,
+        "panel_width_tablet": 58,
+        "panel_width_mobile": 52
+      }
+    },
+    "section_dHFxNJ": {
+      "type": "section",
+      "blocks": {
+        "spy_breadcrumbs_fF7aGf": {
+          "type": "spy-breadcrumbs",
+          "name": "Breadcrumbs",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "spy_breadcrumbs_fF7aGf"
+      ],
+      "name": "t:names.custom_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 0,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 20,
+        "padding-block-end": 20
+      }
     },
     "main": {
       "type": "spy-grouped-collection",
@@ -29,8 +90,8 @@
             "enable_sorting": true,
             "background_color": "",
             "text_color": "",
-            "padding-block-start": 8,
-            "padding-block-end": 8,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0,
             "facets_margin_bottom": 8,
@@ -44,7 +105,8 @@
           "settings": {
             "label_colors_one": "1 color available",
             "label_colors_many": "[count] colors available",
-            "show_quick_view": true,
+            "show_swatches": true,
+            "swatch_count": 4,
             "show_price": false,
             "product_card_gap": 4,
             "background_color": "",
@@ -79,16 +141,12 @@
     "spy_collection_seo_A1": {
       "type": "spy-collection-seo",
       "settings": {}
-    },
-    "spy_quick_view_modal_A1": {
-      "type": "spy-quick-view",
-      "settings": {}
     }
   },
   "order": [
     "spy_collection_hero_A1",
+    "section_dHFxNJ",
     "main",
-    "spy_collection_seo_A1",
-    "spy_quick_view_modal_A1"
+    "spy_collection_seo_A1"
   ]
 }

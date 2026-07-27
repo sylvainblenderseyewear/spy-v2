@@ -1,0 +1,65 @@
+# Creates the two collection hero metafield definitions the responsive hero needs.
+#
+# `collection.hero_image` already exists and holds the desktop banner. These add the
+# tablet and mobile crops — the source ships a separate, taller asset per breakpoint
+# rather than scaling one image down (desktop ~6.5:1, mobile ~2.2:1).
+#
+# Namespace is `collection` to match the existing definition and the audit schema.
+# `sections/spy-collection-hero.liquid` also reads `custom` for anything added
+# through the admin UI, which defaults to that namespace.
+#
+# Run against the Admin GraphQL API (2026-01 or later), one mutation per call.
+# Both are idempotent in effect: re-running returns TAKEN_NAME_KEY, which is safe
+# to ignore.
+
+mutation CreateHeroImageMobile {
+  metafieldDefinitionCreate(
+    definition: {
+      name: "Hero Image (Mobile)"
+      namespace: "collection"
+      key: "hero_image_mobile"
+      description: "PLP hero banner for mobile — use the taller crop, roughly 2.2:1."
+      type: "file_reference"
+      ownerType: COLLECTION
+      pin: true
+      validations: [{ name: "file_type_options", value: "[\"Image\"]" }]
+    }
+  ) {
+    createdDefinition {
+      id
+      namespace
+      key
+    }
+    userErrors {
+      field
+      message
+      code
+    }
+  }
+}
+
+mutation CreateHeroImageTablet {
+  metafieldDefinitionCreate(
+    definition: {
+      name: "Hero Image (Tablet)"
+      namespace: "collection"
+      key: "hero_image_tablet"
+      description: "PLP hero banner for tablet. Optional — falls back to the desktop image."
+      type: "file_reference"
+      ownerType: COLLECTION
+      pin: true
+      validations: [{ name: "file_type_options", value: "[\"Image\"]" }]
+    }
+  ) {
+    createdDefinition {
+      id
+      namespace
+      key
+    }
+    userErrors {
+      field
+      message
+      code
+    }
+  }
+}
