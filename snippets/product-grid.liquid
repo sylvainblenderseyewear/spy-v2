@@ -79,6 +79,13 @@
     }
   }
 {% endstyle %}
+{% comment %}
+  Horizon's .grid class is display:flex/column below 750px, but Tailwind ships a .grid
+  utility too and important-mode makes it win — so the wrapper became a real grid on
+  mobile and the ul's `margin: auto` could no longer centre the cards, leaving them flush
+  right with all the slack on the left. Restore the flex column below 750px and pad it with
+  the same inline padding the filter bar uses, so the cards line up underneath it.
+{% endcomment %}
 <div
   id="ResultsList"
   class="
@@ -86,7 +93,7 @@
     {%- if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}
     {%- if section.settings.product_grid_width == 'full-width' %} collection-wrapper--full-width{% endif %}
     {%- if section.settings.full_width_on_mobile == true %} collection-wrapper--full-width-on-mobile{% endif %}
-    spacing-style
+    spacing-style max-[749px]:flex max-[749px]:flex-col max-[749px]:px-[var(--padding-lg)]
   "
 
   style="
@@ -124,7 +131,7 @@
         <h4 class="main-collection-grid__title">{{ title }}</h4>
       {% endif %}
       <ul
-        class="product-grid product-grid--{{ section.id }} product-grid--{{ section.settings.layout_type }} {% if section.settings.mobile_product_card_size == 'large' %} product-grid-mobile--large{% endif %}"
+        class="product-grid product-grid--{{ section.id }} product-grid--{{ section.settings.layout_type }} {% if section.settings.mobile_product_card_size == 'large' %} product-grid-mobile--large{% endif %} max-[749px]:mx-0 max-[749px]:w-full"
         data-testid="product-grid"
         product-grid-view="default"
         ref="grid"
