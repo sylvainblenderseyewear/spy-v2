@@ -1,6 +1,7 @@
 {%- doc -%}
   Description accordion. Prefers the pdp.long_description metafield, falls back to
-  the product description. Open by default, like the source PDP.
+  the product description. Collapsed by default — the source ships both panels
+  closed (66px headers).
 {%- enddoc -%}
 
 {%- liquid
@@ -10,7 +11,7 @@
 
 {%- if body != blank -%}
 <details class="group border-t border-[color:var(--color-spy-border)]" {% if block.settings.open_default %}open{% endif %} {{ block.shopify_attributes }}>
-  <summary class="flex items-center justify-between gap-2 py-4 cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-[14px] font-bold uppercase tracking-[0.04em] text-[color:var(--color-spy-text)]">
+  <summary class="flex items-center justify-between gap-2 py-5 px-3 cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-[16px] leading-6 font-bold uppercase tracking-[0] text-[color:var(--color-spy-text)]">
     {{ block.settings.heading | default: 'Description' }}
     <svg class="w-4 h-4 shrink-0 text-[color:var(--color-spy-muted)] transition-transform duration-200 group-open:rotate-180" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </summary>
@@ -26,7 +27,7 @@
   "tag": null,
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "Description" },
-    { "type": "checkbox", "id": "open_default", "label": "Open by default", "default": true }
+    { "type": "checkbox", "id": "open_default", "label": "Open by default", "default": false }
   ],
   "presets": [{ "name": "Description", "category": "SPY" }]
 }

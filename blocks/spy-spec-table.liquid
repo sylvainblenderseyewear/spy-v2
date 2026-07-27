@@ -1,8 +1,46 @@
 {%- liquid
   assign p = closest.product
+  assign v = p.selected_or_first_available_variant
   assign s = p.metafields.spec
+  assign vs = v.metafields.spec
   assign g = p.metafields.goggle
   assign h = p.metafields.helmet
+
+  # Frame/fit data is product-scoped, lens data is variant-scoped. Resolve the
+  # variant-scoped rows here: variant wins, product is the fallback.
+  assign ref_val = vs.sku_ref.value
+  if ref_val == blank
+    assign ref_val = s.reference.value
+  endif
+  if ref_val == blank
+    assign ref_val = v.sku
+  endif
+
+  assign lens_name_val = vs.lens_name.value
+  if lens_name_val == blank
+    assign lens_name_val = s.lens_name.value
+  endif
+
+  assign lens_cat_val = vs.lens_category.value
+  if lens_cat_val == blank
+    assign lens_cat_val = s.lens_category.value
+  endif
+
+  assign vlt_val = vs.vlt_percent.value
+  if vlt_val == blank
+    assign vlt_val = s.vlt_percent.value
+  endif
+
+  assign base_tint_val = vs.base_tint.value
+  if base_tint_val == blank
+    assign base_tint_val = s.base_tint.value
+  endif
+
+  # Variant carries the technology as text; the product metaobject list wins.
+  assign tech_text = vs.lens_technology.value
+  if tech_text == blank
+    assign tech_text = s.lens_technology.value
+  endif
 
   # Determine whether goggle / helmet sections should render
   assign show_goggle = false
@@ -16,7 +54,7 @@
 -%}
 
 <details class="group border-t border-[color:var(--color-spy-border)]" {{ block.shopify_attributes }}>
-  <summary class="flex items-center justify-between gap-2 py-4 cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-[14px] font-bold uppercase tracking-[0.04em] text-[color:var(--color-spy-text)]">
+  <summary class="flex items-center justify-between gap-2 py-5 px-3 cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-[16px] leading-6 font-bold uppercase tracking-[0] text-[color:var(--color-spy-text)]">
     {{ block.settings.heading | default: 'Technical Information' }}
     <svg class="w-4 h-4 shrink-0 text-[color:var(--color-spy-muted)] transition-transform duration-200 group-open:rotate-180" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </summary>
@@ -24,8 +62,8 @@
     <tbody>
 
       {%- comment -%}── Identification ─────────────────────────────{%- endcomment -%}
-      {%- if s.reference.value != blank -%}
-        <tr><th>Style #</th><td>{{ s.reference.value }}</td></tr>
+      {%- if ref_val != blank -%}
+        <tr><th>Reference</th><td>{{ ref_val }}</td></tr>
       {%- endif -%}
 
       {%- comment -%}── Frame ──────────────────────────────────────{%- endcomment -%}
@@ -46,8 +84,8 @@
       {%- endif -%}
 
       {%- comment -%}── Lens ───────────────────────────────────────{%- endcomment -%}
-      {%- if s.lens_name.value != blank -%}
-        <tr><th>Lens</th><td>{{ s.lens_name.value }}</td></tr>
+      {%- if lens_name_val != blank -%}
+        <tr><th>Lens Name</th><td>{{ lens_name_val }}</td></tr>
       {%- endif -%}
       {%- if s.lens_material.value != blank -%}
         <tr><th>Lens Material</th><td>{{ s.lens_material.value }}</td></tr>
@@ -55,14 +93,14 @@
       {%- if s.lens_shape.value != blank -%}
         <tr><th>Lens Shape</th><td>{{ s.lens_shape.value }}</td></tr>
       {%- endif -%}
-      {%- if s.lens_category.value != blank -%}
-        <tr><th>Lens Category</th><td>{{ s.lens_category.value }}</td></tr>
+      {%- if lens_cat_val != blank -%}
+        <tr><th>Lens Category</th><td>{{ lens_cat_val }}</td></tr>
       {%- endif -%}
-      {%- if s.vlt_percent.value != blank -%}
-        <tr><th>VLT</th><td>{{ s.vlt_percent.value }}%</td></tr>
+      {%- if vlt_val != blank -%}
+        <tr><th>VLT</th><td>{{ vlt_val }}%</td></tr>
       {%- endif -%}
-      {%- if s.base_tint.value != blank -%}
-        <tr><th>Base Tint</th><td>{{ s.base_tint.value }}</td></tr>
+      {%- if base_tint_val != blank -%}
+        <tr><th>Base Tint</th><td>{{ base_tint_val }}</td></tr>
       {%- endif -%}
       {%- if s.mirror_tint.value != blank -%}
         <tr><th>Mirror Tint</th><td>{{ s.mirror_tint.value }}</td></tr>
@@ -92,8 +130,8 @@
       {%- endif -%}
 
       {%- comment -%}── Technologies ───────────────────────────────{%- endcomment -%}
+      {%- assign tech_names = '' -%}
       {%- if s.technologies.value != blank -%}
-        {%- assign tech_names = '' -%}
         {%- for tech in s.technologies.value -%}
           {%- assign tn = tech.fields.name.value -%}
           {%- if tn != blank -%}
@@ -101,9 +139,13 @@
             {%- assign tech_names = tech_names | append: tn -%}
           {%- endif -%}
         {%- endfor -%}
-        {%- if tech_names != blank -%}
-          <tr><th>Technologies</th><td>{{ tech_names }}</td></tr>
-        {%- endif -%}
+      {%- endif -%}
+      {%- comment -%} No metaobject list: use the variant's plain-text technology {%- endcomment -%}
+      {%- if tech_names == blank -%}
+        {%- assign tech_names = tech_text -%}
+      {%- endif -%}
+      {%- if tech_names != blank -%}
+        <tr><th>Technologies</th><td>{{ tech_names }}</td></tr>
       {%- endif -%}
 
       {%- comment -%}── Goggle-specific ────────────────────────────{%- endcomment -%}

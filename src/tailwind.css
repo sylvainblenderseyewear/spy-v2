@@ -15,6 +15,7 @@
   --color-spy-text:    #242424; /* source content-primary */
   --color-spy-text-2:  #393939; /* source content-secondary */
   --color-spy-muted:   #a6a6a6; /* source content-muted */
+  --color-spy-surface: #f9f9f9; /* source surface-primary — tiles, scale track */
   --color-spy-input-border: #cccccc; /* source select/input outline */
 
   /* Spacing overrides */
@@ -607,29 +608,30 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    Uses Horizon's own 750px two-column breakpoint to avoid a ratio jump.
    ═══════════════════════════════════════════════════════════════════════ */
 
-/* Column split from the source: info column starts at x=855 of 1440, so
-   815:535 of the 1350px content box (see
-   audit/pdp-eyewear-source-column.json). `product-component` in the selector
-   lifts specificity above Horizon's own ratio rules so this wins regardless
-   of stylesheet order. */
-@media (min-width: 750px) {
+/* Column split, straight from the source: `.ds-main-grid` is `repeat(12, 1fr)`
+   with `gap: 0 var(--ds-cols-gap)`, and `.carousel-container` spans
+   `grid-column: 1 / span 7`. So the gallery is 7 of 12 columns and the info
+   column takes the remaining 5. `product-component` in the selector lifts
+   specificity above Horizon's own ratio rules regardless of stylesheet order. */
+@media (min-width: 769px) {
   [data-testid="product-information"] product-component.product-information__grid.product-information--media-left {
-    grid-template-columns: 815fr 535fr;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: var(--spy-cols-gap);
   }
-  /* Pin the shorter gallery; let the taller info column scroll (source behavior) */
   [data-testid="product-information"] .product-information__media {
+    grid-column: 1 / span 7;
+    /* Pin the shorter gallery; let the taller info column scroll (source behavior) */
     position: sticky;
     top: var(--header-height, 1rem);
     align-self: start;
     height: fit-content;
   }
-}
-
-/* Keep the same split past Horizon's 1200px `2fr 1fr` rule */
-@media (min-width: 1200px) {
-  [data-testid="product-information"] product-component.product-information__grid.product-information--media-left {
-    grid-template-columns: 815fr 535fr;
+  [data-testid="product-information"] product-component.product-information__grid > :not(.product-information__media) {
+    grid-column: 8 / span 5;
   }
+  /* The 24px inset that offsets every row in this column is the source's
+     `.pdp-primary-info { padding: 0 0 48px 24px }`. It lives in the template's
+     product-details padding settings, since Horizon writes those inline. */
 }
 
 /* White stage behind gallery images, like the source */
@@ -637,42 +639,175 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   background: #fff;
 }
 
-/* ── Gallery stage geometry, measured off the source at 1739px wide ──────
-   rail 85 · 19px gap · square 832px stage holding a 740px image, so the image
-   is inset 46px on every side. 46px is exactly a 44px arrow button plus 1px
-   either side — the bottom strip of that inset is what the arrows sit in, and
-   the source never puts them over the product. */
-[data-testid="product-information"] slideshow-component {
-  column-gap: 20px;
+/* Page gutter + column gap, taken from the source's own tokens
+   (reference/design-PDP-sample .../global.css → --ds-page-padding / --ds-cols-gap).
+   Horizon ships a flat 40px gutter; the source steps it. Global on purpose — the
+   header and footer have to line up with the PDP columns. */
+:root {
+  --spy-cols-gap: 0.75rem;
 }
-/* Mobile swaps the arrows for dots, so nothing needs the 46px strip there —
-   keep the source's ~89% image-to-stage ratio instead of a fat white margin. */
-[data-testid="product-information"] .product-media {
-  padding: 5.53% !important;
+.page-width-wide,
+.page-width-normal,
+.page-width-narrow,
+.page-width-content {
+  --page-margin: 1rem;
 }
-@media (min-width: 750px) {
-  [data-testid="product-information"] .product-media {
-    padding: 46px !important;
+@media screen and (min-width: 769px) {
+  :root {
+    --spy-cols-gap: 1rem;
+  }
+  .page-width-wide,
+  .page-width-normal,
+  .page-width-narrow,
+  .page-width-content {
+    --page-margin: 2rem;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .page-width-wide,
+  .page-width-normal,
+  .page-width-narrow,
+  .page-width-content {
+    --page-margin: 3.5rem;
+  }
+}
+@media screen and (min-width: 1800px) {
+  :root {
+    --spy-cols-gap: 1.25rem;
+  }
+  .page-width-wide,
+  .page-width-normal,
+  .page-width-narrow,
+  .page-width-content {
+    --page-margin: 4.5rem;
   }
 }
 
-/* Arrows: bottom-left strip under the image, side by side. Horizon centres them
-   over the slide with inset:0 + space-between, which covered the product. */
+/* ── Gallery stage geometry, from the source CSS ──────────────────────────
+   `.product-carousel { padding: 0 0 0 var(--ds-cols-gap) }` — the rail/stage gap
+   is one column gap, not a fixed 20px. The stage takes whatever is left of the
+   7-column gallery span, so it is width-driven with no viewport-height cap. */
+[data-testid="product-information"] slideshow-component {
+  column-gap: var(--spy-cols-gap);
+}
+
+/* Source keeps the stage left-aligned in its span, spare width on the right,
+   which also lines the arrows up with the stage edge. */
+[data-testid="product-information"] slideshow-slide {
+  justify-content: flex-start !important;
+}
+
+/* `.slick-slide > span { padding: 2rem }` and 3rem from 992px up. Fixed rem, not
+   the percentage I had guessed from screenshots. */
+[data-testid="product-information"] .product-media {
+  padding: 2rem !important;
+  /* Clips the hover zoom at the stage edge. overflow cuts at the padding box,
+     so the magnified image may grow into the inset — same as the source. */
+  overflow: hidden;
+}
+@media (min-width: 992px) {
+  [data-testid="product-information"] .product-media {
+    padding: 3rem !important;
+  }
+}
+
+/* Thumbnail rail is only as tall as its thumbs — no empty column underneath.
+   Still scrolls when there are more thumbs than the stage height allows. */
+[data-testid="product-information"] .slideshow-controls__thumbnails-container {
+  align-self: start;
+  height: fit-content !important;
+  max-height: 100%;
+}
+
+/* Hover zoom (assets/spy-hover-zoom.js). Scale animates, origin does not, so
+   panning tracks the cursor with no lag. */
+@media (hover: hover) and (min-width: 750px) {
+  [data-testid="product-information"] .product-media:has(img.product-media__image) {
+    cursor: zoom-in;
+  }
+  [data-testid="product-information"] .product-media img.product-media__image {
+    transition: transform 0.15s ease-out;
+    will-change: transform;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-testid="product-information"] .product-media img.product-media__image {
+    transition: none;
+  }
+}
+/* Arrows: 46px round buttons with an orange chevron, bottom-left of the stage.
+   Source has them 24px in from the stage edge, 2px apart, centres 37px above the
+   stage bottom. Horizon centred them over the slide, covering the product. */
 [data-testid="product-information"] slideshow-arrows {
-  inset: auto auto 0 0 !important;
+  inset: auto auto 1.313rem 0 !important;
   width: auto !important;
   height: auto !important;
   justify-content: flex-start !important;
-  gap: 4px;
-  padding-inline-start: 20px;
+  /* Source: prev at `left: calc(var(--ds-cols-gap) + 1.5rem)` measured from the
+     carousel box, next 0.5rem after it, and `top: calc(100% - 1.313rem - 2.5rem)`
+     which puts the buttons 1.313rem above the bottom. */
+  gap: 0.5rem;
+  padding-inline-start: 1.5rem;
+  /* Horizon blends the arrows with `difference` so they show over any image. On
+     our white stage that turned the white circle black and the orange chevron
+     blue. We set explicit colours, so the blend has to go. */
+  mix-blend-mode: normal !important;
 }
+/* Source: 2.5rem box, 18px radius, white, soft shadow (not a border), #f27e37
+   chevron at .75 opacity, and 0.5rem between the two buttons. */
 [data-testid="product-information"] slideshow-arrows .slideshow-control {
   display: flex !important;
   align-items: center;
   justify-content: center;
+  width: 2.5rem !important;
+  min-width: 2.5rem !important;
+  height: 2.5rem !important;
+  min-height: 2.5rem !important;
   padding: 0 !important;
-  color: var(--color-spy-text) !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  box-shadow: 0 0 9px 0 rgba(119, 119, 119, 0.1);
+  color: #f27e37 !important;
+  transition: box-shadow 0.3s cubic-bezier(0.5, 0.25, 0, 1);
   pointer-events: auto;
+}
+[data-testid="product-information"] slideshow-arrows .slideshow-control:hover,
+[data-testid="product-information"] slideshow-arrows .slideshow-control:focus-visible {
+  box-shadow: 0 0 9px 0 rgba(119, 119, 119, 0.4);
+}
+[data-testid="product-information"] slideshow-arrows .slideshow-control svg {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  opacity: 0.75;
+}
+[data-testid="product-information"] slideshow-arrows .slideshow-control:hover svg {
+  opacity: 1;
+}
+
+/* ── Info-column rhythm ───────────────────────────────────────────────────
+   Source spaces this column with per-block margins, not a uniform gap: rows are
+   contiguous down to Size Chart, then 32px before the lens panel, 56px before
+   Add to Cart, 32px before the trust box and 32px before the panels. The column
+   gap is 0 (template) so these margins are the only spacing. */
+/* 56px above Add to Cart, of which the lens panel already supplies 32 (my-8) */
+[data-testid="product-information"] .buy-buttons-block {
+  margin-top: 1.5rem;
+}
+[data-testid="product-information"] .group-block-content > details:first-of-type {
+  margin-top: 2rem;
+}
+
+/* Lens Cat 0–4 scale. Source grid is `0 repeat(4, 1fr)` with text-align right,
+   which lands Cat. 0 at the left edge and Cat. 4 hard against the right. Not a
+   Tailwind class because Horizon's own `.grid` would drag in its 14-area layout. */
+[data-testid="product-information"] .spy-cat-scale {
+  display: grid;
+  grid-template-columns: 0 repeat(4, minmax(0, 1fr));
+  /* Alignment lives on each step (step 0 reads left, the rest right) so the 0-width
+     first column keeps its icon and label inside the box. overflow:hidden matches the
+     source and only trims the active bar's 16px overhang on the last step. */
+  overflow: hidden;
 }
 
 /* Frame color swatches: 56px photo swatch, dark selected border (source) */
@@ -699,10 +834,12 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   border-radius: 0;
   text-transform: uppercase;
 }
-/* ATC exact: DIN 400, 0.875rem (source .pdp-checkout-button .add-to-cart) */
+/* ATC exact: source computes 14px / w400 / padding 16px all round / 54px tall.
+   !important because Horizon's button preset sets its own weight and padding. */
 [data-testid="product-information"] .add-to-cart-button {
   font-size: 0.875rem;
-  font-weight: 400;
+  font-weight: 400 !important;
+  padding: 1rem !important;
 }
 
 /* Title / inventory in source tokens */
@@ -729,25 +866,26 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* ── PDP pixel pass — exact values from source detail.css / global.css ─── */
 
-/* Product name: DIN 700, 1.5rem mobile → 2rem desktop, tight, uppercase.
-   !important beats the text block's inline font_size. */
+/* Product name: source computes 32px/40px, w700, uppercase, ls 0.5%, #242424.
+   !important beats the text block's inline font_size/line_height/letter_spacing. */
 [data-testid="product-information"] .product-details h1 {
   font-size: 1.5rem !important;
-  line-height: 1.15 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.005em !important;
+  color: var(--color-spy-text) !important;
   font-weight: 700;
   margin-bottom: 0.25rem;
 }
 @media (min-width: 750px) {
   [data-testid="product-information"] .product-details h1 {
     font-size: 2rem !important;
-    line-height: 1.1 !important;
   }
 }
 
-/* Price: source "lead" — 1.125rem / 1.75rem, dark */
+/* Price: source computes 16px/22.4px */
 [data-testid="product-information"] .product-details .price {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
+  font-size: 1rem;
+  line-height: 1.4;
   color: var(--color-spy-text);
 }
 
@@ -773,13 +911,23 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 [data-testid="product-information"] .slideshow-controls__thumbnail {
   aspect-ratio: 1 !important;
   height: auto !important;
-  padding: 9px !important;
-  border: 1px solid transparent !important;
-  border-radius: 0;
+  /* Source: `.slick-paging-btn { border: 2px solid transparent; border-radius: .125rem }`
+     over `.slick-paging-image-container { padding: .5rem }` — 2 + 8 = the 10px
+     inset that leaves a 65px image in an 85px cell. */
+  padding: 0.5rem !important;
+  border: 2px solid transparent !important;
+  border-radius: 0.125rem;
   background: #fff;
 }
+/* Active colour is the source's --custom-color-interactive-primary: #242424 */
 [data-testid="product-information"] .slideshow-controls__thumbnail[aria-selected="true"] {
   border-color: var(--color-spy-text) !important;
+}
+/* 4px between cells. No padding at all: the source aligns the first thumb with
+   the stage top and the rail with the page margin. */
+[data-testid="product-information"] .slideshow-controls__thumbnails {
+  gap: 4px;
+  padding: 0 !important;
 }
 
 /* ── Collection filter sidebar ───────────────────────────────────────
