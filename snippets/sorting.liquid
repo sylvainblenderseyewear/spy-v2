@@ -21,11 +21,22 @@
 >
   {% liquid
     assign default_sort_by = results.default_sort_by
+
+    assign selected_sort_by = sort_by
+    assign status = ''
     for option in results.sort_options
-      if option.value == sort_by
+      if option.value == selected_sort_by
         assign status = option.name
       endif
     endfor
+
+    # Nothing matched, so the trigger would render blank. Fall back to the first
+    # option so the control always names the order the shopper is looking at.
+    if status == blank and results.sort_options.size > 0
+      assign first_option = results.sort_options | first
+      assign selected_sort_by = first_option.value
+      assign status = first_option.name
+    endif
   %}
 
   <div class="sorting-filter__container {% if should_use_select_on_mobile %} desktop:hidden {% else %} hidden {% endif %}">
@@ -47,7 +58,7 @@
         {% for option in results.sort_options %}
           <option
             value="{{ option.value }}"
-            {% if option.value == sort_by %}
+            {% if option.value == selected_sort_by %}
               selected
             {% endif %}
           >
@@ -116,8 +127,8 @@
               <div
                 class="sorting-filter__option"
                 role="option"
-                aria-selected="{% if option.value == sort_by %}true{% else %}false{% endif %}"
-                tabindex="{% if option.value == sort_by %}0{% else %}-1{% endif %}"
+                aria-selected="{% if option.value == selected_sort_by %}true{% else %}false{% endif %}"
+                tabindex="{% if option.value == selected_sort_by %}0{% else %}-1{% endif %}"
               >
                 <input
                   type="radio"
@@ -129,7 +140,7 @@
                   value="{{ option.value }}"
                   class="sorting-filter__input"
                   data-option-name="{{ option.name }}"
-                  {% if option.value == sort_by %}
+                  {% if option.value == selected_sort_by %}
                     checked
                   {% endif %}
                   aria-hidden="true"
