@@ -1,12 +1,55 @@
+{%- doc -%}
+  Lens information panel — VLT / category / tint / technology.
+
+  Lens data is VARIANT-scoped in this store (spec.vlt_percent, spec.lens_category,
+  spec.base_tint, spec.lens_tint, spec.lens_technology), so read the selected
+  variant first and fall back to the product. Coverage is uneven between variants
+  of the same product, so each tile checks its own value.
+{%- enddoc -%}
+
 {%- liquid
   assign p = closest.product
-  assign vlt         = p.metafields.spec.vlt_percent.value
-  assign lens_cat    = p.metafields.spec.lens_category.value
-  assign base_tint   = p.metafields.spec.base_tint.value
-  assign technologies = p.metafields.spec.technologies.value
+  assign v = p.selected_or_first_available_variant
+  assign vs = v.metafields.spec
+  assign ps = p.metafields.spec
 
-  if vlt == blank and lens_cat == blank and base_tint == blank and technologies == blank
+  assign vlt = vs.vlt_percent.value
+  if vlt == blank
+    assign vlt = ps.vlt_percent.value
+  endif
+
+  assign lens_cat = vs.lens_category.value
+  if lens_cat == blank
+    assign lens_cat = ps.lens_category.value
+  endif
+
+  # base_tint is the tile the source labels "Tint base"; lens_tint is the nearest
+  # stand-in when a variant only carries that one.
+  assign base_tint = vs.base_tint.value
+  if base_tint == blank
+    assign base_tint = vs.lens_tint.value
+  endif
+  if base_tint == blank
+    assign base_tint = ps.base_tint.value
+  endif
+
+  # Variant stores the technology as plain text ("Happy"); the product-level
+  # metaobject list is richer (it can carry an icon) so prefer it when present.
+  assign technologies = ps.technologies.value
+  assign tech_text = vs.lens_technology.value
+  if tech_text == blank
+    assign tech_text = ps.lens_technology.value
+  endif
+
+  if vlt == blank and lens_cat == blank and base_tint == blank and technologies == blank and tech_text == blank
     assign skip_block = true
+  endif
+
+  # "Read more" target: the block setting wins, else a technology metaobject link.
+  assign read_more_url = block.settings.read_more_url
+  if read_more_url == blank and technologies != blank
+    assign first_tech_link = technologies | first
+    assign read_more_url = first_tech_link.fields.link.value
   endif
 
   # Parse category number (handles "Cat. 3", "Cat. 1 (Clear) / Cat. 3", "3")
@@ -19,64 +62,91 @@
 -%}
 
 {%- unless skip_block -%}
-<div class="pt-4 pb-1 border-t border-spy-border" {{ block.shopify_attributes }}>
+{%- comment -%}
+  No rule above the heading — the source section has border-top: 0. Its heading row
+  is 24px tall with the title left and "Read more" right, then 12px to the tiles.
+{%- endcomment -%}
+<div {{ block.shopify_attributes }}>
 
-  <div class="mb-2.5">
-    <span class="text-[14px] font-medium text-[color:var(--color-foreground,#2c393e)]">Lens information</span>
+  <div class="flex items-center justify-between gap-3 h-6 mb-3">
+    <span class="text-[16px] leading-6 font-medium text-[color:var(--color-spy-ink)]">Lens information</span>
+    {%- if read_more_url != blank -%}
+      <a
+        href="{{ read_more_url }}"
+        class="text-[14px] leading-5 font-medium underline underline-offset-2 text-[color:var(--color-spy-text)] hover:text-spy-orange"
+      >Read more</a>
+    {%- endif -%}
   </div>
 
-  <div class="grid grid-cols-2 gap-0.5 bg-spy-border border-2 border-spy-border mb-4">
+  {%- comment -%} 2x2 tiles, 8px gutters, no frame or divider lines {%- endcomment -%}
+  <div class="[display:grid] grid-cols-2 gap-2">
 
     {%- if vlt != blank -%}
-      <div class="bg-[#f7f7f7] flex flex-col items-center justify-center px-2.5 py-4 gap-1.5 text-center">
-        <span class="text-[26px] font-bold leading-none text-[color:var(--color-foreground,#2c393e)]">{{ vlt }}%</span>
-        <span class="text-[11px] leading-[1.3] text-[color:var(--color-foreground-secondary,#6a6c77)]">Visible Light Transmission (VLT)</span>
+      <div class="bg-[#f9f9f9] flex flex-col-reverse items-center justify-center gap-0 px-3 py-4 min-h-[76px] text-center">
+        <span class="text-[18px] leading-7 font-medium text-[color:var(--color-spy-ink)]">{{ vlt }}%</span>
+        <span class="text-[12px] leading-4 text-[color:var(--color-spy-ink)]">Visible Light Transmission (VLT)</span>
       </div>
     {%- endif -%}
 
     {%- if lens_cat != blank -%}
-      <div class="bg-[#f7f7f7] flex flex-col items-center justify-center px-2.5 py-4 gap-1.5 text-center">
-        <span class="text-[26px] font-bold leading-none text-[color:var(--color-foreground,#2c393e)]">{{ cat_num }}</span>
-        <span class="text-[11px] leading-[1.3] text-[color:var(--color-foreground-secondary,#6a6c77)]">Lens category</span>
+      <div class="bg-[#f9f9f9] flex flex-col-reverse items-center justify-center gap-0 px-3 py-4 min-h-[76px] text-center">
+        <span class="text-[18px] leading-7 font-medium text-[color:var(--color-spy-ink)]">{{ cat_num }}</span>
+        <span class="text-[12px] leading-4 text-[color:var(--color-spy-ink)]">Lens category</span>
       </div>
     {%- endif -%}
 
     {%- if base_tint != blank -%}
-      <div class="bg-[#f7f7f7] flex flex-col items-center justify-center px-2.5 py-4 gap-1.5 text-center">
-        <span class="text-[17px] font-semibold leading-none text-[color:var(--color-foreground,#2c393e)]">{{ base_tint }}</span>
-        <span class="text-[11px] leading-[1.3] text-[color:var(--color-foreground-secondary,#6a6c77)]">Tint base</span>
+      <div class="bg-[#f9f9f9] flex flex-col-reverse items-center justify-center gap-0 px-3 py-4 min-h-[76px] text-center">
+        <span class="text-[18px] leading-7 font-medium text-[color:var(--color-spy-ink)]">{{ base_tint }}</span>
+        <span class="text-[12px] leading-4 text-[color:var(--color-spy-ink)]">Tint base</span>
       </div>
     {%- endif -%}
 
-    {%- if technologies != blank -%}
-      {%- assign first_tech = technologies | first -%}
-      {%- if first_tech != blank -%}
-        {%- assign tech_name = first_tech.fields.name.value -%}
-        {%- assign tech_icon_file = first_tech.fields.icon.value -%}
-        {%- assign icon_src = tech_icon_file | image_url: width: 120 -%}
-        {%- if icon_src == blank -%}{%- assign icon_src = tech_icon_file.url -%}{%- endif -%}
-        <div class="bg-[#f7f7f7] flex flex-col items-center justify-center px-2.5 py-4 gap-1.5 text-center">
-          <span class="text-[15px] font-bold leading-none text-spy-orange">
-            {%- if icon_src != blank -%}
-              <img src="{{ icon_src }}" alt="{{ tech_name }}" width="80" height="28" loading="lazy" class="max-w-20 h-7 object-contain">
-            {%- else -%}
-              {{- tech_name -}}
-            {%- endif -%}
-          </span>
-          <span class="text-[11px] leading-[1.3] text-[color:var(--color-foreground-secondary,#6a6c77)]">Technology</span>
-        </div>
-      {%- endif -%}
+    {%- liquid
+      # Metaobject first (it can supply the logo), else the variant's text value.
+      assign tech_name = tech_text
+      assign icon_src = ''
+      if technologies != blank
+        assign first_tech = technologies | first
+        if first_tech != blank
+          assign tech_name = first_tech.fields.name.value | default: tech_text
+          assign tech_icon_file = first_tech.fields.icon.value
+          assign icon_src = tech_icon_file | image_url: width: 120
+          if icon_src == blank
+            assign icon_src = tech_icon_file.url
+          endif
+        endif
+      endif
+    -%}
+    {%- if tech_name != blank or icon_src != blank -%}
+      <div class="bg-[#f9f9f9] flex flex-col-reverse items-center justify-center gap-0 px-3 py-4 min-h-[76px] text-center">
+        <span class="text-[18px] leading-7 font-medium text-[color:var(--color-spy-ink)]">
+          {%- if icon_src != blank -%}
+            <img src="{{ icon_src }}" alt="{{ tech_name }}" width="80" height="28" loading="lazy" class="max-w-20 h-7 object-contain">
+          {%- else -%}
+            {{- tech_name -}}
+          {%- endif -%}
+        </span>
+        <span class="text-[12px] leading-4 text-[color:var(--color-spy-ink)]">Technology</span>
+      </div>
     {%- endif -%}
 
   </div>
 
+  {%- comment -%}
+    Cat 0–4 scale, 24px below the tiles and with no rule above it. Source grid is
+    `0 repeat(4, 1fr)` right-aligned, which puts Cat. 0 at the left edge and Cat. 4
+    hard right. Each step lays an 8px #f9f9f9 track; the active one adds a 56x8
+    dark bar plus a 1x16 tick.
+  {%- endcomment -%}
   {%- if show_scale -%}
-    <div class="flex justify-between pt-3.5 pb-3 border-t border-spy-border">
+    <div class="spy-cat-scale mt-6">
       {%- for i in (0..4) -%}
         {%- assign is_active = false -%}
         {%- if i == cat_num -%}{%- assign is_active = true -%}{%- endif -%}
-        <div class="flex flex-col items-center gap-1 flex-1">
-          <span class="leading-[0] {% if is_active %}text-[color:var(--color-foreground,#2c393e)]{% else %}text-[color:var(--color-spy-muted)]{% endif %}" aria-hidden="true">
+        <div class="flex flex-col gap-0 items-end{% if forloop.first %} items-start text-left{% endif %}">
+          {%- comment -%} Source draws every icon in the same ink, active or not {%- endcomment -%}
+          <span class="leading-[0] mb-1 text-[color:var(--color-spy-ink)]" aria-hidden="true">
             {%- case i -%}
               {%- when 0 -%}
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M15.5 14H5a4 4 0 0 1-.3-8 4.5 4.5 0 0 1 8.9 1H14a2.5 2.5 0 0 1 1.5 4.5Z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -90,8 +160,15 @@
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3.5" stroke="currentColor" stroke-width="1.2"/><line x1="10" y1="1" x2="10" y2="3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="10" y1="17" x2="10" y2="19" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="1" y1="10" x2="3" y2="10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="17" y1="10" x2="19" y2="10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="3.34" y1="3.34" x2="4.75" y2="4.75" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="15.25" y1="15.25" x2="16.66" y2="16.66" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="15.25" y1="4.75" x2="16.66" y2="3.34" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="3.34" y1="16.66" x2="4.75" y2="15.25" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="6.5" y1="1" x2="6.5" y2="3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="13.5" y1="1" x2="13.5" y2="3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
             {%- endcase -%}
           </span>
-          <span class="block w-7 h-[3px] rounded-[2px] {% if is_active %}bg-spy-orange{% else %}bg-transparent{% endif %}" aria-hidden="true"></span>
-          <span class="text-[10px] whitespace-nowrap {% if is_active %}font-bold text-[color:var(--color-foreground,#2c393e)]{% else %}font-semibold text-[color:var(--color-spy-muted)]{% endif %}">Cat.&thinsp;{{ i }}</span>
+          {%- comment -%} 1x16 tick, active step only {%- endcomment -%}
+          <span class="block w-px h-4 {% if is_active %}bg-[color:var(--color-spy-text)]{% else %}bg-transparent{% endif %}" aria-hidden="true"></span>
+          {%- comment -%} 8px track across the step, with the 56px active bar {%- endcomment -%}
+          <span class="block w-full h-2 bg-[#f9f9f9] relative" aria-hidden="true">
+            {%- if is_active -%}
+              <span class="absolute inset-y-0 right-0 w-14 bg-[color:var(--color-spy-text)]"></span>
+            {%- endif -%}
+          </span>
+          <span class="text-[16px] leading-[1.4] whitespace-nowrap text-[color:var(--color-spy-ink)]">Cat.&thinsp;{{ i }}</span>
         </div>
       {%- endfor -%}
     </div>
@@ -104,7 +181,9 @@
 {
   "name": "Lens Info",
   "tag": null,
-  "settings": [],
+  "settings": [
+    { "type": "url", "id": "read_more_url", "label": "\"Read more\" link" }
+  ],
   "presets": [
     {
       "name": "Lens Info",

@@ -4,7 +4,8 @@
 -%}
 
 {%- if size_chart_ref != blank or block.settings.fallback_label != blank -%}
-<div class="spy-size-chart py-1" {{ block.shopify_attributes }}>
+{%- comment -%} Source row is 36px: 12px above the link + a 24px link box {%- endcomment -%}
+<div class="spy-size-chart" {{ block.shopify_attributes }}>
   {%- liquid
     if size_chart_ref != blank
       assign chart_image = size_chart_ref.fields.image.value
@@ -19,7 +20,7 @@
 
   <button
     type="button"
-    class="inline-flex items-center gap-2 mt-3 bg-transparent border-none p-0 cursor-pointer text-[0.875rem] font-medium leading-[1.25rem] text-[color:var(--color-spy-text)] hover:text-spy-orange"
+    class="inline-flex items-center gap-2 mt-3 bg-transparent border-none p-0 cursor-pointer text-[0.875rem] font-medium leading-6 tracking-[0.01em] text-[color:var(--color-spy-text)] hover:text-spy-orange"
     aria-haspopup="dialog"
     data-spy-size-chart-open
   >

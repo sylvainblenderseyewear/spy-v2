@@ -575,6 +575,9 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   [data-testid="product-information"] product-component.product-information__grid > :not(.product-information__media) {
     grid-column: 8 / span 5;
   }
+  /* The 24px inset that offsets every row in this column is the source's
+     `.pdp-primary-info { padding: 0 0 48px 24px }`. It lives in the template's
+     product-details padding settings, since Horizon writes those inline. */
 }
 
 /* White stage behind gallery images, like the source */
@@ -728,6 +731,15 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   opacity: 1;
 }
 
+/* Lens Cat 0–4 scale. Source grid is `0 repeat(4, 1fr)` with text-align right,
+   which lands Cat. 0 at the left edge and Cat. 4 hard against the right. Not a
+   Tailwind class because Horizon's own `.grid` would drag in its 14-area layout. */
+[data-testid="product-information"] .spy-cat-scale {
+  display: grid;
+  grid-template-columns: 0 repeat(4, minmax(0, 1fr));
+  text-align: right;
+}
+
 /* Frame color swatches: 56px photo swatch, dark selected border (source) */
 [data-testid="product-information"] .variant-option--swatches .variant-option__swatch-value {
   width: 3.5rem;
@@ -782,25 +794,26 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* ── PDP pixel pass — exact values from source detail.css / global.css ─── */
 
-/* Product name: DIN 700, 1.5rem mobile → 2rem desktop, tight, uppercase.
-   !important beats the text block's inline font_size. */
+/* Product name: source computes 32px/40px, w700, uppercase, ls 0.5%, #242424.
+   !important beats the text block's inline font_size/line_height/letter_spacing. */
 [data-testid="product-information"] .product-details h1 {
   font-size: 1.5rem !important;
-  line-height: 1.15 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.005em !important;
+  color: var(--color-spy-text) !important;
   font-weight: 700;
   margin-bottom: 0.25rem;
 }
 @media (min-width: 750px) {
   [data-testid="product-information"] .product-details h1 {
     font-size: 2rem !important;
-    line-height: 1.1 !important;
   }
 }
 
-/* Price: source "lead" — 1.125rem / 1.75rem, dark */
+/* Price: source computes 16px/22.4px */
 [data-testid="product-information"] .product-details .price {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
+  font-size: 1rem;
+  line-height: 1.4;
   color: var(--color-spy-text);
 }
 
