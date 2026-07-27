@@ -119,7 +119,8 @@
       "background": "#ffffff",
       "foreground": "#2c393e",
       "color1": "#6a6c77",
-      "color2": "#e5e5e5"
+      "color2": "#e5e5e5",
+      "color3": "#f57f29"
     }
   },
   "presets": {

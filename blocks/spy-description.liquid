@@ -1,0 +1,33 @@
+{%- doc -%}
+  Description accordion. Prefers the pdp.long_description metafield, falls back to
+  the product description. Open by default, like the source PDP.
+{%- enddoc -%}
+
+{%- liquid
+  assign p = closest.product
+  assign body = p.metafields.pdp.long_description.value | default: p.description
+-%}
+
+{%- if body != blank -%}
+<details class="group border-t border-[color:var(--color-spy-border)]" {% if block.settings.open_default %}open{% endif %} {{ block.shopify_attributes }}>
+  <summary class="flex items-center justify-between gap-2 py-4 cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-[14px] font-bold uppercase tracking-[0.04em] text-[color:var(--color-spy-text)]">
+    {{ block.settings.heading | default: 'Description' }}
+    <svg class="w-4 h-4 shrink-0 text-[color:var(--color-spy-muted)] transition-transform duration-200 group-open:rotate-180" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </summary>
+  <div class="pb-5 text-[15px] leading-[1.6] text-[color:var(--color-spy-text-2)] [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_li]:mb-1">
+    {{ body }}
+  </div>
+</details>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Description",
+  "tag": null,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Description" },
+    { "type": "checkbox", "id": "open_default", "label": "Open by default", "default": true }
+  ],
+  "presets": [{ "name": "Description", "category": "SPY" }]
+}
+{% endschema %}
