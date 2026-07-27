@@ -1,0 +1,68 @@
+{%- doc -%}
+  Prints "1" when a lens technology appears anywhere in a model's group, otherwise
+  nothing.
+
+  `spec.lens_technology` is a VARIANT field, and it isn't uniform across a model —
+  Discord's representative colourway carries none while a sibling's variant does.
+  A grouped card stands for the whole model, so the badge has to answer "does any
+  colourway offer this?", which means walking every product in the group and every
+  variant of each. Stops at the first hit.
+
+  @param {string} technology - value to look for, matched case-insensitively as a substring
+  @param {object} [products] - the model collection's products
+  @param {object} [product] - single product to check when the model has no collection
+
+  @example
+  {%- capture happy_boost -%}
+    {%- render 'spy-group-has-technology', technology: 'Happy Boost', products: model_collection.products -%}
+  {%- endcapture -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign needle = technology | downcase
+  assign found = false
+
+  if products != blank
+    for group_product in products
+      assign product_value = group_product.metafields.spec.lens_technology.value | downcase
+      if product_value contains needle
+        assign found = true
+        break
+      endif
+
+      for variant in group_product.variants
+        assign variant_value = variant.metafields.spec.lens_technology.value | downcase
+        if variant_value contains needle
+          assign found = true
+          break
+        endif
+      endfor
+
+      if found
+        break
+      endif
+    endfor
+  endif
+
+  # No model collection to walk — fall back to the one product in hand
+  unless found
+    if product != blank
+      assign product_value = product.metafields.spec.lens_technology.value | downcase
+      if product_value contains needle
+        assign found = true
+      else
+        for variant in product.variants
+          assign variant_value = variant.metafields.spec.lens_technology.value | downcase
+          if variant_value contains needle
+            assign found = true
+            break
+          endif
+        endfor
+      endif
+    endif
+  endunless
+
+  if found
+    echo '1'
+  endif
+-%}

@@ -4,10 +4,17 @@
   Reads product-level spec metafields, so combined-listing children pass their own data.
 
   @param {object} product - product to read `spec` metafields from
+  @param {boolean} [force_happy_boost] - show the icon even when this product has no
+    Happy Boost metaobject. The grouped PLP card uses it: the technology sits on
+    variants across the whole model, not on the card's representative colourway.
+  @param {object} [happy_boost_icon] - image to fall back to when forced and no
+    metaobject icon is available
+  @param {string} [hb_class] - classes for the icon, to size it per context
 {%- enddoc -%}
 
 {%- liquid
   assign specs = product.metafields.spec
+  assign hb_class = hb_class | default: 'spy-tech-badge__hb h-6 w-auto object-contain'
 
   # Happy Boost technology -> colourful HB icon
   assign hb_icon = nil
@@ -19,6 +26,10 @@
         break
       endif
     endfor
+  endif
+
+  if hb_icon == blank and force_happy_boost
+    assign hb_icon = happy_boost_icon
   endif
 
   # ANSI certification -> Z87 / Z87-2+ label
@@ -40,14 +51,14 @@
 
 {%- if hb_icon != blank -%}
   {%- assign hb_src = hb_icon | image_url: width: 120 -%}
-  {%- if hb_src == blank -%}{%- assign hb_src = hb_icon.url -%}{%- endif -%}
+  {%- if hb_src == blank -%}{%- assign hb_src = hb_icon.url | default: hb_icon -%}{%- endif -%}
   <img
     src="{{ hb_src }}"
     alt="Happy Boost"
     width="60"
     height="28"
     loading="lazy"
-    class="spy-tech-badge__hb h-6 w-auto object-contain"
+    class="{{ hb_class }}"
   >
 {%- endif -%}
 
