@@ -37,18 +37,37 @@
 {% capture accordion_children %}
   <details
     id="Facet-Details-{{ sectionId }}-{{ filter.param_name | escape | replace: '.', '-' }}"
-    class="facets__panel"
+    class="facets__panel{% if is_vertical %} group{% endif %}"
     {% if filter_style == 'horizontal' %}
       data-auto-close-details="desktop"
     {% endif %}
-    {% if filter_style == 'vertical' %}
-      open
-    {% endif %}
   >
-    <summary class="facets__summary">
-      <span class="facets__label">{{ filter.label }}</span>
+    {% comment %} SPY sidebar: bold uppercase title, ink rule under it, +/- marker instead of a caret {% endcomment %}
+    <summary
+      class="
+        facets__summary
+        {%- if is_vertical %} cursor-pointer select-none list-none items-center justify-between gap-3 border-b border-solid border-b-spy-text pt-[23px] pb-3.5 [&::-webkit-details-marker]:hidden{% endif %}
+      "
+    >
+      <span
+        class="
+          facets__label
+          {%- if is_vertical %} me-0 text-[13px] font-bold uppercase leading-[18px] tracking-[0.06em] text-spy-text{% endif %}
+        "
+      >
+        {{- filter.label -}}
+      </span>
 
-      <div class="facets__status-wrapper">
+      {% if is_vertical %}
+        <span
+          class="shrink-0 text-[18px] font-light leading-none text-spy-text"
+          aria-hidden="true"
+        >
+          <span class="group-open:hidden">+</span><span class="hidden group-open:block">−</span>
+        </span>
+      {% endif %}
+
+      <div class="facets__status-wrapper{% if is_vertical %} hidden{% endif %}">
         {% if is_swatch %}
           <facet-status-component
             class="facets__status facets__status--swatches"
@@ -155,10 +174,19 @@
           if filter.type == 'boolean'
             assign should_use_pills = false
           endif
+
+          # SPY sidebar shows every value as a plain text row, never as pills
+          if is_vertical
+            assign should_use_pills = false
+          endif
         %}
 
         <div
-          class="facets__inputs-wrapper{% if is_swatch or is_image or should_use_pills %} facets__inputs-wrapper--row{% endif %}"
+          class="
+            facets__inputs-wrapper
+            {%- if is_swatch or is_image or should_use_pills %} facets__inputs-wrapper--row{% endif %}
+            {%- if is_vertical %} my-0 pt-2.5 {% if is_swatch %}pb-4{% else %}pb-2{% endif %}{% endif %}
+          "
           ref="showMoreContent"
         >
           {% liquid
@@ -189,9 +217,16 @@
           %}
           <ul
             id="filters-list-{{ sectionId }}-{{ filter.param_name | escape | replace: '.', '-' }}"
-            class="facets__inputs-list{% if should_use_pills %} facets__inputs-list--grid{% endif %} list-unstyled{% if is_swatch %} facets__inputs-list--swatches{% if show_swatch_label %} facets__inputs-list--swatches-grid{% endif %}{% endif %}{% if is_image %} facets__inputs-list--images{% endif %}"
+            class="
+              facets__inputs-list
+              {%- if should_use_pills %} facets__inputs-list--grid{% endif %} list-unstyled
+              {%- if is_swatch %} facets__inputs-list--swatches{% if show_swatch_label %} facets__inputs-list--swatches-grid{% endif %}{% endif %}
+              {%- if is_image %} facets__inputs-list--images{% endif %}
+              {%- comment -%} SPY sidebar: 5-up swatch grid, and zero-gap text rows so line-height sets the pitch {%- endcomment -%}
+              {%- if is_vertical %}{% if is_swatch and show_swatch_label == false %} grid grid-cols-5 gap-3{% elsif is_swatch == false and is_image == false %} gap-0{% endif %}{% endif %}
+            "
             {% if is_swatch %}
-              style="--swatch-columns: {{ swatch_columns }};"
+              style="--swatch-columns: {{ swatch_columns }};{% if is_vertical %} --variant-picker-swatch-width: 34px; --variant-picker-swatch-height: 34px;{% endif %}"
             {% endif %}
             {% if is_image %}
               style="--image-columns: {{ image_columns }};"
@@ -324,6 +359,35 @@
                       </label>
                     </label>
                   </fieldset>
+                {% elsif is_vertical %}
+                  {% comment %} Plain text row — the checkbox stays for facets.js, just visually hidden {% endcomment %}
+                  <label
+                    class="
+                      flex items-center text-[15px] leading-[22px] text-spy-text
+                      {%- if is_disabled %} cursor-not-allowed opacity-40{% else %} cursor-pointer{% endif %}
+                    "
+                    on:pointerenter="/prefetchPage"
+                    on:pointerleave="/cancelPrefetchPage"
+                    on:pointerdown="/prefetchPageImmediate"
+                  >
+                    <input
+                      type="checkbox"
+                      class="peer sr-only"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      id="{{ input_id }}"
+                      {% if value.active %}
+                        checked
+                      {% endif %}
+                      {% if is_disabled %}
+                        disabled
+                      {% endif %}
+                      ref="facetInputs[]"
+                    >
+                    <span class="peer-checked:font-bold peer-focus-visible:outline peer-focus-visible:outline-1 peer-focus-visible:outline-offset-2">
+                      {{- value.label -}}
+                    </span>
+                  </label>
                 {% else %}
                   {% if should_use_pills %}
                     <div
@@ -424,12 +488,13 @@
     </floating-panel-component>
   </details>
 {% endcapture %}
+{% comment %} Source panel ships every facet collapsed — no open_by_default here {% endcomment %}
 {% render 'accordion-custom-component',
   children: accordion_children,
   class: 'facets__item',
-  open: is_vertical,
-  open_by_default_on_desktop: is_vertical,
-  open_by_default_on_mobile: is_vertical,
+  open: false,
+  open_by_default_on_desktop: false,
+  open_by_default_on_mobile: false,
   disable_animation_on_desktop: is_horizontal,
   close_with_escape: is_horizontal,
   data_filter_param_name: filter_param_name

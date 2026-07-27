@@ -18,23 +18,69 @@
   elsif filter_style == 'vertical'
     assign is_vertical = true
   endif
+
+  # Source shows one range row instead of min/max fields. Shopify exposes no
+  # collection price floor in Liquid, so the low end reads 0.
+  assign price_range_min = 0 | money_without_currency
+  assign price_range_max = filter.range_max | money_without_currency
+
+  # Stable key so the open/closed state survives a section re-render
+  assign filter_param_name = filter.param_name | escape | replace: '.', '-'
+
+  assign is_range_active = false
+  if filter.min_value.value != null or filter.max_value.value != null
+    assign is_range_active = true
+  endif
+
+  if filter.min_value.value != null
+    assign min_input_value = filter.min_value.value | money_without_currency
+  elsif is_range_active
+    assign min_input_value = price_range_min
+  else
+    assign min_input_value = ''
+  endif
+
+  if filter.max_value.value != null
+    assign max_input_value = filter.max_value.value | money_without_currency
+  elsif is_range_active
+    assign max_input_value = price_range_max
+  else
+    assign max_input_value = ''
+  endif
 -%}
 {% capture accordion_children %}
   <details
-    class="facets__panel"
+    class="facets__panel{% if is_vertical %} group{% endif %}"
     {% if filter_style == 'horizontal' %}
       data-auto-close-details="desktop"
     {% endif %}
-    {% if filter_style == 'vertical' %}
-      open
-    {% endif %}
   >
     <summary
-      class="facets__summary"
+      class="
+        facets__summary
+        {%- if is_vertical %} cursor-pointer select-none list-none items-center justify-between gap-3 border-b border-solid border-b-spy-text pt-[23px] pb-3.5 [&::-webkit-details-marker]:hidden{% endif %}
+      "
       data-testid="price-filter"
     >
-      <span class="facets__label">{{ filter.label }}</span>
-      <facet-status-component class="facets__status">
+      <span
+        class="
+          facets__label
+          {%- if is_vertical %} me-0 text-[13px] font-bold uppercase leading-[18px] tracking-[0.06em] text-spy-text{% endif %}
+        "
+      >
+        {{- filter.label -}}
+      </span>
+
+      {% if is_vertical %}
+        <span
+          class="shrink-0 text-[18px] font-light leading-none text-spy-text"
+          aria-hidden="true"
+        >
+          <span class="group-open:hidden">+</span><span class="hidden group-open:block">−</span>
+        </span>
+      {% endif %}
+
+      <facet-status-component class="facets__status{% if is_vertical %} hidden{% endif %}">
         <template ref="moneyFormat">{{ shop.money_format }}</template>
 
         <span
@@ -59,9 +105,11 @@
           {%- endif -%}
         </span>
       </facet-status-component>
-      <span class="svg-wrapper icon-caret icon-animated">
-        {{- 'icon-caret.svg' | inline_asset_content -}}
-      </span>
+      {% unless is_vertical %}
+        <span class="svg-wrapper icon-caret icon-animated">
+          {{- 'icon-caret.svg' | inline_asset_content -}}
+        </span>
+      {% endunless %}
     </summary>
     <floating-panel-component
       {% unless filter_style == 'vertical' %}
@@ -82,8 +130,44 @@
         id="facet-inputs-{{ filter.param_name | escape | replace: '.', '-' }}"
         data-money-format="{{ shop.money_format | strip_html }}"
         data-currency="{{ localization.country.currency.iso_code }}"
-        on:change="/updatePriceFilterAndResults"
+        on:change="{% if is_vertical %}/togglePriceRange{% else %}/updatePriceFilterAndResults{% endif %}"
       >
+        {% if is_vertical %}
+          {% comment %} One range row; the real gte/lte fields ride along hidden {% endcomment %}
+          <div class="facets__inputs-wrapper my-0 pt-2.5 pb-2">
+            <label class="flex cursor-pointer items-center gap-2.5 text-[15px] leading-[22px] text-spy-text">
+              <input
+                type="checkbox"
+                class="m-0 h-[13px] w-[13px] shrink-0 cursor-pointer appearance-none rounded-full border border-solid border-[#767676] bg-white checked:border-spy-text checked:bg-spy-text checked:shadow-[inset_0_0_0_2.5px_#fff] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2"
+                ref="rangeToggle"
+                {% if is_range_active %}
+                  checked
+                {% endif %}
+                aria-label="{{ 'accessibility.price_filter_low' | t }}"
+              >
+              <span>{{ price_range_min }} – {{ price_range_max }}</span>
+            </label>
+
+            <input
+              type="hidden"
+              name="{{ filter.min_value.param_name }}"
+              value="{{ min_input_value }}"
+              data-min="0"
+              data-max="{{ price_range_max }}"
+              data-range-value="{{ price_range_min }}"
+              ref="minInput"
+            >
+            <input
+              type="hidden"
+              name="{{ filter.max_value.param_name }}"
+              value="{{ max_input_value }}"
+              data-min="0"
+              data-max="{{ price_range_max }}"
+              data-range-value="{{ price_range_max }}"
+              ref="maxInput"
+            >
+          </div>
+        {% else %}
         <div class="facets__inputs-wrapper facets__inputs-wrapper--row">
           <div
             class="price-facet__inputs-wrapper"
@@ -154,6 +238,7 @@
           {%- assign formatted_highest_price = filter.range_max | money -%}
           {{ 'content.price_filter_html' | t: price: formatted_highest_price }}
         </div>
+        {% endif %}
 
         {% if filter.min_value.value != null or filter.max_value.value != null %}
           {% assign has_active_values = true %}
@@ -178,14 +263,16 @@
     </floating-panel-component>
   </details>
 {% endcapture %}
+{% comment %} Source panel ships every facet collapsed — no open_by_default here {% endcomment %}
 {% render 'accordion-custom-component',
   children: accordion_children,
   class: 'facets__item',
-  open: is_vertical,
-  open_by_default_on_desktop: is_vertical,
-  open_by_default_on_mobile: is_vertical,
+  open: false,
+  open_by_default_on_desktop: false,
+  open_by_default_on_mobile: false,
   disable_animation_on_desktop: is_horizontal,
-  close_with_escape: is_horizontal
+  close_with_escape: is_horizontal,
+  data_filter_param_name: filter_param_name
 %}
 
 {% stylesheet %}

@@ -11,6 +11,12 @@ import { CollectionUpdateEvent, SearchUpdateEvent, StandardEvents } from '@shopi
 const SEARCH_QUERY = 'q';
 
 /**
+ * Id of the desktop vertical filter sidebar, toggled by the FILTER button.
+ * @type {string}
+ */
+const VERTICAL_PANEL_ID = 'vertical-filters-panel';
+
+/**
  * Handles the main facets form functionality
  *
  * @typedef {Object} FacetsFormRefs
@@ -113,13 +119,60 @@ class FacetsFormComponent extends Component {
    * @returns {Promise<void>}
    */
   #updateSection() {
+    const restorePanelState = this.#capturePanelState();
     const viewTransition = !this.closest('dialog');
 
-    if (viewTransition) {
-      return startViewTransition(() => sectionRenderer.renderSection(this.sectionId), ['product-grid']);
-    } else {
-      return sectionRenderer.renderSection(this.sectionId).then(() => {});
-    }
+    const rendered = viewTransition
+      ? startViewTransition(() => sectionRenderer.renderSection(this.sectionId), ['product-grid'])
+      : sectionRenderer.renderSection(this.sectionId).then(() => {});
+
+    return rendered.then(() => restorePanelState());
+  }
+
+  /**
+   * The section re-renders from scratch, which resets two bits of shopper state:
+   * the sidebar comes back with `hidden`, and every facet comes back collapsed.
+   * Snapshot both and reapply once the new markup lands.
+   * @returns {() => void} Callback that restores the snapshot.
+   */
+  #capturePanelState() {
+    const section = this.closest('.shopify-section');
+    const sectionDomId = section?.id ?? null;
+    const panelWasVisible = document.getElementById(VERTICAL_PANEL_ID)?.classList.contains('hidden') === false;
+
+    /** @param {Element} el */
+    const keyOf = (el) =>
+      /** @type {HTMLElement} */ (el).dataset.filterParamName ||
+      el.querySelector('.facets__label')?.textContent?.trim() ||
+      '';
+
+    const wasOpen = new Set(
+      [...(section?.querySelectorAll('accordion-custom.facets__item') ?? [])]
+        .filter((el) => el.querySelector('details')?.open)
+        .map(keyOf)
+        .filter(Boolean)
+    );
+
+    return () => {
+      if (panelWasVisible) {
+        const panel = document.getElementById(VERTICAL_PANEL_ID);
+        panel?.classList.remove('hidden');
+        document
+          .querySelector('vertical-filters-toggle-component button')
+          ?.setAttribute('aria-expanded', 'true');
+      }
+
+      if (!wasOpen.size || !sectionDomId) return;
+
+      const root = document.getElementById(sectionDomId);
+      if (!root) return;
+
+      for (const el of root.querySelectorAll('accordion-custom.facets__item')) {
+        if (!wasOpen.has(keyOf(el))) continue;
+        const details = el.querySelector('details');
+        if (details instanceof HTMLDetailsElement) details.open = true;
+      }
+    };
   }
 
   /**
@@ -325,6 +378,7 @@ if (!customElements.get('facet-inputs-component')) {
  * @typedef {Object} PriceFacetRefs
  * @property {HTMLInputElement} minInput - The minimum price input
  * @property {HTMLInputElement} maxInput - The maximum price input
+ * @property {HTMLInputElement} [rangeToggle] - The single range row used by the vertical panel
  */
 
 /**
@@ -385,6 +439,23 @@ class PriceFacetComponent extends Component {
     facetsForm.updateFilters();
     this.#setMinAndMaxValues();
     this.#updateSummary();
+  }
+
+  /**
+   * Vertical panel swaps the min/max fields for a single range row, so mirror that
+   * row's checked state onto the hidden gte/lte inputs and reuse the normal update path.
+   */
+  togglePriceRange() {
+    const { minInput, maxInput, rangeToggle } = this.refs;
+
+    if (!(rangeToggle instanceof HTMLInputElement)) return;
+    if (!(minInput instanceof HTMLInputElement) || !(maxInput instanceof HTMLInputElement)) return;
+
+    for (const input of [minInput, maxInput]) {
+      input.value = rangeToggle.checked ? input.dataset.rangeValue ?? '' : '';
+    }
+
+    this.updatePriceFilterAndResults();
   }
 
   /**
