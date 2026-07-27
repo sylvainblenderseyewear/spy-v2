@@ -22,6 +22,12 @@
   {% liquid
     assign default_sort_by = results.default_sort_by
 
+    # Boxed trigger only in the horizontal bar; the drawer keeps Horizon's inline look
+    assign is_desktop_bar = false
+    if sort_position == 'desktop'
+      assign is_desktop_bar = true
+    endif
+
     assign selected_sort_by = sort_by
     assign status = ''
     for option in results.sort_options
@@ -96,20 +102,45 @@
         ref="summary"
       >
         <span
-          class="facets__label"
+          class="
+            facets__label
+            {%- if is_desktop_bar %} me-2.5 self-center text-[13px] font-bold uppercase tracking-[0.06em] text-spy-text{% endif %}
+          "
           id="sort-label-{{ section_id }}"
         >
           {{- 'actions.sort' | t -}}
         </span>
-        <span class="sorting-filter__value">
+        <span
+          class="
+            sorting-filter__value
+            {%- if is_desktop_bar %} flex h-9 w-[180px] items-center gap-2 self-center rounded-none border border-solid border-spy-input-border bg-white px-3{% endif %}
+          "
+        >
           <span
-            class="facets__status h6"
+            class="
+              facets__status
+              {%- if is_desktop_bar %} ms-0 flex-1 text-left text-[14px] font-normal leading-none text-spy-text{% else %} h6{% endif %}
+            "
           >
             {{- status -}}
           </span>
-          <span class="svg-wrapper icon-caret icon-animated">
-            {{- 'icon-caret.svg' | inline_asset_content -}}
-          </span>
+          {% if is_desktop_bar %}
+            {% comment %} Source uses a solid triangle here, not Horizon's chevron {% endcomment %}
+            <svg
+              class="shrink-0 text-spy-text"
+              width="9"
+              height="6"
+              viewBox="0 0 9 6"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M0 0h9L4.5 6z" fill="currentColor" />
+            </svg>
+          {% else %}
+            <span class="svg-wrapper icon-caret icon-animated">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          {% endif %}
         </span>
       </summary>
       <floating-panel-component
@@ -365,29 +396,10 @@
     }
   }
 
-  .facets--horizontal .sorting-filter .facets__label {
-    @media screen and (min-width: 750px) {
-      font-weight: var(--font-h5--weight);
-      text-transform: uppercase;
-      color: var(--color-foreground);
-    }
-  }
-
+  /* Drawer/mobile keeps the label and value inline; the boxed desktop trigger is
+     styled with utilities on the markup instead. */
   .sorting-filter__value {
     display: contents;
-  }
-
-  .facets--horizontal .sorting-filter__value {
-    @media screen and (min-width: 750px) {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--gap-2xs);
-      height: var(--minimum-touch-target);
-      padding-inline: var(--padding-sm);
-      border: var(--style-border-width-inputs) solid var(--color-input-border);
-      border-radius: var(--style-border-radius-inputs);
-      background-color: var(--color-background);
-    }
   }
 
   .facets--horizontal .sorting-filter .facets__status {

@@ -15,6 +15,7 @@
   --color-spy-text:    #242424; /* source content-primary */
   --color-spy-text-2:  #393939; /* source content-secondary */
   --color-spy-muted:   #a6a6a6; /* source content-muted */
+  --color-spy-input-border: #cccccc; /* source select/input outline */
 
   /* Spacing overrides */
   --spacing-page: 1.5rem;   /* default page gutter */
