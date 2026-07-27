@@ -118,7 +118,7 @@
     "sign_up": "Sign up",
     "submit": "Submit",
     "view_store_information": "View store information",
-    "sort": "Sort"
+    "sort": "Sort By"
   },
   "blocks": {
     "contact_form": {
@@ -159,6 +159,12 @@
       "success_moderated": "Comment posted, awaiting moderation",
       "success": "Comment posted"
     }
+  },
+  "breadcrumbs": {
+    "aria_label": "Breadcrumb",
+    "home": "Home",
+    "collections": "Collections",
+    "not_found": "Page not found"
   },
   "content": {
     "cancel": "Cancel",

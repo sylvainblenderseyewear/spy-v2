@@ -21,11 +21,28 @@
 >
   {% liquid
     assign default_sort_by = results.default_sort_by
+
+    # Boxed trigger only in the horizontal bar; the drawer keeps Horizon's inline look
+    assign is_desktop_bar = false
+    if sort_position == 'desktop'
+      assign is_desktop_bar = true
+    endif
+
+    assign selected_sort_by = sort_by
+    assign status = ''
     for option in results.sort_options
-      if option.value == sort_by
+      if option.value == selected_sort_by
         assign status = option.name
       endif
     endfor
+
+    # Nothing matched, so the trigger would render blank. Fall back to the first
+    # option so the control always names the order the shopper is looking at.
+    if status == blank and results.sort_options.size > 0
+      assign first_option = results.sort_options | first
+      assign selected_sort_by = first_option.value
+      assign status = first_option.name
+    endif
   %}
 
   <div class="sorting-filter__container {% if should_use_select_on_mobile %} desktop:hidden {% else %} hidden {% endif %}">
@@ -47,7 +64,7 @@
         {% for option in results.sort_options %}
           <option
             value="{{ option.value }}"
-            {% if option.value == sort_by %}
+            {% if option.value == selected_sort_by %}
               selected
             {% endif %}
           >
@@ -85,18 +102,45 @@
         ref="summary"
       >
         <span
-          class="facets__label"
+          class="
+            facets__label
+            {%- if is_desktop_bar %} me-2.5 self-center text-[13px] font-bold uppercase tracking-[0.06em] text-spy-text{% endif %}
+          "
           id="sort-label-{{ section_id }}"
         >
           {{- 'actions.sort' | t -}}
         </span>
         <span
-          class="facets__status h6 desktop:hidden"
+          class="
+            sorting-filter__value
+            {%- if is_desktop_bar %} flex h-9 w-[180px] items-center gap-2 self-center rounded-none border border-solid border-spy-input-border bg-white px-3{% endif %}
+          "
         >
-          {{- status -}}
-        </span>
-        <span class="svg-wrapper icon-caret icon-animated">
-          {{- 'icon-caret.svg' | inline_asset_content -}}
+          <span
+            class="
+              facets__status
+              {%- if is_desktop_bar %} ms-0 flex-1 text-left text-[14px] font-normal leading-none text-spy-text{% else %} h6{% endif %}
+            "
+          >
+            {{- status -}}
+          </span>
+          {% if is_desktop_bar %}
+            {% comment %} Source uses a solid triangle here, not Horizon's chevron {% endcomment %}
+            <svg
+              class="shrink-0 text-spy-text"
+              width="9"
+              height="6"
+              viewBox="0 0 9 6"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M0 0h9L4.5 6z" fill="currentColor" />
+            </svg>
+          {% else %}
+            <span class="svg-wrapper icon-caret icon-animated">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          {% endif %}
         </span>
       </summary>
       <floating-panel-component
@@ -114,8 +158,8 @@
               <div
                 class="sorting-filter__option"
                 role="option"
-                aria-selected="{% if option.value == sort_by %}true{% else %}false{% endif %}"
-                tabindex="{% if option.value == sort_by %}0{% else %}-1{% endif %}"
+                aria-selected="{% if option.value == selected_sort_by %}true{% else %}false{% endif %}"
+                tabindex="{% if option.value == selected_sort_by %}0{% else %}-1{% endif %}"
               >
                 <input
                   type="radio"
@@ -127,7 +171,7 @@
                   value="{{ option.value }}"
                   class="sorting-filter__input"
                   data-option-name="{{ option.name }}"
-                  {% if option.value == sort_by %}
+                  {% if option.value == selected_sort_by %}
                     checked
                   {% endif %}
                   aria-hidden="true"
@@ -230,7 +274,6 @@
     box-shadow: var(--shadow-popover);
     border: var(--style-border-popover);
     background-color: var(--color-background);
-    border-radius: var(--style-border-radius-popover);
     width: max-content;
     min-width: var(--facets-panel-min-width);
     min-height: 0;
@@ -273,15 +316,6 @@
     min-width: 180px;
     max-width: 16em;
     padding: var(--padding-2xs) calc(var(--drawer-padding) / 2) var(--padding-2xs) var(--padding-2xs);
-
-    &:hover {
-      border-radius: calc(var(--style-border-radius-popover) / 2);
-      background-color: rgb(var(--color-foreground-rgb) / var(--opacity-8));
-    }
-
-    &:focus {
-      border-radius: calc(var(--style-border-radius-popover) / 2);
-    }
   }
 
   .sorting-filter__input {
@@ -352,6 +386,49 @@
   .facets--drawer .sorting-filter {
     @media screen and (min-width: 750px) {
       display: none;
+    }
+  }
+
+  /* Horizontal bar sort control - boxed trigger, pinned to the right */
+  .facets--horizontal .sorting-filter {
+    @media screen and (min-width: 750px) {
+      margin-inline-start: auto;
+    }
+  }
+
+  /* Drawer/mobile keeps the label and value inline; the boxed desktop trigger is
+     styled with utilities on the markup instead. */
+  .sorting-filter__value {
+    display: contents;
+  }
+
+  .facets--horizontal .sorting-filter .facets__status {
+    @media screen and (min-width: 750px) {
+      display: block;
+    }
+  }
+
+  .facets--horizontal .sorting-filter__options {
+    @media screen and (min-width: 750px) {
+      min-width: 100%;
+    }
+  }
+
+  .facets--horizontal .sorting-filter__option {
+    @media screen and (min-width: 750px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .facets--horizontal .sorting-filter__checkmark {
+    @media screen and (min-width: 750px) {
+      display: none;
+    }
+  }
+
+  .facets--horizontal .sorting-filter__option[aria-selected='true'] {
+    @media screen and (min-width: 750px) {
+      background-color: rgb(var(--color-foreground-rgb) / var(--opacity-8));
     }
   }
 {% endstylesheet %}

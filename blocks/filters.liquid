@@ -103,7 +103,7 @@
   section_id: block.id
 %}
 
-{% if block_settings.enable_filtering or block_settings.enable_sorting or block_settings.enable_grid_density %}
+{% if block_settings.enable_filtering or block_settings.enable_sorting %}
   {% if block_settings.filter_style == 'vertical' %}
     {% # These elements are always rendered in the horizontal bar that's why we apply the .facets--horizontal class %}
     <div
@@ -111,21 +111,18 @@
       style="{% render 'spacing-style', settings: block_settings %}{% if block_settings.text_label_case == 'uppercase' %} --facet-label-transform: uppercase;{% endif %}"
     >
       {% if block_settings.enable_filtering %}
-        <h4 class="facets--filters-title">{{ 'content.filters' | t }}</h4>
+        <vertical-filters-toggle-component data-target="vertical-filters-panel">
+          <button
+            class="cursor-pointer rounded-none border-0 bg-spy-orange px-3.5 py-[9px] text-[11px] font-bold uppercase leading-none tracking-[0.08em] text-white"
+            type="button"
+            on:click="/toggle"
+            aria-expanded="false"
+            aria-controls="vertical-filters-panel"
+          >
+            {{ 'blocks.filter' | t }}
+          </button>
+        </vertical-filters-toggle-component>
       {% endif %}
-
-      <div
-        class="products-count-wrapper"
-        data-testid="products-count"
-      >
-        <span role="status">
-          {% if products_count > 25000 %}
-            {{- 'content.item_count_cutoff' | t: count: 25000 -}}
-          {% else %}
-            {{- 'content.item_count' | t: count: products_count -}}
-          {% endif %}
-        </span>
-      </div>
 
       {% if block_settings.enable_sorting %}
         {% render 'sorting',
@@ -138,16 +135,15 @@
           section_id: section.id
         %}
       {% endif %}
-
-      {% if block_settings.enable_grid_density %}
-        {% render 'grid-density-controls', viewport: 'desktop' %}
-      {% endif %}
     </div>
   {% endif %}
 
   <div
+    {% if block_settings.filter_style == 'vertical' %}
+      id="vertical-filters-panel"
+    {% endif %}
     class="
-      {% if should_show_pane == false %}
+      {% if should_show_pane == false or block_settings.filter_style == 'vertical' %}
         hidden
       {% endif %}
       facets-block-wrapper
@@ -276,18 +272,6 @@
               {% endif %}
             {% endif %}
             {% if block_settings.filter_style == 'horizontal' %}
-              <div
-                class="products-count-wrapper"
-                data-testid="products-count"
-              >
-                <span role="status">
-                  {% if products_count > 25000 %}
-                    {{- 'content.item_count_cutoff' | t: count: 25000 -}}
-                  {% else %}
-                    {{- 'content.item_count' | t: count: products_count -}}
-                  {% endif %}
-                </span>
-              </div>
 
               {% if block_settings.enable_sorting %}
                 {% render 'sorting',
@@ -299,10 +283,6 @@
                   should_use_select_on_mobile: false,
                   section_id: section.id
                 %}
-              {% endif %}
-
-              {% if block_settings.enable_grid_density %}
-                {% render 'grid-density-controls', viewport: 'desktop' %}
               {% endif %}
             {% endif %}
           {% endif %}
@@ -357,17 +337,7 @@
       </div>
     {% endif %}
 
-    {% liquid
-      assign child_count = 0
-      if block_settings.enable_filtering == false and block_settings.enable_sorting
-        assign child_count = child_count | plus: 1
-      endif
-      if block_settings.enable_grid_density
-        assign child_count = child_count | plus: 1
-      endif
-    %}
-
-    <div class="facets-mobile-wrapper facets-controls-wrapper{% if child_count > 1 %} facets-mobile-wrapper--multiple-controls{% endif %}">
+    <div class="facets-mobile-wrapper facets-controls-wrapper">
       {% if block_settings.enable_filtering == false and block_settings.enable_sorting %}
         <facets-form-component
           section-id="{{ section.id }}"
@@ -393,9 +363,6 @@
             %}
           </form>
         </facets-form-component>
-      {% endif %}
-      {% if block_settings.enable_grid_density %}
-        {% render 'grid-density-controls', viewport: 'mobile' %}
       {% endif %}
     </div>
   </div>
@@ -556,6 +523,24 @@
     }
   }
 
+  #vertical-filters-panel {
+    @media screen and (min-width: 750px) {
+      width: 100%;
+      opacity: 1;
+      visibility: visible;
+      overflow: hidden;
+      transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+    }
+  }
+
+  #vertical-filters-panel.hidden {
+    @media screen and (min-width: 750px) {
+      display: block !important;
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
   .facets-toggle {
     --icon-offset: -3px;
 
@@ -647,10 +632,6 @@
     align-items: center;
     gap: var(--gap-sm);
     justify-content: flex-end;
-  }
-
-  .facets-mobile-wrapper--multiple-controls {
-    justify-content: space-between;
   }
 
   .facets {
@@ -1203,16 +1184,6 @@
     display: none;
   }
 
-  .facets--filters-title {
-    margin-block-end: 0;
-    color: var(--color-foreground);
-    height: fit-content;
-
-    @media screen and (max-width: 749px) {
-      display: none;
-    }
-  }
-
   .facets--horizontal .facets__panel .facets__status:has(:not(:empty)) {
     @media screen and (min-width: 750px) {
       display: flex;
@@ -1383,12 +1354,6 @@
       "type": "checkbox",
       "id": "enable_sorting",
       "label": "t:settings.enable_sorting",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_grid_density",
-      "label": "t:settings.enable_grid_density",
       "default": true
     },
     {
