@@ -9,12 +9,15 @@
   variant of each. Stops at the first hit.
 
   @param {string} technology - value to look for, matched case-insensitively as a substring
-  @param {object} [products] - the model collection's products
+  @param {object} [group_products] - the model collection's products. Deliberately not
+    called `products`: that name resolves to something ambient inside a render scope,
+    so an unpassed `products` came back non-blank and every colourway inherited the
+    group's answer.
   @param {object} [product] - single product to check when the model has no collection
 
   @example
   {%- capture happy_boost -%}
-    {%- render 'spy-group-has-technology', technology: 'Happy Boost', products: model_collection.products -%}
+    {%- render 'spy-group-has-technology', technology: 'Happy Boost', group_products: model_collection.products -%}
   {%- endcapture -%}
 {%- enddoc -%}
 
@@ -22,8 +25,8 @@
   assign needle = technology | downcase
   assign found = false
 
-  if products != blank
-    for group_product in products
+  if group_products != blank
+    for group_product in group_products
       assign product_value = group_product.metafields.spec.lens_technology.value | downcase
       if product_value contains needle
         assign found = true

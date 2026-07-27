@@ -82,7 +82,7 @@
 {%- capture group_happy_boost_flag -%}
   {%- render 'spy-group-has-technology',
     technology: 'Happy Boost',
-    products: model_collection.products,
+    group_products: model_collection.products,
     product: product
   -%}
 {%- endcapture -%}
@@ -191,12 +191,40 @@
       Sits after the count because the CSS pulls it up over both that and the badge.
     {%- endcomment -%}
     {%- if show_swatches and model_collection != blank -%}
+      {%- assign tech_store = '' -%}
       <div class="spy-swatches" data-spy-swatches>
         {%- for colourway in model_collection.products limit: swatch_count -%}
           {%- if colourway.featured_media != blank -%}
+            {%- comment -%}
+              Each thumbnail carries the badge set for its own colourway, so hovering
+              one updates the badge alongside the image instead of leaving the group's
+              resting badge in place. Built in this loop and parked in a <template>.
+            {%- endcomment -%}
+            {%- capture colourway_happy_boost -%}
+              {%- render 'spy-group-has-technology', technology: 'Happy Boost', product: colourway -%}
+            {%- endcapture -%}
+            {%- liquid
+              assign colourway_happy_boost = colourway_happy_boost | strip
+              assign colourway_force = false
+              if colourway_happy_boost == '1'
+                assign colourway_force = true
+              endif
+            -%}
+            {%- capture tech_entry -%}
+              <span data-tech-key="{{ colourway.id }}">
+                {%- render 'spy-tech-badges',
+                  product: colourway,
+                  force_happy_boost: colourway_force,
+                  happy_boost_icon: hb_icon
+                -%}
+              </span>
+            {%- endcapture -%}
+            {%- assign tech_store = tech_store | append: tech_entry -%}
+
             <a
               href="{{ colourway.url }}"
               class="spy-swatches__item"
+              data-tech-key="{{ colourway.id }}"
               data-full="{{ colourway.featured_media | image_url: width: 640 }}"
               aria-label="{{ title | escape }} — {{ colourway.title | escape }}"
             >
@@ -229,6 +257,11 @@
           </a>
         {%- endif -%}
       </div>
+
+      {%- comment -%} Badge sets the hover script swaps in, one per thumbnail {%- endcomment -%}
+      {%- if tech_store != blank -%}
+        <template data-tech-store>{{ tech_store }}</template>
+      {%- endif -%}
     {%- endif -%}
 
     <a class="contents user-select-text" ref="productTitleLink" href="{{ target }}">
@@ -249,7 +282,11 @@
   </div>
 </product-card>
 
-{%- comment -%} Hovering a thumbnail previews that colourway on the card image {%- endcomment -%}
+{%- comment -%}
+  Hovering a thumbnail previews that colourway: spy-card.js swaps the card image,
+  spy-tech-badge.js swaps the badge to match.
+{%- endcomment -%}
 {%- if show_swatches and model_collection != blank -%}
   <script src="{{ 'spy-card.js' | asset_url }}" defer></script>
+  <script src="{{ 'spy-tech-badge.js' | asset_url }}" defer></script>
 {%- endif -%}
