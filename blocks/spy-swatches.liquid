@@ -63,7 +63,7 @@
       assign swatch_off = swatch_base | append: ' border border-[color:var(--color-spy-border)]'
       assign swatch_on = swatch_base | append: ' border-2 border-[color:var(--color-spy-text)]'
     -%}
-    <div class="spy-swatches flex flex-wrap items-center gap-2 pt-3 pb-1" {{ block.shopify_attributes }}>
+    <div class="spy-swatches flex flex-wrap items-center gap-2 mt-[22px]" {{ block.shopify_attributes }}>
       {%- if has_option_colors -%}
         {%- for v in color_option.values -%}
           {%- assign media = v.variant.featured_media | default: p.featured_media -%}

@@ -20,13 +20,22 @@
 
   <button
     type="button"
-    class="inline-flex items-center gap-2 mt-3 bg-transparent border-none p-0 cursor-pointer text-[0.875rem] font-medium leading-6 tracking-[0.01em] text-[color:var(--color-spy-text)] hover:text-spy-orange"
+    {%- comment -%} flex, not inline-flex: inline-level here adds a line box under
+    the row. The source's link is a full-width flex row too. {%- endcomment -%}
+    class="flex w-full items-center justify-start gap-2 mt-3 bg-transparent border-none p-0 cursor-pointer text-left text-[0.875rem] font-medium leading-5 tracking-[0.01em] text-[color:var(--color-spy-text)] hover:text-spy-orange"
     aria-haspopup="dialog"
     data-spy-size-chart-open
   >
-    <svg width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <rect x="1" y="4" width="14" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/>
-      <path d="M4 4V3m4 1V3m4 1V3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    {%- comment -%} Ruler glyph, traced off the source icon: a flat 22x7 body with
+    fine ticks hanging inside the top edge, alternating long/short. The 1.5rem box
+    is what makes the row 24px tall, not the 20px line-height. {%- endcomment -%}
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="shrink-0" aria-hidden="true">
+      <rect x="0.5" y="9.5" width="23" height="5.5" stroke="currentColor" stroke-width="1"/>
+      <path
+        d="M2.8 9.5v2.6M5.1 9.5v1.7M7.4 9.5v2.6M9.7 9.5v1.7M12 9.5v2.6M14.3 9.5v1.7M16.6 9.5v2.6M18.9 9.5v1.7M21.2 9.5v2.6"
+        stroke="currentColor"
+        stroke-width="0.9"
+      />
     </svg>
     <span class="underline underline-offset-[3px]">{{ chart_name | default: 'Size Chart' }}</span>
   </button>

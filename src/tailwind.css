@@ -15,6 +15,7 @@
   --color-spy-text:    #242424; /* source content-primary */
   --color-spy-text-2:  #393939; /* source content-secondary */
   --color-spy-muted:   #a6a6a6; /* source content-muted */
+  --color-spy-surface: #f9f9f9; /* source surface-primary — tiles, scale track */
 
   /* Spacing overrides */
   --spacing-page: 1.5rem;   /* default page gutter */
@@ -731,13 +732,29 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   opacity: 1;
 }
 
+/* ── Info-column rhythm ───────────────────────────────────────────────────
+   Source spaces this column with per-block margins, not a uniform gap: rows are
+   contiguous down to Size Chart, then 32px before the lens panel, 56px before
+   Add to Cart, 32px before the trust box and 32px before the panels. The column
+   gap is 0 (template) so these margins are the only spacing. */
+/* 56px above Add to Cart, of which the lens panel already supplies 32 (my-8) */
+[data-testid="product-information"] .buy-buttons-block {
+  margin-top: 1.5rem;
+}
+[data-testid="product-information"] .group-block-content > details:first-of-type {
+  margin-top: 2rem;
+}
+
 /* Lens Cat 0–4 scale. Source grid is `0 repeat(4, 1fr)` with text-align right,
    which lands Cat. 0 at the left edge and Cat. 4 hard against the right. Not a
    Tailwind class because Horizon's own `.grid` would drag in its 14-area layout. */
 [data-testid="product-information"] .spy-cat-scale {
   display: grid;
   grid-template-columns: 0 repeat(4, minmax(0, 1fr));
-  text-align: right;
+  /* Alignment lives on each step (step 0 reads left, the rest right) so the 0-width
+     first column keeps its icon and label inside the box. overflow:hidden matches the
+     source and only trims the active bar's 16px overhang on the last step. */
+  overflow: hidden;
 }
 
 /* Frame color swatches: 56px photo swatch, dark selected border (source) */
@@ -764,10 +781,12 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   border-radius: 0;
   text-transform: uppercase;
 }
-/* ATC exact: DIN 400, 0.875rem (source .pdp-checkout-button .add-to-cart) */
+/* ATC exact: source computes 14px / w400 / padding 16px all round / 54px tall.
+   !important because Horizon's button preset sets its own weight and padding. */
 [data-testid="product-information"] .add-to-cart-button {
   font-size: 0.875rem;
-  font-weight: 400;
+  font-weight: 400 !important;
+  padding: 1rem !important;
 }
 
 /* Title / inventory in source tokens */

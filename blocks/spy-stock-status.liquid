@@ -10,7 +10,7 @@
 -%}
 
 {%- comment -%} Source renders this row at body-m: 16px / 22.4px, regular weight {%- endcomment -%}
-<div class="spy-stock-status text-[16px] leading-[1.4] mt-1" {{ block.shopify_attributes }}>
+<div class="spy-stock-status text-[16px] leading-[1.4] py-[17px]" {{ block.shopify_attributes }}>
   {%- if available -%}
     <span class="text-green-700">{{ block.settings.in_stock_label | default: 'In Stock' }}</span>
   {%- else -%}

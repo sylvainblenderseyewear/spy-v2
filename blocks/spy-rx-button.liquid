@@ -1,12 +1,20 @@
-{%- comment -%} Shown on the eyewear PDP by default (SPY frames are RX-eligible). {%- endcomment -%}
+{%- comment -%}
+  Only for RX-eligible frames. The source ships this block with `d-none` and
+  reveals it per product, and spec.available_rx carries that flag (populated on
+  409 of 415 products). The `always_show` setting is the escape hatch if the
+  metafield is wrong for a given line.
+{%- endcomment -%}
+{%- assign rx_ok = closest.product.metafields.spec.available_rx.value -%}
+{%- if rx_ok or block.settings.always_show -%}
 <a
   href="{{ block.settings.rx_url | default: 'https://www.sportrx.com' }}"
-  class="flex items-center justify-center w-full py-3 mt-2 border border-spy-orange text-spy-orange uppercase font-bold text-[0.8125rem] tracking-[0.06em] no-underline hover:bg-spy-orange hover:text-white transition-colors"
+  class="flex items-center justify-center w-full py-3 mt-8 border border-spy-orange text-spy-orange uppercase font-bold text-[0.8125rem] tracking-[0.06em] no-underline hover:bg-spy-orange hover:text-white transition-colors"
   {% if block.settings.open_new_tab %}target="_blank" rel="noopener"{% endif %}
   {{ block.shopify_attributes }}
 >
   {{ block.settings.label | default: 'Buy in Prescription' }}
 </a>
+{%- endif -%}
 
 {% schema %}
 {
@@ -15,7 +23,8 @@
   "settings": [
     { "type": "text", "id": "label", "label": "Label", "default": "Buy in Prescription" },
     { "type": "url", "id": "rx_url", "label": "RX partner URL" },
-    { "type": "checkbox", "id": "open_new_tab", "label": "Open in new tab", "default": true }
+    { "type": "checkbox", "id": "open_new_tab", "label": "Open in new tab", "default": true },
+    { "type": "checkbox", "id": "always_show", "label": "Show even if spec.available_rx is false", "default": false }
   ],
   "presets": [{ "name": "RX Button", "category": "SPY" }]
 }
