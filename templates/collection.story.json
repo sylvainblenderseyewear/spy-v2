@@ -20,7 +20,6 @@
             "show_swatch_label": true,
             "show_filter_label": false,
             "enable_sorting": true,
-            "enable_grid_density": false,
             "padding-block-start": 8,
             "padding-block-end": 8,
             "padding-inline-start": 0,

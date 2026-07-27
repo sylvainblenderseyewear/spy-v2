@@ -134,31 +134,15 @@
         style="--mobile-columns: {% if section.settings.mobile_product_card_size == 'large' %}1{% else %}2{% endif %};"
       >
         {% comment %}
-          This script is used to set the grid view on the product grid stored in sessionStorage. Keeping it here helps us prevent seeing the default state.
+          The grid-density switcher is gone, so the grid always renders in the default
+          view. Any stale sessionStorage value is dropped — otherwise a shopper who
+          picked "zoom-out" before would be stuck in it with no control to switch back.
         {% endcomment %}
         {% unless request.design_mode %}
           <script>
             (() => {
-              const grid = document.querySelector('.product-grid');
-              if (!grid) return;
-
-              const storedLayoutMobile = sessionStorage.getItem('product-grid-view-mobile') || 'default';
-              const storedLayoutDesktop = sessionStorage.getItem('product-grid-view-desktop') || 'default';
-
-              // No need to read the window width if no custom layouts were saved.
-              if (storedLayoutMobile === 'default' && storedLayoutDesktop === 'default') return;
-
-              const storedLayout = window.innerWidth >= 750 ? storedLayoutDesktop : storedLayoutMobile;
-              if (storedLayout === 'default') return;
-
-              grid.setAttribute('product-grid-view', storedLayout);
-
-              const options = document.querySelectorAll(
-                'input[type="radio"][name="grid"], input[type="radio"][name="grid-mobile"]'
-              );
-              for (const option of options) {
-                option.checked = option.value === storedLayout;
-              }
+              sessionStorage.removeItem('product-grid-view-mobile');
+              sessionStorage.removeItem('product-grid-view-desktop');
             })();
           </script>
         {% endunless %}

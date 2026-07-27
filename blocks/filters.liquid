@@ -103,7 +103,7 @@
   section_id: block.id
 %}
 
-{% if block_settings.enable_filtering or block_settings.enable_sorting or block_settings.enable_grid_density %}
+{% if block_settings.enable_filtering or block_settings.enable_sorting %}
   {% if block_settings.filter_style == 'vertical' %}
     {% # These elements are always rendered in the horizontal bar that's why we apply the .facets--horizontal class %}
     <div
@@ -134,10 +134,6 @@
           should_use_select_on_mobile: false,
           section_id: section.id
         %}
-      {% endif %}
-
-      {% if block_settings.enable_grid_density %}
-        {% render 'grid-density-controls', viewport: 'desktop' %}
       {% endif %}
     </div>
   {% endif %}
@@ -288,10 +284,6 @@
                   section_id: section.id
                 %}
               {% endif %}
-
-              {% if block_settings.enable_grid_density %}
-                {% render 'grid-density-controls', viewport: 'desktop' %}
-              {% endif %}
             {% endif %}
           {% endif %}
         </form>
@@ -345,17 +337,7 @@
       </div>
     {% endif %}
 
-    {% liquid
-      assign child_count = 0
-      if block_settings.enable_filtering == false and block_settings.enable_sorting
-        assign child_count = child_count | plus: 1
-      endif
-      if block_settings.enable_grid_density
-        assign child_count = child_count | plus: 1
-      endif
-    %}
-
-    <div class="facets-mobile-wrapper facets-controls-wrapper{% if child_count > 1 %} facets-mobile-wrapper--multiple-controls{% endif %}">
+    <div class="facets-mobile-wrapper facets-controls-wrapper">
       {% if block_settings.enable_filtering == false and block_settings.enable_sorting %}
         <facets-form-component
           section-id="{{ section.id }}"
@@ -381,9 +363,6 @@
             %}
           </form>
         </facets-form-component>
-      {% endif %}
-      {% if block_settings.enable_grid_density %}
-        {% render 'grid-density-controls', viewport: 'mobile' %}
       {% endif %}
     </div>
   </div>
@@ -653,10 +632,6 @@
     align-items: center;
     gap: var(--gap-sm);
     justify-content: flex-end;
-  }
-
-  .facets-mobile-wrapper--multiple-controls {
-    justify-content: space-between;
   }
 
   .facets {
@@ -1379,12 +1354,6 @@
       "type": "checkbox",
       "id": "enable_sorting",
       "label": "t:settings.enable_sorting",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_grid_density",
-      "label": "t:settings.enable_grid_density",
       "default": true
     },
     {
