@@ -9,12 +9,10 @@
     variants across the whole model, not on the card's representative colourway.
   @param {object} [happy_boost_icon] - image to fall back to when forced and no
     metaobject icon is available
-  @param {string} [hb_class] - classes for the icon, to size it per context
 {%- enddoc -%}
 
 {%- liquid
   assign specs = product.metafields.spec
-  assign hb_class = hb_class | default: 'spy-tech-badge__hb h-6 w-auto object-contain'
 
   # Happy Boost technology -> colourful HB icon
   assign hb_icon = nil
@@ -50,15 +48,24 @@
 -%}
 
 {%- if hb_icon != blank -%}
-  {%- assign hb_src = hb_icon | image_url: width: 120 -%}
-  {%- if hb_src == blank -%}{%- assign hb_src = hb_icon.url | default: hb_icon -%}{%- endif -%}
+  {%- liquid
+    assign hb_src = hb_icon | image_url: width: 120
+    if hb_src == blank
+      assign hb_src = hb_icon.url | default: hb_icon
+    endif
+
+    # Reserve the right box while it loads. The metaobject icon knows its own size;
+    # the picto file arrives as a bare URL, and it's square.
+    assign hb_width = hb_icon.width | default: 80
+    assign hb_height = hb_icon.height | default: 80
+  -%}
   <img
     src="{{ hb_src }}"
     alt="Happy Boost"
-    width="60"
-    height="28"
+    width="{{ hb_width }}"
+    height="{{ hb_height }}"
     loading="lazy"
-    class="{{ hb_class }}"
+    class="spy-tech-badge__hb h-7 w-auto object-contain min-[750px]:h-10"
   >
 {%- endif -%}
 
