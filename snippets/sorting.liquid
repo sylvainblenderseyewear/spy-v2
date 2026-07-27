@@ -243,7 +243,6 @@
     box-shadow: var(--shadow-popover);
     border: var(--style-border-popover);
     background-color: var(--color-background);
-    border-radius: var(--style-border-radius-popover);
     width: max-content;
     min-width: var(--facets-panel-min-width);
     min-height: 0;
@@ -286,15 +285,6 @@
     min-width: 180px;
     max-width: 16em;
     padding: var(--padding-2xs) calc(var(--drawer-padding) / 2) var(--padding-2xs) var(--padding-2xs);
-
-    &:hover {
-      border-radius: calc(var(--style-border-radius-popover) / 2);
-      background-color: rgb(var(--color-foreground-rgb) / var(--opacity-8));
-    }
-
-    &:focus {
-      border-radius: calc(var(--style-border-radius-popover) / 2);
-    }
   }
 
   .sorting-filter__input {
