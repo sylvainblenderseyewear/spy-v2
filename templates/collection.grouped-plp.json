@@ -137,16 +137,11 @@
         "padding-block-start": 0,
         "padding-block-end": 48
       }
-    },
-    "spy_collection_seo_A1": {
-      "type": "spy-collection-seo",
-      "settings": {}
     }
   },
   "order": [
     "spy_collection_hero_A1",
     "section_dHFxNJ",
     "main",
-    "spy_collection_seo_A1"
   ]
 }
