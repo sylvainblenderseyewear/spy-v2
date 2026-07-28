@@ -53,14 +53,23 @@
   endif
 -%}
 
-<details class="group border-t border-[color:var(--color-spy-border)]" {{ block.shopify_attributes }}>
-  <summary class="flex items-center justify-between gap-2 py-5 px-3 cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-[16px] leading-6 font-bold uppercase tracking-[0] text-[color:var(--color-spy-text)]">
+{%- comment -%}
+  Shares name="product-panels" with the description block, so opening one closes the
+  other — the native version of the source's Bootstrap data-parent accordion.
+{%- endcomment -%}
+<details name="product-panels" class="group" {{ block.shopify_attributes }}>
+  {%- comment -%} Rule sits UNDER the header, and the transparent top border keeps the row 66px {%- endcomment -%}
+  <summary class="flex items-center justify-between gap-2 py-5 px-3 border-t border-t-transparent border-b border-b-[color:var(--color-spy-border)] cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-[16px] leading-6 font-bold uppercase tracking-[0] text-[color:var(--color-spy-text)]">
     {{ block.settings.heading | default: 'Technical Information' }}
-    <svg class="w-4 h-4 shrink-0 text-[color:var(--color-spy-muted)] transition-transform duration-200 group-open:rotate-180" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    {%- comment -%} Source: fa-chevron-down, 14x9 glyph in ink, 300ms flip {%- endcomment -%}
+    <svg class="w-4 h-4 shrink-0 text-[color:var(--color-spy-text)] transition-transform duration-300 ease-in-out group-open:rotate-180" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 5L8 11.5L14 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </summary>
-  {%- comment -%} id is the target of the lens panel's "Read more" — a fragment link
-    into a closed <details> makes the browser open it {%- endcomment -%}
-  <table id="spy-spec-details" class="w-full border-collapse text-[13px] pb-4 [&_tr]:border-t [&_tr]:border-solid [&_tr]:border-t-[color:var(--color-spy-border)] [&_th]:text-left [&_th]:py-2 [&_th]:pr-3 [&_th]:pl-0 [&_th]:font-semibold [&_th]:w-[45%] [&_th]:align-top [&_th]:text-[color:var(--color-spy-text-2)] [&_td]:py-2 [&_td]:align-top [&_td]:text-[color:var(--color-spy-text)]">
+  {%- comment -%}
+    id is the target of the lens panel's "Read more" — a fragment link into a closed
+    <details> makes the browser open it. Rows follow the source: body-m text (14/20,
+    500 label / 400 value, 1% tracking), 16px padding, 50/50 split, rule underneath.
+  {%- endcomment -%}
+  <table id="spy-spec-details" class="w-full border-collapse text-[14px] leading-5 tracking-[0.01em] [&_tr]:border-b [&_tr]:border-solid [&_tr]:border-b-[color:var(--color-spy-border)] [&_th]:text-left [&_th]:py-4 [&_th]:px-3 [&_th]:font-medium [&_th]:w-1/2 [&_th]:align-top [&_th]:text-[color:var(--color-spy-ink)] [&_td]:py-4 [&_td]:px-3 [&_td]:font-normal [&_td]:align-top [&_td]:text-[color:var(--color-spy-ink)]">
     <tbody>
 
       {%- comment -%}── Identification ─────────────────────────────{%- endcomment -%}

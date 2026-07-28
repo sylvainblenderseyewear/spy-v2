@@ -10,12 +10,18 @@
 -%}
 
 {%- if body != blank -%}
-<details class="group border-t border-[color:var(--color-spy-border)]" {% if block.settings.open_default %}open{% endif %} {{ block.shopify_attributes }}>
-  <summary class="flex items-center justify-between gap-2 py-5 px-3 cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-[16px] leading-6 font-bold uppercase tracking-[0] text-[color:var(--color-spy-text)]">
+{%- comment -%}
+  name="product-panels" makes this an exclusive accordion with the spec table: the
+  browser closes the open sibling on its own, like the source's data-parent.
+{%- endcomment -%}
+<details name="product-panels" class="group" {% if block.settings.open_default %}open{% endif %} {{ block.shopify_attributes }}>
+  {%- comment -%} Rule sits UNDER the header, and the transparent top border keeps the row 66px {%- endcomment -%}
+  <summary class="flex items-center justify-between gap-2 py-5 px-3 border-t border-t-transparent border-b border-b-[color:var(--color-spy-border)] cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-[16px] leading-6 font-bold uppercase tracking-[0] text-[color:var(--color-spy-text)]">
     {{ block.settings.heading | default: 'Description' }}
-    <svg class="w-4 h-4 shrink-0 text-[color:var(--color-spy-muted)] transition-transform duration-200 group-open:rotate-180" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    {%- comment -%} Source: fa-chevron-down, 14x9 glyph in ink, 300ms flip {%- endcomment -%}
+    <svg class="w-4 h-4 shrink-0 text-[color:var(--color-spy-text)] transition-transform duration-300 ease-in-out group-open:rotate-180" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 5L8 11.5L14 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </summary>
-  <div class="pb-5 text-[15px] leading-[1.6] text-[color:var(--color-spy-text-2)] [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_li]:mb-1">
+  <div class="px-3 py-4 text-[15px] leading-[1.6] text-[color:var(--color-spy-text-2)] [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_li]:mb-1">
     {{ body }}
   </div>
 </details>
