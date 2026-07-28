@@ -1,26 +1,115 @@
 {%- doc -%}
-  "Notify me when back in stock" button. Renders only when the current variant
-  is sold out. Needs a back-in-stock app to actually send the alert — the button
-  carries data hooks so the app (or a later custom form) can bind to it.
+  "Notify me when back in stock" — shows only when the current variant is sold out.
+  The button reveals a small form (email + consent + send), like the source PDP.
+
+  Sending uses Shopify's own contact form, so it works with no app: the request
+  lands in the shop's inbox with the product, colour and variant id. Swap the
+  form for a back-in-stock app later and the markup can stay.
 {%- enddoc -%}
 
 {%- liquid
   assign p = closest.product
   assign variant = p.selected_or_first_available_variant
+  assign form_id = 'spy-notify-' | append: block.id
+  assign panel_id = 'spy-notify-panel-' | append: block.id
 -%}
 
 {%- unless variant.available -%}
-<div class="spy-notify-me mt-2" {{ block.shopify_attributes }}>
-  <button
-    type="button"
-    class="w-full py-3 border border-spy-orange text-spy-orange uppercase font-bold text-[0.8125rem] tracking-[0.06em] bg-transparent cursor-pointer hover:bg-spy-orange hover:text-white transition-colors"
-    data-spy-notify
-    data-variant-id="{{ variant.id }}"
-    data-product-id="{{ p.id }}"
-  >
-    {{ block.settings.label | default: 'Notify me when back in stock' }}
-  </button>
-</div>
+  <div class="spy-notify-me mt-2" {{ block.shopify_attributes }}>
+    {%- comment -%} Source: white button, orange hairline + orange uppercase label {%- endcomment -%}
+    <button
+      type="button"
+      class="spy-notify-me__toggle w-full py-3 border border-spy-orange text-spy-orange uppercase font-bold text-[0.8125rem] tracking-[0.06em] bg-transparent cursor-pointer hover:bg-spy-orange hover:text-white transition-colors aria-expanded:hidden"
+      data-spy-notify-toggle
+      aria-expanded="false"
+      aria-controls="{{ panel_id }}"
+      data-variant-id="{{ variant.id }}"
+      data-product-id="{{ p.id }}"
+    >
+      {{ block.settings.label | default: 'Notify me when back in stock' }}
+    </button>
+
+    <div id="{{ panel_id }}" class="spy-notify-me__panel mt-4" hidden>
+      {%- form 'contact', id: form_id, class: 'flex flex-col items-start gap-3' -%}
+        {%- comment -%} Remembered outside the form so the script can keep the panel open {%- endcomment -%}
+        {%- if form.posted_successfully? or form.errors -%}
+          {%- assign notify_open = true -%}
+        {%- endif -%}
+        {%- if form.posted_successfully? -%}
+          <p class="m-0 text-[14px] leading-5 text-[color:var(--color-spy-positive)]">
+            {{ block.settings.success_text | default: "Thanks — we'll email you when this is back in stock." }}
+          </p>
+        {%- else -%}
+          {%- if form.errors -%}
+            <p class="m-0 text-[14px] leading-5 text-[color:var(--color-spy-negative)]">
+              {{ form.errors | default_errors }}
+            </p>
+          {%- endif -%}
+
+          <p class="m-0 text-[14px] font-medium leading-5 tracking-[0.01em] text-[color:var(--color-spy-text)]">
+            {{ block.settings.intro | default: 'We will send you an email when the product is back in stock' }}
+          </p>
+
+          {%- comment -%} Tells the merchant which colourway to restock {%- endcomment -%}
+          <input type="hidden" name="contact[subject]" value="Back in stock request: {{ p.title | escape }}">
+          <input type="hidden" name="contact[product]" value="{{ p.title | escape }} — {{ variant.title | escape }}">
+          <input type="hidden" name="contact[variant_id]" value="{{ variant.id }}">
+          <input type="hidden" name="contact[product_url]" value="{{ shop.url }}{{ p.url }}">
+
+          <label for="{{ form_id }}-email" class="m-0 text-[14px] leading-5 text-[color:var(--color-spy-text)]">
+            {{ block.settings.email_label | default: 'Email' }}
+            <span class="text-[color:var(--color-spy-negative)]">*</span>
+          </label>
+          <input
+            id="{{ form_id }}-email"
+            type="email"
+            name="contact[email]"
+            required
+            autocomplete="email"
+            class="w-full max-w-[420px] h-10 px-3 border border-[color:var(--color-spy-border)] bg-white text-[14px] text-[color:var(--color-spy-text)] focus:outline-none focus:border-spy-orange"
+          >
+
+          <label class="flex items-start gap-2 cursor-pointer text-[14px] leading-5 text-[color:var(--color-spy-text)]">
+            <input
+              type="checkbox"
+              name="contact[consent]"
+              value="yes"
+              required
+              class="mt-[3px] h-4 w-4 shrink-0 cursor-pointer accent-spy-orange"
+            >
+            <span>{{ block.settings.consent_text | default: 'I agree to receive a notification by email.' }}<span class="text-[color:var(--color-spy-negative)]">*</span></span>
+          </label>
+
+          <button
+            type="submit"
+            class="w-full max-w-[420px] py-3 bg-spy-orange text-white uppercase font-bold text-[0.8125rem] tracking-[0.06em] border-0 cursor-pointer hover:opacity-90 transition-opacity"
+          >
+            {{ block.settings.send_label | default: 'Send' }}
+          </button>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const root = document.currentScript.previousElementSibling;
+      const toggle = root.querySelector('[data-spy-notify-toggle]');
+      const panel = root.querySelector('.spy-notify-me__panel');
+      if (!toggle || !panel) return;
+      toggle.addEventListener('click', () => {
+        toggle.setAttribute('aria-expanded', 'true');
+        panel.hidden = false;
+        panel.querySelector('input[type="email"]')?.focus();
+      });
+      {%- comment -%} Keep it open when the form comes back with a result {%- endcomment -%}
+      {%- if notify_open -%}
+        toggle.setAttribute('aria-expanded', 'true');
+        panel.hidden = false;
+      {%- endif -%}
+      document.currentScript?.remove();
+    })();
+  </script>
 {%- endunless -%}
 
 {% schema %}
@@ -28,7 +117,12 @@
   "name": "Notify Me",
   "tag": null,
   "settings": [
-    { "type": "text", "id": "label", "label": "Label", "default": "Notify me when back in stock" }
+    { "type": "text", "id": "label", "label": "Button label", "default": "Notify me when back in stock" },
+    { "type": "text", "id": "intro", "label": "Intro text", "default": "We will send you an email when the product is back in stock" },
+    { "type": "text", "id": "email_label", "label": "Email label", "default": "Email" },
+    { "type": "text", "id": "consent_text", "label": "Consent text", "default": "I agree to receive a notification by email." },
+    { "type": "text", "id": "send_label", "label": "Send button label", "default": "Send" },
+    { "type": "text", "id": "success_text", "label": "Success message", "default": "Thanks — we'll email you when this is back in stock." }
   ],
   "presets": [{ "name": "Notify Me", "category": "SPY" }]
 }

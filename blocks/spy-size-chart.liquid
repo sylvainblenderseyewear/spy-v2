@@ -1,29 +1,68 @@
+{%- doc -%}
+  Size Chart link + Frame Fit Guide drawer.
+
+  The drawer is the source's fit guide: a 500px panel on the right over a light
+  grey veil, with two tabs. "This frame" is product data (diagrams + measurements
+  from metafields, rows appear only when filled). "How to measure" is the same
+  copy for every product, so it lives in block settings.
+{%- enddoc -%}
+
 {%- liquid
   assign p = closest.product
   assign size_chart_ref = p.metafields.pdp.size_chart.value
+  assign chart_name = block.settings.fallback_label
+
+  if size_chart_ref != blank
+    assign chart_image = size_chart_ref.fields.image.value
+    if size_chart_ref.fields.name.value != blank
+      assign chart_name = size_chart_ref.fields.name.value
+    endif
+  endif
+
+  comment
+    Front/profile line drawings. The metaobject image is the front view; the
+    second one is optional.
+  endcomment
+  assign diagram_front = chart_image | default: p.metafields.pdp.frame_diagram_front.value
+  assign diagram_profile = p.metafields.pdp.frame_diagram_profile.value
+
+  comment
+    Measurement rows — each only renders when the product has the value.
+  endcomment
+  assign temple_width = p.metafields.spec.temple_width
+  assign temple_length = p.metafields.spec.temple_length
+  assign lens_height = p.metafields.spec.lens_height
+  assign dimensions = p.metafields.spec.dimensions
+  assign frame_fit = p.metafields.spec.fit
+
+  assign has_measures = false
+  if temple_width != blank or temple_length != blank or lens_height != blank or dimensions != blank
+    assign has_measures = true
+  endif
+
+  assign has_frame_tab = false
+  if diagram_front != blank or diagram_profile != blank or has_measures or frame_fit != blank
+    assign has_frame_tab = true
+  endif
+
+  assign drawer_id = 'spy-fit-guide-' | append: block.id
+  comment
+    Source type: condensed uppercase for labels, tracked out. Uses the theme
+    heading font so a font swap in settings carries through.
+  endcomment
+  assign label_cls = 'font-bold uppercase text-[10px] leading-none tracking-[0.25em] text-spy-orange m-0 mb-2.5'
 -%}
 
-{%- if size_chart_ref != blank or block.settings.fallback_label != blank -%}
-{%- comment -%} Source row is 36px: 12px above the link + a 24px link box {%- endcomment -%}
 <div class="spy-size-chart" {{ block.shopify_attributes }}>
-  {%- liquid
-    if size_chart_ref != blank
-      assign chart_image = size_chart_ref.fields.image.value
-      assign chart_name  = size_chart_ref.fields.name.value
-      if chart_name == blank
-        assign chart_name = block.settings.fallback_label
-      endif
-    else
-      assign chart_name = block.settings.fallback_label
-    endif
-  -%}
-
+  {%- comment -%} Source row is 36px: 12px above the link + a 24px link box {%- endcomment -%}
   <button
     type="button"
     {%- comment -%} flex, not inline-flex: inline-level here adds a line box under
     the row. The source's link is a full-width flex row too. {%- endcomment -%}
     class="flex w-full items-center justify-start gap-2 mt-3 bg-transparent border-none p-0 cursor-pointer text-left text-[0.875rem] font-medium leading-5 tracking-[0.01em] text-[color:var(--color-spy-text)] hover:text-spy-orange"
     aria-haspopup="dialog"
+    aria-expanded="false"
+    aria-controls="{{ drawer_id }}"
     data-spy-size-chart-open
   >
     {%- comment -%} Ruler glyph, traced off the source icon: a flat 22x7 body with
@@ -40,49 +79,241 @@
     <span class="underline underline-offset-[3px]">{{ chart_name | default: 'Size Chart' }}</span>
   </button>
 
-  {%- if size_chart_ref != blank and chart_image != blank -%}
+  {%- comment -%}
+    Kept in the DOM so the slide can animate. group + group-data-[open] drives
+    the veil and the panel together.
+  {%- endcomment -%}
   <div
-    class="hidden fixed inset-0 z-[1001] data-[open]:block"
+    id="{{ drawer_id }}"
+    class="spy-fit-guide group invisible fixed inset-0 z-[1001] data-[open]:visible"
     role="dialog"
     aria-modal="true"
-    aria-label="{{ chart_name | escape }}"
+    aria-label="{{ block.settings.title | default: 'Frame Fit Guide' | escape }}"
     aria-hidden="true"
     data-spy-size-chart-modal
   >
-    <div class="absolute inset-0 bg-black/55" data-spy-size-chart-close></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[min(560px,95vw)] max-h-[90vh] overflow-y-auto pt-10 px-7 pb-7 max-[750px]:top-auto max-[750px]:bottom-0 max-[750px]:left-0 max-[750px]:translate-x-0 max-[750px]:translate-y-0 max-[750px]:w-full max-[750px]:rounded-t-xl max-[750px]:px-5 max-[750px]:pb-8">
-      <button type="button" class="absolute top-3 right-3 bg-transparent border-none cursor-pointer p-1.5 flex items-center text-[color:var(--color-foreground,#2c393e)] hover:text-spy-orange" aria-label="Close size chart" data-spy-size-chart-close>
+    {%- comment -%} Source veil is #e6e6e6 at 60%, not a black scrim {%- endcomment -%}
+    <div
+      class="absolute inset-0 bg-[#e6e6e6] opacity-0 transition-opacity duration-300 ease-out group-data-[open]:opacity-60 motion-reduce:transition-none"
+      data-spy-size-chart-close
+    ></div>
+
+    <div
+      class="absolute right-0 top-0 flex h-full w-[min(500px,100vw)] translate-x-full flex-col bg-white shadow-[-4px_0_24px_rgba(0,0,0,0.08)] transition-transform duration-300 ease-out group-data-[open]:translate-x-0 motion-reduce:transition-none"
+      data-spy-fit-panel
+    >
+      <button
+        type="button"
+        class="absolute right-3 top-3 z-10 flex cursor-pointer items-center border-none bg-transparent p-1.5 text-[color:var(--color-spy-text)] hover:text-spy-orange"
+        aria-label="{{ 'accessibility.close' | t | default: 'Close' }}"
+        data-spy-size-chart-close
+      >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
           <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </button>
-      <p class="text-[14px] font-bold uppercase tracking-[0.06em] m-0 mb-4 text-[color:var(--color-foreground,#2c393e)]">{{ chart_name }}</p>
-      <img
-        src="{{ chart_image | image_url: width: 800 }}"
-        alt="{{ chart_name | escape }}"
-        width="800"
-        height="800"
-        loading="lazy"
-        class="w-full h-auto block"
-      >
+
+      <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-width:thin]">
+        {%- comment -%} Header: 3px orange rule, eyebrow, condensed title, grey sub {%- endcomment -%}
+        <div class="border-b border-[#ebebeb] px-5 pb-[18px] pt-11">
+          <div class="mb-4 h-[3px] bg-spy-orange"></div>
+          <p class="m-0 mb-[5px] text-[10px] font-normal uppercase leading-none tracking-[0.3em] text-spy-orange">{{ block.settings.eyebrow }}</p>
+          <h2 class="m-0 mb-1.5 text-[26px] font-bold uppercase leading-none tracking-[0.08em] text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ block.settings.title }}</h2>
+          <p class="m-0 text-[12px] font-light leading-[1.5] text-[#999]">{{ block.settings.subtitle }}</p>
+        </div>
+
+        {%- comment -%} Tabs. Only shown when there is a frame tab to switch to. {%- endcomment -%}
+        {%- if has_frame_tab -%}
+          <div class="flex border-b border-[#ebebeb]" role="tablist">
+            <button
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="{{ drawer_id }}-frame"
+              class="-mb-px flex-1 cursor-pointer border-0 border-b-2 border-transparent bg-transparent px-2 py-[11px] text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[#bbb] transition-colors aria-selected:border-b-spy-orange aria-selected:text-[color:var(--color-spy-text)]"
+              data-spy-tab="frame"
+            >
+              {{ block.settings.tab_frame_label }}
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="{{ drawer_id }}-howto"
+              class="-mb-px flex-1 cursor-pointer border-0 border-b-2 border-transparent bg-transparent px-2 py-[11px] text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[#bbb] transition-colors aria-selected:border-b-spy-orange aria-selected:text-[color:var(--color-spy-text)]"
+              data-spy-tab="howto"
+            >
+              {{ block.settings.tab_howto_label }}
+            </button>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} ── This frame ───────────────────────────────── {%- endcomment -%}
+        {%- if has_frame_tab -%}
+          <div id="{{ drawer_id }}-frame" role="tabpanel" class="px-5 py-[18px]" data-spy-panel="frame">
+            {%- if diagram_front != blank or diagram_profile != blank -%}
+              <div class="mb-6">
+                <p class="{{ label_cls }}" style="font-family: var(--font-heading--family);">{{ block.settings.diagrams_label }}</p>
+                <div class="flex flex-col gap-4">
+                  {%- if diagram_front != blank -%}
+                    <div class="flex flex-col items-center gap-[5px]">
+                      <img src="{{ diagram_front | image_url: width: 900 }}" alt="{{ block.settings.front_caption | escape }}" loading="lazy" class="block h-auto w-full">
+                      <span class="text-center text-[9px] uppercase tracking-[0.15em] text-[#bbb]">{{ block.settings.front_caption }}</span>
+                    </div>
+                  {%- endif -%}
+                  {%- if diagram_profile != blank -%}
+                    <div class="flex flex-col items-center gap-[5px]">
+                      <img src="{{ diagram_profile | image_url: width: 900 }}" alt="{{ block.settings.profile_caption | escape }}" loading="lazy" class="block h-auto w-full">
+                      <span class="text-center text-[9px] uppercase tracking-[0.15em] text-[#bbb]">{{ block.settings.profile_caption }}</span>
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+
+            {%- if has_measures -%}
+              <div class="mb-6">
+                <p class="{{ label_cls }}" style="font-family: var(--font-heading--family);">{{ block.settings.measurements_label }}</p>
+                <table class="w-full border-collapse">
+                  <tbody class="[&_td]:border-b [&_td]:border-[#f3f3f3] [&_td]:py-2 [&_tr:last-child_td]:border-b-0">
+                    {%- assign unit_cls = 'text-[11px] font-normal text-[#bbb]' -%}
+                    {%- if temple_width != blank -%}
+                      <tr>
+                        <td class="text-[12px] text-[#666]">{{ block.settings.temple_width_label }}</td>
+                        <td class="text-right text-[18px] font-semibold whitespace-nowrap text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ temple_width }}<span class="{{ unit_cls }}"> mm</span></td>
+                      </tr>
+                    {%- endif -%}
+                    {%- if temple_length != blank -%}
+                      <tr>
+                        <td class="text-[12px] text-[#666]">{{ block.settings.temple_length_label }}</td>
+                        <td class="text-right text-[18px] font-semibold whitespace-nowrap text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ temple_length }}<span class="{{ unit_cls }}"> mm</span></td>
+                      </tr>
+                    {%- endif -%}
+                    {%- if lens_height != blank -%}
+                      <tr>
+                        <td class="text-[12px] text-[#666]">{{ block.settings.lens_height_label }}</td>
+                        <td class="text-right text-[18px] font-semibold whitespace-nowrap text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ lens_height }}<span class="{{ unit_cls }}"> mm</span></td>
+                      </tr>
+                    {%- endif -%}
+                    {%- if temple_width == blank and temple_length == blank and lens_height == blank and dimensions != blank -%}
+                      {%- comment -%} No split values yet — show the single dimensions string {%- endcomment -%}
+                      <tr>
+                        <td class="text-[12px] text-[#666]">{{ block.settings.dimensions_label }}</td>
+                        <td class="text-right text-[18px] font-semibold whitespace-nowrap text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ dimensions }}</td>
+                      </tr>
+                    {%- endif -%}
+                  </tbody>
+                </table>
+              </div>
+            {%- endif -%}
+
+            {%- if frame_fit != blank -%}
+              <div>
+                <div class="mb-1 flex items-center justify-between gap-3">
+                  <p class="{{ label_cls }} mb-0" style="font-family: var(--font-heading--family);">{{ block.settings.fit_label }}</p>
+                  <span class="text-[12px] font-bold uppercase tracking-[0.06em] text-[color:var(--color-spy-text)]">{{ frame_fit }}</span>
+                </div>
+                <p class="m-0 text-[11px] font-light leading-[1.5] text-[#666]">{{ block.settings.fit_desc }}</p>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} ── How to measure ──────────────────────────── {%- endcomment -%}
+        <div id="{{ drawer_id }}-howto" role="tabpanel" class="px-5 py-[18px]{% if has_frame_tab %} hidden{% endif %}" data-spy-panel="howto">
+          {%- if block.settings.howto_intro != blank -%}
+            {%- comment -%} div, not p: richtext brings its own p and nesting breaks it {%- endcomment -%}
+            <div class="mb-4 text-[12px] font-light leading-[1.6] text-[#666] [&_p]:m-0 [&_strong]:font-semibold [&_strong]:text-[color:var(--color-spy-text)]">{{ block.settings.howto_intro }}</div>
+          {%- endif -%}
+
+          <p class="{{ label_cls }}" style="font-family: var(--font-heading--family);">{{ block.settings.steps_label }}</p>
+
+          {%- comment -%} Three steps: numbered rail on the left, copy + line art right {%- endcomment -%}
+          <div class="flex flex-col gap-4">
+            {%- for i in (1..3) -%}
+              {%- liquid
+                assign t_key = 'step_' | append: i | append: '_title'
+                assign x_key = 'step_' | append: i | append: '_text'
+                assign s_title = block.settings[t_key]
+                assign s_text = block.settings[x_key]
+              -%}
+              {%- if s_title != blank -%}
+                <div class="flex gap-3">
+                  <div class="flex flex-col items-center">
+                    <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold {% if forloop.first %}bg-spy-orange text-white{% else %}bg-[#f3f3f3] text-[#999]{% endif %}">{{ i }}</div>
+                    {%- unless forloop.last -%}
+                      <div class="mt-1 w-px flex-1 bg-[#ebebeb]"></div>
+                    {%- endunless -%}
+                  </div>
+                  <div class="min-w-0 flex-1 pb-1">
+                    <div class="mb-1 text-[13px] font-bold uppercase tracking-[0.06em] text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ s_title }}</div>
+                    <p class="m-0 text-[11px] font-light leading-[1.6] text-[#666]">{{ s_text }}</p>
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          {%- if block.settings.tip_text != blank -%}
+            {%- comment -%} Source tip: cream panel with an orange rule down the left {%- endcomment -%}
+            <div class="mt-4 rounded-r-[4px] border-l-[3px] border-spy-orange bg-[#fff8f3] px-3 py-2.5">
+              <div class="mb-[3px] text-[10px] font-bold uppercase tracking-[0.2em] text-spy-orange" style="font-family: var(--font-heading--family);">{{ block.settings.tip_label }}</div>
+              <p class="m-0 text-[11px] font-light leading-[1.5] text-[#666]">{{ block.settings.tip_text }}</p>
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if block.settings.footer_note != blank -%}
+          <div class="border-t border-[#ebebeb] bg-white px-5 py-3.5">
+            {%- comment -%} div, not p: richtext brings its own p and nesting breaks it {%- endcomment -%}
+            <div class="text-[10px] leading-[1.6] text-[#bbb] [&_p]:m-0 [&_a]:text-spy-orange [&_a]:no-underline hover:[&_a]:underline">{{ block.settings.footer_note }}</div>
+          </div>
+        {%- endif -%}
+      </div>
     </div>
   </div>
-  {%- endif -%}
 </div>
-{%- endif -%}
 
 <script>
   (() => {
-    const wrap = document.currentScript.closest('.spy-size-chart');
-    if (!wrap) return;
+    {%- comment -%} The script follows the wrapper, so step back to it {%- endcomment -%}
+    const wrap = document.currentScript.previousElementSibling;
+    if (!wrap || !wrap.classList.contains('spy-size-chart')) return;
     const trigger = wrap.querySelector('[data-spy-size-chart-open]');
-    const modal   = wrap.querySelector('[data-spy-size-chart-modal]');
+    const modal = wrap.querySelector('[data-spy-size-chart-modal]');
     if (!trigger || !modal) return;
-    const open  = () => { modal.setAttribute('aria-hidden', 'false'); modal.dataset.open = ''; document.body.style.overflow = 'hidden'; };
-    const close = () => { modal.setAttribute('aria-hidden', 'true');  delete modal.dataset.open;  document.body.style.overflow = ''; };
+
+    const open = () => {
+      modal.setAttribute('aria-hidden', 'false');
+      modal.dataset.open = '';
+      trigger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+      modal.querySelector('[data-spy-size-chart-close]')?.focus();
+    };
+    const close = () => {
+      modal.setAttribute('aria-hidden', 'true');
+      delete modal.dataset.open;
+      trigger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      trigger.focus();
+    };
+
     trigger.addEventListener('click', open);
-    wrap.querySelectorAll('[data-spy-size-chart-close]').forEach(el => el.addEventListener('click', close));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.dataset.open !== undefined) close(); });
+    wrap.querySelectorAll('[data-spy-size-chart-close]').forEach((el) => el.addEventListener('click', close));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.dataset.open !== undefined) close();
+    });
+
+    // Tabs
+    const tabs = [...wrap.querySelectorAll('[data-spy-tab]')];
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+        wrap.querySelectorAll('[data-spy-panel]').forEach((panel) => {
+          panel.classList.toggle('hidden', panel.dataset.spyPanel !== tab.dataset.spyTab);
+        });
+      });
+    });
   })();
 </script>
 
@@ -91,12 +322,38 @@
   "name": "Size Chart",
   "tag": null,
   "settings": [
-    {
-      "type": "text",
-      "id": "fallback_label",
-      "label": "Button label (fallback)",
-      "default": "Size Chart"
-    }
+    { "type": "text", "id": "fallback_label", "label": "Link label", "default": "Size Chart" },
+    { "type": "header", "content": "Drawer header" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "SPY Optic" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Frame Fit Guide" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Find your fit using frame specs or learn to measure at home." },
+    { "type": "header", "content": "Tabs" },
+    { "type": "text", "id": "tab_frame_label", "label": "First tab", "default": "This Frame" },
+    { "type": "text", "id": "tab_howto_label", "label": "Second tab", "default": "How to Measure" },
+    { "type": "header", "content": "This frame" },
+    { "type": "text", "id": "diagrams_label", "label": "Diagrams heading", "default": "Frame Diagrams" },
+    { "type": "text", "id": "front_caption", "label": "Front caption", "default": "Front View" },
+    { "type": "text", "id": "profile_caption", "label": "Profile caption", "default": "Profile View" },
+    { "type": "text", "id": "measurements_label", "label": "Measurements heading", "default": "Frame Measurements" },
+    { "type": "text", "id": "temple_width_label", "label": "Temple width label", "default": "Temple Width" },
+    { "type": "text", "id": "temple_length_label", "label": "Temple length label", "default": "Temple Length" },
+    { "type": "text", "id": "lens_height_label", "label": "Lens height label", "default": "Lens Height" },
+    { "type": "text", "id": "dimensions_label", "label": "Dimensions label", "info": "Used when the split measurements are empty", "default": "Dimensions" },
+    { "type": "text", "id": "fit_label", "label": "Fit heading", "default": "Frame Fit" },
+    { "type": "text", "id": "fit_desc", "label": "Fit description", "default": "Temple pressure & nose bridge snugness." },
+    { "type": "header", "content": "How to measure" },
+    { "type": "richtext", "id": "howto_intro", "label": "Intro", "default": "<p>All you need is a <strong>flexible measuring tape</strong> or a <strong>piece of string and a ruler.</strong> Take measurements on bare skin for best accuracy.</p>" },
+    { "type": "text", "id": "steps_label", "label": "Steps heading", "default": "3 Key Measurements" },
+    { "type": "text", "id": "step_1_title", "label": "Step 1 title", "default": "Temple Width" },
+    { "type": "textarea", "id": "step_1_text", "label": "Step 1 text", "default": "Wrap a tape around your head just above your brows and ears. Divide that number by 2 for your half-head width. Match to Temple Width for a pressure-free fit." },
+    { "type": "text", "id": "step_2_title", "label": "Step 2 title", "default": "Temple Length" },
+    { "type": "textarea", "id": "step_2_text", "label": "Step 2 text", "default": "Measure from the hinge of an existing pair to the tip of the arm. Most adults need 135–150mm. Shorter arms sit forward; longer arms hook further behind the ear." },
+    { "type": "text", "id": "step_3_title", "label": "Step 3 title", "default": "Lens Height" },
+    { "type": "textarea", "id": "step_3_text", "label": "Step 3 text", "default": "Measure vertically from your brow bone to your cheekbone. Smaller faces fit 35–42mm; larger faces 44mm+." },
+    { "type": "text", "id": "tip_label", "label": "Tip label", "default": "Pro Tip" },
+    { "type": "textarea", "id": "tip_text", "label": "Tip text", "default": "If you're between sizes, go up — a slightly wider frame is easier to adjust than one that pinches." },
+    { "type": "header", "content": "Footer" },
+    { "type": "richtext", "id": "footer_note", "label": "Footer note", "default": "<p>Measurements may vary slightly by colorway.</p>" }
   ],
   "presets": [
     {
