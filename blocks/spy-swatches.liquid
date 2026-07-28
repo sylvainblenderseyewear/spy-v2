@@ -59,25 +59,43 @@
 {%- if p != blank -%}
   {%- if is_pdp -%}
     {%- liquid
-      assign swatch_base = 'spy-swatches__item block h-14 w-14 rounded-[2px] bg-white overflow-hidden'
+      assign swatch_base = 'spy-swatches__item relative block h-14 w-14 rounded-[2px] bg-white overflow-hidden'
       assign swatch_off = swatch_base | append: ' border border-[color:var(--color-spy-border)]'
       assign swatch_on = swatch_base | append: ' border-2 border-[color:var(--color-spy-text)]'
+      comment
+        Sold-out colourway: half-faded with a thin diagonal bar across the thumb,
+        same as the source's .swatch-not-orderable (69x2px, 45deg, #f2f2f2).
+      endcomment
+      assign swatch_oos = ' spy-swatches__item--oos opacity-50 after:content-[""] after:absolute after:block after:top-[25px] after:-left-2 after:h-[2px] after:w-[69px] after:rotate-45 after:bg-[#f2f2f2] after:pointer-events-none'
     -%}
     <div class="spy-swatches flex flex-wrap items-center gap-2 mt-[22px]" {{ block.shopify_attributes }}>
       {%- if has_option_colors -%}
         {%- for v in color_option.values -%}
           {%- assign media = v.variant.featured_media | default: p.featured_media -%}
           {%- if media != blank -%}
-            {%- if v.selected -%}
-              {%- assign cls = swatch_on -%}
-            {%- else -%}
-              {%- assign cls = swatch_off -%}
-            {%- endif -%}
+            {%- liquid
+              if v.selected
+                assign cls = swatch_on
+              else
+                assign cls = swatch_off
+              endif
+              comment
+                A colour with no orderable variant counts as sold out.
+              endcomment
+              assign v_available = false
+              if v.variant.available
+                assign v_available = true
+              endif
+              unless v_available
+                assign cls = cls | append: swatch_oos
+              endunless
+            -%}
             <a
               href="{{ v.variant.url | default: p.url }}"
               class="{{ cls }}"
               {% if v.selected %}aria-current="true"{% endif %}
-              aria-label="{{ p.title | escape }} – {{ v.name | escape }}"
+              {% unless v_available %}data-spy-oos aria-describedby="spy-oos-note"{% endunless %}
+              aria-label="{{ p.title | escape }} – {{ v.name | escape }}{% unless v_available %} ({{ 'products.product.sold_out' | t }}){% endunless %}"
             >
               <img
                 src="{{ media | image_url: width: 160 }}"
@@ -93,16 +111,27 @@
       {%- elsif model_col != nil -%}
         {%- for sp in model_col.products -%}
           {%- if sp.featured_media != blank -%}
-            {%- if sp.id == p.id -%}
-              {%- assign cls = swatch_on -%}
-            {%- else -%}
-              {%- assign cls = swatch_off -%}
-            {%- endif -%}
+            {%- liquid
+              if sp.id == p.id
+                assign cls = swatch_on
+              else
+                assign cls = swatch_off
+              endif
+              comment
+                One product per colourway in staging, so stock is read off the
+                product itself rather than a variant.
+              endcomment
+              assign sp_available = sp.available
+              unless sp_available
+                assign cls = cls | append: swatch_oos
+              endunless
+            -%}
             <a
               href="{{ sp.url }}"
               class="{{ cls }}"
               {% if sp.id == p.id %}aria-current="true"{% endif %}
-              aria-label="{{ sp.title | escape }}"
+              {% unless sp_available %}data-spy-oos{% endunless %}
+              aria-label="{{ sp.title | escape }}{% unless sp_available %} ({{ 'products.product.sold_out' | t }}){% endunless %}"
             >
               <img
                 src="{{ sp.featured_media | image_url: width: 160 }}"

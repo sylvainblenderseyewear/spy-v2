@@ -27,8 +27,12 @@
       assign can_add_to_cart = true
       assign add_to_cart_text = 'products.product.add_to_cart' | t
     elsif inventory_managed and inventory_quantity <= 0 and inventory_policy == 'deny' or quantity_rule_soldout
+      comment
+        Source keeps the "Add to cart" label when sold out and just fades the
+        button — the Sold Out line above the price carries the message.
+      endcomment
       assign can_add_to_cart = false
-      assign add_to_cart_text = 'products.product.sold_out' | t
+      assign add_to_cart_text = 'products.product.add_to_cart' | t
     else
       assign can_add_to_cart = false
       assign add_to_cart_text = 'products.product.unavailable' | t

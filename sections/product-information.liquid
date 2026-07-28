@@ -118,7 +118,8 @@
 
       <button
         type="button"
-        class="sticky-add-to-cart__button add-to-cart-button button"
+        {%- comment -%} Same 65% fade as the main add-to-cart when sold out {%- endcomment -%}
+        class="sticky-add-to-cart__button add-to-cart-button button disabled:opacity-[0.65] disabled:cursor-not-allowed"
         ref="addToCartButton"
         on:click="/handleAddToCartClick"
         {% unless current_variant.available %}
@@ -135,12 +136,11 @@
           {% endif %}
           <span class="add-to-cart-text__content">
             <span>
-              {%- if current_variant.available -%}
-                {{- 'products.product.add_to_cart' | t -}}
-              {%- elsif current_variant == blank -%}
+              {%- comment -%} Sold out keeps the same label as the source, just faded {%- endcomment -%}
+              {%- if current_variant == blank -%}
                 {{- 'products.product.unavailable' | t -}}
               {%- else -%}
-                {{- 'products.product.sold_out' | t -}}
+                {{- 'products.product.add_to_cart' | t -}}
               {%- endif -%}
             </span>
             <span

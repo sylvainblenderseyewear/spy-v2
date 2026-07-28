@@ -11,6 +11,11 @@
 {% liquid
   assign scoped_class = block.settings.style_class | append: '--' | append: block.id
   assign class = 'add-to-cart-button ' | append: block.settings.style_class | append: ' ' | append: scoped_class
+  comment
+    Sold out keeps the brand orange but fades to 65%, like the source's disabled
+    button. Horizon's own default is 50%, which reads too washed out.
+  endcomment
+  assign class = class | append: ' disabled:opacity-[0.65] disabled:cursor-not-allowed'
   assign id = 'BuyButtons-ProductSubmitButton-' | append: block.id
 %}
 {% render 'button-custom-styles', block_settings: block.settings, block_id: block.id %}
