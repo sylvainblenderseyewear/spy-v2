@@ -109,6 +109,8 @@
     // Button to view complete collection/product list
     "view_all": "View all",
     "more": "More",
+    // Loads the next page of products under the collection grid
+    "more_results": "More results",
     "zoom": "Zoom",
     "zoom_media": "Zoom media {{ index }}",
     "close_dialog": "Close dialog",

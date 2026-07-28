@@ -42,7 +42,7 @@ Same as default PDP, plus:
 | Grouped Product Grid | `sections/spy-grouped-collection.liquid` | Product tag `collection::MODEL` for the group; the matching model collection's `all_products_count` for the colourway count and `products.first` for the card's representative |
 | Grouped Product Card | `blocks/_spy-grouped-product-card.liquid` + `snippets/spy-grouped-product-card.liquid` | Group name + count passed in by the section; `spec.*` via `snippets/spy-tech-badges.liquid`; `pdp.badge_text` / `pdp.badge_new` via `snippets/spy-product-badge-text.liquid` |
 | Color Count | `blocks/spy-color-count.liquid` | `product.options_with_values` (counts Frame Color / Color / Colour option values) |
-| Tech Badge | `blocks/spy-tech-badge.liquid` + `snippets/spy-tech-badges.liquid` | `spec.technologies` → `technology.name`, `.icon` (Happy Boost); `spec.certifications` (ANSI Z87 / Z87-2+). Per-swatch set resolved from each colour option value's product (combined-listing child, else product-level). Hover swap via `assets/spy-tech-badge.js`. |
+| Tech Badge | `blocks/spy-tech-badge.liquid` + `snippets/spy-tech-badges.liquid` | `spec.technologies` → `technology.name`, `.icon` (Happy Boost); `spec.ansi_rating` → ANSI badge art, `spec.certifications` as fallback. Per-swatch set resolved from each colour option value's product (combined-listing child, else product-level). Hover swap via `assets/spy-tech-badge.js`. |
 | Quick View Button | `blocks/spy-quick-view-btn.liquid` | `closest.product.handle` |
 | ~~Compare Button~~ (removed from card) | `blocks/spy-compare-btn.liquid` | `closest.product.handle`, `.title`, `.url`, `.price`, `.featured_image` |
 | Collection SEO Copy | `sections/spy-collection-seo.liquid` | `collection.seo_content` (rich_text) |
