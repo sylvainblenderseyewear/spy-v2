@@ -78,6 +78,7 @@
 | `spec.interchangeable_lens` | boolean | Interchangeable Lenses | — | true |
 | `spec.included_accessories` | list.single_line_text | Included Accessories | — | Case, Cloth |
 | `spec.certifications` | list.single_line_text | Certifications | — | ANSI Z87.1 |
+| `spec.ansi_rating` | single_line_text | ANSI Rating | — | ANSI Z87 · ANSI Z87 -2+ (drives the PLP card badge) |
 | `spec.technologies` | list.metaobject_reference | Technologies | ✅ | [Happy Lens, Magnetic Lens, ...] |
 
 ---

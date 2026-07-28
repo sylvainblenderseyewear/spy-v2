@@ -1,0 +1,43 @@
+{%- doc -%}
+  Renders the "More results" button that replaces the numbered pagination on the
+  PLP and the search results, like the source site.
+
+  It is a real link to the next page, so it still works with no JS. With JS,
+  `paginated-list.js` appends the next page in place and removes the button once
+  the last page is on screen.
+
+  Label comes from the calling section's `more_results_label` setting, so an
+  editor can change the copy.
+
+  @param {object} paginate - The paginate object
+  @param {object} section - The section object
+
+  @example
+  {%- paginate collection.products by 24 -%}
+    {% render 'spy-more-results', paginate: paginate, section: section %}
+  {%- endpaginate -%}
+{%- enddoc -%}
+
+{%- if paginate.next -%}
+  {%- liquid
+    assign more_label = section.settings.more_results_label
+    if more_label == blank
+      assign more_label = 'actions.more_results' | t
+    endif
+  -%}
+  {%- comment -%} Footer wrapper already supplies the inline padding {%- endcomment -%}
+  <div
+    class="flex justify-center pt-16"
+    data-more-results
+  >
+    <a
+      ref="moreResults"
+      href="{{ paginate.next.url }}"
+      rel="next"
+      class="inline-flex h-8 w-full max-w-[430px] items-center justify-center border border-spy-orange text-[12px] font-normal uppercase leading-none tracking-[0.06em] text-spy-orange no-underline transition-colors hover:bg-spy-orange hover:text-white aria-busy:opacity-60"
+      on:click="results-list/loadMore"
+    >
+      {{- more_label -}}
+    </a>
+  </div>
+{%- endif -%}

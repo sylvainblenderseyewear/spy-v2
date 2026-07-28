@@ -12,6 +12,7 @@ import { getScrollTop, scrollTo } from '@theme/scroll-container';
  * @property {HTMLUListElement} [grid] - The grid element.
  * @property {HTMLSpanElement} [viewMorePrevious] - The view more previous button.
  * @property {HTMLSpanElement} [viewMoreNext] - The view more next button.
+ * @property {HTMLAnchorElement} [moreResults] - The "more results" button.
  * @property {HTMLElement[]} [cards] - The cards elements.
  *
  * @extends Component<Refs>
@@ -192,7 +193,8 @@ export default class PaginatedList extends Component {
 
     grid.append(...nextPageItemElements);
 
-    this.#aspectRatioHelper.processNewElements();
+    // Cards without a gallery ref (grouped PLP) never build the helper
+    this.#aspectRatioHelper?.processNewElements();
 
     await yieldToMainThread();
 
@@ -233,7 +235,7 @@ export default class PaginatedList extends Component {
     // Prepend the new elements
     grid.prepend(...previousPageItemElements);
 
-    this.#aspectRatioHelper.processNewElements();
+    this.#aspectRatioHelper?.processNewElements();
 
     // Calculate and adjust scroll position to maintain the same view
     if (firstElement) {
@@ -252,6 +254,49 @@ export default class PaginatedList extends Component {
     requestIdleCallback(() => {
       this.#fetchPage('previous');
     });
+  }
+
+  /**
+   * Appends the next page. Public so a "more results" button can reuse the same
+   * path as the infinite-scroll observer.
+   */
+  async renderNextPage() {
+    await this.#renderNextPage();
+  }
+
+  /**
+   * Click handler for the "more results" button. Loads the next page and drops
+   * the button once the last page is on screen. Without JS the button is a plain
+   * link to the next page, so it still works.
+   *
+   * @param {Event} [event]
+   */
+  async loadMore(event) {
+    event?.preventDefault();
+
+    const button = this.refs.moreResults;
+
+    if (!(button instanceof HTMLElement) || button.getAttribute('aria-busy') === 'true') return;
+
+    button.setAttribute('aria-busy', 'true');
+    await this.renderNextPage();
+    button.removeAttribute('aria-busy');
+
+    // refs can still be pre-append at this point, so count off the grid itself
+    const { grid } = this.refs;
+    const cards = grid?.querySelectorAll(':scope > [ref="cards[]"]');
+    const shown = Number(cards?.[cards.length - 1]?.getAttribute('data-page') ?? 0);
+    const lastPage = Number(grid?.dataset.lastPage ?? 0);
+
+    if (shown >= lastPage) {
+      // Drop the wrapper too, so its spacing goes with it
+      (button.closest('[data-more-results]') ?? button).remove();
+    } else if (button instanceof HTMLAnchorElement) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('page', String(shown + 1));
+      url.hash = '';
+      button.href = url.toString();
+    }
   }
 
   /**

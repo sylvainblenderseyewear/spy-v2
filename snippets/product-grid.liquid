@@ -7,6 +7,7 @@
   @param {string} [title] - Header of the collection or search results
   @param {string} children - List or grid of product cards
   @param {boolean} [enable_infinite_scroll] - Whether to enable infinite scroll (default: true)
+  @param {boolean} [show_category_links] - Render the category cross-links under the button
 {%- enddoc -%}
 
 {%- liquid
@@ -158,9 +159,24 @@
       </ul>
       {% if enable_infinite_scroll != false %}
         <span ref="viewMoreNext"></span>
-      {% else %}
-        {% render 'pagination-controls', paginate: paginate %}
       {% endif %}
+
+      {% comment %}
+        Button + category links go in here, next to the grid, so their edges line
+        up with the cards at every width instead of drifting on mobile.
+      {% endcomment %}
+      {% liquid
+        assign show_more = true
+        if enable_infinite_scroll != false
+          assign show_more = false
+        endif
+      %}
+      {% render 'spy-plp-footer',
+        paginate: paginate,
+        section: section,
+        show_more_results: show_more,
+        show_category_links: show_category_links
+      %}
     {% endif %}
   </div>
 </div>
