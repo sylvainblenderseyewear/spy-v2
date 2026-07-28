@@ -9,7 +9,18 @@
 
 {%- liquid
   assign p = closest.product
-  assign size_chart_ref = p.metafields.pdp.size_chart.value
+  comment
+    Spec data sits on both levels in this store: lens values per variant, frame
+    values per product. Same variant-first / product-fallback order the spec
+    table uses, so a colourway can override anything.
+  endcomment
+  assign v = p.selected_or_first_available_variant
+  assign s = p.metafields.spec
+  assign vs = v.metafields.spec
+  assign pd = p.metafields.pdp
+  assign vpd = v.metafields.pdp
+
+  assign size_chart_ref = vpd.size_chart.value | default: pd.size_chart.value
   assign chart_name = block.settings.fallback_label
 
   if size_chart_ref != blank
@@ -20,20 +31,33 @@
   endif
 
   comment
-    Front/profile line drawings. The metaobject image is the front view; the
-    second one is optional.
+    Line drawings come from the product's own files — variant first (a colourway
+    may ship its own drawing), then the product, then the size-chart metaobject
+    image. No theme asset: one generic drawing on every frame would be wrong, so
+    with nothing attached the diagram band just does not render.
   endcomment
-  assign diagram_front = chart_image | default: p.metafields.pdp.frame_diagram_front.value
-  assign diagram_profile = p.metafields.pdp.frame_diagram_profile.value
+  assign mf_front = vpd.frame_diagram_front.value | default: pd.frame_diagram_front.value
+  assign mf_profile = vpd.frame_diagram_profile.value | default: pd.frame_diagram_profile.value
+
+  if mf_front != blank
+    assign diagram_front = mf_front | image_url: width: 900
+  elsif chart_image != blank
+    assign diagram_front = chart_image | image_url: width: 900
+  endif
+
+  if mf_profile != blank
+    assign diagram_profile = mf_profile | image_url: width: 900
+  endif
 
   comment
-    Measurement rows — each only renders when the product has the value.
+    Measurement rows — each renders only when a value exists.
   endcomment
-  assign temple_width = p.metafields.spec.temple_width
-  assign temple_length = p.metafields.spec.temple_length
-  assign lens_height = p.metafields.spec.lens_height
-  assign dimensions = p.metafields.spec.dimensions
-  assign frame_fit = p.metafields.spec.fit
+  assign temple_width = vs.temple_width.value | default: s.temple_width.value
+  assign temple_length = vs.temple_length.value | default: s.temple_length.value
+  assign lens_height = vs.lens_height.value | default: s.lens_height.value
+  assign dimensions = vs.dimensions.value | default: s.dimensions.value
+  assign frame_fit = vs.fit.value | default: s.fit.value
+  assign frame_size = vs.frame_size.value | default: s.frame_size.value
 
   assign has_measures = false
   if temple_width != blank or temple_length != blank or lens_height != blank or dimensions != blank
@@ -41,7 +65,7 @@
   endif
 
   assign has_frame_tab = false
-  if diagram_front != blank or diagram_profile != blank or has_measures or frame_fit != blank
+  if diagram_front != blank or diagram_profile != blank or has_measures or frame_fit != blank or frame_size != blank
     assign has_frame_tab = true
   endif
 
@@ -113,7 +137,11 @@
         </svg>
       </button>
 
-      <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-width:thin]">
+      {%- comment -%}
+        Source sets the widget's own base type (13px/1.5, #111) and a thin grey
+        scrollbar, so inner copy does not inherit the page scale.
+      {%- endcomment -%}
+      <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain text-[13px] leading-[1.5] text-[#111] [scrollbar-color:#ddd_#fff] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-[2px] [&::-webkit-scrollbar-thumb]:bg-[#ddd] [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar]:w-1">
         {%- comment -%} Header: 3px orange rule, eyebrow, condensed title, grey sub {%- endcomment -%}
         <div class="border-b border-[#ebebeb] px-5 pb-[18px] pt-11">
           <div class="mb-4 h-[3px] bg-spy-orange"></div>
@@ -130,7 +158,7 @@
               role="tab"
               aria-selected="true"
               aria-controls="{{ drawer_id }}-frame"
-              class="-mb-px flex-1 cursor-pointer border-0 border-b-2 border-transparent bg-transparent px-2 py-[11px] text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[#bbb] transition-colors aria-selected:border-b-spy-orange aria-selected:text-[color:var(--color-spy-text)]"
+              class="-mb-px flex-1 cursor-pointer border-0 border-b-2 border-transparent bg-transparent px-2 py-[11px] select-none text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[#bbb] transition-colors aria-selected:border-b-spy-orange aria-selected:text-[color:var(--color-spy-text)]"
               data-spy-tab="frame"
             >
               {{ block.settings.tab_frame_label }}
@@ -140,7 +168,7 @@
               role="tab"
               aria-selected="false"
               aria-controls="{{ drawer_id }}-howto"
-              class="-mb-px flex-1 cursor-pointer border-0 border-b-2 border-transparent bg-transparent px-2 py-[11px] text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[#bbb] transition-colors aria-selected:border-b-spy-orange aria-selected:text-[color:var(--color-spy-text)]"
+              class="-mb-px flex-1 cursor-pointer border-0 border-b-2 border-transparent bg-transparent px-2 py-[11px] select-none text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[#bbb] transition-colors aria-selected:border-b-spy-orange aria-selected:text-[color:var(--color-spy-text)]"
               data-spy-tab="howto"
             >
               {{ block.settings.tab_howto_label }}
@@ -150,21 +178,22 @@
 
         {%- comment -%} ── This frame ───────────────────────────────── {%- endcomment -%}
         {%- if has_frame_tab -%}
-          <div id="{{ drawer_id }}-frame" role="tabpanel" class="px-5 py-[18px]" data-spy-panel="frame">
+          <div id="{{ drawer_id }}-frame" role="tabpanel" data-spy-panel="frame">
+            {%- comment -%} Diagrams sit on the grey band, 18/20 in, 14 under {%- endcomment -%}
             {%- if diagram_front != blank or diagram_profile != blank -%}
-              <div class="mb-6">
+              <div class="border-b border-[#ebebeb] bg-[#f6f6f6] px-5 pb-[14px] pt-[18px]">
                 <p class="{{ label_cls }}" style="font-family: var(--font-heading--family);">{{ block.settings.diagrams_label }}</p>
                 <div class="flex flex-col gap-4">
                   {%- if diagram_front != blank -%}
                     <div class="flex flex-col items-center gap-[5px]">
-                      <img src="{{ diagram_front | image_url: width: 900 }}" alt="{{ block.settings.front_caption | escape }}" loading="lazy" class="block h-auto w-full">
-                      <span class="text-center text-[9px] uppercase tracking-[0.15em] text-[#bbb]">{{ block.settings.front_caption }}</span>
+                      <img src="{{ diagram_front }}" alt="{{ block.settings.front_caption | escape }}" loading="lazy" class="block h-auto w-full">
+                      <span class="text-center text-[9px] uppercase tracking-[0.167em] text-[#bbb]">{{ block.settings.front_caption }}</span>
                     </div>
                   {%- endif -%}
                   {%- if diagram_profile != blank -%}
                     <div class="flex flex-col items-center gap-[5px]">
-                      <img src="{{ diagram_profile | image_url: width: 900 }}" alt="{{ block.settings.profile_caption | escape }}" loading="lazy" class="block h-auto w-full">
-                      <span class="text-center text-[9px] uppercase tracking-[0.15em] text-[#bbb]">{{ block.settings.profile_caption }}</span>
+                      <img src="{{ diagram_profile }}" alt="{{ block.settings.profile_caption | escape }}" loading="lazy" class="block h-auto w-full">
+                      <span class="text-center text-[9px] uppercase tracking-[0.167em] text-[#bbb]">{{ block.settings.profile_caption }}</span>
                     </div>
                   {%- endif -%}
                 </div>
@@ -172,34 +201,38 @@
             {%- endif -%}
 
             {%- if has_measures -%}
-              <div class="mb-6">
+              <div class="border-b border-[#ebebeb] bg-white px-5 py-[18px]">
                 <p class="{{ label_cls }}" style="font-family: var(--font-heading--family);">{{ block.settings.measurements_label }}</p>
                 <table class="w-full border-collapse">
                   <tbody class="[&_td]:border-b [&_td]:border-[#f3f3f3] [&_td]:py-2 [&_tr:last-child_td]:border-b-0">
-                    {%- assign unit_cls = 'text-[11px] font-normal text-[#bbb]' -%}
+                    {%- liquid
+                      assign unit_cls = 'text-[11px] font-normal text-[#bbb]'
+                      assign val_cls = 'text-right text-[18px] font-semibold whitespace-nowrap text-[color:var(--color-spy-text)]'
+                      assign name_cls = 'text-[12px] text-[#666]'
+                    -%}
                     {%- if temple_width != blank -%}
                       <tr>
-                        <td class="text-[12px] text-[#666]">{{ block.settings.temple_width_label }}</td>
-                        <td class="text-right text-[18px] font-semibold whitespace-nowrap text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ temple_width }}<span class="{{ unit_cls }}"> mm</span></td>
+                        <td class="{{ name_cls }}">{{ block.settings.temple_width_label }}</td>
+                        <td class="{{ val_cls }}" style="font-family: var(--font-heading--family);">{{ temple_width }}<span class="{{ unit_cls }}"> mm</span></td>
                       </tr>
                     {%- endif -%}
                     {%- if temple_length != blank -%}
                       <tr>
-                        <td class="text-[12px] text-[#666]">{{ block.settings.temple_length_label }}</td>
-                        <td class="text-right text-[18px] font-semibold whitespace-nowrap text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ temple_length }}<span class="{{ unit_cls }}"> mm</span></td>
+                        <td class="{{ name_cls }}">{{ block.settings.temple_length_label }}</td>
+                        <td class="{{ val_cls }}" style="font-family: var(--font-heading--family);">{{ temple_length }}<span class="{{ unit_cls }}"> mm</span></td>
                       </tr>
                     {%- endif -%}
                     {%- if lens_height != blank -%}
                       <tr>
-                        <td class="text-[12px] text-[#666]">{{ block.settings.lens_height_label }}</td>
-                        <td class="text-right text-[18px] font-semibold whitespace-nowrap text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ lens_height }}<span class="{{ unit_cls }}"> mm</span></td>
+                        <td class="{{ name_cls }}">{{ block.settings.lens_height_label }}</td>
+                        <td class="{{ val_cls }}" style="font-family: var(--font-heading--family);">{{ lens_height }}<span class="{{ unit_cls }}"> mm</span></td>
                       </tr>
                     {%- endif -%}
                     {%- if temple_width == blank and temple_length == blank and lens_height == blank and dimensions != blank -%}
                       {%- comment -%} No split values yet — show the single dimensions string {%- endcomment -%}
                       <tr>
-                        <td class="text-[12px] text-[#666]">{{ block.settings.dimensions_label }}</td>
-                        <td class="text-right text-[18px] font-semibold whitespace-nowrap text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ dimensions }}</td>
+                        <td class="{{ name_cls }}">{{ block.settings.dimensions_label }}</td>
+                        <td class="{{ val_cls }}" style="font-family: var(--font-heading--family);">{{ dimensions }}</td>
                       </tr>
                     {%- endif -%}
                   </tbody>
@@ -207,13 +240,82 @@
               </div>
             {%- endif -%}
 
-            {%- if frame_fit != blank -%}
-              <div>
-                <div class="mb-1 flex items-center justify-between gap-3">
-                  <p class="{{ label_cls }} mb-0" style="font-family: var(--font-heading--family);">{{ block.settings.fit_label }}</p>
-                  <span class="text-[12px] font-bold uppercase tracking-[0.06em] text-[color:var(--color-spy-text)]">{{ frame_fit }}</span>
-                </div>
-                <p class="m-0 text-[11px] font-light leading-[1.5] text-[#666]">{{ block.settings.fit_desc }}</p>
+            {%- comment -%}
+              Fit + size on the grey band. The active pill comes from the product's
+              fit text, so "Medium large" lights MD/LG.
+            {%- endcomment -%}
+            {%- comment -%}
+              Sizing band: fit first, then overall size — same order and grey band
+              as the source, with the description above the pills.
+            {%- endcomment -%}
+            {%- if frame_fit != blank or frame_size != blank -%}
+              <div class="border-b border-[#ebebeb] bg-[#f6f6f6] px-5 py-[18px]">
+                {%- for row in (1..2) -%}
+                  {%- liquid
+                    if row == 1
+                      assign row_tag = frame_fit
+                      assign row_label = block.settings.fit_label
+                      assign row_desc = block.settings.fit_desc
+                    else
+                      assign row_tag = frame_size
+                      assign row_label = block.settings.size_label
+                      assign row_desc = block.settings.size_desc
+                    endif
+                  -%}
+                  {%- if row_tag != blank -%}
+                    {%- liquid
+                      assign sizes = 'SM,MD,LG,XL' | split: ','
+                      assign tag_lower = row_tag | downcase
+                      assign active_i = -1
+                      if tag_lower contains 'extra large' or tag_lower contains 'xl'
+                        assign active_i = 3
+                      elsif tag_lower contains 'large'
+                        assign active_i = 2
+                      elsif tag_lower contains 'medium'
+                        assign active_i = 1
+                      elsif tag_lower contains 'small'
+                        assign active_i = 0
+                      endif
+                    -%}
+                    <div class="{% unless forloop.last %}mb-[18px]{% endunless %}">
+                      <div class="mb-2 flex items-center justify-between gap-3">
+                        <p class="{{ label_cls }} mb-0" style="font-family: var(--font-heading--family);">{{ row_label }}</p>
+                        <span class="rounded-[2px] bg-[#111] px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[0.09em] text-white" style="font-family: var(--font-heading--family);">{{ row_tag }}</span>
+                      </div>
+                      {%- if row_desc != blank -%}
+                        <p class="mt-1.5 mb-2 text-[11px] font-light leading-[1.5] text-[#999]">{{ row_desc }}</p>
+                      {%- endif -%}
+                      {%- if active_i >= 0 -%}
+                        <div class="[display:grid] grid-cols-4 gap-1">
+                          {%- for sz in sizes -%}
+                            {%- liquid
+                              assign i = forloop.index0
+                              assign pill = 'rounded-[3px] border-[1.5px] px-0.5 py-2 text-center text-[12px] font-semibold uppercase tracking-[0.083em] '
+                              assign diff = i | minus: active_i
+                              if diff < 0
+                                assign diff = 0 | minus: diff
+                              endif
+                              if i == active_i
+                                assign pill = pill | append: 'border-spy-orange bg-spy-orange text-white'
+                              elsif diff == 1
+                                assign pill = pill | append: 'border-[#bbb] bg-white text-[#888]'
+                              else
+                                assign pill = pill | append: 'border-[#e0e0e0] bg-white text-[#ccc]'
+                              endif
+                            -%}
+                            <div class="{{ pill }}" style="font-family: var(--font-heading--family);">{{ sz }}</div>
+                          {%- endfor -%}
+                        </div>
+                        {%- comment -%} 3px bar, filled up to the active size {%- endcomment -%}
+                        <div class="mt-[7px] flex h-[3px] gap-0.5 overflow-hidden rounded-[2px]">
+                          {%- for sz in sizes -%}
+                            <div class="flex-1 rounded-[1px] {% if forloop.index0 <= active_i %}bg-spy-orange{% else %}bg-[#e2e2e2]{% endif %}"></div>
+                          {%- endfor -%}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
               </div>
             {%- endif -%}
           </div>
@@ -223,13 +325,16 @@
         <div id="{{ drawer_id }}-howto" role="tabpanel" class="px-5 py-[18px]{% if has_frame_tab %} hidden{% endif %}" data-spy-panel="howto">
           {%- if block.settings.howto_intro != blank -%}
             {%- comment -%} div, not p: richtext brings its own p and nesting breaks it {%- endcomment -%}
-            <div class="mb-4 text-[12px] font-light leading-[1.6] text-[#666] [&_p]:m-0 [&_strong]:font-semibold [&_strong]:text-[color:var(--color-spy-text)]">{{ block.settings.howto_intro }}</div>
+            <div class="mb-[18px] text-[12px] font-light leading-[1.6] text-[#666] [&_p]:m-0 [&_strong]:font-semibold [&_strong]:text-[color:var(--color-spy-text)]">{{ block.settings.howto_intro }}</div>
           {%- endif -%}
 
           <p class="{{ label_cls }}" style="font-family: var(--font-heading--family);">{{ block.settings.steps_label }}</p>
 
-          {%- comment -%} Three steps: numbered rail on the left, copy + line art right {%- endcomment -%}
-          <div class="flex flex-col gap-4">
+          {%- comment -%}
+            Three steps: 28px numbered rail on the left (first one orange), copy and
+            a line-art panel on the right. Diagrams traced from the source SVGs.
+          {%- endcomment -%}
+          <div>
             {%- for i in (1..3) -%}
               {%- liquid
                 assign t_key = 'step_' | append: i | append: '_title'
@@ -238,21 +343,67 @@
                 assign s_text = block.settings[x_key]
               -%}
               {%- if s_title != blank -%}
-                <div class="flex gap-3">
-                  <div class="flex flex-col items-center">
-                    <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold {% if forloop.first %}bg-spy-orange text-white{% else %}bg-[#f3f3f3] text-[#999]{% endif %}">{{ i }}</div>
+                <div class="flex gap-3 border-b border-[#f3f3f3] py-[14px]">
+                  <div class="flex w-7 shrink-0 flex-col items-center">
+                    <div class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full text-[13px] font-bold text-white {% if forloop.first %}bg-spy-orange{% else %}bg-[#111]{% endif %}" style="font-family: var(--font-heading--family);">{{ i }}</div>
                     {%- unless forloop.last -%}
-                      <div class="mt-1 w-px flex-1 bg-[#ebebeb]"></div>
+                      <div class="mt-1 min-h-[10px] w-px flex-1 bg-[#e8e8e8]"></div>
                     {%- endunless -%}
                   </div>
-                  <div class="min-w-0 flex-1 pb-1">
-                    <div class="mb-1 text-[13px] font-bold uppercase tracking-[0.06em] text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ s_title }}</div>
-                    <p class="m-0 text-[11px] font-light leading-[1.6] text-[#666]">{{ s_text }}</p>
+                  <div class="min-w-0 flex-1">
+                    <div class="mb-1 text-[14px] font-semibold uppercase tracking-[0.04em] text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ s_title }}</div>
+                    <p class="m-0 text-[11.5px] font-light leading-[1.55] text-[#777]">{{ s_text }}</p>
+                    <div class="mt-2.5 flex justify-center rounded-[4px] bg-[#f6f6f6] p-2 [&_svg]:h-auto [&_svg]:w-full">
+                      {%- case i -%}
+                        {%- when 1 -%}
+                          <svg viewBox="0 0 150 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><ellipse cx="75" cy="44" rx="30" ry="34" fill="none" stroke="#ccc" stroke-width="1.5"/><ellipse cx="45" cy="46" rx="4" ry="6" fill="none" stroke="#ccc" stroke-width="1.5"/><ellipse cx="105" cy="46" rx="4" ry="6" fill="none" stroke="#ccc" stroke-width="1.5"/><line x1="45" y1="28" x2="105" y2="28" stroke="var(--color-spy-orange)" stroke-width="1.5" stroke-dasharray="3,2"/><line x1="45" y1="25" x2="45" y2="31" stroke="var(--color-spy-orange)" stroke-width="1.5"/><line x1="105" y1="25" x2="105" y2="31" stroke="var(--color-spy-orange)" stroke-width="1.5"/><text x="75" y="23" text-anchor="middle" font-size="8" fill="var(--color-spy-orange)" font-weight="600">{{ s_title | upcase }}</text><path d="M61 31 Q68 27 75 29" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/><path d="M75 29 Q82 27 89 31" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        {%- when 2 -%}
+                          <svg viewBox="0 0 150 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="10" y="15" width="30" height="22" rx="5" fill="none" stroke="#ccc" stroke-width="1.5"/><path d="M40 22 L120 24 Q128 25 128 32" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/><circle cx="40" cy="22" r="2.5" fill="var(--color-spy-orange)"/><line x1="40" y1="50" x2="128" y2="50" stroke="var(--color-spy-orange)" stroke-width="1.2" stroke-dasharray="3,2"/><line x1="40" y1="47" x2="40" y2="53" stroke="var(--color-spy-orange)" stroke-width="1.2"/><line x1="128" y1="47" x2="128" y2="53" stroke="var(--color-spy-orange)" stroke-width="1.2"/><text x="84" y="46" text-anchor="middle" font-size="7" fill="var(--color-spy-orange)" font-weight="600">{{ s_title | upcase }}</text></svg>
+                        {%- when 3 -%}
+                          <svg viewBox="0 0 150 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><ellipse cx="75" cy="38" rx="28" ry="30" fill="none" stroke="#ccc" stroke-width="1.5"/><path d="M60 22 Q75 18 90 22" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/><path d="M58 50 Q75 54 92 50" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/><line x1="48" y1="22" x2="48" y2="50" stroke="var(--color-spy-orange)" stroke-width="1.2" stroke-dasharray="2,2"/><line x1="45" y1="22" x2="51" y2="22" stroke="var(--color-spy-orange)" stroke-width="1.2"/><line x1="45" y1="50" x2="51" y2="50" stroke="var(--color-spy-orange)" stroke-width="1.2"/><text x="38" y="38" text-anchor="middle" font-size="7" fill="var(--color-spy-orange)" font-weight="600" transform="rotate(-90,38,38)">{{ s_title | upcase }}</text></svg>
+                      {%- endcase -%}
+                    </div>
                   </div>
                 </div>
               {%- endif -%}
             {%- endfor -%}
           </div>
+
+          {%- comment -%}
+            Quick size reference. Rows are "SIZE | col2 | col3" so an editor can
+            change them without touching code.
+          {%- endcomment -%}
+          {%- if block.settings.ref_rows != blank -%}
+            <p class="{{ label_cls }} mt-5" style="font-family: var(--font-heading--family);">{{ block.settings.ref_label }}</p>
+            <table class="mt-4 w-full border-collapse text-[11px]">
+              <thead>
+                <tr class="[&_th]:bg-[#111] [&_th]:px-2 [&_th]:py-[7px] [&_th]:text-left [&_th]:text-[10px] [&_th]:font-semibold [&_th]:uppercase [&_th]:tracking-[0.15em] [&_th]:text-white">
+                  {%- assign heads = block.settings.ref_heads | split: '|' -%}
+                  {%- for h in heads -%}
+                    <th style="font-family: var(--font-heading--family);">{{ h | strip }}</th>
+                  {%- endfor -%}
+                </tr>
+              </thead>
+              <tbody class="[&_td]:border-b [&_td]:border-[#f3f3f3] [&_td]:px-2 [&_td]:py-[7px] [&_td]:text-[#555] [&_tr:nth-child(even)_td]:bg-[#f9f9f9]">
+                {%- assign rows = block.settings.ref_rows | newline_to_br | split: '<br />' -%}
+                {%- for row in rows -%}
+                  {%- assign row_clean = row | strip -%}
+                  {%- assign cells = row_clean | split: '|' -%}
+                  {%- if row_clean != blank and cells.size > 0 -%}
+                    <tr>
+                      {%- for c in cells -%}
+                        {%- if forloop.first -%}
+                          <td><span class="text-[12px] font-bold tracking-[0.08em] text-[#111]" style="font-family: var(--font-heading--family);">{{ c | strip }}</span></td>
+                        {%- else -%}
+                          <td>{{ c | strip }}</td>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </tr>
+                  {%- endif -%}
+                {%- endfor -%}
+              </tbody>
+            </table>
+          {%- endif -%}
 
           {%- if block.settings.tip_text != blank -%}
             {%- comment -%} Source tip: cream panel with an orange rule down the left {%- endcomment -%}
@@ -331,7 +482,7 @@
     { "type": "text", "id": "tab_frame_label", "label": "First tab", "default": "This Frame" },
     { "type": "text", "id": "tab_howto_label", "label": "Second tab", "default": "How to Measure" },
     { "type": "header", "content": "This frame" },
-    { "type": "text", "id": "diagrams_label", "label": "Diagrams heading", "default": "Frame Diagrams" },
+    { "type": "text", "id": "diagrams_label", "label": "Diagrams heading", "info": "Drawings come from the product's pdp.frame_diagram_front / _profile metafields", "default": "Frame Diagrams" },
     { "type": "text", "id": "front_caption", "label": "Front caption", "default": "Front View" },
     { "type": "text", "id": "profile_caption", "label": "Profile caption", "default": "Profile View" },
     { "type": "text", "id": "measurements_label", "label": "Measurements heading", "default": "Frame Measurements" },
@@ -341,6 +492,8 @@
     { "type": "text", "id": "dimensions_label", "label": "Dimensions label", "info": "Used when the split measurements are empty", "default": "Dimensions" },
     { "type": "text", "id": "fit_label", "label": "Fit heading", "default": "Frame Fit" },
     { "type": "text", "id": "fit_desc", "label": "Fit description", "default": "Temple pressure & nose bridge snugness." },
+    { "type": "text", "id": "size_label", "label": "Size heading", "default": "Frame Size" },
+    { "type": "text", "id": "size_desc", "label": "Size description", "default": "Overall frame footprint from temple end to end." },
     { "type": "header", "content": "How to measure" },
     { "type": "richtext", "id": "howto_intro", "label": "Intro", "default": "<p>All you need is a <strong>flexible measuring tape</strong> or a <strong>piece of string and a ruler.</strong> Take measurements on bare skin for best accuracy.</p>" },
     { "type": "text", "id": "steps_label", "label": "Steps heading", "default": "3 Key Measurements" },
@@ -350,6 +503,9 @@
     { "type": "textarea", "id": "step_2_text", "label": "Step 2 text", "default": "Measure from the hinge of an existing pair to the tip of the arm. Most adults need 135–150mm. Shorter arms sit forward; longer arms hook further behind the ear." },
     { "type": "text", "id": "step_3_title", "label": "Step 3 title", "default": "Lens Height" },
     { "type": "textarea", "id": "step_3_text", "label": "Step 3 text", "default": "Measure vertically from your brow bone to your cheekbone. Smaller faces fit 35–42mm; larger faces 44mm+." },
+    { "type": "text", "id": "ref_label", "label": "Reference heading", "default": "Quick Size Reference" },
+    { "type": "text", "id": "ref_heads", "label": "Reference columns", "info": "Separate with |", "default": "Size | Temple Width | Temple Arm" },
+    { "type": "textarea", "id": "ref_rows", "label": "Reference rows", "info": "One row per line, cells separated with |", "default": "SM | 125 – 132mm | 130 – 135mm\nMD | 133 – 140mm | 135 – 140mm\nLG | 141 – 148mm | 140 – 145mm\nXL | 149mm+ | 145mm+" },
     { "type": "text", "id": "tip_label", "label": "Tip label", "default": "Pro Tip" },
     { "type": "textarea", "id": "tip_text", "label": "Tip text", "default": "If you're between sizes, go up — a slightly wider frame is easier to adjust than one that pinches." },
     { "type": "header", "content": "Footer" },
