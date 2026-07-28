@@ -178,7 +178,8 @@
                   {% endif %}
                 {% endfor %}
 
-                <div class="[display:grid] grid-cols-1 gap-y-5 pt-5 pb-6" data-promo-slot-mobile="{{ link_handle }}"></div>
+                {% comment %} Mobile shows only the first promo image, like the live site {% endcomment %}
+                <div class="[display:grid] grid-cols-1 gap-y-5 pt-5 pb-6 [&_[data-menu-promo]>a~a]:hidden" data-promo-slot-mobile="{{ link_handle }}"></div>
               </div>
             </div>
           {% endif %}

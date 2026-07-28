@@ -85,7 +85,7 @@
 
     {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
       <button
-        class="button-unstyled flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange transition-colors"
+        class="button-unstyled overflow-visible flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange transition-colors"
         on:click="#cart-drawer/toggle"
         aria-haspopup="dialog"
         aria-expanded="false"
@@ -98,7 +98,7 @@
     {% else %}
       <a
         href="{{ routes.cart_url }}"
-        class="flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange transition-colors"
+        class="overflow-visible flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange transition-colors"
         aria-label="{{ 'accessibility.cart' | t }}"
       >
         {{ cart_icon }}

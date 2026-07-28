@@ -80,4 +80,63 @@
     align-items: center;
     justify-content: center;
   }
+
+  /* SPY header badge — small outlined circle at the bag's top-right.
+     Measured from the source: 1.3em box, .9rem text, 1px #1d2a2b ring on white.
+     Absolute so it never adds width to the button (in-flow it overflowed the
+     36px button and the icon looked cut off). Scoped to cart-icon so the cart
+     page title keeps its own inline badge. */
+  cart-icon {
+    position: relative;
+  }
+
+  cart-icon .cart-bubble {
+    --cart-padding: 0;
+
+    position: absolute;
+    top: -0.35em;
+    right: -0.9em;
+    width: 1.3em;
+    height: 1.3em;
+    font-size: 0.9rem;
+    border: 1px solid #1d2a2b;
+    border-radius: 50%;
+    background: #fff;
+    color: #1d2a2b;
+    pointer-events: none;
+  }
+
+  cart-icon .cart-bubble__background {
+    background: none;
+  }
+
+  cart-icon .cart-bubble__text {
+    font-size: 1em;
+  }
+
+  /* Small pop when the count changes. Also lets cart-icon.js finish its
+     await on the animation, so it clears the animating class. */
+  @keyframes spy-cart-bubble-pop {
+    0% {
+      transform: scale(0.6);
+    }
+
+    60% {
+      transform: scale(1.15);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  cart-icon .cart-bubble--animating .cart-bubble__text {
+    animation: spy-cart-bubble-pop 0.3s ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    cart-icon .cart-bubble--animating .cart-bubble__text {
+      animation: none;
+    }
+  }
 {% endstylesheet %}

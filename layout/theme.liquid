@@ -45,7 +45,11 @@
     {% render 'chat-drawer' %}
 
     <div class="page-wrapper">
-      <div id="header-group">
+      {% comment %} Sticky lives here: #header-group is the tallest-parent box, so the bar can pin. Driven by the header section's Sticky setting. {% endcomment %}
+      <div
+        id="header-group"
+        class="has-[[data-spy-sticky]]:sticky has-[[data-spy-sticky]]:top-0 has-[[data-spy-sticky]]:z-50"
+      >
         {% sections 'header-group' %}
       </div>
 
