@@ -6,6 +6,12 @@ import { StandardEvents } from '@shopify/events';
 import { getScrollTop, scrollTo } from '@theme/scroll-container';
 
 /**
+ * Ceiling on how many earlier pages a `?page=N` deep link may pull in, so a
+ * crafted URL can't fan out into dozens of section requests.
+ */
+const MAX_BACKFILL_PAGES = 20;
+
+/**
  * A custom element that renders a paginated list of items.
  *
  * @typedef {object} Refs
@@ -46,8 +52,11 @@ export default class PaginatedList extends Component {
       });
     }
 
+    this.#backfillPreviousPages();
     this.#fetchPage('next');
-    this.#fetchPage('previous');
+    // The backfill covers every earlier page, so skip the prefetch that would
+    // otherwise request the page right before this one a second time.
+    if (!this.#shouldBackfill()) this.#fetchPage('previous');
     this.#observeViewMore();
 
     // Listen for filter updates to clear cached pages
@@ -254,6 +263,73 @@ export default class PaginatedList extends Component {
     requestIdleCallback(() => {
       this.#fetchPage('previous');
     });
+  }
+
+  /**
+   * Opt-in via the `backfill-pages` attribute, because a list with numbered
+   * pagination wants page 3 to mean page 3 only. Infinite scroll opts out too — it
+   * already prepends earlier pages lazily when you scroll up.
+   *
+   * @returns {boolean} Whether this list backfills earlier pages on load.
+   */
+  #shouldBackfill() {
+    return this.hasAttribute('backfill-pages') && !this.refs.viewMorePrevious;
+  }
+
+  /**
+   * A `?page=3` deep link only renders page 3, because Liquid hands a template one
+   * page at a time — and never more than 50 products, so pages 1-3 can't come from
+   * a single request however the section is set up. Fetch the earlier pages and
+   * prepend them, so the grid ends up holding pages 1..N: the same list a shopper
+   * would have after clicking "More results" their way there. That's what makes the
+   * URL "More results" pushes shareable, and lets it survive a reload or a trip to
+   * a PDP and back.
+   */
+  async #backfillPreviousPages() {
+    if (!this.#shouldBackfill()) return;
+
+    const { grid, cards } = this.refs;
+    if (!grid || !Array.isArray(cards)) return;
+
+    const currentPage = Number(cards[0]?.dataset.page ?? 1);
+    const missing = currentPage - 1;
+    if (missing < 1) return;
+
+    if (missing > MAX_BACKFILL_PAGES) {
+      console.warn(
+        `[paginated-list] Skipping backfill of ${missing} pages (max ${MAX_BACKFILL_PAGES}); showing page ${currentPage} only`
+      );
+      return;
+    }
+
+    const pageNumbers = Array.from({ length: missing }, (_, index) => index + 1);
+    await Promise.all(pageNumbers.map((page) => this.#fetchSpecificPage(page)));
+
+    // One prepend of the whole run, ascending, so page 1 lands first
+    const earlierCards = pageNumbers.flatMap((page) => Array.from(this.#getGridForPage(page) ?? []));
+    if (!earlierCards.length) return;
+
+    const scrollTopBefore = getScrollTop();
+    const anchor = grid.firstElementChild;
+    const anchorTopBefore = anchor ? anchor.getBoundingClientRect().top + scrollTopBefore : 0;
+
+    grid.prepend(...earlierCards);
+
+    this.#aspectRatioHelper?.processNewElements();
+
+    // Only hold the shopper's place if they already had one — a freshly typed
+    // `?page=3` stays at the top, so the list reads from the first product.
+    if (scrollTopBefore > 0 && anchor) {
+      const anchorTopAfter = anchor.getBoundingClientRect().top + getScrollTop();
+      scrollTo({ top: scrollTopBefore + (anchorTopAfter - anchorTopBefore), behavior: 'instant' });
+    }
+
+    // The section's inline hash scroll ran before these cards existed, so a card
+    // anchor from an earlier page had nothing to find. Retry it now.
+    const targetId = window.location.hash.slice(1);
+    if (targetId) {
+      document.getElementById(targetId)?.scrollIntoView({ behavior: 'instant' });
+    }
   }
 
   /**
