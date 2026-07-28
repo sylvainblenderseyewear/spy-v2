@@ -257,11 +257,6 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   pointer-events: none;
 }
 
-/* Keep ANSI text + Z87 pill as one tight stacked unit */
-:is(collection-component, .section-resource-list) .product-card .spy-tech-badge__ansi {
-  gap: 0 !important;
-}
-
 /* Product image: full product, always centred in the box, no crop, no hover zoom */
 :is(collection-component, .section-resource-list) .product-card .card-gallery img {
   width: 100% !important;
@@ -494,11 +489,22 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   height: 7px;
 }
 
-/* base.css holds the filtered grid at 5 fixed columns from 750px up, which leaves
-   cards near 105px at tablet — narrow enough for "23 colors available" to wrap and
-   push the titles out of line. Hold it to one line at a smaller size until the
-   columns are wide enough for the full size. */
-@media screen and (min-width: 750px) and (max-width: 1100px) {
+/* Two cards per row from 991px down, like the source at tablet. base.css pins the
+   grid to 5 fixed columns from 750px up for vertical-filter collections, which
+   squeezes the cards to ~100px there. Same selector as base.css so this file's
+   later position wins; below 750px the grid already runs on --mobile-columns. */
+@media screen and (min-width: 750px) and (max-width: 991px) {
+  .collection-wrapper:has(.facets--vertical) .product-grid--grid,
+  .collection-wrapper .product-grid--grid {
+    --product-grid-columns-desktop: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* From 992px the grid goes back to its 5 fixed columns, which leaves cards near
+   105px — narrow enough for "23 colors available" to wrap and push the titles out
+   of line. Hold it to one line at a smaller size until the columns are wide enough.
+   Starts at 992 because 991 and below is the two-column layout above. */
+@media screen and (min-width: 992px) and (max-width: 1100px) {
   :is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-color-count {
     /* stylelint-disable-next-line declaration-no-important */
     font-size: 0.75rem !important;

@@ -1,6 +1,6 @@
 {%- doc -%}
-  Renders the top-right tech badges for a product card:
-  a Happy Boost icon (from a `technology` metaobject) and an ANSI cert label.
+  Renders the top-right tech badges for a product card, in order: the Happy Boost
+  icon (from a `technology` metaobject), then the ANSI badge (from `spec.ansi_rating`).
   Reads product-level spec metafields, so combined-listing children pass their own data.
 
   @param {object} product - product to read `spec` metafields from
@@ -30,16 +30,31 @@
     assign hb_icon = happy_boost_icon
   endif
 
-  # ANSI certification -> Z87 / Z87-2+ label
-  assign ansi_label = nil
-  if specs.certifications.value != blank
+  # ANSI rating -> which badge. `spec.ansi_rating` decides it; the certifications
+  # list is the fallback so products migrated before the rating field keep a badge.
+  # Spaces are stripped so "ANSI Z87 -2+" and "ANSI Z87-2+" read the same.
+  assign ansi_kind = nil
+  assign ansi_raw = specs.ansi_rating.value | default: specs.ansi_rating
+
+  if ansi_raw != blank
+    assign a = ansi_raw | downcase | replace: ' ', ''
+    if a contains 'z87'
+      if a contains '2+'
+        assign ansi_kind = 'z87-2'
+      else
+        assign ansi_kind = 'z87'
+      endif
+    endif
+  endif
+
+  if ansi_kind == nil and specs.certifications.value != blank
     for cert in specs.certifications.value
-      assign c = cert | downcase
+      assign c = cert | downcase | replace: ' ', ''
       if c contains 'z87'
         if c contains '2+' or c contains 'z87-2' or c contains 'z87.2'
-          assign ansi_label = 'Z87-2+'
+          assign ansi_kind = 'z87-2'
         else
-          assign ansi_label = 'Z87'
+          assign ansi_kind = 'z87'
         endif
         break
       endif
@@ -69,9 +84,24 @@
   >
 {%- endif -%}
 
-{%- if ansi_label != blank -%}
-  <span class="spy-tech-badge__ansi flex flex-col items-center leading-none">
-    <span class="text-[15px] font-bold tracking-tight text-spy-ink">ANSI</span>
-    <span class="mt-px text-[8px] font-bold tracking-wide text-white bg-spy-ink rounded-[2px] px-1 py-px">{{ ansi_label }}</span>
-  </span>
+{%- if ansi_kind != nil -%}
+  {%- liquid
+    # Badge art lives in the shop's Files, so the metafield stays a plain rating
+    # string. Same height as the HB icon so the two sit level.
+    if ansi_kind == 'z87-2'
+      assign ansi_src = 'https://cdn.shopify.com/s/files/1/0846/9803/8512/files/ANSI_-Z87.webp?v=1785272041'
+      assign ansi_alt = 'ANSI Z87-2+'
+    else
+      assign ansi_src = 'https://cdn.shopify.com/s/files/1/0846/9803/8512/files/ANSI_Z87.webp?v=1785272040'
+      assign ansi_alt = 'ANSI Z87'
+    endif
+  -%}
+  <img
+    src="{{ ansi_src }}"
+    alt="{{ ansi_alt }}"
+    width="80"
+    height="80"
+    loading="lazy"
+    class="spy-tech-badge__ansi h-7 w-auto object-contain min-[750px]:h-10"
+  >
 {%- endif -%}

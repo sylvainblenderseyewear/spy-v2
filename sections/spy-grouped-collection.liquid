@@ -211,7 +211,8 @@
           children: children,
           products: collection.products,
           paginate: paginate,
-          enable_infinite_scroll: false
+          enable_infinite_scroll: false,
+          show_category_links: true
         %}
       {% endpaginate %}
     </div>
@@ -280,6 +281,19 @@
         }
       ],
       "default": "small"
+    },
+    {
+      "type": "text",
+      "id": "more_results_label",
+      "label": "\"More results\" button label",
+      "default": "More results"
+    },
+    {
+      "type": "link_list",
+      "id": "category_links_menu",
+      "label": "Category links menu",
+      "info": "Buttons under the grid show the menu items that sit on the same level as the current collection. Leave blank to use the main menu.",
+      "default": "main-menu"
     },
     {
       "type": "header",

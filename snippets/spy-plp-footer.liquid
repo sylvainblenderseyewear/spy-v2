@@ -1,0 +1,28 @@
+{%- doc -%}
+  The block under the product grid: the "More results" button with the category
+  cross-links beneath it.
+
+  Renders inside the product grid's own container, so both rows inherit exactly
+  the box the cards sit in — same left/right edges, same centre axis, same mobile
+  padding, at every breakpoint. It must NOT be placed in the collection-wrapper
+  grid: an explicitly-placed item there pushes its auto-placed siblings (the
+  card grid included) into fresh implicit columns.
+
+  @param {object} paginate - The paginate object
+  @param {object} section - The section object
+  @param {boolean} [show_more_results] - Render the button. Off when infinite scroll loads pages itself.
+  @param {boolean} [show_category_links] - Render the category cross-links
+
+  @example
+  {% render 'spy-plp-footer', paginate: paginate, section: section, show_category_links: true %}
+{%- enddoc -%}
+
+<div class="w-full">
+  {% if show_more_results != false %}
+    {% render 'spy-more-results', paginate: paginate, section: section %}
+  {% endif %}
+
+  {% if show_category_links %}
+    {% render 'spy-category-links', menu: section.settings.category_links_menu %}
+  {% endif %}
+</div>

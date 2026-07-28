@@ -1,0 +1,93 @@
+{%- doc -%}
+  Category cross-links under the PLP grid — the buttons the source shows below
+  "More results".
+
+  The row mirrors the nav: whatever level the current collection sits on in the
+  menu, every item of that level becomes a button. A top-level category
+  (Sunglasses) lists the other top-level categories; a sub-category (Replacement
+  Lenses) lists its parent's children (Sunglass Cases). Nothing is typed in here —
+  the list IS the menu, so a collection the menu never links to shows no row.
+
+  @param {object} [menu] - Link list to read. Falls back to the main menu.
+
+  @example
+  {% render 'spy-category-links', menu: section.settings.category_links_menu %}
+{%- enddoc -%}
+
+{%- liquid
+  assign links_menu = menu
+  if links_menu == blank
+    assign links_menu = linklists['main-menu']
+  endif
+
+  assign current_url = collection.url | default: request.path
+  assign found = false
+
+  # Level 1 — current collection is a top-level item
+  for l1 in links_menu.links
+    if l1.current or l1.url == current_url
+      assign row = links_menu.links
+      assign found = true
+      break
+    endif
+  endfor
+
+  # Level 2 — show the parent's children
+  unless found
+    for l1 in links_menu.links
+      for l2 in l1.links
+        if l2.current or l2.url == current_url
+          assign row = l1.links
+          assign found = true
+          break
+        endif
+      endfor
+      if found
+        break
+      endif
+    endfor
+  endunless
+
+  # Level 3 — same idea one level down
+  unless found
+    for l1 in links_menu.links
+      for l2 in l1.links
+        for l3 in l2.links
+          if l3.current or l3.url == current_url
+            assign row = l2.links
+            assign found = true
+            break
+          endif
+        endfor
+        if found
+          break
+        endif
+      endfor
+      if found
+        break
+      endif
+    endfor
+  endunless
+
+-%}
+
+{%- comment -%}
+  Only collections that are in the menu get the row. A collection the nav never
+  links to (curated story, blue light, a filtered landing page) has no level to
+  show, so it shows nothing.
+
+  Centring is text-align, not flex: the inner div is a plain block, the buttons
+  are inline-flex, and their 3px margins are the gap. The loop trims its own
+  whitespace, so those margins are the only spacing between buttons.
+{%- endcomment -%}
+{%- if found and row.size > 1 -%}
+  <nav class="spy-category-links" aria-label="{{ 'breadcrumbs.collections' | t }}">
+    <div class="w-full pt-[52px] pb-4 text-center">
+      {%- for link in row -%}
+        <a href="{{ link.url }}" class="mx-[3px] my-[3px] inline-flex h-8 items-center whitespace-nowrap border border-spy-orange px-3 align-middle text-[12px] font-normal uppercase leading-none tracking-[0.06em] text-spy-orange no-underline transition-colors hover:bg-spy-orange hover:text-white"{% if link.current %} aria-current="page"{% endif %}>
+          {{- link.title -}}
+        </a>
+      {%- endfor -%}
+    </div>
+  </nav>
+{%- endif -%}
