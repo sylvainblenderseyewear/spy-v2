@@ -24,9 +24,9 @@
   assign chart_name = block.settings.fallback_label
 
   if size_chart_ref != blank
-    assign chart_image = size_chart_ref.fields.image.value
-    if size_chart_ref.fields.name.value != blank
-      assign chart_name = size_chart_ref.fields.name.value
+    assign chart_image = size_chart_ref.image.value
+    if size_chart_ref.name.value != blank
+      assign chart_name = size_chart_ref.name.value
     endif
   endif
 

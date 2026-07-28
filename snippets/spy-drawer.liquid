@@ -1,0 +1,58 @@
+{%- doc -%}
+  Right-hand drawer shell, shared by the PDP panels (fit guide, lens tech).
+
+  Matches the source's modal-panel: a 500px sheet pinned right, over a light grey
+  veil (#e6e6e6 at 60%, not a black scrim), with a close cross top-right and a 3px
+  orange rule under it. Kept in the DOM so the slide can animate.
+
+  @param {string} id - Unique id for the dialog
+  @param {string} body - Pre-rendered panel content (capture it first)
+  @param {string} [label] - Accessible name for the dialog
+  @param {boolean} [accent] - Show the 3px orange rule (default true)
+{%- enddoc -%}
+
+{%- liquid
+  assign show_accent = true
+  if accent == false
+    assign show_accent = false
+  endif
+-%}
+
+<div
+  id="{{ id }}"
+  class="spy-drawer group invisible fixed inset-0 z-[1001] data-[open]:visible"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ label | default: 'Details' | escape }}"
+  aria-hidden="true"
+  data-spy-drawer
+>
+  <div
+    class="absolute inset-0 bg-[#e6e6e6] opacity-0 transition-opacity duration-300 ease-out group-data-[open]:opacity-60 motion-reduce:transition-none"
+    data-spy-drawer-close
+  ></div>
+
+  <div
+    class="absolute right-0 top-0 flex h-full w-[min(500px,100vw)] translate-x-full flex-col bg-white shadow-[-4px_0_24px_rgba(0,0,0,0.08)] transition-transform duration-300 ease-out group-data-[open]:translate-x-0 motion-reduce:transition-none"
+    data-spy-drawer-panel
+  >
+    <button
+      type="button"
+      class="absolute right-3 top-3 z-10 flex cursor-pointer items-center border-none bg-transparent p-1.5 text-[color:var(--color-spy-text)] hover:text-spy-orange"
+      aria-label="{{ 'accessibility.close' | t | default: 'Close' }}"
+      data-spy-drawer-close
+    >
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    {%- comment -%} Source sets the panel's own base type so copy ignores the page scale {%- endcomment -%}
+    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain pt-11 text-[13px] leading-[1.5] text-[#111] [scrollbar-color:#ddd_#fff] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-[2px] [&::-webkit-scrollbar-thumb]:bg-[#ddd] [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar]:w-1">
+      {%- if show_accent -%}
+        <div class="h-[3px] shrink-0 bg-spy-orange"></div>
+      {%- endif -%}
+      {{ body }}
+    </div>
+  </div>
+</div>
