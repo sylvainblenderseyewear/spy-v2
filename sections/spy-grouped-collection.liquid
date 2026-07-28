@@ -48,6 +48,8 @@
     style="--padding-block-start: {{ section.settings.padding-block-start }}px; --padding-block-end: {{ section.settings.padding-block-end }}px;"
     section-id="{{ section.id }}"
     infinite-scroll="false"
+    {% comment %} ?page=N restores pages 1..N, so a "More results" URL survives a reload {% endcomment %}
+    backfill-pages
   >
     {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
 
