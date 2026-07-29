@@ -276,7 +276,7 @@
         "padding_left": 16,
         "padding_right": 16,
         "title_font": "var(--font-heading--family)",
-        "title_font_size": 38
+        "title_font_size": 42
       }
     },
     "section_tRkEMM": {
@@ -553,7 +553,9 @@
             "spy_swatches_qAzhNx": {
               "type": "spy-swatches",
               "name": "Color Preview",
-              "settings": {},
+              "settings": {
+                "display": "card"
+              },
               "blocks": {}
             },
             "product_title_fdpLnW": {
@@ -882,7 +884,9 @@
             "spy_swatches_CqRm9T": {
               "type": "spy-swatches",
               "name": "Color Preview",
-              "settings": {},
+              "settings": {
+                "display": "card"
+              },
               "blocks": {}
             },
             "product_title_3WpyTJ": {
