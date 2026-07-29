@@ -137,9 +137,10 @@
       that still fit all four (max_shown) plus 6px gaps on one line — the swatch row is
       ~152px on mobile and ~239px on desktop.
       object-contain rather than cover: product shots are wide, so a square crop would eat them.
+      No outline on purpose — the source thumb (.swatch-circle) is a bare image.
     {%- endcomment -%}
     {%- liquid
-      assign card_swatch = 'spy-swatches__item block h-8 w-8 min-[750px]:h-9 min-[750px]:w-9 shrink-0 overflow-hidden border'
+      assign card_swatch = 'spy-swatches__item block h-8 w-8 min-[750px]:h-9 min-[750px]:w-9 shrink-0 overflow-hidden'
       assign card_swatch_img = 'block h-full w-full object-contain'
     -%}
     <div class="spy-swatches flex flex-wrap items-center gap-1.5 pt-3 pb-1" data-spy-swatches {{ block.shopify_attributes }}>
@@ -150,7 +151,7 @@
             {%- assign v_url = v.variant.url | default: p.url -%}
             <a
               href="{{ v_url }}"
-              class="{{ card_swatch }} border-[color:var(--color-spy-border)] hover:border-[color:var(--color-foreground,#2c393e)]"
+              class="{{ card_swatch }}"
               data-full="{{ media | image_url: width: 640 }}"
               aria-label="{{ p.title | escape }} – {{ v.name | escape }}"
             >
@@ -164,7 +165,7 @@
       {%- elsif p.featured_media != blank -%}
         <a
           href="{{ p.url }}"
-          class="{{ card_swatch }} border-[color:var(--color-foreground,#2c393e)]"
+          class="{{ card_swatch }}"
           data-full="{{ p.featured_media | image_url: width: 640 }}"
           aria-label="{{ p.title | escape }}"
         >

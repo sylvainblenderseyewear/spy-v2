@@ -1,11 +1,29 @@
 
 
+{%- liquid
+  comment
+    SPY: cards can print the model name instead of the full title. Every colourway of
+    a model carries the same `collection::MODEL` tag, so the tag is the model name.
+  endcomment
+  assign title_text = closest.product.title
+
+  if block.settings.title_source == 'group'
+    capture group_name
+      render 'spy-group-name', product: closest.product
+    endcapture
+    assign group_name = group_name | strip
+    if group_name != blank
+      assign title_text = group_name
+    endif
+  endif
+-%}
+
 {% if closest.product == blank %}
   {% assign text = 'placeholders.product_title' | t %}
   {% assign product_title = '<p role="heading" aria-level="3">' | append: text | append: '</p>' %}
   {% render 'text', fallback_text: product_title, block: block %}
 {% else %}
-  {% assign product_title = '<p role="heading" aria-level="3">' | append: closest.product.title | append: '</p>' %}
+  {% assign product_title = '<p role="heading" aria-level="3">' | append: title_text | append: '</p>' %}
   <a
     class="contents user-select-text"
     ref="productTitleLink"
@@ -23,6 +41,23 @@
     {
       "type": "paragraph",
       "content": "t:content.resource_reference_product_title"
+    },
+    {
+      "type": "select",
+      "id": "title_source",
+      "label": "Text",
+      "info": "Model name comes from the product's `collection::MODEL` tag, and falls back to the product title.",
+      "options": [
+        {
+          "value": "product",
+          "label": "Product title"
+        },
+        {
+          "value": "group",
+          "label": "Model name"
+        }
+      ],
+      "default": "product"
     },
     {
       "type": "header",

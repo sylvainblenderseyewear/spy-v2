@@ -1,0 +1,40 @@
+{%- doc -%}
+  Colourway name under the card image — the source's `.swatches-label`
+  (.9rem, #6c757d), the small soft line above the model title.
+
+  Takes the place of the colour count on the default PLP card: staging has one
+  product per colourway, so the name is the useful fact and the count is always 1.
+  Sits in the slot the hover swatch row covers, so it fades out as the thumbnails
+  fade in and nothing below moves.
+{%- enddoc -%}
+
+{%- capture spy_variant_name -%}
+  {%- render 'spy-colourway-name', product: closest.product -%}
+{%- endcapture -%}
+
+{%- comment -%} Always rendered so the slot keeps its height, even with no colour data {%- endcomment -%}
+<p
+  class="spy-variant-name text-[0.9rem] font-normal text-spy-label m-0"
+  {{ block.shopify_attributes }}
+>
+  {{- spy_variant_name | strip -}}
+</p>
+
+{% schema %}
+{
+  "name": "Variant Name",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Colourway name — the product title with its `collection::MODEL` name taken out. Falls back to the colour option."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Variant Name",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}
