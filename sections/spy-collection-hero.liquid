@@ -9,8 +9,10 @@
   by ratio so it holds its shape across phone widths; tablet and desktop use pixel
   heights, which is how they were measured off the source.
 
-  Images resolve section setting first (Layer 2), then the collection metafield in
-  either the `collection` or `custom` namespace (Layer 3), then the desktop image.
+  Images resolve the collection metafield first, in either the `collection` or
+  `custom` namespace (Layer 3), then the section setting (Layer 2), then the desktop
+  image. The collection's own artwork wins because one template serves every
+  collection — the setting is the fallback for the ones with no artwork yet.
   When a breakpoint falls back to the desktop asset there is no matching crop, so
   the focal point pins to the dark panel — the title stays legible instead of
   landing on the photo. Set a per-breakpoint asset and the focal setting takes over.
@@ -27,9 +29,9 @@
   assign mf = collection.metafields.collection
   assign mf_custom = collection.metafields.custom
 
-  assign img_desktop = section.settings.image_desktop | default: mf.hero_image.value | default: mf_custom.hero_image.value
-  assign img_tablet = section.settings.image_tablet | default: mf.hero_image_tablet.value | default: mf_custom.hero_image_tablet.value
-  assign img_mobile = section.settings.image_mobile | default: mf.hero_image_mobile.value | default: mf_custom.hero_image_mobile.value
+  assign img_desktop = mf.hero_image.value | default: mf_custom.hero_image.value | default: section.settings.image_desktop
+  assign img_tablet = mf.hero_image_tablet.value | default: mf_custom.hero_image_tablet.value | default: section.settings.image_tablet
+  assign img_mobile = mf.hero_image_mobile.value | default: mf_custom.hero_image_mobile.value | default: section.settings.image_mobile
 
   # Track the fallbacks so the focal point can favour the dark panel
   assign tablet_is_fallback = false
@@ -141,7 +143,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Falls back to the collection's `hero_image`, `hero_image_tablet` and `hero_image_mobile` metafields (namespace `collection` or `custom`) when no image is set here. The source uses a separate, taller crop on mobile — set one to match it exactly."
+      "content": "Each collection's own `hero_image`, `hero_image_tablet` and `hero_image_mobile` metafields (namespace `collection` or `custom`) come first. An image set here is the fallback for every collection on this template that has none. The source uses a separate, taller crop on mobile — set one to match it exactly."
     },
     {
       "type": "header",

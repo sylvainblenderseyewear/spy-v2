@@ -48,15 +48,10 @@
       class="collection-wrapper grid gap-style{% if section.settings.product_grid_width == 'full-width' %} collection-wrapper--grid-full-width{% endif %}"
     >
       {% comment %}
-        Breadcrumb sits above the filter bar and takes the same grid span + inline padding
-        as .facets-toggle, so both left edges line up. Named-line span on mobile, numeric
-        on desktop where base.css swaps in the sidebar track template. Rendered here rather
-        than as a block because this section takes no dynamic blocks, and the hero section
-        skips itself when the collection has no hero image.
+        The breadcrumb is its own section above this one (a Breadcrumbs block in a
+        page-width row), like the source: a full row under the hero, not a line
+        squeezed into the grid's filter column.
       {% endcomment %}
-      <div class="col-[var(--full-width)] px-[var(--padding-lg)] pb-3 min-[750px]:col-[2/4] min-[750px]:px-0 min-[750px]:pb-4">
-        {% render 'spy-breadcrumbs' %}
-      </div>
 
       {% content_for 'block',
         type: 'filters',

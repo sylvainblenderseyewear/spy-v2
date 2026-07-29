@@ -1,0 +1,102 @@
+{%- doc -%}
+  Prints a product's colourway name — the source card's `.swatches-label`.
+
+  Staging holds one product per colourway, so the title carries both facts: the
+  model name (the same value as the `collection::MODEL` tag) plus the colourway.
+  Cutting the model name out of the title leaves the colourway — e.g.
+  `Galactic MIPS Matte Lilac` + tag `collection::Galactic MIPS` → `Matte Lilac`.
+
+  Falls back to the colour option (real combined listings after the migration) and
+  prints nothing when neither answers — the caller keeps the slot's height.
+
+  @param {object} product - product to read the name from
+
+  @example
+  {%- capture colourway -%}
+    {%- render 'spy-colourway-name', product: product -%}
+  {%- endcapture -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign spy_cw_name = ''
+  assign spy_cw_title = product.title | strip
+
+  capture spy_cw_group
+    render 'spy-group-name', product: product
+  endcapture
+  assign spy_cw_group = spy_cw_group | strip
+
+  if spy_cw_title != blank and spy_cw_group != blank
+    assign spy_cw_title_lower = spy_cw_title | downcase
+    assign spy_cw_group_lower = spy_cw_group | downcase
+    assign spy_cw_group_size = spy_cw_group | size
+
+    if spy_cw_title_lower contains spy_cw_group_lower
+      comment
+        Match on the downcased pair but cut the original, so the colourway keeps its own casing.
+      endcomment
+      assign spy_cw_head = spy_cw_title | slice: 0, spy_cw_group_size | downcase
+
+      if spy_cw_head == spy_cw_group_lower
+        assign spy_cw_name = spy_cw_title | slice: spy_cw_group_size, 255
+      else
+        # model name sits later in the title — measure what leads it, then cut there
+        assign spy_cw_before = spy_cw_title_lower | split: spy_cw_group_lower | first
+        assign spy_cw_before_size = spy_cw_before | size
+        assign spy_cw_start = spy_cw_before_size | plus: spy_cw_group_size
+        assign spy_cw_name = spy_cw_title | slice: spy_cw_start, 255
+        assign spy_cw_name = spy_cw_name | strip
+
+        # model name trails the title instead — then the colourway is what led it
+        if spy_cw_name == '' and spy_cw_before_size > 0
+          assign spy_cw_name = spy_cw_title | slice: 0, spy_cw_before_size
+        endif
+      endif
+    endif
+  endif
+
+  assign spy_cw_name = spy_cw_name | strip
+
+  comment
+    Tidy a separator the cut left behind (`Galactic MIPS - Matte Lilac`).
+  endcomment
+  assign spy_cw_seps = '-–—|/:,·'
+  assign spy_cw_size = spy_cw_name | size
+
+  if spy_cw_size > 0
+    assign spy_cw_lead = spy_cw_name | slice: 0, 1
+    if spy_cw_seps contains spy_cw_lead
+      assign spy_cw_name = spy_cw_name | slice: 1, 255 | strip
+    endif
+  endif
+
+  assign spy_cw_size = spy_cw_name | size
+  if spy_cw_size > 0
+    assign spy_cw_tail = spy_cw_name | slice: -1, 1
+    if spy_cw_seps contains spy_cw_tail
+      assign spy_cw_cut = spy_cw_size | minus: 1
+      assign spy_cw_name = spy_cw_name | slice: 0, spy_cw_cut | strip
+    endif
+  endif
+
+  comment
+    No group tag, or a title that is only the model name — read the colour option.
+  endcomment
+  if spy_cw_name == ''
+    for spy_cw_opt in product.options_with_values
+      assign spy_cw_opt_name = spy_cw_opt.name | downcase
+      if spy_cw_opt_name == 'frame color' or spy_cw_opt_name == 'color' or spy_cw_opt_name == 'colour'
+        assign spy_cw_name = spy_cw_opt.selected_value | default: spy_cw_opt.values.first.name
+        break
+      endif
+    endfor
+    assign spy_cw_name = spy_cw_name | strip
+  endif
+
+  assign spy_cw_check = spy_cw_name | downcase
+  if spy_cw_check == 'default title'
+    assign spy_cw_name = ''
+  endif
+
+  echo spy_cw_name
+-%}

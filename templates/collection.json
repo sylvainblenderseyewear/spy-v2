@@ -13,6 +13,49 @@
       "type": "spy-collection-hero",
       "settings": {}
     },
+    "spy_breadcrumbs_row": {
+      "type": "section",
+      "blocks": {
+        "spy_breadcrumbs_block": {
+          "type": "spy-breadcrumbs",
+          "name": "Breadcrumbs",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "spy_breadcrumbs_block"
+      ],
+      "name": "Breadcrumbs",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 0,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 20,
+        "padding-block-end": 20
+      }
+    },
     "main": {
       "type": "main-collection",
       "blocks": {
@@ -77,21 +120,15 @@
               },
               "blocks": {}
             },
-            "spy_quick_view_btn_A1": {
-              "type": "spy-quick-view-btn",
-              "name": "Quick View Button",
-              "settings": {},
-              "blocks": {}
-            },
             "spy_new_badge_A1": {
               "type": "spy-new-badge",
               "name": "Badge",
               "settings": {},
               "blocks": {}
             },
-            "spy_color_count_A1": {
-              "type": "spy-color-count",
-              "name": "Color Count",
+            "spy_variant_name_A1": {
+              "type": "spy-variant-name",
+              "name": "Variant Name",
               "settings": {},
               "blocks": {}
             },
@@ -105,6 +142,7 @@
               "type": "product-title",
               "name": "Title",
               "settings": {
+                "title_source": "group",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -152,9 +190,8 @@
           "block_order": [
             "spy_tech_badge_A1",
             "card-gallery",
-            "spy_quick_view_btn_A1",
             "spy_new_badge_A1",
-            "spy_color_count_A1",
+            "spy_variant_name_A1",
             "swatches_card",
             "product_title_card",
             "price_card"
@@ -189,6 +226,7 @@
   },
   "order": [
     "spy_collection_hero_A1",
+    "spy_breadcrumbs_row",
     "main",
     "spy_collection_seo_A1",
     "spy_quick_view_modal_A1"

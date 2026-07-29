@@ -15,6 +15,7 @@
   --color-spy-text:    #242424; /* source content-primary */
   --color-spy-text-2:  #393939; /* source content-secondary */
   --color-spy-muted:   #a6a6a6; /* source content-muted */
+  --color-spy-label:   #6c757d; /* source swatches-label — colourway name on the card */
   --color-spy-surface: #f9f9f9; /* source surface-primary — tiles, scale track */
   --color-spy-positive: #4bb151; /* source sentiment-positive — In Stock */
   --color-spy-negative: #d7403a; /* source sentiment-negative — Sold Out */
@@ -362,8 +363,10 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   }
 }
 
-/* ── SPY color preview (spy-swatches) — overlaps the colour-count slot, no reflow ── */
-:is(collection-component, .section-resource-list) .product-card .spy-color-count {
+/* ── SPY color preview (spy-swatches) — overlaps the label slot, no reflow ──
+   Colour count and variant name share the slot: whichever one the card uses, the
+   hover swatch row covers it. */
+:is(collection-component, .section-resource-list) .product-card :is(.spy-color-count, .spy-variant-name) {
   min-height: 28px;
   display: flex;
   align-items: center;
@@ -415,7 +418,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     opacity: 1;
     visibility: visible;
   }
-  :is(collection-component, .section-resource-list) .product-card:hover .spy-color-count,
+  :is(collection-component, .section-resource-list) .product-card:hover :is(.spy-color-count, .spy-variant-name),
   :is(collection-component, .section-resource-list) .product-card:hover .spy-new-badge {
     opacity: 0;
     visibility: hidden;
@@ -427,7 +430,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     opacity: 0;
     visibility: hidden;
   }
-  :is(collection-component, .section-resource-list) .product-card:hover:has(.text-block:hover) .spy-color-count,
+  :is(collection-component, .section-resource-list) .product-card:hover:has(.text-block:hover) :is(.spy-color-count, .spy-variant-name),
   :is(collection-component, .section-resource-list) .product-card:hover:has(.text-block:hover) .spy-new-badge {
     opacity: 1;
     visibility: visible;
