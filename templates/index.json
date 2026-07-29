@@ -174,8 +174,8 @@
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SNOW-HOVER_jpg.webp",
             "label": "Snow",
             "link": "",
-            "aspect_ratio": "3:4",
-            "custom_aspect_ratio": "3/4.5"
+            "aspect_ratio": "custom",
+            "custom_aspect_ratio": "3/4.2"
           }
         },
         "tile_Xyd7Pd": {
@@ -184,6 +184,15 @@
             "image": "shopify://shop_images/safety.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SAFETY-HOVER_jpg.webp",
             "label": "Safety",
+            "link": "",
+            "aspect_ratio": "custom",
+            "custom_aspect_ratio": "3/4.2"
+          }
+        },
+        "tile_qWTqGU": {
+          "type": "tile",
+          "settings": {
+            "label": "",
             "link": "",
             "aspect_ratio": "3:4",
             "custom_aspect_ratio": ""
@@ -196,8 +205,8 @@
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-FISHING-HOVER_jpg.webp",
             "label": "Fishing",
             "link": "",
-            "aspect_ratio": "3:4",
-            "custom_aspect_ratio": ""
+            "aspect_ratio": "custom",
+            "custom_aspect_ratio": "3/4.2"
           }
         },
         "tile_ypbPi3": {
@@ -207,8 +216,8 @@
             "hover_image": "shopify://shop_images/lifestyle-hover.webp",
             "label": "Lifestyle",
             "link": "",
-            "aspect_ratio": "3:4",
-            "custom_aspect_ratio": ""
+            "aspect_ratio": "custom",
+            "custom_aspect_ratio": "3/4.2"
           }
         },
         "tile_aydk6r": {
@@ -218,8 +227,8 @@
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-CLASSICS-HOVER.webp",
             "label": "Classics",
             "link": "",
-            "aspect_ratio": "3:4",
-            "custom_aspect_ratio": ""
+            "aspect_ratio": "custom",
+            "custom_aspect_ratio": "3/4.2"
           }
         },
         "tile_PtCzT4": {
@@ -229,8 +238,8 @@
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-MOTO-HOVER.jpg",
             "label": "Moto",
             "link": "",
-            "aspect_ratio": "3:4",
-            "custom_aspect_ratio": ""
+            "aspect_ratio": "custom",
+            "custom_aspect_ratio": "3/4.2"
           }
         },
         "tile_b7znmT": {
@@ -240,8 +249,8 @@
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-TRAIL-HOVER.webp",
             "label": "Trail",
             "link": "",
-            "aspect_ratio": "3:4",
-            "custom_aspect_ratio": ""
+            "aspect_ratio": "custom",
+            "custom_aspect_ratio": "3/4.2"
           }
         },
         "tile_TRD7Kn": {
@@ -251,14 +260,15 @@
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-BLUELIGHT-HOVER.webp",
             "label": "Blue Light",
             "link": "",
-            "aspect_ratio": "3:4",
-            "custom_aspect_ratio": ""
+            "aspect_ratio": "custom",
+            "custom_aspect_ratio": "3/4.2"
           }
         }
       },
       "block_order": [
         "tile_dFjizK",
         "tile_Xyd7Pd",
+        "tile_qWTqGU",
         "tile_AkPFxa",
         "tile_ypbPi3",
         "tile_aydk6r",
@@ -270,13 +280,13 @@
       "settings": {
         "heading": "",
         "columns": 4,
-        "gap": 40,
-        "padding_top": 26,
-        "padding_bottom": 26,
-        "padding_left": 16,
-        "padding_right": 16,
+        "gap": 48,
+        "padding_top": 30,
+        "padding_bottom": 30,
+        "padding_left": 26,
+        "padding_right": 26,
         "title_font": "var(--font-heading--family)",
-        "title_font_size": 38
+        "title_font_size": 40
       }
     },
     "section_tRkEMM": {
@@ -553,7 +563,9 @@
             "spy_swatches_qAzhNx": {
               "type": "spy-swatches",
               "name": "Color Preview",
-              "settings": {},
+              "settings": {
+                "display": "card"
+              },
               "blocks": {}
             },
             "product_title_fdpLnW": {
@@ -702,7 +714,7 @@
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "h1",
+                "type_preset": "h2",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
@@ -882,7 +894,9 @@
             "spy_swatches_CqRm9T": {
               "type": "spy-swatches",
               "name": "Color Preview",
-              "settings": {},
+              "settings": {
+                "display": "card"
+              },
               "blocks": {}
             },
             "product_title_3WpyTJ": {

@@ -68,7 +68,7 @@
   {%- endif -%}
 
   {%- if block.settings.guide_link != blank -%}
-  <a href="{{ block.settings.guide_link }}" class="inline-block mt-1 text-[11px] font-bold uppercase tracking-[0.06em] text-spy-slate underline underline-offset-[3px] hover:text-spy-orange transition-colors">
+  <a href="{{ block.settings.guide_link }}" class="inline-block mt-1 text-[11px] font-bold uppercase tracking-[0.06em] text-spy-slate underline decoration-current underline-offset-[3px] hover:text-spy-orange transition-colors">
     {{- block.settings.guide_link_label | default: 'View Fit Guide' -}}
   </a>
   {%- endif -%}

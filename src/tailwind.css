@@ -38,6 +38,21 @@
   /* Mobile nav drawer (was :root in spy-mega-menu) */
   --spy-nav-width: 280px;
   --ease-spy-nav:  cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Drawer content rises as the panel opens — source's spy-hl-fadein */
+  --animate-spy-fade-up: spy-fade-up 0.3s ease both;
+
+  @keyframes spy-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 /* ── Scan all Liquid theme files for class names ─────────────────── */

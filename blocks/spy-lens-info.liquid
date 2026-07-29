@@ -45,13 +45,46 @@
     assign skip_block = true
   endif
 
-  # "Read more" target: block setting first, then a technology metaobject link, then
-  # the spec table. The tech guide pages land in a later phase, so the spec panel is
-  # the only real "more" today — and a fragment link opens a closed <details>.
+  # "Read more" opens the lens-tech drawer, like the source. Its content is the same
+  # editorial copy for every product, so it lives in block settings; when a product
+  # references a technology metaobject that entry overrides the logo, blurb and body.
+  assign tech = nil
+  if technologies != blank
+    assign tech = technologies | first
+  endif
+
+  assign drawer_logo = block.settings.drawer_logo
+  assign drawer_title = block.settings.drawer_title
+  assign drawer_blurb = block.settings.drawer_blurb
+  assign drawer_benefits = block.settings.drawer_benefits
+
+  if tech != nil
+    if tech.icon.value != blank
+      assign drawer_logo = tech.icon.value
+    endif
+    if tech.name.value != blank
+      assign drawer_title = tech.name.value
+    endif
+    if tech.short_blurb.value != blank
+      assign drawer_blurb = tech.short_blurb.value
+    endif
+    if tech.long_description.value != blank
+      assign drawer_benefits = tech.long_description.value
+    endif
+  endif
+
+  assign drawer_id = 'spy-lens-tech-' | append: block.id
+  assign drawer_label = drawer_title | default: block.settings.drawer_eyebrow
+
+  # Nothing to show at all — keep the old link behaviour rather than an empty panel.
+  assign use_drawer = false
+  if drawer_logo != blank or drawer_title != blank or drawer_blurb != blank or drawer_benefits != blank
+    assign use_drawer = true
+  endif
+
   assign read_more_url = block.settings.read_more_url
-  if read_more_url == blank and technologies != blank
-    assign first_tech_link = technologies | first
-    assign read_more_url = first_tech_link.fields.link.value
+  if read_more_url == blank and tech != nil
+    assign read_more_url = tech.link.value
   endif
   if read_more_url == blank
     assign read_more_url = '#spy-spec-details'
@@ -75,11 +108,24 @@
 
   <div class="flex items-center justify-between gap-3 h-6 mb-3">
     <span class="text-[16px] leading-6 font-medium text-[color:var(--color-spy-ink)]">Lens information</span>
-    {%- if read_more_url != blank -%}
+    {%- liquid
+      assign read_more_cls = 'text-[14px] leading-5 font-medium tracking-[0.01em] underline decoration-current underline-offset-2 text-[color:var(--color-spy-text)] hover:text-spy-orange'
+    -%}
+    {%- if use_drawer -%}
+      <button
+        type="button"
+        id="{{ drawer_id }}-trigger"
+        class="{{ read_more_cls }} cursor-pointer border-none bg-transparent p-0"
+        aria-haspopup="dialog"
+        aria-expanded="false"
+        aria-controls="{{ drawer_id }}"
+        data-spy-drawer-open="{{ drawer_id }}"
+      >{{ block.settings.read_more_label | default: 'Read more' }}</button>
+    {%- elsif read_more_url != blank -%}
       <a
         href="{{ read_more_url }}"
-        class="text-[14px] leading-5 font-medium tracking-[0.01em] underline underline-offset-2 text-[color:var(--color-spy-text)] hover:text-spy-orange"
-      >Read more</a>
+        class="{{ read_more_cls }}"
+      >{{ block.settings.read_more_label | default: 'Read more' }}</a>
     {%- endif -%}
   </div>
 
@@ -114,8 +160,8 @@
       if technologies != blank
         assign first_tech = technologies | first
         if first_tech != blank
-          assign tech_name = first_tech.fields.name.value | default: tech_text
-          assign tech_icon_file = first_tech.fields.icon.value
+          assign tech_name = first_tech.name.value | default: tech_text
+          assign tech_icon_file = first_tech.icon.value
           assign icon_src = tech_icon_file | image_url: width: 120
           if icon_src == blank
             assign icon_src = tech_icon_file.url
@@ -192,6 +238,66 @@
   {%- endif -%}
 
 </div>
+
+{%- comment -%}
+  Lens tech drawer, opened by "Read more". Copy comes from the block settings and a
+  linked technology metaobject overrides it. Matches the source's .spy-hl-* content
+  asset (24px gutters, 8px orange dots, grey note).
+{%- endcomment -%}
+{%- if use_drawer -%}
+  {%- capture lens_tech_body -%}
+    {%- comment -%} Source fades the content up 6px as the panel opens, and antialiases it {%- endcomment -%}
+    <div class="antialiased group-data-[open]:animate-spy-fade-up">
+    <div class="px-6 pt-6">
+      <p class="mb-3.5 text-[10px] font-bold uppercase leading-none tracking-[0.3em] text-spy-orange">{{ block.settings.drawer_eyebrow }}</p>
+      {%- if drawer_logo != blank -%}
+        <img
+          src="{{ drawer_logo | image_url: width: 400 }}"
+          alt="{{ drawer_title | default: 'Lens technology' | escape }}"
+          loading="lazy"
+          class="mb-3.5 block max-h-12 w-auto max-w-full max-[768px]:max-h-14"
+        >
+      {%- elsif drawer_title != blank -%}
+        {%- comment -%} No logo uploaded — the name carries the heading {%- endcomment -%}
+        <p class="mb-3.5 text-[22px] font-bold uppercase leading-none tracking-[0.04em] text-[#111]" style="font-family: var(--font-heading--family);">{{ drawer_title }}</p>
+      {%- endif -%}
+      {%- if drawer_blurb != blank -%}
+        <div class="border-b border-[#e5e5e5] pb-[18px] text-[13px] font-normal italic leading-[1.65] text-[#666] max-[768px]:text-[14px] [&_p]:m-0">{{ drawer_blurb }}</div>
+      {%- endif -%}
+    </div>
+
+    {%- if drawer_benefits != blank -%}
+      {%- comment -%}
+        Editor's rich text becomes the benefit list: each list item gets the orange
+        dot, a bold lead-in reads as the benefit name.
+      {%- endcomment -%}
+      <div class="px-6 pt-[18px] text-[12px] leading-[1.65] text-[#888] max-[768px]:text-[13px]
+        [&_ul]:m-0 [&_ul]:flex [&_ul]:list-none [&_ul]:flex-col [&_ul]:gap-4 [&_ul]:p-0
+        [&_li]:relative [&_li]:pl-[21px]
+        [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-[5px] [&_li]:before:h-2 [&_li]:before:w-2 [&_li]:before:rounded-full [&_li]:before:bg-spy-orange [&_li]:before:content-['']
+        [&_strong]:mb-[3px] [&_strong]:block [&_strong]:text-[13px] [&_strong]:font-bold [&_strong]:text-[#111] [&_strong]:max-[768px]:text-[14px]
+        [&_p]:m-0 [&_p:not(:last-child)]:mb-4
+        [&_a]:text-spy-orange [&_a]:underline [&_a]:decoration-current">
+        {{ drawer_benefits }}
+      </div>
+    {%- endif -%}
+
+    {%- if block.settings.drawer_note != blank -%}
+      {%- comment -%} Grey callout with the orange rule down its left edge {%- endcomment -%}
+      <div class="mx-6 mb-7 mt-5 rounded-r-[2px] border-l-[3px] border-spy-orange bg-[#f7f7f7] px-[15px] py-[13px]">
+        <div class="text-[12px] leading-[1.7] text-[#999] max-[768px]:text-[13px] [&_p]:m-0">{{ block.settings.drawer_note }}</div>
+      </div>
+    {%- endif -%}
+    </div>
+  {%- endcapture -%}
+
+  {%- render 'spy-drawer',
+    id: drawer_id,
+    label: drawer_label,
+    body: lens_tech_body
+  -%}
+  <script src="{{ 'spy-drawer.js' | asset_url }}" defer></script>
+{%- endif -%}
 {%- endunless -%}
 
 {% schema %}
@@ -199,7 +305,15 @@
   "name": "Lens Info",
   "tag": null,
   "settings": [
-    { "type": "url", "id": "read_more_url", "label": "\"Read more\" link" }
+    { "type": "url", "id": "read_more_url", "label": "\"Read more\" link", "info": "Used only when the product references no technology metaobject" },
+    { "type": "text", "id": "read_more_label", "label": "\"Read more\" label", "default": "Read more" },
+    { "type": "header", "content": "Lens tech drawer" },
+    { "type": "text", "id": "drawer_eyebrow", "label": "Eyebrow", "default": "Lens Technology" },
+    { "type": "image_picker", "id": "drawer_logo", "label": "Logo", "info": "Overridden by a linked technology metaobject icon" },
+    { "type": "text", "id": "drawer_title", "label": "Title", "info": "Shown when no logo is set", "default": "Happy Lens Tech" },
+    { "type": "richtext", "id": "drawer_blurb", "label": "Intro", "default": "<p>SPY's patented spectrally-selective filter technology blocks harmful UV and HEV light while preserving the beneficial wavelengths that keep your mind and eyes performing at their best.</p>" },
+    { "type": "richtext", "id": "drawer_benefits", "label": "Benefits", "info": "Use a bulleted list; bold the start of each point for its title", "default": "<ul><li><strong>Mood-Boosting Light Science</strong> Lets in long-wave blue light that studies show can boost alertness, improve mood, and keep you feeling sharp longer.</li><li><strong>100% UV Protection</strong> Blocks all UVA and UVB rays completely — full protection from harmful sun exposure in every condition.</li><li><strong>Enhanced Color &amp; Contrast</strong> Richer color and sharper edge definition so the world looks the way it's supposed to — vivid and clear.</li></ul>" },
+    { "type": "richtext", "id": "drawer_note", "label": "Closing note", "default": "<p>The lens engineered to work with your brain, not just your eyes, letting in the light that makes you feel better all day long.</p>" }
   ],
   "presets": [
     {
