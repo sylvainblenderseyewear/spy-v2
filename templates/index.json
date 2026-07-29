@@ -218,8 +218,8 @@
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-CLASSICS-HOVER.webp",
             "label": "Classics",
             "link": "",
-            "aspect_ratio": "3:4",
-            "custom_aspect_ratio": ""
+            "aspect_ratio": "custom",
+            "custom_aspect_ratio": "3/4.2"
           }
         },
         "tile_PtCzT4": {
@@ -229,8 +229,8 @@
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-MOTO-HOVER.jpg",
             "label": "Moto",
             "link": "",
-            "aspect_ratio": "3:4",
-            "custom_aspect_ratio": ""
+            "aspect_ratio": "custom",
+            "custom_aspect_ratio": "3/4.2"
           }
         },
         "tile_b7znmT": {
@@ -240,8 +240,8 @@
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-TRAIL-HOVER.webp",
             "label": "Trail",
             "link": "",
-            "aspect_ratio": "3:4",
-            "custom_aspect_ratio": ""
+            "aspect_ratio": "custom",
+            "custom_aspect_ratio": "3/4.2"
           }
         },
         "tile_TRD7Kn": {
@@ -251,8 +251,8 @@
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-BLUELIGHT-HOVER.webp",
             "label": "Blue Light",
             "link": "",
-            "aspect_ratio": "3:4",
-            "custom_aspect_ratio": ""
+            "aspect_ratio": "custom",
+            "custom_aspect_ratio": "3/4.2"
           }
         }
       },
