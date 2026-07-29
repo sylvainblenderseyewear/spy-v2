@@ -283,8 +283,8 @@
         "gap": 48,
         "padding_top": 30,
         "padding_bottom": 30,
-        "padding_left": 16,
-        "padding_right": 16,
+        "padding_left": 30,
+        "padding_right": 30,
         "title_font": "var(--font-heading--family)",
         "title_font_size": 40
       }
