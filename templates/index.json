@@ -189,6 +189,15 @@
             "custom_aspect_ratio": "3/4.2"
           }
         },
+        "tile_qWTqGU": {
+          "type": "tile",
+          "settings": {
+            "label": "",
+            "link": "",
+            "aspect_ratio": "3:4",
+            "custom_aspect_ratio": ""
+          }
+        },
         "tile_AkPFxa": {
           "type": "tile",
           "settings": {
@@ -259,6 +268,7 @@
       "block_order": [
         "tile_dFjizK",
         "tile_Xyd7Pd",
+        "tile_qWTqGU",
         "tile_AkPFxa",
         "tile_ypbPi3",
         "tile_aydk6r",
@@ -276,7 +286,7 @@
         "padding_left": 16,
         "padding_right": 16,
         "title_font": "var(--font-heading--family)",
-        "title_font_size": 38
+        "title_font_size": 40
       }
     },
     "section_tRkEMM": {
