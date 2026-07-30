@@ -11,7 +11,25 @@
   "sections": {
     "spy_collection_hero_A1": {
       "type": "spy-collection-hero",
-      "settings": {}
+      "settings": {
+        "height_desktop": 240,
+        "height_tablet": 120,
+        "ratio_mobile": 2,
+        "focal_desktop": "center",
+        "focal_tablet": "center",
+        "focal_mobile": "center",
+        "show_heading": true,
+        "heading": "",
+        "heading_color": "#ffffff",
+        "heading_weight": "400",
+        "heading_tracking": "0.05",
+        "title_size_desktop": 28,
+        "title_size_tablet": 22,
+        "title_size_mobile": 14,
+        "panel_width_desktop": 64,
+        "panel_width_tablet": 58,
+        "panel_width_mobile": 52
+      }
     },
     "spy_breadcrumbs_row": {
       "type": "section",
@@ -135,7 +153,9 @@
             "swatches_card": {
               "type": "spy-swatches",
               "name": "Color Preview",
-              "settings": {},
+              "settings": {
+                "display": "card"
+              },
               "blocks": {}
             },
             "product_title_card": {
@@ -204,6 +224,8 @@
         "mobile_product_card_size": "small",
         "enable_infinite_scroll": false,
         "products_per_page": 24,
+        "more_results_label": "More results",
+        "category_links_menu": "main-menu",
         "product_grid_width": "centered",
         "full_width_on_mobile": true,
         "columns_gap_horizontal": 16,
@@ -217,6 +239,7 @@
     },
     "spy_collection_seo_A1": {
       "type": "spy-collection-seo",
+      "disabled": true,
       "settings": {}
     },
     "spy_quick_view_modal_A1": {
