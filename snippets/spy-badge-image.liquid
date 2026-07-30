@@ -1,0 +1,51 @@
+{%- doc -%}
+  One picto in a card's top-right badge row, at the shared badge size.
+
+  Takes a picked image or falls back to a file in the shop's Files, so badge art
+  stays swappable from the theme editor without touching code.
+
+  @param {object} [image] - picked image, or a plain URL string
+  @param {string} [fallback_file] - file name to use when `image` is blank
+  @param {string} alt - alt text
+  @param {string} modifier - suffix for the `spy-tech-badge__*` class hook
+  @param {number} [width] - intrinsic width, to reserve the box while it loads
+  @param {number} [height] - intrinsic height
+
+  @example
+  {%- render 'spy-badge-image',
+    image: block.settings.deadbolt_icon,
+    fallback_file: 'deadbolt.webp',
+    alt: 'Deadbolt lens change system',
+    modifier: 'deadbolt',
+    width: 153,
+    height: 153
+  -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign icon = image
+  if icon == blank and fallback_file != blank
+    assign icon = fallback_file | file_url
+  endif
+-%}
+
+{%- if icon != blank -%}
+  {%- liquid
+    # A picked image knows how to resize itself; a file arrives as a bare URL
+    assign src = icon | image_url: width: 160
+    if src == blank
+      assign src = icon.url | default: icon
+    endif
+
+    assign box_width = icon.width | default: width | default: 80
+    assign box_height = icon.height | default: height | default: 80
+  -%}
+  <img
+    src="{{ src }}"
+    alt="{{ alt }}"
+    width="{{ box_width }}"
+    height="{{ box_height }}"
+    loading="lazy"
+    class="spy-tech-badge__{{ modifier }} h-7 w-auto object-contain min-[750px]:h-10"
+  >
+{%- endif -%}
