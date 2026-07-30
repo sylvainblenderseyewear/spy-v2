@@ -72,7 +72,7 @@
    important-mode utilities still win regardless of order.
 
    Rules that map cleanly to utilities were inlined on the markup instead
-   (trust-badges, lens-info, size-chart trigger). What stays below needs a
+   (trust-badges, lens-info, fit-guide trigger). What stays below needs a
    real selector: Horizon-DOM overrides, JS-state classes, [open]/pseudo-
    elements, fixed modals, and keyframe-style motion.
    ═══════════════════════════════════════════════════════════════════════ */
@@ -87,8 +87,8 @@
    vs mobile sheet, transition-[opacity,translate] (v4 translate is its own property),
    and [&.is-selected]: for the JS-toggled swatch. Classnames kept as JS hooks. */
 
-/* Size Chart (trigger/heading/image AND modal/overlay/panel/close) is fully inlined
-   as Tailwind utilities on spy-size-chart.liquid — data-[open]:block + max-[749px]: variants. */
+/* Frame Fit Guide (trigger/heading/image AND drawer/overlay/panel/close) is fully inlined
+   as Tailwind utilities on spy-frame-fit-guide.liquid — group-data-[open]: for the open state. */
 
 /* Brand vars --spy-orange/--spy-slate + nav vars moved into @theme (top of file). */
 

@@ -213,8 +213,8 @@
               },
               "blocks": {}
             },
-            "spy_size_chart_A1": {
-              "type": "spy-size-chart",
+            "spy_frame_fit_guide_A1": {
+              "type": "spy-frame-fit-guide",
               "name": "Size Chart",
               "settings": {}
             },
@@ -342,7 +342,7 @@
             "group_icgrde",
             "divider_VJhene",
             "variant_picker_R3rGDr",
-            "spy_size_chart_A1",
+            "spy_frame_fit_guide_A1",
             "spy_goggle_fit_A1",
             "spy_lens_info_A1",
             "divider_after_lens",

@@ -11,7 +11,7 @@
 | Breadcrumbs | `blocks/spy-breadcrumbs.liquid` | `product.collections` (first non-all/non-frontpage) |
 | Lens Info | `blocks/spy-lens-info.liquid` | `spec.vlt_percent`, `spec.lens_category`, `spec.base_tint`, `spec.mirror_tint`, `spec.polarized`, `spec.technologies` → `technology.name`, `.icon`; `goggle.otg` |
 | Variant picker | Horizon `variant-picker` block | `product.options_with_values`, `variant.swatch` (file) |
-| Size Chart | `blocks/spy-size-chart.liquid` | `pdp.size_chart` → `size_chart.name`, `.image` |
+| Frame Fit Guide | `blocks/spy-frame-fit-guide.liquid` | **Collection**: `custom.fit_guide` → `fit_guide.frame_name`, `.image_front`, `.image_side`, `.temple_width`, `.temple_length`, `.lens_height`, `.frame_fit`, `.temple_pressure`, `.frame_size` (smallest collection wins). Fallback: `spec.fit` |
 | Buy Buttons | Horizon `buy-buttons` block | — |
 | Trust Badges | `blocks/spy-trust-badges.liquid` | Section settings (Layer 2): badge text 1–5, icon 1–5 |
 | Technical Information | `blocks/spy-spec-table.liquid` | All `spec.*` fields + `goggle.*` + `helmet.*` (conditionally) |
@@ -101,7 +101,8 @@ These templates use Horizon built-in sections, branded via `settings_data.json`:
 | Metaobject | Fields | Used By |
 |---|---|---|
 | `technology` | `name`, `icon` (file), `short_blurb`, `long_description` (rich_text), `link` (url) | `spy-lens-info`, `spy-spec-table`, `spy-tech-guide` |
-| `size_chart` | `name`, `image` (file), `category` | `spy-size-chart` |
+| `fit_guide` | `frame_name`, `image_front` (file), `image_side` (file), `temple_width` (int), `temple_length` (int), `lens_height` (int), `frame_fit`, `temple_pressure`, `frame_size` | `spy-frame-fit-guide` — linked from the **collection** metafield `custom.fit_guide` |
+| `size_chart` | `name`, `image` (file), `category`, `table_html` (rich_text) | Defined but empty — no entries, no `pdp.size_chart` product definition |
 | `collection_story` | `headline`, `hero` (file), `hero_mobile` (file), `body` (rich_text), `featured_products` (list.product_reference) | `spy-collection-story` |
 
 ---

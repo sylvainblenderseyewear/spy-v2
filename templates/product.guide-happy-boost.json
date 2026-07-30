@@ -221,8 +221,8 @@
                 "spy_stock_A1"
               ]
             },
-            "spy_size_chart_A1": {
-              "type": "spy-size-chart",
+            "spy_frame_fit_guide_A1": {
+              "type": "spy-frame-fit-guide",
               "name": "Size Chart",
               "settings": {
                 "fallback_label": "Size Chart"
@@ -349,7 +349,7 @@
             "group_icgrde",
             "spy_swatches_A1",
             "spy_frame_summary_A1",
-            "spy_size_chart_A1",
+            "spy_frame_fit_guide_A1",
             "spy_lens_info_A1",
             "buy_buttons_eYQEYi",
             "spy_rx_button_A1",

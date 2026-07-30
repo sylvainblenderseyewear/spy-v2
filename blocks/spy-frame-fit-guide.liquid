@@ -1,66 +1,76 @@
 {%- doc -%}
-  Size Chart link + Frame Fit Guide drawer.
+  Frame Fit Guide — the PDP "Size Chart" link and the drawer it opens.
+  Eyewear only; goggles have their own inline block (spy-goggle-fit-guide).
 
   The drawer is the source's fit guide: a 500px panel on the right over a light
-  grey veil, with two tabs. "This frame" is product data (diagrams + measurements
-  from metafields, rows appear only when filled). "How to measure" is the same
-  copy for every product, so it lives in block settings.
+  grey veil, with two tabs. "This frame" reads the collection's custom.fit_guide
+  metaobject (drawings + measurements, rows appear only when filled). "How to
+  measure" is the same copy for every product, so it lives in block settings.
 {%- enddoc -%}
 
 {%- liquid
   assign p = closest.product
+
   comment
-    Spec data sits on both levels in this store: lens values per variant, frame
-    values per product. Same variant-first / product-fallback order the spec
-    table uses, so a colourway can override anything.
+    Fit data is collection-level, not product-level: one drawing set and one set
+    of measurements per frame model, shared by every colourway. A product also
+    sits in a broad category collection, so keep the smallest collection that
+    carries a guide — the model (Overhaul, 5) beats the category (Sunglasses, 199).
   endcomment
-  assign v = p.selected_or_first_available_variant
-  assign s = p.metafields.spec
-  assign vs = v.metafields.spec
-  assign pd = p.metafields.pdp
-  assign vpd = v.metafields.pdp
-
-  assign size_chart_ref = vpd.size_chart.value | default: pd.size_chart.value
-  assign chart_name = block.settings.fallback_label
-
-  if size_chart_ref != blank
-    assign chart_image = size_chart_ref.image.value
-    if size_chart_ref.name.value != blank
-      assign chart_name = size_chart_ref.name.value
+  assign fg_found = false
+  assign fg_count = 0
+  for c in p.collections
+    assign candidate = c.metafields.custom.fit_guide.value
+    if candidate == blank
+      continue
     endif
+    if fg_found == false or c.all_products_count < fg_count
+      assign fg = candidate
+      assign fg_count = c.all_products_count
+      assign fg_found = true
+    endif
+  endfor
+
+  assign frame_name = fg.frame_name.value
+
+  comment
+    Drawings come from the guide only. One generic drawing on every frame would
+    be wrong, so with nothing attached the diagram band just does not render.
+  endcomment
+  assign img_front = fg.image_front.value
+  assign img_side = fg.image_side.value
+
+  if img_front != blank
+    assign diagram_front = img_front | image_url: width: 900
+    assign front_alt = img_front.alt | default: block.settings.front_caption
+  endif
+
+  if img_side != blank
+    assign diagram_profile = img_side | image_url: width: 900
+    assign profile_alt = img_side.alt | default: block.settings.profile_caption
   endif
 
   comment
-    Line drawings come from the product's own files — variant first (a colourway
-    may ship its own drawing), then the product, then the size-chart metaobject
-    image. No theme asset: one generic drawing on every frame would be wrong, so
-    with nothing attached the diagram band just does not render.
+    Measurement rows — each renders only when the guide has a value.
   endcomment
-  assign mf_front = vpd.frame_diagram_front.value | default: pd.frame_diagram_front.value
-  assign mf_profile = vpd.frame_diagram_profile.value | default: pd.frame_diagram_profile.value
-
-  if mf_front != blank
-    assign diagram_front = mf_front | image_url: width: 900
-  elsif chart_image != blank
-    assign diagram_front = chart_image | image_url: width: 900
-  endif
-
-  if mf_profile != blank
-    assign diagram_profile = mf_profile | image_url: width: 900
-  endif
+  assign temple_width = fg.temple_width.value
+  assign temple_length = fg.temple_length.value
+  assign lens_height = fg.lens_height.value
 
   comment
-    Measurement rows — each renders only when a value exists.
+    Fit falls back to the product's own spec.fit: nearly every frame has that
+    filled, while only a few models have a guide entry so far.
   endcomment
-  assign temple_width = vs.temple_width.value | default: s.temple_width.value
-  assign temple_length = vs.temple_length.value | default: s.temple_length.value
-  assign lens_height = vs.lens_height.value | default: s.lens_height.value
-  assign dimensions = vs.dimensions.value | default: s.dimensions.value
-  assign frame_fit = vs.fit.value | default: s.fit.value
-  assign frame_size = vs.frame_size.value | default: s.frame_size.value
+  assign frame_fit = fg.frame_fit.value | default: p.metafields.spec.fit.value
+  assign frame_size = fg.frame_size.value
+  comment
+    Temple pressure is already an SM/MD/LG/XL code, so it picks the active pill
+    straight off instead of guessing from the fit text.
+  endcomment
+  assign temple_pressure = fg.temple_pressure.value
 
   assign has_measures = false
-  if temple_width != blank or temple_length != blank or lens_height != blank or dimensions != blank
+  if temple_width != blank or temple_length != blank or lens_height != blank
     assign has_measures = true
   endif
 
@@ -77,7 +87,7 @@
   assign label_cls = 'font-bold uppercase text-[10px] leading-none tracking-[0.25em] text-spy-orange m-0 mb-2.5'
 -%}
 
-<div class="spy-size-chart" {{ block.shopify_attributes }}>
+<div class="spy-frame-fit-guide" {{ block.shopify_attributes }}>
   {%- comment -%} Source row is 36px: 12px above the link + a 24px link box {%- endcomment -%}
   <button
     type="button"
@@ -87,7 +97,7 @@
     aria-haspopup="dialog"
     aria-expanded="false"
     aria-controls="{{ drawer_id }}"
-    data-spy-size-chart-open
+    data-spy-fit-guide-open
   >
     {%- comment -%} Ruler glyph, traced off the source icon: a flat 22x7 body with
     fine ticks hanging inside the top edge, alternating long/short. The 1.5rem box
@@ -100,7 +110,7 @@
         stroke-width="0.8"
       />
     </svg>
-    <span class="underline underline-offset-[3px]">{{ chart_name | default: 'Size Chart' }}</span>
+    <span class="underline underline-offset-[3px]">{{ block.settings.fallback_label | default: 'Size Chart' }}</span>
   </button>
 
   {%- comment -%}
@@ -112,14 +122,15 @@
     class="spy-fit-guide group invisible fixed inset-0 z-[1001] data-[open]:visible"
     role="dialog"
     aria-modal="true"
-    aria-label="{{ block.settings.title | default: 'Frame Fit Guide' | escape }}"
+    {%- comment -%} Frame name only in the label, so screen readers get the model {%- endcomment -%}
+    aria-label="{{ block.settings.title | default: 'Frame Fit Guide' | append: ' ' | append: frame_name | strip | escape }}"
     aria-hidden="true"
-    data-spy-size-chart-modal
+    data-spy-fit-guide-modal
   >
     {%- comment -%} Source veil is #e6e6e6 at 60%, not a black scrim {%- endcomment -%}
     <div
       class="absolute inset-0 bg-[#e6e6e6] opacity-0 transition-opacity duration-300 ease-out group-data-[open]:opacity-60 motion-reduce:transition-none"
-      data-spy-size-chart-close
+      data-spy-fit-guide-close
     ></div>
 
     <div
@@ -130,7 +141,7 @@
         type="button"
         class="absolute right-3 top-3 z-10 flex cursor-pointer items-center border-none bg-transparent p-1.5 text-[color:var(--color-spy-text)] hover:text-spy-orange"
         aria-label="{{ 'accessibility.close' | t | default: 'Close' }}"
-        data-spy-size-chart-close
+        data-spy-fit-guide-close
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
           <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -186,13 +197,13 @@
                 <div class="flex flex-col gap-4">
                   {%- if diagram_front != blank -%}
                     <div class="flex flex-col items-center gap-[5px]">
-                      <img src="{{ diagram_front }}" alt="{{ block.settings.front_caption | escape }}" loading="lazy" class="block h-auto w-full">
+                      <img src="{{ diagram_front }}" alt="{{ front_alt | escape }}" loading="lazy" class="block h-auto w-full">
                       <span class="text-center text-[9px] uppercase tracking-[0.167em] text-[#bbb]">{{ block.settings.front_caption }}</span>
                     </div>
                   {%- endif -%}
                   {%- if diagram_profile != blank -%}
                     <div class="flex flex-col items-center gap-[5px]">
-                      <img src="{{ diagram_profile }}" alt="{{ block.settings.profile_caption | escape }}" loading="lazy" class="block h-auto w-full">
+                      <img src="{{ diagram_profile }}" alt="{{ profile_alt | escape }}" loading="lazy" class="block h-auto w-full">
                       <span class="text-center text-[9px] uppercase tracking-[0.167em] text-[#bbb]">{{ block.settings.profile_caption }}</span>
                     </div>
                   {%- endif -%}
@@ -228,13 +239,6 @@
                         <td class="{{ val_cls }}" style="font-family: var(--font-heading--family);">{{ lens_height }}<span class="{{ unit_cls }}"> mm</span></td>
                       </tr>
                     {%- endif -%}
-                    {%- if temple_width == blank and temple_length == blank and lens_height == blank and dimensions != blank -%}
-                      {%- comment -%} No split values yet — show the single dimensions string {%- endcomment -%}
-                      <tr>
-                        <td class="{{ name_cls }}">{{ block.settings.dimensions_label }}</td>
-                        <td class="{{ val_cls }}" style="font-family: var(--font-heading--family);">{{ dimensions }}</td>
-                      </tr>
-                    {%- endif -%}
                   </tbody>
                 </table>
               </div>
@@ -254,10 +258,12 @@
                   {%- liquid
                     if row == 1
                       assign row_tag = frame_fit
+                      assign row_code = temple_pressure
                       assign row_label = block.settings.fit_label
                       assign row_desc = block.settings.fit_desc
                     else
                       assign row_tag = frame_size
+                      assign row_code = ''
                       assign row_label = block.settings.size_label
                       assign row_desc = block.settings.size_desc
                     endif
@@ -265,16 +271,29 @@
                   {%- if row_tag != blank -%}
                     {%- liquid
                       assign sizes = 'SM,MD,LG,XL' | split: ','
-                      assign tag_lower = row_tag | downcase
+                      assign match_on = row_code | default: row_tag | downcase | strip
                       assign active_i = -1
-                      if tag_lower contains 'extra large' or tag_lower contains 'xl'
-                        assign active_i = 3
-                      elsif tag_lower contains 'large'
-                        assign active_i = 2
-                      elsif tag_lower contains 'medium'
-                        assign active_i = 1
-                      elsif tag_lower contains 'small'
-                        assign active_i = 0
+                      comment
+                        A code ("LG") matches a pill outright; fit text ("Medium
+                        large") has to be read by word, widest name first.
+                      endcomment
+                      for sz in sizes
+                        assign sz_lower = sz | downcase
+                        if match_on == sz_lower
+                          assign active_i = forloop.index0
+                          break
+                        endif
+                      endfor
+                      if active_i < 0
+                        if match_on contains 'extra large' or match_on contains 'xl'
+                          assign active_i = 3
+                        elsif match_on contains 'large'
+                          assign active_i = 2
+                        elsif match_on contains 'medium'
+                          assign active_i = 1
+                        elsif match_on contains 'small'
+                          assign active_i = 0
+                        endif
                       endif
                     -%}
                     <div class="{% unless forloop.last %}mb-[18px]{% endunless %}">
@@ -429,9 +448,9 @@
   (() => {
     {%- comment -%} The script follows the wrapper, so step back to it {%- endcomment -%}
     const wrap = document.currentScript.previousElementSibling;
-    if (!wrap || !wrap.classList.contains('spy-size-chart')) return;
-    const trigger = wrap.querySelector('[data-spy-size-chart-open]');
-    const modal = wrap.querySelector('[data-spy-size-chart-modal]');
+    if (!wrap || !wrap.classList.contains('spy-frame-fit-guide')) return;
+    const trigger = wrap.querySelector('[data-spy-fit-guide-open]');
+    const modal = wrap.querySelector('[data-spy-fit-guide-modal]');
     if (!trigger || !modal) return;
 
     const open = () => {
@@ -439,7 +458,7 @@
       modal.dataset.open = '';
       trigger.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
-      modal.querySelector('[data-spy-size-chart-close]')?.focus();
+      modal.querySelector('[data-spy-fit-guide-close]')?.focus();
     };
     const close = () => {
       modal.setAttribute('aria-hidden', 'true');
@@ -450,7 +469,7 @@
     };
 
     trigger.addEventListener('click', open);
-    wrap.querySelectorAll('[data-spy-size-chart-close]').forEach((el) => el.addEventListener('click', close));
+    wrap.querySelectorAll('[data-spy-fit-guide-close]').forEach((el) => el.addEventListener('click', close));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && modal.dataset.open !== undefined) close();
     });
@@ -470,10 +489,10 @@
 
 {% schema %}
 {
-  "name": "Size Chart",
+  "name": "Frame Fit Guide",
   "tag": null,
   "settings": [
-    { "type": "text", "id": "fallback_label", "label": "Link label", "default": "Size Chart" },
+    { "type": "text", "id": "fallback_label", "label": "Link label", "info": "Trigger text on the PDP — the source calls it \"Size Chart\"", "default": "Size Chart" },
     { "type": "header", "content": "Drawer header" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "SPY Optic" },
     { "type": "text", "id": "title", "label": "Title", "default": "Frame Fit Guide" },
@@ -482,15 +501,14 @@
     { "type": "text", "id": "tab_frame_label", "label": "First tab", "default": "This Frame" },
     { "type": "text", "id": "tab_howto_label", "label": "Second tab", "default": "How to Measure" },
     { "type": "header", "content": "This frame" },
-    { "type": "text", "id": "diagrams_label", "label": "Diagrams heading", "info": "Drawings come from the product's pdp.frame_diagram_front / _profile metafields", "default": "Frame Diagrams" },
+    { "type": "text", "id": "diagrams_label", "label": "Diagrams heading", "info": "Drawings and measurements come from the collection's Fit Guide metafield (custom.fit_guide)", "default": "Frame Diagrams" },
     { "type": "text", "id": "front_caption", "label": "Front caption", "default": "Front View" },
     { "type": "text", "id": "profile_caption", "label": "Profile caption", "default": "Profile View" },
     { "type": "text", "id": "measurements_label", "label": "Measurements heading", "default": "Frame Measurements" },
     { "type": "text", "id": "temple_width_label", "label": "Temple width label", "default": "Temple Width" },
     { "type": "text", "id": "temple_length_label", "label": "Temple length label", "default": "Temple Length" },
     { "type": "text", "id": "lens_height_label", "label": "Lens height label", "default": "Lens Height" },
-    { "type": "text", "id": "dimensions_label", "label": "Dimensions label", "info": "Used when the split measurements are empty", "default": "Dimensions" },
-    { "type": "text", "id": "fit_label", "label": "Fit heading", "default": "Frame Fit" },
+    { "type": "text", "id": "fit_label", "label": "Fit heading", "info": "Falls back to the product's spec.fit when the guide has no fit value", "default": "Frame Fit" },
     { "type": "text", "id": "fit_desc", "label": "Fit description", "default": "Temple pressure & nose bridge snugness." },
     { "type": "text", "id": "size_label", "label": "Size heading", "default": "Frame Size" },
     { "type": "text", "id": "size_desc", "label": "Size description", "default": "Overall frame footprint from temple end to end." },
@@ -513,9 +531,10 @@
   ],
   "presets": [
     {
-      "name": "Size Chart",
+      "name": "Frame Fit Guide",
       "category": "SPY"
     }
   ]
 }
 {% endschema %}
+
