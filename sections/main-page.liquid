@@ -17,6 +17,7 @@
       layout-panel-flex--column
       section-content-wrapper
       mobile-column
+      {%- if section.settings.full_width %} force-full-width{% endif -%}
     "
     style="
       {% render 'layout-panel-style', settings: section.settings %}
@@ -58,6 +59,13 @@
       ],
       "default": "column",
       "visible_if": "{{ section.settings.gap < 0 }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width content",
+      "info": "Lets blocks run edge to edge instead of sitting in the page reading column. Blocks then set their own max width.",
+      "default": false
     },
     {
       "type": "range",

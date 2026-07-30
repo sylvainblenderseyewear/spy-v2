@@ -1,0 +1,48 @@
+{%- doc -%}
+  Builds a srcset string for one image, skipping widths larger than the file.
+
+  Needed because `image_tag` can only put a srcset on the <img>; a <picture> with
+  one asset per breakpoint needs the string on each <source>.
+
+  @param {object} image - image object (image_picker / file_reference)
+  @param {string} [widths] - comma separated widths, largest last
+
+  @example
+  <source media="(min-width: 1024px)" srcset="{% render 'spy-srcset', image: img, widths: '1200,1600,2000' %}">
+{%- enddoc -%}
+{%- liquid
+  assign width_list = widths | default: '375,550,750,1100,1500,2000' | split: ','
+  assign srcset = ''
+
+  for width in width_list
+    assign w = width | strip | times: 1
+
+    # Shopify never upscales, so a too-large width would repeat the previous URL
+    if image.width >= w
+      capture candidate
+        echo image | image_url: width: w
+        echo ' '
+        echo w
+        echo 'w'
+      endcapture
+
+      if srcset == ''
+        assign srcset = candidate
+      else
+        assign srcset = srcset | append: ', ' | append: candidate
+      endif
+    endif
+  endfor
+
+  # Tiny source file: fall back to its own URL so the source is never empty
+  if srcset == '' and image != blank
+    capture srcset
+      echo image | image_url
+      echo ' '
+      echo image.width
+      echo 'w'
+    endcapture
+  endif
+
+  echo srcset
+-%}
