@@ -21,10 +21,21 @@
           "name": "Breadcrumbs",
           "settings": {},
           "blocks": {}
+        },
+        "spy_collection_intro_block": {
+          "type": "spy-collection-intro",
+          "name": "Collection intro",
+          "settings": {
+            "char_limit": 130,
+            "label_more": "Read more",
+            "label_less": "Read less"
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "spy_breadcrumbs_block"
+        "spy_breadcrumbs_block",
+        "spy_collection_intro_block"
       ],
       "name": "Breadcrumbs",
       "settings": {
@@ -120,6 +131,12 @@
               },
               "blocks": {}
             },
+            "spy_quick_view_btn_A1": {
+              "type": "spy-quick-view-btn",
+              "name": "Quick View Button",
+              "settings": {},
+              "blocks": {}
+            },
             "spy_new_badge_A1": {
               "type": "spy-new-badge",
               "name": "Badge",
@@ -190,6 +207,7 @@
           "block_order": [
             "spy_tech_badge_A1",
             "card-gallery",
+            "spy_quick_view_btn_A1",
             "spy_new_badge_A1",
             "spy_variant_name_A1",
             "swatches_card",
