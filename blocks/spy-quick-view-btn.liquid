@@ -1,12 +1,8 @@
-{%- if closest.product -%}
-<button
-  class="spy-quick-view-btn py-2 px-3 bg-white border border-spy-orange text-spy-orange text-[12px] font-bold uppercase tracking-widest cursor-pointer text-center transition-colors hover:bg-spy-orange hover:text-white"
-  data-spy-qv="{{ closest.product.handle }}"
-  aria-label="Quick View {{ closest.product.title | escape }}"
-  type="button"
-  {{ block.shopify_attributes }}
->Quick View</button>
-{%- endif -%}
+{%- comment -%} Markup lives in the snippet so the grouped card can reuse it {%- endcomment -%}
+{%- render 'spy-quick-view-button',
+  product: closest.product,
+  shopify_attributes: block.shopify_attributes
+-%}
 
 {% schema %}
 {

@@ -905,7 +905,7 @@
             "links": {
               "type": "text",
               "settings": {
-                "text": "<p><a href=\"/pages/about-us\">About Us</a><br/><a href=\"/blogs/journal\">Blog</a><br/><a href=\"/pages/careers\">Careers</a><br/><a href=\"/pages/team\">Team</a><br/><a href=\"https://stores.spyoptic.com\">Store Locator</a></p>",
+                "text": "<p><a href=\"/pages/about-us\">About Us</a><br/><a href=\"/blogs/news\" title=\"News\">Blog</a><br/><a href=\"/pages/careers\">Careers</a><br/><a href=\"/pages/team\">Team</a><br/><a href=\"https://stores.spyoptic.com\">Store Locator</a></p>",
                 "width": "100%",
                 "max_width": "none",
                 "alignment": "left",

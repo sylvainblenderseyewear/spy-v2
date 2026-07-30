@@ -367,6 +367,9 @@ export default class PaginatedList extends Component {
     if (shown >= lastPage) {
       // Drop the wrapper too, so its spacing goes with it
       (button.closest('[data-more-results]') ?? button).remove();
+
+      // Nothing left to load, so let the short bottom row show
+      grid?.removeAttribute('data-trim-partial-row');
     } else if (button instanceof HTMLAnchorElement) {
       const url = new URL(window.location.href);
       url.searchParams.set('page', String(shown + 1));

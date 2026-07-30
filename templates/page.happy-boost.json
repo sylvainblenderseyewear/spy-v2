@@ -12,20 +12,93 @@
     "main": {
       "type": "main-page",
       "blocks": {
-        "heading": {
-          "type": "text",
-          "name": "Title",
+        "image_TdLpzR": {
+          "type": "image",
+          "name": "t:names.image",
           "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
-            "width": "100%",
+            "image": "shopify://shop_images/guide-happy-boost_49eb9c8f-646a-4401-9e1a-4bac7be765e5.webp",
+            "link": "",
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "video_7eCTr3": {
+          "type": "video",
+          "name": "t:names.video",
+          "settings": {
+            "source": "uploaded",
+            "video_autoplay": false,
+            "video_loop": true,
+            "alt": "",
+            "custom_width": 100,
+            "custom_width_mobile": 100,
+            "aspect_ratio": "auto",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "image_XNhxFp": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "shopify://shop_images/guide-happy-boost-lens.webp",
+            "link": "",
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_k9xjjC": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<h4>Standard color enhancing high-contrast lenses increase a limited amount of colors while other colors are diminished, and the colors that are enhanced are only 15% more than the naked eye. This reduces enhances color in an unnatural and unbalanced way, providing an inferior visual experience.</h4>",
+            "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-primary--family)",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
+            "text_color": "",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -36,15 +109,101 @@
           },
           "blocks": {}
         },
-        "page-content": {
-          "type": "page-content",
-          "settings": {},
+        "text_DrgdYJ": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<h4>HAPPY BOOST™ was designed using a proprietary formula developed by artificial intelligence that tested over 10 million unique lens combinations, which lead to one incredible lens that offers up to 30% color enhancement beyond the naked eye. This means ALL colors are enhanced, without sacrificing any others.</h4>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
           "blocks": {}
+        },
+        "group_BQY6HT": {
+          "type": "group",
+          "name": "t:names.group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "spy_menu_promo_YXg8Lx": {
+              "type": "spy-menu-promo",
+              "name": "Menu images",
+              "settings": {
+                "menu_item": "",
+                "caption_1": "",
+                "link_1": "",
+                "caption_2": "",
+                "link_2": "",
+                "caption_3": "",
+                "link_3": "",
+                "caption_4": "",
+                "link_4": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "spy_menu_promo_YXg8Lx"
+          ]
         }
       },
       "block_order": [
-        "heading",
-        "page-content"
+        "image_TdLpzR",
+        "video_7eCTr3",
+        "image_XNhxFp",
+        "text_k9xjjC",
+        "text_DrgdYJ",
+        "group_BQY6HT"
       ],
       "settings": {
         "content_direction": "column",

@@ -131,7 +131,23 @@
       {% if title %}
         <h4 class="main-collection-grid__title">{{ title }}</h4>
       {% endif %}
+
+      {% liquid
+        # The button loads pages itself, so it isn't rendered under infinite scroll
+        assign show_more = true
+        if enable_infinite_scroll != false
+          assign show_more = false
+        endif
+
+        # While more pages are waiting, an incomplete bottom row is held back so
+        # every visible row is full. The last page drops the flag and shows the rest.
+        assign trim_partial_row = false
+        if show_more and paginate.next
+          assign trim_partial_row = true
+        endif
+      %}
       <ul
+        {% if trim_partial_row %}data-trim-partial-row{% endif %}
         class="product-grid product-grid--{{ section.id }} product-grid--{{ section.settings.layout_type }} {% if section.settings.mobile_product_card_size == 'large' %} product-grid-mobile--large{% endif %} max-[749px]:mx-0 max-[749px]:w-full"
         data-testid="product-grid"
         product-grid-view="default"
@@ -165,12 +181,6 @@
         Button + category links go in here, next to the grid, so their edges line
         up with the cards at every width instead of drifting on mobile.
       {% endcomment %}
-      {% liquid
-        assign show_more = true
-        if enable_infinite_scroll != false
-          assign show_more = false
-        endif
-      %}
       {% render 'spy-plp-footer',
         paginate: paginate,
         section: section,

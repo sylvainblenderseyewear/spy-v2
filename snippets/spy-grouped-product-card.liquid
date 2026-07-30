@@ -3,10 +3,10 @@
 
   Same shell, refs and class hooks as `product-card`, so everything the SPY card
   styling in tailwind.css does (square 10%-inset image, heavy uppercase title,
-  reserved badge slot, hover swatch row) applies here unchanged. Two things differ:
-  the title prints the model name from the group tag and the label prints the
-  colourway count, and there is no Quick View — the source's grouped card doesn't
-  offer one, since the card stands for a model rather than a buyable colourway.
+  reserved badge slot, hover swatch row, Quick View on hover) applies here
+  unchanged. What differs: the title prints the model name from the group tag and
+  the label prints the colourway count. Quick View opens the representative
+  colourway, since the card itself stands for a model.
 
   @param {object} product - the colourway that represents the group
   @param {string} group_name - model name from the `collection: xxx` tag
@@ -99,6 +99,11 @@
   if hb_icon == blank
     assign hb_icon = 'pictohappyboost.webp' | file_url
   endif
+
+  # Tag badges fall back to the shop files, so an unset setting still prints art
+  assign mips_icon = block_settings.mips_icon
+  assign bonus_lens_icon = block_settings.bonus_lens_icon
+  assign deadbolt_icon = block_settings.deadbolt_icon
 -%}
 
 <product-card
@@ -141,14 +146,19 @@
       --quick-add-mobile-opacity: 0;
     "
   >
+    {%- comment -%} Wraps because a card can earn up to four badges at once {%- endcomment -%}
     <spy-tech-badge
-      class="spy-tech-badge absolute top-2.5 right-2.5 z-10 flex items-start gap-1.5 pointer-events-none"
+      class="spy-tech-badge absolute top-2.5 right-2.5 z-10 flex flex-wrap items-start justify-end gap-1.5 pointer-events-none"
     >
-      <span class="spy-tech-badge__current flex items-start gap-1.5" data-tech-current>
+      <span class="spy-tech-badge__current flex flex-wrap items-start justify-end gap-1.5" data-tech-current>
         {%- render 'spy-tech-badges',
           product: product,
           force_happy_boost: group_happy_boost,
-          happy_boost_icon: hb_icon
+          happy_boost_icon: hb_icon,
+          show_tag_badges: true,
+          mips_icon: mips_icon,
+          bonus_lens_icon: bonus_lens_icon,
+          deadbolt_icon: deadbolt_icon
         -%}
       </span>
     </spy-tech-badge>
@@ -171,6 +181,12 @@
         {%- endif -%}
       </a>
     </div>
+
+    {%- comment -%}
+      Quick View, revealed on card hover. Sits right after the gallery because the
+      CSS pulls it up over the image bottom, so it costs the card no height at rest.
+    {%- endcomment -%}
+    {%- render 'spy-quick-view-button', product: product -%}
 
     {%- comment -%} Badge slot always renders so every card keeps the same height {%- endcomment -%}
     {%- capture badge_text -%}{%- render 'spy-product-badge-text', product: product -%}{%- endcapture -%}
@@ -215,7 +231,11 @@
                 {%- render 'spy-tech-badges',
                   product: colourway,
                   force_happy_boost: colourway_force,
-                  happy_boost_icon: hb_icon
+                  happy_boost_icon: hb_icon,
+                  show_tag_badges: true,
+                  mips_icon: mips_icon,
+                  bonus_lens_icon: bonus_lens_icon,
+                  deadbolt_icon: deadbolt_icon
                 -%}
               </span>
             {%- endcapture -%}

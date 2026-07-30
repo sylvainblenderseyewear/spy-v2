@@ -22,7 +22,7 @@
   {{ block.shopify_attributes }}
 >
   <span class="spy-tech-badge__current flex items-start gap-1.5" data-tech-current>
-    {%- render 'spy-tech-badges', product: product -%}
+    {%- render 'spy-tech-badges', product: product, mips_icon: block.settings.mips_icon -%}
   </span>
 
   {%- comment -%} Hidden badge sets — one per colour, swapped in on hover {%- endcomment -%}
@@ -30,7 +30,9 @@
     <template data-tech-store>
       {%- for ov in color_option.values -%}
         {%- assign ov_product = ov.variant.product | default: product -%}
-        <span data-tech-key="{{ ov.id }}">{%- render 'spy-tech-badges', product: ov_product -%}</span>
+        <span data-tech-key="{{ ov.id }}">
+          {%- render 'spy-tech-badges', product: ov_product, mips_icon: block.settings.mips_icon -%}
+        </span>
       {%- endfor -%}
     </template>
   {%- endif -%}
@@ -43,7 +45,14 @@
 {
   "name": "Tech Badge",
   "tag": null,
-  "settings": [],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "mips_icon",
+      "label": "Mips badge",
+      "info": "Shown on products tagged `badge::mips`. Defaults to the mips file."
+    }
+  ],
   "presets": [
     {
       "name": "Tech Badge",
