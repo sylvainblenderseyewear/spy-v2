@@ -1,0 +1,23 @@
+{%- doc -%}
+  The Quick View button that sits on a PLP card, revealed on card hover.
+
+  Styling and the hover reveal live in tailwind.css against `.spy-quick-view-btn`,
+  so the block and the grouped card share one look. `spy-quick-view.js` reads the
+  handle off the button and fills the modal.
+
+  @param {object} product - product the modal opens
+  @param {string} [shopify_attributes] - block attributes, when a block renders it
+
+  @example
+  {%- render 'spy-quick-view-button', product: product -%}
+{%- enddoc -%}
+
+{%- if product != blank -%}
+  <button
+    class="spy-quick-view-btn py-2 px-3 bg-white border border-spy-orange text-spy-orange text-[12px] font-bold uppercase tracking-widest cursor-pointer text-center transition-colors hover:bg-spy-orange hover:text-white"
+    data-spy-qv="{{ product.handle }}"
+    aria-label="Quick View {{ product.title | escape }}"
+    type="button"
+    {{ shopify_attributes }}
+  >Quick View</button>
+{%- endif -%}

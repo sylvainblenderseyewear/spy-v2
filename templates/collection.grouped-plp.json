@@ -39,10 +39,21 @@
           "name": "Breadcrumbs",
           "settings": {},
           "blocks": {}
+        },
+        "spy_collection_intro_block": {
+          "type": "spy-collection-intro",
+          "name": "Collection intro",
+          "settings": {
+            "char_limit": 130,
+            "label_more": "Read more",
+            "label_less": "Read less"
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "spy_breadcrumbs_fF7aGf"
+        "spy_breadcrumbs_fF7aGf",
+        "spy_collection_intro_block"
       ],
       "name": "t:names.custom_section",
       "settings": {
@@ -137,11 +148,16 @@
         "padding-block-start": 0,
         "padding-block-end": 48
       }
+    },
+    "spy_quick_view_modal_A1": {
+      "type": "spy-quick-view",
+      "settings": {}
     }
   },
   "order": [
     "spy_collection_hero_A1",
     "section_dHFxNJ",
     "main",
+    "spy_quick_view_modal_A1"
   ]
 }

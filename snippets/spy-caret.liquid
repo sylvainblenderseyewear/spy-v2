@@ -1,0 +1,24 @@
+{%- doc -%}
+  Small solid triangle used next to the "Read more" / "Read less" toggles.
+
+  @param {string} [direction] - 'down' (default) or 'up'
+
+  @example
+  {%- render 'spy-caret', direction: 'up' -%}
+{%- enddoc -%}
+
+{%- if direction == 'up' -%}
+  {%- assign points = '1,5 5,1 9,5' -%}
+{%- else -%}
+  {%- assign points = '1,1 9,1 5,5' -%}
+{%- endif -%}
+
+<svg
+  class="inline-block align-middle ml-1 w-[10px] h-[6px]"
+  viewBox="0 0 10 6"
+  fill="currentColor"
+  aria-hidden="true"
+  focusable="false"
+>
+  <polygon points="{{ points }}"></polygon>
+</svg>

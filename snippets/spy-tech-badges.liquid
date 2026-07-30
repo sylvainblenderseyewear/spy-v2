@@ -1,14 +1,21 @@
 {%- doc -%}
   Renders the top-right tech badges for a product card, in order: the Happy Boost
-  icon (from a `technology` metaobject), then the ANSI badge (from `spec.ansi_rating`).
-  Reads product-level spec metafields, so combined-listing children pass their own data.
+  icon (from a `technology` metaobject), the ANSI badge (from `spec.ansi_rating`),
+  then the tag-driven badges. Reads product-level spec metafields, so
+  combined-listing children pass their own data.
 
-  @param {object} product - product to read `spec` metafields from
+  @param {object} product - product to read `spec` metafields and tags from
   @param {boolean} [force_happy_boost] - show the icon even when this product has no
     Happy Boost metaobject. The grouped PLP card uses it: the technology sits on
     variants across the whole model, not on the card's representative colourway.
   @param {object} [happy_boost_icon] - image to fall back to when forced and no
     metaobject icon is available
+  @param {object} [mips_icon] - Mips picto, for the `badge::mips` tag. Every card
+    reads this tag, since a helmet carries Mips wherever its card shows up.
+  @param {boolean} [show_tag_badges] - also read the `badge::bonus-lens` tag.
+    Grouped PLP only, the one card the source gives that badge.
+  @param {object} [bonus_lens_icon] - bonus lens picto, for the `badge::bonus-lens` tag
+  @param {object} [deadbolt_icon] - deadbolt picto, printed with the bonus lens one
 {%- enddoc -%}
 
 {%- liquid
@@ -60,34 +67,29 @@
       endif
     endfor
   endif
+
+  # Badge tags, read in one pass: `badge::mips` -> Mips picto, and on the grouped
+  # PLP `badge::bonus-lens` -> bonus lens + deadbolt pictos, always as a pair
+  assign has_mips = false
+  assign has_bonus_lens = false
+
+  for tag in product.tags
+    assign tag_key = tag | downcase | strip
+    if tag_key == 'badge::mips'
+      assign has_mips = true
+    elsif tag_key == 'badge::bonus-lens' and show_tag_badges
+      assign has_bonus_lens = true
+    endif
+  endfor
 -%}
 
 {%- if hb_icon != blank -%}
-  {%- liquid
-    assign hb_src = hb_icon | image_url: width: 120
-    if hb_src == blank
-      assign hb_src = hb_icon.url | default: hb_icon
-    endif
-
-    # Reserve the right box while it loads. The metaobject icon knows its own size;
-    # the picto file arrives as a bare URL, and it's square.
-    assign hb_width = hb_icon.width | default: 80
-    assign hb_height = hb_icon.height | default: 80
-  -%}
-  <img
-    src="{{ hb_src }}"
-    alt="Happy Boost"
-    width="{{ hb_width }}"
-    height="{{ hb_height }}"
-    loading="lazy"
-    class="spy-tech-badge__hb h-7 w-auto object-contain min-[750px]:h-10"
-  >
+  {%- render 'spy-badge-image', image: hb_icon, alt: 'Happy Boost', modifier: 'hb' -%}
 {%- endif -%}
 
 {%- if ansi_kind != nil -%}
   {%- liquid
-    # Badge art lives in the shop's Files, so the metafield stays a plain rating
-    # string. Same height as the HB icon so the two sit level.
+    # Badge art lives in the shop's Files, so the metafield stays a plain rating string
     if ansi_kind == 'z87-2'
       assign ansi_src = 'https://cdn.shopify.com/s/files/1/0846/9803/8512/files/ANSI_-Z87.webp?v=1785272041'
       assign ansi_alt = 'ANSI Z87-2+'
@@ -96,12 +98,35 @@
       assign ansi_alt = 'ANSI Z87'
     endif
   -%}
-  <img
-    src="{{ ansi_src }}"
-    alt="{{ ansi_alt }}"
-    width="80"
-    height="80"
-    loading="lazy"
-    class="spy-tech-badge__ansi h-7 w-auto object-contain min-[750px]:h-10"
-  >
+  {%- render 'spy-badge-image', image: ansi_src, alt: ansi_alt, modifier: 'ansi' -%}
+{%- endif -%}
+
+{%- if has_mips -%}
+  {%- render 'spy-badge-image',
+    image: mips_icon,
+    fallback_file: 'mips.webp',
+    alt: 'Mips',
+    modifier: 'mips',
+    width: 225,
+    height: 225
+  -%}
+{%- endif -%}
+
+{%- if has_bonus_lens -%}
+  {%- render 'spy-badge-image',
+    image: bonus_lens_icon,
+    fallback_file: 'Bonus_Lens.webp',
+    alt: 'Bonus lens included',
+    modifier: 'bonus-lens',
+    width: 274,
+    height: 284
+  -%}
+  {%- render 'spy-badge-image',
+    image: deadbolt_icon,
+    fallback_file: 'deadbolt.webp',
+    alt: 'Deadbolt lens change system',
+    modifier: 'deadbolt',
+    width: 153,
+    height: 153
+  -%}
 {%- endif -%}
