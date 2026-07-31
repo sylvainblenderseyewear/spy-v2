@@ -1,9 +1,10 @@
 {%- comment -%}
   Agents grid — holds one card per person.
 
-  Column counts are per breakpoint, so the source's 4-up desktop row can drop to
-  3-up and 2-up without the cards ever squashing. A short trailing row (3 cards
-  after 4) just stays left-aligned, which is what the source does.
+  One breakpoint at 990px, not a gradual 4/3/2 step-down. The site header stops
+  fitting below 990, so everything under that is treated as one stacked layout:
+  a single column, each portrait filling the width. A short trailing row (3 cards
+  after 4) just stays left-aligned above 990, which is what the source does.
 
   Label colours and size live here, not on each card: the cards read them as CSS
   variables so all seven stay in sync from one place.
@@ -16,14 +17,12 @@
 <div
   class="
     spy-agents-grid [display:grid] w-full
-    [grid-template-columns:repeat(var(--agents-cols-mobile),minmax(0,1fr))]
-    min-[750px]:[grid-template-columns:repeat(var(--agents-cols-tablet),minmax(0,1fr))]
-    min-[1100px]:[grid-template-columns:repeat(var(--agents-cols),minmax(0,1fr))]
+    [grid-template-columns:repeat(var(--agents-cols-stacked),minmax(0,1fr))]
+    min-[990px]:[grid-template-columns:repeat(var(--agents-cols),minmax(0,1fr))]
   "
   style="
     --agents-cols: {{ block.settings.columns_desktop }};
-    --agents-cols-tablet: {{ block.settings.columns_tablet }};
-    --agents-cols-mobile: {{ block.settings.columns_mobile }};
+    --agents-cols-stacked: {{ block.settings.columns_stacked }};
     --agent-ratio: {{ block.settings.image_ratio }};
     --agent-card-bg: {{ block.settings.card_background }};
     --agent-label-bg: {{ block.settings.label_background }};
@@ -53,7 +52,7 @@
     {
       "type": "range",
       "id": "columns_desktop",
-      "label": "Desktop",
+      "label": "Desktop (990px and up)",
       "min": 2,
       "max": 6,
       "step": 1,
@@ -61,21 +60,13 @@
     },
     {
       "type": "range",
-      "id": "columns_tablet",
-      "label": "Tablet",
-      "min": 1,
-      "max": 5,
-      "step": 1,
-      "default": 3
-    },
-    {
-      "type": "range",
-      "id": "columns_mobile",
-      "label": "Mobile",
+      "id": "columns_stacked",
+      "label": "Below 990px",
+      "info": "1 means each portrait fills the full width.",
       "min": 1,
       "max": 3,
       "step": 1,
-      "default": 2
+      "default": 1
     },
     {
       "type": "range",
@@ -139,7 +130,7 @@
     {
       "type": "range",
       "id": "label_size",
-      "label": "Font size — desktop",
+      "label": "Font size — 990px and up",
       "min": 10,
       "max": 28,
       "step": 1,
@@ -149,12 +140,12 @@
     {
       "type": "range",
       "id": "label_size_mobile",
-      "label": "Font size — mobile",
+      "label": "Font size — below 990px",
       "min": 9,
       "max": 22,
       "step": 1,
       "unit": "px",
-      "default": 12
+      "default": 15
     },
     {
       "type": "range",
