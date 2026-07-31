@@ -1,0 +1,116 @@
+{%- comment -%}
+  One Change Agent — portrait plus the name label sitting over the bottom of it.
+
+  Link is optional: with no URL the card renders as a plain figure, so an editor
+  can add a bio page later without any code change. Colours and sizes come from
+  the parent grid through CSS variables, with the source values as fallbacks so
+  the card still looks right on its own.
+{%- endcomment -%}
+
+{%- liquid
+  assign img = block.settings.image
+  assign title = block.settings.title
+  assign link = block.settings.link
+  assign alt = block.settings.image_alt | default: title
+-%}
+
+{%- capture card_inner -%}
+  <div
+    class="relative w-full overflow-hidden bg-[var(--agent-card-bg)]"
+  >
+    {%- if img != blank -%}
+      <img
+        src="{{ img | image_url: width: 800 }}"
+        srcset="
+          {{ img | image_url: width: 400 }} 400w,
+          {{ img | image_url: width: 600 }} 600w,
+          {{ img | image_url: width: 800 }} 800w,
+          {{ img | image_url: width: 1200 }} 1200w
+        "
+        sizes="(min-width: 1100px) 25vw, (min-width: 750px) 33vw, 50vw"
+        alt="{{ alt | escape }}"
+        width="{{ img.width }}"
+        height="{{ img.height }}"
+        loading="lazy"
+        class="block w-full object-cover aspect-[var(--agent-ratio)] object-[var(--agent-focus)_center]"
+        style="--agent-focus: {{ block.settings.focal_point }};"
+      >
+    {%- else -%}
+      <div class="w-full aspect-[var(--agent-ratio)] bg-[#1a1a1a]"></div>
+    {%- endif -%}
+
+    {%- if title != blank -%}
+      <span
+        class="
+          absolute inset-x-0 bottom-[var(--agent-label-offset)]
+          mx-auto w-fit max-w-[calc(100%-16px)] px-2 py-[3px]
+          text-center font-bold uppercase leading-tight tracking-[0.02em]
+          text-[length:var(--agent-label-size-mobile)] min-[750px]:text-[length:var(--agent-label-size)]
+          bg-[var(--agent-label-bg)]
+          text-[color:var(--agent-label-color)]
+          [-webkit-text-stroke-color:var(--agent-label-color)]
+        "
+      >
+        {{ title }}
+      </span>
+    {%- endif -%}
+  </div>
+{%- endcapture -%}
+
+{%- if link != blank -%}
+  <a
+    href="{{ link }}"
+    class="spy-agent-card block no-underline"
+    {{ block.shopify_attributes }}
+  >
+    {{ card_inner }}
+  </a>
+{%- else -%}
+  <div class="spy-agent-card block" {{ block.shopify_attributes }}>
+    {{ card_inner }}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Change Agent",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Portrait"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Name"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link",
+      "info": "Optional. Leave empty for a non-clickable card."
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Alt text",
+      "info": "Defaults to the name."
+    },
+    {
+      "type": "select",
+      "id": "focal_point",
+      "label": "Crop focus",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,78 @@
+{%- comment -%}
+  Gallery title — "Meet the Change Agents".
+
+  Orange, uppercase and centred like the source. The stroke colour is set
+  alongside the fill so a stroke width picked later inherits the same orange.
+{%- endcomment -%}
+
+{%- if block.settings.heading != blank -%}
+  <h2
+    class="
+      m-0 text-center font-bold uppercase
+      text-[length:var(--agents-title-size-mobile)] min-[750px]:text-[length:var(--agents-title-size)]
+      leading-tight tracking-[0.02em]
+      text-[color:var(--agents-title-color)]
+      [-webkit-text-stroke-color:var(--agents-title-color)]
+    "
+    style="
+      --agents-title-color: {{ block.settings.heading_color }};
+      --agents-title-size: {{ block.settings.font_size }}px;
+      --agents-title-size-mobile: {{ block.settings.font_size_mobile }}px;
+      margin-bottom: {{ block.settings.margin_bottom }}px;
+    "
+    {{ block.shopify_attributes }}
+  >
+    {{ block.settings.heading }}
+  </h2>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Gallery title",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Title",
+      "default": "Meet the Change Agents"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Text color",
+      "default": "#ee7624"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size — desktop",
+      "min": 14,
+      "max": 56,
+      "step": 1,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Font size — mobile",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Space below",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    }
+  ]
+}
+{% endschema %}
