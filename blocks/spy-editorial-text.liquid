@@ -1,0 +1,230 @@
+{%- doc -%}
+  Centred body copy for editorial pages — the paragraph that sits under the
+  Change Agents hero.
+
+  main-page keeps its blocks in a 672px reading column, so this block sets its own
+  max width and centres itself. Every type value is a setting (per breakpoint where
+  the source differs), and the font families come from the Layer 1 theme settings.
+{%- enddoc -%}
+
+{%- liquid
+  assign settings = block.settings
+
+  case settings.alignment
+    when 'left'
+      assign align_class = 'text-left'
+    when 'right'
+      assign align_class = 'text-right'
+    else
+      assign align_class = 'text-center'
+  endcase
+
+  case settings.weight
+    when '400'
+      assign weight_class = 'font-normal'
+    when '500'
+      assign weight_class = 'font-medium'
+    when '600'
+      assign weight_class = 'font-semibold'
+    else
+      assign weight_class = 'font-bold'
+  endcase
+
+  if settings.case == 'uppercase'
+    assign case_class = 'uppercase'
+  else
+    assign case_class = 'normal-case'
+  endif
+
+  if settings.font == 'heading'
+    assign font_family = 'var(--font-heading--family)'
+  else
+    assign font_family = 'var(--font-body--family)'
+  endif
+
+  assign line_height = settings.line_height | divided_by: 100.0
+  assign letter_spacing = settings.letter_spacing | divided_by: 1000.0
+-%}
+
+{%- if settings.text != blank -%}
+  {%- comment -%} Gutter on the outer box so max width measures the text column itself {%- endcomment -%}
+  <div
+    class="w-full px-4 md:px-8"
+    style="
+      padding-block: {{ settings.padding_top }}px {{ settings.padding_bottom }}px;
+      --spy-text-size-m: {{ settings.font_size_mobile }}px;
+      --spy-text-size-d: {{ settings.font_size_desktop }}px;
+    "
+    {{ block.shopify_attributes }}
+  >
+    <div
+      class="
+        mx-auto w-full {{ align_class }} {{ weight_class }} {{ case_class }}
+        text-[length:var(--spy-text-size-m)] md:text-[length:var(--spy-text-size-d)]
+        [&_p]:m-0 [&_p+p]:mt-4 [&_a]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1
+      "
+      style="
+        max-width: {{ settings.max_width }}px;
+        color: {{ settings.text_color }};
+        font-family: {{ font_family }};
+        line-height: {{ line_height }};
+        letter-spacing: {{ letter_spacing }}em;
+      "
+    >
+      {{ settings.text }}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SPY Editorial Text",
+  "tag": null,
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Change Agents are Renegades, Creators, Outliers, Visionaries, and Icons. They exist in multiple dimensions of expression. They are outside of control, yet not out of control. Brashly individualistic, our people are agents of positive action who walk along the edge of what is now and what is next.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum width",
+      "min": 400,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 940
+    },
+    {
+      "type": "header",
+      "content": "Type"
+    },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "Font",
+      "info": "Both come from the theme typography settings.",
+      "options": [
+        { "value": "body", "label": "Body font" },
+        { "value": "heading", "label": "Heading font" }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "label": "Size — desktop",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 19
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Size — mobile",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line height",
+      "min": 100,
+      "max": 220,
+      "step": 5,
+      "unit": "%",
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter spacing",
+      "info": "In thousandths of an em, so 50 renders as 0.05em.",
+      "min": -50,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "weight",
+      "label": "Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "case",
+      "label": "Case",
+      "options": [
+        { "value": "none", "label": "As written" },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#242424"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Editorial Text",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

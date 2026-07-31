@@ -1,0 +1,89 @@
+{%- doc -%}
+  One Change Agent: portrait, name label and an optional link.
+
+  Only the per-agent data lives here. Ratio, label colours, size and position come
+  from the parent gallery as CSS variables, so all cards stay in step.
+{%- enddoc -%}
+
+{%- liquid
+  assign settings = block.settings
+  assign image = settings.image
+  assign name = settings.name
+  assign alt = image.alt | default: name | default: ''
+-%}
+
+{%- capture card_content -%}
+  <div class="relative w-full overflow-hidden bg-spy-surface aspect-[var(--spy-ag-ratio,1/1)]">
+    {%- if image != blank -%}
+      {{
+        image
+        | image_url: width: 1200
+        | image_tag:
+          loading: 'lazy',
+          alt: alt,
+          widths: '200,300,400,600,800,1200',
+          sizes: '(min-width: 1024px) 25vw, 50vw',
+          class: 'absolute inset-0 h-full w-full object-cover'
+      }}
+    {%- else -%}
+      {{ 'image' | placeholder_svg_tag: 'absolute inset-0 h-full w-full object-cover' }}
+    {%- endif -%}
+
+    {%- if name != blank -%}
+      <div
+        class="absolute inset-x-0 flex px-2"
+        style="bottom: var(--spy-ag-label-offset, 26px); justify-content: var(--spy-ag-label-justify, center);"
+      >
+        <span
+          class="
+            inline-block px-1.5 py-0.5 font-bold leading-tight
+            font-[family-name:var(--font-heading--family)]
+            text-[length:var(--spy-ag-label-size-m,12px)] md:text-[length:var(--spy-ag-label-size-d,15px)]
+          "
+          style="
+            background-color: var(--spy-ag-label-bg, #f57f29);
+            color: var(--spy-ag-label-color, #ffffff);
+            text-transform: var(--spy-ag-label-case, uppercase);
+          "
+        >
+          {{ name }}
+        </span>
+      </div>
+    {%- endif -%}
+  </div>
+{%- endcapture -%}
+
+{%- if settings.link != blank -%}
+  <a href="{{ settings.link }}" class="block" {{ block.shopify_attributes }}>
+    {{ card_content }}
+  </a>
+{%- else -%}
+  <div class="block" {{ block.shopify_attributes }}>
+    {{ card_content }}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Agent card",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Portrait"
+    },
+    {
+      "type": "text",
+      "id": "name",
+      "label": "Name",
+      "info": "Shown in the label over the image."
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    }
+  ]
+}
+{% endschema %}

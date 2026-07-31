@@ -1,0 +1,300 @@
+{%- doc -%}
+  Full-bleed hero image with its own asset per breakpoint.
+
+  Editorial pages (Change Agents, About) run a wide banner at the top where the
+  source ships a different crop for phone, tablet and desktop. Each slot is its
+  own setting so nobody has to reuse the desktop file on a phone; empty slots
+  fall back to the desktop image.
+
+  A <picture> is used on purpose: the browser then downloads only the file for
+  the current breakpoint, unlike hidden/shown wrappers.
+
+  Put this block in a section whose content is full width, otherwise it is capped
+  by the page column (main-page has a "Full width content" toggle for that).
+{%- enddoc -%}
+
+{%- liquid
+  assign settings = block.settings
+
+  assign image_desktop = settings.image_desktop
+  assign image_tablet = settings.image_tablet | default: image_desktop
+  assign image_mobile = settings.image_mobile | default: image_desktop
+
+  assign alt = settings.alt | default: image_desktop.alt | default: ''
+
+  # Fixed class strings so Tailwind can see them; the values themselves are settings
+  case settings.object_position
+    when 'top'
+      assign position_class = 'object-top'
+    when 'bottom'
+      assign position_class = 'object-bottom'
+    else
+      assign position_class = 'object-center'
+  endcase
+
+  if settings.fit == 'contain'
+    assign fit_class = 'object-contain'
+  else
+    assign fit_class = 'object-cover'
+  endif
+
+  if settings.eager
+    assign loading = 'eager'
+    assign fetchpriority = 'high'
+  else
+    assign loading = 'lazy'
+    assign fetchpriority = 'auto'
+  endif
+
+  if settings.width == 'custom'
+    assign max_width = settings.custom_max_width | append: 'px'
+  else
+    assign max_width = 'none'
+  endif
+
+  # Built here, not in the filter args: image_tag cannot take a filtered value
+  assign ratio_classes = 'aspect-[var(--spy-hero-ratio-m)] md:aspect-[var(--spy-hero-ratio-t)] lg:aspect-[var(--spy-hero-ratio-d)]'
+  assign image_class = 'block w-full ' | append: ratio_classes | append: ' ' | append: fit_class | append: ' ' | append: position_class
+-%}
+
+{%- if image_desktop != blank -%}
+  {%- capture picture -%}
+    <picture>
+      {%- if image_tablet != blank -%}
+        <source
+          media="(min-width: 768px) and (max-width: 1023px)"
+          srcset="{% render 'spy-srcset', image: image_tablet, widths: '768,1024,1280,1536,2048' %}"
+          sizes="100vw"
+        >
+      {%- endif -%}
+      {%- if image_mobile != blank -%}
+        <source
+          media="(max-width: 767px)"
+          srcset="{% render 'spy-srcset', image: image_mobile, widths: '375,550,750,1100,1500' %}"
+          sizes="100vw"
+        >
+      {%- endif -%}
+      {{
+        image_desktop
+        | image_url: width: 3000
+        | image_tag:
+          loading: loading,
+          fetchpriority: fetchpriority,
+          alt: alt,
+          sizes: '100vw',
+          widths: '1024,1280,1536,1920,2400,3000',
+          class: image_class
+      }}
+    </picture>
+  {%- endcapture -%}
+
+  <div
+    class="mx-auto w-full leading-[0]"
+    style="
+      --spy-hero-ratio-m: {{ settings.ratio_mobile }};
+      --spy-hero-ratio-t: {{ settings.ratio_tablet }};
+      --spy-hero-ratio-d: {{ settings.ratio_desktop }};
+      max-width: {{ max_width }};
+      padding-block: {{ settings.padding_top }}px {{ settings.padding_bottom }}px;
+      background-color: {{ settings.background_color }};
+    "
+    {{ block.shopify_attributes }}
+  >
+    {%- if settings.link != blank -%}
+      <a href="{{ settings.link }}" class="block">{{ picture }}</a>
+    {%- else -%}
+      {{ picture }}
+    {%- endif -%}
+  </div>
+{%- elsif request.design_mode -%}
+  <div
+    class="flex min-h-[240px] w-full items-center justify-center bg-spy-surface text-sm text-spy-gray"
+    {{ block.shopify_attributes }}
+  >
+    Pick a desktop image for the hero.
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SPY Hero Image",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "One image per breakpoint. Tablet and mobile fall back to the desktop image when left empty."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Desktop image",
+      "info": "Shown from 1024px up."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_tablet",
+      "label": "Tablet image",
+      "info": "Shown from 768px to 1023px."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "info": "Shown below 768px."
+    },
+    {
+      "type": "text",
+      "id": "alt",
+      "label": "Alt text",
+      "info": "Leave empty to use the image's own alt text."
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Shape"
+    },
+    {
+      "type": "select",
+      "id": "ratio_desktop",
+      "label": "Desktop aspect ratio",
+      "options": [
+        { "value": "auto", "label": "Image's own ratio" },
+        { "value": "3 / 1", "label": "3:1" },
+        { "value": "21 / 9", "label": "21:9" },
+        { "value": "2 / 1", "label": "2:1" },
+        { "value": "16 / 9", "label": "16:9" },
+        { "value": "3 / 2", "label": "3:2" },
+        { "value": "4 / 3", "label": "4:3" },
+        { "value": "1 / 1", "label": "1:1" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "ratio_tablet",
+      "label": "Tablet aspect ratio",
+      "options": [
+        { "value": "auto", "label": "Image's own ratio" },
+        { "value": "3 / 1", "label": "3:1" },
+        { "value": "21 / 9", "label": "21:9" },
+        { "value": "2 / 1", "label": "2:1" },
+        { "value": "16 / 9", "label": "16:9" },
+        { "value": "3 / 2", "label": "3:2" },
+        { "value": "4 / 3", "label": "4:3" },
+        { "value": "1 / 1", "label": "1:1" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "ratio_mobile",
+      "label": "Mobile aspect ratio",
+      "options": [
+        { "value": "auto", "label": "Image's own ratio" },
+        { "value": "16 / 9", "label": "16:9" },
+        { "value": "3 / 2", "label": "3:2" },
+        { "value": "4 / 3", "label": "4:3" },
+        { "value": "1 / 1", "label": "1:1" },
+        { "value": "4 / 5", "label": "4:5" },
+        { "value": "3 / 4", "label": "3:4" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "fit",
+      "label": "Fill behaviour",
+      "info": "Only matters when an aspect ratio is set.",
+      "options": [
+        { "value": "cover", "label": "Crop to fill" },
+        { "value": "contain", "label": "Fit inside" }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "select",
+      "id": "object_position",
+      "label": "Crop from",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "options": [
+        { "value": "full", "label": "Full width" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "custom_max_width",
+      "label": "Maximum width",
+      "min": 600,
+      "max": 2400,
+      "step": 20,
+      "unit": "px",
+      "default": 1600,
+      "visible_if": "{{ block.settings.width == 'custom' }}"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#000000",
+      "info": "Shows behind the image when it is fitted inside."
+    },
+    {
+      "type": "checkbox",
+      "id": "eager",
+      "label": "Load immediately",
+      "info": "Keep on for the first image on the page.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Hero Image",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}
