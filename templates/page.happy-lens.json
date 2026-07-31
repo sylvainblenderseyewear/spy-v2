@@ -86,7 +86,6 @@
           "name": "Happy Lens video",
           "settings": {
             "source": "url",
-            "video": "",
             "video_url": "https://www.youtube.com/watch?v=u4raGVJikx0",
             "video_autoplay": false,
             "video_loop": false,
@@ -103,9 +102,7 @@
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0,
-            "width": "custom",
-            "width_mobile": "fill"
+            "padding-inline-end": 0
           },
           "blocks": {}
         },
@@ -802,16 +799,11 @@
                     "label": "Shop Sunglasses",
                     "link": "shopify://collections/sunglasses",
                     "style_class": "button-custom",
-                    "type_preset": "paragraph",
                     "custom_button_background": "#f57f29",
                     "custom_button_text": "#ffffff",
                     "custom_button_border": "#f57f29",
                     "width": "fit-content",
-                    "custom_width": 100,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
+                    "custom_width": 100
                   },
                   "blocks": {}
                 }
@@ -892,16 +884,11 @@
                     "label": "Shop Goggles",
                     "link": "shopify://collections/snow-goggles",
                     "style_class": "button-custom",
-                    "type_preset": "paragraph",
                     "custom_button_background": "#f57f29",
                     "custom_button_text": "#ffffff",
                     "custom_button_border": "#f57f29",
                     "width": "fit-content",
-                    "custom_width": 100,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
+                    "custom_width": 100
                   },
                   "blocks": {}
                 }

@@ -19,7 +19,7 @@
             "text": "<h1>{{ closest.page.title }}</h1>",
             "width": "100%",
             "max_width": "normal",
-            "alignment": "center",
+            "alignment": "left",
             "type_preset": "h2",
             "font": "var(--font-primary--family)",
             "font_size": "1rem",
@@ -42,7 +42,7 @@
           "type": "text",
           "name": "t:names.content",
           "settings": {
-            "text": "<p>{{ closest.page.content }}</p>",
+            "text": "{{ closest.page.content }}",
             "width": "100%",
             "max_width": "none",
             "alignment": "left",
