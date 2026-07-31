@@ -1,0 +1,120 @@
+{%- comment -%}
+  Change Agents gallery — the "Meet the Change Agents" band.
+
+  The section is only the page-width shell. What sits inside is two blocks:
+  a title block and a grid block, and the grid holds one card per agent. That
+  keeps the copy, the person list and their order fully editable.
+{%- endcomment -%}
+
+<div
+  class="spy-change-agents-gallery w-full"
+  style="
+    background-color: {{ section.settings.background_color }};
+    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+  "
+  {{ section.shopify_attributes }}
+>
+  <div
+    class="mx-auto w-full px-4 md:px-10"
+    style="max-width: {{ section.settings.max_width }}px;"
+  >
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SPY Change Agents Gallery",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "blocks": [
+    { "type": "_spy-agents-title" },
+    { "type": "_spy-agents-grid" }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Band"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width",
+      "min": 800,
+      "max": 2000,
+      "step": 20,
+      "unit": "px",
+      "default": 1400
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 72
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Change Agents Gallery",
+      "category": "SPY",
+      "blocks": {
+        "title": {
+          "type": "_spy-agents-title",
+          "settings": {
+            "heading": "Meet the Change Agents"
+          }
+        },
+        "grid": {
+          "type": "_spy-agents-grid",
+          "blocks": {
+            "agent_1": { "type": "_spy-agent-card", "name": "Todd Richards", "settings": { "title": "Todd Richards" } },
+            "agent_2": { "type": "_spy-agent-card", "name": "Nathan Fletcher", "settings": { "title": "Nathan Fletcher" } },
+            "agent_3": { "type": "_spy-agent-card", "name": "Axell Hodges", "settings": { "title": "Axell Hodges" } },
+            "agent_4": { "type": "_spy-agent-card", "name": "Balaram Stack", "settings": { "title": "Balaram Stack" } },
+            "agent_5": { "type": "_spy-agent-card", "name": "Chris Rasman", "settings": { "title": "Chris Rasman" } },
+            "agent_6": { "type": "_spy-agent-card", "name": "Jeremy McGrath", "settings": { "title": "Jeremy McGrath" } },
+            "agent_7": { "type": "_spy-agent-card", "name": "Austen Sweetin", "settings": { "title": "Austen Sweetin" } }
+          },
+          "block_order": [
+            "agent_1",
+            "agent_2",
+            "agent_3",
+            "agent_4",
+            "agent_5",
+            "agent_6",
+            "agent_7"
+          ]
+        }
+      },
+      "block_order": ["title", "grid"]
+    }
+  ]
+}
+{% endschema %}

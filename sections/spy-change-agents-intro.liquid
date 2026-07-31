@@ -1,0 +1,145 @@
+{%- comment -%}
+  Change Agents intro — the centred manifesto paragraph under the hero.
+
+  One rich-text setting so an editor can rewrite it without touching code. Size
+  is set per breakpoint because the source drops the copy a couple of px on
+  mobile rather than scaling the whole block.
+{%- endcomment -%}
+
+<div
+  class="spy-change-agents-intro w-full"
+  style="
+    background-color: {{ section.settings.background_color }};
+    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+  "
+  {{ section.shopify_attributes }}
+>
+  {%- if section.settings.content != blank -%}
+    <div
+      class="
+        mx-auto px-6 text-center
+        text-[length:var(--intro-size-mobile)] min-[750px]:text-[length:var(--intro-size)]
+        leading-[var(--intro-leading)]
+        [&_p]:m-0 [&_p+p]:mt-4
+        [&_a]:underline [&_a]:underline-offset-2
+      "
+      style="
+        max-width: {{ section.settings.max_width }}px;
+        color: {{ section.settings.text_color }};
+        --intro-size: {{ section.settings.font_size }}px;
+        --intro-size-mobile: {{ section.settings.font_size_mobile }}px;
+        --intro-leading: {{ section.settings.line_height }};
+      "
+    >
+      {{ section.settings.content }}
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "SPY Change Agents Intro",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Copy",
+      "default": "<p>Change Agents are Renegades, Creators, Outliers, Visionaries, and Icons. They exist in multiple dimensions of expression. They are outside of control, yet not out of control. Brashly individualistic, our people are agents of positive action who walk along the edge of what is now and what is next.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Type"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#2c393e"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size — desktop",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Font size — mobile",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line height",
+      "min": 1.1,
+      "max": 2.2,
+      "step": 0.1,
+      "default": 1.6
+    },
+    {
+      "type": "header",
+      "content": "Band"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Copy max width",
+      "min": 400,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 940
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Change Agents Intro",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

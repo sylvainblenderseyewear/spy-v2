@@ -1,0 +1,150 @@
+{%- comment -%}
+  Change Agents hero — one full-bleed artwork at the top of the page.
+
+  The source bakes the whole composition (black panel, "Change Agents" title,
+  photo) into a single file, so this is an image band, not a text-over-image
+  hero. Nothing is overlaid, which keeps the type exactly as designed.
+
+  Desktop and mobile have their own picker because the band is ~2.3:1 and gets
+  very small on a phone. Empty mobile picker = reuse the desktop file.
+{%- endcomment -%}
+
+{%- liquid
+  assign img_desktop = section.settings.image_desktop
+  assign img_mobile = section.settings.image_mobile | default: img_desktop
+  assign alt = section.settings.image_alt | default: page.title
+-%}
+
+<div
+  class="spy-change-agents-hero w-full leading-[0]"
+  style="
+    background-color: {{ section.settings.background_color }};
+    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+  "
+  {{ section.shopify_attributes }}
+>
+  <div class="mx-auto w-full" style="max-width: {{ section.settings.max_width }}px;">
+    {%- if img_desktop != blank -%}
+      <picture>
+        <source
+          media="(min-width: 750px)"
+          srcset="
+            {{ img_desktop | image_url: width: 1000 }} 1000w,
+            {{ img_desktop | image_url: width: 1500 }} 1500w,
+            {{ img_desktop | image_url: width: 2000 }} 2000w,
+            {{ img_desktop | image_url: width: 2800 }} 2800w
+          "
+          sizes="100vw"
+        >
+        <img
+          src="{{ img_mobile | image_url: width: 800 }}"
+          srcset="
+            {{ img_mobile | image_url: width: 500 }} 500w,
+            {{ img_mobile | image_url: width: 800 }} 800w,
+            {{ img_mobile | image_url: width: 1200 }} 1200w
+          "
+          sizes="100vw"
+          alt="{{ alt | escape }}"
+          width="{{ img_mobile.width }}"
+          height="{{ img_mobile.height }}"
+          loading="eager"
+          fetchpriority="high"
+          class="block h-auto w-full"
+        >
+      </picture>
+    {%- else -%}
+      {%- comment -%} Editor placeholder so the band is still clickable {%- endcomment -%}
+      <div class="aspect-[23/10] w-full bg-[#111]"></div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SPY Change Agents Hero",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "info": "Under 750px. Leave empty to reuse the desktop image."
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Alt text",
+      "info": "Defaults to the page title."
+    },
+    {
+      "type": "header",
+      "content": "Band"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Image max width",
+      "min": 800,
+      "max": 3000,
+      "step": 25,
+      "unit": "px",
+      "default": 3000
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Change Agents Hero",
+      "category": "SPY",
+      "settings": {
+        "background_color": "#000000",
+        "max_width": 3000,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  ]
+}
+{% endschema %}

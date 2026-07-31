@@ -1,0 +1,166 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "spy-change-agents-hero",
+      "settings": {
+        "image_desktop": "shopify://shop_images/change_agents.jpg",
+        "image_alt": "Change Agents",
+        "background_color": "#000000",
+        "max_width": 3000,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "intro": {
+      "type": "spy-change-agents-intro",
+      "settings": {
+        "content": "<p>Change Agents are Renegades, Creators, Outliers, Visionaries, and Icons. They exist in multiple dimensions of expression. They are outside of control, yet not out of control. Brashly individualistic, our people are agents of positive action who walk along the edge of what is now and what is next.</p>",
+        "text_color": "#2c393e",
+        "font_size": 17,
+        "font_size_mobile": 15,
+        "line_height": 1.6,
+        "background_color": "#ffffff",
+        "max_width": 940,
+        "padding_top": 64,
+        "padding_bottom": 56
+      }
+    },
+    "gallery": {
+      "type": "spy-change-agents-gallery",
+      "blocks": {
+        "title": {
+          "type": "_spy-agents-title",
+          "settings": {
+            "heading": "Meet the Change Agents",
+            "heading_color": "#ee7624",
+            "font_size": 26,
+            "font_size_mobile": 20,
+            "margin_bottom": 56
+          }
+        },
+        "grid": {
+          "type": "_spy-agents-grid",
+          "blocks": {
+            "agent_1": {
+              "type": "_spy-agent-card",
+              "name": "Todd Richards",
+              "settings": {
+                "image": "shopify://shop_images/TODD_PORTRAIT.png",
+                "title": "Todd Richards",
+                "link": "",
+                "focal_point": "center"
+              }
+            },
+            "agent_2": {
+              "type": "_spy-agent-card",
+              "name": "Nathan Fletcher",
+              "settings": {
+                "image": "shopify://shop_images/NATHAN_PORTRAIT.png",
+                "title": "Nathan Fletcher",
+                "link": "",
+                "focal_point": "center"
+              }
+            },
+            "agent_3": {
+              "type": "_spy-agent-card",
+              "name": "Axell Hodges",
+              "settings": {
+                "image": "shopify://shop_images/Axell_hodges_bio_pic.png",
+                "title": "Axell Hodges",
+                "link": "",
+                "focal_point": "center"
+              }
+            },
+            "agent_4": {
+              "type": "_spy-agent-card",
+              "name": "Balaram Stack",
+              "settings": {
+                "image": "shopify://shop_images/25-SPY-Digital-Website-ChangeAgents-BalaramStack-Portrait-1200x1200px.jpg",
+                "title": "Balaram Stack",
+                "link": "",
+                "focal_point": "center"
+              }
+            },
+            "agent_5": {
+              "type": "_spy-agent-card",
+              "name": "Chris Rasman",
+              "settings": {
+                "image": "shopify://shop_images/Chris-Rasman-2.jpg",
+                "title": "Chris Rasman",
+                "link": "",
+                "focal_point": "center"
+              }
+            },
+            "agent_6": {
+              "type": "_spy-agent-card",
+              "name": "Jeremy McGrath",
+              "settings": {
+                "image": "shopify://shop_images/Jeremy-McGrath-2.jpg",
+                "title": "Jeremy McGrath",
+                "link": "",
+                "focal_point": "center"
+              }
+            },
+            "agent_7": {
+              "type": "_spy-agent-card",
+              "name": "Austen Sweetin",
+              "settings": {
+                "image": "shopify://shop_images/25-SPY-Digital-ChangeAgents-AustenSweetin-1200x1200px.jpg",
+                "title": "Austen Sweetin",
+                "link": "",
+                "focal_point": "center"
+              }
+            }
+          },
+          "block_order": [
+            "agent_1",
+            "agent_2",
+            "agent_3",
+            "agent_4",
+            "agent_5",
+            "agent_6",
+            "agent_7"
+          ],
+          "settings": {
+            "columns_desktop": 4,
+            "columns_tablet": 3,
+            "columns_mobile": 2,
+            "column_gap": 6,
+            "row_gap": 6,
+            "image_ratio": "1/1",
+            "card_background": "#000000",
+            "label_color": "#ee7624",
+            "label_background": "#000000",
+            "label_size": 15,
+            "label_size_mobile": 12,
+            "label_offset": 18
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "grid"
+      ],
+      "settings": {
+        "background_color": "#ffffff",
+        "max_width": 1400,
+        "padding_top": 48,
+        "padding_bottom": 72
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "intro",
+    "gallery"
+  ]
+}
