@@ -76,6 +76,16 @@ Same as default PDP, plus:
 | Hero | Horizon `hero` | Section settings (image, optional overlay) |
 | Tech Guide Content | `sections/spy-tech-guide.liquid` | `page.guide.technology` → `technology.name`, `.icon`, `.short_blurb`, `.long_description`, `.link` |
 
+### Hand-built tech landing pages (stock blocks only, no metafields)
+
+| Template | Page | Sections | Assets |
+|---|---|---|---|
+| `page.happy-boost.json` | `happy-boost` | one stock `section` (page-width) | `guide-happy-boost*.webp` (6 files) |
+| `page.happy-lens.json` | `happy-lens` | two stock `section`s — white intro + `#57c2e6` tech band | `guide-happy-lens-*.png` (11 files) |
+
+Both are built from `group` / `image` / `text` / `video` / `button` / `custom-liquid` theme blocks.
+Content lives in block settings (Layer 2), not metafields.
+
 ---
 
 ## Annex Pages (Horizon Defaults)
