@@ -89,7 +89,6 @@
             "video_url": "https://www.youtube.com/watch?v=u4raGVJikx0",
             "video_autoplay": false,
             "video_loop": false,
-            "cover_image": "",
             "alt": "How Happy lens tech works",
             "custom_width": 85,
             "custom_width_mobile": 100,
@@ -798,12 +797,18 @@
                   "settings": {
                     "label": "Shop Sunglasses",
                     "link": "shopify://collections/sunglasses",
+                    "open_in_new_tab": false,
                     "style_class": "button-custom",
                     "custom_button_background": "#f57f29",
                     "custom_button_text": "#ffffff",
                     "custom_button_border": "#f57f29",
+                    "link_text_color": "",
                     "width": "fit-content",
-                    "custom_width": 100
+                    "custom_width": 100,
+                    "width_mobile": "fit-content",
+                    "custom_width_mobile": 100,
+                    "padding_block": 0,
+                    "padding_inline": 0
                   },
                   "blocks": {}
                 }
@@ -883,12 +888,18 @@
                   "settings": {
                     "label": "Shop Goggles",
                     "link": "shopify://collections/snow-goggles",
+                    "open_in_new_tab": false,
                     "style_class": "button-custom",
                     "custom_button_background": "#f57f29",
                     "custom_button_text": "#ffffff",
                     "custom_button_border": "#f57f29",
+                    "link_text_color": "",
                     "width": "fit-content",
-                    "custom_width": 100
+                    "custom_width": 100,
+                    "width_mobile": "fit-content",
+                    "custom_width_mobile": 100,
+                    "padding_block": 0,
+                    "padding_inline": 0
                   },
                   "blocks": {}
                 }
@@ -903,8 +914,51 @@
             "sunglasses",
             "goggles"
           ]
-        },
-        "banner_tech": {
+        }
+      },
+      "block_order": [
+        "banner_top",
+        "hero_video",
+        "row_sun",
+        "row_unlike",
+        "row_result",
+        "choose_happy",
+        "tiles"
+      ],
+      "name": "Happy Lens - intro",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 48,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 0,
+        "padding-block-end": 56
+      }
+    },
+    "tech": {
+      "type": "section",
+      "blocks": {
+        "group_Ch7WQH": {
           "type": "group",
           "name": "Banner - The Tech Stuff",
           "settings": {
@@ -972,51 +1026,7 @@
           "block_order": [
             "image"
           ]
-        }
-      },
-      "block_order": [
-        "banner_top",
-        "hero_video",
-        "row_sun",
-        "row_unlike",
-        "row_result",
-        "choose_happy",
-        "tiles",
-        "banner_tech"
-      ],
-      "name": "Happy Lens - intro",
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "center",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 48,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "background_media": "none",
-        "background_color": "",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 40,
-        "padding-block-end": 56
-      }
-    },
-    "tech": {
-      "type": "section",
-      "blocks": {
+        },
         "row_good": {
           "type": "group",
           "name": "Good rays",
@@ -1456,7 +1466,7 @@
             "vertical_alignment_flex_direction_column": "center",
             "gap": 0,
             "width": "custom",
-            "custom_width": 75,
+            "custom_width": 100,
             "width_mobile": "fill",
             "custom_width_mobile": 100,
             "height": "fit",
@@ -1487,7 +1497,7 @@
               "type": "text",
               "name": "Closing copy",
               "settings": {
-                "text": "<p><strong>Our patented Happy&trade; lens tech is scientifically formulated to allow in the sun&rsquo;s good rays while blocking the bad, letting you SEE BETTER by enhancing color and contrast, while helping you to FEEL BETTER by boosting your mood and alertness&mdash;something you&rsquo;ll feel even after taking your sunglasses off.</strong></p>",
+                "text": "<p><strong>Our patented Happy™ lens tech is scientifically formulated to allow in the sun’s good rays while blocking the bad, letting you SEE BETTER by enhancing color and contrast, while helping you to FEEL BETTER by boosting your mood and alertness—something you’ll feel even after taking your sunglasses off.</strong></p>",
                 "width": "100%",
                 "max_width": "none",
                 "alignment": "center",
@@ -1527,7 +1537,7 @@
             "vertical_alignment_flex_direction_column": "center",
             "gap": 0,
             "width": "custom",
-            "custom_width": 94,
+            "custom_width": 100,
             "width_mobile": "fill",
             "custom_width_mobile": 100,
             "height": "fit",
@@ -1585,6 +1595,7 @@
         }
       },
       "block_order": [
+        "group_Ch7WQH",
         "row_good",
         "row_bad",
         "closing",
@@ -1599,7 +1610,7 @@
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 48,
+        "gap": 0,
         "section_width": "full-width",
         "section_height": "",
         "section_height_custom": 50,
@@ -1616,8 +1627,8 @@
         "border_opacity": 100,
         "border_color": "",
         "border_radius": 0,
-        "padding-block-start": 56,
-        "padding-block-end": 56
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     }
   },
