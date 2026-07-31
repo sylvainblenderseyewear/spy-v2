@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "main": {
       "type": "main-page",
@@ -73,68 +74,164 @@
       }
     },
     "form": {
-      "type": "section",
+      "type": "spy-contact-form",
       "blocks": {
-        "contact_form_UwiCkQ": {
-          "type": "contact-form",
+        "topic_product": {
+          "type": "topic",
+          "name": "Product",
           "settings": {
-            "width": "custom",
-            "custom_width": 50,
-            "width_mobile": "custom",
-            "custom_width_mobile": 100,
-            "input_style": "default",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "submit-button": {
-              "type": "contact-form-submit-button",
-              "static": true,
-              "settings": {
-                "label": "Submit",
-                "style_class": "button",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": []
+            "label": "Product",
+            "value": "Products",
+            "show_order_number": false,
+            "sub_label": "Your request",
+            "sub_options": "Advice/Product availability\nPrescription lenses"
+          }
+        },
+        "topic_order": {
+          "type": "topic",
+          "name": "Order",
+          "settings": {
+            "label": "Order",
+            "value": "Order",
+            "show_order_number": true,
+            "sub_label": "Your request",
+            "sub_options": "Ordering assistance\nOrder tracking"
+          }
+        },
+        "topic_return": {
+          "type": "topic",
+          "name": "Return",
+          "settings": {
+            "label": "Return",
+            "value": "Return",
+            "show_order_number": true,
+            "sub_label": "Your request",
+            "sub_options": "Return request\nReturn request status"
+          }
+        },
+        "topic_resellers": {
+          "type": "topic",
+          "name": "Reseller and Shop",
+          "settings": {
+            "label": "Reseller and Shop",
+            "value": "Resellers",
+            "show_order_number": false,
+            "sub_label": "Your request",
+            "sub_options": "Find a SPY reseller\nBecome a certified reseller"
+          }
+        },
+        "topic_malfunction": {
+          "type": "topic",
+          "name": "Dysfunction",
+          "settings": {
+            "label": "Dysfunction",
+            "value": "Malfunction",
+            "show_order_number": false,
+            "sub_label": "Your request",
+            "sub_options": "Payment issue\nTechnical issue\nDescription error\nLog in issue"
+          }
+        },
+        "topic_support": {
+          "type": "topic",
+          "name": "After-sales service",
+          "settings": {
+            "label": "After-sales service",
+            "value": "Customer Support",
+            "show_order_number": false,
+            "sub_label": "Your request",
+            "sub_options": "After-sales service request (Warranty / 2 years)\nRequest for repair/replacement (out of warranty)\nPurchase of spare parts and accessories (screens, frames, noses, ...)"
+          }
+        },
+        "topic_partnerships": {
+          "type": "topic",
+          "name": "Partnership",
+          "settings": {
+            "label": "Partnership",
+            "value": "Partnerships",
+            "show_order_number": false,
+            "sub_label": "Your request",
+            "sub_options": "Become an ambassador (influencers, adventurers, ...)\nPress Relations\nMountain professionals (instructors, cops, ...)"
+          }
+        },
+        "topic_application": {
+          "type": "topic",
+          "name": "Application",
+          "settings": {
+            "label": "Application",
+            "value": "Application",
+            "show_order_number": false,
+            "sub_label": "Your request",
+            "sub_options": "Spontaneous application\nInternship request"
+          }
+        },
+        "topic_other": {
+          "type": "topic",
+          "name": "Other",
+          "settings": {
+            "label": "Other",
+            "value": "Other",
+            "show_order_number": false,
+            "sub_label": "Your request",
+            "sub_options": ""
+          }
         }
       },
       "block_order": [
-        "contact_form_UwiCkQ"
+        "topic_product",
+        "topic_order",
+        "topic_return",
+        "topic_resellers",
+        "topic_malfunction",
+        "topic_support",
+        "topic_partnerships",
+        "topic_application",
+        "topic_other"
       ],
-      "name": "t:names.contact_form",
       "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 32,
-        "section_width": "page-width",
-        "section_height_custom": 50,
-        "background_media": "none",
-        "background_color": "{{ settings.color_palette.background }}",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 32,
-        "padding-block-end": 84
+        "consumer_label": "Consumer",
+        "business_label": "Business",
+        "b2b_question_label": "Has B2B Account ?",
+        "b2b_no_label": "No",
+        "b2b_yes_label": "Yes",
+        "b2b_message": "<p>If you have a customer account at SPY Optic, please contact your Customer Service at 1 (800) 779-3937.</p>",
+        "first_name_label": "First Name",
+        "last_name_label": "Last Name",
+        "email_label": "E-Mail",
+        "company_label": "Company Name",
+        "phone_label": "Phone",
+        "country_label": "Country",
+        "question_label": "My Question",
+        "question_placeholder": "Choose an option",
+        "order_label": "Order Number",
+        "comment_label": "Comment",
+        "submit_label": "Submit",
+        "success_message": "Thanks — your message is on its way. We'll be in touch soon.",
+        "show_attachment": true,
+        "attachment_label": "Attachment",
+        "attachment_accept": ".gif,.heic,.jpg,.jpeg,.png,.doc,.docx,.pdf",
+        "attachment_note": "Accepted file : .gif,.heic,.jpg,.jpeg,.png,.doc,.docx,.pdf.",
+        "card_background": "#ffffff",
+        "card_border_color": "#e5e5e5",
+        "card_padding": 26,
+        "max_width": 760,
+        "corner_radius": 0,
+        "label_color": "#2c393e",
+        "label_size": 15,
+        "required_color": "#f57f29",
+        "input_background": "#ffffff",
+        "input_color": "#2c393e",
+        "input_border_color": "#cccccc",
+        "focus_border_color": "#2c393e",
+        "input_size": 15,
+        "input_height": 38,
+        "button_background": "#f57f29",
+        "button_background_hover": "#dd6c18",
+        "button_text_color": "#ffffff",
+        "button_height": 34,
+        "button_size": 13,
+        "background_color": "#ffffff",
+        "padding_top": 32,
+        "padding_bottom": 84
       }
     }
   },

@@ -1,0 +1,695 @@
+{%- comment -%}
+  SPY Contact form — mirrors the SFCC contact form: a bordered card with a
+  Consumer/Business switch, a topic dropdown that reveals a follow-up dropdown,
+  an order-number field that only appears for order/return topics, and a
+  Business path that points customers at Customer Service instead.
+
+  Topics are section blocks declared inline in the schema below, so an editor can
+  add, remove and reorder them. Each one is read twice: as an <option> and as its
+  own follow-up panel.
+
+  They must be inline schema blocks, not theme blocks in `blocks/`: a parent cannot
+  read a theme block's settings — Shopify reports those children as type `@theme`
+  with no reachable settings, which left the dropdown empty.
+
+  Anything JS toggles carries NO Tailwind display class. Tailwind runs in
+  important mode here, so a `grid`/`flex` utility would beat `[hidden]` and the
+  element would never actually hide — flex/grid goes on an inner wrapper instead.
+
+  Two-column rows use `[display:grid]`, never Tailwind's `grid`. Horizon's base.css
+  owns a `.grid` class — the 14-column page layout with `grid-template-areas` —
+  and those named areas force 14 columns, which collapses the fields to content
+  width instead of halves.
+
+  Hidden groups get their inputs disabled, not just hidden: a hidden `required`
+  field blocks submission and its value would otherwise still post.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign form_id = section.id | prepend: 'SpyContact-'
+-%}
+
+{%- capture label_class -%}
+  mb-1.5 block font-medium text-[length:var(--cf-label-size)] text-[color:var(--cf-label-color)]
+{%- endcapture -%}
+
+{%- capture star -%}
+  <span class="text-[color:var(--cf-star-color)]" aria-hidden="true">&nbsp;*</span>
+{%- endcapture -%}
+
+{%- capture control_class -%}
+  w-full bg-[color:var(--cf-input-bg)] px-3
+  text-[length:var(--cf-input-size)] text-[color:var(--cf-input-color)]
+  border border-solid border-[color:var(--cf-input-border)]
+  rounded-[var(--cf-radius)]
+  focus:outline-none focus:border-[color:var(--cf-focus-border)]
+{%- endcapture -%}
+
+{%- capture input_class -%}
+  {{ control_class }} h-[var(--cf-input-height)]
+{%- endcapture -%}
+
+{%- capture select_class -%}
+  {{ control_class }} h-[var(--cf-input-height)] appearance-none pr-9
+{%- endcapture -%}
+
+{%- capture chevron -%}
+  <svg
+    class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-2.5 w-2.5 fill-[color:var(--cf-label-color)]"
+    viewBox="0 0 10 6"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M0 0h10L5 6z" />
+  </svg>
+{%- endcapture -%}
+
+<div
+  class="spy-contact-form-band w-full"
+  style="
+    background-color: {{ s.background_color }};
+    padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px;
+  "
+  {{ section.shopify_attributes }}
+>
+<div
+  class="spy-contact-form mx-auto w-full px-4 md:px-10"
+  style="
+    max-width: {{ s.max_width }}px;
+    --cf-label-color: {{ s.label_color }};
+    --cf-label-size: {{ s.label_size }}px;
+    --cf-star-color: {{ s.required_color }};
+    --cf-input-bg: {{ s.input_background }};
+    --cf-input-color: {{ s.input_color }};
+    --cf-input-border: {{ s.input_border_color }};
+    --cf-focus-border: {{ s.focus_border_color }};
+    --cf-input-size: {{ s.input_size }}px;
+    --cf-input-height: {{ s.input_height }}px;
+    --cf-radius: {{ s.corner_radius }}px;
+  "
+  data-spy-contact-form
+>
+  <div
+    class="border border-solid p-[var(--cf-card-pad)] rounded-[var(--cf-radius)]"
+    style="
+      background-color: {{ s.card_background }};
+      border-color: {{ s.card_border_color }};
+      --cf-card-pad: {{ s.card_padding }}px;
+    "
+  >
+    {%- form 'contact', id: form_id, class: 'spy-contact-form__form' -%}
+      <input type="hidden" name="contact[id]" value="{{ form_id }}">
+
+      {%- liquid
+        assign form_matches = false
+        if form.id == form_id or form.id == blank
+          assign form_matches = true
+        endif
+      -%}
+
+      {%- if form.errors and form_matches -%}
+        <div
+          class="mb-5 border border-solid border-[#c0392b] bg-[#fdeceb] px-4 py-3 text-[14px] text-[#c0392b]"
+          tabindex="-1"
+          autofocus
+        >
+          {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+        </div>
+      {%- endif -%}
+
+      {%- if form.posted_successfully? and form_matches -%}
+        <div
+          class="mb-5 border border-solid border-[#2e7d32] bg-[#edf7ed] px-4 py-3 text-[14px] text-[#2e7d32]"
+          tabindex="-1"
+          autofocus
+        >
+          {{ s.success_message }}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Consumer / Business {%- endcomment -%}
+      <div class="mb-5 flex flex-wrap items-center gap-x-9 gap-y-2">
+        <span class="inline-flex items-center gap-2">
+          <input
+            type="radio"
+            id="{{ form_id }}-consumer"
+            name="contact[Customer type]"
+            value="{{ s.consumer_label | escape }}"
+            class="m-0 h-4 w-4"
+            checked
+            data-spy-audience="consumer"
+          >
+          <label class="text-[length:var(--cf-label-size)] text-[color:var(--cf-label-color)]" for="{{ form_id }}-consumer">
+            {{ s.consumer_label }}
+          </label>
+        </span>
+        <span class="inline-flex items-center gap-2">
+          <input
+            type="radio"
+            id="{{ form_id }}-business"
+            name="contact[Customer type]"
+            value="{{ s.business_label | escape }}"
+            class="m-0 h-4 w-4"
+            data-spy-audience="business"
+          >
+          <label class="text-[length:var(--cf-label-size)] text-[color:var(--cf-label-color)]" for="{{ form_id }}-business">
+            {{ s.business_label }}
+          </label>
+        </span>
+      </div>
+
+      {%- comment -%} Has a B2B account? Only for Business. {%- endcomment -%}
+      <div class="mb-5" data-spy-b2b-account hidden>
+        <div class="mb-2 font-medium text-[length:var(--cf-label-size)] text-[color:var(--cf-label-color)]">
+          {{ s.b2b_question_label }}
+        </div>
+        <div class="flex flex-wrap items-center gap-x-9 gap-y-2">
+          <span class="inline-flex items-center gap-2">
+            <input
+              type="radio"
+              id="{{ form_id }}-b2b-no"
+              name="contact[Has B2B account]"
+              value="{{ s.b2b_no_label | escape }}"
+              class="m-0 h-4 w-4"
+              checked
+              data-spy-b2b="no"
+            >
+            <label class="text-[length:var(--cf-label-size)] text-[color:var(--cf-label-color)]" for="{{ form_id }}-b2b-no">
+              {{ s.b2b_no_label }}
+            </label>
+          </span>
+          <span class="inline-flex items-center gap-2">
+            <input
+              type="radio"
+              id="{{ form_id }}-b2b-yes"
+              name="contact[Has B2B account]"
+              value="{{ s.b2b_yes_label | escape }}"
+              class="m-0 h-4 w-4"
+              data-spy-b2b="yes"
+            >
+            <label class="text-[length:var(--cf-label-size)] text-[color:var(--cf-label-color)]" for="{{ form_id }}-b2b-yes">
+              {{ s.b2b_yes_label }}
+            </label>
+          </span>
+        </div>
+      </div>
+
+      {%- comment -%} Existing B2B customers are sent to Customer Service. {%- endcomment -%}
+      <div
+        class="text-[length:var(--cf-input-size)] leading-relaxed text-[color:var(--cf-label-color)] [&_a]:underline"
+        data-spy-b2b-message
+        hidden
+      >
+        {{ s.b2b_message }}
+      </div>
+
+      <fieldset class="m-0 border-0 p-0" data-spy-fields>
+        {%- comment -%} Name pair {%- endcomment -%}
+        <div class="mb-5 [display:grid] grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-2">
+          <div>
+            <label class="{{ label_class }}" for="{{ form_id }}-first">{{ s.first_name_label }}{{ star }}</label>
+            <input
+              type="text"
+              id="{{ form_id }}-first"
+              class="{{ input_class }}"
+              name="contact[First name]"
+              autocomplete="given-name"
+              maxlength="50"
+              required
+              aria-required="true"
+              data-spy-first
+            >
+          </div>
+          <div>
+            <label class="{{ label_class }}" for="{{ form_id }}-last">{{ s.last_name_label }}{{ star }}</label>
+            <input
+              type="text"
+              id="{{ form_id }}-last"
+              class="{{ input_class }}"
+              name="contact[Last name]"
+              autocomplete="family-name"
+              maxlength="50"
+              required
+              aria-required="true"
+              data-spy-last
+            >
+          </div>
+        </div>
+
+        {%- comment -%} Shopify labels the sender from contact[name]; JS keeps it in sync. {%- endcomment -%}
+        <input type="hidden" name="contact[name]" value="" data-spy-fullname>
+
+        <div class="mb-5">
+          <label class="{{ label_class }}" for="{{ form_id }}-email">{{ s.email_label }}{{ star }}</label>
+          <input
+            type="email"
+            id="{{ form_id }}-email"
+            class="{{ input_class }}"
+            name="contact[email]"
+            autocomplete="email"
+            spellcheck="false"
+            autocapitalize="off"
+            maxlength="250"
+            required
+            aria-required="true"
+            value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+          >
+        </div>
+
+        {%- comment -%} Business only — no display utility, JS hides this. {%- endcomment -%}
+        <div class="mb-5" data-spy-b2b-only hidden>
+          <label class="{{ label_class }}" for="{{ form_id }}-company">{{ s.company_label }}{{ star }}</label>
+          <input
+            type="text"
+            id="{{ form_id }}-company"
+            class="{{ input_class }}"
+            name="contact[Company]"
+            autocomplete="organization"
+            data-spy-require-when-shown
+          >
+        </div>
+
+        <div class="mb-5">
+          <label class="{{ label_class }}" for="{{ form_id }}-phone">{{ s.phone_label }}</label>
+          <input
+            type="tel"
+            id="{{ form_id }}-phone"
+            class="{{ input_class }}"
+            name="contact[phone]"
+            autocomplete="tel"
+            maxlength="50"
+          >
+        </div>
+
+        <div class="mb-5" data-spy-b2b-only hidden>
+          <label class="{{ label_class }}" for="{{ form_id }}-country">{{ s.country_label }}{{ star }}</label>
+          <div class="relative">
+            <select
+              id="{{ form_id }}-country"
+              class="{{ select_class }}"
+              name="contact[Country]"
+              data-spy-require-when-shown
+            >
+              <option value=""></option>
+              {{ all_country_option_tags }}
+            </select>
+            {{ chevron }}
+          </div>
+        </div>
+
+        {%- comment -%} Topic {%- endcomment -%}
+        <div class="mb-5">
+          <label class="{{ label_class }}" for="{{ form_id }}-topic">{{ s.question_label }}{{ star }}</label>
+          <div class="relative">
+            <select
+              id="{{ form_id }}-topic"
+              class="{{ select_class }}"
+              name="contact[My question]"
+              required
+              aria-required="true"
+              data-spy-topic
+            >
+              <option value="" selected disabled>{{ s.question_placeholder }}</option>
+              {%- for child in section.blocks -%}
+                {%- if child.type == 'topic' and child.settings.label != blank -%}
+                  <option
+                    value="{{ child.settings.value | default: child.settings.label | escape }}"
+                    data-sub="{{ child.id }}"
+                    data-show-order="{% if child.settings.show_order_number %}true{% else %}false{% endif %}"
+                  >
+                    {{ child.settings.label }}
+                  </option>
+                {%- endif -%}
+              {%- endfor -%}
+            </select>
+            {{ chevron }}
+          </div>
+        </div>
+
+        {%- comment -%} One follow-up panel per topic; JS reveals the matching one. {%- endcomment -%}
+        {%- for child in section.blocks -%}
+          {%- if child.type == 'topic' and child.settings.sub_options != blank -%}
+            <div class="mb-5" data-spy-sub="{{ child.id }}" hidden>
+              <label class="{{ label_class }}" for="{{ form_id }}-sub-{{ forloop.index }}">
+                {{ child.settings.sub_label | default: 'Your request' }}{{ star }}
+              </label>
+              <div class="relative">
+                <select
+                  id="{{ form_id }}-sub-{{ forloop.index }}"
+                  class="{{ select_class }}"
+                  name="contact[Your request]"
+                  data-spy-require-when-shown
+                >
+                  {%- assign opts = child.settings.sub_options | strip | newline_to_br | split: '<br />' -%}
+                  {%- for opt in opts -%}
+                    {%- assign opt_clean = opt | strip -%}
+                    {%- if opt_clean != blank -%}
+                      <option value="{{ opt_clean | escape }}">{{ opt_clean }}</option>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </select>
+                {{ chevron }}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- comment -%} Only for topics flagged to ask for it {%- endcomment -%}
+        <div class="mb-5" data-spy-order hidden>
+          <label class="{{ label_class }}" for="{{ form_id }}-order">{{ s.order_label }}</label>
+          <input
+            type="text"
+            id="{{ form_id }}-order"
+            class="{{ input_class }}"
+            name="contact[Order number]"
+            maxlength="50"
+          >
+        </div>
+
+        <div class="mb-5">
+          <label class="{{ label_class }}" for="{{ form_id }}-comment">{{ s.comment_label }}{{ star }}</label>
+          <textarea
+            id="{{ form_id }}-comment"
+            class="{{ control_class }} resize-y py-2"
+            name="contact[body]"
+            rows="5"
+            required
+            aria-required="true"
+          >{{ form.body }}</textarea>
+        </div>
+
+        {%- if s.show_attachment -%}
+          <div class="mb-5">
+            <label class="{{ label_class }}" for="{{ form_id }}-file">{{ s.attachment_label }}</label>
+            <input
+              type="file"
+              id="{{ form_id }}-file"
+              class="{{ control_class }} py-1.5"
+              name="contact[Attachment]"
+              accept="{{ s.attachment_accept }}"
+            >
+            {%- if s.attachment_note != blank -%}
+              <div class="mt-1.5 text-right text-[11px] text-[#8a8a8a]">{{ s.attachment_note }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        <div class="[display:grid] grid-cols-1 gap-x-8 md:grid-cols-2">
+          <div class="hidden md:block"></div>
+          <button
+            type="submit"
+            class="
+              w-full cursor-pointer border-0 px-4 font-bold uppercase tracking-[0.04em]
+              h-[var(--cf-btn-height)] rounded-[var(--cf-radius)]
+              text-[length:var(--cf-btn-size)]
+              bg-[color:var(--cf-btn-bg)] text-[color:var(--cf-btn-color)]
+              hover:bg-[color:var(--cf-btn-bg-hover)]
+            "
+            style="
+              --cf-btn-bg: {{ s.button_background }};
+              --cf-btn-bg-hover: {{ s.button_background_hover }};
+              --cf-btn-color: {{ s.button_text_color }};
+              --cf-btn-height: {{ s.button_height }}px;
+              --cf-btn-size: {{ s.button_size }}px;
+            "
+          >
+            {{ s.submit_label }}
+          </button>
+        </div>
+      </fieldset>
+    {%- endform -%}
+  </div>
+</div>
+</div>
+
+<script src="{{ 'spy-contact-form.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "SPY Contact form",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "blocks": [
+    {
+      "type": "topic",
+      "name": "Question topic",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Option text",
+          "info": "What the customer sees in the dropdown."
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Submitted value",
+          "info": "What arrives in the email. Falls back to the option text."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_order_number",
+          "label": "Ask for an order number",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "sub_label",
+          "label": "Follow-up label",
+          "default": "Your request"
+        },
+        {
+          "type": "textarea",
+          "id": "sub_options",
+          "label": "Follow-up choices",
+          "info": "One per line. Leave empty to skip the follow-up dropdown."
+        }
+      ]
+    }
+  ],
+  "settings": [
+    { "type": "header", "content": "Audience switch" },
+    { "type": "text", "id": "consumer_label", "label": "Consumer option", "default": "Consumer" },
+    { "type": "text", "id": "business_label", "label": "Business option", "default": "Business" },
+    { "type": "text", "id": "b2b_question_label", "label": "B2B account question", "default": "Has B2B Account ?" },
+    { "type": "text", "id": "b2b_no_label", "label": "No", "default": "No" },
+    { "type": "text", "id": "b2b_yes_label", "label": "Yes", "default": "Yes" },
+    {
+      "type": "richtext",
+      "id": "b2b_message",
+      "label": "Message for existing B2B customers",
+      "default": "<p>If you have a customer account at SPY Optic, please contact your Customer Service at 1 (800) 779-3937.</p>"
+    },
+    { "type": "header", "content": "Field labels" },
+    { "type": "text", "id": "first_name_label", "label": "First name", "default": "First Name" },
+    { "type": "text", "id": "last_name_label", "label": "Last name", "default": "Last Name" },
+    { "type": "text", "id": "email_label", "label": "Email", "default": "E-Mail" },
+    { "type": "text", "id": "company_label", "label": "Company", "default": "Company Name" },
+    { "type": "text", "id": "phone_label", "label": "Phone", "default": "Phone" },
+    { "type": "text", "id": "country_label", "label": "Country", "default": "Country" },
+    { "type": "text", "id": "question_label", "label": "Topic", "default": "My Question" },
+    { "type": "text", "id": "question_placeholder", "label": "Topic placeholder", "default": "Choose an option" },
+    { "type": "text", "id": "order_label", "label": "Order number", "default": "Order Number" },
+    { "type": "text", "id": "comment_label", "label": "Comment", "default": "Comment" },
+    { "type": "text", "id": "submit_label", "label": "Submit button", "default": "Submit" },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thanks — your message is on its way. We'll be in touch soon."
+    },
+    { "type": "header", "content": "Attachment" },
+    {
+      "type": "checkbox",
+      "id": "show_attachment",
+      "label": "Show the attachment field",
+      "info": "Shopify's contact form cannot deliver files — see the note below.",
+      "default": true
+    },
+    { "type": "text", "id": "attachment_label", "label": "Label", "default": "Attachment" },
+    {
+      "type": "text",
+      "id": "attachment_accept",
+      "label": "Accepted types",
+      "default": ".gif,.heic,.jpg,.jpeg,.png,.doc,.docx,.pdf"
+    },
+    {
+      "type": "text",
+      "id": "attachment_note",
+      "label": "Note under the field",
+      "default": "Accepted file : .gif,.heic,.jpg,.jpeg,.png,.doc,.docx,.pdf."
+    },
+    {
+      "type": "paragraph",
+      "content": "Shopify's built-in contact form posts to email and cannot carry a file. The field matches the old site visually, but an app or custom endpoint is needed to actually receive attachments."
+    },
+    { "type": "header", "content": "Band" },
+    { "type": "color", "id": "background_color", "label": "Page background", "default": "#ffffff" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 84
+    },
+    { "type": "header", "content": "Card" },
+    { "type": "color", "id": "card_background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "card_border_color", "label": "Border", "default": "#e5e5e5" },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Padding",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 400,
+      "max": 1200,
+      "step": 10,
+      "unit": "px",
+      "default": 760
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    { "type": "header", "content": "Labels" },
+    { "type": "color", "id": "label_color", "label": "Colour", "default": "#2c393e" },
+    {
+      "type": "range",
+      "id": "label_size",
+      "label": "Size",
+      "min": 11,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    { "type": "color", "id": "required_color", "label": "Required asterisk", "default": "#f57f29" },
+    { "type": "header", "content": "Inputs" },
+    { "type": "color", "id": "input_background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "input_color", "label": "Text", "default": "#2c393e" },
+    { "type": "color", "id": "input_border_color", "label": "Border", "default": "#cccccc" },
+    { "type": "color", "id": "focus_border_color", "label": "Border on focus", "default": "#2c393e" },
+    {
+      "type": "range",
+      "id": "input_size",
+      "label": "Text size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "input_height",
+      "label": "Height",
+      "min": 28,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 38
+    },
+    { "type": "header", "content": "Submit button" },
+    { "type": "color", "id": "button_background", "label": "Background", "default": "#f57f29" },
+    { "type": "color", "id": "button_background_hover", "label": "Background on hover", "default": "#dd6c18" },
+    { "type": "color", "id": "button_text_color", "label": "Text", "default": "#ffffff" },
+    {
+      "type": "range",
+      "id": "button_height",
+      "label": "Height",
+      "min": 28,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "button_size",
+      "label": "Text size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Contact form",
+      "category": "SPY",
+      "blocks": [
+        {
+          "type": "topic",
+          "settings": {
+            "label": "Product",
+            "value": "Products",
+            "show_order_number": false,
+            "sub_label": "Your request",
+            "sub_options": "Advice/Product availability\nPrescription lenses"
+          }
+        },
+        {
+          "type": "topic",
+          "settings": {
+            "label": "Order",
+            "value": "Order",
+            "show_order_number": true,
+            "sub_label": "Your request",
+            "sub_options": "Ordering assistance\nOrder tracking"
+          }
+        },
+        {
+          "type": "topic",
+          "settings": {
+            "label": "Return",
+            "value": "Return",
+            "show_order_number": true,
+            "sub_label": "Your request",
+            "sub_options": "Return request\nReturn request status"
+          }
+        },
+        {
+          "type": "topic",
+          "settings": {
+            "label": "Other",
+            "value": "Other",
+            "show_order_number": false,
+            "sub_label": "Your request",
+            "sub_options": ""
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
