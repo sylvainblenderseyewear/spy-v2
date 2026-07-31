@@ -20,6 +20,7 @@
   style="
     background-color: {{ section.settings.background_color }};
     padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+    padding-inline: {{ section.settings.padding_left }}px {{ section.settings.padding_right }}px;
   "
   {{ section.shopify_attributes }}
 >
@@ -131,7 +132,27 @@
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 0
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Left",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Right",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 80
     }
   ],
   "presets": [
@@ -142,7 +163,9 @@
         "background_color": "#000000",
         "max_width": 3000,
         "padding_top": 0,
-        "padding_bottom": 0
+        "padding_bottom": 80,
+        "padding_left": 80,
+        "padding_right": 80
       }
     }
   ]

@@ -3,13 +3,18 @@
 
   Orange, uppercase and centred like the source. The stroke colour is set
   alongside the fill so a stroke width picked later inherits the same orange.
+
+  Spacing goes through utilities, not inline style: Tailwind runs in important
+  mode here, so a plain `m-0` would beat an inline margin and the setting would
+  do nothing. `mt-0` plus `mb-[…]` touch different properties, so both stick.
 {%- endcomment -%}
 
 {%- if block.settings.heading != blank -%}
   <h2
     class="
-      m-0 text-center font-bold uppercase
-      text-[length:var(--agents-title-size-mobile)] min-[750px]:text-[length:var(--agents-title-size)]
+      mt-0 mb-[var(--agents-title-mb)] pb-[var(--agents-title-pb)]
+      text-center font-bold uppercase
+      text-[length:var(--agents-title-size-mobile)] min-[990px]:text-[length:var(--agents-title-size)]
       leading-tight tracking-[0.02em]
       text-[color:var(--agents-title-color)]
       [-webkit-text-stroke-color:var(--agents-title-color)]
@@ -18,7 +23,8 @@
       --agents-title-color: {{ block.settings.heading_color }};
       --agents-title-size: {{ block.settings.font_size }}px;
       --agents-title-size-mobile: {{ block.settings.font_size_mobile }}px;
-      margin-bottom: {{ block.settings.margin_bottom }}px;
+      --agents-title-pb: {{ block.settings.padding_bottom }}px;
+      --agents-title-mb: {{ block.settings.margin_bottom }}px;
     "
     {{ block.shopify_attributes }}
   >
@@ -60,6 +66,16 @@
       "min": 12,
       "max": 40,
       "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 80,
+      "step": 2,
       "unit": "px",
       "default": 20
     },

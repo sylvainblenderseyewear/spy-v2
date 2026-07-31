@@ -17,7 +17,9 @@
         "background_color": "#000000",
         "max_width": 3000,
         "padding_top": 0,
-        "padding_bottom": 0
+        "padding_bottom": 80,
+        "padding_left": 80,
+        "padding_right": 80
       }
     },
     "intro": {
@@ -44,6 +46,7 @@
             "heading_color": "#ee7624",
             "font_size": 26,
             "font_size_mobile": 20,
+            "padding_bottom": 20,
             "margin_bottom": 56
           }
         },
@@ -132,8 +135,7 @@
           ],
           "settings": {
             "columns_desktop": 4,
-            "columns_tablet": 3,
-            "columns_mobile": 2,
+            "columns_stacked": 1,
             "column_gap": 6,
             "row_gap": 6,
             "image_ratio": "1/1",
@@ -141,7 +143,7 @@
             "label_color": "#ee7624",
             "label_background": "#000000",
             "label_size": 15,
-            "label_size_mobile": 12,
+            "label_size_mobile": 15,
             "label_offset": 18
           }
         }
