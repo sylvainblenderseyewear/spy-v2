@@ -1029,15 +1029,25 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   margin-inline: auto;
 }
 
-/* Source stacks the image/copy rows at col-lg-6 -> col-md-12, i.e. below 992px.
+/* Happy Lens caps at 1440px instead — same idea, its own source container.
+   Capping the content wrapper leaves the section background full-bleed, which
+   the blue "tech stuff" band relies on. */
+[data-template='page.happy-lens'] .section-content-wrapper {
+  max-width: 90rem; /* 1440px */
+  margin-inline: auto;
+}
+
+/* Source stacks the image/copy rows at col-lg-* -> col-md-12, i.e. below 992px.
    Horizon's "stack on mobile" only fires under 750px, leaving 750-991 side by
    side with columns too narrow to read. Match the source breakpoint. */
 @media screen and (max-width: 991px) {
-  [data-template='page.happy-boost'] .group-block-content.layout-panel-flex--row {
+  :is([data-template='page.happy-boost'], [data-template='page.happy-lens'])
+    .group-block-content.layout-panel-flex--row {
     flex-direction: column;
   }
-  [data-template='page.happy-boost'] .group-block-content.layout-panel-flex--row > .group-block,
-  [data-template='page.happy-boost'] .group-block-content.layout-panel-flex--row > .image-block {
+  :is([data-template='page.happy-boost'], [data-template='page.happy-lens'])
+    .group-block-content.layout-panel-flex--row
+    > :is(.group-block, .image-block) {
     --size-style-width: 100%;
     width: 100%;
   }
