@@ -1032,7 +1032,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 /* Happy Lens caps at 1440px instead — same idea, its own source container.
    Capping the content wrapper leaves the section background full-bleed, which
    the blue "tech stuff" band relies on. */
-[data-template='page.happy-lens'] .section-content-wrapper {
+[data-template='page.happy-lens'] .section--page-width .section-content-wrapper {
   max-width: 90rem; /* 1440px */
   margin-inline: auto;
 }
