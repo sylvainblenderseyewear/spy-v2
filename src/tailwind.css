@@ -1052,3 +1052,11 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     width: 100%;
   }
 }
+
+/* Happy Lens white-section rows cap their copy at ~300px regardless of column
+   width (source measures 296/300/293 in columns of 480/480/360). The blue
+   section's copy fills its column instead, so this targets the rows only. */
+[data-template='page.happy-lens'] .text-block[class*='__row_body'] {
+  max-width: 19rem; /* 304px */
+  margin-inline: auto;
+}

@@ -187,11 +187,11 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "body": {
+                "row_body": {
                   "type": "text",
                   "name": "Body",
                   "settings": {
-                    "text": "<p>The sun gives off rays that are both good and bad for your health and wellbeing.</p>",
+                    "text": "<p><strong>The sun gives off rays that are both good and bad for your health and wellbeing.</strong></p>",
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",
@@ -215,7 +215,7 @@
                 }
               },
               "block_order": [
-                "body"
+                "row_body"
               ]
             },
             "image": {
@@ -442,11 +442,11 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "body": {
+                "row_body": {
                   "type": "text",
                   "name": "Body",
                   "settings": {
-                    "text": "<p>Unlike other color-enhancing lenses, which block the good as well as the bad, our revolutionary patented Happy&trade; lens tech lets in the good rays that help boost your mood and alertness and optimize color.</p>",
+                    "text": "<p><strong>Unlike other color-enhancing lenses, which block the good as well as the bad, our revolutionary patented Happy&trade; lens tech lets in the good rays that help boost your mood and alertness and optimize color.</strong></p>",
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",
@@ -470,7 +470,7 @@
                 }
               },
               "block_order": [
-                "body"
+                "row_body"
               ]
             }
           },
@@ -628,11 +628,11 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "body": {
+                "row_body": {
                   "type": "text",
                   "name": "Body",
                   "settings": {
-                    "text": "<p>The result is a truly life-changing visual experience you can SEE and FEEL.</p>",
+                    "text": "<p><strong>The result is a truly life-changing visual experience you can SEE and FEEL.</strong></p>",
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",
@@ -656,7 +656,7 @@
                 }
               },
               "block_order": [
-                "body"
+                "row_body"
               ]
             }
           },
@@ -1162,7 +1162,7 @@
                   "type": "text",
                   "name": "Body",
                   "settings": {
-                    "text": "<p>The &ldquo;good&rdquo; rays are a specific type of long-wave blue light that science has shown helps to boost both mood and alertness while also enhancing color and contrast.</p>",
+                    "text": "<p><strong>The &ldquo;good&rdquo; rays are a specific type of long-wave blue light that science has shown helps to boost both mood and alertness while also enhancing color and contrast.</strong></p>",
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",
@@ -1306,7 +1306,7 @@
                   "type": "text",
                   "name": "Body",
                   "settings": {
-                    "text": "<p>The &ldquo;bad&rdquo; rays include ultraviolet (UV) light and short-wave blue light, both of which can cause eyestrain, fatigue, and several sunlight-related eye diseases.</p>",
+                    "text": "<p><strong>The &ldquo;bad&rdquo; rays include ultraviolet (UV) light and short-wave blue light, both of which can cause eyestrain, fatigue, and several sunlight-related eye diseases.</strong></p>",
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",
@@ -1368,7 +1368,7 @@
           "type": "text",
           "name": "Closing copy",
           "settings": {
-            "text": "<p>Our patented Happy&trade; lens tech is scientifically formulated to allow in the sun&rsquo;s good rays while blocking the bad, letting you SEE BETTER by enhancing color and contrast, while helping you to FEEL BETTER by boosting your mood and alertness&mdash;something you&rsquo;ll feel even after taking your sunglasses off.</p>",
+            "text": "<p><strong>Our patented Happy&trade; lens tech is scientifically formulated to allow in the sun&rsquo;s good rays while blocking the bad, letting you SEE BETTER by enhancing color and contrast, while helping you to FEEL BETTER by boosting your mood and alertness&mdash;something you&rsquo;ll feel even after taking your sunglasses off.</strong></p>",
             "width": "100%",
             "max_width": "none",
             "alignment": "center",
