@@ -16,7 +16,7 @@
           "type": "text",
           "name": "t:names.title",
           "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
+            "text": "<h2>{{ closest.page.title }}</h2>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -44,7 +44,7 @@
           "settings": {
             "text": "{{ closest.page.content }}",
             "width": "100%",
-            "max_width": "narrow",
+            "max_width": "none",
             "alignment": "left",
             "type_preset": "rte",
             "font": "var(--font-primary--family)",
