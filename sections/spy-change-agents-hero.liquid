@@ -15,11 +15,28 @@
   assign alt = section.settings.image_alt | default: page.title
 -%}
 
+{%- comment -%}
+  Padding runs through utilities, not inline style: Tailwind is in important mode,
+  so a utility would beat an inline value anyway. Below 990 gets its own numbers —
+  80px a side is 41% of a 390px phone and would squeeze the band to nothing.
+{%- endcomment -%}
 <div
-  class="spy-change-agents-hero w-full leading-[0]"
+  class="
+    spy-change-agents-hero w-full leading-[0]
+    pt-[var(--hero-pt-s)] pb-[var(--hero-pb-s)] pl-[var(--hero-pl-s)] pr-[var(--hero-pr-s)]
+    min-[990px]:pt-[var(--hero-pt)] min-[990px]:pb-[var(--hero-pb)]
+    min-[990px]:pl-[var(--hero-pl)] min-[990px]:pr-[var(--hero-pr)]
+  "
   style="
     background-color: {{ section.settings.background_color }};
-    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+    --hero-pt: {{ section.settings.padding_top }}px;
+    --hero-pb: {{ section.settings.padding_bottom }}px;
+    --hero-pl: {{ section.settings.padding_left }}px;
+    --hero-pr: {{ section.settings.padding_right }}px;
+    --hero-pt-s: {{ section.settings.padding_top_small }}px;
+    --hero-pb-s: {{ section.settings.padding_bottom_small }}px;
+    --hero-pl-s: {{ section.settings.padding_left_small }}px;
+    --hero-pr-s: {{ section.settings.padding_right_small }}px;
   "
   {{ section.shopify_attributes }}
 >
@@ -111,7 +128,7 @@
     },
     {
       "type": "header",
-      "content": "Padding"
+      "content": "Padding — 990px and up"
     },
     {
       "type": "range",
@@ -131,7 +148,71 @@
       "max": 160,
       "step": 2,
       "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Left",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Right",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Padding — below 990px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_small",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
       "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_small",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_left_small",
+      "label": "Left",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_right_small",
+      "label": "Right",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 16
     }
   ],
   "presets": [
@@ -142,7 +223,13 @@
         "background_color": "#000000",
         "max_width": 3000,
         "padding_top": 0,
-        "padding_bottom": 0
+        "padding_bottom": 80,
+        "padding_left": 80,
+        "padding_right": 80,
+        "padding_top_small": 0,
+        "padding_bottom_small": 40,
+        "padding_left_small": 16,
+        "padding_right_small": 16
       }
     }
   ]
