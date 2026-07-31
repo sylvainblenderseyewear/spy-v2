@@ -905,7 +905,7 @@
             "links": {
               "type": "text",
               "settings": {
-                "text": "<p><a href=\"/pages/about-us\">About Us</a><br/><a href=\"/blogs/news\" title=\"News\">Blog</a><br/><a href=\"https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=f8d4b700-684e-4cbf-82e0-eb81ed208309\" title=\"https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=f8d4b700-684e-4cbf-82e0-eb81ed208309\">Careers</a><br/><a href=\"/pages/team\">Team</a><br/><a href=\"https://stores.spyoptic.com\">Store Locator</a></p>",
+                "text": "<p><a href=\"/pages/about-us\">About Us</a><br/><a href=\"/blogs/news\" title=\"News\">Blog</a><br/><a href=\"https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=f8d4b700-684e-4cbf-82e0-eb81ed208309\" title=\"https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=f8d4b700-684e-4cbf-82e0-eb81ed208309\">Careers</a><br/><a href=\"/pages/changeagents\">Team</a><br/><a href=\"https://stores.spyoptic.com\">Store Locator</a></p>",
                 "width": "100%",
                 "max_width": "none",
                 "alignment": "left",
