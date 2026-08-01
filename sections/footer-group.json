@@ -1001,7 +1001,7 @@
             "links": {
               "type": "text",
               "settings": {
-                "text": "<p><a href=\"/pages/contact\">Contact us</a><br/><a href=\"/account\">My Account</a><br/><a href=\"/account\">My Orders</a><br/><a href=\"/pages/faq\">FAQ</a><br/><a href=\"/pages/warranty\">Warranty</a><br/><a href=\"#\">Dealer Portal</a></p>",
+                "text": "<p><a href=\"/pages/contact\">Contact us</a><br/><a href=\"/account\">My Account</a><br/><a href=\"/account\">My Orders</a><br/><a href=\"/pages/faq\">FAQ</a><br/><a href=\"/pages/warranty\">Warranty</a><br/><a href=\"https://www.b2b-bollebrands.com/store/checkout.ssp?is=login&login=T\" title=\"https://www.b2b-bollebrands.com/store/checkout.ssp?is=login&login=T\">Dealer Portal</a></p>",
                 "width": "100%",
                 "max_width": "none",
                 "alignment": "left",
