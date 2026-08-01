@@ -164,18 +164,44 @@
               },
               "blocks": {
                 "intro_standard": {
-                  "type": "custom-liquid",
+                  "type": "spy-body-text",
                   "name": "Standard lenses",
                   "settings": {
-                    "custom_liquid": "<p class=\"m-0 text-[1.25rem] leading-[24px] text-center text-spy-ink\">Standard color enhancing high-contrast lenses increase a limited amount of colors while other colors are diminished, and the colors that are enhanced are only 15% more than the naked eye. This reduces enhances color in an unnatural and unbalanced way, providing an inferior visual experience.</p>"
+                    "text": "<p>Standard color enhancing high-contrast lenses increase a limited amount of colors while other colors are diminished, and the colors that are enhanced are only 15% more than the naked eye. This reduces enhances color in an unnatural and unbalanced way, providing an inferior visual experience.</p>",
+                    "highlight": "",
+                    "highlight_color": "#00ceff",
+                    "size": 20,
+                    "size_mobile": 20,
+                    "weight": "400",
+                    "line_height": 120,
+                    "text_color": "#1d2a2b",
+                    "align": "center",
+                    "align_mobile": "",
+                    "max_width": 0,
+                    "paragraph_gap": 25,
+                    "margin_bottom": 0,
+                    "margin_bottom_mobile": 0
                   },
                   "blocks": {}
                 },
                 "intro_hb": {
-                  "type": "custom-liquid",
+                  "type": "spy-body-text",
                   "name": "Happy Boost formula",
                   "settings": {
-                    "custom_liquid": "<p class=\"m-0 text-[1.25rem] leading-[24px] text-center text-spy-ink\"><span class=\"text-[#00ceff]\">HAPPY BOOST™</span> was designed using a proprietary formula developed by artificial intelligence that tested over 10 million unique lens combinations, which lead to one incredible lens that offers up to 30% color enhancement beyond the naked eye. This means ALL colors are enhanced, without sacrificing any others.</p>"
+                    "text": "<p>HAPPY BOOST™ was designed using a proprietary formula developed by artificial intelligence that tested over 10 million unique lens combinations, which lead to one incredible lens that offers up to 30% color enhancement beyond the naked eye. This means ALL colors are enhanced, without sacrificing any others.</p>",
+                    "highlight": "HAPPY BOOST™",
+                    "highlight_color": "#00ceff",
+                    "size": 20,
+                    "size_mobile": 20,
+                    "weight": "400",
+                    "line_height": 120,
+                    "text_color": "#1d2a2b",
+                    "align": "center",
+                    "align_mobile": "",
+                    "max_width": 0,
+                    "paragraph_gap": 25,
+                    "margin_bottom": 0,
+                    "margin_bottom_mobile": 0
                   },
                   "blocks": {}
                 }
@@ -290,36 +316,48 @@
                   },
                   "blocks": {
                     "heading": {
-                      "type": "text",
+                      "type": "spy-heading",
                       "name": "Heading",
                       "settings": {
-                        "text": "<p>See more.</p>",
-                        "width": "100%",
-                        "max_width": "none",
-                        "alignment": "left",
-                        "type_preset": "h3",
-                        "font": "var(--font-heading--family)",
-                        "font_size": "1.5rem",
-                        "line_height": "tight",
-                        "letter_spacing": "normal",
-                        "case": "uppercase",
-                        "wrap": "pretty",
+                        "text": "See more.",
+                        "level": "h2",
+                        "highlight": "",
+                        "highlight_color": "#00ceff",
+                        "size": 26,
+                        "size_mobile": 26,
+                        "weight": "700",
+                        "line_height": 110,
+                        "letter_spacing": 0,
+                        "uppercase": true,
                         "text_color": "#00ceff",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
-                        "padding-block-start": 0,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
+                        "align": "left",
+                        "align_mobile": "",
+                        "max_width": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "margin_top_mobile": 0,
+                        "margin_bottom_mobile": 0
                       },
                       "blocks": {}
                     },
                     "body": {
-                      "type": "custom-liquid",
+                      "type": "spy-body-text",
                       "name": "Body",
                       "settings": {
-                        "custom_liquid": "<p class=\"m-0 text-[1rem] leading-[22px] text-spy-ink\"><span class=\"text-[#00ceff]\">HAPPY BOOST™</span> enhances color and contrast up to 30% more than the naked eye and at least 15% more than other brands&rsquo; lenses, allowing you to enjoy more of what the outdoors have to offer.</p>"
+                        "text": "<p>HAPPY BOOST™ enhances color and contrast up to 30% more than the naked eye and at least 15% more than other brands’ lenses, allowing you to enjoy more of what the outdoors have to offer.</p>",
+                        "highlight": "HAPPY BOOST™",
+                        "highlight_color": "#00ceff",
+                        "size": 16,
+                        "size_mobile": 16,
+                        "weight": "400",
+                        "line_height": 137.5,
+                        "text_color": "#1d2a2b",
+                        "align": "left",
+                        "align_mobile": "",
+                        "max_width": 0,
+                        "paragraph_gap": 25,
+                        "margin_bottom": 0,
+                        "margin_bottom_mobile": 0
                       },
                       "blocks": {}
                     }
@@ -416,36 +454,48 @@
                   },
                   "blocks": {
                     "heading": {
-                      "type": "text",
+                      "type": "spy-heading",
                       "name": "Heading",
                       "settings": {
-                        "text": "<p>Feel better.</p>",
-                        "width": "100%",
-                        "max_width": "none",
-                        "alignment": "left",
-                        "type_preset": "h3",
-                        "font": "var(--font-heading--family)",
-                        "font_size": "1.5rem",
-                        "line_height": "tight",
-                        "letter_spacing": "normal",
-                        "case": "uppercase",
-                        "wrap": "pretty",
+                        "text": "Feel better.",
+                        "level": "h2",
+                        "highlight": "",
+                        "highlight_color": "#00ceff",
+                        "size": 26,
+                        "size_mobile": 26,
+                        "weight": "700",
+                        "line_height": 110,
+                        "letter_spacing": 0,
+                        "uppercase": true,
                         "text_color": "#00ceff",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
-                        "padding-block-start": 0,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
+                        "align": "left",
+                        "align_mobile": "",
+                        "max_width": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "margin_top_mobile": 0,
+                        "margin_bottom_mobile": 0
                       },
                       "blocks": {}
                     },
                     "body": {
-                      "type": "custom-liquid",
+                      "type": "spy-body-text",
                       "name": "Body",
                       "settings": {
-                        "custom_liquid": "<p class=\"m-0 text-[1rem] leading-[22px] text-spy-ink\"><span class=\"text-[#00ceff]\">HAPPY BOOST™</span> features our revolutionary patented HAPPY™ Lens Tech that lets in the good blue light that helps to boost your mood and alertness.</p>"
+                        "text": "<p>HAPPY BOOST™ features our revolutionary patented HAPPY™ Lens Tech that lets in the good blue light that helps to boost your mood and alertness.</p>",
+                        "highlight": "HAPPY BOOST™",
+                        "highlight_color": "#00ceff",
+                        "size": 16,
+                        "size_mobile": 16,
+                        "weight": "400",
+                        "line_height": 137.5,
+                        "text_color": "#1d2a2b",
+                        "align": "left",
+                        "align_mobile": "",
+                        "max_width": 0,
+                        "paragraph_gap": 25,
+                        "margin_bottom": 0,
+                        "margin_bottom_mobile": 0
                       },
                       "blocks": {}
                     }
@@ -590,36 +640,48 @@
                   },
                   "blocks": {
                     "heading": {
-                      "type": "text",
+                      "type": "spy-heading",
                       "name": "Heading",
                       "settings": {
-                        "text": "<p>The ATV of lenses.</p>",
-                        "width": "100%",
-                        "max_width": "none",
-                        "alignment": "left",
-                        "type_preset": "h3",
-                        "font": "var(--font-heading--family)",
-                        "font_size": "1.5rem",
-                        "line_height": "tight",
-                        "letter_spacing": "normal",
-                        "case": "uppercase",
-                        "wrap": "pretty",
+                        "text": "The ATV of lenses.",
+                        "level": "h2",
+                        "highlight": "",
+                        "highlight_color": "#00ceff",
+                        "size": 26,
+                        "size_mobile": 26,
+                        "weight": "700",
+                        "line_height": 110,
+                        "letter_spacing": 0,
+                        "uppercase": true,
                         "text_color": "#00ceff",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
-                        "padding-block-start": 0,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
+                        "align": "left",
+                        "align_mobile": "",
+                        "max_width": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "margin_top_mobile": 0,
+                        "margin_bottom_mobile": 0
                       },
                       "blocks": {}
                     },
                     "body": {
-                      "type": "custom-liquid",
+                      "type": "spy-body-text",
                       "name": "Body",
                       "settings": {
-                        "custom_liquid": "<p class=\"m-0 text-[1rem] leading-[22px] text-spy-ink\">From full super-bright sun, to dipping in and out of tree cover, <span class=\"text-[#00ceff]\">HAPPY BOOST™</span> Bronze with our Ice Blue Spectra Mirror was specifically formulated to provide mind-blowing color and contrast in a wide variety of conditions.</p>"
+                        "text": "<p>From full super-bright sun, to dipping in and out of tree cover, HAPPY BOOST™ Bronze with our Ice Blue Spectra Mirror was specifically formulated to provide mind-blowing color and contrast in a wide variety of conditions.</p>",
+                        "highlight": "HAPPY BOOST™",
+                        "highlight_color": "#00ceff",
+                        "size": 16,
+                        "size_mobile": 16,
+                        "weight": "400",
+                        "line_height": 137.5,
+                        "text_color": "#1d2a2b",
+                        "align": "left",
+                        "align_mobile": "",
+                        "max_width": 0,
+                        "paragraph_gap": 25,
+                        "margin_bottom": 0,
+                        "margin_bottom_mobile": 0
                       },
                       "blocks": {}
                     }

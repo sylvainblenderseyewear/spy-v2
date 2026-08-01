@@ -1,0 +1,190 @@
+{%- comment -%}
+  Lens Overview — the VLT scale. Holds one ring circle per lens.
+
+  Two layouts, one breakpoint at 768px, straight from the source:
+  - 769px and up: circles in a row, a sun -> cloud arrow scale under them, then a
+    row of VLT / condition text lined up with the circles.
+  - 768px and down: the scale is dropped. The circles stack and each sits beside
+    its own text, threaded on a vertical line with the sun on top, cloud below.
+
+  One grid does both rows. A parent block cannot read `block.blocks[].settings`, so
+  the copy can't be re-printed here — instead each item goes `display: contents` on
+  desktop and drops its circle into row 1 and its text into row 3, leaving row 2 for
+  the scale. `grid-auto-flow: dense` is required: the default sparse cursor only
+  moves forward, so interleaved row-1/row-3 items would land in the wrong columns.
+
+  Note: `[display:grid]`, not Tailwind's `grid`. Horizon's base.css owns a `.grid`
+  class of its own — the 14-column page layout — and its named areas would force
+  14 columns here whatever we set.
+{%- endcomment -%}
+
+{%- liquid
+  assign sun = block.settings.icon_sun
+  assign cloud = block.settings.icon_cloud
+  assign cols = block.blocks.size
+  if cols < 1
+    assign cols = 1
+  endif
+
+  if sun != blank
+    assign sun_src = sun | image_url: width: 150
+  else
+    assign sun_src = 'spy-icon-sun.svg' | asset_url
+  endif
+
+  if cloud != blank
+    assign cloud_src = cloud | image_url: width: 150
+  else
+    assign cloud_src = 'spy-icon-cloud.svg' | asset_url
+  endif
+-%}
+
+<div
+  class="spy-lens-overview w-full mx-auto px-5 py-5 min-[769px]:py-10 max-w-[var(--lo-max)]"
+  style="
+    --lo-max: {{ block.settings.max_width }}px;
+    --lo-line: {{ block.settings.scale_color }};
+    --lo-cols: {{ cols }};
+  "
+  {{ block.shopify_attributes }}
+>
+  <div
+    class="
+      relative
+      max-[769px]:block max-[769px]:py-15
+      min-[769px]:[display:grid] min-[769px]:[grid-auto-flow:row_dense]
+      min-[769px]:[grid-template-columns:repeat(var(--lo-cols),minmax(0,1fr))]
+      min-[769px]:gap-x-5
+    "
+  >
+    {%- comment -%} The line the circles hang on, plus the end icons — mobile only. {%- endcomment -%}
+    <span
+      class="min-[769px]:hidden absolute left-[60px] top-10 bottom-10 w-[2px] bg-[var(--lo-line)] z-0"
+      aria-hidden="true"
+    ></span>
+
+    <img
+      src="{{ sun_src }}"
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      class="min-[769px]:hidden absolute left-10 top-0 w-10 h-10 z-[2]"
+    >
+
+    <img
+      src="{{ cloud_src }}"
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      class="min-[769px]:hidden absolute left-10 bottom-0 w-10 h-10 z-[2]"
+    >
+
+    {% content_for 'blocks' %}
+
+    {%- comment -%}
+      Arrow scale — row 2, desktop only. The line is inset 80px each side so the
+      50px icons sit outside it, and the icon row is pulled back up over the line.
+      50px above (40 under the circles + 10) and 60px below (30 + 30), per source.
+    {%- endcomment -%}
+    <div
+      data-lens-scale
+      class="
+        max-[769px]:hidden
+        min-[769px]:[grid-row:2] min-[769px]:[grid-column:1/-1]
+        min-[769px]:mt-[50px] min-[769px]:mb-[60px]
+      "
+    >
+      <div class="relative h-[2px] mx-20 bg-[var(--lo-line)]">
+        <span
+          class="absolute top-[-7px] left-[-16px] w-0 h-0 border-solid border-y-8 border-y-transparent border-l-0 border-r-[16px] border-r-[var(--lo-line)]"
+          aria-hidden="true"
+        ></span>
+        <span
+          class="absolute top-[-7px] right-[-16px] w-0 h-0 border-solid border-y-8 border-y-transparent border-r-0 border-l-[16px] border-l-[var(--lo-line)]"
+          aria-hidden="true"
+        ></span>
+      </div>
+
+      <div class="relative z-[1] flex justify-between items-center mt-[-25px]">
+        <img
+          src="{{ sun_src }}"
+          alt="{{ block.settings.label_bright | escape }}"
+          loading="lazy"
+          class="w-[50px] h-[50px]"
+        >
+        <img
+          src="{{ cloud_src }}"
+          alt="{{ block.settings.label_dim | escape }}"
+          loading="lazy"
+          class="w-[50px] h-[50px]"
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Lens Overview",
+  "tag": null,
+  "blocks": [{ "type": "_spy-lens-overview-item" }],
+  "settings": [
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width",
+      "min": 600,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "header",
+      "content": "Condition scale"
+    },
+    {
+      "type": "color",
+      "id": "scale_color",
+      "label": "Line & arrow color",
+      "default": "#333333"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_sun",
+      "label": "Bright-end icon",
+      "info": "Optional. Falls back to the built-in sun icon."
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_cloud",
+      "label": "Dim-end icon",
+      "info": "Optional. Falls back to the built-in cloud icon."
+    },
+    {
+      "type": "text",
+      "id": "label_bright",
+      "label": "Bright-end alt text",
+      "default": "Bright sun"
+    },
+    {
+      "type": "text",
+      "id": "label_dim",
+      "label": "Dim-end alt text",
+      "default": "Overcast"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lens Overview",
+      "category": "SPY",
+      "blocks": [
+        { "type": "_spy-lens-overview-item" },
+        { "type": "_spy-lens-overview-item" },
+        { "type": "_spy-lens-overview-item" },
+        { "type": "_spy-lens-overview-item" }
+      ]
+    }
+  ]
+}
+{% endschema %}

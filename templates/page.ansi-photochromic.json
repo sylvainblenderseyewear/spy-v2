@@ -1,0 +1,385 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "section",
+      "blocks": {
+        "video": {
+          "type": "custom-liquid",
+          "settings": {
+            "custom_liquid": "<div class=\"w-full\"><div class=\"relative w-full aspect-[1920/600] max-[991px]:hidden\"><iframe class=\"absolute inset-0 h-full w-full border-0\" src=\"https://player.vimeo.com/video/1077414998?background=1&amp;autoplay=1&amp;loop=1&amp;muted=1&amp;playsinline=1\" title=\"ANSI Photochromic\" allow=\"autoplay; fullscreen; picture-in-picture\" referrerpolicy=\"strict-origin-when-cross-origin\" loading=\"lazy\"></iframe></div><div class=\"relative w-full aspect-[400/600] min-[992px]:hidden\"><iframe class=\"absolute inset-0 h-full w-full border-0\" src=\"https://player.vimeo.com/video/1077418501?background=1&amp;autoplay=1&amp;loop=1&amp;muted=1&amp;playsinline=1\" title=\"ANSI Photochromic\" allow=\"autoplay; fullscreen; picture-in-picture\" referrerpolicy=\"strict-origin-when-cross-origin\" loading=\"lazy\"></iframe></div></div>"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "video"
+      ],
+      "name": "ANSI — hero video",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "intro": {
+      "type": "section",
+      "blocks": {
+        "copy": {
+          "type": "custom-liquid",
+          "settings": {
+            "custom_liquid": "<div class=\"mx-auto w-full px-[15px] min-[544px]:max-w-[540px] min-[769px]:max-w-[720px] min-[992px]:max-w-[1140px] min-[1200px]:max-w-[1440px]\"><div class=\"w-full text-center text-[3rem] leading-[1.2] mb-12 min-[992px]:mx-12 min-[992px]:px-12\"><h2 class=\"table w-full text-center font-spy font-semibold leading-[1.2] text-[#1D2A2B] mt-[1em] mb-[0.5em] text-[calc(1.3rem+0.6vw)] min-[1200px]:text-[1.75rem]\">ANSI PHOTOCHROMIC COLLECTION</h2><p class=\"m-0 mb-4 text-[1.125rem] leading-[1.2] text-[#1D2A2B]\">Our ANSI-certified, photochromic eyewear is built for the bold, meeting the ultimate ANSI Z87-2+ standards for impact protection and light-adaptive photochromic lenses that seamlessly adjust to changing light conditions.</p></div></div>"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "copy"
+      ],
+      "name": "ANSI — intro header",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "frames": {
+      "type": "product-list",
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "name": "t:names.header",
+          "static": true,
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": true,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fill",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {},
+          "block_order": []
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "spy_tech_badge_XQ6chg": {
+              "type": "spy-tech-badge",
+              "name": "Tech Badge",
+              "settings": {},
+              "blocks": {}
+            },
+            "product_card_gallery_eCNPeJ": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "adapt",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "spy_quick_view_btn_M4hUjh": {
+              "type": "spy-quick-view-btn",
+              "name": "Quick View Button",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_new_badge_fTWJ8m": {
+              "type": "spy-new-badge",
+              "name": "New Badge",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_color_count_hkXrAJ": {
+              "type": "spy-color-count",
+              "name": "Color Count",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_swatches_CqRm9T": {
+              "type": "spy-swatches",
+              "name": "Color Preview",
+              "settings": {
+                "display": "card"
+              },
+              "blocks": {}
+            },
+            "product_title_3WpyTJ": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "title_source": "product",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "center",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price_YFxQDQ": {
+              "type": "price",
+              "name": "t:names.product_price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "center",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "text_color": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "spy_tech_badge_XQ6chg",
+            "product_card_gallery_eCNPeJ",
+            "spy_quick_view_btn_M4hUjh",
+            "spy_new_badge_fTWJ8m",
+            "spy_color_count_hkXrAJ",
+            "spy_swatches_CqRm9T",
+            "product_title_3WpyTJ",
+            "price_YFxQDQ"
+          ]
+        }
+      },
+      "name": "ANSI — product carousel",
+      "settings": {
+        "collection": "",
+        "layout_type": "carousel",
+        "carousel_on_mobile": true,
+        "max_products": 4,
+        "columns": 4,
+        "mobile_columns": "2",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 8,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "full-width",
+        "horizontal_alignment": "center",
+        "gap": 16,
+        "background_color": "",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "content_rows": {
+      "type": "section",
+      "blocks": {
+        "rows": {
+          "type": "custom-liquid",
+          "settings": {
+            "custom_liquid": "<div class=\"mx-auto w-full px-[15px] min-[544px]:max-w-[540px] min-[769px]:max-w-[720px] min-[992px]:max-w-[1140px] min-[1200px]:max-w-[1440px]\"><div class=\"flex flex-col min-[768px]:flex-row min-[768px]:[&:not(:last-child)]:mb-5\"><div class=\"w-full order-1 min-[768px]:order-none min-[768px]:w-1/2 min-[768px]:pr-[10px]\"><img src=\"{{ 'ansi-photochromic-half-banner-1.gif' | file_url }}\" alt=\"Photochromic Glasses\" width=\"800\" height=\"640\" loading=\"lazy\" decoding=\"async\" class=\"block w-full h-auto\"></div><div class=\"w-full order-2 min-[768px]:order-none min-[768px]:w-1/2 min-[768px]:pl-[10px]\"><div class=\"bg-[#f5f5f5] p-[30px] min-[768px]:flex min-[768px]:h-full min-[768px]:items-center min-[768px]:p-5\"><div><h2 class=\"mb-6 font-spy font-semibold leading-[1.2] text-[calc(1.3rem+0.6vw)] min-[1200px]:text-[1.75rem]\">HAPPY PHOTOCHROMIC</h2><p class=\"mt-0 mb-4 leading-[1.4] text-[16px] min-[768px]:text-[20px]\">A lens for all conditions infused with our Happy Lens&trade; technology. Through its chemical composition, this lens is able to darken in bright scenarios and lighten in dark scenarios, providing seamless transitions in changing environments.</p></div></div></div></div><div class=\"flex flex-col min-[768px]:flex-row min-[768px]:[&:not(:last-child)]:mb-5\"><div class=\"w-full order-2 min-[768px]:order-none min-[768px]:w-1/2 min-[768px]:pr-[10px]\"><div class=\"bg-[#f5f5f5] p-[30px] min-[768px]:flex min-[768px]:h-full min-[768px]:items-center min-[768px]:p-5\"><div><h2 class=\"mb-6 font-spy font-semibold leading-[1.2] text-[calc(1.3rem+0.6vw)] min-[1200px]:text-[1.75rem]\">ANSI Z87-2+ CERTIFICATION</h2><p class=\"mt-0 mb-4 leading-[1.4] text-[16px] min-[768px]:text-[20px]\">Our frames meet the American National Standards Institute&rsquo;s requirements for protection against optical hazards &mdash; flying debris, intense light, splashes, kicked up dirt, fly-fishing hooks, and more.</p></div></div></div><div class=\"w-full order-1 min-[768px]:order-none min-[768px]:w-1/2 min-[768px]:pl-[10px]\"><img src=\"{{ 'ansi-photochromic-half-banner-2.jpg' | file_url }}\" alt=\"Worker with Safety Glasses\" width=\"1000\" height=\"800\" loading=\"lazy\" decoding=\"async\" class=\"block w-full h-auto\"></div></div></div>"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "rows"
+      ],
+      "name": "ANSI — tech content rows",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "footer_banner": {
+      "type": "section",
+      "blocks": {
+        "banner": {
+          "type": "custom-liquid",
+          "settings": {
+            "custom_liquid": "{%- assign cta_url = '' -%}<div class=\"relative w-full overflow-hidden\"><picture class=\"block w-full\"><source media=\"(min-width: 992px)\" srcset=\"{{ 'ansi-photochromic-footer-desktop.jpg' | file_url }}\"><img src=\"{{ 'ansi-photochromic-footer-mobile.jpg' | file_url }}\" alt=\"Shop all safety sunglasses\" loading=\"lazy\" decoding=\"async\" class=\"block w-full object-cover object-center aspect-[800/640] min-[992px]:aspect-[1920/440]\"></picture><a href=\"{{ cta_url | default: '#' }}\" class=\"absolute inset-0 block\"><div class=\"mx-auto flex h-full w-full items-end justify-center px-[15px] min-[544px]:max-w-[540px] min-[769px]:max-w-[720px] min-[992px]:max-w-[1140px] min-[992px]:items-center min-[992px]:justify-end min-[1200px]:max-w-[1440px]\"><div class=\"pt-4 px-4 pb-16 text-center text-white min-[992px]:text-left\"><h2 class=\"mb-2 pb-2 font-spy font-semibold leading-[1.2] text-[calc(1.3rem+0.6vw)] min-[1200px]:text-[1.75rem]\">SHOP ALL<br>SAFETY SUNGLASSES</h2><div class=\"block min-[768px]:inline-block\"><span class=\"inline-block rounded-none border border-[#1d2a2b] bg-white px-8 py-2 text-center text-[.875rem] font-normal uppercase leading-[1.5] text-[#1d2a2b] transition-colors duration-150 hover:border-[#1d2a2b] hover:bg-[#1d2a2b] hover:text-white\">SHOP SAFETY</span></div></div></div></a></div>"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "banner"
+      ],
+      "name": "ANSI — shop safety banner",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 48,
+        "padding-block-end": 0
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "intro",
+    "frames",
+    "content_rows",
+    "footer_banner"
+  ]
+}
