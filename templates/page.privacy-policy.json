@@ -16,7 +16,7 @@
           "type": "text",
           "name": "Title",
           "settings": {
-            "text": "<h6>{{ closest.page.title }}</h6>",
+            "text": "",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
