@@ -133,8 +133,7 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "block_order": []
+          "blocks": {}
         },
         "static-product-card": {
           "type": "_product-card",
