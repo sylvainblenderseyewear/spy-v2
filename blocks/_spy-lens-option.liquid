@@ -1,0 +1,227 @@
+{%- comment -%}
+  One lens in the picker — its swatch and its whole panel.
+
+  The wrapper is `display: contents` so the swatch becomes a flex item of the
+  parent's swatch row. The panel starts here too and the parent's script lifts it out
+  into the stage below the row — see that block for why it's moved rather than
+  reordered with CSS.
+
+  Shared wording (the two comparison labels, the VLT suffix, the slider's accessible
+  name) lives on the parent and is written in by the script — a child block can't
+  read its parent's settings, and repeating those strings on every lens would be
+  four copies of the same value for an editor to keep in sync.
+
+  Swatch: "Swatch color" for a flat tint, "Swatch CSS" when the source uses a
+  gradient. Swatch CSS wins when both are set.
+{%- endcomment -%}
+
+{%- liquid
+  assign left_img = block.settings.overlay_image
+  assign right_img = block.settings.base_image
+  assign swatch = block.settings.swatch_css | default: block.settings.swatch_color
+-%}
+
+<div class="contents" {{ block.shopify_attributes }}>
+  <button
+    type="button"
+    data-lens-swatch
+    aria-pressed="false"
+    class="
+      group relative cursor-pointer bg-transparent border-0 p-0 leading-none
+      focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#333]
+    "
+  >
+    <span class="sr-only">{{ block.settings.name | default: block.settings.vlt }}</span>
+    <span
+      class="
+        block rounded-full border-2 border-transparent relative overflow-hidden
+        transition-transform duration-300
+        w-9 h-9 max-[769px]:w-8 max-[769px]:h-8
+        [background:var(--swatch-bg)]
+        group-hover:scale-110 group-aria-pressed:scale-110
+      "
+      style="--swatch-bg: {{ swatch }};"
+      aria-hidden="true"
+    >
+      {%- comment -%}
+        Uses the hidden attribute, not Tailwind's .hidden: important-mode utilities
+        outrank [hidden], so the script could never reveal it again.
+      {%- endcomment -%}
+      <span
+        data-lens-check
+        hidden
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-base font-bold"
+      >&check;</span>
+    </span>
+  </button>
+
+  <div data-lens-panel hidden>
+    {%- if block.settings.name != blank -%}
+      <div class="text-center text-[14px] font-semibold text-black tracking-[0.5px] mb-[25px] max-[769px]:text-[13px] max-[769px]:mb-5">
+        {{ block.settings.name }}
+      </div>
+    {%- endif -%}
+
+    <div class="flex gap-10 items-start max-[769px]:flex-col max-[769px]:gap-[25px]">
+      {%- comment -%} Comparison slider. --cs is the split, 0-100 from the left. {%- endcomment -%}
+      <div class="flex-1 max-w-[500px] max-[769px]:max-w-full">
+        <div
+          data-lens-frame
+          style="--cs: 50;"
+          class="relative overflow-hidden rounded-[4px] shadow-[0_2px_8px_rgba(0,0,0,0.1)] mb-[10px] select-none"
+        >
+          {%- if right_img != blank -%}
+            <img
+              src="{{ right_img | image_url: width: 1000 }}"
+              alt=""
+              width="{{ right_img.width }}"
+              height="{{ right_img.height }}"
+              loading="lazy"
+              class="block w-full h-auto"
+            >
+          {%- else -%}
+            <div class="w-full aspect-[3/2] bg-[#e6e6e6]"></div>
+          {%- endif -%}
+
+          <div class="absolute inset-0 overflow-hidden [clip-path:inset(0_calc((100_-_var(--cs))_*_1%)_0_0)]">
+            {%- if left_img != blank -%}
+              <img
+                src="{{ left_img | image_url: width: 1000 }}"
+                alt=""
+                loading="lazy"
+                class="block w-full h-full object-cover"
+              >
+            {%- else -%}
+              <div class="w-full h-full bg-[#cccccc]"></div>
+            {%- endif -%}
+          </div>
+
+          <div
+            class="absolute top-0 w-[3px] h-full bg-white pointer-events-none left-[calc(var(--cs)_*_1%)] -translate-x-1/2"
+            aria-hidden="true"
+          >
+            <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.3)] flex items-center justify-center text-[#333]">
+              <svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 6 4.5 10 8 14M12 6l3.5 4-3.5 4" />
+              </svg>
+            </span>
+          </div>
+
+          <input
+            data-lens-range
+            type="range"
+            min="0"
+            max="100"
+            value="50"
+            class="absolute inset-0 w-full h-full m-0 p-0 opacity-0 cursor-ew-resize appearance-none z-[2]"
+          >
+        </div>
+
+        <div class="flex justify-between text-[11px] font-semibold text-[#666] uppercase tracking-[1px]">
+          <span data-lens-label-before></span>
+          <span data-lens-label-after></span>
+        </div>
+      </div>
+
+      {%- comment -%} Copy panel. {%- endcomment -%}
+      <div class="flex-1 max-w-[400px] max-[769px]:max-w-full">
+        {%- if block.settings.vlt != blank -%}
+          <div class="inline-block bg-black text-white rounded-[20px] px-4 py-[6px] text-[13px] font-semibold mb-5">
+            {{ block.settings.vlt }} <span data-lens-vlt-suffix></span>
+          </div>
+        {%- endif -%}
+
+        {%- if block.settings.subtitle != blank -%}
+          <h3 class="text-[15px] font-bold text-black leading-[1.4] m-0 mb-3 max-[769px]:text-[16px]">
+            {{ block.settings.subtitle }}
+          </h3>
+        {%- endif -%}
+
+        {%- if block.settings.description != blank -%}
+          <p class="text-[13px] leading-[1.7] text-[#333] mb-[15px] max-[769px]:text-[14px]">
+            {{ block.settings.description }}
+          </p>
+        {%- endif -%}
+
+        {%- if block.settings.usage != blank -%}
+          <p class="text-[13px] leading-[1.7] text-[#333] mb-[15px] max-[769px]:text-[14px]">
+            {{ block.settings.usage }}
+          </p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Lens option",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "name",
+      "label": "Lens name",
+      "default": "HAPPY BOOST™ / POLAR ICE BLUE MIRROR"
+    },
+    {
+      "type": "text",
+      "id": "vlt",
+      "label": "VLT",
+      "info": "Shown inside the badge, e.g. 12%",
+      "default": "12%"
+    },
+    {
+      "type": "header",
+      "content": "Swatch"
+    },
+    {
+      "type": "color",
+      "id": "swatch_color",
+      "label": "Swatch color",
+      "default": "#4b9bff"
+    },
+    {
+      "type": "text",
+      "id": "swatch_css",
+      "label": "Swatch CSS",
+      "info": "Optional. Overrides the color, e.g. linear-gradient(135deg, #4B9BFF 0%, #87CEEB 100%)"
+    },
+    {
+      "type": "header",
+      "content": "Comparison images"
+    },
+    {
+      "type": "image_picker",
+      "id": "overlay_image",
+      "label": "Left image",
+      "info": "Shown on the left of the split."
+    },
+    {
+      "type": "image_picker",
+      "id": "base_image",
+      "label": "Right image",
+      "info": "Shown on the right of the split."
+    },
+    {
+      "type": "header",
+      "content": "Copy"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "textarea",
+      "id": "usage",
+      "label": "Best for"
+    }
+  ]
+}
+{% endschema %}

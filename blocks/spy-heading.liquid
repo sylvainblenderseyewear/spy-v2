@@ -1,0 +1,291 @@
+{%- comment -%}
+  Heading with exact type control.
+
+  Exists because the stock `text` block's font_size is a fixed select with no
+  1.75rem (28px) or 1.625rem (26px) — off-list values are dropped and Horizon's
+  fluid preset takes over. Everything here is a real setting, so an editor changes
+  the words and the type without touching code.
+
+  `highlight` colours one run of words inside the heading — the source does this for
+  "HAPPY BOOST(tm)" in orange inside an otherwise black title.
+
+  Size, weight and margins each have a mobile value. The switch is 769px to match
+  the layout breakpoints on the pages that use it.
+{%- endcomment -%}
+
+{%- liquid
+  assign tag = block.settings.level | default: 'h2'
+
+  assign body = block.settings.text
+  if block.settings.highlight != blank
+    capture hl
+      echo '<span class="text-[color:var(--sh-hl)]">'
+      echo block.settings.highlight
+      echo '</span>'
+    endcapture
+    assign body = body | replace: block.settings.highlight, hl
+  endif
+
+  case block.settings.align
+    when 'center'
+      assign align = 'text-center'
+    when 'right'
+      assign align = 'text-right'
+    else
+      assign align = 'text-left'
+  endcase
+
+  case block.settings.align_mobile
+    when 'center'
+      assign align_m = 'max-[769px]:text-center'
+    when 'right'
+      assign align_m = 'max-[769px]:text-right'
+    when 'left'
+      assign align_m = 'max-[769px]:text-left'
+    else
+      assign align_m = ''
+  endcase
+
+  if block.settings.uppercase
+    assign case_class = 'uppercase'
+  else
+    assign case_class = 'normal-case'
+  endif
+-%}
+
+{%- if block.settings.text != blank -%}
+  <{{ tag }}
+    class="
+      spy-heading w-full {{ align }} {{ align_m }} {{ case_class }}
+      text-[length:var(--sh-size-mobile)] min-[769px]:text-[length:var(--sh-size)]
+      font-[number:var(--sh-weight)] leading-[var(--sh-leading)]
+      tracking-[var(--sh-tracking)]
+      mt-[var(--sh-mt-mobile)] mb-[var(--sh-mb-mobile)]
+      min-[769px]:mt-[var(--sh-mt)] min-[769px]:mb-[var(--sh-mb)]
+      {% if block.settings.text_color != blank %}text-[color:var(--sh-color)]{% endif %}
+      {% if block.settings.max_width > 0 %}max-w-[var(--sh-max)] mx-auto{% endif %}
+    "
+    style="
+      --sh-size: {{ block.settings.size }}px;
+      --sh-size-mobile: {{ block.settings.size_mobile }}px;
+      --sh-weight: {{ block.settings.weight }};
+      --sh-leading: {{ block.settings.line_height | divided_by: 100.0 }};
+      --sh-tracking: {{ block.settings.letter_spacing }}px;
+      --sh-mt: {{ block.settings.margin_top }}px;
+      --sh-mb: {{ block.settings.margin_bottom }}px;
+      --sh-mt-mobile: {{ block.settings.margin_top_mobile }}px;
+      --sh-mb-mobile: {{ block.settings.margin_bottom_mobile }}px;
+      {% if block.settings.text_color != blank %}--sh-color: {{ block.settings.text_color }};{% endif %}
+      {% if block.settings.highlight != blank %}--sh-hl: {{ block.settings.highlight_color }};{% endif %}
+      {% if block.settings.max_width > 0 %}--sh-max: {{ block.settings.max_width }}px;{% endif %}
+    "
+    {{ block.shopify_attributes }}
+  >{{ body }}</{{ tag }}>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Heading",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Heading",
+      "default": "Section heading"
+    },
+    {
+      "type": "select",
+      "id": "level",
+      "label": "Heading level",
+      "info": "Affects meaning for search and screen readers, not the size.",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "p", "label": "None (plain text)" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "Highlight"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Words to colour",
+      "info": "Must match the heading exactly, e.g. HAPPY BOOST™"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Highlight colour",
+      "default": "#ee7624"
+    },
+    {
+      "type": "header",
+      "content": "Type"
+    },
+    {
+      "type": "range",
+      "id": "size",
+      "label": "Size — desktop",
+      "min": 12,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "size_mobile",
+      "label": "Size — mobile",
+      "min": 10,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "weight",
+      "label": "Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "900", "label": "Black" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line height",
+      "min": 90,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter spacing",
+      "min": -2,
+      "max": 8,
+      "step": 0.5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "label": "Uppercase",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Colour",
+      "info": "Leave empty to inherit."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment — desktop",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "align_mobile",
+      "label": "Alignment — mobile",
+      "options": [
+        { "value": "", "label": "Same as desktop" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": ""
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "info": "0 means full width.",
+      "min": 0,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Spacing — desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Above",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Below",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Spacing — mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_mobile",
+      "label": "Above",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_mobile",
+      "label": "Below",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    }
+  ],
+  "presets": [
+    {
+      "name": "Heading",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

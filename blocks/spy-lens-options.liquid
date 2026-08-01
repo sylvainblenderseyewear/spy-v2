@@ -1,0 +1,115 @@
+{%- comment -%}
+  Lens Options — swatch picker driving a before/after comparison slider.
+
+  A parent block cannot read `block.blocks[].settings`, so nothing is centralised
+  here: each child renders its own swatch AND its own complete panel.
+
+  Both start inside the child, which means the DOM reads swatch, panel, swatch,
+  panel... The script lifts every panel into the stage below, leaving the swatches
+  as one clean row. Doing it by moving nodes rather than with flex `order` or grid
+  placement keeps the tab order matching what you see — otherwise focus would jump
+  from the first swatch into the open panel and back up to the second swatch.
+
+  Panels ship with the hidden attribute, so nothing flashes before the script runs
+  and nothing is stranded mid-row if it never does.
+
+  The drag uses a transparent range input over the images rather than raw pointer
+  maths, so the slider is keyboard- and screen-reader-operable for free.
+{%- endcomment -%}
+
+<div
+  class="spy-lens-options w-full mx-auto max-w-[var(--lop-max)]"
+  style="--lop-max: {{ block.settings.max_width }}px;"
+  data-spy-lens-options
+  data-label-before="{{ block.settings.label_before | escape }}"
+  data-label-after="{{ block.settings.label_after | escape }}"
+  data-vlt-suffix="{{ block.settings.vlt_suffix | escape }}"
+  data-slider-label="{{ block.settings.slider_label | escape }}"
+  {{ block.shopify_attributes }}
+>
+  <div
+    class="flex flex-wrap justify-center items-center gap-x-5 gap-y-3 max-[769px]:gap-x-3"
+    role="group"
+    aria-label="{{ block.settings.swatch_group_label | escape }}"
+  >
+    {% content_for 'blocks' %}
+  </div>
+
+  {%- comment -%}
+    The script moves every panel in here, then shows one. 30px clear of the swatch
+    row, which the source splits as 15px margin plus 15px padding.
+  {%- endcomment -%}
+  <div data-lens-stage class="mt-[30px] max-[769px]:mt-[25px]"></div>
+
+  <script src="{{ 'spy-lens-options.js' | asset_url }}" defer></script>
+</div>
+
+{% schema %}
+{
+  "name": "Lens Options",
+  "tag": null,
+  "blocks": [{ "type": "_spy-lens-option" }],
+  "settings": [
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width",
+      "min": 600,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1000
+    },
+    {
+      "type": "header",
+      "content": "Comparison labels"
+    },
+    {
+      "type": "text",
+      "id": "label_before",
+      "label": "Left label",
+      "default": "Without lens"
+    },
+    {
+      "type": "text",
+      "id": "label_after",
+      "label": "Right label",
+      "default": "With lens"
+    },
+    {
+      "type": "text",
+      "id": "vlt_suffix",
+      "label": "VLT badge suffix",
+      "default": "VLT"
+    },
+    {
+      "type": "header",
+      "content": "Accessibility"
+    },
+    {
+      "type": "text",
+      "id": "swatch_group_label",
+      "label": "Swatch group label",
+      "default": "Choose a lens"
+    },
+    {
+      "type": "text",
+      "id": "slider_label",
+      "label": "Slider label",
+      "default": "Drag to compare the lens view"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lens Options",
+      "category": "SPY",
+      "blocks": [
+        { "type": "_spy-lens-option" },
+        { "type": "_spy-lens-option" },
+        { "type": "_spy-lens-option" },
+        { "type": "_spy-lens-option" }
+      ]
+    }
+  ]
+}
+{% endschema %}
