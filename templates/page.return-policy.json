@@ -186,7 +186,7 @@
           "name": "Content1",
           "settings": {
             "text": "<p>You have a period of <strong>30 days</strong> following the delivery of your order to inform us if you would like to return part or all of your order.<br/><br/>You must return the items to us within <strong>30 days</strong> of registering your cancellation in your customer account.</p><p><em>Disclaimer: Please note that we do not provide a return label.</em></p>",
-            "width": "fit-content",
+            "width": "100%",
             "max_width": "none",
             "alignment": "left",
             "type_preset": "rte",
