@@ -187,7 +187,7 @@
           "settings": {
             "text": "<p>You have a period of <strong>30 days</strong> following the delivery of your order to inform us if you would like to return part or all of your order.<br/><br/>You must return the items to us within <strong>30 days</strong> of registering your cancellation in your customer account.</p><p><em>Disclaimer: Please note that we do not provide a return label.</em></p>",
             "width": "fit-content",
-            "max_width": "normal",
+            "max_width": "none",
             "alignment": "left",
             "type_preset": "rte",
             "font": "var(--font-body--family)",
@@ -260,7 +260,7 @@
           "settings": {
             "text": "<p>1. Login to your account HERE or look up your order using the order number, email, and Billing zip code.</p>",
             "width": "100%",
-            "max_width": "normal",
+            "max_width": "none",
             "alignment": "left",
             "type_preset": "custom",
             "font": "var(--font-body--family)",
