@@ -323,7 +323,7 @@ p:empty {
 }
 
 .page-width-content {
-  --page-content-width: var(--normal-content-width);
+  --page-content-width: var(--wide-content-width);
   --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
 }
 
