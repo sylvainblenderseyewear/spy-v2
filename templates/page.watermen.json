@@ -1,0 +1,3207 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "intro": {
+      "type": "section",
+      "blocks": {
+        "wrap": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 0,
+            "width": "custom",
+            "custom_width": 49,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 40,
+            "padding-block-end": 40,
+            "padding-inline-start": 20,
+            "padding-inline-end": 20
+          },
+          "blocks": {
+            "heading": {
+              "type": "spy-heading",
+              "name": "Heading",
+              "settings": {
+                "text": "WATERMEN’S FRAMES",
+                "level": "h2",
+                "highlight": "",
+                "highlight_color": "#ee7624",
+                "size": 40,
+                "size_mobile": 32,
+                "weight": "700",
+                "line_height": 120,
+                "letter_spacing": 2,
+                "uppercase": true,
+                "text_color": "",
+                "align": "center",
+                "align_mobile": "",
+                "max_width": 0,
+                "margin_top": 0,
+                "margin_bottom": 30,
+                "margin_top_mobile": 0,
+                "margin_bottom_mobile": 30
+              },
+              "blocks": {}
+            },
+            "lead": {
+              "type": "spy-body-text",
+              "name": "Lead paragraph",
+              "settings": {
+                "text": "<p>Fueled by our proprietary <strong>Happy Polar™</strong> and <strong>Happy Boost™</strong> lens tech, SPY+ delivers unmatched clarity, contrast, and glare-cutting performance built for life on the water.</p>",
+                "highlight": "",
+                "highlight_color": "#ee7624",
+                "size": 19,
+                "size_mobile": 17,
+                "weight": "400",
+                "line_height": 180,
+                "text_color": "",
+                "align": "center",
+                "align_mobile": "",
+                "max_width": 0,
+                "paragraph_gap": 25,
+                "margin_bottom": 25,
+                "margin_bottom_mobile": 25
+              },
+              "blocks": {}
+            },
+            "rest": {
+              "type": "spy-body-text",
+              "name": "Body paragraphs",
+              "settings": {
+                "text": "<p>Crafted for deckhands, captains, riders, and lifers who grind from sunup to sundown, SPY+ comes from a place where water, wind, and grit aren’t just elements—they’re a way of life.</p><p>From 4AM runs out of Point Loma to freezing dawn bites in Montauk, to full-send throttle punches to outrun the weather—we build gear for those who go.</p>",
+                "highlight": "",
+                "highlight_color": "#ee7624",
+                "size": 18,
+                "size_mobile": 16,
+                "weight": "400",
+                "line_height": 180,
+                "text_color": "",
+                "align": "center",
+                "align_mobile": "",
+                "max_width": 0,
+                "paragraph_gap": 25,
+                "margin_bottom": 0,
+                "margin_bottom_mobile": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading",
+            "lead",
+            "rest"
+          ]
+        }
+      },
+      "block_order": [
+        "wrap"
+      ],
+      "name": "Watermen — intro",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "frames": {
+      "type": "product-list",
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "name": "t:names.header",
+          "static": true,
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": true,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fill",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "spy_tech_badge_XQ6chg": {
+              "type": "spy-tech-badge",
+              "name": "Tech Badge",
+              "settings": {},
+              "blocks": {}
+            },
+            "product_card_gallery_eCNPeJ": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "adapt",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "spy_quick_view_btn_M4hUjh": {
+              "type": "spy-quick-view-btn",
+              "name": "Quick View Button",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_new_badge_fTWJ8m": {
+              "type": "spy-new-badge",
+              "name": "New Badge",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_color_count_hkXrAJ": {
+              "type": "spy-color-count",
+              "name": "Color Count",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_swatches_CqRm9T": {
+              "type": "spy-swatches",
+              "name": "Color Preview",
+              "settings": {
+                "display": "card"
+              },
+              "blocks": {}
+            },
+            "product_title_3WpyTJ": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "title_source": "product",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "center",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price_YFxQDQ": {
+              "type": "price",
+              "name": "t:names.product_price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "center",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "text_color": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "spy_tech_badge_XQ6chg",
+            "product_card_gallery_eCNPeJ",
+            "spy_quick_view_btn_M4hUjh",
+            "spy_new_badge_fTWJ8m",
+            "spy_color_count_hkXrAJ",
+            "spy_swatches_CqRm9T",
+            "product_title_3WpyTJ",
+            "price_YFxQDQ"
+          ]
+        }
+      },
+      "name": "Watermen — frames carousel",
+      "settings": {
+        "collection": "watermen",
+        "layout_type": "carousel",
+        "carousel_on_mobile": true,
+        "max_products": 10,
+        "columns": 5,
+        "mobile_columns": "2",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 8,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "horizontal_alignment": "center",
+        "gap": 16,
+        "background_color": "",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "frames_cta": {
+      "type": "section",
+      "blocks": {
+        "cta": {
+          "type": "button",
+          "name": "Shop all",
+          "settings": {
+            "label": "SHOP ALL FISHING SUNGLASSES",
+            "link": "",
+            "open_in_new_tab": false,
+            "style_class": "button-custom",
+            "custom_button_background": "#ee7624",
+            "custom_button_text": "#ffffff",
+            "custom_button_border": "#ee7624",
+            "link_text_color": "",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100,
+            "padding_block": 15,
+            "padding_inline": 30
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "cta"
+      ],
+      "name": "Watermen — shop all CTA",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 40,
+        "padding-block-end": 15
+      }
+    },
+    "our_tech": {
+      "type": "section",
+      "blocks": {
+        "hdr": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 0,
+            "width": "custom",
+            "custom_width": 50,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "heading": {
+              "type": "spy-heading",
+              "name": "Heading",
+              "settings": {
+                "text": "OUR TECH",
+                "level": "h2",
+                "highlight": "",
+                "highlight_color": "#ee7624",
+                "size": 28,
+                "size_mobile": 28,
+                "weight": "600",
+                "line_height": 120,
+                "letter_spacing": 0,
+                "uppercase": true,
+                "text_color": "",
+                "align": "center",
+                "align_mobile": "",
+                "max_width": 0,
+                "margin_top": 28,
+                "margin_bottom": 14,
+                "margin_top_mobile": 28,
+                "margin_bottom_mobile": 14
+              },
+              "blocks": {}
+            },
+            "sub": {
+              "type": "spy-body-text",
+              "name": "Subheading",
+              "settings": {
+                "text": "<p>We offer some of the best lens options for the Waterman, from basic polarization to color enhancing proprietary tech and even lenses to protect your eyes from the harsh impacts and danger with our ANSI rated product.</p>",
+                "highlight": "",
+                "highlight_color": "#ee7624",
+                "size": 18,
+                "size_mobile": 16,
+                "weight": "400",
+                "line_height": 150,
+                "text_color": "",
+                "align": "center",
+                "align_mobile": "",
+                "max_width": 0,
+                "paragraph_gap": 25,
+                "margin_bottom": 0,
+                "margin_bottom_mobile": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading",
+            "sub"
+          ]
+        },
+        "row1": {
+          "type": "group",
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "flex-start",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 30,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "tile1": {
+              "type": "group",
+              "name": "Happy Lens",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "flex-start",
+                "gap": 0,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "background_media": "none",
+                "background_color": "",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "img": {
+                  "type": "image",
+                  "settings": {
+                    "image": "shopify://shop_images/watermen-tech-happy-lens.jpg",
+                    "link": "",
+                    "image_ratio": "adapt",
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "body": {
+                  "type": "group",
+                  "settings": {
+                    "content_direction": "column",
+                    "vertical_on_mobile": true,
+                    "horizontal_alignment": "center",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "flex-start",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 0,
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "background_media": "none",
+                    "background_color": "",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "placeholder": "",
+                    "padding-block-start": 30,
+                    "padding-block-end": 30,
+                    "padding-inline-start": 20,
+                    "padding-inline-end": 20
+                  },
+                  "blocks": {
+                    "title": {
+                      "type": "spy-heading",
+                      "name": "Title",
+                      "settings": {
+                        "text": "PROPRIETARY HAPPY LENS® TECH:",
+                        "level": "h3",
+                        "highlight": "",
+                        "highlight_color": "#ee7624",
+                        "size": 18,
+                        "size_mobile": 18,
+                        "weight": "700",
+                        "line_height": 120,
+                        "letter_spacing": 0.5,
+                        "uppercase": true,
+                        "text_color": "",
+                        "align": "left",
+                        "align_mobile": "",
+                        "max_width": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 20,
+                        "margin_top_mobile": 0,
+                        "margin_bottom_mobile": 20
+                      },
+                      "blocks": {}
+                    },
+                    "points": {
+                      "type": "spy-bullet-list",
+                      "name": "Points",
+                      "settings": {
+                        "items": "TUNED TO BOOST MOOD &amp; ALERTNESS\nENHANCES COLOR AND CONTRAST\nPATENTED THERAPEUTIC TECHNOLOGY\nPOLARIZED",
+                        "marker": "•",
+                        "size": 14,
+                        "size_mobile": 14,
+                        "line_height": 160,
+                        "text_color": "",
+                        "align": "left",
+                        "indent": 20,
+                        "item_gap": 8,
+                        "margin_bottom": 20
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "title",
+                    "points"
+                  ]
+                }
+              },
+              "block_order": [
+                "img",
+                "body"
+              ]
+            },
+            "tile2": {
+              "type": "group",
+              "name": "Happy Boost",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "flex-start",
+                "gap": 0,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "background_media": "none",
+                "background_color": "",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "img": {
+                  "type": "image",
+                  "settings": {
+                    "image": "shopify://shop_images/watermen-tech-happy-boost.jpg",
+                    "link": "",
+                    "image_ratio": "adapt",
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "body": {
+                  "type": "group",
+                  "settings": {
+                    "content_direction": "column",
+                    "vertical_on_mobile": true,
+                    "horizontal_alignment": "center",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "flex-start",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 0,
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "background_media": "none",
+                    "background_color": "",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "placeholder": "",
+                    "padding-block-start": 30,
+                    "padding-block-end": 30,
+                    "padding-inline-start": 20,
+                    "padding-inline-end": 20
+                  },
+                  "blocks": {
+                    "title": {
+                      "type": "spy-heading",
+                      "name": "Title",
+                      "settings": {
+                        "text": "PROPRIETARY HAPPY BOOST™ LENS TECH:",
+                        "level": "h3",
+                        "highlight": "HAPPY BOOST™",
+                        "highlight_color": "#ee7624",
+                        "size": 18,
+                        "size_mobile": 18,
+                        "weight": "700",
+                        "line_height": 120,
+                        "letter_spacing": 0.5,
+                        "uppercase": true,
+                        "text_color": "",
+                        "align": "left",
+                        "align_mobile": "",
+                        "max_width": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 20,
+                        "margin_top_mobile": 0,
+                        "margin_bottom_mobile": 20
+                      },
+                      "blocks": {}
+                    },
+                    "points": {
+                      "type": "spy-bullet-list",
+                      "name": "Points",
+                      "settings": {
+                        "items": "ALL THE BENEFITS OF HAPPY LENS® TECH PLUS...\nCOLOR ENHACEMENT: UP TO 30%\nWHITE BALANCE MAINTAINED\nPREMIUM POLARIZATION\nBACKSIDE ANTI-REFLECTIVE COATING\nHYDRO AND OLEOPHOBIC COATING",
+                        "marker": "•",
+                        "size": 14,
+                        "size_mobile": 14,
+                        "line_height": 160,
+                        "text_color": "",
+                        "align": "left",
+                        "indent": 20,
+                        "item_gap": 8,
+                        "margin_bottom": 20
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "title",
+                    "points"
+                  ]
+                }
+              },
+              "block_order": [
+                "img",
+                "body"
+              ]
+            }
+          },
+          "block_order": [
+            "tile1",
+            "tile2"
+          ]
+        },
+        "row2": {
+          "type": "group",
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "flex-start",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 30,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "tile3": {
+              "type": "group",
+              "name": "ANSI Z87-2+",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "flex-start",
+                "gap": 0,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "background_media": "none",
+                "background_color": "",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "img": {
+                  "type": "image",
+                  "settings": {
+                    "image": "shopify://shop_images/watermen-tech-ansi.jpg",
+                    "link": "",
+                    "image_ratio": "adapt",
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "body": {
+                  "type": "group",
+                  "settings": {
+                    "content_direction": "column",
+                    "vertical_on_mobile": true,
+                    "horizontal_alignment": "center",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "flex-start",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 0,
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "background_media": "none",
+                    "background_color": "",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "placeholder": "",
+                    "padding-block-start": 30,
+                    "padding-block-end": 30,
+                    "padding-inline-start": 20,
+                    "padding-inline-end": 20
+                  },
+                  "blocks": {
+                    "title": {
+                      "type": "spy-heading",
+                      "name": "Title",
+                      "settings": {
+                        "text": "KEY PRODUCT ANSI Z87-2+ CERTIFICATION:",
+                        "level": "h3",
+                        "highlight": "",
+                        "highlight_color": "#ee7624",
+                        "size": 18,
+                        "size_mobile": 18,
+                        "weight": "700",
+                        "line_height": 120,
+                        "letter_spacing": 0.5,
+                        "uppercase": true,
+                        "text_color": "",
+                        "align": "left",
+                        "align_mobile": "",
+                        "max_width": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 20,
+                        "margin_top_mobile": 0,
+                        "margin_bottom_mobile": 20
+                      },
+                      "blocks": {}
+                    },
+                    "points": {
+                      "type": "spy-bullet-list",
+                      "name": "Points",
+                      "settings": {
+                        "items": "HIGH IMPACT PROTECTION\nENHANCED OPTICAL CLARITY\nAVAILABLE IN PRESCRIPTION\nCERTIFIED SAFETY COMPLIANCE ANSI Z87-2+",
+                        "marker": "•",
+                        "size": 14,
+                        "size_mobile": 14,
+                        "line_height": 160,
+                        "text_color": "",
+                        "align": "left",
+                        "indent": 20,
+                        "item_gap": 8,
+                        "margin_bottom": 20
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "title",
+                    "points"
+                  ]
+                }
+              },
+              "block_order": [
+                "img",
+                "body"
+              ]
+            },
+            "tile4": {
+              "type": "group",
+              "name": "Sun RX",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "flex-start",
+                "gap": 0,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "background_media": "none",
+                "background_color": "",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "img": {
+                  "type": "image",
+                  "settings": {
+                    "image": "shopify://shop_images/watermen-tech-sun-rx.jpg",
+                    "link": "",
+                    "image_ratio": "adapt",
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "body": {
+                  "type": "group",
+                  "settings": {
+                    "content_direction": "column",
+                    "vertical_on_mobile": true,
+                    "horizontal_alignment": "center",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "flex-start",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 0,
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "background_media": "none",
+                    "background_color": "",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "placeholder": "",
+                    "padding-block-start": 30,
+                    "padding-block-end": 30,
+                    "padding-inline-start": 20,
+                    "padding-inline-end": 20
+                  },
+                  "blocks": {
+                    "title": {
+                      "type": "spy-heading",
+                      "name": "Title",
+                      "settings": {
+                        "text": "SUN RX CAPABILITIES (COMING SOON):",
+                        "level": "h3",
+                        "highlight": "",
+                        "highlight_color": "#ee7624",
+                        "size": 18,
+                        "size_mobile": 18,
+                        "weight": "700",
+                        "line_height": 120,
+                        "letter_spacing": 0.5,
+                        "uppercase": true,
+                        "text_color": "",
+                        "align": "left",
+                        "align_mobile": "",
+                        "max_width": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 20,
+                        "margin_top_mobile": 0,
+                        "margin_bottom_mobile": 20
+                      },
+                      "blocks": {}
+                    },
+                    "points": {
+                      "type": "spy-bullet-list",
+                      "name": "Points",
+                      "settings": {
+                        "items": "CUSTOMIZED VISION CORRECTION\nHAPPY/ HAPPY BOOST LENS TECH\nOFFERED IN KEY PERFORMANCE FRAMES",
+                        "marker": "•",
+                        "size": 14,
+                        "size_mobile": 14,
+                        "line_height": 160,
+                        "text_color": "",
+                        "align": "left",
+                        "indent": 20,
+                        "item_gap": 8,
+                        "margin_bottom": 20
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "title",
+                    "points"
+                  ]
+                }
+              },
+              "block_order": [
+                "img",
+                "body"
+              ]
+            }
+          },
+          "block_order": [
+            "tile3",
+            "tile4"
+          ]
+        }
+      },
+      "block_order": [
+        "hdr",
+        "row1",
+        "row2"
+      ],
+      "name": "Watermen — our tech",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "#f5f5f5",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 48,
+        "padding-block-end": 40
+      }
+    },
+    "lens_overview": {
+      "type": "section",
+      "blocks": {
+        "hdr": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 0,
+            "width": "custom",
+            "custom_width": 50,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "heading": {
+              "type": "spy-heading",
+              "name": "Heading",
+              "settings": {
+                "text": "LENS OVERVIEW",
+                "level": "h2",
+                "highlight": "",
+                "highlight_color": "#ee7624",
+                "size": 28,
+                "size_mobile": 28,
+                "weight": "600",
+                "line_height": 120,
+                "letter_spacing": 0,
+                "uppercase": true,
+                "text_color": "",
+                "align": "center",
+                "align_mobile": "",
+                "max_width": 0,
+                "margin_top": 28,
+                "margin_bottom": 14,
+                "margin_top_mobile": 28,
+                "margin_bottom_mobile": 14
+              },
+              "blocks": {}
+            },
+            "sub": {
+              "type": "spy-body-text",
+              "name": "Subheading",
+              "settings": {
+                "text": "<p>We offer a fine tuned selection of Happy Boost lens options for every angling condition, from full-blast offshroe glare to cloudy twilight on the flats. Choose your VLT, dial your visibility and don’t miss a thing.</p>",
+                "highlight": "",
+                "highlight_color": "#ee7624",
+                "size": 18,
+                "size_mobile": 16,
+                "weight": "400",
+                "line_height": 150,
+                "text_color": "",
+                "align": "center",
+                "align_mobile": "",
+                "max_width": 0,
+                "paragraph_gap": 25,
+                "margin_bottom": 0,
+                "margin_bottom_mobile": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading",
+            "sub"
+          ]
+        },
+        "scale": {
+          "type": "spy-lens-overview",
+          "name": "VLT scale",
+          "settings": {
+            "max_width": 1200,
+            "scale_color": "#333333",
+            "icon_sun": "",
+            "icon_cloud": "",
+            "label_bright": "Bright sun",
+            "label_dim": "Overcast"
+          },
+          "blocks": {
+            "lens1": {
+              "type": "_spy-lens-overview-item",
+              "name": "12% VLT — Sunny/Bright",
+              "settings": {
+                "image": "shopify://shop_images/watermen-vlt-bright-water.jpg",
+                "image_alt": "Sunny/Bright — Offshore Water",
+                "ring_color": "#87ceeb",
+                "ring_gradient": "linear-gradient(0deg, rgba(70,130,180,0.2) 0%, rgba(70,130,180,0.3) 50%, rgba(70,130,180,0.2) 100%)",
+                "vlt": "12% VLT",
+                "condition": "Sunny/Bright",
+                "description": "Offshore Water"
+              },
+              "blocks": {}
+            },
+            "lens2": {
+              "type": "_spy-lens-overview-item",
+              "name": "15% VLT — Varied Conditions",
+              "settings": {
+                "image": "shopify://shop_images/watermen-vlt-green-water.jpg",
+                "image_alt": "Varied Conditions — Inshore, Offshore, All Around",
+                "ring_color": "#6b8e7f",
+                "ring_gradient": "linear-gradient(135deg, rgba(107,142,127,0.7) 0%, rgba(90,120,105,0.8) 50%, rgba(107,142,127,0.7) 100%)",
+                "vlt": "15% VLT",
+                "condition": "Varied Conditions",
+                "description": "Inshore, Offshore, All Around"
+              },
+              "blocks": {}
+            },
+            "lens3": {
+              "type": "_spy-lens-overview-item",
+              "name": "18% VLT — Varied Conditions",
+              "settings": {
+                "image": "shopify://shop_images/watermen-vlt-dark-water.jpg",
+                "image_alt": "Varied Conditions — Inshore, Offshore, All Around",
+                "ring_color": "#4a4a4a",
+                "ring_gradient": "radial-gradient(ellipse at center, rgba(60,60,60,0.8) 0%, rgba(40,40,40,0.9) 100%)",
+                "vlt": "18% VLT",
+                "condition": "Varied Conditions",
+                "description": "Inshore, Offshore, All Around"
+              },
+              "blocks": {}
+            },
+            "lens4": {
+              "type": "_spy-lens-overview-item",
+              "name": "20% VLT — Cloudy/Twilight",
+              "settings": {
+                "image": "shopify://shop_images/watermen-vlt-shallow-water.jpg",
+                "image_alt": "Cloudy/Twilight — Shallows, Flats, Site Fishing",
+                "ring_color": "#a89b85",
+                "ring_gradient": "radial-gradient(circle at center, rgba(168,155,133,0.6) 0%, rgba(140,130,110,0.8) 100%)",
+                "vlt": "20% VLT",
+                "condition": "Cloudy/Twilight",
+                "description": "Shallows, Flats, Site Fishing"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "lens1",
+            "lens2",
+            "lens3",
+            "lens4"
+          ]
+        }
+      },
+      "block_order": [
+        "hdr",
+        "scale"
+      ],
+      "name": "Watermen — lens overview",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 48,
+        "padding-block-end": 0
+      }
+    },
+    "lens_options": {
+      "type": "section",
+      "blocks": {
+        "hdr": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 0,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "heading": {
+              "type": "spy-heading",
+              "name": "Heading",
+              "settings": {
+                "text": "LENS OPTIONS",
+                "level": "h2",
+                "highlight": "",
+                "highlight_color": "#ee7624",
+                "size": 26,
+                "size_mobile": 22,
+                "weight": "700",
+                "line_height": 120,
+                "letter_spacing": 2,
+                "uppercase": true,
+                "text_color": "#000000",
+                "align": "center",
+                "align_mobile": "",
+                "max_width": 0,
+                "margin_top": 0,
+                "margin_bottom": 15,
+                "margin_top_mobile": 0,
+                "margin_bottom_mobile": 15
+              },
+              "blocks": {}
+            },
+            "intro": {
+              "type": "spy-body-text",
+              "name": "Intro",
+              "settings": {
+                "text": "<p>Our lens options in HAPPY BOOST offer a dynamic range of options that will enhance your fishing experience from shallow turbid color scenarios to the brightest and harshest offshore days, allowing you to see it all. Seeing it allows you the best presentation for the maximum opportunity on the water.</p>",
+                "highlight": "",
+                "highlight_color": "#ee7624",
+                "size": 18,
+                "size_mobile": 14,
+                "weight": "400",
+                "line_height": 150,
+                "text_color": "#333333",
+                "align": "center",
+                "align_mobile": "",
+                "max_width": 700,
+                "paragraph_gap": 25,
+                "margin_bottom": 30,
+                "margin_bottom_mobile": 20
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading",
+            "intro"
+          ]
+        },
+        "picker": {
+          "type": "spy-lens-options",
+          "name": "Lens picker",
+          "settings": {
+            "max_width": 1000,
+            "label_before": "WITHOUT LENS",
+            "label_after": "WITH LENS",
+            "vlt_suffix": "VLT",
+            "swatch_group_label": "Choose a lens",
+            "slider_label": "Drag to compare the lens view"
+          },
+          "blocks": {
+            "opt1": {
+              "type": "_spy-lens-option",
+              "name": "HAPPY BOOST™ / POLAR ICE BLUE MIRROR",
+              "settings": {
+                "name": "HAPPY BOOST™ / POLAR ICE BLUE MIRROR",
+                "vlt": "12%",
+                "swatch_color": "#4b9bff",
+                "swatch_css": "linear-gradient(135deg, #4B9BFF 0%, #87CEEB 100%)",
+                "overlay_image": "shopify://shop_images/watermen-lens-blue-before.jpg",
+                "base_image": "shopify://shop_images/watermen-lens-blue-after.jpg",
+                "subtitle": "Maximum sun defense for offshore clarity.",
+                "description": "This lens is purpose-built for open water and brutal glare. HAPPY BOOST™ combines enhanced contrast and polarization with SPY+’s proprietary long-wave blue light–filtering tech to sharpen detail, increase depth perception, and reduce eye fatigue in harsh UV.",
+                "usage": "Best for offshore runs, high-sun hunts, and long-range scanning. Whether tracking tailers or spotting birds, it delivers unrivaled clarity through reflection and chop."
+              },
+              "blocks": {}
+            },
+            "opt2": {
+              "type": "_spy-lens-option",
+              "name": "HAPPY BOOST™ / POLAR GREEN MIRROR (Coming Soon)",
+              "settings": {
+                "name": "HAPPY BOOST™ / POLAR GREEN MIRROR (Coming Soon)",
+                "vlt": "15%",
+                "swatch_color": "#013220",
+                "swatch_css": "",
+                "overlay_image": "shopify://shop_images/watermen-lens-coming-soon-1.jpg",
+                "base_image": "shopify://shop_images/watermen-lens-coming-soon-2.jpg",
+                "subtitle": "Adaptable optics for inshore to offshore transitions.",
+                "description": "Maximum sun protection for the brightest conditions. These ultra-dark lenses are designed for extreme glare situations where eye comfort is paramount.",
+                "usage": "Perfect for glacier fishing, tropical flats, and desert lake fishing where reflected light is intense. Also ideal for those with light-sensitive eyes."
+              },
+              "blocks": {}
+            },
+            "opt3": {
+              "type": "_spy-lens-option",
+              "name": "HAPPY BOOST™ / POLAR BLACK MIRROR",
+              "settings": {
+                "name": "HAPPY BOOST™ / POLAR BLACK MIRROR",
+                "vlt": "18%",
+                "swatch_color": "#2c2c2c",
+                "swatch_css": "",
+                "overlay_image": "shopify://shop_images/watermen-lens-black-after.jpg",
+                "base_image": "shopify://shop_images/watermen-lens-black-before.jpg",
+                "subtitle": "All-day utility for fluctuating light and wide terrain",
+                "description": "True color perception with no distortion. This neutral gray lens provides excellent glare reduction while maintaining natural color balance. Perfect for everyday wear and versatile enough for various fishing conditions.",
+                "usage": "Great for general purpose use, driving, and fishing in moderate to bright conditions. The neutral tint won’t alter your perception of lure colors or water conditions."
+              },
+              "blocks": {}
+            },
+            "opt4": {
+              "type": "_spy-lens-option",
+              "name": "HAPPY BOOST™ / POLAR BRONZE",
+              "settings": {
+                "name": "HAPPY BOOST™ / POLAR BRONZE",
+                "vlt": "20%",
+                "swatch_color": "#a37a22",
+                "swatch_css": "",
+                "overlay_image": "shopify://shop_images/watermen-lens-bronze-before.jpg",
+                "base_image": "shopify://shop_images/watermen-lens-bronze-after.jpg",
+                "subtitle": "Sight-fishing specialist for low light and skinny water.",
+                "description": "Enhances contrast while reducing eye strain. Green lenses provide excellent color balance and are particularly effective at cutting through glare on the water.",
+                "usage": "Ideal for inshore fishing, sight fishing in shallow water, and spotting structure. The green tint helps distinguish subtle color variations in water and vegetation."
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "opt1",
+            "opt2",
+            "opt3",
+            "opt4"
+          ]
+        }
+      },
+      "block_order": [
+        "hdr",
+        "picker"
+      ],
+      "name": "Watermen — lens options",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "#f5f5f5",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 30,
+        "padding-block-end": 30
+      }
+    },
+    "ice_blue": {
+      "type": "product-list",
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "name": "t:names.header",
+          "static": true,
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": true,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fill",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "heading": {
+              "type": "spy-heading",
+              "name": "Heading",
+              "settings": {
+                "text": "HAPPY BOOST ICE BLUE MIRROR",
+                "level": "h2",
+                "highlight": "",
+                "highlight_color": "#ee7624",
+                "size": 28,
+                "size_mobile": 28,
+                "weight": "600",
+                "line_height": 120,
+                "letter_spacing": 0,
+                "uppercase": true,
+                "text_color": "",
+                "align": "center",
+                "align_mobile": "",
+                "max_width": 0,
+                "margin_top": 0,
+                "margin_bottom": 14,
+                "margin_top_mobile": 0,
+                "margin_bottom_mobile": 14
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading"
+          ]
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "spy_tech_badge_XQ6chg": {
+              "type": "spy-tech-badge",
+              "name": "Tech Badge",
+              "settings": {},
+              "blocks": {}
+            },
+            "product_card_gallery_eCNPeJ": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "adapt",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "spy_quick_view_btn_M4hUjh": {
+              "type": "spy-quick-view-btn",
+              "name": "Quick View Button",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_new_badge_fTWJ8m": {
+              "type": "spy-new-badge",
+              "name": "New Badge",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_color_count_hkXrAJ": {
+              "type": "spy-color-count",
+              "name": "Color Count",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_swatches_CqRm9T": {
+              "type": "spy-swatches",
+              "name": "Color Preview",
+              "settings": {
+                "display": "card"
+              },
+              "blocks": {}
+            },
+            "product_title_3WpyTJ": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "title_source": "product",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "center",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price_YFxQDQ": {
+              "type": "price",
+              "name": "t:names.product_price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "center",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "text_color": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "spy_tech_badge_XQ6chg",
+            "product_card_gallery_eCNPeJ",
+            "spy_quick_view_btn_M4hUjh",
+            "spy_new_badge_fTWJ8m",
+            "spy_color_count_hkXrAJ",
+            "spy_swatches_CqRm9T",
+            "product_title_3WpyTJ",
+            "price_YFxQDQ"
+          ]
+        }
+      },
+      "name": "Watermen — ice blue mirror",
+      "settings": {
+        "collection": "",
+        "layout_type": "carousel",
+        "carousel_on_mobile": true,
+        "max_products": 14,
+        "columns": 5,
+        "mobile_columns": "2",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 8,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "horizontal_alignment": "center",
+        "gap": 16,
+        "background_color": "",
+        "padding-block-start": 48,
+        "padding-block-end": 0
+      }
+    },
+    "black_mirror": {
+      "type": "product-list",
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "name": "t:names.header",
+          "static": true,
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": true,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fill",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "heading": {
+              "type": "spy-heading",
+              "name": "Heading",
+              "settings": {
+                "text": "HAPPY BOOST BLACK MIRROR",
+                "level": "h2",
+                "highlight": "",
+                "highlight_color": "#ee7624",
+                "size": 28,
+                "size_mobile": 28,
+                "weight": "600",
+                "line_height": 120,
+                "letter_spacing": 0,
+                "uppercase": true,
+                "text_color": "",
+                "align": "center",
+                "align_mobile": "",
+                "max_width": 0,
+                "margin_top": 0,
+                "margin_bottom": 14,
+                "margin_top_mobile": 0,
+                "margin_bottom_mobile": 14
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading"
+          ]
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "spy_tech_badge_XQ6chg": {
+              "type": "spy-tech-badge",
+              "name": "Tech Badge",
+              "settings": {},
+              "blocks": {}
+            },
+            "product_card_gallery_eCNPeJ": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "adapt",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "spy_quick_view_btn_M4hUjh": {
+              "type": "spy-quick-view-btn",
+              "name": "Quick View Button",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_new_badge_fTWJ8m": {
+              "type": "spy-new-badge",
+              "name": "New Badge",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_color_count_hkXrAJ": {
+              "type": "spy-color-count",
+              "name": "Color Count",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_swatches_CqRm9T": {
+              "type": "spy-swatches",
+              "name": "Color Preview",
+              "settings": {
+                "display": "card"
+              },
+              "blocks": {}
+            },
+            "product_title_3WpyTJ": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "title_source": "product",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "center",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price_YFxQDQ": {
+              "type": "price",
+              "name": "t:names.product_price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "center",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "text_color": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "spy_tech_badge_XQ6chg",
+            "product_card_gallery_eCNPeJ",
+            "spy_quick_view_btn_M4hUjh",
+            "spy_new_badge_fTWJ8m",
+            "spy_color_count_hkXrAJ",
+            "spy_swatches_CqRm9T",
+            "product_title_3WpyTJ",
+            "price_YFxQDQ"
+          ]
+        }
+      },
+      "name": "Watermen — black mirror",
+      "settings": {
+        "collection": "",
+        "layout_type": "carousel",
+        "carousel_on_mobile": true,
+        "max_products": 10,
+        "columns": 5,
+        "mobile_columns": "2",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 8,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "horizontal_alignment": "center",
+        "gap": 16,
+        "background_color": "",
+        "padding-block-start": 48,
+        "padding-block-end": 0
+      }
+    },
+    "bronze": {
+      "type": "product-list",
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "name": "t:names.header",
+          "static": true,
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": true,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fill",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "heading": {
+              "type": "spy-heading",
+              "name": "Heading",
+              "settings": {
+                "text": "HAPPY BOOST BRONZE",
+                "level": "h2",
+                "highlight": "",
+                "highlight_color": "#ee7624",
+                "size": 28,
+                "size_mobile": 28,
+                "weight": "600",
+                "line_height": 120,
+                "letter_spacing": 0,
+                "uppercase": true,
+                "text_color": "",
+                "align": "center",
+                "align_mobile": "",
+                "max_width": 0,
+                "margin_top": 0,
+                "margin_bottom": 14,
+                "margin_top_mobile": 0,
+                "margin_bottom_mobile": 14
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading"
+          ]
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "spy_tech_badge_XQ6chg": {
+              "type": "spy-tech-badge",
+              "name": "Tech Badge",
+              "settings": {},
+              "blocks": {}
+            },
+            "product_card_gallery_eCNPeJ": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "adapt",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "spy_quick_view_btn_M4hUjh": {
+              "type": "spy-quick-view-btn",
+              "name": "Quick View Button",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_new_badge_fTWJ8m": {
+              "type": "spy-new-badge",
+              "name": "New Badge",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_color_count_hkXrAJ": {
+              "type": "spy-color-count",
+              "name": "Color Count",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_swatches_CqRm9T": {
+              "type": "spy-swatches",
+              "name": "Color Preview",
+              "settings": {
+                "display": "card"
+              },
+              "blocks": {}
+            },
+            "product_title_3WpyTJ": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "title_source": "product",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "center",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price_YFxQDQ": {
+              "type": "price",
+              "name": "t:names.product_price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "center",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "text_color": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "spy_tech_badge_XQ6chg",
+            "product_card_gallery_eCNPeJ",
+            "spy_quick_view_btn_M4hUjh",
+            "spy_new_badge_fTWJ8m",
+            "spy_color_count_hkXrAJ",
+            "spy_swatches_CqRm9T",
+            "product_title_3WpyTJ",
+            "price_YFxQDQ"
+          ]
+        }
+      },
+      "name": "Watermen — bronze",
+      "settings": {
+        "collection": "",
+        "layout_type": "carousel",
+        "carousel_on_mobile": true,
+        "max_products": 1,
+        "columns": 5,
+        "mobile_columns": "2",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 8,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "horizontal_alignment": "center",
+        "gap": 16,
+        "background_color": "",
+        "padding-block-start": 48,
+        "padding-block-end": 0
+      }
+    },
+    "lens_benefits_header": {
+      "type": "section",
+      "blocks": {
+        "hdr": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 0,
+            "width": "custom",
+            "custom_width": 50,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "heading": {
+              "type": "spy-heading",
+              "name": "Heading",
+              "settings": {
+                "text": "LENS BENEFITS",
+                "level": "h2",
+                "highlight": "",
+                "highlight_color": "#ee7624",
+                "size": 28,
+                "size_mobile": 28,
+                "weight": "600",
+                "line_height": 120,
+                "letter_spacing": 0,
+                "uppercase": true,
+                "text_color": "",
+                "align": "center",
+                "align_mobile": "",
+                "max_width": 0,
+                "margin_top": 28,
+                "margin_bottom": 14,
+                "margin_top_mobile": 28,
+                "margin_bottom_mobile": 14
+              },
+              "blocks": {}
+            },
+            "sub": {
+              "type": "spy-body-text",
+              "name": "Subheading",
+              "settings": {
+                "text": "<p>HAPPY BOOST lenses are built for every condition. From murky shallows to blinding offshore glare, they embrace contrast, color, and clarity so you can read the water, dial in your presentation, and capitalize on every opportunity.</p>",
+                "highlight": "",
+                "highlight_color": "#ee7624",
+                "size": 18,
+                "size_mobile": 16,
+                "weight": "400",
+                "line_height": 150,
+                "text_color": "",
+                "align": "center",
+                "align_mobile": "",
+                "max_width": 0,
+                "paragraph_gap": 25,
+                "margin_bottom": 0,
+                "margin_bottom_mobile": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "heading",
+            "sub"
+          ]
+        }
+      },
+      "block_order": [
+        "hdr"
+      ],
+      "name": "Watermen — lens benefits header",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 48,
+        "padding-block-end": 0
+      }
+    },
+    "lens_benefits": {
+      "type": "carousel",
+      "blocks": {
+        "static-header": {
+          "type": "group",
+          "static": true,
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 0,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "static-carousel-content": {
+          "type": "_carousel-content",
+          "static": true,
+          "settings": {
+            "background_color": "#f8f9fa",
+            "height": "fit",
+            "position": "center"
+          },
+          "blocks": {
+            "slide1": {
+              "type": "_card",
+              "name": "HAPPY BOOST™ LENS",
+              "settings": {
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 0,
+                "background_media": "none",
+                "background_color": "",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "img": {
+                  "type": "image",
+                  "settings": {
+                    "image": "shopify://shop_images/watermen-benefit-color-enhancement.jpg",
+                    "link": "",
+                    "image_ratio": "adapt",
+                    "width": "custom",
+                    "custom_width": 50,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "copy": {
+                  "type": "group",
+                  "settings": {
+                    "content_direction": "column",
+                    "vertical_on_mobile": true,
+                    "horizontal_alignment": "center",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "flex-start",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 0,
+                    "width": "custom",
+                    "custom_width": 50,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "background_media": "none",
+                    "background_color": "",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "placeholder": "",
+                    "padding-block-start": 40,
+                    "padding-block-end": 40,
+                    "padding-inline-start": 60,
+                    "padding-inline-end": 60
+                  },
+                  "blocks": {
+                    "title": {
+                      "type": "spy-heading",
+                      "name": "Title",
+                      "settings": {
+                        "text": "HAPPY BOOST™ LENS",
+                        "level": "h2",
+                        "highlight": "",
+                        "highlight_color": "#ee7624",
+                        "size": 40,
+                        "size_mobile": 28,
+                        "weight": "700",
+                        "line_height": 120,
+                        "letter_spacing": 0,
+                        "uppercase": true,
+                        "text_color": "#1a1a1a",
+                        "align": "left",
+                        "align_mobile": "center",
+                        "max_width": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 15,
+                        "margin_top_mobile": 0,
+                        "margin_bottom_mobile": 10
+                      },
+                      "blocks": {}
+                    },
+                    "subtitle": {
+                      "type": "spy-heading",
+                      "name": "Subtitle",
+                      "settings": {
+                        "text": "PROPRIETARY LENS TECHNOLOGY",
+                        "level": "h3",
+                        "highlight": "",
+                        "highlight_color": "#ee7624",
+                        "size": 22,
+                        "size_mobile": 18,
+                        "weight": "500",
+                        "line_height": 130,
+                        "letter_spacing": 0,
+                        "uppercase": true,
+                        "text_color": "#444444",
+                        "align": "left",
+                        "align_mobile": "center",
+                        "max_width": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 20,
+                        "margin_top_mobile": 0,
+                        "margin_bottom_mobile": 15
+                      },
+                      "blocks": {}
+                    },
+                    "desc": {
+                      "type": "spy-body-text",
+                      "name": "Description",
+                      "settings": {
+                        "text": "<p>Built for Hardcore Saltwater Anglers. SPY+ Happy Boost™ lens tech cuts through harsh glare and boosts color and contrast up to 30% more than the competition. From scanning flats to chasing offshore foam, it preserves white balance and keeps your vision dialed. Made for captains, deckhands, and lifers who fish for a living—and live to fish.</p>",
+                        "highlight": "",
+                        "highlight_color": "#ee7624",
+                        "size": 18,
+                        "size_mobile": 16,
+                        "weight": "400",
+                        "line_height": 170,
+                        "text_color": "#666666",
+                        "align": "left",
+                        "align_mobile": "",
+                        "max_width": 0,
+                        "paragraph_gap": 25,
+                        "margin_bottom": 0,
+                        "margin_bottom_mobile": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "title",
+                    "subtitle",
+                    "desc"
+                  ]
+                }
+              },
+              "block_order": [
+                "img",
+                "copy"
+              ]
+            },
+            "slide2": {
+              "type": "_card",
+              "name": "HAPPY™ POLAR LENS",
+              "settings": {
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 0,
+                "background_media": "none",
+                "background_color": "",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "img": {
+                  "type": "image",
+                  "settings": {
+                    "image": "shopify://shop_images/watermen-benefit-white-balance.jpg",
+                    "link": "",
+                    "image_ratio": "adapt",
+                    "width": "custom",
+                    "custom_width": 50,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "copy": {
+                  "type": "group",
+                  "settings": {
+                    "content_direction": "column",
+                    "vertical_on_mobile": true,
+                    "horizontal_alignment": "center",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "flex-start",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 0,
+                    "width": "custom",
+                    "custom_width": 50,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "background_media": "none",
+                    "background_color": "",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "placeholder": "",
+                    "padding-block-start": 40,
+                    "padding-block-end": 40,
+                    "padding-inline-start": 60,
+                    "padding-inline-end": 60
+                  },
+                  "blocks": {
+                    "title": {
+                      "type": "spy-heading",
+                      "name": "Title",
+                      "settings": {
+                        "text": "HAPPY™ POLAR LENS",
+                        "level": "h2",
+                        "highlight": "",
+                        "highlight_color": "#ee7624",
+                        "size": 40,
+                        "size_mobile": 28,
+                        "weight": "700",
+                        "line_height": 120,
+                        "letter_spacing": 0,
+                        "uppercase": true,
+                        "text_color": "#1a1a1a",
+                        "align": "left",
+                        "align_mobile": "center",
+                        "max_width": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 15,
+                        "margin_top_mobile": 0,
+                        "margin_bottom_mobile": 10
+                      },
+                      "blocks": {}
+                    },
+                    "subtitle": {
+                      "type": "spy-heading",
+                      "name": "Subtitle",
+                      "settings": {
+                        "text": "PROPRIETARY LENS TECHNOLOGY",
+                        "level": "h3",
+                        "highlight": "",
+                        "highlight_color": "#ee7624",
+                        "size": 22,
+                        "size_mobile": 18,
+                        "weight": "500",
+                        "line_height": 130,
+                        "letter_spacing": 0,
+                        "uppercase": true,
+                        "text_color": "#444444",
+                        "align": "left",
+                        "align_mobile": "center",
+                        "max_width": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 20,
+                        "margin_top_mobile": 0,
+                        "margin_bottom_mobile": 15
+                      },
+                      "blocks": {}
+                    },
+                    "desc": {
+                      "type": "spy-body-text",
+                      "name": "Description",
+                      "settings": {
+                        "text": "<p>SPY+ Happy Polar™ fights back with premium polarization that cuts surface reflection while preserving the vivid detail serious anglers count on. Unlike basic tints, it lets in long-wave blue light—boosting alertness and reducing fatigue—so your eyes stay sharp from cast to gaff. Built to see what others miss.</p>",
+                        "highlight": "",
+                        "highlight_color": "#ee7624",
+                        "size": 18,
+                        "size_mobile": 16,
+                        "weight": "400",
+                        "line_height": 170,
+                        "text_color": "#666666",
+                        "align": "left",
+                        "align_mobile": "",
+                        "max_width": 0,
+                        "paragraph_gap": 25,
+                        "margin_bottom": 0,
+                        "margin_bottom_mobile": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "title",
+                    "subtitle",
+                    "desc"
+                  ]
+                }
+              },
+              "block_order": [
+                "img",
+                "copy"
+              ]
+            },
+            "slide3": {
+              "type": "_card",
+              "name": "ANSI Z87-2+ CERTIFICATION",
+              "settings": {
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 0,
+                "background_media": "none",
+                "background_color": "",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "img": {
+                  "type": "image",
+                  "settings": {
+                    "image": "shopify://shop_images/watermen-benefit-polarization.jpg",
+                    "link": "",
+                    "image_ratio": "adapt",
+                    "width": "custom",
+                    "custom_width": 50,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "copy": {
+                  "type": "group",
+                  "settings": {
+                    "content_direction": "column",
+                    "vertical_on_mobile": true,
+                    "horizontal_alignment": "center",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "flex-start",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 0,
+                    "width": "custom",
+                    "custom_width": 50,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "background_media": "none",
+                    "background_color": "",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "placeholder": "",
+                    "padding-block-start": 40,
+                    "padding-block-end": 40,
+                    "padding-inline-start": 60,
+                    "padding-inline-end": 60
+                  },
+                  "blocks": {
+                    "title": {
+                      "type": "spy-heading",
+                      "name": "Title",
+                      "settings": {
+                        "text": "ANSI Z87-2+ CERTIFICATION",
+                        "level": "h2",
+                        "highlight": "",
+                        "highlight_color": "#ee7624",
+                        "size": 40,
+                        "size_mobile": 28,
+                        "weight": "700",
+                        "line_height": 120,
+                        "letter_spacing": 0,
+                        "uppercase": true,
+                        "text_color": "#1a1a1a",
+                        "align": "left",
+                        "align_mobile": "center",
+                        "max_width": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 15,
+                        "margin_top_mobile": 0,
+                        "margin_bottom_mobile": 10
+                      },
+                      "blocks": {}
+                    },
+                    "desc": {
+                      "type": "spy-body-text",
+                      "name": "Description",
+                      "settings": {
+                        "text": "<p>Flying jigs. Heavy chop. Leaders snapping under pressure. Saltwater life isn’t gentle. The SPY+ Waterman Collection features multiple fully ANSI Z87.1 certified frames—built to take a beating. We over-test for endurance so you don’t have to second-guess when things get sketchy.</p>",
+                        "highlight": "",
+                        "highlight_color": "#ee7624",
+                        "size": 18,
+                        "size_mobile": 16,
+                        "weight": "400",
+                        "line_height": 170,
+                        "text_color": "#666666",
+                        "align": "left",
+                        "align_mobile": "",
+                        "max_width": 0,
+                        "paragraph_gap": 25,
+                        "margin_bottom": 0,
+                        "margin_bottom_mobile": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "title",
+                    "desc"
+                  ]
+                }
+              },
+              "block_order": [
+                "img",
+                "copy"
+              ]
+            },
+            "slide4": {
+              "type": "_card",
+              "name": "PRESCRIPTION READY",
+              "settings": {
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 0,
+                "background_media": "none",
+                "background_color": "",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "img": {
+                  "type": "image",
+                  "settings": {
+                    "image": "shopify://shop_images/watermen-benefit-contrast.jpg",
+                    "link": "",
+                    "image_ratio": "adapt",
+                    "width": "custom",
+                    "custom_width": 50,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "copy": {
+                  "type": "group",
+                  "settings": {
+                    "content_direction": "column",
+                    "vertical_on_mobile": true,
+                    "horizontal_alignment": "center",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "flex-start",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 0,
+                    "width": "custom",
+                    "custom_width": 50,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "background_media": "none",
+                    "background_color": "",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "placeholder": "",
+                    "padding-block-start": 40,
+                    "padding-block-end": 40,
+                    "padding-inline-start": 60,
+                    "padding-inline-end": 60
+                  },
+                  "blocks": {
+                    "title": {
+                      "type": "spy-heading",
+                      "name": "Title",
+                      "settings": {
+                        "text": "PRESCRIPTION READY",
+                        "level": "h2",
+                        "highlight": "",
+                        "highlight_color": "#ee7624",
+                        "size": 40,
+                        "size_mobile": 28,
+                        "weight": "700",
+                        "line_height": 120,
+                        "letter_spacing": 0,
+                        "uppercase": true,
+                        "text_color": "#1a1a1a",
+                        "align": "left",
+                        "align_mobile": "center",
+                        "max_width": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 15,
+                        "margin_top_mobile": 0,
+                        "margin_bottom_mobile": 10
+                      },
+                      "blocks": {}
+                    },
+                    "desc": {
+                      "type": "spy-body-text",
+                      "name": "Description",
+                      "settings": {
+                        "text": "<p>Skill gets you far—gear takes you further. Your vision is your most vital tool on the water, so don’t sacrifice clarity, safety, or performance.<br>SPY+ prescription sunglasses are built with the same performance DNA, available in Happy™ and Happy Boost™ lens tech. Z87-2+ frames ensure your custom RX lenses are impact-rated too, not just the frame.</p>",
+                        "highlight": "",
+                        "highlight_color": "#ee7624",
+                        "size": 18,
+                        "size_mobile": 16,
+                        "weight": "400",
+                        "line_height": 170,
+                        "text_color": "#666666",
+                        "align": "left",
+                        "align_mobile": "",
+                        "max_width": 0,
+                        "paragraph_gap": 25,
+                        "margin_bottom": 0,
+                        "margin_bottom_mobile": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "title",
+                    "desc"
+                  ]
+                }
+              },
+              "block_order": [
+                "img",
+                "copy"
+              ]
+            }
+          },
+          "block_order": [
+            "slide1",
+            "slide2",
+            "slide3",
+            "slide4"
+          ]
+        }
+      },
+      "name": "Watermen — lens benefits carousel",
+      "settings": {
+        "columns": 1,
+        "mobile_columns": "1",
+        "section_width": "page-width",
+        "columns_gap": 0,
+        "background_color": "",
+        "icons_style": "arrows_large",
+        "icons_shape": "square",
+        "padding-block-start": 20,
+        "padding-block-end": 25
+      }
+    },
+    "footer_banner": {
+      "type": "spy-feature-link-banner",
+      "name": "Watermen — shop all banner",
+      "settings": {
+        "image_desktop": "shopify://shop_images/watermen-footer-desktop.jpg",
+        "image_mobile": "shopify://shop_images/watermen-footer-mobile.jpg",
+        "eyebrow": "",
+        "heading": "SHOP ALL\nFISHING SUNGLASSES",
+        "cta_label": "SHOP",
+        "link": "",
+        "cta_style": "solid",
+        "heading_size": 28,
+        "heading_size_mobile": 28,
+        "content_align": "right",
+        "content_valign": "center",
+        "text_align": "left",
+        "content_align_mobile": "center",
+        "content_valign_mobile": "bottom",
+        "text_align_mobile": "center",
+        "show_overlay": false,
+        "content_width": "page",
+        "content_max_width": 1140
+      }
+    }
+  },
+  "order": [
+    "intro",
+    "frames",
+    "frames_cta",
+    "our_tech",
+    "lens_overview",
+    "lens_options",
+    "ice_blue",
+    "black_mirror",
+    "bronze",
+    "lens_benefits_header",
+    "lens_benefits",
+    "footer_banner"
+  ]
+}

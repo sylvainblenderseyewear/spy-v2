@@ -430,7 +430,12 @@
   "name": "SPY Contact form",
   "tag": "section",
   "class": "section-wrapper",
-  "disabled_on": { "groups": ["header", "footer"] },
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
   "blocks": [
     {
       "type": "topic",
@@ -470,37 +475,126 @@
     }
   ],
   "settings": [
-    { "type": "header", "content": "Audience switch" },
-    { "type": "text", "id": "consumer_label", "label": "Consumer option", "default": "Consumer" },
-    { "type": "text", "id": "business_label", "label": "Business option", "default": "Business" },
-    { "type": "text", "id": "b2b_question_label", "label": "B2B account question", "default": "Has B2B Account ?" },
-    { "type": "text", "id": "b2b_no_label", "label": "No", "default": "No" },
-    { "type": "text", "id": "b2b_yes_label", "label": "Yes", "default": "Yes" },
+    {
+      "type": "header",
+      "content": "Audience switch"
+    },
+    {
+      "type": "text",
+      "id": "consumer_label",
+      "label": "Consumer option",
+      "default": "Consumer"
+    },
+    {
+      "type": "text",
+      "id": "business_label",
+      "label": "Business option",
+      "default": "Business"
+    },
+    {
+      "type": "text",
+      "id": "b2b_question_label",
+      "label": "B2B account question",
+      "default": "Has B2B Account ?"
+    },
+    {
+      "type": "text",
+      "id": "b2b_no_label",
+      "label": "No",
+      "default": "No"
+    },
+    {
+      "type": "text",
+      "id": "b2b_yes_label",
+      "label": "Yes",
+      "default": "Yes"
+    },
     {
       "type": "richtext",
       "id": "b2b_message",
       "label": "Message for existing B2B customers",
       "default": "<p>If you have a customer account at SPY Optic, please contact your Customer Service at 1 (800) 779-3937.</p>"
     },
-    { "type": "header", "content": "Field labels" },
-    { "type": "text", "id": "first_name_label", "label": "First name", "default": "First Name" },
-    { "type": "text", "id": "last_name_label", "label": "Last name", "default": "Last Name" },
-    { "type": "text", "id": "email_label", "label": "Email", "default": "E-Mail" },
-    { "type": "text", "id": "company_label", "label": "Company", "default": "Company Name" },
-    { "type": "text", "id": "phone_label", "label": "Phone", "default": "Phone" },
-    { "type": "text", "id": "country_label", "label": "Country", "default": "Country" },
-    { "type": "text", "id": "question_label", "label": "Topic", "default": "My Question" },
-    { "type": "text", "id": "question_placeholder", "label": "Topic placeholder", "default": "Choose an option" },
-    { "type": "text", "id": "order_label", "label": "Order number", "default": "Order Number" },
-    { "type": "text", "id": "comment_label", "label": "Comment", "default": "Comment" },
-    { "type": "text", "id": "submit_label", "label": "Submit button", "default": "Submit" },
+    {
+      "type": "header",
+      "content": "Field labels"
+    },
+    {
+      "type": "text",
+      "id": "first_name_label",
+      "label": "First name",
+      "default": "First Name"
+    },
+    {
+      "type": "text",
+      "id": "last_name_label",
+      "label": "Last name",
+      "default": "Last Name"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email",
+      "default": "E-Mail"
+    },
+    {
+      "type": "text",
+      "id": "company_label",
+      "label": "Company",
+      "default": "Company Name"
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Phone",
+      "default": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "country_label",
+      "label": "Country",
+      "default": "Country"
+    },
+    {
+      "type": "text",
+      "id": "question_label",
+      "label": "Topic",
+      "default": "My Question"
+    },
+    {
+      "type": "text",
+      "id": "question_placeholder",
+      "label": "Topic placeholder",
+      "default": "Choose an option"
+    },
+    {
+      "type": "text",
+      "id": "order_label",
+      "label": "Order number",
+      "default": "Order Number"
+    },
+    {
+      "type": "text",
+      "id": "comment_label",
+      "label": "Comment",
+      "default": "Comment"
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Submit button",
+      "default": "Submit"
+    },
     {
       "type": "text",
       "id": "success_message",
       "label": "Success message",
       "default": "Thanks — your message is on its way. We'll be in touch soon."
     },
-    { "type": "header", "content": "Attachment" },
+    {
+      "type": "header",
+      "content": "Attachment"
+    },
     {
       "type": "checkbox",
       "id": "show_attachment",
@@ -508,7 +602,12 @@
       "info": "Shopify's contact form cannot deliver files — see the note below.",
       "default": true
     },
-    { "type": "text", "id": "attachment_label", "label": "Label", "default": "Attachment" },
+    {
+      "type": "text",
+      "id": "attachment_label",
+      "label": "Label",
+      "default": "Attachment"
+    },
     {
       "type": "text",
       "id": "attachment_accept",
@@ -525,8 +624,16 @@
       "type": "paragraph",
       "content": "Shopify's built-in contact form posts to email and cannot carry a file. The field matches the old site visually, but an app or custom endpoint is needed to actually receive attachments."
     },
-    { "type": "header", "content": "Band" },
-    { "type": "color", "id": "background_color", "label": "Page background", "default": "#ffffff" },
+    {
+      "type": "header",
+      "content": "Band"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Page background",
+      "default": "#ffffff"
+    },
     {
       "type": "range",
       "id": "padding_top",
@@ -547,9 +654,22 @@
       "unit": "px",
       "default": 84
     },
-    { "type": "header", "content": "Card" },
-    { "type": "color", "id": "card_background", "label": "Background", "default": "#ffffff" },
-    { "type": "color", "id": "card_border_color", "label": "Border", "default": "#e5e5e5" },
+    {
+      "type": "header",
+      "content": "Card"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Border",
+      "default": "#e5e5e5"
+    },
     {
       "type": "range",
       "id": "card_padding",
@@ -580,8 +700,16 @@
       "unit": "px",
       "default": 0
     },
-    { "type": "header", "content": "Labels" },
-    { "type": "color", "id": "label_color", "label": "Colour", "default": "#2c393e" },
+    {
+      "type": "header",
+      "content": "Labels"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Colour",
+      "default": "#2c393e"
+    },
     {
       "type": "range",
       "id": "label_size",
@@ -592,12 +720,40 @@
       "unit": "px",
       "default": 15
     },
-    { "type": "color", "id": "required_color", "label": "Required asterisk", "default": "#f57f29" },
-    { "type": "header", "content": "Inputs" },
-    { "type": "color", "id": "input_background", "label": "Background", "default": "#ffffff" },
-    { "type": "color", "id": "input_color", "label": "Text", "default": "#2c393e" },
-    { "type": "color", "id": "input_border_color", "label": "Border", "default": "#cccccc" },
-    { "type": "color", "id": "focus_border_color", "label": "Border on focus", "default": "#2c393e" },
+    {
+      "type": "color",
+      "id": "required_color",
+      "label": "Required asterisk",
+      "default": "#f57f29"
+    },
+    {
+      "type": "header",
+      "content": "Inputs"
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "input_color",
+      "label": "Text",
+      "default": "#2c393e"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Border",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "focus_border_color",
+      "label": "Border on focus",
+      "default": "#2c393e"
+    },
     {
       "type": "range",
       "id": "input_size",
@@ -618,10 +774,28 @@
       "unit": "px",
       "default": 38
     },
-    { "type": "header", "content": "Submit button" },
-    { "type": "color", "id": "button_background", "label": "Background", "default": "#f57f29" },
-    { "type": "color", "id": "button_background_hover", "label": "Background on hover", "default": "#dd6c18" },
-    { "type": "color", "id": "button_text_color", "label": "Text", "default": "#ffffff" },
+    {
+      "type": "header",
+      "content": "Submit button"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Background",
+      "default": "#f57f29"
+    },
+    {
+      "type": "color",
+      "id": "button_background_hover",
+      "label": "Background on hover",
+      "default": "#dd6c18"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
     {
       "type": "range",
       "id": "button_height",
@@ -647,8 +821,8 @@
     {
       "name": "SPY Contact form",
       "category": "SPY",
-      "blocks": [
-        {
+      "blocks": {
+        "topic_product": {
           "type": "topic",
           "settings": {
             "label": "Product",
@@ -658,7 +832,7 @@
             "sub_options": "Advice/Product availability\nPrescription lenses"
           }
         },
-        {
+        "topic_order": {
           "type": "topic",
           "settings": {
             "label": "Order",
@@ -668,7 +842,7 @@
             "sub_options": "Ordering assistance\nOrder tracking"
           }
         },
-        {
+        "topic_return": {
           "type": "topic",
           "settings": {
             "label": "Return",
@@ -678,7 +852,7 @@
             "sub_options": "Return request\nReturn request status"
           }
         },
-        {
+        "topic_other": {
           "type": "topic",
           "settings": {
             "label": "Other",
@@ -688,6 +862,12 @@
             "sub_options": ""
           }
         }
+      },
+      "block_order": [
+        "topic_product",
+        "topic_order",
+        "topic_return",
+        "topic_other"
       ]
     }
   ]

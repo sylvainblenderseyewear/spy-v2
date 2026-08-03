@@ -1,95 +1,203 @@
+{%- comment -%}
+  Feature Link Banner — a full-bleed image with copy laid over it.
+
+  Separate desktop and mobile art, because the source crops these banners
+  differently per breakpoint rather than reflowing one file.
+
+  Placement is set per breakpoint too, so the copy can sit bottom-centre on a phone
+  and centre-right on a desktop off one block. The scrim is optional: art that
+  already carries a dark panel for the text doesn't want a second one over it.
+{%- endcomment -%}
+
 {%- liquid
   assign desktop_img = section.settings.image_desktop
-  assign mobile_img  = section.settings.image_mobile
+  assign mobile_img = section.settings.image_mobile
   if desktop_img == blank and mobile_img == blank
     assign skip_section = true
+  endif
+
+  comment
+    Where the copy block sits is one setting; how the lines are set inside it is
+    another. The source pushes this block to the right of the container but keeps
+    its two heading lines flush left, so the two can't be one control.
+    Text alignment falls back to the block position when left unset.
+  endcomment
+
+  case section.settings.content_align
+    when 'center'
+      assign align_d = 'md:items-center'
+    when 'right'
+      assign align_d = 'md:items-end'
+    else
+      assign align_d = 'md:items-start'
+  endcase
+
+  assign text_d = section.settings.text_align | default: section.settings.content_align
+  case text_d
+    when 'center'
+      assign text_d = 'md:text-center'
+    when 'right'
+      assign text_d = 'md:text-right'
+    else
+      assign text_d = 'md:text-left'
+  endcase
+
+  case section.settings.content_align_mobile
+    when 'center'
+      assign align_m = 'items-center'
+    when 'right'
+      assign align_m = 'items-end'
+    else
+      assign align_m = 'items-start'
+  endcase
+
+  assign text_m = section.settings.text_align_mobile | default: section.settings.content_align_mobile
+  case text_m
+    when 'center'
+      assign text_m = 'text-center'
+    when 'right'
+      assign text_m = 'text-right'
+    else
+      assign text_m = 'text-left'
+  endcase
+
+  case section.settings.content_valign
+    when 'top'
+      assign valign_d = 'md:justify-start'
+    when 'center'
+      assign valign_d = 'md:justify-center'
+    else
+      assign valign_d = 'md:justify-end'
+  endcase
+
+  case section.settings.content_valign_mobile
+    when 'top'
+      assign valign_m = 'justify-start'
+    when 'center'
+      assign valign_m = 'justify-center'
+    else
+      assign valign_m = 'justify-end'
+  endcase
+
+  if section.settings.content_width == 'page'
+    assign width_classes = 'mx-auto max-w-[var(--flb-max)]'
+  else
+    assign width_classes = 'w-full'
+  endif
+
+  if section.settings.show_overlay
+    assign scrim = 'bg-gradient-to-t from-black/55 to-transparent'
+  else
+    assign scrim = ''
   endif
 -%}
 
 {%- unless skip_section -%}
-{%- assign banner_alt = section.settings.heading | escape -%}
-<div class="spy-feature-link-banner relative w-full overflow-hidden" {{ section.shopify_attributes }}>
-  {%- if section.settings.link != blank -%}
-    <a
-      href="{{ section.settings.link }}"
-      class="group block no-underline"
-      aria-label="{{ section.settings.eyebrow | default: section.settings.heading | escape }}"
-    >
-  {%- endif -%}
+  {%- assign banner_alt = section.settings.heading | strip_newlines | escape -%}
+  <div
+    class="spy-feature-link-banner relative w-full overflow-hidden"
+    style="
+      --flb-max: {{ section.settings.content_max_width }}px;
+      --flb-heading: {{ section.settings.heading_size }}px;
+      --flb-heading-mobile: {{ section.settings.heading_size_mobile }}px;
+    "
+    {{ section.shopify_attributes }}
+  >
+    {%- if section.settings.link != blank -%}
+      <a
+        href="{{ section.settings.link }}"
+        class="group block no-underline"
+        aria-label="{{ section.settings.eyebrow | default: banner_alt }}"
+      >
+    {%- endif -%}
 
-  {%- comment -%} Desktop image {%- endcomment -%}
-  {%- if desktop_img != blank -%}
-    {{
-      desktop_img
-      | image_url: width: 2000
-      | image_tag:
-        loading: 'lazy',
-        alt: banner_alt,
-        sizes: '100vw',
-        widths: '750, 1100, 1500, 2000',
-        class: 'hidden md:block w-full h-auto object-cover transition-transform duration-500 ease-in-out group-hover:scale-[1.02]'
-    }}
-  {%- endif -%}
+    {%- comment -%} Desktop art {%- endcomment -%}
+    {%- if desktop_img != blank -%}
+      {{
+        desktop_img
+        | image_url: width: 2000
+        | image_tag:
+          loading: 'lazy',
+          alt: banner_alt,
+          sizes: '100vw',
+          widths: '750, 1100, 1500, 2000',
+          class: 'hidden md:block w-full h-auto object-cover'
+      }}
+    {%- endif -%}
 
-  {%- comment -%} Mobile image (falls back to desktop) {%- endcomment -%}
-  {%- if mobile_img != blank -%}
-    {{
-      mobile_img
-      | image_url: width: 800
-      | image_tag:
-        loading: 'lazy',
-        alt: banner_alt,
-        sizes: '100vw',
-        widths: '390, 550, 800',
-        class: 'block md:hidden w-full h-auto object-cover'
-    }}
-  {%- elsif desktop_img != blank -%}
-    {{
-      desktop_img
-      | image_url: width: 800
-      | image_tag:
-        loading: 'lazy',
-        alt: banner_alt,
-        sizes: '100vw',
-        widths: '390, 550, 800',
-        class: 'block md:hidden w-full h-auto object-cover'
-    }}
-  {%- endif -%}
+    {%- comment -%} Mobile art, falling back to the desktop file {%- endcomment -%}
+    {%- if mobile_img != blank -%}
+      {{
+        mobile_img
+        | image_url: width: 800
+        | image_tag:
+          loading: 'lazy',
+          alt: banner_alt,
+          sizes: '100vw',
+          widths: '390, 550, 800',
+          class: 'block md:hidden w-full h-auto object-cover'
+      }}
+    {%- elsif desktop_img != blank -%}
+      {{
+        desktop_img
+        | image_url: width: 800
+        | image_tag:
+          loading: 'lazy',
+          alt: banner_alt,
+          sizes: '100vw',
+          widths: '390, 550, 800',
+          class: 'block md:hidden w-full h-auto object-cover'
+      }}
+    {%- endif -%}
 
-  {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.cta_label != blank -%}
-    {%- liquid
-      case section.settings.content_align
-        when 'center'
-          assign align_classes = 'items-center text-center'
-        when 'right'
-          assign align_classes = 'items-end text-right'
-        else
-          assign align_classes = 'items-start text-left'
-      endcase
+    {%- if section.settings.eyebrow != blank
+        or section.settings.heading != blank
+        or section.settings.cta_label != blank
     -%}
-    <div class="absolute inset-x-0 bottom-0 flex flex-col gap-2 {{ align_classes }} px-6 pb-12 pt-24 bg-gradient-to-t from-black/55 to-transparent pointer-events-none md:px-12">
-      {%- if section.settings.eyebrow != blank -%}
-        <span class="text-spy-orange text-[11px] font-bold uppercase tracking-widest leading-none">
-          {{ section.settings.eyebrow }}
-        </span>
-      {%- endif -%}
-      {%- if section.settings.heading != blank -%}
-        <h2 class="text-white font-bold uppercase leading-none m-0 text-4xl md:text-6xl lg:text-7xl tracking-tight">
-          {{ section.settings.heading }}
-        </h2>
-      {%- endif -%}
-      {%- if section.settings.cta_label != blank -%}
-        <span class="inline-block text-white text-xs font-bold uppercase tracking-widest border-b border-white/60 pb-0.5 mt-2 leading-none pointer-events-auto">
-          {{ section.settings.cta_label }}
-        </span>
-      {%- endif -%}
-    </div>
-  {%- endif -%}
+      <div class="absolute inset-0 flex px-6 py-6 md:px-12 pointer-events-none {{ scrim }}">
+        <div
+          class="
+            flex flex-col gap-2 flex-1 {{ width_classes }}
+            {{ align_m }} {{ align_d }} {{ text_m }} {{ text_d }}
+            {{ valign_m }} {{ valign_d }}
+          "
+        >
+          {%- if section.settings.eyebrow != blank -%}
+            <span class="text-spy-orange text-[11px] font-bold uppercase tracking-widest leading-none">
+              {{ section.settings.eyebrow }}
+            </span>
+          {%- endif -%}
 
-  {%- if section.settings.link != blank -%}
-    </a>
-  {%- endif -%}
-</div>
+          {%- if section.settings.heading != blank -%}
+            <h2
+              class="
+                text-white font-bold uppercase leading-tight m-0 tracking-tight
+                text-[length:var(--flb-heading-mobile)] md:text-[length:var(--flb-heading)]
+              "
+            >
+              {{ section.settings.heading | newline_to_br }}
+            </h2>
+          {%- endif -%}
+
+          {%- if section.settings.cta_label != blank -%}
+            {%- if section.settings.cta_style == 'solid' -%}
+              <span class="inline-block w-fit mt-2 px-8 py-2 bg-white text-spy-ink border border-spy-ink text-sm leading-normal uppercase pointer-events-auto transition-colors duration-200 group-hover:bg-spy-ink group-hover:text-white">
+                {{ section.settings.cta_label }}
+              </span>
+            {%- else -%}
+              <span class="inline-block text-white text-xs font-bold uppercase tracking-widest border-b border-white/60 pb-0.5 mt-2 leading-none pointer-events-auto">
+                {{ section.settings.cta_label }}
+              </span>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.link != blank -%}
+      </a>
+    {%- endif -%}
+  </div>
 {%- endunless -%}
 
 {% schema %}
@@ -109,14 +217,19 @@
       "info": "Falls back to desktop image if blank"
     },
     {
+      "type": "header",
+      "content": "Content"
+    },
+    {
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow text"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "heading",
-      "label": "Heading"
+      "label": "Heading",
+      "info": "Line breaks are kept."
     },
     {
       "type": "text",
@@ -130,14 +243,147 @@
     },
     {
       "type": "select",
-      "id": "content_align",
-      "label": "Content alignment",
+      "id": "cta_style",
+      "label": "CTA style",
       "options": [
-        { "value": "left",   "label": "Left" },
+        { "value": "underline", "label": "Underlined text" },
+        { "value": "solid", "label": "Solid box" }
+      ],
+      "default": "underline"
+    },
+    {
+      "type": "header",
+      "content": "Heading size"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Desktop",
+      "min": 16,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Mobile",
+      "min": 14,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Placement — desktop"
+    },
+    {
+      "type": "select",
+      "id": "content_align",
+      "label": "Horizontal",
+      "options": [
+        { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
-        { "value": "right",  "label": "Right" }
+        { "value": "right", "label": "Right" }
       ],
       "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "content_valign",
+      "label": "Vertical",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "info": "Separate from where the block sits.",
+      "options": [
+        { "value": "", "label": "Match block position" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": ""
+    },
+    {
+      "type": "header",
+      "content": "Placement — mobile"
+    },
+    {
+      "type": "select",
+      "id": "content_align_mobile",
+      "label": "Horizontal",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "content_valign_mobile",
+      "label": "Vertical",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "select",
+      "id": "text_align_mobile",
+      "label": "Text alignment",
+      "info": "Separate from where the block sits.",
+      "options": [
+        { "value": "", "label": "Match block position" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": ""
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Darken behind the copy",
+      "info": "Turn off when the artwork already has a panel for the text.",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Content width",
+      "options": [
+        { "value": "full", "label": "Full width" },
+        { "value": "page", "label": "Page width" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Page width cap",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1140,
+      "visible_if": "{{ section.settings.content_width == 'page' }}"
     }
   ],
   "presets": [

@@ -1,0 +1,132 @@
+{%- comment -%}
+  One lens on the VLT scale — a coloured ring with the lens' own view inside it.
+
+  The ring is the outer circle showing through: the photo sits inset 20px on
+  desktop, 15px on mobile, so the tint reads as a band around it. Ring colour and
+  the optional gradient are per-lens, because the source tints each to its lens.
+
+  On desktop the item itself goes `display: contents` so the circle and the copy
+  become grid items of the parent — circle in row 1, copy in row 3, with the arrow
+  scale between them. On mobile the item is the flex row holding both side by side.
+{%- endcomment -%}
+
+{%- liquid
+  assign img = block.settings.image
+  assign alt = block.settings.image_alt | default: block.settings.condition
+-%}
+
+<div
+  class="
+    spy-lens-overview__item
+    max-[769px]:relative max-[769px]:z-[1]
+    max-[769px]:flex max-[769px]:items-center max-[769px]:text-left max-[769px]:mb-10
+    min-[769px]:contents
+  "
+  style="
+    --lens-ring: {{ block.settings.ring_color }};
+    {% if block.settings.ring_gradient != blank %}--lens-ring-image: {{ block.settings.ring_gradient }};{% endif %}
+  "
+  {{ block.shopify_attributes }}
+>
+  <div
+    class="
+      relative shrink-0 overflow-hidden rounded-full
+      shadow-[0_4px_6px_rgba(0,0,0,0.1)]
+      bg-[var(--lens-ring)] bg-[image:var(--lens-ring-image,none)]
+      w-[120px] h-[120px]
+      min-[769px]:w-[200px] min-[769px]:h-[200px] min-[769px]:mx-auto
+      min-[769px]:[grid-row:1]
+    "
+  >
+    {%- if img != blank -%}
+      <img
+        src="{{ img | image_url: width: 400 }}"
+        srcset="
+          {{ img | image_url: width: 200 }} 200w,
+          {{ img | image_url: width: 400 }} 400w,
+          {{ img | image_url: width: 600 }} 600w
+        "
+        sizes="(min-width: 769px) 160px, 90px"
+        alt="{{ alt | escape }}"
+        loading="lazy"
+        class="
+          absolute rounded-full object-cover object-center
+          top-[15px] left-[15px] w-[90px] h-[90px]
+          min-[769px]:top-5 min-[769px]:left-5 min-[769px]:w-[160px] min-[769px]:h-[160px]
+        "
+      >
+    {%- endif -%}
+  </div>
+
+  <div class="pl-5 min-[769px]:pl-0 min-[769px]:text-center min-[769px]:[grid-row:3]">
+    {%- if block.settings.vlt != blank -%}
+      <div class="font-semibold text-[#333] text-[20px] mb-2 min-[769px]:text-[24px] min-[769px]:mb-[30px]">
+        {{ block.settings.vlt }}
+      </div>
+    {%- endif -%}
+    {%- if block.settings.condition != blank -%}
+      <div class="font-semibold text-[#333] text-[16px] mb-1 min-[769px]:text-[18px] min-[769px]:mb-2">
+        {{ block.settings.condition }}
+      </div>
+    {%- endif -%}
+    {%- if block.settings.description != blank -%}
+      <div class="leading-[1.4] text-[#666] text-[14px] min-[769px]:text-[16px]">
+        {{ block.settings.description }}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Lens",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Through-the-lens photo"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Alt text",
+      "info": "Defaults to the condition name."
+    },
+    {
+      "type": "color",
+      "id": "ring_color",
+      "label": "Ring color",
+      "default": "#87ceeb"
+    },
+    {
+      "type": "text",
+      "id": "ring_gradient",
+      "label": "Ring gradient",
+      "info": "Optional CSS gradient laid over the ring color, e.g. linear-gradient(0deg, rgba(70,130,180,0.2) 0%, rgba(70,130,180,0.3) 50%, rgba(70,130,180,0.2) 100%)"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "vlt",
+      "label": "VLT",
+      "default": "12% VLT"
+    },
+    {
+      "type": "text",
+      "id": "condition",
+      "label": "Condition",
+      "default": "Sunny/Bright"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description",
+      "default": "Offshore Water"
+    }
+  ]
+}
+{% endschema %}

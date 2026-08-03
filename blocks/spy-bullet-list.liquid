@@ -1,0 +1,169 @@
+{%- comment -%}
+  Bullet list — one item per line in a textarea, so an editor adds or reorders
+  points without touching markup.
+
+  The marker is a pseudo-element rather than a real list-marker: the source draws
+  its own bullet at a fixed 20px indent, and `list-style` can't be positioned that
+  precisely. Marker glyph, indent, gap and type are all settings.
+{%- endcomment -%}
+
+{%- liquid
+  assign items = block.settings.items | strip | newline_to_br | split: '<br />'
+
+  case block.settings.align
+    when 'center'
+      assign align = 'text-center'
+    when 'right'
+      assign align = 'text-right'
+    else
+      assign align = 'text-left'
+  endcase
+-%}
+
+{%- if block.settings.items != blank -%}
+  <ul
+    class="
+      spy-bullet-list list-none w-full p-0 {{ align }}
+      text-[length:var(--sl-size-mobile)] min-[769px]:text-[length:var(--sl-size)]
+      leading-[var(--sl-leading)]
+      mb-[var(--sl-mb)]
+      {% if block.settings.text_color != blank %}text-[color:var(--sl-color)]{% endif %}
+    "
+    style="
+      --sl-size: {{ block.settings.size }}px;
+      --sl-size-mobile: {{ block.settings.size_mobile }}px;
+      --sl-leading: {{ block.settings.line_height | divided_by: 100.0 }};
+      --sl-indent: {{ block.settings.indent }}px;
+      --sl-gap: {{ block.settings.item_gap }}px;
+      --sl-mb: {{ block.settings.margin_bottom }}px;
+      {% if block.settings.text_color != blank %}--sl-color: {{ block.settings.text_color }};{% endif %}
+    "
+    {{ block.shopify_attributes }}
+  >
+    {%- for item in items -%}
+      {%- assign line = item | strip -%}
+      {%- if line != blank -%}
+        <li
+          class="
+            relative pl-[var(--sl-indent)] mb-[var(--sl-gap)] last:mb-0
+            before:absolute before:left-0 before:font-bold before:content-[var(--sl-marker)]
+          "
+          style="--sl-marker: '{{ block.settings.marker }}';"
+        >{{ line }}</li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Bullet list",
+  "tag": null,
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "items",
+      "label": "Items",
+      "info": "One per line.",
+      "default": "First point\nSecond point\nThird point"
+    },
+    {
+      "type": "text",
+      "id": "marker",
+      "label": "Marker",
+      "default": "•"
+    },
+    {
+      "type": "header",
+      "content": "Type"
+    },
+    {
+      "type": "range",
+      "id": "size",
+      "label": "Size — desktop",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "size_mobile",
+      "label": "Size — mobile",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line height",
+      "min": 100,
+      "max": 220,
+      "step": 5,
+      "unit": "%",
+      "default": 160
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Colour",
+      "info": "Leave empty to inherit."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "indent",
+      "label": "Marker indent",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "item_gap",
+      "label": "Gap between items",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Space below list",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bullet list",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

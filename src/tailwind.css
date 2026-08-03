@@ -1060,3 +1060,82 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   max-width: 19rem; /* 304px */
   margin-inline: auto;
 }
+
+/* ── Watermen — fixed-px containers the source uses ──────────────────────
+   Same reason as the Happy pages above: these are hard pixel caps and a block's
+   width setting is only a percentage of the section, which drifts at every
+   viewport. Everything else on this page caps itself through its own block
+   setting (lens overview 1200, lens picker 1000, banner copy 1140).
+
+   OUR TECH tiles sit in a Bootstrap `.container` inside the full-bleed grey band:
+   1140px with 15px of inner padding, so the art gets 1110px and the two tiles are
+   30px apart. The grey band and the section header stay full width.
+
+   Targeted by position, not by block id: group blocks do not carry their id in the
+   class list, so the two tile rows are picked out as the section's own full-width
+   children — the header beside them is a 50%-width block. */
+[data-template='page.watermen']
+  [id$='__our_tech']
+  .section-content-wrapper
+  > .group-block--width-fill {
+  max-width: 71.25rem; /* 1140px */
+  margin-inline: auto;
+  padding-inline: 0.9375rem; /* 15px */
+}
+
+/* Lens-benefits carousel: source `.hbc-carousel-container` is 1200px centred. */
+[data-template='page.watermen'] .section-carousel {
+  max-width: 75rem; /* 1200px */
+  margin-inline: auto;
+}
+
+/* ── ANSI Photochromic — Bootstrap `.container` is 1140px ────────────────
+   A custom-liquid block renders as a bare <div> with no width setting, and the
+   section centres its children, so each band would shrink to its own text.
+   Stretch them so the hero video and footer banner really go full bleed. */
+[data-template='page.ansi-photochromic'] .section-content-wrapper > * {
+  width: 100%;
+}
+
+/* Every band is a full-width section so the theme's own page margin never
+   doubles up with the source gutter. Width comes from the source container
+   instead — measured off global.css, and its breakpoints are custom, not
+   Bootstrap defaults: 540 / 720 / 1140 / 1440 at 544 / 769 / 992 / 1200,
+   always with 15px inner padding.
+
+   The copy bands carry that ladder as utility classes in the template. The
+   product carousel cannot, so it gets the same steps here. */
+[data-template='page.ansi-photochromic']
+  :is(.section-resource-list__header, .section-resource-list__content) {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 0.9375rem; /* 15px */
+}
+
+@media (min-width: 544px) {
+  [data-template='page.ansi-photochromic']
+    :is(.section-resource-list__header, .section-resource-list__content) {
+    max-width: 33.75rem; /* 540px */
+  }
+}
+
+@media (min-width: 769px) {
+  [data-template='page.ansi-photochromic']
+    :is(.section-resource-list__header, .section-resource-list__content) {
+    max-width: 45rem; /* 720px */
+  }
+}
+
+@media (min-width: 992px) {
+  [data-template='page.ansi-photochromic']
+    :is(.section-resource-list__header, .section-resource-list__content) {
+    max-width: 71.25rem; /* 1140px */
+  }
+}
+
+@media (min-width: 1200px) {
+  [data-template='page.ansi-photochromic']
+    :is(.section-resource-list__header, .section-resource-list__content) {
+    max-width: 90rem; /* 1440px */
+  }
+}

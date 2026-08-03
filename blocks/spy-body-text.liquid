@@ -1,0 +1,236 @@
+{%- comment -%}
+  Body copy with exact type control — the paragraph counterpart to [spy-heading].
+
+  Same reason it exists: the stock `text` block can only pick sizes off a fixed list
+  and line-height off tight/normal/loose, so source values like 19.2px at 1.8 or
+  13px at 1.7 are unreachable. Here they are plain settings.
+
+  `highlight` colours one run of words, for the orange "HAPPY BOOST(tm)" the source
+  drops into otherwise grey copy. Rich text handles bold, italic and links.
+
+  Mobile has its own size and alignment; the switch is 769px to match the layout
+  breakpoints on the pages that use it.
+{%- endcomment -%}
+
+{%- liquid
+  assign body = block.settings.text
+  if block.settings.highlight != blank
+    capture hl
+      echo '<span class="text-[color:var(--sb-hl)]">'
+      echo block.settings.highlight
+      echo '</span>'
+    endcapture
+    assign body = body | replace: block.settings.highlight, hl
+  endif
+
+  case block.settings.align
+    when 'center'
+      assign align = 'text-center'
+    when 'right'
+      assign align = 'text-right'
+    else
+      assign align = 'text-left'
+  endcase
+
+  case block.settings.align_mobile
+    when 'center'
+      assign align_m = 'max-[769px]:text-center'
+    when 'right'
+      assign align_m = 'max-[769px]:text-right'
+    when 'left'
+      assign align_m = 'max-[769px]:text-left'
+    else
+      assign align_m = ''
+  endcase
+-%}
+
+{%- if block.settings.text != blank -%}
+  <div
+    class="
+      spy-body-text w-full {{ align }} {{ align_m }}
+      text-[length:var(--sb-size-mobile)] min-[769px]:text-[length:var(--sb-size)]
+      font-[number:var(--sb-weight)] leading-[var(--sb-leading)]
+      mb-[var(--sb-mb-mobile)] min-[769px]:mb-[var(--sb-mb)]
+      [&_p]:m-0 [&_p+p]:mt-[var(--sb-gap)]
+      [&_a]:underline
+      {% if block.settings.text_color != blank %}text-[color:var(--sb-color)]{% endif %}
+      {% if block.settings.max_width > 0 %}max-w-[var(--sb-max)]{% endif %}
+      {% if block.settings.max_width > 0 and block.settings.align == 'center' %}mx-auto{% endif %}
+    "
+    style="
+      --sb-size: {{ block.settings.size }}px;
+      --sb-size-mobile: {{ block.settings.size_mobile }}px;
+      --sb-weight: {{ block.settings.weight }};
+      --sb-leading: {{ block.settings.line_height | divided_by: 100.0 }};
+      --sb-gap: {{ block.settings.paragraph_gap }}px;
+      --sb-mb: {{ block.settings.margin_bottom }}px;
+      --sb-mb-mobile: {{ block.settings.margin_bottom_mobile }}px;
+      {% if block.settings.text_color != blank %}--sb-color: {{ block.settings.text_color }};{% endif %}
+      {% if block.settings.highlight != blank %}--sb-hl: {{ block.settings.highlight_color }};{% endif %}
+      {% if block.settings.max_width > 0 %}--sb-max: {{ block.settings.max_width }}px;{% endif %}
+    "
+    {{ block.shopify_attributes }}
+  >{{ body }}</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Body text",
+  "tag": null,
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Body copy.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Highlight"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Words to colour",
+      "info": "Must match the text exactly, e.g. HAPPY BOOST™"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Highlight colour",
+      "default": "#ee7624"
+    },
+    {
+      "type": "header",
+      "content": "Type"
+    },
+    {
+      "type": "range",
+      "id": "size",
+      "label": "Size — desktop",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "size_mobile",
+      "label": "Size — mobile",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "weight",
+      "label": "Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line height",
+      "min": 100,
+      "max": 220,
+      "step": 2.5,
+      "unit": "%",
+      "default": 150
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Colour",
+      "info": "Leave empty to inherit."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment — desktop",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "align_mobile",
+      "label": "Alignment — mobile",
+      "options": [
+        { "value": "", "label": "Same as desktop" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": ""
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "info": "0 means full width. Centred when the alignment is centred.",
+      "min": 0,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "paragraph_gap",
+      "label": "Gap between paragraphs",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Below — desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_mobile",
+      "label": "Below — mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Body text",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}
