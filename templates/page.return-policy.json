@@ -299,7 +299,7 @@
       "custom_css": [],
       "settings": {
         "content_direction": "column",
-        "full_width": false,
+        "full_width": true,
         "gap": 15,
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 21,
