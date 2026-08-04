@@ -8,6 +8,12 @@
   the label prints the colourway count. Quick View opens the representative
   colourway, since the card itself stands for a model.
 
+  Laid out in the source's three bands so the CSS can be plain geometry:
+  `.spy-image-container` (image + Quick View + labels) is the hover zone, inside it
+  `.spy-color-swatches` holds the label stack with the thumbnail row on top of it,
+  and `.spy-tile-body` carries the title and price. Measurements for each band are
+  in docs/superpowers/specs/2026-08-04-plp-product-card-pixel-perfect-design.md.
+
   @param {object} product - the colourway that represents the group
   @param {string} group_name - model name from the `collection: xxx` tag
   @param {number} group_count - how many colourways the group holds
@@ -117,14 +123,6 @@
   {% # theme-check-disable-next-line UnknownFilter %}
   view-event-payload="{{ product | standard_event_data: 'view', context: product_view_context | escape }}"
 >
-  <a
-    href="{{ target }}"
-    class="product-card__link"
-    ref="productCardLink"
-  >
-    <span class="visually-hidden">{{ title }}</span>
-  </a>
-
   <div
     class="
       product-card__content
@@ -146,159 +144,192 @@
       --quick-add-mobile-opacity: 0;
     "
   >
-    {%- comment -%} Wraps because a card can earn up to four badges at once {%- endcomment -%}
-    <spy-tech-badge
-      class="spy-tech-badge absolute top-2.5 right-2.5 z-10 flex flex-wrap items-start justify-end gap-1.5 pointer-events-none"
-    >
-      <span class="spy-tech-badge__current flex flex-wrap items-start justify-end gap-1.5" data-tech-current>
-        {%- render 'spy-tech-badges',
-          product: product,
-          force_happy_boost: group_happy_boost,
-          happy_boost_icon: hb_icon,
-          show_tag_badges: true,
-          mips_icon: mips_icon,
-          bonus_lens_icon: bonus_lens_icon,
-          deadbolt_icon: deadbolt_icon
-        -%}
-      </span>
-    </spy-tech-badge>
-
-    <div class="card-gallery" data-product-id="{{ product.id }}">
+    {%- comment -%}
+      Image band — the source's `.image-container`. Hovering anywhere in here swaps the
+      label row for the colourway thumbnails; the text band below is deliberately outside,
+      so hovering the title or price leaves the labels alone.
+      The card-wide link lives in here too, so it covers the image and the label row but
+      not the text band, which keeps the hover zone honest.
+    {%- endcomment -%}
+    <div class="spy-image-container">
       <a
-        class="contents"
-        ref="cardGalleryLink"
         href="{{ target }}"
-        aria-label="{{ title | escape }}"
+        class="product-card__link"
+        ref="productCardLink"
       >
-        {%- if media != blank -%}
-          {{
-            media
-            | image_url: width: 1000
-            | image_tag: sizes: image_sizes, widths: '200,300,400,500,600,800,1000', alt: title, loading: 'lazy'
-          }}
-        {%- else -%}
-          {{ 'product-apparel-1' | placeholder_svg_tag }}
-        {%- endif -%}
+        <span class="visually-hidden">{{ title }}</span>
       </a>
-    </div>
 
-    {%- comment -%}
-      Quick View, revealed on card hover. Sits right after the gallery because the
-      CSS pulls it up over the image bottom, so it costs the card no height at rest.
-    {%- endcomment -%}
-    {%- render 'spy-quick-view-button', product: product -%}
+      {%- comment -%} Wraps because a card can earn up to four badges at once {%- endcomment -%}
+      <spy-tech-badge
+        class="spy-tech-badge absolute top-2.5 right-2.5 z-10 flex flex-wrap items-start justify-end gap-1.5 pointer-events-none"
+      >
+        <span class="spy-tech-badge__current flex flex-wrap items-start justify-end gap-1.5" data-tech-current>
+          {%- render 'spy-tech-badges',
+            product: product,
+            force_happy_boost: group_happy_boost,
+            happy_boost_icon: hb_icon,
+            show_tag_badges: true,
+            mips_icon: mips_icon,
+            bonus_lens_icon: bonus_lens_icon,
+            deadbolt_icon: deadbolt_icon
+          -%}
+        </span>
+      </spy-tech-badge>
 
-    {%- comment -%} Badge slot always renders so every card keeps the same height {%- endcomment -%}
-    {%- capture badge_text -%}{%- render 'spy-product-badge-text', product: product -%}{%- endcapture -%}
-    <div class="spy-new-badge">
-      {%- if badge_text != blank -%}
-        <span
-          class="spy-badge-pill border border-spy-orange text-spy-orange text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 leading-none"
-          >{{ badge_text | strip }}</span
+      <div class="card-gallery" data-product-id="{{ product.id }}">
+        <a
+          class="contents"
+          ref="cardGalleryLink"
+          href="{{ target }}"
+          aria-label="{{ title | escape }}"
         >
-      {%- endif -%}
-    </div>
-
-    <p class="spy-color-count text-spy-gray m-0">{{ count_label }}</p>
-
-    {%- comment -%}
-      Colourway thumbnails, revealed on hover in place of the count (source behaviour:
-      the label fades out, this row fades in — same slot, so nothing below moves).
-      Sits after the count because the CSS pulls it up over both that and the badge.
-    {%- endcomment -%}
-    {%- if show_swatches and model_collection != blank -%}
-      {%- assign tech_store = '' -%}
-      <div class="spy-swatches" data-spy-swatches>
-        {%- for colourway in model_collection.products limit: swatch_count -%}
-          {%- if colourway.featured_media != blank -%}
-            {%- comment -%}
-              Each thumbnail carries the badge set for its own colourway, so hovering
-              one updates the badge alongside the image instead of leaving the group's
-              resting badge in place. Built in this loop and parked in a <template>.
-            {%- endcomment -%}
-            {%- capture colourway_happy_boost -%}
-              {%- render 'spy-group-has-technology', technology: 'Happy Boost', product: colourway -%}
-            {%- endcapture -%}
-            {%- liquid
-              assign colourway_happy_boost = colourway_happy_boost | strip
-              assign colourway_force = false
-              if colourway_happy_boost == '1'
-                assign colourway_force = true
-              endif
-            -%}
-            {%- capture tech_entry -%}
-              <span data-tech-key="{{ colourway.id }}">
-                {%- render 'spy-tech-badges',
-                  product: colourway,
-                  force_happy_boost: colourway_force,
-                  happy_boost_icon: hb_icon,
-                  show_tag_badges: true,
-                  mips_icon: mips_icon,
-                  bonus_lens_icon: bonus_lens_icon,
-                  deadbolt_icon: deadbolt_icon
-                -%}
-              </span>
-            {%- endcapture -%}
-            {%- assign tech_store = tech_store | append: tech_entry -%}
-
-            <a
-              href="{{ colourway.url }}"
-              class="spy-swatches__item"
-              data-tech-key="{{ colourway.id }}"
-              data-full="{{ colourway.featured_media | image_url: width: 640 }}"
-              aria-label="{{ title | escape }} — {{ colourway.title | escape }}"
-            >
-              {%- comment -%} 240 covers the widest the thumb flexes to on a 3x screen {%- endcomment -%}
-              <img
-                src="{{ colourway.featured_media | image_url: width: 240 }}"
-                alt="{{ colourway.title | escape }}"
-                width="42"
-                height="26"
-                loading="lazy"
-              >
-            </a>
+          {%- if media != blank -%}
+            {{
+              media
+              | image_url: width: 1000
+              | image_tag: sizes: image_sizes, widths: '200,300,400,500,600,800,1000', alt: title, loading: 'lazy'
+            }}
+          {%- else -%}
+            {{ 'product-apparel-1' | placeholder_svg_tag }}
           {%- endif -%}
-        {%- endfor -%}
+        </a>
+      </div>
 
-        {%- if count > swatch_count -%}
-          {%- comment -%}
-            The source points this at the model's own page. Each colourway is still its
-            own product here, so the model collection is the page that lists them all.
-          {%- endcomment -%}
-          <a
-            href="{{ model_collection.url }}"
-            class="spy-swatches__more"
-            aria-label="See all {{ count }} colors of {{ title | escape }}"
-          >
-            <svg width="28" height="10" viewBox="0 0 28 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-              <path d="M0.5 5H26.42" stroke="currentColor" stroke-miterlimit="10"></path>
-              <path d="M23.1 9.09L22.42 8.36L26.03 5L22.42 1.64L23.1 0.91L27.5 5L23.1 9.09Z" fill="currentColor"></path>
-            </svg>
-          </a>
+      {%- comment -%}
+        Quick View, revealed on card hover. Sits right after the gallery because the
+        CSS pulls it up over the image bottom, so it costs the card no height at rest.
+      {%- endcomment -%}
+      {%- render 'spy-quick-view-button', product: product -%}
+
+      {%- comment -%}
+        Label band — the source's `.color-swatches`. One box holds the badge and the label
+        stacked bottom-up, and the thumbnail row sits on top of them, so the swap on hover
+        moves nothing below it.
+      {%- endcomment -%}
+      <div class="spy-color-swatches">
+        <div class="spy-tile-labels">
+          {%- comment -%} Badge slot always renders so every card keeps the same height {%- endcomment -%}
+          {%- capture badge_text -%}{%- render 'spy-product-badge-text', product: product -%}{%- endcapture -%}
+          <div class="spy-new-badge">
+            {%- if badge_text != blank -%}
+              <span class="spy-badge-pill border border-spy-orange text-spy-orange">{{ badge_text | strip }}</span>
+            {%- endif -%}
+          </div>
+
+          <p class="spy-color-count m-0">{{ count_label }}</p>
+        </div>
+
+        {%- comment -%}
+          Colourway thumbnails, revealed on hover in place of the label row (source behaviour:
+          the labels fade out, this row fades in — same slot, so nothing below moves).
+        {%- endcomment -%}
+        {%- if show_swatches and model_collection != blank -%}
+          {%- assign tech_store = '' -%}
+          <div class="spy-swatches" data-spy-swatches>
+            {%- for colourway in model_collection.products limit: swatch_count -%}
+              {%- if colourway.featured_media != blank -%}
+                {%- comment -%}
+                  Each thumbnail carries the badge set for its own colourway, so hovering
+                  one updates the badge alongside the image instead of leaving the group's
+                  resting badge in place. Built in this loop and parked in a <template>.
+                {%- endcomment -%}
+                {%- capture colourway_happy_boost -%}
+                  {%- render 'spy-group-has-technology', technology: 'Happy Boost', product: colourway -%}
+                {%- endcapture -%}
+                {%- liquid
+                  assign colourway_happy_boost = colourway_happy_boost | strip
+                  assign colourway_force = false
+                  if colourway_happy_boost == '1'
+                    assign colourway_force = true
+                  endif
+                -%}
+                {%- capture tech_entry -%}
+                  <span data-tech-key="{{ colourway.id }}">
+                    {%- render 'spy-tech-badges',
+                      product: colourway,
+                      force_happy_boost: colourway_force,
+                      happy_boost_icon: hb_icon,
+                      show_tag_badges: true,
+                      mips_icon: mips_icon,
+                      bonus_lens_icon: bonus_lens_icon,
+                      deadbolt_icon: deadbolt_icon
+                    -%}
+                  </span>
+                {%- endcapture -%}
+                {%- assign tech_store = tech_store | append: tech_entry -%}
+
+                <a
+                  href="{{ colourway.url }}"
+                  class="spy-swatches__item"
+                  data-tech-key="{{ colourway.id }}"
+                  data-full="{{ colourway.featured_media | image_url: width: 640 }}"
+                  aria-label="{{ title | escape }} — {{ colourway.title | escape }}"
+                >
+                  {%- comment -%} 240 covers the widest the thumb flexes to on a 3x screen {%- endcomment -%}
+                  <img
+                    src="{{ colourway.featured_media | image_url: width: 240 }}"
+                    alt="{{ colourway.title | escape }}"
+                    width="42"
+                    height="26"
+                    loading="lazy"
+                  >
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- if count > swatch_count -%}
+              {%- comment -%}
+                The source points this at the model's own page. Each colourway is still its
+                own product here, so the model collection is the page that lists them all.
+              {%- endcomment -%}
+              <a
+                href="{{ model_collection.url }}"
+                class="spy-swatches__more"
+                aria-label="See all {{ count }} colors of {{ title | escape }}"
+              >
+                {%- comment -%} 32x10 arrow, the source's `.view-pdp-link svg` {%- endcomment -%}
+                <svg width="32" height="10" viewBox="0 0 32 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <path d="M0.5 5H30.42" stroke="currentColor" stroke-miterlimit="10"></path>
+                  <path d="M27.1 9.09L26.42 8.36L30.03 5L26.42 1.64L27.1 0.91L31.5 5L27.1 9.09Z" fill="currentColor"></path>
+                </svg>
+              </a>
+            {%- endif -%}
+          </div>
+
+          {%- comment -%} Badge sets the hover script swaps in, one per thumbnail {%- endcomment -%}
+          {%- if tech_store != blank -%}
+            <template data-tech-store>{{ tech_store }}</template>
+          {%- endif -%}
         {%- endif -%}
       </div>
+    </div>
 
-      {%- comment -%} Badge sets the hover script swaps in, one per thumbnail {%- endcomment -%}
-      {%- if tech_store != blank -%}
-        <template data-tech-store>{{ tech_store }}</template>
+    {%- comment -%}
+      Text band — the source's `.tile-body`. Its padding and the gap between title and
+      price live on this box, not on the blocks, so the two stay locked together.
+    {%- endcomment -%}
+    <div class="spy-tile-body">
+      <a class="contents user-select-text" ref="productTitleLink" href="{{ target }}">
+        <div class="text-block text-block--align-center rte" style="--width: 100%; --text-align: center;">
+          <p role="heading" aria-level="3">{{ title }}</p>
+        </div>
+      </a>
+
+      {%- if block_settings.show_price -%}
+        <product-price
+          class="spy-card-price text-block text-block--align-center rte"
+          data-product-id="{{ product.id }}"
+          style="--width: 100%; --text-align: center;"
+        >
+          {%- render 'spy-card-price',
+            product: product,
+            group_collection: model_collection,
+            from_label: block_settings.label_price_from
+          -%}
+        </product-price>
       {%- endif -%}
-    {%- endif -%}
-
-    <a class="contents user-select-text" ref="productTitleLink" href="{{ target }}">
-      <div class="text-block text-block--align-center rte pt-1" style="--width: 100%; --text-align: center;">
-        <p role="heading" aria-level="3">{{ title }}</p>
-      </div>
-    </a>
-
-    {%- if block_settings.show_price -%}
-      <product-price
-        class="text-block text-block--align-center rte"
-        data-product-id="{{ product.id }}"
-        style="--width: 100%; --text-align: center;"
-      >
-        {%- render 'price', product_resource: product, show_sale_price_first: true -%}
-      </product-price>
-    {%- endif -%}
+    </div>
   </div>
 </product-card>
 

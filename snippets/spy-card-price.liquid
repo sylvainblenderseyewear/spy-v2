@@ -1,0 +1,62 @@
+{%- doc -%}
+  Price line for a PLP card, in the two forms the source uses.
+
+  Plain `$200` when every colourway costs the same, `Starting from $170` when they
+  differ, and a struck-through compare-at after it when the cheapest one is on sale.
+  The source hides its percentage chip on the card, so this prints no percentage.
+
+  Range covers the whole model when a model collection is passed, since the card
+  stands for the model rather than the one colourway it shows. Falls back to the
+  product's own variant range otherwise.
+
+  @param {object} product - colourway the card shows
+  @param {object} [group_collection] - the model's collection, to price the whole group
+  @param {string} [from_label] - copy in front of a range price
+
+  @example
+  {%- render 'spy-card-price', product: product, group_collection: model_collection -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign low = product.price_min
+  assign high = product.price_max
+  assign low_compare = product.compare_at_price_max
+
+  if group_collection != blank and group_collection.products.size > 0
+    assign low = nil
+    assign high = nil
+    assign low_compare = 0
+    for colourway in group_collection.products
+      if low == nil or colourway.price_min < low
+        assign low = colourway.price_min
+        assign low_compare = colourway.compare_at_price_max
+      endif
+      if high == nil or colourway.price_max > high
+        assign high = colourway.price_max
+      endif
+    endfor
+  endif
+
+  assign show_compare = false
+  if low_compare > low
+    assign show_compare = true
+  endif
+
+  assign low_money = low | money_without_trailing_zeros
+  assign compare_money = low_compare | money_without_trailing_zeros
+-%}
+
+<span class="spy-price">
+  <span class="spy-price__sales">
+    {%- if high > low -%}
+      <span class="spy-price__label">{{ from_label | default: 'Starting from' }}</span>&nbsp;
+    {%- endif -%}
+    {{- low_money -}}
+  </span>
+  {%- if show_compare -%}
+    <del class="spy-price__compare">
+      <span class="visually-hidden">{{ 'content.price_regular' | t }}&nbsp;</span>
+      {{- compare_money -}}
+    </del>
+  {%- endif -%}
+</span>

@@ -244,21 +244,51 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 /* Lens Info + Trust Badges are inlined as Tailwind utilities on their markup
    (spy-lens-info.liquid / spy-trust-badges.liquid) — no rules needed here. */
 
-/* ── PLP product-card — SPY reference look (hover reveal + centred) ─────
-   Note: Tailwind runs in `important` mode, so display toggles here need
-   !important to beat the utility classes on the elements. */
+/* ═══════════════════════════════════════════════════════════════════════
+   PLP product card — 1:1 with spyoptic.com (US)
+
+   Every number here is a computed style read off three saved live PLPs; the
+   full table, the height formula and the source rules are in
+   docs/superpowers/specs/2026-08-04-plp-product-card-pixel-perfect-design.md.
+
+   The card is three bands stacked in `.product-card__content` with gap 0, the
+   way the source stacks them — spacing comes from each band's own margins:
+
+     .spy-image-container   square image · Quick View pulled over it · label band
+     .spy-tile-body         title · price · 16px reserved for ratings + compare
+
+   Tailwind runs in `important` mode, so anything that has to beat a utility
+   class on the markup needs !important here.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Scope: the grouped PLP card and every stock Horizon card (search, homepage
+   carousels, PDP recommendations) so all of them read the same. */
+@layer components {
+  :is(collection-component, .section-resource-list) .product-card {
+    --spy-card-band-pad: 8px;      /* .color-swatches padding-top */
+    --spy-card-labels-min: 48px;   /* .tile-labels-container min-height [3rem] */
+    --spy-card-label-h: 20.16px;   /* .swatches-label line box */
+    --spy-card-badge-h: 22.78px;   /* .product-tile-label box */
+  }
+}
 
 /* Centre everything under the image */
 :is(collection-component, .section-resource-list) .product-card__content {
   text-align: center;
+  /* Source lets the Quick View and swatch rows overhang their band */
+  overflow: visible;
 }
 
-/* Tech badges sit on top but never eat clicks */
-:is(collection-component, .section-resource-list) .product-card .spy-tech-badge {
-  pointer-events: none;
+/* ── Image ──────────────────────────────────────────────────────────────
+   Square box, product inset 10%, always centred, no crop and no hover zoom. */
+/* Below 750px Horizon pads the card 8px and pulls the gallery back out by the same
+   8px, so the photo spans the whole grid track. That is what the source does too —
+   image edge-to-edge, text inset — so the pair is left alone. */
+:is(collection-component, .section-resource-list) .product-card .card-gallery {
+  padding: 10% !important;
+  aspect-ratio: 1 / 1;
 }
 
-/* Product image: full product, always centred in the box, no crop, no hover zoom */
 :is(collection-component, .section-resource-list) .product-card .card-gallery img {
   width: 100% !important;
   height: 100% !important;
@@ -267,14 +297,8 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   transform: none !important;
 }
 
-/* 10% inset around the image; locked to a square so every card keeps the same box (source: image-wrapper) */
-:is(collection-component, .section-resource-list) .product-card .card-gallery {
-  padding: 10% !important;
-  aspect-ratio: 1 / 1;
-}
-
-/* Fill the square box down the slideshow chain so wide photos (e.g. Hielo) sit
-   vertically centred instead of top-anchored — object-fit then centres them. */
+/* Fill the square box down the slideshow chain so wide photos sit vertically
+   centred instead of top-anchored — object-fit then centres them. */
 :is(collection-component, .section-resource-list) .product-card .card-gallery slideshow-component,
 :is(collection-component, .section-resource-list) .product-card .card-gallery slideshow-slides,
 :is(collection-component, .section-resource-list) .product-card .card-gallery slideshow-slide,
@@ -282,90 +306,334 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   height: 100% !important;
 }
 
-/* Title uses ink (#1d2a2b); price is the source tile-body grey */
-:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] p,
-:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] {
-  color: var(--color-spy-ink);
-}
-:is(collection-component, .section-resource-list) .product-card .price {
-  color: #565656; /* matched from source .tile-body .price */
-  font-weight: 600;
-  font-size: 15px;
+/* Hover zone: image + Quick View + label band, like the source's .image-container.
+   The text band sits outside it on purpose, so hovering the title or price leaves
+   the labels alone. Positioned, because the card-wide link and the swatch row
+   both anchor to it. */
+:is(collection-component, .section-resource-list) .product-card .spy-image-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Quick View: inset outline box (like the source mx-3), revealed on card hover via opacity.
-   Negative top pulls it over the image bottom so it reserves no space at rest. */
+/* ── Tech / cert stickers ───────────────────────────────────────────────
+   Source: right 5px [0.3125rem], top 11.2px [0.7rem], 40px [2.5rem] each,
+   4px [0.25rem] apart, and scaled to 0.7 only below 544px. */
+:is(collection-component, .section-resource-list) .product-card .spy-tech-badge {
+  top: 11.2px !important;
+  right: 5px !important;
+  gap: 4px !important;
+  pointer-events: none;
+  transform-origin: top right;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-tech-badge__current {
+  gap: 4px !important;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-tech-badge img {
+  width: 40px;
+  height: 40px;
+}
+
+@media screen and (max-width: 543.98px) {
+  :is(collection-component, .section-resource-list) .product-card .spy-tech-badge {
+    transform: scale(0.7);
+  }
+}
+
+/* ── Quick View ─────────────────────────────────────────────────────────
+   Pulled up over the image bottom so it costs the card no height at rest:
+   -43.2px [-2.7rem] top, 8px [0.5rem] bottom, 16px [mx-3] each side, which
+   nets to -0.4px in the flow. Revealed on whole-card hover, 769px up only. */
 :is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn {
-  display: block;
+  display: none;
+}
+
+@media screen and (min-width: 769px) {
+  :is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn {
+    display: block;
+    position: relative;
+    z-index: 2;
+    margin: -43.2px 16px 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-spy-orange);
+    border-radius: 0;
+    background: #fff;
+    color: var(--color-spy-orange);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16.8px;
+    letter-spacing: normal;
+    text-transform: uppercase;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  }
+
+  :is(collection-component, .section-resource-list) .product-card:hover .spy-quick-view-btn {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Source's .btn-outline-primary:hover — fills in */
+  :is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn:hover {
+    background: var(--color-spy-orange);
+    color: #fff;
+  }
+}
+
+/* ── Label band ─────────────────────────────────────────────────────────
+   One box, 8px of top padding, holding the badge and the label stacked
+   bottom-up in a 48px minimum. The thumbnail row is absolute on top of them,
+   so swapping the two on hover moves nothing below.
+
+   Bottom alignment is what keeps titles in line: with a badge the stack runs
+   to 50.94px and overflows the 48px minimum, so a badged card sits 2.94px
+   lower than its neighbour. The source does exactly this — don't "fix" it. */
+:is(collection-component, .section-resource-list) .product-card .spy-color-swatches {
   position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: var(--spy-card-band-pad) 8px 0;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-tile-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: var(--spy-card-labels-min);
+  transition: opacity 0.2s ease;
+}
+
+/* Badge slot collapses to nothing when the card earns no badge, so the label
+   alone bottoms out against the 48px minimum. */
+:is(collection-component, .section-resource-list) .product-card .spy-new-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-new-badge:empty {
+  display: none;
+}
+
+/* Source .product-tile-label: 13px [.8125em] / 17.6px [1.1rem], bold, square,
+   padding .2rem .8rem 0, and it never wraps. */
+:is(collection-component, .section-resource-list) .product-card .spy-badge-pill {
+  padding: 3.2px 12.8px 0 !important;
+  border-radius: 0 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 17.6px !important;
+  letter-spacing: normal !important;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Source .swatches-label: 14.4px [.9rem] / 20.16px, regular, #6c757d.
+   Holds either the colourway count or its name — the source uses both. */
+:is(collection-component, .section-resource-list) .product-card :is(.spy-color-count, .spy-variant-name) {
+  display: block;
+  min-height: var(--spy-card-label-h);
+  color: var(--color-spy-label) !important;
+  font-size: 14.4px !important;
+  font-weight: 400 !important;
+  line-height: var(--spy-card-label-h) !important;
+}
+
+/* ── Colourway thumbnails ───────────────────────────────────────────────
+   Absolute on top of the label stack, 8px down from the band's top edge, so
+   it lands exactly where the labels start. 48px [3rem] squares on #f8f8f8,
+   8px [.5rem] apart, with a 32px [2rem] arrow to the rest. */
+:is(collection-component, .section-resource-list) .product-card .spy-swatches {
+  position: absolute;
+  top: var(--spy-card-band-pad);
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   z-index: 2;
-  margin: -43px 16px 8px;
-  border: 1px solid var(--color-spy-orange);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  transition: opacity 0.3s ease;
 }
-:is(collection-component, .section-resource-list) .product-card:hover .spy-quick-view-btn {
+
+:is(collection-component, .section-resource-list) .product-card .spy-swatches__item {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #f8f8f8;
+  line-height: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-swatches__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-swatches__more {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-spy-gray);
+  text-decoration: none;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-swatches__more svg {
+  width: 32px;
+  height: 10px;
+}
+
+/* Source hides thumbs 3 and 4 below its md breakpoint (`d-none d-md-block`),
+   so a narrow card shows two and the arrow. */
+@media screen and (max-width: 768.98px) {
+  :is(collection-component, .section-resource-list)
+    .product-card
+    .spy-swatches__item:nth-of-type(n + 3) {
+    display: none;
+  }
+}
+
+/* The swap: hovering the image band fades the labels out and the thumbs in.
+   Scoped to .spy-image-container, so the text band is not a trigger. */
+:is(collection-component, .section-resource-list) .product-card .spy-image-container:hover .spy-swatches {
   opacity: 1;
   visibility: visible;
 }
 
-/* Badge slot: always holds its height so cards align whether or not a badge shows */
-:is(collection-component, .section-resource-list) .product-card .spy-new-badge {
-  min-height: 24px;
+:is(collection-component, .section-resource-list) .product-card .spy-image-container:hover .spy-tile-labels {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ── Text band ──────────────────────────────────────────────────────────
+   Source .tile-body: padding 10px 8px 24px [.625em .5rem 1.5em], centred, with
+   8px [.5rem] under each child except the price. The trailing 16px stands in
+   for the source's two empty slots — a ratings row (8px) and a Compare row
+   (8px, itself hidden below 769px). Both are open decisions in CLAUDE.md; when
+   either gets built it replaces this padding and the geometry still holds. */
+:is(collection-component, .section-resource-list) .product-card .spy-tile-body {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  transition: opacity 0.2s ease;
+  padding: 10px 8px 32px; /* 24 + 8 ratings */
 }
 
-/* New pill: match source — square, 13px, no extra tracking, tight vertical */
-:is(collection-component, .section-resource-list) .product-card .spy-new-badge .spy-badge-pill {
-  font-size: 13px !important;
-  letter-spacing: normal !important;
-  border-radius: 0 !important;
-  padding: 0 0.8rem !important;
-  line-height: 1.1rem !important;
+@media screen and (min-width: 769px) {
+  :is(collection-component, .section-resource-list) .product-card .spy-tile-body {
+    padding-bottom: 40px; /* 24 + 8 ratings + 8 compare */
+  }
 }
 
-/* Card title: heavy uppercase, single line, like the SPY reference */
+/* Horizon already insets the whole card 8px below 750px, which is the inset the
+   source puts on the text band — so drop ours there rather than doubling it. */
+@media screen and (max-width: 749.98px) {
+  :is(collection-component, .section-resource-list) .product-card .spy-tile-body {
+    padding-inline: 0;
+  }
+}
+
+/* Title: heavy uppercase, one line, ellipsis. Source line-height comes from
+   .pdp-link (1.2), not from the body's 1.4. */
 :is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"],
 :is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] p {
-  text-transform: uppercase !important;
+  color: var(--color-spy-ink);
+  font-size: 19.2px !important;
   font-weight: 900 !important;
-  font-size: 1.2rem !important;
+  line-height: 23.04px !important;
+  text-transform: uppercase !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
 }
 
-/* Drop Horizon's quick-add bag and slideshow arrows — not in the SPY card */
-:is(collection-component, .section-resource-list) .product-card :is(quick-add-component, .quick-add, slideshow-arrows, .slideshow-control) {
+:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] .text-block {
+  margin-bottom: 8px;
+  padding: 0 !important;
+}
+
+/* Price: 15px / 21px, 600, #565656. The amount itself is bold (source .sales),
+   and the compare-at is #ababab with 4px [.25rem] to its right. The source
+   styles a percentage chip but hides it on the card, so none is printed. */
+:is(collection-component, .section-resource-list) .product-card :is(.price, .spy-price) {
+  color: #565656 !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  line-height: 21px !important;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-price__sales {
+  font-weight: 700;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-price__compare {
+  margin-right: 4px;
+  color: #ababab;
+  text-decoration: line-through;
+}
+
+/* Stock Horizon price parts, so search and carousel cards read the same */
+:is(collection-component, .section-resource-list) .product-card .compare-at-price {
+  margin-right: 4px;
+  color: #ababab;
+  text-decoration: line-through;
+}
+
+:is(collection-component, .section-resource-list) .product-card :is(.price .percentage, .price__badge-sale, .badge--sale) {
   display: none !important;
 }
 
-/* Swatches read as small glasses thumbnails, not colour dots */
-:is(collection-component, .section-resource-list) .product-card .swatch--variant-image {
-  width: 44px !important;
-  height: 26px !important;
-  border-radius: 0 !important;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+/* ── Type steps ─────────────────────────────────────────────────────────
+   Source: name 1.2rem down to 991.98, then 1rem; price 15px, 1.0625em below
+   991.98, then 1em. Line heights follow the body's 1.4 for the price and
+   .pdp-link's 1.2 for the name. */
+@media screen and (min-width: 769px) and (max-width: 991.98px) {
+  :is(collection-component, .section-resource-list) .product-card :is(.price, .spy-price) {
+    font-size: 17px !important;
+    line-height: 23.8px !important;
+  }
 }
 
-/* Overflow control becomes an arrow instead of "+N" */
-:is(collection-component, .section-resource-list) .product-card .hidden-swatches__count::before {
-  content: "\2192";
-  font-size: 16px;
-  line-height: 1;
+@media screen and (max-width: 768.98px) {
+  :is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"],
+  :is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] p {
+    font-size: 16px !important;
+    line-height: 19.2px !important;
+  }
+
+  :is(collection-component, .section-resource-list) .product-card :is(.price, .spy-price) {
+    font-size: 16px !important;
+    line-height: 22.4px !important;
+  }
 }
 
-/* Swatch row: reserved in the flow, revealed on card hover.
-   It overlaps the colour-count slot so the title/price never move. Renders only when the product
-   has swatch/variant-image data. */
-@media screen and (min-width: 750px) {
+/* Drop Horizon's quick-add bag and slideshow arrows — not on the SPY card */
+:is(collection-component, .section-resource-list)
+  .product-card
+  :is(quick-add-component, .quick-add, slideshow-arrows, .slideshow-control) {
+  display: none !important;
+}
+
+/* Stock Horizon swatch pickers get the same reveal as the SPY thumb row */
+@media screen and (min-width: 769px) {
   :is(collection-component, .section-resource-list) .product-card swatches-variant-picker-component {
     opacity: 0;
     visibility: hidden;
@@ -378,170 +646,98 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   }
 }
 
-/* ── SPY color preview (spy-swatches) — overlaps the label slot, no reflow ──
-   Colour count and variant name share the slot: whichever one the card uses, the
-   hover swatch row covers it. */
-:is(collection-component, .section-resource-list) .product-card :is(.spy-color-count, .spy-variant-name) {
-  min-height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem !important; /* source swatches-label */
-  font-weight: 400 !important;
-  transition: opacity 0.2s ease;
+:is(collection-component, .section-resource-list) .product-card .swatch--variant-image {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 0 !important;
+  background-color: #f8f8f8;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-:is(collection-component, .section-resource-list) .product-card .spy-swatches {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 52px;
-  margin-top: -52px; /* sit on top of BOTH the badge (24) + colour-count (28) slots, centred */
-  position: relative;
-  z-index: 2;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s ease;
-}
-
-:is(collection-component, .section-resource-list) .product-card .spy-swatches__item {
-  border: 0;
-  background: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  line-height: 0;
-  display: inline-flex;
-  text-decoration: none;
-}
-
-/* Size lives on the markup (h-8/h-9 + h-full w-full object-contain in spy-swatches.liquid)
-   so the thumb stays square. */
-
-:is(collection-component, .section-resource-list) .product-card .spy-swatches__more {
-  margin-inline-start: 4px;
-  color: var(--color-spy-gray);
-  font-size: 15px;
+:is(collection-component, .section-resource-list) .product-card .hidden-swatches__count::before {
+  content: "\2192";
+  font-size: 16px;
   line-height: 1;
-  text-decoration: none;
 }
 
-/* On card hover: swatches fade in; badge and colour-count fade out (slots stay reserved). */
-@media screen and (min-width: 750px) {
-  :is(collection-component, .section-resource-list) .product-card:hover .spy-swatches {
-    opacity: 1;
-    visibility: visible;
-  }
-  :is(collection-component, .section-resource-list) .product-card:hover :is(.spy-color-count, .spy-variant-name),
-  :is(collection-component, .section-resource-list) .product-card:hover .spy-new-badge {
-    opacity: 0;
-    visibility: hidden;
-  }
+/* ── Grid ───────────────────────────────────────────────────────────────
+   The source's ladder, not a fixed column count: `desktop-N` is only a
+   ceiling. 1 column to 768.98, 2 from 769, 3 from 992, 4 from 1459.2px
+   [91.2rem]. Gap is 2.2rem 1rem → 35.2px row / 16px column. Same selectors
+   as base.css, which pins 5 columns from 750px up; this file loads later. */
+.collection-wrapper .product-grid--grid,
+.collection-wrapper:has(.facets--vertical) .product-grid--grid {
+  column-gap: 16px;
+  row-gap: 35.2px;
+}
 
-  /* Hovering only the title/price area: show Quick View but keep swatches hidden
-     and colour-count/badge as at rest (.text-block = title & price only). */
-  :is(collection-component, .section-resource-list) .product-card:hover:has(.text-block:hover) .spy-swatches {
-    opacity: 0;
-    visibility: hidden;
-  }
-  :is(collection-component, .section-resource-list) .product-card:hover:has(.text-block:hover) :is(.spy-color-count, .spy-variant-name),
-  :is(collection-component, .section-resource-list) .product-card:hover:has(.text-block:hover) .spy-new-badge {
-    opacity: 1;
-    visibility: visible;
+/* Horizon hardcodes `1fr 1fr` below 750px and only reads the desktop var above it,
+   while the source switches at 769px — so the 750–768.98 slice needs the var set
+   to one column as well, or the grid falls back to auto-fill tracks there. */
+@media screen and (max-width: 749.98px) {
+  .collection-wrapper .product-grid--grid,
+  .collection-wrapper:has(.facets--vertical) .product-grid--grid {
+    grid-template-columns: 100%;
   }
 }
 
-/* ── Grouped PLP card ────────────────────────────────────────────────
-   Reuses every rule above — square image, heavy title, badge slot, and the
-   hover swap of the colour-count for the swatch row.
-
-   The row used to let each thumb flex (`flex: 1 1 0`), so a two-colourway card
-   drew them at 80px while a four-colourway card beside it dropped to 51px — and
-   to 18px at tablet. Thumbs are now square and sized as if the row always held
-   the full four plus the arrow, so the size depends on the card width alone and
-   never on how many colourways a product happens to have.
-   34px reserved = 4 gaps (3px) + the arrow (20px + 2px margin).
-   ──────────────────────────────────────────────────────────────────── */
-:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches {
-  gap: 3px;
+@media screen and (min-width: 750px) and (max-width: 768.98px) {
+  .collection-wrapper .product-grid--grid,
+  .collection-wrapper:has(.facets--vertical) .product-grid--grid {
+    --product-grid-columns-desktop: 100%;
+  }
 }
 
-:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches__item {
-  flex: 0 0 auto;
-  width: min(48px, calc((100% - 34px) / 4));
-  height: auto;
-  aspect-ratio: 1;
-}
-
-:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches__item img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* The arrow keeps its own width so it never steals room from the thumbs. 20px is
-   the source's 28px scaled to our narrower card, so it stays in proportion. */
-:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches__more {
-  flex: 0 0 auto;
-  margin-inline-start: 2px;
-}
-
-:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches__more svg {
-  width: 20px;
-  height: 7px;
-}
-
-/* Two cards per row from 991px down, like the source at tablet. base.css pins the
-   grid to 5 fixed columns from 750px up for vertical-filter collections, which
-   squeezes the cards to ~100px there. Same selector as base.css so this file's
-   later position wins; below 750px the grid already runs on --mobile-columns. */
-@media screen and (min-width: 750px) and (max-width: 991px) {
-  .collection-wrapper:has(.facets--vertical) .product-grid--grid,
-  .collection-wrapper .product-grid--grid {
+@media screen and (min-width: 769px) {
+  .collection-wrapper .product-grid--grid,
+  .collection-wrapper:has(.facets--vertical) .product-grid--grid {
     --product-grid-columns-desktop: repeat(2, minmax(0, 1fr));
   }
 }
 
-/* Four cards per row from 992px up, on both PLP templates. base.css pins 5 there;
-   4 is what the source shows, and it keeps every row full while "More results"
-   appends each page into the same grid. Same selector as base.css so this file's
-   later position wins. */
 @media screen and (min-width: 992px) {
   .collection-wrapper:has(.facets--vertical) .product-grid--grid,
   /* `:is(.product-grid)` only to outweigh the per-section auto-fill rule, which
      sits in a <style> later in the document */
+  .collection-wrapper .product-grid--grid:is(.product-grid) {
+    --product-grid-columns-desktop: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media screen and (min-width: 1459.2px) {
+  .collection-wrapper:has(.facets--vertical) .product-grid--grid,
   .collection-wrapper .product-grid--grid:is(.product-grid) {
     --product-grid-columns-desktop: repeat(4, minmax(0, 1fr));
   }
 }
 
 /* Hold back an incomplete bottom row while "More results" is still on screen, so
-   every visible row carries a full four. The card that starts a row (4n+1) and sits
-   in the last three is proof that row is short — hide it and everything after it.
-   `:not(:first-of-type)` keeps a page that grouped down to 1–3 cards from emptying
-   the grid. Counted `-of-type`, because the grid's first child is a <script>, which
-   would throw `nth-child` off by one. Without the flag (last page) the leftovers
-   show, which is the source's look. */
-@media screen and (min-width: 992px) {
+   every visible row stays full. The card that starts a row and sits inside the
+   last (columns - 1) is proof that row is short — hide it and everything after.
+   `:not(:first-of-type)` keeps a page that grouped down to a couple of cards
+   from emptying the grid. Counted `-of-type`, because the grid's first child is
+   a <script>, which would throw `nth-child` off by one. Without the flag (last
+   page) the leftovers show, which is the source's look. Column count tracks the
+   ladder above. */
+@media screen and (min-width: 992px) and (max-width: 1459.19px) {
+  .product-grid[data-trim-partial-row]
+    > .product-grid__item:nth-of-type(3n + 1):not(:first-of-type):nth-last-of-type(-n + 2),
+  .product-grid[data-trim-partial-row]
+    > .product-grid__item:nth-of-type(3n + 1):not(:first-of-type):nth-last-of-type(-n + 2)
+    ~ .product-grid__item {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1459.2px) {
   .product-grid[data-trim-partial-row]
     > .product-grid__item:nth-of-type(4n + 1):not(:first-of-type):nth-last-of-type(-n + 3),
   .product-grid[data-trim-partial-row]
     > .product-grid__item:nth-of-type(4n + 1):not(:first-of-type):nth-last-of-type(-n + 3)
     ~ .product-grid__item {
     display: none;
-  }
-}
-
-/* Four columns from 992px leave cards near 130px with the filter panel open —
-   narrow enough for "23 colors available" to wrap and push the titles out of line.
-   Hold it to one line at a smaller size until the columns are wide enough.
-   Starts at 992 because 991 and below is the two-column layout above. */
-@media screen and (min-width: 992px) and (max-width: 1100px) {
-  :is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-color-count {
-    /* stylelint-disable-next-line declaration-no-important */
-    font-size: 0.75rem !important;
-    white-space: nowrap;
   }
 }
 
