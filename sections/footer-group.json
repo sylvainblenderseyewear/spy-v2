@@ -635,7 +635,7 @@
       ],
       "name": "SPY Value Props",
       "settings": {
-        "background_color": "#f2f2f2",
+        "background_color": "#FFFFFF",
         "show_border": true,
         "border_color": "#1d2a2b",
         "column_gap": 30,
@@ -857,9 +857,10 @@
         "background_color": "#272727",
         "background_image": "shopify://shop_images/footer-background.webp",
         "overlay": false,
-        "overlay_color": "#00000000",
+        "overlay_color": "rgba(0,0,0,0)",
         "padding_top": 16,
-        "padding_bottom": 16
+        "padding_bottom": 16,
+        "padding_bottom_desktop": 36
       }
     },
     "spy_footer_utilities": {
@@ -1143,6 +1144,7 @@
       "name": "Footer Utilities",
       "settings": {
         "background_color": "#f2f2f2",
+        "text_color": "#1d2a2b",
         "show_top_border": false,
         "top_border_color": "#1d2a2b",
         "row_line_color": "#1d2a2b",
