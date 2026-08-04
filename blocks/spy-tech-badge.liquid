@@ -18,10 +18,10 @@
 
 {%- unless skip -%}
 <spy-tech-badge
-  class="spy-tech-badge absolute top-2.5 right-2.5 z-10 flex items-start gap-1.5 pointer-events-none"
+  class="spy-tech-badge absolute top-[11.2px] right-[5px] z-10 flex items-start gap-1 pointer-events-none"
   {{ block.shopify_attributes }}
 >
-  <span class="spy-tech-badge__current flex items-start gap-1.5" data-tech-current>
+  <span class="spy-tech-badge__current flex items-start gap-1" data-tech-current>
     {%- render 'spy-tech-badges', product: product, mips_icon: block.settings.mips_icon -%}
   </span>
 

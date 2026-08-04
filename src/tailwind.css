@@ -272,9 +272,10 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   }
 }
 
-/* Centre everything under the image */
+/* Centre everything under the image. White ground, like the source's `.product`. */
 :is(collection-component, .section-resource-list) .product-card__content {
   text-align: center;
+  background-color: #fff;
   /* Source lets the Quick View and swatch rows overhang their band */
   overflow: visible;
 }
@@ -318,22 +319,18 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* ── Tech / cert stickers ───────────────────────────────────────────────
    Source: right 5px [0.3125rem], top 11.2px [0.7rem], 40px [2.5rem] each,
-   4px [0.25rem] apart, and scaled to 0.7 only below 544px. */
-:is(collection-component, .section-resource-list) .product-card .spy-tech-badge {
-  top: 11.2px !important;
-  right: 5px !important;
-  gap: 4px !important;
-  pointer-events: none;
-  transform-origin: top right;
-}
+   4px [0.25rem] apart, and scaled to 0.7 only below 544px.
 
-:is(collection-component, .section-resource-list) .product-card .spy-tech-badge__current {
-  gap: 4px !important;
-}
+   Position and gap ride on the markup as `top-[11.2px] right-[5px] gap-1`, not
+   here: Tailwind's utilities are !important inside a layer, and a layered
+   !important outranks an unlayered one, so CSS could never win those three.
+   The scale keeps the default centre origin, which is what the source scales from. */
 
+/* Width only — the source sets `width: 2.5rem` and lets height follow the art, so a
+   tall badge (pictohappyboost) draws 40x61 rather than being squashed into a square. */
 :is(collection-component, .section-resource-list) .product-card .spy-tech-badge img {
   width: 40px;
-  height: 40px;
+  height: auto;
 }
 
 @media screen and (max-width: 543.98px) {
@@ -377,10 +374,21 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     visibility: visible;
   }
 
-  /* Source's .btn-outline-primary:hover — fills in */
-  :is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn:hover {
+  /* Source's .btn-outline-primary:hover — fills in. :active matches it, with no
+     press displacement. */
+  :is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn:is(:hover, :active) {
     background: var(--color-spy-orange);
     color: #fff;
+  }
+
+  /* Source ring: box-shadow 0 0 0 .2rem rgba(primary,.5) with the outline off.
+     Deviation on purpose — the source never reveals this button on focus, so a
+     keyboard user lands on an invisible control. WCAG 2.1 AA needs it visible. */
+  :is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 3.2px color-mix(in srgb, var(--color-spy-orange) 50%, transparent);
+    opacity: 1;
+    visibility: visible;
   }
 }
 
@@ -400,6 +408,8 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   padding: var(--spy-card-band-pad) 8px 0;
 }
 
+/* No transition: the source's labels snap off (transition-duration 0s) while only the
+   thumbnail row fades in over .3s. The swap reads as a cut, not a cross-fade. */
 :is(collection-component, .section-resource-list) .product-card .spy-tile-labels {
   display: flex;
   flex-direction: column;
@@ -408,7 +418,6 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   gap: 8px;
   width: 100%;
   min-height: var(--spy-card-labels-min);
-  transition: opacity 0.2s ease;
 }
 
 /* Badge slot collapses to nothing when the card earns no badge, so the label
@@ -446,12 +455,6 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   font-size: 14.4px !important;
   font-weight: 400 !important;
   line-height: var(--spy-card-label-h) !important;
-  /* Fades on the flat path, where the labels aren't wrapped in .spy-tile-labels */
-  transition: opacity 0.2s ease;
-}
-
-:is(collection-component, .section-resource-list) .product-card .spy-new-badge {
-  transition: opacity 0.2s ease;
 }
 
 /* ── Colourway thumbnails ───────────────────────────────────────────────
