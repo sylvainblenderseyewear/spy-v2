@@ -52,7 +52,7 @@
       ],
       "settings": {
         "content_direction": "column",
-        "full_width": true,
+        "full_width": false,
         "gap": 32,
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 40,
