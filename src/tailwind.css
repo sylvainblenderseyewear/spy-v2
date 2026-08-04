@@ -1061,29 +1061,12 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   margin-inline: auto;
 }
 
-/* ── Watermen — fixed-px containers the source uses ──────────────────────
-   Same reason as the Happy pages above: these are hard pixel caps and a block's
-   width setting is only a percentage of the section, which drifts at every
-   viewport. Everything else on this page caps itself through its own block
-   setting (lens overview 1200, lens picker 1000, banner copy 1140).
+/* Watermen bands moved to the bottom of this file — they now use the source
+   container ladder and the section "CSS class" setting instead of a fixed
+   1140px cap and [id$='…'] selectors. See "Watermen Collection" below. */
 
-   OUR TECH tiles sit in a Bootstrap `.container` inside the full-bleed grey band:
-   1140px with 15px of inner padding, so the art gets 1110px and the two tiles are
-   30px apart. The grey band and the section header stay full width.
-
-   Targeted by position, not by block id: group blocks do not carry their id in the
-   class list, so the two tile rows are picked out as the section's own full-width
-   children — the header beside them is a 50%-width block. */
-[data-template='page.watermen']
-  [id$='__our_tech']
-  .section-content-wrapper
-  > .group-block--width-fill {
-  max-width: 71.25rem; /* 1140px */
-  margin-inline: auto;
-  padding-inline: 0.9375rem; /* 15px */
-}
-
-/* Lens-benefits carousel: source `.hbc-carousel-container` is 1200px centred. */
+/* Lens-benefits carousel: source `.hbc-carousel-container` is 1200px centred.
+   The carousel section has no CSS-class setting, so it stays template-scoped. */
 [data-template='page.watermen'] .section-carousel {
   max-width: 75rem; /* 1200px */
   margin-inline: auto;
@@ -1362,6 +1345,16 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   }
 }
 
+/* Every paragraph on this page is 14pt, which is 18.667px — half a step off what
+   spy-body-text's size slider can express. Rounding to 19px runs each line ~1.8%
+   long and moves the wrap points, so the size comes back as real `pt` here.
+   Overriding the custom property rather than `font-size` keeps the block's own
+   utility in charge; `!important` is what beats the inline style. */
+.sht-band .spy-body-text {
+  --sb-size: 14pt !important;
+  --sb-size-mobile: 14pt !important;
+}
+
 /* col-8 of 12, less the column's own 15px each side — 930px at 1440. */
 /* max-width, not width: the type blocks carry a `w-full` utility, and Tailwind
    is imported with `important`, so its width always wins — for !important
@@ -1383,6 +1376,17 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    so it outranks the column cap above. */
 .sht-band--c8n .section-content-wrapper > .image-block {
   max-width: 500px;
+}
+
+/* The source's h1 is `<picture><img></picture>&nbsp;` — that trailing space is
+   part of the centred line, so it carries the artwork half a space left of true
+   centre. Measured at 4px against the live page. Only where the h1 is at its
+   full 32px; below that the columns stack and the artwork is scaled to fit, so
+   a fixed 4px would read as bad centring rather than a match. */
+@media (min-width: 992px) {
+  .sht-band--c8n .section-content-wrapper > .image-block {
+    transform: translateX(-4px);
+  }
 }
 
 /* Under 544 the column is narrower than the artwork. The source lets it spill
@@ -1457,10 +1461,19 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   max-width: 50%;
 }
 
-/* The ABS row is nudged 8px right by an ml-lg-2 utility. */
+/* The ABS row carries ml-lg-2. That 8px replaces the row's -15px left margin, so
+   the row ends up 1417 wide instead of 1440 and its twelfths become 118.08px —
+   the whole grid shifts right AND tightens. Hence the odd numbers: the 8-column
+   span starts 259.2/1440 in and runs 944.7/1440 wide. Applied to the row only,
+   because the CONSTRUCTION heading above it stays centred on the page. */
 @media (min-width: 992px) {
-  .sht-band--abs .layout-panel-flex--row {
-    margin-left: 8px;
+  .sht-band--abs .section-content-wrapper > .group-block {
+    width: 65.6042% !important;
+    margin-inline-start: 18%;
+    margin-inline-end: 0;
+    /* The wrapper is a centring column flex, which would centre the row's whole
+       margin box and hand back half the offset as extra indent. */
+    align-self: flex-start;
   }
 }
 
@@ -1516,9 +1529,6 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     padding-right: 15px;
   }
 
-  .sht-band--abs .layout-panel-flex--row {
-    margin-left: 0;
-  }
 }
 
 /* The carousel has no CSS-class setting, so it stays template-scoped. In
@@ -1560,3 +1570,114 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     max-width: 90rem; /* 1440px */
   }
 }
+
+/* ── Watermen Collection ─────────────────────────────────────────────────
+   The source builds this page from SFCC content assets, so its widths are
+   inline max-widths per band rather than one container. Taken from the saved
+   capture's own <style> blocks in reference/waterman:
+
+     intro            .max-width 700 + 20px padding  -> 660 measure
+     OUR TECH grid    .container ladder, .sfcc-custom-container padding 40/15
+     LENS OVERVIEW    .vlt-comparison-container  max-width 1200, padding 40/20
+     LENS OPTIONS     .fishing-selector-container max-width 1000, padding 30/20
+     LENS BENEFITS    .hbc-carousel-container     max-width 1200
+     section headers  platform .section-header inside .container + px-lg-5
+
+   Typography already matched before this change; only the widths were off,
+   so nothing here touches font size, weight or colour.
+
+   Bands opt in by class, never by section ID — see the ANSI note above. */
+.wm-band .section-content-wrapper {
+  width: 100%;
+  max-width: none;
+  padding-inline: 0;
+}
+
+/* Intro copy: a fixed 660px measure, not a percentage of the viewport. */
+.wm-band--intro .section-content-wrapper > .group-block {
+  width: 100%;
+  max-width: 43.75rem; /* 700px */
+  margin-inline: auto;
+  margin-block-end: 50px;
+}
+
+/* Section headers and the tech grid follow the source container ladder. */
+.wm-band--header .spy-heading,
+.wm-band--header .spy-body-text,
+.wm-band--tech .section-content-wrapper > .group-block--width-fill,
+[data-template='page.watermen'] .section-resource-list__header,
+[data-template='page.watermen'] .section-resource-list__content,
+[data-template='page.watermen'] .resource-list.resource-list__carousel {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 0.9375rem; /* 15px */
+}
+
+@media (min-width: 544px) {
+  .wm-band--header .spy-heading,
+  .wm-band--header .spy-body-text,
+  .wm-band--tech .section-content-wrapper > .group-block--width-fill,
+  [data-template='page.watermen'] .section-resource-list__header,
+  [data-template='page.watermen'] .section-resource-list__content,
+  [data-template='page.watermen'] .resource-list.resource-list__carousel {
+    max-width: 33.75rem; /* 540px */
+  }
+}
+
+@media (min-width: 769px) {
+  .wm-band--header .spy-heading,
+  .wm-band--header .spy-body-text,
+  .wm-band--tech .section-content-wrapper > .group-block--width-fill,
+  [data-template='page.watermen'] .section-resource-list__header,
+  [data-template='page.watermen'] .section-resource-list__content,
+  [data-template='page.watermen'] .resource-list.resource-list__carousel {
+    max-width: 45rem; /* 720px */
+  }
+}
+
+@media (min-width: 992px) {
+  .wm-band--header .spy-heading,
+  .wm-band--header .spy-body-text,
+  .wm-band--tech .section-content-wrapper > .group-block--width-fill,
+  [data-template='page.watermen'] .section-resource-list__header,
+  [data-template='page.watermen'] .section-resource-list__content,
+  [data-template='page.watermen'] .resource-list.resource-list__carousel {
+    max-width: 71.25rem; /* 1140px */
+  }
+}
+
+@media (min-width: 1200px) {
+  .wm-band--header .spy-heading,
+  .wm-band--header .spy-body-text,
+  .wm-band--tech .section-content-wrapper > .group-block--width-fill,
+  [data-template='page.watermen'] .section-resource-list__header,
+  [data-template='page.watermen'] .section-resource-list__content,
+  [data-template='page.watermen'] .resource-list.resource-list__carousel {
+    max-width: 90rem; /* 1440px */
+  }
+}
+
+/* .section-header adds px-lg-5 on top of the container from lg up. */
+@media (min-width: 992px) {
+  .wm-band--header .spy-heading,
+  .wm-band--header .spy-body-text {
+    padding-inline: 3.9375rem; /* 15px + 48px */
+  }
+}
+
+/* .sfcc-custom-container is 40px/15px inside that container. */
+.wm-band--tech .section-content-wrapper > .group-block--width-fill {
+  padding-inline: 1.875rem; /* 15px container + 15px */
+}
+
+/* Each half of the tech grid is a Bootstrap col-md-6 with 15px gutters. */
+@media (min-width: 769px) {
+  .wm-band--tech .layout-panel-flex--row > :not(style) {
+    flex: 0 0 50%;
+    max-width: 50%;
+    min-width: 0;
+  }
+}
+
+/* The benefits carousel's 1200px cap lives with the other template-scoped
+   rules above, because the carousel section has no CSS-class setting. */

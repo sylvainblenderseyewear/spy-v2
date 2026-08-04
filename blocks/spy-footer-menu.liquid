@@ -1,0 +1,61 @@
+{%- comment -%}
+  SPY Footer Menu — one footer link column.
+  Heading + Shopify menu. Collapses into an accordion below 769px, exactly
+  like the source footer; forced open from 769px up (CSS only, no JS).
+{%- endcomment -%}
+
+{%- liquid
+  assign menu = block.settings.menu
+  assign heading = block.settings.heading | default: menu.title
+-%}
+
+<details
+  class="spy-fmenu group w-full min-[769px]:[&:not([open])>.spy-fmenu-panel]:block min-[769px]:[&::details-content]:[content-visibility:visible]"
+  {{ block.shopify_attributes }}
+>
+  <summary class="spy-fmenu-head cursor-pointer list-none items-center justify-between gap-0 py-0 [display:flex] max-[992px]:py-1 min-[769px]:pointer-events-none [&::-webkit-details-marker]:hidden">
+    <span class="mr-4 text-[16px] font-semibold uppercase leading-[22.4px]">{{ heading }}</span>
+    <span
+      class="w-[10px] shrink-0 transition-transform duration-300 group-open:rotate-180 min-[769px]:hidden [&_svg]:block [&_svg]:h-[10px] [&_svg]:w-[10px]"
+      aria-hidden="true"
+    >
+      {{- 'icon-caret.svg' | inline_asset_content -}}
+    </span>
+  </summary>
+
+  {%- if menu != blank -%}
+    <div class="spy-fmenu-panel">
+      {%- for link in menu.links -%}
+        <div class="text-[12px] leading-[20px] max-[992px]:py-1">
+          <a class="text-current no-underline" href="{{ link.url }}">{{ link.title }}</a>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</details>
+
+{% schema %}
+{
+  "name": "SPY Footer Menu",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Falls back to the menu name."
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Footer Menu",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

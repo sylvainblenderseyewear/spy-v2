@@ -45,7 +45,7 @@
             "border_opacity": 100,
             "border_color": "",
             "border_radius": 0,
-            "link": "",
+            "link": "/policies/shipping-policy",
             "open_in_new_tab": false,
             "placeholder": "",
             "padding-block-start": 0,
@@ -58,11 +58,11 @@
               "type": "icon",
               "settings": {
                 "icon": "truck",
-                "image_upload": "shopify://shop_images/plp_033.png",
-                "width": 124,
+                "image_upload": "shopify://shop_images/spy-footer-icon-shipping.png",
+                "width": 84,
                 "link": "",
                 "open_in_new_tab": false,
-                "icon_color": "#2c393e"
+                "icon_color": "#1d2a2b"
               },
               "blocks": {}
             },
@@ -76,7 +76,7 @@
                 "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "center",
                 "vertical_alignment_flex_direction_column": "center",
-                "gap": 6,
+                "gap": 0,
                 "width": "fill",
                 "custom_width": 100,
                 "width_mobile": "fill",
@@ -198,7 +198,7 @@
             "border_opacity": 100,
             "border_color": "",
             "border_radius": 0,
-            "link": "",
+            "link": "/pages/return-policy",
             "open_in_new_tab": false,
             "placeholder": "",
             "padding-block-start": 0,
@@ -211,11 +211,11 @@
               "type": "icon",
               "settings": {
                 "icon": "return",
-                "image_upload": "shopify://shop_images/plp_034.png",
-                "width": 124,
+                "image_upload": "shopify://shop_images/spy-footer-icon-returns.png",
+                "width": 84,
                 "link": "",
                 "open_in_new_tab": false,
-                "icon_color": "#2c393e"
+                "icon_color": "#1d2a2b"
               },
               "blocks": {}
             },
@@ -229,7 +229,7 @@
                 "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "center",
                 "vertical_alignment_flex_direction_column": "center",
-                "gap": 6,
+                "gap": 0,
                 "width": "fill",
                 "custom_width": 100,
                 "width_mobile": "fill",
@@ -291,7 +291,7 @@
                     "max_width": "none",
                     "alignment": "center",
                     "type_preset": "custom",
-                    "font": "var(--font-subheading--family)",
+                    "font": "var(--font-body--family)",
                     "font_size": "1rem",
                     "line_height": "normal",
                     "letter_spacing": "normal",
@@ -351,7 +351,7 @@
             "border_opacity": 100,
             "border_color": "",
             "border_radius": 0,
-            "link": "",
+            "link": "/pages/warranty",
             "open_in_new_tab": false,
             "placeholder": "",
             "padding-block-start": 0,
@@ -364,11 +364,11 @@
               "type": "icon",
               "settings": {
                 "icon": "star",
-                "image_upload": "shopify://shop_images/plp_035.png",
-                "width": 124,
+                "image_upload": "shopify://shop_images/spy-footer-icon-warranty.png",
+                "width": 84,
                 "link": "",
                 "open_in_new_tab": false,
-                "icon_color": "#2c393e"
+                "icon_color": "#1d2a2b"
               },
               "blocks": {}
             },
@@ -382,7 +382,7 @@
                 "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "center",
                 "vertical_alignment_flex_direction_column": "center",
-                "gap": 6,
+                "gap": 0,
                 "width": "fill",
                 "custom_width": 100,
                 "width_mobile": "fill",
@@ -444,7 +444,7 @@
                     "max_width": "none",
                     "alignment": "center",
                     "type_preset": "custom",
-                    "font": "var(--font-subheading--family)",
+                    "font": "var(--font-body--family)",
                     "font_size": "1rem",
                     "line_height": "normal",
                     "letter_spacing": "normal",
@@ -504,7 +504,7 @@
             "border_opacity": 100,
             "border_color": "",
             "border_radius": 0,
-            "link": "",
+            "link": "/pages/contact",
             "open_in_new_tab": false,
             "placeholder": "",
             "padding-block-start": 0,
@@ -517,11 +517,11 @@
               "type": "icon",
               "settings": {
                 "icon": "chat_bubble",
-                "image_upload": "shopify://shop_images/plp_036.png",
-                "width": 124,
+                "image_upload": "shopify://shop_images/spy-footer-icon-support.png",
+                "width": 84,
                 "link": "",
                 "open_in_new_tab": false,
-                "icon_color": "#2c393e"
+                "icon_color": "#1d2a2b"
               },
               "blocks": {}
             },
@@ -535,7 +535,7 @@
                 "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "center",
                 "vertical_alignment_flex_direction_column": "center",
-                "gap": 6,
+                "gap": 0,
                 "width": "fill",
                 "custom_width": 100,
                 "width_mobile": "fill",
@@ -637,15 +637,14 @@
       "settings": {
         "background_color": "#f2f2f2",
         "show_border": true,
-        "border_color": "#e0e0e0",
-        "max_width": 1400,
-        "column_gap": 80,
-        "padding_top": 56,
-        "padding_bottom": 56
+        "border_color": "#1d2a2b",
+        "column_gap": 30,
+        "padding_top": 48,
+        "padding_bottom": 80
       }
     },
     "section_4nxAxy": {
-      "type": "section",
+      "type": "spy-email-signup",
       "blocks": {
         "text_8L666z": {
           "type": "text",
@@ -653,13 +652,13 @@
           "settings": {
             "text": "<p>Sign up for news, exclusive sales, and 20% off your first order</p>",
             "width": "100%",
-            "max_width": "narrow",
+            "max_width": "none",
             "alignment": "center",
             "type_preset": "custom",
             "font": "var(--font-subheading--family)",
             "font_size": "1.5rem",
-            "line_height": "tight",
-            "letter_spacing": "loose",
+            "line_height": "normal",
+            "letter_spacing": "normal",
             "case": "uppercase",
             "wrap": "balance",
             "text_color": "#ffffff",
@@ -676,22 +675,22 @@
         "email_signup_MqBPHj": {
           "type": "email-signup",
           "settings": {
-            "width": "custom",
-            "custom_width": 24,
+            "width": "fill",
+            "custom_width": 100,
             "heading": "",
-            "heading_text_color": "#1d2a2b",
+            "heading_text_color": "#ffffff",
             "heading_preset": "h4",
             "border_style": "all",
             "input_style": "custom",
-            "border_width": 0,
-            "border_radius": 5,
+            "border_width": 1,
+            "border_radius": 4,
             "input_background_color": "#ffffff",
-            "input_text_color": "#1d2a2b",
-            "input_border_color": "#ffffff",
-            "input_type_preset": "h4",
+            "input_text_color": "#000000",
+            "input_border_color": "#949596",
+            "input_type_preset": "paragraph",
             "style_class": "button-custom",
             "custom_button_background": "#ffffff",
-            "custom_button_text": "#1d2a2b",
+            "custom_button_text": "#111111",
             "custom_button_border": "#ffffff",
             "link_text_color": "",
             "display_type": "text",
@@ -710,34 +709,14 @@
         "text_8L666z",
         "email_signup_MqBPHj"
       ],
-      "name": "t:names.email_signup",
+      "name": "SPY Email Signup",
       "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 16,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "background_media": "none",
         "background_color": "#272727",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 56,
-        "padding-block-end": 56
+        "form_width": 450,
+        "form_height": 200,
+        "gap": 10,
+        "padding_top": 16,
+        "padding_bottom": 16
       }
     },
     "spy_footer_top": {
@@ -752,9 +731,9 @@
             "horizontal_alignment": "flex-start",
             "vertical_alignment": "center",
             "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
+            "horizontal_alignment_flex_direction_column": "center",
             "vertical_alignment_flex_direction_column": "flex-start",
-            "gap": 20,
+            "gap": 16,
             "width": "fill",
             "custom_width": 100,
             "width_mobile": "fill",
@@ -778,7 +757,7 @@
             "open_in_new_tab": false,
             "placeholder": "",
             "padding-block-start": 0,
-            "padding-block-end": 0,
+            "padding-block-end": 16,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
@@ -791,22 +770,14 @@
               "blocks": {}
             },
             "logo": {
-              "type": "logo",
+              "type": "icon",
               "settings": {
-                "inverse": false,
-                "font": "heading",
-                "text_color": "",
-                "unit": "pixel",
-                "percent_width": 100,
-                "pixel_height": 40,
-                "custom_mobile_size": false,
-                "unit_mobile": "percent",
-                "percent_width_mobile": 100,
-                "pixel_height_mobile": 120,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "icon": "none",
+                "image_upload": "shopify://shop_images/spy-footer-logo.svg",
+                "width": 78,
+                "link": "/",
+                "open_in_new_tab": false,
+                "icon_color": ""
               },
               "blocks": {}
             },
@@ -838,388 +809,40 @@
           ]
         },
         "col_company": {
-          "type": "group",
+          "type": "spy-footer-menu",
           "name": "Company",
           "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "flex-start",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "background_color": "",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
-            "link": "",
-            "open_in_new_tab": false,
-            "placeholder": "",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "heading": "Company",
+            "menu": "footer-company"
           },
-          "blocks": {
-            "heading": {
-              "type": "text",
-              "settings": {
-                "text": "<p>COMPANY</p>",
-                "width": "100%",
-                "max_width": "none",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-heading--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "links": {
-              "type": "text",
-              "settings": {
-                "text": "<p><a href=\"/pages/about-us\">About Us</a><br/><a href=\"/blogs/news\" title=\"News\">Blog</a><br/><a href=\"https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=f8d4b700-684e-4cbf-82e0-eb81ed208309\" title=\"https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=f8d4b700-684e-4cbf-82e0-eb81ed208309\">Careers</a><br/><a href=\"/pages/changeagents\">Team</a><br/><a href=\"https://stores.spyoptic.com\">Store Locator</a></p>",
-                "width": "100%",
-                "max_width": "none",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-body--family)",
-                "font_size": "0.75rem",
-                "line_height": "loose",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "heading",
-            "links"
-          ]
+          "blocks": {}
         },
         "col_services": {
-          "type": "group",
+          "type": "spy-footer-menu",
           "name": "Services",
           "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "flex-start",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "background_color": "",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
-            "link": "",
-            "open_in_new_tab": false,
-            "placeholder": "",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "heading": "Services",
+            "menu": "footer-services"
           },
-          "blocks": {
-            "heading": {
-              "type": "text",
-              "settings": {
-                "text": "<p><strong>SERVICES</strong></p>",
-                "width": "100%",
-                "max_width": "none",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "links": {
-              "type": "text",
-              "settings": {
-                "text": "<p><a href=\"/pages/contact\">Contact us</a><br/><a href=\"/account\">My Account</a><br/><a href=\"/account\">My Orders</a><br/><a href=\"/pages/faq\">FAQ</a><br/><a href=\"/pages/warranty\">Warranty</a><br/><a href=\"https://www.b2b-bollebrands.com/store/checkout.ssp?is=login&login=T\" title=\"https://www.b2b-bollebrands.com/store/checkout.ssp?is=login&login=T\">Dealer Portal</a></p>",
-                "width": "100%",
-                "max_width": "none",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-body--family)",
-                "font_size": "0.75rem",
-                "line_height": "loose",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "heading",
-            "links"
-          ]
+          "blocks": {}
         },
         "col_policy": {
-          "type": "group",
+          "type": "spy-footer-menu",
           "name": "Policy",
           "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "flex-start",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "background_color": "",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
-            "link": "",
-            "open_in_new_tab": false,
-            "placeholder": "",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "heading": "Policy",
+            "menu": "footer-policy"
           },
-          "blocks": {
-            "heading": {
-              "type": "text",
-              "settings": {
-                "text": "<p><strong>POLICY</strong></p>",
-                "width": "100%",
-                "max_width": "none",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "links": {
-              "type": "text",
-              "settings": {
-                "text": "<p><a href=\"/policies/privacy-policy\">Privacy Policy</a><br/><a href=\"/pages/return-policy\" title=\"Return Policy\">Return Policy</a><br/><a href=\"https://www.b2b-bollebrands.com/map-policy\" target=\"_blank\" title=\"https://www.b2b-bollebrands.com/map-policy\">MAP Policy</a><br/><a href=\"/policies/terms-of-service\">Terms of Use</a><br/><a href=\"/pages/retail-sales-agreement\">Retail Sales Agreement</a><br/><a href=\"/pages/accessibility-statement\">Accessibility Statement</a><br/><a href=\"/pages/esg\">Our ESG program</a><br/><a href=\"/pages/military-discount\">Military & First Responders Discount</a></p>",
-                "width": "100%",
-                "max_width": "none",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-body--family)",
-                "font_size": "0.75rem",
-                "line_height": "loose",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "heading",
-            "links"
-          ]
+          "blocks": {}
         },
         "col_programs": {
-          "type": "group",
+          "type": "spy-footer-menu",
           "name": "Programs",
           "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "flex-start",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "background_color": "",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
-            "link": "",
-            "open_in_new_tab": false,
-            "placeholder": "",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "heading": "Programs",
+            "menu": "footer-programs"
           },
-          "blocks": {
-            "heading": {
-              "type": "text",
-              "settings": {
-                "text": "<p><strong>PROGRAMS</strong></p>",
-                "width": "100%",
-                "max_width": "none",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "links": {
-              "type": "text",
-              "settings": {
-                "text": "<p><a href=\"/pages/military-discount\">Military & First Responders Discount</a><br/><a href=\"/pages/affiliate-program\">Affiliate Program</a><br/><a href=\"/pages/rewards\">Rewards Program</a></p>",
-                "width": "100%",
-                "max_width": "none",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-body--family)",
-                "font_size": "0.75rem",
-                "line_height": "loose",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "heading",
-            "links"
-          ]
+          "blocks": {}
         }
       },
       "block_order": [
@@ -1231,31 +854,29 @@
       ],
       "name": "Footer",
       "settings": {
-        "background_color": "#1d2a2b",
+        "background_color": "#272727",
         "background_image": "shopify://shop_images/footer-background.webp",
-        "overlay": true,
-        "overlay_color": "rgba(0,0,0,0)",
-        "max_width": 1600,
-        "gap": 0,
-        "padding_top": 56,
-        "padding_bottom": 48
+        "overlay": false,
+        "overlay_color": "#00000000",
+        "padding_top": 16,
+        "padding_bottom": 16
       }
     },
     "spy_footer_utilities": {
       "type": "spy-footer-utilities",
       "blocks": {
-        "light_wrap": {
+        "row_a": {
           "type": "group",
-          "name": "Bottom rows",
+          "name": "Secure + payments",
           "settings": {
-            "content_direction": "column",
+            "content_direction": "row",
             "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
+            "horizontal_alignment": "space-between",
             "vertical_alignment": "center",
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "flex-start",
-            "gap": 20,
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 16,
             "width": "fill",
             "custom_width": 100,
             "width_mobile": "fill",
@@ -1284,19 +905,18 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "row_a": {
+            "secure": {
               "type": "group",
-              "name": "Secure + payments",
               "settings": {
                 "content_direction": "row",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "space-between",
+                "vertical_on_mobile": false,
+                "horizontal_alignment": "flex-start",
                 "vertical_alignment": "center",
                 "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "flex-start",
                 "vertical_alignment_flex_direction_column": "center",
-                "gap": 16,
-                "width": "fill",
+                "gap": 2,
+                "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "fill",
                 "custom_width_mobile": 100,
@@ -1324,169 +944,60 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "secure": {
-                  "type": "group",
+                "lock": {
+                  "type": "icon",
                   "settings": {
-                    "content_direction": "row",
-                    "vertical_on_mobile": false,
-                    "horizontal_alignment": "flex-start",
-                    "vertical_alignment": "center",
-                    "align_baseline": false,
-                    "horizontal_alignment_flex_direction_column": "flex-start",
-                    "vertical_alignment_flex_direction_column": "center",
-                    "gap": 8,
-                    "width": "fit-content",
-                    "custom_width": 100,
-                    "width_mobile": "fill",
-                    "custom_width_mobile": 100,
-                    "height": "fit",
-                    "custom_height": 100,
-                    "background_media": "none",
-                    "background_color": "",
-                    "video_position": "cover",
-                    "background_image_position": "cover",
-                    "toggle_overlay": false,
-                    "overlay_color": "#00000026",
-                    "overlay_style": "solid",
-                    "gradient_direction": "to top",
-                    "border": "none",
-                    "border_width": 1,
-                    "border_opacity": 100,
-                    "border_color": "",
-                    "border_radius": 0,
+                    "icon": "lock",
+                    "width": 14,
                     "link": "",
                     "open_in_new_tab": false,
-                    "placeholder": "",
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
+                    "icon_color": ""
                   },
-                  "blocks": {
-                    "lock": {
-                      "type": "icon",
-                      "settings": {
-                        "icon": "lock",
-                        "width": 12,
-                        "link": "",
-                        "open_in_new_tab": false,
-                        "icon_color": ""
-                      },
-                      "blocks": {}
-                    },
-                    "text": {
-                      "type": "text",
-                      "settings": {
-                        "text": "<p>We guarantee every transaction is 100% secure.</p>",
-                        "width": "fit-content",
-                        "max_width": "none",
-                        "alignment": "left",
-                        "type_preset": "custom",
-                        "font": "var(--font-subheading--family)",
-                        "font_size": "0.75rem",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "wrap": "pretty",
-                        "text_color": "#1d2a2b",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
-                        "padding-block-start": 0,
-                        "padding-block-end": 0,
-                        "padding-inline-start": 0,
-                        "padding-inline-end": 0
-                      },
-                      "blocks": {}
-                    }
-                  },
-                  "block_order": [
-                    "lock",
-                    "text"
-                  ]
+                  "blocks": {}
                 },
-                "payments_wrap": {
-                  "type": "group",
+                "text": {
+                  "type": "text",
                   "settings": {
-                    "content_direction": "row",
-                    "vertical_on_mobile": false,
-                    "horizontal_alignment": "flex-end",
-                    "vertical_alignment": "center",
-                    "align_baseline": false,
-                    "horizontal_alignment_flex_direction_column": "flex-start",
-                    "vertical_alignment_flex_direction_column": "center",
-                    "gap": 0,
+                    "text": "<p>We guarantee every transaction is 100% secure.</p>",
                     "width": "fit-content",
-                    "custom_width": 100,
-                    "width_mobile": "fill",
-                    "custom_width_mobile": 100,
-                    "height": "fit",
-                    "custom_height": 100,
-                    "background_media": "none",
-                    "background_color": "",
-                    "video_position": "cover",
-                    "background_image_position": "cover",
-                    "toggle_overlay": false,
-                    "overlay_color": "#00000026",
-                    "overlay_style": "solid",
-                    "gradient_direction": "to top",
-                    "border": "none",
-                    "border_width": 1,
-                    "border_opacity": 100,
-                    "border_color": "",
-                    "border_radius": 0,
-                    "link": "",
-                    "open_in_new_tab": false,
-                    "placeholder": "",
+                    "max_width": "none",
+                    "alignment": "left",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "0.75rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "#1d2a2b",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
                     "padding-block-start": 0,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
                     "padding-inline-end": 0
                   },
-                  "blocks": {
-                    "payments": {
-                      "type": "custom-liquid",
-                      "settings": {
-                        "custom_liquid": "{% render 'spy-payment-icons' %}"
-                      },
-                      "blocks": {}
-                    }
-                  },
-                  "block_order": [
-                    "payments"
-                  ]
+                  "blocks": {}
                 }
               },
               "block_order": [
-                "secure",
-                "payments_wrap"
+                "lock",
+                "text"
               ]
             },
-            "divider": {
-              "type": "_divider",
-              "settings": {
-                "thickness": 1,
-                "corner_radius": "square",
-                "divider_color": "#1d2a2b",
-                "width_percent": 100,
-                "padding-block-start": 0,
-                "padding-block-end": 0
-              },
-              "blocks": {}
-            },
-            "row_b": {
+            "payments_wrap": {
               "type": "group",
-              "name": "Copyright + legal",
               "settings": {
                 "content_direction": "row",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "space-between",
+                "vertical_on_mobile": false,
+                "horizontal_alignment": "flex-end",
                 "vertical_alignment": "center",
                 "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "flex-start",
                 "vertical_alignment_flex_direction_column": "center",
-                "gap": 16,
-                "width": "fill",
+                "gap": 0,
+                "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "fill",
                 "custom_width_mobile": 100,
@@ -1514,83 +1025,132 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "copyright": {
-                  "type": "text",
+                "payments": {
+                  "type": "custom-liquid",
                   "settings": {
-                    "text": "<p>Copyright © 2026 SPY Optic. All rights Reserved.</p>",
-                    "width": "fit-content",
-                    "max_width": "none",
-                    "alignment": "left",
-                    "type_preset": "custom",
-                    "font": "var(--font-subheading--family)",
-                    "font_size": "0.75rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "text_color": "#1d2a2b",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "legal": {
-                  "type": "text",
-                  "settings": {
-                    "text": "<p><a href=\"/policies/terms-of-service\">Terms & Conditions</a>   <a href=\"/policies/privacy-policy\">Privacy Policy</a>   <a href=\"#\">Privacy Preferences</a>   <a href=\"/pages/legal-notices\">Legal Notices</a></p>",
-                    "width": "fit-content",
-                    "max_width": "none",
-                    "alignment": "left",
-                    "type_preset": "custom",
-                    "font": "var(--font-subheading--family)",
-                    "font_size": "0.75rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "text_color": "#1d2a2b",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
+                    "custom_liquid": "{% render 'spy-payment-icons' %}"
                   },
                   "blocks": {}
                 }
               },
               "block_order": [
-                "copyright",
-                "legal"
+                "payments"
               ]
             }
           },
           "block_order": [
-            "row_a",
-            "divider",
-            "row_b"
+            "secure",
+            "payments_wrap"
+          ]
+        },
+        "row_b": {
+          "type": "group",
+          "name": "Copyright + legal",
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "space-between",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 16,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "copyright": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Copyright © 2026 SPY Optic. All rights Reserved.</p>",
+                "width": "fit-content",
+                "max_width": "none",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.75rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "#1d2a2b",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "legal": {
+              "type": "text",
+              "settings": {
+                "text": "<p><a href=\"/policies/terms-of-service\">Terms & Conditions</a>   <a href=\"/policies/privacy-policy\">Privacy Policy</a>   <a href=\"#\">Privacy Preferences</a>   <a href=\"/pages/legal-notices\">Legal Notices</a></p>",
+                "width": "fit-content",
+                "max_width": "none",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.75rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "#1d2a2b",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "copyright",
+            "legal"
           ]
         }
       },
       "block_order": [
-        "light_wrap"
+        "row_a",
+        "row_b"
       ],
       "name": "Footer Utilities",
       "settings": {
         "background_color": "#f2f2f2",
-        "overlay": false,
-        "overlay_color": "#00000040",
-        "show_top_border": true,
-        "top_border_color": "#f2f2f2",
-        "max_width": 1600,
-        "padding_top": 26,
-        "padding_bottom": 20
+        "show_top_border": false,
+        "top_border_color": "#1d2a2b",
+        "row_line_color": "#1d2a2b",
+        "row_padding": 16
       }
     }
   },

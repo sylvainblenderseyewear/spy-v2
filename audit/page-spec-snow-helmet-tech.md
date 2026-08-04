@@ -42,9 +42,9 @@ color: #1d2a2b }`. `h1 h2 h3 { font-family: "DINNextLTPro"; font-weight: 600 }`,
 
 | Element | Size | Weight | Line-height | Colour | Notes |
 |---|---|---|---|---|---|
-| Body copy | **19px** (14pt inline) | 400 | 140% | `#1d2a2b` | Same at every breakpoint — inline `pt` is not fluid |
+| Body copy | **14pt** = 18.667px | 400 | 140% | `#1d2a2b` | Same at every breakpoint — inline `pt` is not fluid. Set as real `pt`; see below |
 | `ADJUSTABLE FIT SYSTEMS` (h2) | **32px** (24pt inline) | 600 | 120% | `#000000` | Inline colour, not the body slate |
-| Its subtitle (p) | 19px | 400 | 140% | `#000000` | Inline colour |
+| Its subtitle (p) | 14pt = 18.667px | 400 | 140% | `#000000` | Inline colour |
 | `VENTILATION SYSTEMS`, `CONSTRUCTION`, `ADDITIONAL FEATURES`, `SHOP SNOW HELMETS` (h1) | **32px** (2rem) | 600 | 120% | `#1d2a2b` | Bootstrap RFS below 1200px — see deviation note |
 | `SNUG LIFE`, `ACTIVE`, `PASSIVE`, `ABS` (h3) | **24px** (18pt inline) | 600 | 120% | `#1d2a2b` | Fixed at every breakpoint |
 
@@ -60,9 +60,18 @@ below 1200px, `2rem` at and above. That resolves to **32px @ 1440**, **28px @ 76
 within 2px of the source at both widths. Matching all three exactly would need `custom-liquid`,
 which costs editability.
 
-**Body size rounds up 0.33px.** 14pt is 18.67px and `spy-body-text`'s size steps by 1, so body copy
-is 19px. Over the MIPS block's nine lines that accumulates to **+4px**, which is the whole of the
-page's vertical drift (see the verification table).
+**Body size is forced to real `pt`.** 14pt is 18.667px and `spy-body-text`'s size slider steps by 1.
+Rounding to 19px runs every line ~1.8% long — an intro line measured 929px against the source's
+913px — which moved wrap points and put a different word on the last line. `spy-body-text` emits its
+size as an inline `--sb-size` custom property, so the band CSS overrides that property to `14pt`
+rather than fighting the `font-size` utility:
+
+```css
+.sht-band .spy-body-text { --sb-size: 14pt !important; --sb-size-mobile: 14pt !important; }
+```
+
+`!important` is what beats the inline style. Every heading size on this page (24pt, 18pt) is already
+a whole number of px, so only body copy needs this.
 
 **Headings are `h2`, not `h1`.** The source emits four separate `h1`s plus a fifth wrapping the MIPS
 image with empty alt. Since `spy-heading` sets size, weight and line-height explicitly, the tag has
@@ -72,6 +81,21 @@ alt text. Zero pixels change; the heading outline becomes valid.
 **The MIPS lock-up is capped under 544px.** The source renders the 500px PNG at natural size inside a
 320px column, taking the page into horizontal scroll. Here it is capped to the column width instead,
 lined up with the copy. Above 544 it is 500px exactly as the source has it.
+
+**The MIPS lock-up is nudged 4px left, on purpose.** The source's `h1` is
+`<picture><img></picture>&nbsp;` — the trailing non-breaking space is part of the centred line, so it
+carries the artwork half a space left of true centre. Reproduced with `translateX(-4px)`, scoped to
+≥992px: below that the columns stack and the artwork is scaled to fit its column, where a fixed 4px
+would read as bad centring rather than a match.
+
+**The video embed must not loop.** `video_loop: true` appends `&playlist=<id>&loop=1`, which makes
+YouTube serve a looping playlist player. The source embeds a bare `/embed/<id>`, so the setting is
+off and the built URL is `https://www.youtube.com/embed/VG9OrN4YsWA?`.
+
+**The ABS row's grid is 1417px wide, not 1440.** Its `ml-lg-2` utility replaces the row's −15px left
+margin with +8px, so the row no longer spans the full container and its twelfths become 118.083px.
+The 8-column span therefore starts 259.2/1440 in and runs 944.7/1440 wide — hence the odd
+percentages in the CSS. Applied to the row only; the CONSTRUCTION heading above stays page-centred.
 
 ---
 
@@ -227,58 +251,80 @@ Not fixable without creating products, which is out of scope.
 
 ---
 
-## Verification (2026-08-03)
+## Verification (2026-08-04)
 
-Rendered on `Staging v2` via `shopify theme dev`, measured against the baseline screenshot at the
-baseline's own 1920 layout so band positions are directly comparable. Ink-band tops and bottoms were
-detected programmatically in both images, then compared gap by gap — that is immune to the header
-height differing between the two platforms.
+Rendered on `Staging v2` via `shopify theme dev`, screenshotted at a **1935 viewport** so the layout
+width matches the baseline's 1920 and both centre the same 1440 container — the render is a uniform
++7.5px right of the baseline, which is normalised out below. Ink bands were detected
+programmatically in both images, then compared band by band on width and on the gap to the band
+above. Gap comparison is immune to the header height differing between the two platforms.
 
-**Band heights — every one matches:**
+**27 of 27 bands matched. Worst deviation: 1px on width, 1px on vertical gap.**
 
-| Band | Source | Rendered |
-|---|---|---|
-| MIPS lock-up | 120 | 120 |
-| Video | 450 | 450 |
-| Hero photo | 466 | 466 |
-| ADJUSTABLE FIT SYSTEMS | 22 | 22 |
-| Snug Life art | 442 | 442 |
-| VENTILATION SYSTEMS | 22 | 22 |
-| Active art | 434 | 434 |
-| Passive art | 450 | 450 |
-| CONSTRUCTION | 22 | 22 |
-| ABS art | 304 | 308 |
-| ADDITIONAL FEATURES | 22 | 22 |
-| Icon strip | 126 | 126 |
+| Element | Source w | Render w | Δw | Source gap | Render gap | Δgap |
+|---|---|---|---|---|---|---|
+| Intro line 1 | 913 | 913 | 0 | — | — | — |
+| Intro line 2 | 916 | 915 | −1 | 10 | 10 | **0** |
+| Intro line 3 | 564 | 563 | −1 | 10 | 10 | **0** |
+| MIPS lock-up | 500 | 500 | 0 | 102 | 102 | **0** |
+| MIPS ¶1 line 1 | 861 | 861 | 0 | 12 | 12 | **0** |
+| MIPS ¶1 line 2 | 910 | 909 | −1 | 11 | 11 | **0** |
+| MIPS ¶1 line 3 | 610 | 610 | 0 | 10 | 10 | **0** |
+| MIPS ¶2 line 1 | 907 | 908 | +1 | 26 | 26 | **0** |
+| MIPS ¶2 line 2 | 905 | 906 | +1 | 10 | 10 | **0** |
+| MIPS ¶2 line 3 | 887 | 887 | 0 | 10 | 10 | **0** |
+| MIPS ¶2 line 4 | 239 | 239 | 0 | 10 | 10 | **0** |
+| Video | 800 | 800 | 0 | 70 | 70 | **0** |
+| Hero photo | 930 | 930 | 0 | 48 | 48 | **0** |
+| ADJUSTABLE FIT SYSTEMS | 381 | 381 | 0 | 101 | 101 | **0** |
+| Fit subtitle | 486 | 486 | 0 | 24 | 24 | **0** |
+| Snug Life row | 926 | 927 | +1 | 134 | 134 | **0** |
+| VENTILATION SYSTEMS | 330 | 330 | 0 | 77 | 77 | **0** |
+| Active row | 927 | 926 | −1 | 92 | 92 | **0** |
+| Passive row | 927 | 928 | +1 | 16 | 16 | **0** |
+| CONSTRUCTION | 220 | 221 | +1 | 101 | 101 | **0** |
+| ABS row | 767 | 768 | +1 | 42 | 42 | **0** |
+| ABS last line | 200 | 199 | −1 | 10 | 10 | **0** |
+| ADDITIONAL FEATURES | 333 | 333 | 0 | 89 | 89 | **0** |
+| Icon circles | 965 | 965 | 0 | 144 | 144 | **0** |
+| Icon label line 1 | 1080 | 1080 | 0 | 37 | 37 | **0** |
+| Icon label line 2 | 1039 | 1039 | 0 | 4 | 3 | −1 |
+| SHOP SNOW HELMETS | 318 | 317 | −1 | 120 | 119 | −1 |
 
-**Gaps between bands:**
+Line counts and wrap points match everywhere: intro 3 lines, MIPS 3 + 4, Snug Life 5, Active 1,
+Passive 4, ABS 7. Each narrow copy column was also checked line by line — the ABS column reads
+195/184/144/184/169/193/82 against the source's 194/185/143/183/169/193/82.
 
-| Gap | Source | Rendered | Δ |
+**Fonts.** `DINNextLTPro` 400 and 700 both load. The theme declares no 600 face, but CSS weight
+matching sends the headings' 600 request up to the 700 file — which is the same Bold face the source
+maps its own 600 to, so glyphs are identical. Confirmed by ink width, not by inspection: every
+heading measures within 1px of the source (381/381, 330/330, 333/333, 220/221, 318/317).
+
+**Responsive.** Re-measured after the type fix. Body copy is 18.667px at all three widths; zero
+elements inside any band overflow the viewport.
+
+| | 1440 | 768 | 390 |
 |---|---|---|---|
-| MIPS lock-up → video | 270 | 274 | +4 |
-| Video → hero | 48 | 48 | **0** |
-| Hero → ADJUSTABLE FIT SYSTEMS | 100 | 100 | **0** |
-| ADJUSTABLE → Snug Life art | 174 | 174 | **0** |
-| Snug Life → VENTILATION SYSTEMS | 78 | 78 | **0** |
-| VENTILATION → Active art | 92 | 92 | **0** |
-| Active → Passive art | 16 | 16 | **0** |
-| Passive → CONSTRUCTION | 100 | 100 | **0** |
-| CONSTRUCTION → ABS art | 42 | 44 | +2 |
-| ABS → ADDITIONAL FEATURES | 116 | 118 | +2 |
-| ADDITIONAL FEATURES → icon strip | 144 | 144 | **0** |
-| Icon strip → SHOP SNOW HELMETS | 38 | 36 | −2 |
-
-The +4 is the 19px body rounding described above; the ±2 values are antialiasing on text and photo
-edges. Nothing else deviates.
-
-The gap from SHOP SNOW HELMETS to the first helmet is not comparable: the source shows Galactic MIPS
-photography and staging has Neutron MIPS, framed differently inside the image. The carousel's own box
-sits 8px under the heading, matching the heading's `margin_bottom`.
+| Layout (less scrollbar) | 1430 | 758 | 390 |
+| Intro / hero column | 923 | 510 | 360 |
+| MIPS column | 903 | 480 | 330 |
+| Video | 800 × 450 | 510 | 360 |
+| Row columns | 208 / 685 · 447 / 447 | stacked 510 | stacked 360 |
+| ABS copy / art | 202 / 583 | stacked 510 | stacked 360 |
+| Icon strip | 1322 | 510 | 360 |
+| Band overflow | 0 | 0 | 0 |
 
 **Console:** no errors from this page. The four that appear are Shopify's own Shop Pay and customer
 account embeds failing against `127.0.0.1` in dev — a CSP `frame-ancestors` block on `shop.app`, a
-`403` on its pre-auth call, and a missing `customer-account-main-menu` in this dev store. All four
+403 on its pre-auth call, and a missing `customer-account-main-menu` in this dev store. All four
 appear identically on other pages.
+
+### Not comparable
+- **The carousel.** The source shows four Galactic MIPS tiles at $120/$140; staging holds three
+  Neutron MIPS at $102.50, photographed with different framing, and with no colourway label because
+  the variants carry no colour data yet. The carousel box itself sits 8px under its heading, matching
+  the heading's `margin_bottom`.
+- **The Axeptio cookie badge** in the source's left margin, which has no counterpart here.
 
 ### Two pre-existing issues found, not fixed here
 Both reproduce on `page.ansi-photochromic`, so they are theme-wide and out of this page's scope:
@@ -290,3 +336,47 @@ Both reproduce on `page.ansi-photochromic`, so they are theme-wide and out of th
    `scrollWidth` of 1177 — 419px of sideways scroll — coming from `spy-mega-menu` and
    `spy-utility-nav`, not from any band on this page. Consistent with the known note that the source
    header is itself broken between 992 and 1240.
+
+---
+
+## Pixel diff (2026-08-04)
+
+Band extents can match while the pixels inside them do not, so the page was also compared
+**per pixel**. Rendered at a **1920 viewport**, which puts the layout width, the container box
+(x 240, w 1440) and the hero (x 495) on exactly the baseline's coordinates — the two images then
+differ by a single pixel vertically, which is normalised out. The 1440 × 4510 content area is
+6,494,400 pixels.
+
+| Pixels differing by more than | Count | Share |
+|---|---|---|
+| 8/255 | 37,813 | 0.582% |
+| 16/255 | 7,490 | 0.115% |
+| 32/255 | 1,609 | 0.025% |
+| 64/255 | 479 | 0.007% |
+| **128/255** | **0** | **0.000%** |
+
+Not one pixel differs by more than half a channel. An 8×8 tile sweep flagged 186 tiles of 101,340
+(0.18%), and every one falls into three causes, none of them layout, type or colour:
+
+1. **Antialiasing phase on text.** The glyphs land on different sub-pixel offsets between the two
+   platforms. Measured on three separate text regions, the ink is identical: darkest pixel exactly
+   `rgb(29,42,43)` in both, mean luminance within **0.05%**, ink-pixel count within **0.4%**. Nothing
+   is available to fix here — it is not weight, colour, size or position.
+2. **Shopify CDN JPEG re-encoding** of the photographs. Same source files, same display boxes,
+   different compression. Confirmed by fetching the CDN URLs directly: full resolution is served and
+   nothing is upscaled. The Mips PNG is **byte-identical** to the uploaded original (difference
+   bounding box: none).
+3. **YouTube's own player chrome**, whose play button differs by a uniform 12/255 from a capture
+   taken years earlier.
+
+### What the pixel diff caught that the extent measurements missed
+- **The video was looping.** `video_loop: true` appended `&playlist=<id>&loop=1`; the source embeds a
+  bare `/embed/<id>`. Fixed.
+- **The Mips lock-up was 4px right of the source**, from the trailing `&nbsp;` in the source's `h1`.
+  Fixed and scoped to ≥992px.
+
+### A trap worth recording
+`img.naturalWidth` on an image with a `srcset` returns the **density-corrected** intrinsic size, not
+the decoded pixel size. It therefore tracks the CSS box and looks like upscaling when there is none —
+the icon strip read as "1187 natural vs 1332 displayed" while the CDN was in fact serving 1426. Fetch
+the URL and measure the file when checking image resolution.

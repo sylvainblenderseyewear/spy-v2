@@ -1,6 +1,7 @@
 {%- comment -%}
   Footer payment icons. Uses the store's enabled payment types when set,
-  otherwise falls back to the common card set so staging matches the design.
+  otherwise the set the source footer shows. Each mark sits in a 45px slot
+  like the source; the square Apple/Google Pay badges set the row height.
 {%- endcomment -%}
 {%- liquid
   assign types = shop.enabled_payment_types
@@ -8,9 +9,36 @@
   if type_count == 0
     assign types = 'visa,master,paypal,american_express,apple_pay,google_pay' | split: ','
   endif
+
+  assign known = 'visa,master,paypal,american_express,apple_pay,google_pay' | split: ','
+  assign files = 'spy-pay-visa.svg,spy-pay-mastercard.svg,spy-pay-paypal.svg,spy-pay-amex.svg,spy-pay-apple-pay.svg,spy-pay-google-pay.svg' | split: ','
 -%}
-<ul class="spy-payments flex flex-wrap items-center gap-2 m-0 p-0" role="list">
+{%- comment -%} [display:flex] + gap-0: Horizon's own .flex class would add a gap and wrap the row. {%- endcomment -%}
+<ul class="spy-payments m-0 list-none flex-wrap items-center justify-center gap-0 p-0 [display:flex] min-[769px]:justify-end" role="list">
   {%- for type in types -%}
-    <li class="flex items-center">{{ type | payment_type_svg_tag: class: 'h-6 w-auto block' }}</li>
+    {%- liquid
+      assign idx = -1
+      for k in known
+        if k == type
+          assign idx = forloop.index0
+          break
+        endif
+      endfor
+    -%}
+    <li class="w-[45px] shrink-0 items-center justify-center [display:flex]">
+      {%- if idx >= 0 -%}
+        {%- assign file = files[idx] -%}
+        <img
+          src="{{ file | asset_url }}"
+          alt="{{ type | replace: '_', ' ' }}"
+          loading="lazy"
+          width="45"
+          height="45"
+          class="block h-auto w-auto max-w-[45px]"
+        >
+      {%- else -%}
+        {{ type | payment_type_svg_tag: class: 'block h-6 w-auto' }}
+      {%- endif -%}
+    </li>
   {%- endfor -%}
 </ul>

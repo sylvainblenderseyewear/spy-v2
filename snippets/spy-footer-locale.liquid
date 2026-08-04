@@ -1,7 +1,7 @@
 {%- comment -%}
   Compact country + language picker for the footer brand column.
-  Rendered from a custom-liquid block. Falls back to a static label
-  when the store has a single market/language.
+  Matches the source: flag, 12px uppercase label, caret. Falls back to a static
+  label when the store has a single market/language, and hides below 769px.
 {%- endcomment -%}
 {%- liquid
   assign has_countries = false
@@ -12,9 +12,28 @@
   if localization.available_languages.size > 1
     assign has_languages = true
   endif
+  assign flag = ''
+  if localization.country.iso_code == 'US'
+    assign flag = 'spy-flag-us.svg'
+  endif
 -%}
-<div class="spy-locale flex flex-wrap items-center gap-x-4 gap-y-1" style="color: var(--color-foreground);">
-  {%- form 'localization', id: 'FooterLocalization', class: 'spy-locale__form flex flex-wrap items-center gap-x-4 gap-y-1' -%}
+<div
+  class="spy-locale hidden min-h-[34px] w-full text-center text-[12px] font-normal uppercase leading-[16.8px] min-[769px]:block"
+  style="color: var(--color-foreground);"
+>
+  {%- comment -%} Inline flow, not flex: the label has to wrap mid-string like the source. {%- endcomment -%}
+  {%- form 'localization', id: 'FooterLocalization', class: 'spy-locale__form' -%}
+    {%- if flag != blank -%}
+      <img
+        src="{{ flag | asset_url }}"
+        alt=""
+        width="16"
+        height="12"
+        class="mr-1 inline-block h-[12px] w-[16px] align-[-0.1em]"
+        aria-hidden="true"
+      >
+    {%- endif -%}
+
     {%- if has_countries -%}
       <label class="sr-only" for="FooterLocaleCountry">Country/region</label>
       <span class="relative inline-flex items-center">
@@ -22,7 +41,7 @@
           id="FooterLocaleCountry"
           name="country_code"
           onchange="this.form.submit()"
-          class="appearance-none bg-transparent border-0 cursor-pointer uppercase font-bold tracking-wide text-[13px] leading-none pr-5 text-current focus:outline-none"
+          class="cursor-pointer appearance-none border-0 bg-transparent pr-3 text-[12px] font-normal uppercase leading-[16.8px] text-current focus:outline-none"
         >
           {%- for country in localization.available_countries -%}
             <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
@@ -30,12 +49,12 @@
             </option>
           {%- endfor -%}
         </select>
-        <span class="pointer-events-none absolute right-0 flex w-3 [&_svg]:w-3 [&_svg]:h-3">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+        <span class="pointer-events-none absolute right-0 w-3 [display:flex] [&_svg]:h-3 [&_svg]:w-3">{{ 'icon-caret.svg' | inline_asset_content }}</span>
       </span>
     {%- else -%}
-      <span class="inline-flex items-center gap-1 uppercase font-bold tracking-wide text-[13px] leading-none">
-        {{ localization.country.name }} ({{ localization.language.endonym_name | capitalize }})
-        <span class="flex w-3 [&_svg]:w-3 [&_svg]:h-3">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+      <span class="text-[12px] font-normal uppercase leading-[16.8px]">
+        {{- localization.country.name }} ({{ localization.language.endonym_name | capitalize }})
+        <span class="inline-block w-3 align-[-0.15em] [&_svg]:h-3 [&_svg]:w-3">{{ 'icon-caret.svg' | inline_asset_content }}</span>
       </span>
     {%- endif -%}
 
@@ -46,7 +65,7 @@
           id="FooterLocaleLanguage"
           name="language_code"
           onchange="this.form.submit()"
-          class="appearance-none bg-transparent border-0 cursor-pointer uppercase font-bold tracking-wide text-[13px] leading-none pr-5 text-current focus:outline-none"
+          class="cursor-pointer appearance-none border-0 bg-transparent pr-4 text-[12px] font-normal uppercase leading-[16.8px] text-current focus:outline-none"
         >
           {%- for language in localization.available_languages -%}
             <option value="{{ language.iso_code }}" lang="{{ language.iso_code }}"{% if language.iso_code == localization.language.iso_code %} selected{% endif %}>
@@ -54,7 +73,7 @@
             </option>
           {%- endfor -%}
         </select>
-        <span class="pointer-events-none absolute right-0 flex w-3 [&_svg]:w-3 [&_svg]:h-3">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+        <span class="pointer-events-none absolute right-0 w-3 [display:flex] [&_svg]:h-3 [&_svg]:w-3">{{ 'icon-caret.svg' | inline_asset_content }}</span>
       </span>
     {%- endif -%}
   {%- endform -%}
