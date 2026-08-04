@@ -1,0 +1,220 @@
+{%- comment -%}
+  ESG intro band — copy on the left, the ESG "Be Beyond" mark on the right.
+
+  Two children by design: a copy column [_spy-esg-copy] and a logo column
+  [_spy-esg-logo]. Nothing is hard-coded — words, type, image, colours, track
+  widths and padding are all settings, so an editor owns the whole band.
+
+  Grid, not flex: the source gives the mark a fixed 452px track and lets the
+  copy take the rest, which `minmax(0,1fr) var(--esg-right)` says directly.
+  Below 769px the second track is dropped and the two stack — same breakpoint
+  the other SPY blocks switch on.
+
+  Note `[display:grid]`, not Tailwind's `grid`. Horizon's base.css owns a
+  `.grid` class of its own — the 14-column page layout — and its named areas
+  would force 14 columns here whatever we set.
+{%- endcomment -%}
+
+{%- liquid
+  case block.settings.align
+    when 'start'
+      assign align = 'items-start'
+    when 'end'
+      assign align = 'items-end'
+    else
+      assign align = 'items-center'
+  endcase
+-%}
+
+<div
+  class="
+    spy-esg-intro w-full bg-[var(--esg-bg)]
+    px-[var(--esg-px-mobile)] min-[769px]:px-[var(--esg-px)]
+    pt-[var(--esg-pt-mobile)] pb-[var(--esg-pb-mobile)]
+    min-[769px]:pt-[var(--esg-pt)] min-[769px]:pb-[var(--esg-pb)]
+  "
+  style="
+    --esg-bg: {{ block.settings.background_color }};
+    --esg-px: {{ block.settings.padding_inline }}px;
+    --esg-px-mobile: {{ block.settings.padding_inline_mobile }}px;
+    --esg-pt: {{ block.settings.padding_top }}px;
+    --esg-pb: {{ block.settings.padding_bottom }}px;
+    --esg-pt-mobile: {{ block.settings.padding_top_mobile }}px;
+    --esg-pb-mobile: {{ block.settings.padding_bottom_mobile }}px;
+    --esg-right: {{ block.settings.right_column }}px;
+    --esg-gap: {{ block.settings.gap }}px;
+    --esg-gap-mobile: {{ block.settings.gap_mobile }}px;
+    {% if block.settings.max_width > 0 %}--esg-max: {{ block.settings.max_width }}px;{% endif %}
+  "
+  {{ block.shopify_attributes }}
+>
+  <div
+    class="
+      spy-esg-intro__row w-full {{ align }}
+      [display:grid] [grid-template-columns:minmax(0,1fr)]
+      gap-[var(--esg-gap-mobile)] min-[769px]:gap-[var(--esg-gap)]
+      min-[769px]:[grid-template-columns:minmax(0,1fr)_var(--esg-right)]
+      {% if block.settings.max_width > 0 %}max-w-[var(--esg-max)] mx-auto{% endif %}
+    "
+  >
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ESG Intro",
+  "tag": null,
+  "blocks": [{ "type": "_spy-esg-copy" }, { "type": "_spy-esg-logo" }],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Band"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background colour",
+      "default": "#f2f2f2"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width",
+      "info": "0 runs the band edge to edge.",
+      "min": 0,
+      "max": 2000,
+      "step": 20,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Columns"
+    },
+    {
+      "type": "range",
+      "id": "right_column",
+      "label": "Logo column width — desktop",
+      "info": "The copy takes whatever is left. Columns stack below 769px.",
+      "min": 200,
+      "max": 600,
+      "step": 4,
+      "unit": "px",
+      "default": 452
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Vertical alignment",
+      "options": [
+        { "value": "start", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap — desktop",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Gap — mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Padding — desktop"
+    },
+    {
+      "type": "range",
+      "id": "padding_inline",
+      "label": "Sides",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 47
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 57
+    },
+    {
+      "type": "header",
+      "content": "Padding — mobile"
+    },
+    {
+      "type": "range",
+      "id": "padding_inline_mobile",
+      "label": "Sides",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 47
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "ESG Intro",
+      "category": "SPY",
+      "blocks": [
+        {
+          "type": "_spy-esg-copy",
+          "blocks": [{ "type": "spy-heading" }, { "type": "spy-body-text" }]
+        },
+        { "type": "_spy-esg-logo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

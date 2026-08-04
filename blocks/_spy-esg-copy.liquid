@@ -1,0 +1,62 @@
+{%- comment -%}
+  Copy column of the ESG band — the title block, then the paragraph block.
+
+  A plain container on purpose. The type lives in [spy-heading] and
+  [spy-body-text], which already expose size, weight, line-height and colour per
+  breakpoint, so there is nothing to re-implement here. This block only owns how
+  wide the copy is allowed to run before it wraps.
+
+  The width is per breakpoint because the source does not simply let the copy
+  fill the screen once the columns stack — it keeps it in a narrower measure, so
+  the title still breaks over three lines on a phone.
+
+  `min-w-0` matters: the parent track is `minmax(0,1fr)`, but a grid item still
+  defaults to its min-content width, so long words would push the logo track out.
+{%- endcomment -%}
+
+<div
+  class="
+    spy-esg-intro__copy min-w-0 w-full
+    {% if block.settings.max_width_mobile > 0 %}max-[769px]:max-w-[var(--esg-copy-max-mobile)]{% endif %}
+    {% if block.settings.max_width > 0 %}min-[769px]:max-w-[var(--esg-copy-max)]{% endif %}
+  "
+  style="
+    {% if block.settings.max_width > 0 %}--esg-copy-max: {{ block.settings.max_width }}px;{% endif %}
+    {% if block.settings.max_width_mobile > 0 %}--esg-copy-max-mobile: {{ block.settings.max_width_mobile }}px;{% endif %}
+  "
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Copy column",
+  "tag": null,
+  "blocks": [{ "type": "spy-heading" }, { "type": "spy-body-text" }],
+  "settings": [
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Copy max width — desktop",
+      "info": "0 fills the column.",
+      "min": 0,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "max_width_mobile",
+      "label": "Copy max width — mobile",
+      "info": "0 fills the screen. The source keeps a narrower measure here.",
+      "min": 0,
+      "max": 500,
+      "step": 5,
+      "unit": "px",
+      "default": 250
+    }
+  ]
+}
+{% endschema %}

@@ -111,19 +111,119 @@
             "text_color": ""
           },
           "blocks": {}
+        },
+        "esg_intro": {
+          "type": "spy-esg-intro",
+          "name": "ESG Intro",
+          "settings": {
+            "background_color": "#f2f2f2",
+            "max_width": 0,
+            "right_column": 452,
+            "align": "start",
+            "gap": 40,
+            "gap_mobile": 18,
+            "padding_inline": 48,
+            "padding_top": 47,
+            "padding_bottom": 57,
+            "padding_inline_mobile": 48,
+            "padding_top_mobile": 49,
+            "padding_bottom_mobile": 48
+          },
+          "blocks": {
+            "copy": {
+              "type": "_spy-esg-copy",
+              "name": "Copy column",
+              "settings": {
+                "max_width": 1260,
+                "max_width_mobile": 225
+              },
+              "blocks": {
+                "title": {
+                  "type": "spy-heading",
+                  "name": "Title",
+                  "settings": {
+                    "text": "SECURING A BRIGHTER FUTURE",
+                    "level": "h2",
+                    "highlight": "",
+                    "highlight_color": "#ee7624",
+                    "size": 32,
+                    "size_mobile": 32,
+                    "weight": "700",
+                    "line_height": 120,
+                    "letter_spacing": 0,
+                    "uppercase": true,
+                    "text_color": "#1d2a2b",
+                    "align": "left",
+                    "align_mobile": "",
+                    "max_width": 0,
+                    "margin_top": 0,
+                    "margin_bottom": 8,
+                    "margin_top_mobile": 0,
+                    "margin_bottom_mobile": 8
+                  },
+                  "blocks": {}
+                },
+                "body": {
+                  "type": "spy-body-text",
+                  "name": "Text",
+                  "settings": {
+                    "text": "<p>We at SPY+ are conscious of our responsabilities with regards to helping the environment and society through our work practice. Today, we seek to not only stop being part of the problem, but also to become part of the solution for society and for our planet.</p><p>ESG has become a major strategic issue for SPY+.</p>",
+                    "highlight": "",
+                    "highlight_color": "#ee7624",
+                    "size": 16,
+                    "size_mobile": 16,
+                    "weight": "400",
+                    "line_height": 140,
+                    "text_color": "#1d2a2b",
+                    "align": "left",
+                    "align_mobile": "",
+                    "max_width": 0,
+                    "paragraph_gap": 16,
+                    "margin_bottom": 0,
+                    "margin_bottom_mobile": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "title",
+                "body"
+              ]
+            },
+            "logo": {
+              "type": "_spy-esg-logo",
+              "name": "ESG logo",
+              "settings": {
+                "image": "shopify://shop_images/ESG-beyond.png",
+                "image_alt": "ESG — Be Beyond",
+                "max_width": 408,
+                "max_width_mobile": 296,
+                "offset_top": 0,
+                "offset_top_mobile": 0,
+                "align": "center",
+                "align_mobile": "left"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "copy",
+            "logo"
+          ]
         }
       },
       "block_order": [
         "heading",
-        "page-content"
+        "page-content",
+        "esg_intro"
       ],
       "settings": {
         "content_direction": "column",
         "full_width": true,
         "gap": 0,
         "background_color": "#F2F2F2",
-        "padding-block-start": 63,
-        "padding-block-end": 80
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     }
   },
