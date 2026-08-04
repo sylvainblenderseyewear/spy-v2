@@ -1,0 +1,167 @@
+{%- comment -%}
+  Logo column of the ESG band — the "ESG Be Beyond" mark.
+
+  Width is a max, not a fixed size, so the mark shrinks with the column on
+  narrow screens instead of overflowing. Desktop and mobile get their own max
+  and their own alignment because the source centres the mark in its track on
+  desktop but left-aligns it under the copy on mobile.
+
+  Kept as its own block rather than the stock image block so the two per-
+  breakpoint widths are real settings — the stock block only expresses width as
+  a percentage of the page.
+{%- endcomment -%}
+
+{%- liquid
+  assign img = block.settings.image
+
+  case block.settings.align
+    when 'left'
+      assign align = 'justify-start'
+    when 'right'
+      assign align = 'justify-end'
+    else
+      assign align = 'justify-center'
+  endcase
+
+  case block.settings.align_mobile
+    when 'left'
+      assign align_m = 'max-[769px]:justify-start'
+    when 'center'
+      assign align_m = 'max-[769px]:justify-center'
+    when 'right'
+      assign align_m = 'max-[769px]:justify-end'
+    else
+      assign align_m = ''
+  endcase
+-%}
+
+<div
+  class="spy-esg-intro__logo flex w-full {{ align }} {{ align_m }}"
+  style="
+    --esg-logo-max: {{ block.settings.max_width }}px;
+    --esg-logo-max-mobile: {{ block.settings.max_width_mobile }}px;
+    --esg-logo-mt: {{ block.settings.offset_top }}px;
+    --esg-logo-mt-mobile: {{ block.settings.offset_top_mobile }}px;
+  "
+  {{ block.shopify_attributes }}
+>
+  {%- if img != blank -%}
+    <img
+      src="{{ img | image_url: width: 900 }}"
+      srcset="{% render 'spy-srcset', image: img, widths: '300,450,600,900,1200' %}"
+      sizes="(min-width: 769px) {{ block.settings.max_width }}px, {{ block.settings.max_width_mobile }}px"
+      alt="{{ block.settings.image_alt | escape }}"
+      width="{{ img.width }}"
+      height="{{ img.height }}"
+      loading="lazy"
+      decoding="async"
+      class="
+        h-auto w-full
+        max-w-[var(--esg-logo-max-mobile)] min-[769px]:max-w-[var(--esg-logo-max)]
+        mt-[var(--esg-logo-mt-mobile)] min-[769px]:mt-[var(--esg-logo-mt)]
+      "
+    >
+  {%- else -%}
+    {%- comment -%} Editor placeholder so the column is visible before an image is picked. {%- endcomment -%}
+    <div
+      class="
+        w-full aspect-[3/1] bg-black/5
+        max-w-[var(--esg-logo-max-mobile)] min-[769px]:max-w-[var(--esg-logo-max)]
+        mt-[var(--esg-logo-mt-mobile)] min-[769px]:mt-[var(--esg-logo-mt)]
+      "
+    ></div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Logo",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Logo"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Alt text",
+      "info": "Describe the mark for screen readers.",
+      "default": "ESG — Be Beyond"
+    },
+    {
+      "type": "header",
+      "content": "Size"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width — desktop",
+      "min": 80,
+      "max": 480,
+      "step": 4,
+      "unit": "px",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "max_width_mobile",
+      "label": "Max width — mobile",
+      "min": 80,
+      "max": 480,
+      "step": 4,
+      "unit": "px",
+      "default": 288
+    },
+    {
+      "type": "header",
+      "content": "Alignment"
+    },
+    {
+      "type": "range",
+      "id": "offset_top",
+      "label": "Nudge down — desktop",
+      "info": "Compensates for whitespace baked into the artwork. Negative pulls it up.",
+      "min": -40,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "offset_top_mobile",
+      "label": "Nudge down — mobile",
+      "min": -40,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Desktop",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "align_mobile",
+      "label": "Mobile",
+      "options": [
+        { "value": "", "label": "Same as desktop" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    }
+  ]
+}
+{% endschema %}
