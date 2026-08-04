@@ -9,7 +9,7 @@
   assign bg = section.settings.background_color
 
   if bg != blank
-    render 'contrast-override', background_color: bg, section_id: section.id
+    render 'contrast-override', background_color: bg, text_color: section.settings.text_color, section_id: section.id
   endif
 -%}
 
@@ -26,7 +26,7 @@
       min-[544px]:[&>.group-block>.group-block-content]:max-w-[540px] min-[769px]:[&>.group-block>.group-block-content]:max-w-[720px] min-[992px]:[&>.group-block>.group-block-content]:max-w-[1140px] min-[1200px]:[&>.group-block>.group-block-content]:max-w-[1440px]
       max-[769px]:[&>.group-block>.group-block-content]:flex-col max-[769px]:[&>.group-block>.group-block-content]:items-center max-[769px]:[&>.group-block>.group-block-content]:gap-0
       max-[769px]:[&_.group-block-content]:justify-center
-      [&_.icon-block\_\_media]:h-[14px] [&_.icon-block\_\_media]:w-auto"
+      [&_svg]:block [&_svg]:shrink-0"
     style="--row-pad: {{ section.settings.row_padding }}px; --row-line: {{ section.settings.row_line_color }};"
   >
     {% content_for 'blocks' %}
@@ -61,6 +61,12 @@
       "id": "background_color",
       "label": "Background color",
       "default": "#f2f2f2"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#1d2a2b"
     },
     {
       "type": "checkbox",
