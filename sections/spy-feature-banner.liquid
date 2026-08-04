@@ -1,57 +1,66 @@
+{%- doc -%}
+  Full-bleed feature banner under the product grid.
+
+  The source breaks this out of the page container to 100vw at 768px and up, with 2rem above
+  and below, and swaps a separate image per breakpoint by `display` — desktop art 1920x801,
+  mobile 800x1200. Never one shared value (CLAUDE.md rule 7).
+
+  Data: pdp.feature_banner_desktop / pdp.feature_banner_mobile. Those definitions do not
+  exist yet, so section settings stand in meanwhile.
+{%- enddoc -%}
+
 {%- liquid
-  assign desktop = closest.product.metafields.pdp.feature_banner_desktop.value
-  assign mobile  = closest.product.metafields.pdp.feature_banner_mobile.value
-  if desktop == blank and mobile == blank
-    assign skip_banner = true
+  assign p = product
+  if p == blank and request.visual_preview_mode
+    assign p = collections.all.products.first
   endif
+  assign desktop = p.metafields.pdp.feature_banner_desktop.value | default: section.settings.image_desktop
+  assign mobile = p.metafields.pdp.feature_banner_mobile.value | default: section.settings.image_mobile
+  assign alt_text = section.settings.alt | default: p.title
 -%}
 
-{%- unless skip_banner -%}
-<div class="w-full leading-[0]" {{ section.shopify_attributes }}>
-  {%- if desktop != blank -%}
-    <div class="hidden md:block">
-      {{
-        desktop
-        | image_url: width: 2000
-        | image_tag:
-          loading: 'lazy',
-          alt: closest.product.title,
-          sizes: '100vw',
-          widths: '750, 1100, 1500, 2000',
-          class: 'w-full h-auto block'
-      }}
-    </div>
-  {%- endif -%}
+{%- if desktop != blank or mobile != blank -%}
+  {%- comment -%}
+    Full-bleed: centre a 100vw box on the viewport, same as the source's
+    `left: 50%; margin-inline: -50vw; width: 100vw`.
+  {%- endcomment -%}
+  <div
+    class="spy-feature-banner relative left-1/2 my-8 w-screen max-w-[100vw] -translate-x-1/2 overflow-hidden leading-[0]"
+    {{ section.shopify_attributes }}
+  >
+    {%- if desktop != blank -%}
+      <div class="hidden md:block">
+        {{
+          desktop
+          | image_url: width: 2000
+          | image_tag:
+            loading: 'lazy',
+            alt: alt_text,
+            sizes: '100vw',
+            widths: '750, 1100, 1500, 2000',
+            class: 'w-full h-auto block'
+        }}
+      </div>
+    {%- endif -%}
 
-  {%- if mobile != blank -%}
-    <div class="block md:hidden">
-      {{
-        mobile
-        | image_url: width: 800
-        | image_tag:
-          loading: 'lazy',
-          alt: closest.product.title,
-          sizes: '100vw',
-          widths: '375, 550, 750, 800',
-          class: 'w-full h-auto block'
-      }}
-    </div>
-  {%- elsif desktop != blank -%}
-    <div class="block md:hidden">
-      {{
-        desktop
-        | image_url: width: 800
-        | image_tag:
-          loading: 'lazy',
-          alt: closest.product.title,
-          sizes: '100vw',
-          widths: '375, 550, 750, 800',
-          class: 'w-full h-auto block'
-      }}
-    </div>
-  {%- endif -%}
-</div>
-{%- endunless -%}
+    {%- comment -%} Desktop art stands in on mobile when no mobile crop is set {%- endcomment -%}
+    {%- assign small = mobile | default: desktop -%}
+    {%- if small != blank -%}
+      <div class="block md:hidden">
+        {{
+          small
+          | image_url: width: 800
+          | image_tag:
+            loading: 'lazy',
+            alt: alt_text,
+            sizes: '100vw',
+            widths: '375, 550, 750, 800',
+            class: 'w-full h-auto block'
+        }}
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
 
 {% schema %}
 {
@@ -59,7 +68,15 @@
   "enabled_on": {
     "templates": ["product"]
   },
-  "settings": [],
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Falls back to these when pdp.feature_banner_desktop / pdp.feature_banner_mobile are empty. Source art: desktop 1920x801, mobile 800x1200."
+    },
+    { "type": "image_picker", "id": "image_desktop", "label": "Desktop image (768px and up)" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Mobile image (under 768px)" },
+    { "type": "text", "id": "alt", "label": "Alt text" }
+  ],
   "presets": []
 }
 {% endschema %}

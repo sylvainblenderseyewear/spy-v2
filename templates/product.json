@@ -518,10 +518,15 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "spy_lifestyle_carousel": {
+      "type": "spy-lifestyle-carousel",
+      "settings": {}
     }
   },
   "order": [
     "main",
+    "spy_lifestyle_carousel",
     "spy_feature_banner_A1",
     "product_recommendations_qggXJq"
   ]
