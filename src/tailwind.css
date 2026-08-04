@@ -446,6 +446,12 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   font-size: 14.4px !important;
   font-weight: 400 !important;
   line-height: var(--spy-card-label-h) !important;
+  /* Fades on the flat path, where the labels aren't wrapped in .spy-tile-labels */
+  transition: opacity 0.2s ease;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-new-badge {
+  transition: opacity 0.2s ease;
 }
 
 /* ── Colourway thumbnails ───────────────────────────────────────────────
@@ -521,6 +527,113 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 :is(collection-component, .section-resource-list) .product-card .spy-image-container:hover .spy-tile-labels {
   opacity: 0;
   visibility: hidden;
+}
+
+/* ── Flat block path ────────────────────────────────────────────────────
+   The stock Horizon card (search, homepage carousels, PDP recommendations and
+   the non-grouped collection template) is built from `content_for 'blocks'`,
+   so badge, label, thumbs, title and price are flat siblings with no band to
+   wrap them in. These rules rebuild the same geometry out of margins:
+
+     badge slot   8px top pad + 27.84 reserved  → 35.84, growing to 38.78 with a pill
+     label        20.16
+     → 56 with no badge, 58.94 with one — the same two band heights as above.
+
+   The thumb row can't be absolute here (its nearest positioned ancestor is the
+   card, not the band), so it is pulled back over the pair with a negative
+   margin and zero height instead. Same pixels, different mechanism. */
+:is(collection-component, .section-resource-list) .product-card:not(:has(.spy-color-swatches)) {
+  /* Reserved slot heights, kept here so the pull distances below stay readable */
+  --spy-flat-badge-slot: 35.84px;
+  --spy-flat-badge-slot-filled: 38.78px;
+}
+
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches))
+  .spy-new-badge {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: var(--spy-flat-badge-slot);
+  padding-top: 8px;
+}
+
+/* An empty slot still has to hold its height here — there is no band minimum
+   behind it — so the :empty collapse used by the grouped card is undone. */
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches))
+  .spy-new-badge:empty {
+  display: flex;
+}
+
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches))
+  .spy-new-badge:has(.spy-badge-pill) {
+  min-height: var(--spy-flat-badge-slot-filled);
+  padding-bottom: 8px;
+}
+
+/* `position: relative` + a negative `top`, not a negative margin: the margin
+   would pull the title and price up with it, since the row is still in flow. */
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches))
+  .spy-swatches {
+  position: relative;
+  z-index: 2;
+  height: 0;
+  align-items: flex-start;
+  padding: 0;
+  /* Lands 8px into the band, over the label and the empty badge slot */
+  top: calc(-1 * (var(--spy-flat-badge-slot) + 20.16px - 8px));
+}
+
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches)):has(.spy-badge-pill)
+  .spy-swatches {
+  top: calc(-1 * (var(--spy-flat-badge-slot-filled) + 20.16px - 8px));
+}
+
+/* The swap has to hang off the whole card here: there is no band element to
+   scope to, and Horizon's full-card `.product-card__link` overlay sits above
+   the text anyway, so a region test could never fire. Hovering the title
+   therefore also reveals the thumbs — the one behaviour this path can't match. */
+@media screen and (min-width: 769px) {
+  :is(collection-component, .section-resource-list)
+    .product-card:not(:has(.spy-color-swatches)):hover
+    .spy-swatches {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  :is(collection-component, .section-resource-list)
+    .product-card:not(:has(.spy-color-swatches)):hover
+    :is(.spy-color-count, .spy-variant-name, .spy-new-badge) {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Title and price stand in for the text band: the 10px that would be its top
+   padding goes on the title, and the bottom padding goes on the card. */
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches))
+  [ref="productTitleLink"]
+  .text-block {
+  margin-top: 10px;
+}
+
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches))
+  .product-card__content {
+  padding-bottom: 32px; /* 24 + 8 ratings */
+}
+
+@media screen and (min-width: 769px) {
+  :is(collection-component, .section-resource-list)
+    .product-card:not(:has(.spy-color-swatches))
+    .product-card__content {
+    padding-bottom: 40px; /* 24 + 8 ratings + 8 compare */
+  }
 }
 
 /* ── Text band ──────────────────────────────────────────────────────────
