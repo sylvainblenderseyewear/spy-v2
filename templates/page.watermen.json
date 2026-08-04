@@ -1870,7 +1870,7 @@
       },
       "name": "Watermen — ice blue mirror",
       "settings": {
-        "collection": "",
+        "collection": "watermen-ice-blue",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 14,
@@ -2087,7 +2087,7 @@
       },
       "name": "Watermen — black mirror",
       "settings": {
-        "collection": "",
+        "collection": "watermen-black-mirror",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 10,
@@ -2304,7 +2304,7 @@
       },
       "name": "Watermen — bronze",
       "settings": {
-        "collection": "",
+        "collection": "watermen-bronze",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 1,
