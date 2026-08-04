@@ -11,6 +11,32 @@
   "sections": {
     "hero": {
       "type": "section",
+      "blocks": {
+        "hero": {
+          "type": "spy-hero-image",
+          "name": "Hero",
+          "settings": {
+            "image_desktop": "shopify://shop_images/snowtech-hero.jpg",
+            "alt": "",
+            "link": "",
+            "ratio_desktop": "auto",
+            "ratio_tablet": "auto",
+            "ratio_mobile": "auto",
+            "fit": "cover",
+            "object_position": "center",
+            "width": "full",
+            "custom_max_width": 1600,
+            "background_color": "#ffffff",
+            "eager": true,
+            "padding_top": 0,
+            "padding_bottom": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "hero"
+      ],
       "name": "Hero",
       "settings": {
         "content_direction": "column",
@@ -40,68 +66,10 @@
         "padding-block-start": 0,
         "padding-block-end": 0,
         "custom_class": "snowtech-band snowtech-band--bleed"
-      },
-      "blocks": {
-        "hero": {
-          "type": "spy-hero-image",
-          "name": "Hero",
-          "settings": {
-            "image_desktop": "shopify://shop_images/snowtech-hero.jpg",
-            "image_tablet": "",
-            "image_mobile": "",
-            "alt": "",
-            "link": "",
-            "ratio_desktop": "auto",
-            "ratio_tablet": "auto",
-            "ratio_mobile": "auto",
-            "fit": "cover",
-            "object_position": "center",
-            "width": "full",
-            "custom_max_width": 1600,
-            "background_color": "#ffffff",
-            "eager": true,
-            "padding_top": 0,
-            "padding_bottom": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "hero"
-      ]
+      }
     },
     "lens_change": {
       "type": "section",
-      "name": "Lens change systems",
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "center",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 16,
-        "section_width": "full-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "background_media": "none",
-        "background_color": "",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "snowtech-band snowtech-band--rows"
-      },
       "blocks": {
         "head": {
           "type": "spy-heading",
@@ -620,11 +588,8 @@
         "row_1",
         "row_2",
         "row_3"
-      ]
-    },
-    "happy_lens": {
-      "type": "section",
-      "name": "See better, snow better",
+      ],
+      "name": "Lens change systems",
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -652,8 +617,11 @@
         "border_radius": 0,
         "padding-block-start": 0,
         "padding-block-end": 0,
-        "custom_class": "snowtech-band snowtech-band--feature"
-      },
+        "custom_class": "snowtech-band snowtech-band--rows"
+      }
+    },
+    "happy_lens": {
+      "type": "section",
       "blocks": {
         "rule": {
           "type": "_divider",
@@ -744,11 +712,8 @@
         "head",
         "sub",
         "art"
-      ]
-    },
-    "lens_types": {
-      "type": "section",
-      "name": "Lens types",
+      ],
+      "name": "See better, snow better",
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -757,7 +722,7 @@
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 16,
+        "gap": 0,
         "section_width": "full-width",
         "section_height": "",
         "section_height_custom": 50,
@@ -776,8 +741,11 @@
         "border_radius": 0,
         "padding-block-start": 0,
         "padding-block-end": 0,
-        "custom_class": "snowtech-band snowtech-band--rows snowtech-band--rows-8-4"
-      },
+        "custom_class": "snowtech-band snowtech-band--feature"
+      }
+    },
+    "lens_types": {
+      "type": "section",
       "blocks": {
         "rule": {
           "type": "_divider",
@@ -1310,11 +1278,8 @@
         "row_1",
         "row_2",
         "row_3"
-      ]
-    },
-    "light_conditions": {
-      "type": "section",
-      "name": "Light conditions",
+      ],
+      "name": "Lens types",
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -1342,8 +1307,11 @@
         "border_radius": 0,
         "padding-block-start": 0,
         "padding-block-end": 0,
-        "custom_class": "snowtech-band snowtech-band--feature"
-      },
+        "custom_class": "snowtech-band snowtech-band--rows snowtech-band--rows-8-4"
+      }
+    },
+    "light_conditions": {
+      "type": "section",
       "blocks": {
         "rule": {
           "type": "_divider",
@@ -1509,11 +1477,8 @@
         "mixed",
         "flat",
         "night"
-      ]
-    },
-    "anti_fog": {
-      "type": "section",
-      "name": "Anti-fog coating",
+      ],
+      "name": "Light conditions",
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -1522,7 +1487,7 @@
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 0,
+        "gap": 16,
         "section_width": "full-width",
         "section_height": "",
         "section_height_custom": 50,
@@ -1542,7 +1507,10 @@
         "padding-block-start": 0,
         "padding-block-end": 0,
         "custom_class": "snowtech-band snowtech-band--feature"
-      },
+      }
+    },
+    "anti_fog": {
+      "type": "section",
       "blocks": {
         "rule": {
           "type": "_divider",
@@ -1633,11 +1601,8 @@
         "head",
         "sub",
         "art"
-      ]
-    },
-    "additional_features": {
-      "type": "section",
-      "name": "Additional features",
+      ],
+      "name": "Anti-fog coating",
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -1666,7 +1631,10 @@
         "padding-block-start": 0,
         "padding-block-end": 0,
         "custom_class": "snowtech-band snowtech-band--feature"
-      },
+      }
+    },
+    "additional_features": {
+      "type": "section",
       "blocks": {
         "rule": {
           "type": "_divider",
@@ -1735,11 +1703,8 @@
         "rule",
         "head",
         "art"
-      ]
-    },
-    "goggles_header": {
-      "type": "section",
-      "name": "Shop snow goggles — heading",
+      ],
+      "name": "Additional features",
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -1767,8 +1732,11 @@
         "border_radius": 0,
         "padding-block-start": 0,
         "padding-block-end": 0,
-        "custom_class": "snowtech-band snowtech-band--header"
-      },
+        "custom_class": "snowtech-band snowtech-band--feature"
+      }
+    },
+    "goggles_header": {
+      "type": "section",
       "blocks": {
         "rule": {
           "type": "_divider",
@@ -1812,11 +1780,40 @@
       "block_order": [
         "rule",
         "head"
-      ]
+      ],
+      "name": "Shop snow goggles — heading",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 0,
+        "padding-block-end": 0,
+        "custom_class": "snowtech-band snowtech-band--header"
+      }
     },
     "goggles": {
       "type": "product-list",
-      "name": "Shop snow goggles",
       "blocks": {
         "static-header": {
           "type": "_product-list-content",
@@ -1851,8 +1848,7 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "block_order": []
+          "blocks": {}
         },
         "static-product-card": {
           "type": "_product-card",
@@ -1983,6 +1979,7 @@
           ]
         }
       },
+      "name": "Shop snow goggles",
       "settings": {
         "collection": "snow-goggle-frames",
         "layout_type": "carousel",
@@ -2005,36 +2002,6 @@
     },
     "lenses_header": {
       "type": "section",
-      "name": "Shop snow lenses — heading",
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "center",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 0,
-        "section_width": "full-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "background_media": "none",
-        "background_color": "",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "snowtech-band snowtech-band--header"
-      },
       "blocks": {
         "head": {
           "type": "spy-heading",
@@ -2064,11 +2031,40 @@
       },
       "block_order": [
         "head"
-      ]
+      ],
+      "name": "Shop snow lenses — heading",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 0,
+        "padding-block-end": 0,
+        "custom_class": "snowtech-band snowtech-band--header"
+      }
     },
     "lenses": {
       "type": "product-list",
-      "name": "Shop snow lenses",
       "blocks": {
         "static-header": {
           "type": "_product-list-content",
@@ -2103,8 +2099,7 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
-          "blocks": {},
-          "block_order": []
+          "blocks": {}
         },
         "static-product-card": {
           "type": "_product-card",
@@ -2235,6 +2230,7 @@
           ]
         }
       },
+      "name": "Shop snow lenses",
       "settings": {
         "collection": "snow-replacement-lenses",
         "layout_type": "carousel",
