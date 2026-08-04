@@ -272,10 +272,17 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   }
 }
 
-/* Centre everything under the image. White ground, like the source's `.product`. */
+/* Centre everything under the image. White ground, like the source's `.product`.
+
+   `min-width: 0` is load-bearing. The card is a grid and this is its item, so with
+   the default `min-width: auto` the title's nowrap min-content width becomes the
+   item's floor — a long name then pushes this box wider than its track, and since
+   the gallery is `aspect-ratio: 1/1`, wider also means taller. Zeroing the floor
+   keeps the box on its track and lets the title ellipsis do its job. */
 :is(collection-component, .section-resource-list) .product-card__content {
   text-align: center;
   background-color: #fff;
+  min-width: 0;
   /* Source lets the Quick View and swatch rows overhang their band */
   overflow: visible;
 }
@@ -315,6 +322,8 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   position: relative;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  min-width: 0;
 }
 
 /* ── Tech / cert stickers ───────────────────────────────────────────────
@@ -645,10 +654,15 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    for the source's two empty slots — a ratings row (8px) and a Compare row
    (8px, itself hidden below 769px). Both are open decisions in CLAUDE.md; when
    either gets built it replaces this padding and the geometry still holds. */
+/* `width: 100%` + `min-width: 0` give the band a definite width to truncate against,
+   the way the source's `.tile-body` does. Without them a long title sizes this box
+   off its own max-content and drags the whole card with it. */
 :is(collection-component, .section-resource-list) .product-card .spy-tile-body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  min-width: 0;
   padding: 10px 8px 32px; /* 24 + 8 ratings */
 }
 
@@ -681,9 +695,14 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   max-width: 100%;
 }
 
+/* The block the ellipsis measures against: full width of the band, no min-content
+   floor of its own, so the nowrap <p> inside truncates instead of stretching out. */
 :is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] .text-block {
   margin-bottom: 8px;
   padding: 0 !important;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
 /* Price: 15px / 21px, 600, #565656. The amount itself is bold (source .sales),
