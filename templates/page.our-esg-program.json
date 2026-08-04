@@ -892,12 +892,12 @@
                   "blocks": {
                     "text_XrRbyC": {
                       "type": "text",
-                      "name": "t:names.text",
+                      "name": "resources-title",
                       "settings": {
-                        "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
-                        "width": "fit-content",
+                        "text": "<h3>OUR RESSOURCES</h3>",
+                        "width": "100%",
                         "max_width": "normal",
-                        "alignment": "left",
+                        "alignment": "center",
                         "type_preset": "rte",
                         "font": "var(--font-body--family)",
                         "font_size": "1rem",
@@ -915,10 +915,148 @@
                         "padding-inline-end": 0
                       },
                       "blocks": {}
+                    },
+                    "text_Q7UFGR": {
+                      "type": "text",
+                      "name": "t:names.text",
+                      "settings": {
+                        "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "center",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "group_mLwj9C": {
+                      "type": "group",
+                      "name": "Resources-buttons",
+                      "settings": {
+                        "content_direction": "row",
+                        "vertical_on_mobile": true,
+                        "horizontal_alignment": "center",
+                        "vertical_alignment": "center",
+                        "align_baseline": false,
+                        "horizontal_alignment_flex_direction_column": "flex-start",
+                        "vertical_alignment_flex_direction_column": "center",
+                        "gap": 12,
+                        "width": "fill",
+                        "custom_width": 100,
+                        "width_mobile": "fill",
+                        "custom_width_mobile": 100,
+                        "height": "fit",
+                        "custom_height": 100,
+                        "background_media": "none",
+                        "background_color": "",
+                        "video_position": "cover",
+                        "background_image_position": "cover",
+                        "toggle_overlay": false,
+                        "overlay_color": "#00000026",
+                        "overlay_style": "solid",
+                        "gradient_direction": "to top",
+                        "border": "none",
+                        "border_width": 1,
+                        "border_opacity": 100,
+                        "border_color": "",
+                        "border_radius": 0,
+                        "link": "",
+                        "open_in_new_tab": false,
+                        "placeholder": "",
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {
+                        "button_b66fVw": {
+                          "type": "button",
+                          "name": "t:names.button",
+                          "settings": {
+                            "label": "OUR SUSTAINABLE DEVELOPMENT REPORTS",
+                            "link": "shopify://collections/all",
+                            "open_in_new_tab": false,
+                            "style_class": "button-custom",
+                            "custom_button_background": "{{ settings.color_palette.foreground }}",
+                            "custom_button_text": "{{ settings.color_palette.background }}",
+                            "custom_button_border": "{{ settings.color_palette.background }}",
+                            "link_text_color": "",
+                            "width": "fit-content",
+                            "custom_width": 100,
+                            "width_mobile": "fit-content",
+                            "custom_width_mobile": 100,
+                            "padding_block": 0,
+                            "padding_inline": 0
+                          },
+                          "blocks": {}
+                        },
+                        "button_cRbe8L": {
+                          "type": "button",
+                          "name": "t:names.button",
+                          "settings": {
+                            "label": "OUR ESG POLICIES",
+                            "link": "shopify://collections/all",
+                            "open_in_new_tab": false,
+                            "style_class": "button-custom",
+                            "custom_button_background": "{{ settings.color_palette.foreground }}",
+                            "custom_button_text": "{{ settings.color_palette.background }}",
+                            "custom_button_border": "{{ settings.color_palette.background }}",
+                            "link_text_color": "",
+                            "width": "fit-content",
+                            "custom_width": 100,
+                            "width_mobile": "fit-content",
+                            "custom_width_mobile": 100,
+                            "padding_block": 0,
+                            "padding_inline": 0
+                          },
+                          "blocks": {}
+                        },
+                        "button_UtiFER": {
+                          "type": "button",
+                          "name": "t:names.button",
+                          "settings": {
+                            "label": "CODE OF ETHICS",
+                            "link": "shopify://collections/all",
+                            "open_in_new_tab": false,
+                            "style_class": "button-custom",
+                            "custom_button_background": "{{ settings.color_palette.foreground }}",
+                            "custom_button_text": "{{ settings.color_palette.background }}",
+                            "custom_button_border": "{{ settings.color_palette.background }}",
+                            "link_text_color": "",
+                            "width": "fit-content",
+                            "custom_width": 100,
+                            "width_mobile": "fit-content",
+                            "custom_width_mobile": 100,
+                            "padding_block": 0,
+                            "padding_inline": 0
+                          },
+                          "blocks": {}
+                        }
+                      },
+                      "block_order": [
+                        "button_b66fVw",
+                        "button_cRbe8L",
+                        "button_UtiFER"
+                      ]
                     }
                   },
                   "block_order": [
-                    "text_XrRbyC"
+                    "text_XrRbyC",
+                    "text_Q7UFGR",
+                    "group_mLwj9C"
                   ]
                 }
               },
@@ -938,7 +1076,7 @@
                 "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "flex-start",
                 "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
+                "gap": 0,
                 "width": "fill",
                 "custom_width": 100,
                 "width_mobile": "fill",
@@ -961,12 +1099,136 @@
                 "link": "",
                 "open_in_new_tab": false,
                 "placeholder": "",
-                "padding-block-start": 0,
+                "padding-block-start": 25,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
-              "blocks": {}
+              "blocks": {
+                "text_hhTMEg": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>Compliance is essential to our operations. If you notice anything that seems dangerous, illegal, or contrary to our Code of Ethics, don’t stay silent. Speak up!     Our reporting platform <a href=\"https://app.convercent.com/en-US/LandingPage/fa7ecaf3-db3f-ee11-a99e-000d3ab9f296?_=1694705503432\" target=\"_blank\"><strong>Speak Up </strong></a>is open to everyone, including people outside the company. We will listen and take the necessary actions.</p>",
+                    "width": "100%",
+                    "max_width": "none",
+                    "alignment": "center",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_HKhfXr": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p><strong>For more details on the procedure, please refer to our Whistleblower Policy.</strong></p>",
+                    "width": "100%",
+                    "max_width": "none",
+                    "alignment": "center",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 20,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "group_LPcKXw": {
+                  "type": "group",
+                  "name": "speak-button",
+                  "settings": {
+                    "content_direction": "row",
+                    "vertical_on_mobile": true,
+                    "horizontal_alignment": "center",
+                    "vertical_alignment": "center",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "center",
+                    "vertical_alignment_flex_direction_column": "center",
+                    "gap": 12,
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "background_media": "none",
+                    "background_color": "",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "placeholder": "",
+                    "padding-block-start": 10,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {
+                    "button_AkdhDw": {
+                      "type": "button",
+                      "name": "speakup-button",
+                      "settings": {
+                        "label": "SPEAK UP",
+                        "link": "shopify://collections/all",
+                        "open_in_new_tab": false,
+                        "style_class": "button-custom",
+                        "custom_button_background": "{{ settings.color_palette.foreground }}",
+                        "custom_button_text": "{{ settings.color_palette.background }}",
+                        "custom_button_border": "{{ settings.color_palette.background }}",
+                        "link_text_color": "",
+                        "width": "fit-content",
+                        "custom_width": 100,
+                        "width_mobile": "fit-content",
+                        "custom_width_mobile": 100,
+                        "padding_block": 0,
+                        "padding_inline": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "button_AkdhDw"
+                  ]
+                }
+              },
+              "block_order": [
+                "text_hhTMEg",
+                "text_HKhfXr",
+                "group_LPcKXw"
+              ]
             }
           },
           "block_order": [
