@@ -23,8 +23,8 @@
             "horizontal_alignment_flex_direction_column": "center",
             "vertical_alignment_flex_direction_column": "center",
             "gap": 0,
-            "width": "custom",
-            "custom_width": 49,
+            "width": "fill",
+            "custom_width": 100,
             "width_mobile": "fill",
             "custom_width_mobile": 100,
             "height": "fit",
@@ -139,7 +139,7 @@
         "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
         "gap": 0,
-        "section_width": "page-width",
+        "section_width": "full-width",
         "section_height": "",
         "section_height_custom": 50,
         "background_media": "none",
@@ -156,7 +156,8 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "custom_class": "wm-band wm-band--intro"
       }
     },
     "frames": {
@@ -385,7 +386,7 @@
         "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
         "gap": 0,
-        "section_width": "page-width",
+        "section_width": "full-width",
         "section_height": "",
         "section_height_custom": 50,
         "background_media": "none",
@@ -401,8 +402,9 @@
         "border_opacity": 100,
         "border_color": "",
         "border_radius": 0,
-        "padding-block-start": 40,
-        "padding-block-end": 15
+        "padding-block-start": 25,
+        "padding-block-end": 15,
+        "custom_class": "wm-band wm-band--cta"
       }
     },
     "our_tech": {
@@ -420,7 +422,7 @@
             "vertical_alignment_flex_direction_column": "center",
             "gap": 0,
             "width": "custom",
-            "custom_width": 50,
+            "custom_width": 100,
             "width_mobile": "fill",
             "custom_width_mobile": 100,
             "height": "fit",
@@ -1246,7 +1248,8 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 48,
-        "padding-block-end": 40
+        "padding-block-end": 40,
+        "custom_class": "wm-band wm-band--header wm-band--tech"
       }
     },
     "lens_overview": {
@@ -1263,8 +1266,8 @@
             "horizontal_alignment_flex_direction_column": "center",
             "vertical_alignment_flex_direction_column": "center",
             "gap": 0,
-            "width": "custom",
-            "custom_width": 50,
+            "width": "fill",
+            "custom_width": 100,
             "width_mobile": "fill",
             "custom_width_mobile": 100,
             "height": "fit",
@@ -1451,7 +1454,8 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 48,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "custom_class": "wm-band wm-band--header"
       }
     },
     "lens_options": {
@@ -1664,7 +1668,8 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 30,
-        "padding-block-end": 30
+        "padding-block-end": 30,
+        "custom_class": "wm-band"
       }
     },
     "ice_blue": {
@@ -1865,7 +1870,7 @@
       },
       "name": "Watermen — ice blue mirror",
       "settings": {
-        "collection": "",
+        "collection": "watermen-ice-blue",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 14,
@@ -2082,7 +2087,7 @@
       },
       "name": "Watermen — black mirror",
       "settings": {
-        "collection": "",
+        "collection": "watermen-black-mirror",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 10,
@@ -2299,7 +2304,7 @@
       },
       "name": "Watermen — bronze",
       "settings": {
-        "collection": "",
+        "collection": "watermen-bronze",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 1,
@@ -2332,8 +2337,8 @@
             "horizontal_alignment_flex_direction_column": "center",
             "vertical_alignment_flex_direction_column": "center",
             "gap": 0,
-            "width": "custom",
-            "custom_width": 50,
+            "width": "fill",
+            "custom_width": 100,
             "width_mobile": "fill",
             "custom_width_mobile": 100,
             "height": "fit",
@@ -2443,7 +2448,8 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 48,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "custom_class": "wm-band wm-band--header"
       }
     },
     "lens_benefits": {
@@ -3156,7 +3162,7 @@
       "settings": {
         "columns": 1,
         "mobile_columns": "1",
-        "section_width": "page-width",
+        "section_width": "full-width",
         "columns_gap": 0,
         "background_color": "",
         "icons_style": "arrows_large",

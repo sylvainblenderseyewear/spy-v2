@@ -1,0 +1,136 @@
+{%- comment -%}
+  SPY Email Signup — dark newsletter band above the footer menus.
+  Full-bleed colour band, col-10 content well, and a 450px form box that keeps
+  the source's 200px height, 24px heading and side-by-side field + button at
+  every breakpoint (Horizon stacks them on mobile — we don't).
+{%- endcomment -%}
+
+{%- liquid
+  assign bg = section.settings.background_color
+
+  if bg != blank
+    render 'contrast-override', background_color: bg, section_id: section.id
+  endif
+-%}
+
+<div
+  class="spy-signup w-full{% if bg != blank %} color-custom-{{ section.id }}{% endif %}"
+  style="{% if bg != blank %}background-color: {{ bg }};{% endif %}"
+  {{ section.shopify_attributes }}
+>
+  <div
+    class="spy-signup__inner mx-auto w-[calc((100%_+_30px)_*_0.8333333_-_30px)]"
+    style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;"
+  >
+    {%- comment -%} [display:flex] not `flex`: Horizon's own .flex class would add a gap. {%- endcomment -%}
+    <div
+      class="spy-signup__form mx-auto w-full justify-center [display:flex] flex-col
+        [&_.text-block]:w-full [&_.text-block]:max-w-none [&_.text-block]:px-[6px] [&_.text-block]:font-semibold [&_.text-block]:leading-[32px] [&_.text-block_p]:leading-[32px]
+        [&_.email-signup-block]:w-full [&_.email-signup-block]:min-w-0 [&_.email-signup\_\_form]:w-full
+        [&_.email-signup\_\_input-group]:w-[calc(100%_-_6px)] [&_.email-signup\_\_input-group]:flex-row [&_.email-signup\_\_input-group]:gap-4
+        [&_.email-signup\_\_input]:h-[54px] [&_.email-signup\_\_input]:w-auto [&_.email-signup\_\_input]:flex-1 [&_.email-signup\_\_input]:rounded-[4px] [&_.email-signup\_\_input]:border [&_.email-signup\_\_input]:border-solid [&_.email-signup\_\_input]:border-[#949596] [&_.email-signup\_\_input]:bg-white [&_.email-signup\_\_input]:py-0 [&_.email-signup\_\_input]:pl-4 [&_.email-signup\_\_input]:pr-0 [&_.email-signup\_\_input]:text-[20px] [&_.email-signup\_\_input]:text-black
+        [&_.email-signup\_\_input::placeholder]:uppercase [&_.email-signup\_\_input::placeholder]:text-[#757575]
+        [&_.email-signup\_\_button]:h-[54px] [&_.email-signup\_\_button]:w-[70px] [&_.email-signup\_\_button]:shrink-0 [&_.email-signup\_\_button]:grow-0 [&_.email-signup\_\_button]:rounded-[6px] [&_.email-signup\_\_button]:border-0 [&_.email-signup\_\_button]:bg-white [&_.email-signup\_\_button]:px-[10px] [&_.email-signup\_\_button]:py-0 [&_.email-signup\_\_button]:text-[13px] [&_.email-signup\_\_button]:font-bold [&_.email-signup\_\_button]:uppercase [&_.email-signup\_\_button]:leading-none [&_.email-signup\_\_button]:text-[#111]"
+      style="
+        max-width: {{ section.settings.form_width }}px;
+        min-height: {{ section.settings.form_height }}px;
+        gap: {{ section.settings.gap }}px;
+      "
+    >
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SPY Email Signup",
+  "class": "section-wrapper",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" },
+    { "type": "text" },
+    { "type": "email-signup" },
+    { "type": "custom-liquid" }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Band"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#272727"
+    },
+    {
+      "type": "header",
+      "content": "Form"
+    },
+    {
+      "type": "range",
+      "id": "form_width",
+      "label": "Form max width",
+      "min": 280,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 450
+    },
+    {
+      "type": "range",
+      "id": "form_height",
+      "label": "Form min height",
+      "min": 0,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between heading and field",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Email Signup",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

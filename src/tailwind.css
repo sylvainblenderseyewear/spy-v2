@@ -244,21 +244,52 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 /* Lens Info + Trust Badges are inlined as Tailwind utilities on their markup
    (spy-lens-info.liquid / spy-trust-badges.liquid) — no rules needed here. */
 
-/* ── PLP product-card — SPY reference look (hover reveal + centred) ─────
-   Note: Tailwind runs in `important` mode, so display toggles here need
-   !important to beat the utility classes on the elements. */
+/* ═══════════════════════════════════════════════════════════════════════
+   PLP product card — 1:1 with spyoptic.com (US)
 
-/* Centre everything under the image */
+   Every number here is a computed style read off three saved live PLPs; the
+   full table, the height formula and the source rules are in
+   docs/superpowers/specs/2026-08-04-plp-product-card-pixel-perfect-design.md.
+
+   The card is three bands stacked in `.product-card__content` with gap 0, the
+   way the source stacks them — spacing comes from each band's own margins:
+
+     .spy-image-container   square image · Quick View pulled over it · label band
+     .spy-tile-body         title · price · 16px reserved for ratings + compare
+
+   Tailwind runs in `important` mode, so anything that has to beat a utility
+   class on the markup needs !important here.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Scope: the grouped PLP card and every stock Horizon card (search, homepage
+   carousels, PDP recommendations) so all of them read the same. */
+@layer components {
+  :is(collection-component, .section-resource-list) .product-card {
+    --spy-card-band-pad: 8px;      /* .color-swatches padding-top */
+    --spy-card-labels-min: 48px;   /* .tile-labels-container min-height [3rem] */
+    --spy-card-label-h: 20.16px;   /* .swatches-label line box */
+    --spy-card-badge-h: 22.78px;   /* .product-tile-label box */
+  }
+}
+
+/* Centre everything under the image. White ground, like the source's `.product`. */
 :is(collection-component, .section-resource-list) .product-card__content {
   text-align: center;
+  background-color: #fff;
+  /* Source lets the Quick View and swatch rows overhang their band */
+  overflow: visible;
 }
 
-/* Tech badges sit on top but never eat clicks */
-:is(collection-component, .section-resource-list) .product-card .spy-tech-badge {
-  pointer-events: none;
+/* ── Image ──────────────────────────────────────────────────────────────
+   Square box, product inset 10%, always centred, no crop and no hover zoom. */
+/* Below 750px Horizon pads the card 8px and pulls the gallery back out by the same
+   8px, so the photo spans the whole grid track. That is what the source does too —
+   image edge-to-edge, text inset — so the pair is left alone. */
+:is(collection-component, .section-resource-list) .product-card .card-gallery {
+  padding: 10% !important;
+  aspect-ratio: 1 / 1;
 }
 
-/* Product image: full product, always centred in the box, no crop, no hover zoom */
 :is(collection-component, .section-resource-list) .product-card .card-gallery img {
   width: 100% !important;
   height: 100% !important;
@@ -267,14 +298,8 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   transform: none !important;
 }
 
-/* 10% inset around the image; locked to a square so every card keeps the same box (source: image-wrapper) */
-:is(collection-component, .section-resource-list) .product-card .card-gallery {
-  padding: 10% !important;
-  aspect-ratio: 1 / 1;
-}
-
-/* Fill the square box down the slideshow chain so wide photos (e.g. Hielo) sit
-   vertically centred instead of top-anchored — object-fit then centres them. */
+/* Fill the square box down the slideshow chain so wide photos sit vertically
+   centred instead of top-anchored — object-fit then centres them. */
 :is(collection-component, .section-resource-list) .product-card .card-gallery slideshow-component,
 :is(collection-component, .section-resource-list) .product-card .card-gallery slideshow-slides,
 :is(collection-component, .section-resource-list) .product-card .card-gallery slideshow-slide,
@@ -282,90 +307,449 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   height: 100% !important;
 }
 
-/* Title uses ink (#1d2a2b); price is the source tile-body grey */
-:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] p,
-:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] {
-  color: var(--color-spy-ink);
-}
-:is(collection-component, .section-resource-list) .product-card .price {
-  color: #565656; /* matched from source .tile-body .price */
-  font-weight: 600;
-  font-size: 15px;
+/* Hover zone: image + Quick View + label band, like the source's .image-container.
+   The text band sits outside it on purpose, so hovering the title or price leaves
+   the labels alone. Positioned, because the card-wide link and the swatch row
+   both anchor to it. */
+:is(collection-component, .section-resource-list) .product-card .spy-image-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Quick View: inset outline box (like the source mx-3), revealed on card hover via opacity.
-   Negative top pulls it over the image bottom so it reserves no space at rest. */
+/* ── Tech / cert stickers ───────────────────────────────────────────────
+   Source: right 5px [0.3125rem], top 11.2px [0.7rem], 40px [2.5rem] each,
+   4px [0.25rem] apart, and scaled to 0.7 only below 544px.
+
+   Position and gap ride on the markup as `top-[11.2px] right-[5px] gap-1`, not
+   here: Tailwind's utilities are !important inside a layer, and a layered
+   !important outranks an unlayered one, so CSS could never win those three.
+   The scale keeps the default centre origin, which is what the source scales from. */
+
+/* Width only — the source sets `width: 2.5rem` and lets height follow the art, so a
+   tall badge (pictohappyboost) draws 40x61 rather than being squashed into a square. */
+:is(collection-component, .section-resource-list) .product-card .spy-tech-badge img {
+  width: 40px;
+  height: auto;
+}
+
+@media screen and (max-width: 543.98px) {
+  :is(collection-component, .section-resource-list) .product-card .spy-tech-badge {
+    transform: scale(0.7);
+  }
+}
+
+/* ── Quick View ─────────────────────────────────────────────────────────
+   Pulled up over the image bottom so it costs the card no height at rest:
+   -43.2px [-2.7rem] top, 8px [0.5rem] bottom, 16px [mx-3] each side, which
+   nets to -0.4px in the flow. Revealed on whole-card hover, 769px up only. */
 :is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn {
-  display: block;
+  display: none;
+}
+
+@media screen and (min-width: 769px) {
+  :is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn {
+    display: block;
+    position: relative;
+    z-index: 2;
+    margin: -43.2px 16px 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-spy-orange);
+    border-radius: 0;
+    background: #fff;
+    color: var(--color-spy-orange);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16.8px;
+    letter-spacing: normal;
+    text-transform: uppercase;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  }
+
+  :is(collection-component, .section-resource-list) .product-card:hover .spy-quick-view-btn {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Source's .btn-outline-primary:hover — fills in. :active matches it, with no
+     press displacement. */
+  :is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn:is(:hover, :active) {
+    background: var(--color-spy-orange);
+    color: #fff;
+  }
+
+  /* Source ring: box-shadow 0 0 0 .2rem rgba(primary,.5) with the outline off.
+     Deviation on purpose — the source never reveals this button on focus, so a
+     keyboard user lands on an invisible control. WCAG 2.1 AA needs it visible. */
+  :is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 3.2px color-mix(in srgb, var(--color-spy-orange) 50%, transparent);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* ── Label band ─────────────────────────────────────────────────────────
+   One box, 8px of top padding, holding the badge and the label stacked
+   bottom-up in a 48px minimum. The thumbnail row is absolute on top of them,
+   so swapping the two on hover moves nothing below.
+
+   Bottom alignment is what keeps titles in line: with a badge the stack runs
+   to 50.94px and overflows the 48px minimum, so a badged card sits 2.94px
+   lower than its neighbour. The source does exactly this — don't "fix" it. */
+:is(collection-component, .section-resource-list) .product-card .spy-color-swatches {
   position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: var(--spy-card-band-pad) 8px 0;
+}
+
+/* No transition: the source's labels snap off (transition-duration 0s) while only the
+   thumbnail row fades in over .3s. The swap reads as a cut, not a cross-fade. */
+:is(collection-component, .section-resource-list) .product-card .spy-tile-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: var(--spy-card-labels-min);
+}
+
+/* Badge slot collapses to nothing when the card earns no badge, so the label
+   alone bottoms out against the 48px minimum. */
+:is(collection-component, .section-resource-list) .product-card .spy-new-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-new-badge:empty {
+  display: none;
+}
+
+/* Source .product-tile-label: 13px [.8125em] / 17.6px [1.1rem], bold, square,
+   padding .2rem .8rem 0, and it never wraps. */
+:is(collection-component, .section-resource-list) .product-card .spy-badge-pill {
+  padding: 3.2px 12.8px 0 !important;
+  border-radius: 0 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 17.6px !important;
+  letter-spacing: normal !important;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Source .swatches-label: 14.4px [.9rem] / 20.16px, regular, #6c757d.
+   Holds either the colourway count or its name — the source uses both. */
+:is(collection-component, .section-resource-list) .product-card :is(.spy-color-count, .spy-variant-name) {
+  display: block;
+  min-height: var(--spy-card-label-h);
+  color: var(--color-spy-label) !important;
+  font-size: 14.4px !important;
+  font-weight: 400 !important;
+  line-height: var(--spy-card-label-h) !important;
+}
+
+/* ── Colourway thumbnails ───────────────────────────────────────────────
+   Absolute on top of the label stack, 8px down from the band's top edge, so
+   it lands exactly where the labels start. 48px [3rem] squares on #f8f8f8,
+   8px [.5rem] apart, with a 32px [2rem] arrow to the rest. */
+:is(collection-component, .section-resource-list) .product-card .spy-swatches {
+  position: absolute;
+  top: var(--spy-card-band-pad);
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   z-index: 2;
-  margin: -43px 16px 8px;
-  border: 1px solid var(--color-spy-orange);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  transition: opacity 0.3s ease;
 }
-:is(collection-component, .section-resource-list) .product-card:hover .spy-quick-view-btn {
+
+:is(collection-component, .section-resource-list) .product-card .spy-swatches__item {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #f8f8f8;
+  line-height: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-swatches__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-swatches__more {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-spy-gray);
+  text-decoration: none;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-swatches__more svg {
+  width: 32px;
+  height: 10px;
+}
+
+/* Source hides thumbs 3 and 4 below its md breakpoint (`d-none d-md-block`),
+   so a narrow card shows two and the arrow. */
+@media screen and (max-width: 768.98px) {
+  :is(collection-component, .section-resource-list)
+    .product-card
+    .spy-swatches__item:nth-of-type(n + 3) {
+    display: none;
+  }
+}
+
+/* The swap: hovering the image band fades the labels out and the thumbs in.
+   Scoped to .spy-image-container, so the text band is not a trigger. */
+:is(collection-component, .section-resource-list) .product-card .spy-image-container:hover .spy-swatches {
   opacity: 1;
   visibility: visible;
 }
 
-/* Badge slot: always holds its height so cards align whether or not a badge shows */
-:is(collection-component, .section-resource-list) .product-card .spy-new-badge {
-  min-height: 24px;
+:is(collection-component, .section-resource-list) .product-card .spy-image-container:hover .spy-tile-labels {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ── Flat block path ────────────────────────────────────────────────────
+   The stock Horizon card (search, homepage carousels, PDP recommendations and
+   the non-grouped collection template) is built from `content_for 'blocks'`,
+   so badge, label, thumbs, title and price are flat siblings with no band to
+   wrap them in. These rules rebuild the same geometry out of margins:
+
+     badge slot   8px top pad + 27.84 reserved  → 35.84, growing to 38.78 with a pill
+     label        20.16
+     → 56 with no badge, 58.94 with one — the same two band heights as above.
+
+   The thumb row can't be absolute here (its nearest positioned ancestor is the
+   card, not the band), so it is pulled back over the pair with a negative
+   margin and zero height instead. Same pixels, different mechanism. */
+:is(collection-component, .section-resource-list) .product-card:not(:has(.spy-color-swatches)) {
+  /* Reserved slot heights, kept here so the pull distances below stay readable */
+  --spy-flat-badge-slot: 35.84px;
+  --spy-flat-badge-slot-filled: 38.78px;
+}
+
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches))
+  .spy-new-badge {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  transition: opacity 0.2s ease;
+  min-height: var(--spy-flat-badge-slot);
+  padding-top: 8px;
 }
 
-/* New pill: match source — square, 13px, no extra tracking, tight vertical */
-:is(collection-component, .section-resource-list) .product-card .spy-new-badge .spy-badge-pill {
-  font-size: 13px !important;
-  letter-spacing: normal !important;
-  border-radius: 0 !important;
-  padding: 0 0.8rem !important;
-  line-height: 1.1rem !important;
+/* An empty slot still has to hold its height here — there is no band minimum
+   behind it — so the :empty collapse used by the grouped card is undone. */
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches))
+  .spy-new-badge:empty {
+  display: flex;
 }
 
-/* Card title: heavy uppercase, single line, like the SPY reference */
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches))
+  .spy-new-badge:has(.spy-badge-pill) {
+  min-height: var(--spy-flat-badge-slot-filled);
+  padding-bottom: 8px;
+}
+
+/* `position: relative` + a negative `top`, not a negative margin: the margin
+   would pull the title and price up with it, since the row is still in flow. */
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches))
+  .spy-swatches {
+  position: relative;
+  z-index: 2;
+  height: 0;
+  align-items: flex-start;
+  padding: 0;
+  /* Lands 8px into the band, over the label and the empty badge slot */
+  top: calc(-1 * (var(--spy-flat-badge-slot) + 20.16px - 8px));
+}
+
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches)):has(.spy-badge-pill)
+  .spy-swatches {
+  top: calc(-1 * (var(--spy-flat-badge-slot-filled) + 20.16px - 8px));
+}
+
+/* The swap has to hang off the whole card here: there is no band element to
+   scope to, and Horizon's full-card `.product-card__link` overlay sits above
+   the text anyway, so a region test could never fire. Hovering the title
+   therefore also reveals the thumbs — the one behaviour this path can't match. */
+@media screen and (min-width: 769px) {
+  :is(collection-component, .section-resource-list)
+    .product-card:not(:has(.spy-color-swatches)):hover
+    .spy-swatches {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  :is(collection-component, .section-resource-list)
+    .product-card:not(:has(.spy-color-swatches)):hover
+    :is(.spy-color-count, .spy-variant-name, .spy-new-badge) {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Title and price stand in for the text band: the 10px that would be its top
+   padding goes on the title, and the bottom padding goes on the card. */
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches))
+  [ref="productTitleLink"]
+  .text-block {
+  margin-top: 10px;
+}
+
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches))
+  .product-card__content {
+  padding-bottom: 32px; /* 24 + 8 ratings */
+}
+
+@media screen and (min-width: 769px) {
+  :is(collection-component, .section-resource-list)
+    .product-card:not(:has(.spy-color-swatches))
+    .product-card__content {
+    padding-bottom: 40px; /* 24 + 8 ratings + 8 compare */
+  }
+}
+
+/* ── Text band ──────────────────────────────────────────────────────────
+   Source .tile-body: padding 10px 8px 24px [.625em .5rem 1.5em], centred, with
+   8px [.5rem] under each child except the price. The trailing 16px stands in
+   for the source's two empty slots — a ratings row (8px) and a Compare row
+   (8px, itself hidden below 769px). Both are open decisions in CLAUDE.md; when
+   either gets built it replaces this padding and the geometry still holds. */
+:is(collection-component, .section-resource-list) .product-card .spy-tile-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 8px 32px; /* 24 + 8 ratings */
+}
+
+@media screen and (min-width: 769px) {
+  :is(collection-component, .section-resource-list) .product-card .spy-tile-body {
+    padding-bottom: 40px; /* 24 + 8 ratings + 8 compare */
+  }
+}
+
+/* Horizon already insets the whole card 8px below 750px, which is the inset the
+   source puts on the text band — so drop ours there rather than doubling it. */
+@media screen and (max-width: 749.98px) {
+  :is(collection-component, .section-resource-list) .product-card .spy-tile-body {
+    padding-inline: 0;
+  }
+}
+
+/* Title: heavy uppercase, one line, ellipsis. Source line-height comes from
+   .pdp-link (1.2), not from the body's 1.4. */
 :is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"],
 :is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] p {
-  text-transform: uppercase !important;
+  color: var(--color-spy-ink);
+  font-size: 19.2px !important;
   font-weight: 900 !important;
-  font-size: 1.2rem !important;
+  line-height: 23.04px !important;
+  text-transform: uppercase !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
 }
 
-/* Drop Horizon's quick-add bag and slideshow arrows — not in the SPY card */
-:is(collection-component, .section-resource-list) .product-card :is(quick-add-component, .quick-add, slideshow-arrows, .slideshow-control) {
+:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] .text-block {
+  margin-bottom: 8px;
+  padding: 0 !important;
+}
+
+/* Price: 15px / 21px, 600, #565656. The amount itself is bold (source .sales),
+   and the compare-at is #ababab with 4px [.25rem] to its right. The source
+   styles a percentage chip but hides it on the card, so none is printed. */
+:is(collection-component, .section-resource-list) .product-card :is(.price, .spy-price) {
+  color: #565656 !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  line-height: 21px !important;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-price__sales {
+  font-weight: 700;
+}
+
+:is(collection-component, .section-resource-list) .product-card .spy-price__compare {
+  margin-right: 4px;
+  color: #ababab;
+  text-decoration: line-through;
+}
+
+/* Stock Horizon price parts, so search and carousel cards read the same */
+:is(collection-component, .section-resource-list) .product-card .compare-at-price {
+  margin-right: 4px;
+  color: #ababab;
+  text-decoration: line-through;
+}
+
+:is(collection-component, .section-resource-list) .product-card :is(.price .percentage, .price__badge-sale, .badge--sale) {
   display: none !important;
 }
 
-/* Swatches read as small glasses thumbnails, not colour dots */
-:is(collection-component, .section-resource-list) .product-card .swatch--variant-image {
-  width: 44px !important;
-  height: 26px !important;
-  border-radius: 0 !important;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+/* ── Type steps ─────────────────────────────────────────────────────────
+   Source: name 1.2rem down to 991.98, then 1rem; price 15px, 1.0625em below
+   991.98, then 1em. Line heights follow the body's 1.4 for the price and
+   .pdp-link's 1.2 for the name. */
+@media screen and (min-width: 769px) and (max-width: 991.98px) {
+  :is(collection-component, .section-resource-list) .product-card :is(.price, .spy-price) {
+    font-size: 17px !important;
+    line-height: 23.8px !important;
+  }
 }
 
-/* Overflow control becomes an arrow instead of "+N" */
-:is(collection-component, .section-resource-list) .product-card .hidden-swatches__count::before {
-  content: "\2192";
-  font-size: 16px;
-  line-height: 1;
+@media screen and (max-width: 768.98px) {
+  :is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"],
+  :is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] p {
+    font-size: 16px !important;
+    line-height: 19.2px !important;
+  }
+
+  :is(collection-component, .section-resource-list) .product-card :is(.price, .spy-price) {
+    font-size: 16px !important;
+    line-height: 22.4px !important;
+  }
 }
 
-/* Swatch row: reserved in the flow, revealed on card hover.
-   It overlaps the colour-count slot so the title/price never move. Renders only when the product
-   has swatch/variant-image data. */
-@media screen and (min-width: 750px) {
+/* Drop Horizon's quick-add bag and slideshow arrows — not on the SPY card */
+:is(collection-component, .section-resource-list)
+  .product-card
+  :is(quick-add-component, .quick-add, slideshow-arrows, .slideshow-control) {
+  display: none !important;
+}
+
+/* Stock Horizon swatch pickers get the same reveal as the SPY thumb row */
+@media screen and (min-width: 769px) {
   :is(collection-component, .section-resource-list) .product-card swatches-variant-picker-component {
     opacity: 0;
     visibility: hidden;
@@ -378,170 +762,98 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   }
 }
 
-/* ── SPY color preview (spy-swatches) — overlaps the label slot, no reflow ──
-   Colour count and variant name share the slot: whichever one the card uses, the
-   hover swatch row covers it. */
-:is(collection-component, .section-resource-list) .product-card :is(.spy-color-count, .spy-variant-name) {
-  min-height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem !important; /* source swatches-label */
-  font-weight: 400 !important;
-  transition: opacity 0.2s ease;
+:is(collection-component, .section-resource-list) .product-card .swatch--variant-image {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 0 !important;
+  background-color: #f8f8f8;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-:is(collection-component, .section-resource-list) .product-card .spy-swatches {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 52px;
-  margin-top: -52px; /* sit on top of BOTH the badge (24) + colour-count (28) slots, centred */
-  position: relative;
-  z-index: 2;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s ease;
-}
-
-:is(collection-component, .section-resource-list) .product-card .spy-swatches__item {
-  border: 0;
-  background: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  line-height: 0;
-  display: inline-flex;
-  text-decoration: none;
-}
-
-/* Size lives on the markup (h-8/h-9 + h-full w-full object-contain in spy-swatches.liquid)
-   so the thumb stays square. */
-
-:is(collection-component, .section-resource-list) .product-card .spy-swatches__more {
-  margin-inline-start: 4px;
-  color: var(--color-spy-gray);
-  font-size: 15px;
+:is(collection-component, .section-resource-list) .product-card .hidden-swatches__count::before {
+  content: "\2192";
+  font-size: 16px;
   line-height: 1;
-  text-decoration: none;
 }
 
-/* On card hover: swatches fade in; badge and colour-count fade out (slots stay reserved). */
-@media screen and (min-width: 750px) {
-  :is(collection-component, .section-resource-list) .product-card:hover .spy-swatches {
-    opacity: 1;
-    visibility: visible;
-  }
-  :is(collection-component, .section-resource-list) .product-card:hover :is(.spy-color-count, .spy-variant-name),
-  :is(collection-component, .section-resource-list) .product-card:hover .spy-new-badge {
-    opacity: 0;
-    visibility: hidden;
-  }
+/* ── Grid ───────────────────────────────────────────────────────────────
+   The source's ladder, not a fixed column count: `desktop-N` is only a
+   ceiling. 1 column to 768.98, 2 from 769, 3 from 992, 4 from 1459.2px
+   [91.2rem]. Gap is 2.2rem 1rem → 35.2px row / 16px column. Same selectors
+   as base.css, which pins 5 columns from 750px up; this file loads later. */
+.collection-wrapper .product-grid--grid,
+.collection-wrapper:has(.facets--vertical) .product-grid--grid {
+  column-gap: 16px;
+  row-gap: 35.2px;
+}
 
-  /* Hovering only the title/price area: show Quick View but keep swatches hidden
-     and colour-count/badge as at rest (.text-block = title & price only). */
-  :is(collection-component, .section-resource-list) .product-card:hover:has(.text-block:hover) .spy-swatches {
-    opacity: 0;
-    visibility: hidden;
-  }
-  :is(collection-component, .section-resource-list) .product-card:hover:has(.text-block:hover) :is(.spy-color-count, .spy-variant-name),
-  :is(collection-component, .section-resource-list) .product-card:hover:has(.text-block:hover) .spy-new-badge {
-    opacity: 1;
-    visibility: visible;
+/* Horizon hardcodes `1fr 1fr` below 750px and only reads the desktop var above it,
+   while the source switches at 769px — so the 750–768.98 slice needs the var set
+   to one column as well, or the grid falls back to auto-fill tracks there. */
+@media screen and (max-width: 749.98px) {
+  .collection-wrapper .product-grid--grid,
+  .collection-wrapper:has(.facets--vertical) .product-grid--grid {
+    grid-template-columns: 100%;
   }
 }
 
-/* ── Grouped PLP card ────────────────────────────────────────────────
-   Reuses every rule above — square image, heavy title, badge slot, and the
-   hover swap of the colour-count for the swatch row.
-
-   The row used to let each thumb flex (`flex: 1 1 0`), so a two-colourway card
-   drew them at 80px while a four-colourway card beside it dropped to 51px — and
-   to 18px at tablet. Thumbs are now square and sized as if the row always held
-   the full four plus the arrow, so the size depends on the card width alone and
-   never on how many colourways a product happens to have.
-   34px reserved = 4 gaps (3px) + the arrow (20px + 2px margin).
-   ──────────────────────────────────────────────────────────────────── */
-:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches {
-  gap: 3px;
+@media screen and (min-width: 750px) and (max-width: 768.98px) {
+  .collection-wrapper .product-grid--grid,
+  .collection-wrapper:has(.facets--vertical) .product-grid--grid {
+    --product-grid-columns-desktop: 100%;
+  }
 }
 
-:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches__item {
-  flex: 0 0 auto;
-  width: min(48px, calc((100% - 34px) / 4));
-  height: auto;
-  aspect-ratio: 1;
-}
-
-:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches__item img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* The arrow keeps its own width so it never steals room from the thumbs. 20px is
-   the source's 28px scaled to our narrower card, so it stays in proportion. */
-:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches__more {
-  flex: 0 0 auto;
-  margin-inline-start: 2px;
-}
-
-:is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-swatches__more svg {
-  width: 20px;
-  height: 7px;
-}
-
-/* Two cards per row from 991px down, like the source at tablet. base.css pins the
-   grid to 5 fixed columns from 750px up for vertical-filter collections, which
-   squeezes the cards to ~100px there. Same selector as base.css so this file's
-   later position wins; below 750px the grid already runs on --mobile-columns. */
-@media screen and (min-width: 750px) and (max-width: 991px) {
-  .collection-wrapper:has(.facets--vertical) .product-grid--grid,
-  .collection-wrapper .product-grid--grid {
+@media screen and (min-width: 769px) {
+  .collection-wrapper .product-grid--grid,
+  .collection-wrapper:has(.facets--vertical) .product-grid--grid {
     --product-grid-columns-desktop: repeat(2, minmax(0, 1fr));
   }
 }
 
-/* Four cards per row from 992px up, on both PLP templates. base.css pins 5 there;
-   4 is what the source shows, and it keeps every row full while "More results"
-   appends each page into the same grid. Same selector as base.css so this file's
-   later position wins. */
 @media screen and (min-width: 992px) {
   .collection-wrapper:has(.facets--vertical) .product-grid--grid,
   /* `:is(.product-grid)` only to outweigh the per-section auto-fill rule, which
      sits in a <style> later in the document */
+  .collection-wrapper .product-grid--grid:is(.product-grid) {
+    --product-grid-columns-desktop: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media screen and (min-width: 1459.2px) {
+  .collection-wrapper:has(.facets--vertical) .product-grid--grid,
   .collection-wrapper .product-grid--grid:is(.product-grid) {
     --product-grid-columns-desktop: repeat(4, minmax(0, 1fr));
   }
 }
 
 /* Hold back an incomplete bottom row while "More results" is still on screen, so
-   every visible row carries a full four. The card that starts a row (4n+1) and sits
-   in the last three is proof that row is short — hide it and everything after it.
-   `:not(:first-of-type)` keeps a page that grouped down to 1–3 cards from emptying
-   the grid. Counted `-of-type`, because the grid's first child is a <script>, which
-   would throw `nth-child` off by one. Without the flag (last page) the leftovers
-   show, which is the source's look. */
-@media screen and (min-width: 992px) {
+   every visible row stays full. The card that starts a row and sits inside the
+   last (columns - 1) is proof that row is short — hide it and everything after.
+   `:not(:first-of-type)` keeps a page that grouped down to a couple of cards
+   from emptying the grid. Counted `-of-type`, because the grid's first child is
+   a <script>, which would throw `nth-child` off by one. Without the flag (last
+   page) the leftovers show, which is the source's look. Column count tracks the
+   ladder above. */
+@media screen and (min-width: 992px) and (max-width: 1459.19px) {
+  .product-grid[data-trim-partial-row]
+    > .product-grid__item:nth-of-type(3n + 1):not(:first-of-type):nth-last-of-type(-n + 2),
+  .product-grid[data-trim-partial-row]
+    > .product-grid__item:nth-of-type(3n + 1):not(:first-of-type):nth-last-of-type(-n + 2)
+    ~ .product-grid__item {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1459.2px) {
   .product-grid[data-trim-partial-row]
     > .product-grid__item:nth-of-type(4n + 1):not(:first-of-type):nth-last-of-type(-n + 3),
   .product-grid[data-trim-partial-row]
     > .product-grid__item:nth-of-type(4n + 1):not(:first-of-type):nth-last-of-type(-n + 3)
     ~ .product-grid__item {
     display: none;
-  }
-}
-
-/* Four columns from 992px leave cards near 130px with the filter panel open —
-   narrow enough for "23 colors available" to wrap and push the titles out of line.
-   Hold it to one line at a smaller size until the columns are wide enough.
-   Starts at 992 because 991 and below is the two-column layout above. */
-@media screen and (min-width: 992px) and (max-width: 1100px) {
-  :is(collection-component, .section-resource-list) .product-card.spy-grouped-card .spy-color-count {
-    /* stylelint-disable-next-line declaration-no-important */
-    font-size: 0.75rem !important;
-    white-space: nowrap;
   }
 }
 
@@ -1061,81 +1373,623 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   margin-inline: auto;
 }
 
-/* ── Watermen — fixed-px containers the source uses ──────────────────────
-   Same reason as the Happy pages above: these are hard pixel caps and a block's
-   width setting is only a percentage of the section, which drifts at every
-   viewport. Everything else on this page caps itself through its own block
-   setting (lens overview 1200, lens picker 1000, banner copy 1140).
+/* Watermen bands moved to the bottom of this file — they now use the source
+   container ladder and the section "CSS class" setting instead of a fixed
+   1140px cap and [id$='…'] selectors. See "Watermen Collection" below. */
 
-   OUR TECH tiles sit in a Bootstrap `.container` inside the full-bleed grey band:
-   1140px with 15px of inner padding, so the art gets 1110px and the two tiles are
-   30px apart. The grey band and the section header stay full width.
-
-   Targeted by position, not by block id: group blocks do not carry their id in the
-   class list, so the two tile rows are picked out as the section's own full-width
-   children — the header beside them is a 50%-width block. */
-[data-template='page.watermen']
-  [id$='__our_tech']
-  .section-content-wrapper
-  > .group-block--width-fill {
-  max-width: 71.25rem; /* 1140px */
-  margin-inline: auto;
-  padding-inline: 0.9375rem; /* 15px */
-}
-
-/* Lens-benefits carousel: source `.hbc-carousel-container` is 1200px centred. */
+/* Lens-benefits carousel: source `.hbc-carousel-container` is 1200px centred.
+   The carousel section has no CSS-class setting, so it stays template-scoped. */
 [data-template='page.watermen'] .section-carousel {
   max-width: 75rem; /* 1200px */
   margin-inline: auto;
 }
 
-/* ── ANSI Photochromic — Bootstrap `.container` is 1140px ────────────────
-   A custom-liquid block renders as a bare <div> with no width setting, and the
-   section centres its children, so each band would shrink to its own text.
-   Stretch them so the hero video and footer banner really go full bleed. */
-[data-template='page.ansi-photochromic'] .section-content-wrapper > * {
-  width: 100%;
-}
-
-/* Every band is a full-width section so the theme's own page margin never
+/* ── ANSI Photochromic ───────────────────────────────────────────────────
+   Every band is a full-width section so the theme's own page margin never
    doubles up with the source gutter. Width comes from the source container
-   instead — measured off global.css, and its breakpoints are custom, not
-   Bootstrap defaults: 540 / 720 / 1140 / 1440 at 544 / 769 / 992 / 1200,
-   always with 15px inner padding.
+   instead, whose breakpoints are custom rather than Bootstrap defaults:
+   540 / 720 / 1140 / 1440 at 544 / 769 / 992 / 1200, always with 15px padding.
 
-   The copy bands carry that ladder as utility classes in the template. The
-   product carousel cannot, so it gets the same steps here. */
-[data-template='page.ansi-photochromic']
-  :is(.section-resource-list__header, .section-resource-list__content) {
+   The bands are built from real blocks so an editor can change the copy, so the
+   ladder has to live here rather than on a wrapper's utility classes.
+
+   Each band opts in with a class typed into its "CSS class" setting, not by its
+   section ID: an ID changes the moment someone duplicates or re-adds the band,
+   and the styling would silently disappear. The product carousel is the one
+   exception — it has no class setting, so it stays template-scoped. */
+.ansi-band--intro .section-content-wrapper,
+.ansi-band--rows .section-content-wrapper,
+[data-template='page.ansi-photochromic'] .section-resource-list__header,
+[data-template='page.ansi-photochromic'] .section-resource-list__content,
+[data-template='page.ansi-photochromic'] .resource-list.resource-list__carousel {
   width: 100%;
   margin-inline: auto;
   padding-inline: 0.9375rem; /* 15px */
 }
 
 @media (min-width: 544px) {
-  [data-template='page.ansi-photochromic']
-    :is(.section-resource-list__header, .section-resource-list__content) {
+  .ansi-band--intro .section-content-wrapper,
+  .ansi-band--rows .section-content-wrapper,
+  [data-template='page.ansi-photochromic'] .section-resource-list__header,
+  [data-template='page.ansi-photochromic'] .section-resource-list__content,
+  [data-template='page.ansi-photochromic'] .resource-list.resource-list__carousel {
     max-width: 33.75rem; /* 540px */
   }
 }
 
 @media (min-width: 769px) {
-  [data-template='page.ansi-photochromic']
-    :is(.section-resource-list__header, .section-resource-list__content) {
+  .ansi-band--intro .section-content-wrapper,
+  .ansi-band--rows .section-content-wrapper,
+  [data-template='page.ansi-photochromic'] .section-resource-list__header,
+  [data-template='page.ansi-photochromic'] .section-resource-list__content,
+  [data-template='page.ansi-photochromic'] .resource-list.resource-list__carousel {
     max-width: 45rem; /* 720px */
   }
 }
 
 @media (min-width: 992px) {
-  [data-template='page.ansi-photochromic']
-    :is(.section-resource-list__header, .section-resource-list__content) {
+  .ansi-band--intro .section-content-wrapper,
+  .ansi-band--rows .section-content-wrapper,
+  [data-template='page.ansi-photochromic'] .section-resource-list__header,
+  [data-template='page.ansi-photochromic'] .section-resource-list__content,
+  [data-template='page.ansi-photochromic'] .resource-list.resource-list__carousel {
     max-width: 71.25rem; /* 1140px */
   }
 }
 
 @media (min-width: 1200px) {
-  [data-template='page.ansi-photochromic']
-    :is(.section-resource-list__header, .section-resource-list__content) {
+  .ansi-band--intro .section-content-wrapper,
+  .ansi-band--rows .section-content-wrapper,
+  [data-template='page.ansi-photochromic'] .section-resource-list__header,
+  [data-template='page.ansi-photochromic'] .section-resource-list__content,
+  [data-template='page.ansi-photochromic'] .resource-list.resource-list__carousel {
     max-width: 90rem; /* 1440px */
   }
 }
+
+/* The hero video and any bare block must fill their band, because the section
+   centres its children and an unsized block shrinks to its own content. */
+.ansi-band--bleed .section-content-wrapper > * {
+  width: 100%;
+}
+
+/* Source `.section-header` adds 3rem of margin AND 3rem of padding each side
+   from lg up, on top of the container's own 15px. */
+@media (min-width: 992px) {
+  .ansi-band--intro .section-content-wrapper {
+    padding-inline: 6.9375rem; /* 15px + 48 + 48 */
+  }
+}
+
+/* Content rows: halves are equal regardless of how wide the art is. The 20px
+   the source splits as 10px of padding per column is the row gap here, so each
+   column is 50% minus half that gap.
+
+   The basis has to be pinned rather than left as `flex: 1 1 0`: the art carries
+   an aspect-ratio, and that resolves its width off the row height and wins over
+   a zero basis, which pulled the halves to 670/710. max-width holds the cap. */
+@media (min-width: 768px) {
+  .ansi-band--rows .layout-panel-flex--row > :not(style) {
+    flex: 0 0 calc(50% - 10px);
+    max-width: calc(50% - 10px);
+    min-width: 0;
+  }
+}
+
+/* Below 768 the source stacks and puts the picture first in BOTH rows, so the
+   second row reverses. Its copy panel also grows from 20px to 30px of padding. */
+@media (max-width: 767px) {
+  .ansi-band--rows .image-block {
+    order: -1;
+  }
+
+  .ansi-band--rows .group-block .group-block {
+    padding: 30px !important;
+  }
+}
+
+/* ── Snow Goggle Tech ────────────────────────────────────────────────────
+   This page runs two width regimes next to each other. Headers, centred art
+   and the carousels sit in the shared .container ladder above. The 2-column
+   tech rows do not: they go edge to edge with Bootstrap's p-5 (48px) gutter
+   from lg up, which is why every band is unpadded here and each regime adds
+   its own inset.
+
+   Bands opt in by class, never by section ID — see the ANSI note. */
+.snowtech-band .section-content-wrapper {
+  width: 100%;
+  max-width: none;
+  padding-inline: 0;
+}
+
+/* Container ladder for everything except the tech rows. */
+.snowtech-band .section-content-wrapper > .spy-heading,
+.snowtech-band .section-content-wrapper > .spy-body-text,
+.snowtech-band--feature .section-content-wrapper > .image-block,
+[data-template='page.snow-tech'] .section-resource-list__header,
+[data-template='page.snow-tech'] .section-resource-list__content,
+[data-template='page.snow-tech'] .resource-list.resource-list__carousel {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 0.9375rem; /* 15px */
+}
+
+@media (min-width: 544px) {
+  .snowtech-band .section-content-wrapper > .spy-heading,
+  .snowtech-band .section-content-wrapper > .spy-body-text,
+  .snowtech-band--feature .section-content-wrapper > .image-block,
+  [data-template='page.snow-tech'] .section-resource-list__header,
+  [data-template='page.snow-tech'] .section-resource-list__content,
+  [data-template='page.snow-tech'] .resource-list.resource-list__carousel {
+    max-width: 33.75rem; /* 540px */
+  }
+}
+
+@media (min-width: 769px) {
+  .snowtech-band .section-content-wrapper > .spy-heading,
+  .snowtech-band .section-content-wrapper > .spy-body-text,
+  .snowtech-band--feature .section-content-wrapper > .image-block,
+  [data-template='page.snow-tech'] .section-resource-list__header,
+  [data-template='page.snow-tech'] .section-resource-list__content,
+  [data-template='page.snow-tech'] .resource-list.resource-list__carousel {
+    max-width: 45rem; /* 720px */
+  }
+}
+
+@media (min-width: 992px) {
+  .snowtech-band .section-content-wrapper > .spy-heading,
+  .snowtech-band .section-content-wrapper > .spy-body-text,
+  .snowtech-band--feature .section-content-wrapper > .image-block,
+  [data-template='page.snow-tech'] .section-resource-list__header,
+  [data-template='page.snow-tech'] .section-resource-list__content,
+  [data-template='page.snow-tech'] .resource-list.resource-list__carousel {
+    max-width: 71.25rem; /* 1140px */
+  }
+}
+
+@media (min-width: 1200px) {
+  .snowtech-band .section-content-wrapper > .spy-heading,
+  .snowtech-band .section-content-wrapper > .spy-body-text,
+  .snowtech-band--feature .section-content-wrapper > .image-block,
+  [data-template='page.snow-tech'] .section-resource-list__header,
+  [data-template='page.snow-tech'] .section-resource-list__content,
+  [data-template='page.snow-tech'] .resource-list.resource-list__carousel {
+    max-width: 90rem; /* 1440px */
+  }
+}
+
+/* Source .section-header carries px-lg-5 on top of the container padding. */
+@media (min-width: 992px) {
+  .snowtech-band .section-content-wrapper > .spy-heading,
+  .snowtech-band .section-content-wrapper > .spy-body-text {
+    padding-inline: 3.9375rem; /* 15px + 48px */
+  }
+}
+
+/* Tech rows: no container, just the 48px gutter the source's layout-row adds
+   from lg up. The rows are the band's only top-level group blocks. */
+@media (min-width: 992px) {
+  .snowtech-band--rows .section-content-wrapper > .group-block {
+    padding-inline: 3rem; /* 48px */
+  }
+}
+
+/* Halves must be pinned, not left as flex: 1 1 0 — the art carries an
+   aspect-ratio that resolves off the row height and beats a zero basis. */
+@media (min-width: 992px) {
+  .snowtech-band--rows .layout-panel-flex--row > :not(style) {
+    flex: 0 0 50%;
+    max-width: 50%;
+    min-width: 0;
+  }
+
+  /* Lens types split 8/4 rather than 6/6, and the art swaps side per row, so
+     key off the block type instead of child order. */
+  .snowtech-band--rows-8-4 .layout-panel-flex--row > .image-block {
+    flex-basis: 66.6667%;
+    max-width: 66.6667%;
+  }
+
+  .snowtech-band--rows-8-4 .layout-panel-flex--row > .group-block {
+    flex-basis: 33.3333%;
+    max-width: 33.3333%;
+  }
+}
+
+/* The source stacks at 992 (col-lg-*), but the group block's own
+   vertical_on_mobile only fires at 750, so close the gap here. Copy padding
+   is lg-only in the source too, hence dropping it with the row. */
+@media (max-width: 991px) {
+  .snowtech-band--rows .layout-panel-flex--row {
+    flex-flow: column nowrap;
+  }
+
+  .snowtech-band--rows .layout-panel-flex--row > :not(style) {
+    flex: 0 0 auto;
+    max-width: 100%;
+  }
+
+  .snowtech-band--rows .group-block .group-block {
+    padding: 0 !important;
+  }
+}
+
+/* ── Snow Helmet Tech ────────────────────────────────────────────────────
+   Same story as the ANSI bands: every band is a full-width section and the
+   width comes from the source container ladder, 540 / 720 / 1140 / 1440 at
+   544 / 769 / 992 / 1200.
+
+   The ladder below carries NO padding, because the source's `.row` cancels the
+   container's 15px with a -15px margin and hands it back as each column's own
+   padding. That is why every width here subtracts 30px instead: it is the
+   column's padding, not the container's.
+
+   Bands opt in by class from the section's "CSS class" setting, never by
+   section ID — an ID changes the moment an editor duplicates a band. */
+.sht-band .section-content-wrapper {
+  width: 100%;
+  max-width: none;
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+@media (min-width: 544px) {
+  .sht-band .section-content-wrapper {
+    max-width: 33.75rem; /* 540px */
+  }
+}
+
+@media (min-width: 769px) {
+  .sht-band .section-content-wrapper {
+    max-width: 45rem; /* 720px */
+  }
+}
+
+@media (min-width: 992px) {
+  .sht-band .section-content-wrapper {
+    max-width: 71.25rem; /* 1140px */
+  }
+}
+
+@media (min-width: 1200px) {
+  .sht-band .section-content-wrapper {
+    max-width: 90rem; /* 1440px */
+  }
+}
+
+/* Every paragraph on this page is 14pt, which is 18.667px — half a step off what
+   spy-body-text's size slider can express. Rounding to 19px runs each line ~1.8%
+   long and moves the wrap points, so the size comes back as real `pt` here.
+   Overriding the custom property rather than `font-size` keeps the block's own
+   utility in charge; `!important` is what beats the inline style. */
+.sht-band .spy-body-text {
+  --sb-size: 14pt !important;
+  --sb-size-mobile: 14pt !important;
+}
+
+/* col-8 of 12, less the column's own 15px each side — 930px at 1440. */
+/* max-width, not width: the type blocks carry a `w-full` utility, and Tailwind
+   is imported with `important`, so its width always wins — for !important
+   declarations a layer beats unlayered CSS, whatever the specificity. Capping
+   max-width sidesteps the fight, and margin-inline still centres the result. */
+.sht-band--c8 .section-content-wrapper > :not(style) {
+  max-width: calc(66.6667% - 30px);
+  margin-inline: auto;
+}
+
+/* Same column, but the source nests a second container inside the first here,
+   and the extra 15px each side costs 20px of column width: 910 not 930. */
+.sht-band--c8n .section-content-wrapper > :not(style) {
+  max-width: calc(66.6667% - 50px);
+  margin-inline: auto;
+}
+
+/* The Mips lock-up is served at 500px and shown at natural size. Three classes
+   so it outranks the column cap above. */
+.sht-band--c8n .section-content-wrapper > .image-block {
+  max-width: 500px;
+}
+
+/* The source's h1 is `<picture><img></picture>&nbsp;` — that trailing space is
+   part of the centred line, so it carries the artwork half a space left of true
+   centre. Measured at 4px against the live page. Only where the h1 is at its
+   full 32px; below that the columns stack and the artwork is scaled to fit, so
+   a fixed 4px would read as bad centring rather than a match. */
+@media (min-width: 992px) {
+  .sht-band--c8n .section-content-wrapper > .image-block {
+    transform: translateX(-4px);
+  }
+}
+
+/* Under 544 the column is narrower than the artwork. The source lets it spill
+   and take the page with it; keep it in its column instead, lined up with the
+   copy, so there is no sideways scroll on a phone. */
+@media (max-width: 543px) {
+  .sht-band--c8n .section-content-wrapper > .image-block {
+    max-width: calc(100% - 60px);
+  }
+}
+
+/* YouTube hands the embed over at a fixed 800 x 450, inside a col-12 that still
+   carries its own 15px each side. */
+.sht-band--video .section-content-wrapper > :not(style) {
+  max-width: min(800px, calc(100% - 30px));
+  margin-inline: auto;
+}
+
+/* Bare headings sit outside any container in the source. Their 48px side
+   margin is inert for centred copy that never wraps, so it is dropped. */
+.sht-band--bleed .section-content-wrapper {
+  max-width: none;
+}
+
+/* Content rows occupy columns 3-10, so the row is col-8 wide and its two
+   children split it. 15px per side is each column's own padding. */
+.sht-band--rows .section-content-wrapper > :not(style) {
+  width: 66.6667% !important;
+  margin-inline: auto;
+}
+
+/* Column padding lives here rather than in block settings, so there is one
+   source of truth — a `padding-inline` shorthand would silently eat a block's
+   own inline padding anyway. */
+.sht-band--rows .layout-panel-flex--row > :not(style) {
+  min-width: 0;
+  padding-inline: 15px;
+}
+
+/* The Active art adds pr-lg-3 on top of its column's 15px. `first-of-type`
+   rather than `first-child`: Horizon injects a per-block <style> as a real
+   sibling, and it also keeps this off the Passive row, where the copy leads. */
+.sht-band--r44 .layout-panel-flex--row > .image-block:first-of-type {
+  padding-right: 31px;
+}
+
+/* The ABS art is pushed 96px into its column (ml-lg-5 + pl-lg-5), its copy
+   adds pr-lg-1. */
+.sht-band--abs .layout-panel-flex--row > .image-block {
+  padding-left: 111px;
+}
+
+.sht-band--abs .layout-panel-flex--row > .group-block {
+  padding-right: 19px;
+}
+
+/* Basis is pinned rather than left at 0: the art carries an aspect-ratio, which
+   resolves its width from the row height and quietly beats a zero basis. */
+.sht-band--r26 .layout-panel-flex--row > .group-block {
+  flex: 0 0 25%;
+  max-width: 25%;
+}
+
+.sht-band--r26 .layout-panel-flex--row > .image-block {
+  flex: 0 0 75%;
+  max-width: 75%;
+}
+
+.sht-band--r44 .layout-panel-flex--row > .group-block,
+.sht-band--r44 .layout-panel-flex--row > .image-block {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+/* The ABS row carries ml-lg-2. That 8px replaces the row's -15px left margin, so
+   the row ends up 1417 wide instead of 1440 and its twelfths become 118.08px —
+   the whole grid shifts right AND tightens. Hence the odd numbers: the 8-column
+   span starts 259.2/1440 in and runs 944.7/1440 wide. Applied to the row only,
+   because the CONSTRUCTION heading above it stays centred on the page. */
+@media (min-width: 992px) {
+  .sht-band--abs .section-content-wrapper > .group-block {
+    width: 65.6042% !important;
+    margin-inline-start: 18%;
+    margin-inline-end: 0;
+    /* The wrapper is a centring column flex, which would centre the row's whole
+       margin box and hand back half the offset as extra indent. */
+    align-self: flex-start;
+  }
+}
+
+/* The icon strip's row adds 16px of margin and 8px of padding per side on top
+   of the column's 15px, and the container padding survives this time. */
+@media (min-width: 992px) {
+  .sht-band--icons .section-content-wrapper > :not(style) {
+    width: calc(100% - 108px) !important;
+    margin-inline: auto;
+  }
+}
+
+/* Columns collapse at 992 in the source. Horizon's own mobile-column only fires
+   at 750, so the 750-991 gap is closed by hand and every band goes full width. */
+@media (max-width: 991px) {
+  .sht-band--c8 .section-content-wrapper > :not(style) {
+    max-width: calc(100% - 30px);
+  }
+
+  /* Stacked to col-12, but the nested container's own 15px each side still
+     applies, so this column is 30px narrower than the plain one. */
+  .sht-band--c8n .section-content-wrapper > :not(style) {
+    max-width: calc(100% - 60px);
+  }
+
+  .sht-band--icons .section-content-wrapper > :not(style) {
+    width: calc(100% - 30px) !important;
+  }
+
+  .sht-band--rows .section-content-wrapper > :not(style) {
+    width: 100% !important;
+  }
+
+  .sht-band--rows .layout-panel-flex--row {
+    flex-flow: column nowrap;
+  }
+
+  .sht-band--rows .layout-panel-flex--row > .group-block,
+  .sht-band--rows .layout-panel-flex--row > .image-block {
+    flex: 0 0 auto;
+    max-width: 100%;
+    width: 100% !important;
+  }
+
+  /* Stacked, so the desktop column offsets stop applying. */
+  .sht-band--r44 .layout-panel-flex--row > .image-block:first-of-type,
+  .sht-band--abs .layout-panel-flex--row > .image-block {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .sht-band--abs .layout-panel-flex--row > .group-block {
+    padding-right: 15px;
+  }
+
+}
+
+/* The carousel has no CSS-class setting, so it stays template-scoped. In
+   carousel mode `__content` is display:none — the real track is
+   `.resource-list.resource-list__carousel`. The source's product carousel swaps
+   the row's -15px margin for +16px from 769 up, so the track is 1378 at 1440. */
+[data-template='page.snow-helmet-tech'] .section-resource-list__content,
+[data-template='page.snow-helmet-tech'] .resource-list.resource-list__carousel {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 0.9375rem; /* 15px */
+}
+
+@media (min-width: 544px) {
+  [data-template='page.snow-helmet-tech'] .section-resource-list__content,
+  [data-template='page.snow-helmet-tech'] .resource-list.resource-list__carousel {
+    max-width: 33.75rem; /* 540px */
+  }
+}
+
+@media (min-width: 769px) {
+  [data-template='page.snow-helmet-tech'] .section-resource-list__content,
+  [data-template='page.snow-helmet-tech'] .resource-list.resource-list__carousel {
+    max-width: 45rem; /* 720px */
+    padding-inline: 1.9375rem; /* 15 + 16 */
+  }
+}
+
+@media (min-width: 992px) {
+  [data-template='page.snow-helmet-tech'] .section-resource-list__content,
+  [data-template='page.snow-helmet-tech'] .resource-list.resource-list__carousel {
+    max-width: 71.25rem; /* 1140px */
+  }
+}
+
+@media (min-width: 1200px) {
+  [data-template='page.snow-helmet-tech'] .section-resource-list__content,
+  [data-template='page.snow-helmet-tech'] .resource-list.resource-list__carousel {
+    max-width: 90rem; /* 1440px */
+  }
+}
+
+/* ── Watermen Collection ─────────────────────────────────────────────────
+   The source builds this page from SFCC content assets, so its widths are
+   inline max-widths per band rather than one container. Taken from the saved
+   capture's own <style> blocks in reference/waterman:
+
+     intro            .max-width 700 + 20px padding  -> 660 measure
+     OUR TECH grid    .container ladder, .sfcc-custom-container padding 40/15
+     LENS OVERVIEW    .vlt-comparison-container  max-width 1200, padding 40/20
+     LENS OPTIONS     .fishing-selector-container max-width 1000, padding 30/20
+     LENS BENEFITS    .hbc-carousel-container     max-width 1200
+     section headers  platform .section-header inside .container + px-lg-5
+
+   Typography already matched before this change; only the widths were off,
+   so nothing here touches font size, weight or colour.
+
+   Bands opt in by class, never by section ID — see the ANSI note above. */
+.wm-band .section-content-wrapper {
+  width: 100%;
+  max-width: none;
+  padding-inline: 0;
+}
+
+/* Intro copy: a fixed 660px measure, not a percentage of the viewport. */
+.wm-band--intro .section-content-wrapper > .group-block {
+  width: 100%;
+  max-width: 43.75rem; /* 700px */
+  margin-inline: auto;
+  margin-block-end: 50px;
+}
+
+/* Section headers and the tech grid follow the source container ladder. */
+.wm-band--header .spy-heading,
+.wm-band--header .spy-body-text,
+.wm-band--tech .section-content-wrapper > .group-block--width-fill,
+[data-template='page.watermen'] .section-resource-list__header,
+[data-template='page.watermen'] .section-resource-list__content,
+[data-template='page.watermen'] .resource-list.resource-list__carousel {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 0.9375rem; /* 15px */
+}
+
+@media (min-width: 544px) {
+  .wm-band--header .spy-heading,
+  .wm-band--header .spy-body-text,
+  .wm-band--tech .section-content-wrapper > .group-block--width-fill,
+  [data-template='page.watermen'] .section-resource-list__header,
+  [data-template='page.watermen'] .section-resource-list__content,
+  [data-template='page.watermen'] .resource-list.resource-list__carousel {
+    max-width: 33.75rem; /* 540px */
+  }
+}
+
+@media (min-width: 769px) {
+  .wm-band--header .spy-heading,
+  .wm-band--header .spy-body-text,
+  .wm-band--tech .section-content-wrapper > .group-block--width-fill,
+  [data-template='page.watermen'] .section-resource-list__header,
+  [data-template='page.watermen'] .section-resource-list__content,
+  [data-template='page.watermen'] .resource-list.resource-list__carousel {
+    max-width: 45rem; /* 720px */
+  }
+}
+
+@media (min-width: 992px) {
+  .wm-band--header .spy-heading,
+  .wm-band--header .spy-body-text,
+  .wm-band--tech .section-content-wrapper > .group-block--width-fill,
+  [data-template='page.watermen'] .section-resource-list__header,
+  [data-template='page.watermen'] .section-resource-list__content,
+  [data-template='page.watermen'] .resource-list.resource-list__carousel {
+    max-width: 71.25rem; /* 1140px */
+  }
+}
+
+@media (min-width: 1200px) {
+  .wm-band--header .spy-heading,
+  .wm-band--header .spy-body-text,
+  .wm-band--tech .section-content-wrapper > .group-block--width-fill,
+  [data-template='page.watermen'] .section-resource-list__header,
+  [data-template='page.watermen'] .section-resource-list__content,
+  [data-template='page.watermen'] .resource-list.resource-list__carousel {
+    max-width: 90rem; /* 1440px */
+  }
+}
+
+/* .section-header adds px-lg-5 on top of the container from lg up. */
+@media (min-width: 992px) {
+  .wm-band--header .spy-heading,
+  .wm-band--header .spy-body-text {
+    padding-inline: 3.9375rem; /* 15px + 48px */
+  }
+}
+
+/* .sfcc-custom-container is 40px/15px inside that container. */
+.wm-band--tech .section-content-wrapper > .group-block--width-fill {
+  padding-inline: 1.875rem; /* 15px container + 15px */
+}
+
+/* Each half of the tech grid is a Bootstrap col-md-6 with 15px gutters. */
+@media (min-width: 769px) {
+  .wm-band--tech .layout-panel-flex--row > :not(style) {
+    flex: 0 0 50%;
+    max-width: 50%;
+    min-width: 0;
+  }
+}
+
+/* The benefits carousel's 1200px cap lives with the other template-scoped
+   rules above, because the carousel section has no CSS-class setting. */

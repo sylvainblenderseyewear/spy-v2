@@ -1,22 +1,28 @@
 {%- comment -%}
   SPY Value Props — trust/value row built only from basic blocks.
-  The band, lines and padding live on the section; each column is a
-  Group block (icon + two Text blocks) so editors can add/remove columns.
-  Icons are picked in the editor.
+  Full-bleed light band with a col-10 content well: 4 columns from 769px, 2 below.
+  The band itself has no padding — like the source, each column carries it, so
+  stacked rows keep the same rhythm. Icons are picked in the editor.
 {%- endcomment -%}
 
 <div
   class="spy-value-props w-full"
   style="
     background-color: {{ section.settings.background_color }};
-    {% if section.settings.show_border %}border-block: 1px solid {{ section.settings.border_color }};{% endif %}
-    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+    {% if section.settings.show_border %}border-bottom: 1px solid {{ section.settings.border_color }};{% endif %}
   "
   {{ section.shopify_attributes }}
 >
+  {%- comment -%} [display:grid] not `grid`: Horizon's own .grid class would add 14 track areas. {%- endcomment -%}
   <div
-    class="spy-value-props__inner mx-auto flex flex-col gap-y-10 px-4 md:px-10 md:flex-row md:justify-center md:items-start md:gap-y-0 [&>.group-block]:w-full md:[&>.group-block]:w-auto md:[&>.group-block]:flex-1 md:[&>.group-block]:min-w-0"
-    style="max-width: {{ section.settings.max_width }}px; column-gap: {{ section.settings.column_gap }}px;"
+    class="spy-value-props__inner mx-auto w-[calc((100%_+_30px)_*_0.8333333_-_30px)] items-start [display:grid] grid-cols-2 min-[769px]:grid-cols-4
+      [&>.group-block]:h-full [&>.group-block]:[padding-block:var(--vp-pad-top)_var(--vp-pad-bottom)]
+      [&_.icon-block\_\_media]:h-[72px] [&_.icon-block\_\_media]:w-auto"
+    style="
+      column-gap: {{ section.settings.column_gap }}px;
+      --vp-pad-top: {{ section.settings.padding_top }}px;
+      --vp-pad-bottom: {{ section.settings.padding_bottom }}px;
+    "
   >
     {% content_for 'blocks' %}
   </div>
@@ -47,29 +53,19 @@
     {
       "type": "checkbox",
       "id": "show_border",
-      "label": "Top & bottom lines",
+      "label": "Bottom line",
       "default": true
     },
     {
       "type": "color",
       "id": "border_color",
       "label": "Line color",
-      "default": "#e0e0e0",
+      "default": "#1d2a2b",
       "visible_if": "{{ section.settings.show_border }}"
     },
     {
       "type": "header",
       "content": "Layout"
-    },
-    {
-      "type": "range",
-      "id": "max_width",
-      "label": "Content max width",
-      "min": 800,
-      "max": 2000,
-      "step": 20,
-      "unit": "px",
-      "default": 1400
     },
     {
       "type": "range",
@@ -79,11 +75,11 @@
       "max": 80,
       "step": 2,
       "unit": "px",
-      "default": 16
+      "default": 30
     },
     {
       "type": "header",
-      "content": "Padding"
+      "content": "Column padding"
     },
     {
       "type": "range",
@@ -93,7 +89,7 @@
       "max": 120,
       "step": 2,
       "unit": "px",
-      "default": 56
+      "default": 48
     },
     {
       "type": "range",
@@ -103,7 +99,7 @@
       "max": 120,
       "step": 2,
       "unit": "px",
-      "default": 56
+      "default": 80
     }
   ],
   "presets": [
@@ -113,11 +109,10 @@
       "settings": {
         "background_color": "#f2f2f2",
         "show_border": true,
-        "border_color": "#e0e0e0",
-        "max_width": 1400,
-        "column_gap": 16,
-        "padding_top": 56,
-        "padding_bottom": 56
+        "border_color": "#1d2a2b",
+        "column_gap": 30,
+        "padding_top": 48,
+        "padding_bottom": 80
       },
       "blocks": {
         "col_1": {
@@ -137,8 +132,8 @@
               "type": "icon",
               "settings": {
                 "icon": "truck",
-                "width": 52,
-                "icon_color": "#2c393e"
+                "width": 84,
+                "icon_color": "#1d2a2b"
               }
             },
             "text": {
@@ -146,7 +141,7 @@
               "settings": {
                 "content_direction": "column",
                 "horizontal_alignment_flex_direction_column": "center",
-                "gap": 6,
+                "gap": 0,
                 "width": "fill",
                 "height": "fit"
               },
@@ -165,7 +160,7 @@
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",
-                    "text_color": "#2c393e"
+                    "text_color": "#1d2a2b"
                   }
                 },
                 "subtitle": {
@@ -182,7 +177,7 @@
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",
-                    "text_color": "#6a6c77"
+                    "text_color": "#1d2a2b"
                   }
                 }
               },
@@ -208,8 +203,8 @@
               "type": "icon",
               "settings": {
                 "icon": "return",
-                "width": 52,
-                "icon_color": "#2c393e"
+                "width": 84,
+                "icon_color": "#1d2a2b"
               }
             },
             "text": {
@@ -217,7 +212,7 @@
               "settings": {
                 "content_direction": "column",
                 "horizontal_alignment_flex_direction_column": "center",
-                "gap": 6,
+                "gap": 0,
                 "width": "fill",
                 "height": "fit"
               },
@@ -236,7 +231,7 @@
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",
-                    "text_color": "#2c393e"
+                    "text_color": "#1d2a2b"
                   }
                 },
                 "subtitle": {
@@ -253,7 +248,7 @@
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",
-                    "text_color": "#6a6c77"
+                    "text_color": "#1d2a2b"
                   }
                 }
               },
@@ -279,8 +274,8 @@
               "type": "icon",
               "settings": {
                 "icon": "star",
-                "width": 52,
-                "icon_color": "#2c393e"
+                "width": 84,
+                "icon_color": "#1d2a2b"
               }
             },
             "text": {
@@ -288,7 +283,7 @@
               "settings": {
                 "content_direction": "column",
                 "horizontal_alignment_flex_direction_column": "center",
-                "gap": 6,
+                "gap": 0,
                 "width": "fill",
                 "height": "fit"
               },
@@ -307,7 +302,7 @@
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",
-                    "text_color": "#2c393e"
+                    "text_color": "#1d2a2b"
                   }
                 },
                 "subtitle": {
@@ -324,7 +319,7 @@
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",
-                    "text_color": "#6a6c77"
+                    "text_color": "#1d2a2b"
                   }
                 }
               },
@@ -350,8 +345,8 @@
               "type": "icon",
               "settings": {
                 "icon": "chat_bubble",
-                "width": 52,
-                "icon_color": "#2c393e"
+                "width": 84,
+                "icon_color": "#1d2a2b"
               }
             },
             "text": {
@@ -359,7 +354,7 @@
               "settings": {
                 "content_direction": "column",
                 "horizontal_alignment_flex_direction_column": "center",
-                "gap": 6,
+                "gap": 0,
                 "width": "fill",
                 "height": "fit"
               },
@@ -378,7 +373,7 @@
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",
-                    "text_color": "#2c393e"
+                    "text_color": "#1d2a2b"
                   }
                 },
                 "subtitle": {
@@ -395,7 +390,7 @@
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",
-                    "text_color": "#6a6c77"
+                    "text_color": "#1d2a2b"
                   }
                 }
               },

@@ -1,0 +1,45 @@
+{%- doc -%}
+  One video slot for the video block.
+
+  Picks the uploaded or the URL path and hands off to the shared `video` snippet.
+  It exists so the block can render a second slot for phones without repeating
+  the same branch twice.
+
+  @param {string} source - 'uploaded' or 'url'
+  @param {object} [video] - Shopify video object, used when source is 'uploaded'
+  @param {object} [video_url] - video_url setting, used when source is 'url'
+  @param {object} [cover_image] - Poster image for the URL path
+  @param {string} [alt] - Alt text for the URL path
+  @param {string} [video_style] - Inline styles, carries the aspect ratio
+  @param {boolean} [video_autoplay] - Whether the video plays on load
+  @param {boolean} [video_loop] - Whether the video loops
+  @param {boolean} [video_background] - Strip player chrome
+  @param {string} [additional_attributes] - Extra attributes, e.g. the editor handle
+{%- enddoc -%}
+
+{%- if source == 'uploaded' -%}
+  {% render 'video',
+    video: video,
+    video_class: 'spacing-style size-style border-style',
+    video_autoplay: video_autoplay,
+    video_loop: video_loop,
+    video_style: video_style,
+    video_preview_image: video.preview_image,
+    video_background: video_background,
+    additional_attributes: additional_attributes
+  %}
+{%- else -%}
+  {% render 'video',
+    video_from_url: true,
+    video: video_url.id,
+    video_class: 'spacing-style size-style border-style',
+    video_type: video_url.type,
+    video_autoplay: video_autoplay,
+    video_loop: video_loop,
+    video_style: video_style,
+    video_alt: alt,
+    video_preview_image: cover_image,
+    video_background: video_background,
+    additional_attributes: additional_attributes
+  %}
+{%- endif -%}

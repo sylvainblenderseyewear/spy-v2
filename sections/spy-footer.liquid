@@ -1,13 +1,11 @@
 {%- comment -%}
-  SPY Footer — full-bleed band that lays out footer blocks in a page-width grid.
-  Adds an optional background image (with overlay) the stock footer lacks.
-  Columns auto-fit the block count; content is built from stock footer blocks.
+  SPY Footer — dark menu band. Full-bleed background (+ optional image) with a
+  col-10 content well: brand column on the left, link columns spread to the
+  right edge. Below 992px the links move above the brand block, and below 769px
+  each column collapses into an accordion (see spy-footer-menu).
 {%- endcomment -%}
 
 {%- liquid
-  assign n = section.blocks.size
-  assign cols_lg = n | at_most: 6
-  assign cols_md = n | at_most: 2
   assign bg = section.settings.background_color
   assign img = section.settings.background_image
 
@@ -17,13 +15,14 @@
 -%}
 
 <div
-  class="spy-footer relative w-full{% if bg != blank %} color-custom-{{ section.id }}{% endif %}"
+  class="spy-footer relative w-full overflow-hidden{% if bg != blank %} color-custom-{{ section.id }}{% endif %}"
   style="{% if bg != blank %}background-color: {{ bg }};{% endif %}"
   {{ section.shopify_attributes }}
 >
   {%- if img != blank -%}
+    {%- comment -%} Taller than the band: the source crops one image across this row and the two rows below it. {%- endcomment -%}
     <div
-      class="absolute inset-0 bg-center bg-cover bg-no-repeat"
+      class="absolute inset-x-0 top-0 h-[150%] bg-center bg-cover bg-no-repeat"
       style="background-image: url({{ img | image_url: width: 3000 }});"
       role="presentation"
     ></div>
@@ -32,9 +31,18 @@
     {%- endif -%}
   {%- endif -%}
 
+  {%- comment -%} [display:flex] not `flex`: Horizon's own .flex class would add a gap. {%- endcomment -%}
   <div
-    class="spy-footer__inner relative mx-auto grid grid-cols-1 items-start md:[grid-template-columns:repeat(var(--cols-md),minmax(0,1fr))] lg:[grid-template-columns:repeat(var(--cols-lg),minmax(0,1fr))] px-4 md:px-10"
-    style="max-width: {{ section.settings.max_width }}px; gap: {{ section.settings.gap }}px; --cols-md: {{ cols_md }}; --cols-lg: {{ cols_lg }}; padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;"
+    class="spy-footer__inner relative mx-auto w-[calc((100%_+_30px)_*_0.8333333_-_30px)] items-start gap-0 [display:flex] flex-col
+      [&>.group-block]:order-1 [&>.group-block]:w-full [&>.spy-fmenu]:mb-4 [&>.spy-fmenu]:w-full
+      min-[769px]:flex-row min-[769px]:flex-wrap min-[769px]:justify-between min-[769px]:[&>.spy-fmenu]:w-auto
+      min-[992px]:flex-nowrap min-[992px]:justify-start
+      min-[992px]:[&>.group-block]:order-none min-[992px]:[&>.group-block]:w-auto min-[992px]:[&>.group-block]:shrink-0 min-[992px]:[&>.group-block]:grow-0 min-[992px]:[&>.group-block]:basis-[calc((100%_+_30px)_*_0.1666667_-_30px)]
+      min-[992px]:[&>.spy-fmenu:first-of-type]:ml-[54px] min-[992px]:[&>.spy-fmenu:not(:first-of-type)]:ml-auto
+      [&_.icon-block\_\_media]:h-[70px] [&_.icon-block\_\_media]:w-auto
+      [&_.social-icons\_\_wrapper]:h-[50.39px] [&_.social-icons\_\_wrapper]:items-start [&_.social-icons\_\_wrapper]:gap-[13.67px] [&_.social-icons\_\_wrapper]:pt-[2px] [&_.social-icons\_\_icon-wrapper:has(a[href*=twitter])]:order-1 [&_.social-icons\_\_icon-wrapper:has(a[href*=instagram])]:order-2
+      min-[992px]:[padding-bottom:var(--pb-desktop)]"
+    style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px; --pb-desktop: {{ section.settings.padding_bottom_desktop }}px;"
   >
     {% content_for 'blocks' %}
   </div>
@@ -50,17 +58,15 @@
   "blocks": [
     { "type": "@theme" },
     { "type": "@app" },
-    { "type": "_divider" },
+    { "type": "spy-footer-menu" },
     { "type": "group" },
     { "type": "icon" },
     { "type": "image" },
     { "type": "menu" },
-    { "type": "payment-icons" },
     { "type": "text" },
     { "type": "logo" },
     { "type": "social-links" },
-    { "type": "custom-liquid" },
-    { "type": "email-signup" }
+    { "type": "custom-liquid" }
   ],
   "settings": [
     {
@@ -71,7 +77,7 @@
       "type": "color",
       "id": "background_color",
       "label": "Background color",
-      "default": "#1d2a2b"
+      "default": "#272727"
     },
     {
       "type": "image_picker",
@@ -82,39 +88,15 @@
       "type": "checkbox",
       "id": "overlay",
       "label": "Darken image with overlay",
-      "default": true
+      "default": false
     },
     {
       "type": "color",
       "id": "overlay_color",
       "label": "Overlay color",
       "alpha": true,
-      "default": "#1d2a2bb3",
+      "default": "#00000000",
       "visible_if": "{{ section.settings.overlay }}"
-    },
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "range",
-      "id": "max_width",
-      "label": "Content max width",
-      "min": 800,
-      "max": 2400,
-      "step": 20,
-      "unit": "px",
-      "default": 1600
-    },
-    {
-      "type": "range",
-      "id": "gap",
-      "label": "Gap between columns",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "default": 32
     },
     {
       "type": "header",
@@ -128,7 +110,7 @@
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 56
+      "default": 16
     },
     {
       "type": "range",
@@ -138,7 +120,18 @@
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 40
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom (from 992px)",
+      "info": "The source band carries extra dark space under the link columns on desktop.",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 36
     }
   ],
   "presets": [

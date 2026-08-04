@@ -68,15 +68,80 @@ Text colour `#1D2A2B` in bands 2; `#fff` on the footer banner.
 
 ## Band inventory
 
-| # | Source component | Section | Blocks | Width |
+| # | Source component | Section | Blocks | Editable in theme editor |
 |---|---|---|---|---|
-| 1 | `experience-assets-banner` | `section` | `custom-liquid` | full |
-| 2 | `experience-assets-sectionHeader` | `section` | `custom-liquid` | page (1140) |
-| 3 | `experience-carousel-productCarousel` | `product-list` | `_product-card` + spy-* | page (1140) |
-| 4 | `experience-assets-contentAsset` | `section` | `custom-liquid` | page (1140) |
-| 5 | `experience-assets-banner` | `section` | `custom-liquid` | full |
+| 1 | `experience-assets-banner` | `section` | `video` | yes |
+| 2 | `experience-assets-sectionHeader` | `section` | `spy-heading` + `spy-body-text` | yes |
+| 3 | `experience-carousel-productCarousel` | `product-list` | `_product-card` + spy-* | yes (collection) |
+| 4 | `experience-assets-contentAsset` | `section` | `group` × 2 → `image` + `group` → `spy-heading` + `spy-body-text` | yes |
+| 5 | `experience-assets-banner` | `spy-feature-link-banner` | — (section settings) | yes |
 
-No new sections or blocks were written — the whole page reuses what already ships in the theme.
+No new sections or blocks were written. Every band is a real block, so all copy, art and
+video are editable with no code edit.
+
+Band 1 was `custom-liquid` at first, because the stock `video` block could not render it: its
+aspect-ratio setting offers only auto / 9:16 / 1:1 / 16:9 (the source needs **1920/600** and
+**400/600**), it has one media slot rather than one per breakpoint, and `snippets/video.liquid`
+never passed `disable_controls` and had no `background=1`, so Vimeo chrome would appear.
+
+That block was **extended** rather than replaced, so the page keeps the same block vocabulary as
+happy-lens / happy-boost. The additions are all opt-in and default to the previous output:
+
+| Setting | Purpose |
+|---|---|
+| `ratio_w` / `ratio_h` | Exact ratio the select cannot express. Empty → old behaviour. |
+| `mobile_enabled` + `source_mobile` / `video_mobile` / `video_url_mobile` | Second asset for narrow screens. |
+| `ratio_w_mobile` / `ratio_h_mobile` | Phone ratio; falls back to the desktop one. |
+| `swap_at` | 768 / 992 / 1200. Emitted as fixed Tailwind class pairs so the scanner sees them. |
+| `background` | Vimeo `background=1` / the YouTube equivalent. Forces autoplay + loop + mute. |
+
+With two slots the block renders two `deferred-media` wrappers, each carrying its own inline
+`--size-style-aspect-ratio`. `deferred-media iframe` already reads that variable
+(`assets/base.css:1730`), so **no new CSS** was needed for the ratio or the swap.
+
+`snippets/video-slot.liquid` was added as the block's own helper — it picks the uploaded or the
+URL path so the block does not repeat that branch per slot.
+
+**Fixed along the way:** `blocks/video.liquid` never passed `video_autoplay` to the snippet, and
+`block` is not in scope inside a `{% render %}`, so the snippet's `block_settings.video_autoplay`
+fallback always resolved to nil — that setting had been dead. It is now passed explicitly. Both
+existing users have it `false`, so their output is unchanged.
+
+### How each band gets the container ladder
+
+The ladder is opt-in by **class**, typed into the section's new "CSS class" setting
+(`custom_class`, added to `sections/section.liquid` and applied in `snippets/section.liquid`):
+
+| Band | Class |
+|---|---|
+| 1 hero | `ansi-band ansi-band--bleed` |
+| 2 intro | `ansi-band ansi-band--intro` |
+| 4 rows | `ansi-band ansi-band--rows` |
+
+It used to key off section IDs (`[id$='__intro']`). That breaks the moment an editor duplicates
+or re-adds a band, because the key changes and the styling silently disappears. A class travels
+with the band instead.
+
+Band 3 is the exception — `product-list` has no class setting, so it stays template-scoped.
+
+### Cost of making it editable
+
+`spy-heading` and `spy-body-text` express type as fixed px per breakpoint, switching at 769px.
+The source scales its `h2` fluidly with `calc(1.3rem + 0.6vw)` below 1200px. The rebuild is
+exact at ≥1200 (28px) and within 0.1px at 390 (23 vs 23.1), but runs up to ~2.6px large between
+769 and 1199. The content-row paragraph switches at 769 rather than the source's 768 — a
+one-pixel-wide window at exactly 768.
+
+`spy-feature-link-banner` switches placement at 768px where the source switches at 992px, sets
+its heading `font-bold` (700) where the source computes 600, and uses its own overlay padding
+rather than the source's `1rem 1rem 4rem 1rem`. Its `solid` CTA, however, already computes to
+the source button exactly.
+
+These were accepted deliberately in exchange for editor-editable copy, under the constraint of
+using only blocks and sections that already exist.
+
+The hero no longer costs anything: with `ratio_w`/`ratio_h` and `swap_at` it hits 1920/600 and
+400/600 exactly, and swaps at the source's 992px.
 
 ### Band 1 — hero video
 
@@ -176,8 +241,8 @@ template — set it in the theme editor to the real Shopify collection.
 
 ## Images
 
-Staged and renamed in `reference/ANSI_Photochromic/upload/`, to be uploaded to Shopify Files
-under exactly these names (the template resolves them with `| file_url`):
+Staged in `reference/ANSI_Photochromic/upload/` and now **uploaded to Shopify Files** under
+exactly these names, all `READY` and confirmed resolving in the render:
 
 | File | Size | Notes |
 |---|---|---|
@@ -206,7 +271,7 @@ markup inside the same DOM the `section` snippet emits (`scratchpad/build-harnes
 | `row2.margin-bottom` 20px vs 0 | The source declares 20px on both rows, but the last one collapses out of `.content-tile`. In the theme the row sits in a flex container where it would not collapse, so the rebuild drops it on the last row only. Rendered band height matches exactly: **1132px at 1440, 1106px at 390**. |
 | `.hero-banner-overlay` colour | An inherited orange on an element that paints no text — all copy lives in `-inner`, which matches `#fff` on both sides. |
 
-Every box width matches to the pixel at all three breakpoints (`dw = 0` for both rows, both
+Every box width matched to the pixel at all three breakpoints (`dw = 0` for both rows, both
 columns, and both grey panels). Confirmed by screenshot that the mobile reorder puts the image
 first in **both** rows, and that the footer banner is right-aligned/centred on desktop and
 centred/bottom on mobile.
@@ -214,8 +279,91 @@ centred/bottom on mobile.
 Text *widths* were deliberately excluded: the offline copy has no webfonts and falls back to
 Arial, so only box geometry is trustworthy there.
 
+> **Scope of that result.** Those measurements were taken against the earlier all-`custom-liquid`
+> build, which rendered as static HTML. The block-based build has since been re-measured live —
+> see below.
+
+## Live verification of the block build
+
+Measured against `shopify theme dev` at 1440 / 768 / 390, reading computed geometry out of the
+real DOM rather than the offline harness.
+
+| Check | 1440 | 768 | 390 |
+|---|---|---|---|
+| Hero desktop slot | 1430 × 447, ratio **3.200** = 1920/600 | hidden | hidden |
+| Hero mobile slot | hidden | visible, ratio **0.667** = 400/600 | visible, ratio **0.667** |
+| Container max-width | 1440 | 540 (clientWidth 758 < 769) | none (< 544) |
+| Band inline padding | 15px | 15px | 15px |
+| Intro extra padding ≥992 | 111px = 15 + 48 + 48 | n/a | n/a |
+| Carousel content width | 1400, first card at left 15 | — | — |
+| Row halves | **690 / 690**, 20px gap | stacked | stacked |
+| Row order | 1 = IMAGE·COPY, 2 = COPY·IMAGE | image first, both rows | image first, both rows |
+| Copy panel | 20px pad, `#f5f5f5` | 30px pad | 30px pad |
+
+Two defects were found and fixed during this pass:
+
+1. **The carousel was never being capped.** In carousel layout `product-list` hides
+   `.section-resource-list__content` (`display:none`) and renders through
+   `.resource-list.force-full-width.resource-list__carousel`, which the ladder did not target —
+   so the cards sat at left 0 and ran 1430 wide instead of 1400 inset by 15px. The carousel track
+   is now in all five ladder steps. (`force-full-width` is only `grid-column: 1 / -1`, so capping
+   it is safe.)
+2. **The row halves were 670 / 710, not equal.** Both images are 1.25 ratio, and `aspect-ratio`
+   resolves their width from the row height, which beats `flex-basis: 0`. The columns are now
+   pinned to `flex: 0 0 calc(50% - 10px)` with a matching `max-width` — the source's `width: 50%`
+   plus its 10px per-column padding. Row height follows at 552 = 690 / 1.25.
+
+### Regression check on the shared block
+
+| Page | Before → after |
+|---|---|
+| happy-lens | One slot, 16/9, `youtube.com/embed/u4raGVJikx0?` with no extra params, no swap wrappers — unchanged |
+| happy-boost | Renders `.video-placeholder-wrapper` because its `video` setting was never populated — pre-existing, unchanged |
+
+### Console
+
+Clean of anything caused by this page. What remains is environmental or pre-existing:
+`arclight.vimeo.com` analytics beacons (530) and `player.css` connection-closed in the sandbox,
+`shop.app` CSP/403 for Shop Pay on localhost, a `customer-account-main-menu` Storefront lookup,
+and an `overflow-list.css` preload warning. The Vimeo **video itself does play** — the 530s are
+only its stats endpoint.
+
 ### Not yet covered
 
-- The product carousel (band 3) — needs real products and a live render.
-- The hero video — Vimeo is blocked offline, so only the wrapper ratio is verified.
-- A render of the actual Shopify page, which needs the images uploaded and the page created.
+- **The 992px hero swap between 768 and 991px is still an assumption.** The source's own swap
+  logic is in JS that is not in the saved copy, and the live site blocks automation. At 768 the
+  rebuild shows the 400×600 portrait clip full-bleed, which is 1137px tall — if the live site
+  actually swaps at 768 rather than 992, `swap_at` needs changing to `768`. One setting, no code.
+- The carousel shows one product per **colourway**, not one per model as the live page does.
+  Staging has no combined listings yet, so this waits on the migration.
+- No ANSI Dirk exists in staging; `Dirk Matte Black` stands in for the live DIRK tile.
+
+### Pre-existing defect found, not fixed here
+
+Between roughly 758 and 991px the **header** overflows: `.spy-utility-nav` / `header-actions`
+extend to x=1172 against a 758px viewport, giving the document a 419px horizontal scroll. This is
+not specific to this page — `/pages/watermen` shows the identical 419px overflow from the same
+element. It belongs to the header workstream.
+
+## Theme state
+
+Pushed to **Staging v2** (`165560156400`) and confirmed by pulling back: the template, plus
+`blocks/spy-heading.liquid`, `blocks/spy-body-text.liquid`, `blocks/spy-bullet-list.liquid`
+and `sections/spy-feature-link-banner.liquid`, which were in the repo but had never been pushed
+to that theme.
+
+Both previously-blank settings are now filled, and the store data behind them exists:
+
+| Setting | Value | Backing data |
+|---|---|---|
+| `frames.collection` | `ansi-photochromic` | **Manual** collection, sort order MANUAL, 4 products in the live page's order: Rebar ANSI Matte Black · Rebar SE ANSI Matte Black · Logan Matte Black ANSI RX · Dirk Matte Black |
+| `footer_banner.link` | `shopify://collections/safety-sunglasses` | **Smart** collection, rule `TITLE CONTAINS "ANSI"`, 25 products |
+
+Manual — not a smart tag rule — because the source carousel is a hand-picked list of four model
+tiles; a disjunctive tag rule pulls all 18 colourways and `max_products: 4` would then show four
+arbitrary best-sellers instead of one tile per model. Both collections are published to Online
+Store and Shop.
+
+The page itself now exists: **ANSI Photochromic**, handle `ansi-photochromic`, template suffix
+`ansi-photochromic`, published — matching how watermen / happy-lens / happy-boost are set up. The
+template could not be opened in the theme editor before this.

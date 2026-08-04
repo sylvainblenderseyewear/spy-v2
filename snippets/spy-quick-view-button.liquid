@@ -13,8 +13,9 @@
 {%- enddoc -%}
 
 {%- if product != blank -%}
+  {%- comment -%} Source: 12px regular, no tracking. Pull-up and hover reveal live in tailwind.css {%- endcomment -%}
   <button
-    class="spy-quick-view-btn py-2 px-3 bg-white border border-spy-orange text-spy-orange text-[12px] font-bold uppercase tracking-widest cursor-pointer text-center transition-colors hover:bg-spy-orange hover:text-white"
+    class="spy-quick-view-btn py-2 px-3 bg-white border border-spy-orange text-spy-orange text-[12px] font-normal uppercase tracking-normal cursor-pointer text-center transition-colors hover:bg-spy-orange hover:text-white"
     data-spy-qv="{{ product.handle }}"
     aria-label="Quick View {{ product.title | escape }}"
     type="button"

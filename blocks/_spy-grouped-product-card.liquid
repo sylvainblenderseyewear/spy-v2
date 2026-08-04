@@ -98,18 +98,27 @@
       "type": "checkbox",
       "id": "show_price",
       "label": "Show price",
-      "info": "Off by default: a model's colourways can differ in price.",
-      "default": false
+      "info": "Prices the whole model, so colourways that differ read as a range.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "label_price_from",
+      "label": "Label — price range",
+      "info": "Printed before the price when the model's colourways differ.",
+      "default": "Starting from",
+      "visible_if": "{{ block.settings.show_price }}"
     },
     {
       "type": "range",
       "id": "product_card_gap",
       "label": "t:settings.vertical_gap",
+      "info": "0 matches the source, which spaces the bands with their own margins.",
       "min": 0,
       "max": 50,
       "step": 1,
       "unit": "px",
-      "default": 4
+      "default": 0
     },
     {
       "type": "header",

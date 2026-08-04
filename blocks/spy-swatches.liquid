@@ -168,11 +168,12 @@
       object-contain rather than cover: product shots are wide, so a square crop would eat them.
       No outline on purpose — the source thumb (.swatch-circle) is a bare image.
     {%- endcomment -%}
+    {%- comment -%} Source .swatch-circle: 48px square on #f8f8f8, 8px apart {%- endcomment -%}
     {%- liquid
-      assign card_swatch = 'spy-swatches__item block h-8 w-8 min-[750px]:h-9 min-[750px]:w-9 shrink-0 overflow-hidden'
+      assign card_swatch = 'spy-swatches__item block h-12 w-12 shrink-0 overflow-hidden bg-[#f8f8f8]'
       assign card_swatch_img = 'block h-full w-full object-contain'
     -%}
-    <div class="spy-swatches flex flex-wrap items-center gap-1.5 pt-3 pb-1" data-spy-swatches {{ block.shopify_attributes }}>
+    <div class="spy-swatches flex items-start justify-center gap-2" data-spy-swatches {{ block.shopify_attributes }}>
       {%- if color_option != nil and color_option.values.size > 0 -%}
         {%- for v in color_option.values limit: max_shown -%}
           {%- assign media = v.variant.featured_media | default: p.media[forloop.index0] | default: p.featured_media -%}
@@ -189,7 +190,13 @@
           {%- endif -%}
         {%- endfor -%}
         {%- if color_option.values.size > max_shown -%}
-          <a href="{{ p.url }}" class="spy-swatches__more inline-flex w-7 h-7 shrink-0 items-center justify-center text-spy-gray hover:text-spy-orange no-underline" aria-label="View all {{ color_option.values.size }} colors">&rarr;</a>
+          {%- comment -%} 32x10 arrow, the source's `.view-pdp-link svg` {%- endcomment -%}
+          <a href="{{ p.url }}" class="spy-swatches__more inline-flex h-12 shrink-0 items-center text-spy-gray hover:text-spy-orange no-underline" aria-label="View all {{ color_option.values.size }} colors">
+            <svg width="32" height="10" viewBox="0 0 32 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+              <path d="M0.5 5H30.42" stroke="currentColor" stroke-miterlimit="10"></path>
+              <path d="M27.1 9.09L26.42 8.36L30.03 5L26.42 1.64L27.1 0.91L31.5 5L27.1 9.09Z" fill="currentColor"></path>
+            </svg>
+          </a>
         {%- endif -%}
       {%- elsif p.featured_media != blank -%}
         <a
