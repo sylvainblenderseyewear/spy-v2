@@ -1,0 +1,611 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "spy_support_menu_6qGiyn": {
+      "type": "spy-support-menu",
+      "blocks": {
+        "title_EaJmzd": {
+          "type": "title",
+          "settings": {
+            "title": "Customer Support",
+            "heading_tag": "h2",
+            "font_size": 24,
+            "font_weight": "700",
+            "text_color": "#000000",
+            "uppercase": true,
+            "letter_spacing": 0.5
+          }
+        },
+        "dropdown_iGhe9i": {
+          "type": "dropdown",
+          "settings": {
+            "button_label": "See Support Menu",
+            "empty_label": "",
+            "uppercase_button": true,
+            "button_width": 600,
+            "button_height": 48,
+            "button_font_size": 14,
+            "button_letter_spacing": 0.8,
+            "button_radius": 8,
+            "button_background": "#000000",
+            "button_text_color": "#ffffff",
+            "button_border_color": "#000000",
+            "button_background_hover": "#ffffff",
+            "button_text_hover": "#000000",
+            "button_border_hover": "#000000",
+            "panel_gap": 12,
+            "panel_radius": 6,
+            "row_height": 54,
+            "item_font_size": 14,
+            "item_letter_spacing": 0.6,
+            "uppercase_items": true,
+            "icon_size": 22,
+            "panel_background": "#ffffff",
+            "panel_border_color": "#e0e0e0",
+            "row_text_color": "#242424",
+            "row_hover_background": "#f7f7f7",
+            "row_hover_text_color": "#f57f29",
+            "active_background": "#000000",
+            "active_text_color": "#ffffff"
+          }
+        },
+        "menu_link_krGVVN": {
+          "type": "menu_link",
+          "name": "Contact Us",
+          "settings": {
+            "label": "Contact Us",
+            "link": "",
+            "icon": "envelope",
+            "open_in_new_tab": false
+          }
+        },
+        "menu_link_BcbpPg": {
+          "type": "menu_link",
+          "name": "My Account",
+          "settings": {
+            "label": "My Account",
+            "link": "/account",
+            "icon": "user",
+            "open_in_new_tab": false
+          }
+        },
+        "menu_link_gjBj6x": {
+          "type": "menu_link",
+          "name": "FAQ",
+          "settings": {
+            "label": "FAQ",
+            "link": "",
+            "icon": "question",
+            "open_in_new_tab": false
+          }
+        },
+        "menu_link_RPT7Ax": {
+          "type": "menu_link",
+          "name": "RX FAQ",
+          "settings": {
+            "label": "RX FAQ",
+            "link": "",
+            "icon": "sparkle",
+            "open_in_new_tab": false
+          }
+        },
+        "menu_link_qJJNhX": {
+          "type": "menu_link",
+          "name": "Warranty",
+          "settings": {
+            "label": "Warranty",
+            "link": "",
+            "icon": "shield",
+            "open_in_new_tab": false
+          }
+        },
+        "menu_link_4HhLFD": {
+          "type": "menu_link",
+          "name": "Returns",
+          "settings": {
+            "label": "Returns",
+            "link": "",
+            "icon": "bag",
+            "open_in_new_tab": false
+          }
+        },
+        "menu_link_CVUyiL": {
+          "type": "menu_link",
+          "name": "Promotions",
+          "settings": {
+            "label": "Promotions",
+            "link": "",
+            "icon": "tag",
+            "open_in_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "title_EaJmzd",
+        "dropdown_iGhe9i",
+        "menu_link_krGVVN",
+        "menu_link_BcbpPg",
+        "menu_link_gjBj6x",
+        "menu_link_RPT7Ax",
+        "menu_link_qJJNhX",
+        "menu_link_4HhLFD",
+        "menu_link_CVUyiL"
+      ],
+      "name": "SPY Support Menu",
+      "settings": {
+        "background_color": "#ffffff",
+        "show_border": true,
+        "border_color": "#e0e0e0",
+        "band_radius": 6,
+        "band_height": 143,
+        "max_width": 1400,
+        "content_gap": 20,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1><strong>Returns</strong></h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "2rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_Xr48Jh": {
+          "type": "text",
+          "name": "Content1",
+          "settings": {
+            "text": "<p>You have a period of <strong>30 days</strong> following the delivery of your order to inform us if you would like to return part or all of your order.<br/><br/>You must return the items to us within <strong>30 days</strong> of registering your cancellation in your customer account.</p><p><em>Disclaimer: Please note that we do not provide a return label.</em></p>",
+            "width": "100%",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_etizin": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "START A RE TURN",
+            "link": "https://shopify.com/authentication/84698038512/login?analytics_trace_id=74ac9b9a-9cf8-48a5-b1aa-136bbebc67f8&client_id=867289cc-1fcb-4908-90ad-6e9ac3407bb8&locale=en-US&redirect_uri=%2Fauthentication%2F84698038512%2Foauth%2Fauthorize%3Fanalytics_trace_id%3D74ac9b9a-9cf8-48a5-b1aa-136bbebc67f8%26buyer_flags%3DeyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzcHlkZXZzeWx2Lm15c2hvcGlmeS5jb20iLCJmbGFncyI6W10sImV4cCI6MTc4NjM4MzUwNiwibmJmIjoxNzg1Nzc4NzA2fQ.QAIiz5U1iX9PKSTs0CLHQEtUWe7TP0x4qA_tVGF2Kck%26client_id%3D867289cc-1fcb-4908-90ad-6e9ac3407bb8%26locale%3Den-US%26nonce%3D4361e6b3-7f73-40e2-b700-36d4b43d7f78%26redirect_uri%3Dhttps%253A%252F%252Fshopify.com%252F84698038512%252Faccount%252Fcallback%26region_country%3DUS%26response_type%3Dcode%26scope%3Dopenid%2Bemail%2Bcustomer-account-api%253Afull%26state%3DhWNFEg9056YDDOjuCRk5lQJd&region_country=US",
+            "open_in_new_tab": false,
+            "style_class": "button-custom",
+            "custom_button_background": "#f27e37",
+            "custom_button_text": "{{ settings.color_palette.background }}",
+            "custom_button_border": "{{ settings.color_palette.background }}",
+            "link_text_color": "",
+            "width": "fit-content",
+            "custom_width": 30,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100,
+            "padding_block": 0,
+            "padding_inline": 0
+          },
+          "blocks": {}
+        },
+        "text_P9Cb4c": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<h2><strong>How to return a product?</strong><br/></h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "1.5rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_zJnJ9x": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<ul><li>1. Login to your account <a href=\"/pages/about-us\" title=\"About us\"><em><strong>HERE</strong></em></a> or look up your order using the order number, email, and Billing zip code.                                                                                                                                                                                       </li><li>2.Then under the \"<strong>My Orders</strong>\" tab, confirm the products you wish to return. If you ordered as a Guest, please go to the Log In page and complete the \"<strong>Check Order</strong>\" form. (You can look up your order by entering the <strong>Order Number, email, and billing address</strong>)</li><li>3. Select the items you want to return, the quantity as well as the reason for your return. <em>(Your return reason can help us improve your experience in the future so we thank you for filling this part out)</em></li><li>4. You will then receive a Return Authorization number which you must write down legibly on the outside of the package.</li><li>5. Prepare your package for the return:</li></ul>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "#2C393E",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 33,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_JRhJNY": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<ul><li>- Returned items must be in new, unused condition and in their original package. Please exclude any other products in this return package.</li><li>- One order, one return. Please do not combine returns.</li><li>- Ship package back to:</li><li>   <strong>400 Intermodal Parkway STE 200<br/>Fort Worth, Texas 76177<br/>ATT: Bolle Returns</strong></li><li>- Using the carrier of your choice. Please keep the return tracking information until the refund is applied.<br/></li></ul><p></p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 56,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_L37GDP": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>6. Once the return package has been received, the refund should be complete within 5-10 business days from receipt.<br/></p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 33,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_DkPWAk": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p><strong>Shipping items back to Spy Optic<br/></strong></p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "1.5rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_zxaFgn": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>We are not responsible for shipments lost in transit back to our warehouse. Please contact your shipping carrier for their process on package recovery.<br/></p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_6bgKdF": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p><a href=\"https://www.usps.com/help/missing-mail.htm\" title=\"https://www.usps.com/help/missing-mail.htm\">United States Postal Service Support</a></p><p><a href=\"https://www.ups.com/us/en/support/file-a-claim\" title=\"https://www.ups.com/us/en/support/file-a-claim\">UPS Support</a></p><p><a href=\"https://www.fedex.com/en-us/customer-support/claims.html\" title=\"https://www.fedex.com/en-us/customer-support/claims.html\">FedEx Support</a><br/></p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "#4E1BAE",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_rpdzD3": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p><strong>After Sales Service Codes<br/></strong></p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "1.5rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_yP8gpz": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Items purchased through our after sales service program are final sale.</p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_LPH8WV": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p><strong>Promotional Discount Codes</strong></p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "1.5rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_L9CrgV": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Items purchased under promotional discount programs are final sale.</p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1.5rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_DyHG8h": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p><strong>Need help from a customer support representative?</strong></p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "1.5rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_mPLJxf": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Contact our team on weekdays from Monday to Thursday from 8am to 5pm PST and Friday 8am to 3:30pm PST. Our customer service team will assist you with order inquiries, delivery questions, returns, and exchanges. For most issues please visit our <a href=\"/pages/contact\" title=\"Contact Us\"><em><strong>Contact Page</strong></em></a><em><strong> </strong></em>and fill our the form and a support representative will reach out to you. If you need to talk to a representative Customer Service is available at <em><strong>1 (800) 779-3937</strong></em></p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1.5rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {
+            "text_color": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "text_Xr48Jh",
+        "button_etizin",
+        "text_P9Cb4c",
+        "text_zJnJ9x",
+        "text_JRhJNY",
+        "text_L37GDP",
+        "text_DkPWAk",
+        "text_zxaFgn",
+        "text_6bgKdF",
+        "text_rpdzD3",
+        "text_yP8gpz",
+        "text_LPH8WV",
+        "text_L9CrgV",
+        "text_DyHG8h",
+        "text_mPLJxf",
+        "page-content"
+      ],
+      "custom_css": [],
+      "settings": {
+        "content_direction": "column",
+        "full_width": false,
+        "gap": 15,
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 21,
+        "padding-block-end": 80
+      }
+    }
+  },
+  "order": [
+    "spy_support_menu_6qGiyn",
+    "main"
+  ]
+}

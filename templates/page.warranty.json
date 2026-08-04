@@ -9,6 +9,149 @@
  */
 {
   "sections": {
+    "spy_support_menu_fXhfyJ": {
+      "type": "spy-support-menu",
+      "blocks": {
+        "title_gFyX9U": {
+          "type": "title",
+          "settings": {
+            "title": "Customer Support",
+            "heading_tag": "h2",
+            "font_size": 24,
+            "font_weight": "700",
+            "text_color": "#000000",
+            "uppercase": true,
+            "letter_spacing": 0.5
+          }
+        },
+        "dropdown_x8xrUc": {
+          "type": "dropdown",
+          "settings": {
+            "button_label": "See Support Menu",
+            "empty_label": "",
+            "uppercase_button": true,
+            "button_width": 600,
+            "button_height": 48,
+            "button_font_size": 14,
+            "button_letter_spacing": 0.8,
+            "button_radius": 8,
+            "button_background": "#000000",
+            "button_text_color": "#ffffff",
+            "button_border_color": "#000000",
+            "button_background_hover": "#ffffff",
+            "button_text_hover": "#000000",
+            "button_border_hover": "#000000",
+            "panel_gap": 12,
+            "panel_radius": 6,
+            "row_height": 54,
+            "item_font_size": 14,
+            "item_letter_spacing": 0.6,
+            "uppercase_items": true,
+            "icon_size": 22,
+            "panel_background": "#ffffff",
+            "panel_border_color": "#e0e0e0",
+            "row_text_color": "#242424",
+            "row_hover_background": "#f7f7f7",
+            "row_hover_text_color": "#f57f29",
+            "active_background": "#000000",
+            "active_text_color": "#ffffff"
+          }
+        },
+        "menu_link_K6pBjz": {
+          "type": "menu_link",
+          "name": "Contact Us",
+          "settings": {
+            "label": "Contact Us",
+            "link": "",
+            "icon": "envelope",
+            "open_in_new_tab": false
+          }
+        },
+        "menu_link_eQj9Wm": {
+          "type": "menu_link",
+          "name": "My Account",
+          "settings": {
+            "label": "My Account",
+            "link": "/account",
+            "icon": "user",
+            "open_in_new_tab": false
+          }
+        },
+        "menu_link_Rp9xYe": {
+          "type": "menu_link",
+          "name": "FAQ",
+          "settings": {
+            "label": "FAQ",
+            "link": "",
+            "icon": "question",
+            "open_in_new_tab": false
+          }
+        },
+        "menu_link_9qhahV": {
+          "type": "menu_link",
+          "name": "RX FAQ",
+          "settings": {
+            "label": "RX FAQ",
+            "link": "",
+            "icon": "sparkle",
+            "open_in_new_tab": false
+          }
+        },
+        "menu_link_GTxY3m": {
+          "type": "menu_link",
+          "name": "Warranty",
+          "settings": {
+            "label": "Warranty",
+            "link": "",
+            "icon": "shield",
+            "open_in_new_tab": false
+          }
+        },
+        "menu_link_aLW4YF": {
+          "type": "menu_link",
+          "name": "Returns",
+          "settings": {
+            "label": "Returns",
+            "link": "",
+            "icon": "bag",
+            "open_in_new_tab": false
+          }
+        },
+        "menu_link_m7h4ec": {
+          "type": "menu_link",
+          "name": "Promotions",
+          "settings": {
+            "label": "Promotions",
+            "link": "",
+            "icon": "tag",
+            "open_in_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "title_gFyX9U",
+        "dropdown_x8xrUc",
+        "menu_link_K6pBjz",
+        "menu_link_eQj9Wm",
+        "menu_link_Rp9xYe",
+        "menu_link_9qhahV",
+        "menu_link_GTxY3m",
+        "menu_link_aLW4YF",
+        "menu_link_m7h4ec"
+      ],
+      "name": "SPY Support Menu",
+      "settings": {
+        "background_color": "#ffffff",
+        "show_border": true,
+        "border_color": "#e0e0e0",
+        "band_radius": 6,
+        "band_height": 143,
+        "max_width": 1400,
+        "content_gap": 20,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    },
     "main": {
       "type": "main-page",
       "blocks": {
@@ -16,16 +159,18 @@
           "type": "text",
           "name": "Title",
           "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
+            "text": "",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
             "type_preset": "h2",
             "font": "var(--font-primary--family)",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
+            "text_color": "",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -38,7 +183,9 @@
         },
         "page-content": {
           "type": "page-content",
-          "settings": {},
+          "settings": {
+            "text_color": ""
+          },
           "blocks": {}
         }
       },
@@ -48,7 +195,8 @@
       ],
       "settings": {
         "content_direction": "column",
-        "gap": 32,
+        "full_width": true,
+        "gap": 0,
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 40,
         "padding-block-end": 80
@@ -56,6 +204,7 @@
     }
   },
   "order": [
+    "spy_support_menu_fXhfyJ",
     "main"
   ]
 }

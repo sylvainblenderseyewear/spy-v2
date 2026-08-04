@@ -1,0 +1,805 @@
+{%- comment -%}
+  SPY Support Menu — the bordered "CUSTOMER SUPPORT" band that sits under the
+  header on every support page (FAQ, Contact, Warranty, Returns…).
+
+  Two blocks build it: a Title block and a Dropdown block. The dropdown's rows
+  are Link blocks — one per support page, each with an icon and a URL the editor
+  picks. They must be inline schema blocks, not theme blocks in `blocks/`: a
+  parent section cannot read a theme block's settings.
+
+  The row whose link matches the current URL is auto-selected — it turns black
+  with a check mark and its label shows on the closed button ("• FAQ"). Nothing
+  to set per page; drop the same section on every support page.
+
+  The panel sits in the flow, not on top of the page: opening it pushes the band
+  taller instead of covering what follows. `band_height` is only a floor.
+
+  The panel is toggled by JS, so it carries NO Tailwind display class — Tailwind
+  runs in important mode here and a `flex` utility would beat `[hidden]`. The
+  flex layout goes on the inner list instead.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign uid = section.id | prepend: 'SpySupportMenu-'
+
+  # Blocks are placed by role, not by order: the band's layout is fixed.
+  assign title_block = false
+  assign dropdown_block = false
+  for block in section.blocks
+    case block.type
+      when 'title'
+        unless title_block
+          assign title_block = block
+        endunless
+      when 'dropdown'
+        unless dropdown_block
+          assign dropdown_block = block
+        endunless
+    endcase
+  endfor
+
+  # Trailing slash on both sides so /pages/faq can't match /pages/faq-rx.
+  assign here = request.path | split: '?' | first | append: '/' | replace: '//', '/'
+
+  # Rows are matched by position, not block id — the id is Shopify's to change.
+  assign active_row = -1
+  assign active_label = ''
+  assign row_index = -1
+  for block in section.blocks
+    if block.type != 'menu_link'
+      continue
+    endif
+    assign row_index = row_index | plus: 1
+    if block.settings.link == blank or active_row >= 0
+      continue
+    endif
+    assign link = block.settings.link | split: '?' | first | split: '#' | first | append: '/' | replace: '//', '/'
+    if here == link
+      assign active_row = row_index
+    elsif link != '/' and here contains link
+      # Catches locale prefixes (/en-ca/pages/faq) and sub-pages (/account/login)
+      assign active_row = row_index
+    endif
+    if active_row >= 0
+      assign active_label = block.settings.label
+    endif
+  endfor
+-%}
+
+{%- capture row_label_class -%}
+  font-semibold leading-none text-[length:var(--sm-item-size)] tracking-[var(--sm-item-spacing)]
+  {% if dropdown_block.settings.uppercase_items %}uppercase{% endif %}
+{%- endcapture -%}
+
+<div
+  class="spy-support-menu w-full [display:flex] flex-col items-center justify-center"
+  style="
+    background-color: {{ s.background_color }};
+    {% if s.show_border %}border: 1px solid {{ s.border_color }};{% endif %}
+    border-radius: {{ s.band_radius }}px;
+    min-height: {{ s.band_height }}px;
+    --sm-btn-bg: {{ dropdown_block.settings.button_background | default: '#000000' }};
+    --sm-btn-text: {{ dropdown_block.settings.button_text_color | default: '#ffffff' }};
+    --sm-btn-border: {{ dropdown_block.settings.button_border_color | default: '#000000' }};
+    --sm-btn-bg-hover: {{ dropdown_block.settings.button_background_hover | default: '#ffffff' }};
+    --sm-btn-text-hover: {{ dropdown_block.settings.button_text_hover | default: '#000000' }};
+    --sm-btn-border-hover: {{ dropdown_block.settings.button_border_hover | default: '#000000' }};
+    --sm-btn-width: {{ dropdown_block.settings.button_width | default: 600 }}px;
+    --sm-btn-height: {{ dropdown_block.settings.button_height | default: 48 }}px;
+    --sm-btn-size: {{ dropdown_block.settings.button_font_size | default: 14 }}px;
+    --sm-btn-spacing: {{ dropdown_block.settings.button_letter_spacing | default: 0.8 }}px;
+    --sm-btn-radius: {{ dropdown_block.settings.button_radius | default: 8 }}px;
+    --sm-panel-bg: {{ dropdown_block.settings.panel_background | default: '#ffffff' }};
+    --sm-panel-border: {{ dropdown_block.settings.panel_border_color | default: '#e0e0e0' }};
+    --sm-panel-gap: {{ dropdown_block.settings.panel_gap | default: 12 }}px;
+    --sm-panel-radius: {{ dropdown_block.settings.panel_radius | default: 6 }}px;
+    --sm-row-h: {{ dropdown_block.settings.row_height | default: 54 }}px;
+    --sm-row-text: {{ dropdown_block.settings.row_text_color | default: '#242424' }};
+    --sm-row-hover: {{ dropdown_block.settings.row_hover_background | default: '#f7f7f7' }};
+    --sm-row-hover-text: {{ dropdown_block.settings.row_hover_text_color | default: '#f57f29' }};
+    --sm-active-bg: {{ dropdown_block.settings.active_background | default: '#000000' }};
+    --sm-active-text: {{ dropdown_block.settings.active_text_color | default: '#ffffff' }};
+    --sm-item-size: {{ dropdown_block.settings.item_font_size | default: 14 }}px;
+    --sm-item-spacing: {{ dropdown_block.settings.item_letter_spacing | default: 0.6 }}px;
+    --sm-icon-size: {{ dropdown_block.settings.icon_size | default: 22 }}px;
+  "
+  {{ section.shopify_attributes }}
+>
+  <div
+    class="spy-support-menu__inner mx-auto w-full [display:flex] flex-col items-center justify-center px-4 md:px-10"
+    style="
+      max-width: {{ s.max_width }}px;
+      row-gap: {{ s.content_gap }}px;
+      padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px;
+    "
+  >
+    {%- if title_block and title_block.settings.title != blank -%}
+      {%- assign t = title_block.settings -%}
+      <{{ t.heading_tag }}
+        class="spy-support-menu__title m-0 text-center leading-tight {% if t.uppercase %}uppercase{% endif %}"
+        style="
+          font-size: {{ t.font_size }}px;
+          font-weight: {{ t.font_weight }};
+          color: {{ t.text_color }};
+          letter-spacing: {{ t.letter_spacing }}px;
+        "
+        {{ title_block.shopify_attributes }}
+      >
+        {{ t.title }}
+      </{{ t.heading_tag }}>
+    {%- endif -%}
+
+    {%- if dropdown_block -%}
+      {%- assign d = dropdown_block.settings -%}
+      <div
+        class="spy-support-menu__dropdown w-full max-w-[var(--sm-btn-width)]"
+        data-spy-support-menu
+        {{ dropdown_block.shopify_attributes }}
+      >
+        <button
+          class="spy-support-menu__trigger w-full [display:flex] h-[var(--sm-btn-height)] cursor-pointer items-center gap-3 border border-solid px-5 text-left rounded-[var(--sm-btn-radius)]
+            bg-[color:var(--sm-btn-bg)] text-[color:var(--sm-btn-text)] border-[color:var(--sm-btn-border)]
+            hover:bg-[color:var(--sm-btn-bg-hover)] hover:text-[color:var(--sm-btn-text-hover)] hover:border-[color:var(--sm-btn-border-hover)]
+            transition-colors duration-200 [&[aria-expanded=true]_[data-spy-support-caret]]:rotate-180"
+          type="button"
+          aria-expanded="false"
+          aria-haspopup="true"
+          aria-controls="{{ uid }}-panel"
+          data-spy-support-toggle
+        >
+          <span
+            class="font-bold text-[length:var(--sm-btn-size)] tracking-[var(--sm-btn-spacing)] {% if d.uppercase_button %}uppercase{% endif %}"
+          >
+            {{- d.button_label -}}
+          </span>
+
+          {%- liquid
+            assign current_label = active_label
+            if current_label == blank
+              assign current_label = d.empty_label
+            endif
+          -%}
+
+          <span class="ml-auto [display:flex] shrink-0 items-center gap-0.5">
+            {%- if current_label != blank -%}
+              <span aria-hidden="true">&bull;</span>
+              <span
+                class="font-normal text-[length:var(--sm-btn-size)] tracking-[var(--sm-btn-spacing)] {% if d.uppercase_button %}uppercase{% endif %}"
+              >
+                {{- current_label -}}
+              </span>
+            {%- endif -%}
+            <svg
+              class="spy-support-menu__caret ml-2 h-2.5 w-4 transition-transform duration-200"
+              data-spy-support-caret
+              viewBox="0 0 16 10"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="m1.5 1.5 6.5 7 6.5-7" />
+            </svg>
+          </span>
+        </button>
+
+        <div
+          class="spy-support-menu__panel w-full mt-[var(--sm-panel-gap)]"
+          id="{{ uid }}-panel"
+          data-spy-support-panel
+          hidden
+        >
+          <ul
+            class="m-0 [display:flex] max-h-[70vh] list-none flex-col overflow-y-auto p-0 border border-solid rounded-[var(--sm-panel-radius)] bg-[color:var(--sm-panel-bg)] border-[color:var(--sm-panel-border)]"
+          >
+            {%- assign row_index = -1 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type != 'menu_link' -%}{%- continue -%}{%- endif -%}
+              {%- assign row_index = row_index | plus: 1 -%}
+              {%- assign is_active = false -%}
+              {%- if row_index == active_row -%}
+                {%- assign is_active = true -%}
+              {%- endif -%}
+              <li class="m-0 border-solid border-b border-b-[color:var(--sm-panel-border)] last:border-b-0">
+                <a
+                  class="[display:flex] h-[var(--sm-row-h)] items-center gap-3 px-5 no-underline transition-colors duration-150
+                    {% if is_active %}
+                      bg-[color:var(--sm-active-bg)] text-[color:var(--sm-active-text)]
+                    {% else %}
+                      text-[color:var(--sm-row-text)]
+                      hover:bg-[color:var(--sm-row-hover)] hover:text-[color:var(--sm-row-hover-text)]
+                      active:bg-[color:var(--sm-active-bg)] active:text-[color:var(--sm-active-text)]
+                    {% endif %}"
+                  href="{{ block.settings.link | default: '#' }}"
+                  {% if block.settings.open_in_new_tab %}
+                    target="_blank"
+                    rel="noopener"
+                  {% endif %}
+                  {% if is_active %}
+                    aria-current="page"
+                  {% endif %}
+                  {{ block.shopify_attributes }}
+                >
+                  {%- if block.settings.icon != 'none' -%}
+                    <span class="[display:flex] shrink-0 items-center justify-center w-[var(--sm-icon-size)]">
+                      {%- render 'spy-support-icon',
+                        icon: block.settings.icon,
+                        class: 'w-[var(--sm-icon-size)] h-[var(--sm-icon-size)]'
+                      -%}
+                    </span>
+                  {%- endif -%}
+
+                  <span class="{{ row_label_class }}">{{ block.settings.label }}</span>
+
+                  {%- if is_active -%}
+                    <svg
+                      class="ml-auto h-4 w-4 shrink-0"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path d="m4 12.5 5.5 5.5L20 6.5" />
+                    </svg>
+                  {%- endif -%}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script src="{{ 'spy-support-menu.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "SPY Support Menu",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Text",
+          "default": "Customer Support"
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "label": "Heading level",
+          "options": [
+            { "value": "h1", "label": "H1" },
+            { "value": "h2", "label": "H2" },
+            { "value": "h3", "label": "H3" },
+            { "value": "p", "label": "Paragraph" }
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "label": "Font size",
+          "min": 14,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "default": 24
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font weight",
+          "options": [
+            { "value": "400", "label": "Regular" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semibold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#000000"
+        },
+        {
+          "type": "checkbox",
+          "id": "uppercase",
+          "label": "Uppercase",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "letter_spacing",
+          "label": "Letter spacing",
+          "min": 0,
+          "max": 4,
+          "step": 0.1,
+          "unit": "px",
+          "default": 0.5
+        }
+      ]
+    },
+    {
+      "type": "dropdown",
+      "name": "Dropdown",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "See Support Menu"
+        },
+        {
+          "type": "text",
+          "id": "empty_label",
+          "label": "Label when no link matches the page",
+          "info": "The button normally shows the row that matches the current URL. Leave blank to show nothing."
+        },
+        {
+          "type": "checkbox",
+          "id": "uppercase_button",
+          "label": "Uppercase button text",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "range",
+          "id": "button_width",
+          "label": "Width",
+          "min": 240,
+          "max": 1000,
+          "step": 10,
+          "unit": "px",
+          "default": 600
+        },
+        {
+          "type": "range",
+          "id": "button_height",
+          "label": "Height",
+          "min": 32,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 48
+        },
+        {
+          "type": "range",
+          "id": "button_font_size",
+          "label": "Font size",
+          "min": 10,
+          "max": 22,
+          "step": 1,
+          "unit": "px",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "button_letter_spacing",
+          "label": "Letter spacing",
+          "min": 0,
+          "max": 4,
+          "step": 0.1,
+          "unit": "px",
+          "default": 0.8
+        },
+        {
+          "type": "range",
+          "id": "button_radius",
+          "label": "Corner radius",
+          "min": 0,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "default": 8
+        },
+        {
+          "type": "color",
+          "id": "button_background",
+          "label": "Background",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Text",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_border_color",
+          "label": "Border",
+          "default": "#000000"
+        },
+        {
+          "type": "header",
+          "content": "Button — hover only"
+        },
+        {
+          "type": "color",
+          "id": "button_background_hover",
+          "label": "Background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_text_hover",
+          "label": "Text",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "button_border_hover",
+          "label": "Border",
+          "default": "#000000"
+        },
+        {
+          "type": "header",
+          "content": "Dropdown panel"
+        },
+        {
+          "type": "range",
+          "id": "panel_gap",
+          "label": "Gap under button",
+          "min": 0,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "panel_radius",
+          "label": "Corner radius",
+          "min": 0,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "default": 6
+        },
+        {
+          "type": "range",
+          "id": "row_height",
+          "label": "Row height",
+          "min": 36,
+          "max": 88,
+          "step": 1,
+          "unit": "px",
+          "default": 54
+        },
+        {
+          "type": "range",
+          "id": "item_font_size",
+          "label": "Row font size",
+          "min": 10,
+          "max": 22,
+          "step": 1,
+          "unit": "px",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "item_letter_spacing",
+          "label": "Row letter spacing",
+          "min": 0,
+          "max": 4,
+          "step": 0.1,
+          "unit": "px",
+          "default": 0.6
+        },
+        {
+          "type": "checkbox",
+          "id": "uppercase_items",
+          "label": "Uppercase row labels",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "label": "Icon size",
+          "min": 14,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "default": 22
+        },
+        {
+          "type": "color",
+          "id": "panel_background",
+          "label": "Panel background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "panel_border_color",
+          "label": "Panel border & dividers",
+          "default": "#e0e0e0"
+        },
+        {
+          "type": "color",
+          "id": "row_text_color",
+          "label": "Row text",
+          "default": "#242424"
+        },
+        {
+          "type": "color",
+          "id": "row_hover_background",
+          "label": "Row hover background",
+          "default": "#f7f7f7"
+        },
+        {
+          "type": "color",
+          "id": "row_hover_text_color",
+          "label": "Row hover text & icon",
+          "default": "#f57f29"
+        },
+        {
+          "type": "header",
+          "content": "Selected row"
+        },
+        {
+          "type": "paragraph",
+          "content": "The row whose link matches the current page is selected automatically. A row also uses these colors while it is being clicked."
+        },
+        {
+          "type": "color",
+          "id": "active_background",
+          "label": "Background",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "active_text_color",
+          "label": "Text & check mark",
+          "default": "#ffffff"
+        }
+      ]
+    },
+    {
+      "type": "menu_link",
+      "name": "Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Support page"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "envelope", "label": "Envelope" },
+            { "value": "user", "label": "Person" },
+            { "value": "question", "label": "Question mark" },
+            { "value": "sparkle", "label": "Sparkle (RX)" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "bag", "label": "Bag" },
+            { "value": "tag", "label": "Tag" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "chat", "label": "Chat bubble" },
+            { "value": "pin", "label": "Map pin" },
+            { "value": "phone", "label": "Phone" },
+            { "value": "star", "label": "Star" }
+          ],
+          "default": "question"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_in_new_tab",
+          "label": "Open in new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Band"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border",
+      "label": "Border",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#e0e0e0",
+      "visible_if": "{{ section.settings.show_border }}"
+    },
+    {
+      "type": "range",
+      "id": "band_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "band_height",
+      "label": "Minimum height",
+      "min": 100,
+      "max": 200,
+      "step": 1,
+      "unit": "px",
+      "default": 143
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width",
+      "min": 600,
+      "max": 2000,
+      "step": 20,
+      "unit": "px",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "content_gap",
+      "label": "Gap between title and button",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Support Menu",
+      "category": "SPY",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "title": "Customer Support"
+          }
+        },
+        "dropdown": {
+          "type": "dropdown",
+          "settings": {
+            "button_label": "See Support Menu"
+          }
+        },
+        "link_contact": {
+          "type": "menu_link",
+          "name": "Contact Us",
+          "settings": {
+            "label": "Contact Us",
+            "icon": "envelope"
+          }
+        },
+        "link_account": {
+          "type": "menu_link",
+          "name": "My Account",
+          "settings": {
+            "label": "My Account",
+            "icon": "user",
+            "link": "/account"
+          }
+        },
+        "link_faq": {
+          "type": "menu_link",
+          "name": "FAQ",
+          "settings": {
+            "label": "FAQ",
+            "icon": "question"
+          }
+        },
+        "link_rx_faq": {
+          "type": "menu_link",
+          "name": "RX FAQ",
+          "settings": {
+            "label": "RX FAQ",
+            "icon": "sparkle"
+          }
+        },
+        "link_warranty": {
+          "type": "menu_link",
+          "name": "Warranty",
+          "settings": {
+            "label": "Warranty",
+            "icon": "shield"
+          }
+        },
+        "link_returns": {
+          "type": "menu_link",
+          "name": "Returns",
+          "settings": {
+            "label": "Returns",
+            "icon": "bag"
+          }
+        },
+        "link_promotions": {
+          "type": "menu_link",
+          "name": "Promotions",
+          "settings": {
+            "label": "Promotions",
+            "icon": "tag"
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "dropdown",
+        "link_contact",
+        "link_account",
+        "link_faq",
+        "link_rx_faq",
+        "link_warranty",
+        "link_returns",
+        "link_promotions"
+      ]
+    }
+  ]
+}
+{% endschema %}
+

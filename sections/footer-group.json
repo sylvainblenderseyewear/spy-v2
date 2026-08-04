@@ -1001,7 +1001,7 @@
             "links": {
               "type": "text",
               "settings": {
-                "text": "<p><a href=\"/pages/contact\">Contact us</a><br/><a href=\"/account\">My Account</a><br/><a href=\"/account\">My Orders</a><br/><a href=\"/pages/faq\">FAQ</a><br/><a href=\"/pages/warranty\">Warranty</a><br/><a href=\"#\">Dealer Portal</a></p>",
+                "text": "<p><a href=\"/pages/contact\">Contact us</a><br/><a href=\"/account\">My Account</a><br/><a href=\"/account\">My Orders</a><br/><a href=\"/pages/faq\">FAQ</a><br/><a href=\"/pages/warranty\">Warranty</a><br/><a href=\"https://www.b2b-bollebrands.com/store/checkout.ssp?is=login&login=T\" title=\"https://www.b2b-bollebrands.com/store/checkout.ssp?is=login&login=T\">Dealer Portal</a></p>",
                 "width": "100%",
                 "max_width": "none",
                 "alignment": "left",
@@ -1097,7 +1097,7 @@
             "links": {
               "type": "text",
               "settings": {
-                "text": "<p><a href=\"/policies/privacy-policy\">Privacy Policy</a><br/><a href=\"/policies/refund-policy\">Return Policy</a><br/><a href=\"/pages/map-policy\">MAP Policy</a><br/><a href=\"/policies/terms-of-service\">Terms of Use</a><br/><a href=\"/pages/retail-sales-agreement\">Retail Sales Agreement</a><br/><a href=\"/pages/accessibility-statement\">Accessibility Statement</a><br/><a href=\"/pages/esg\">Our ESG program</a><br/><a href=\"/pages/military-discount\">Military & First Responders Discount</a></p>",
+                "text": "<p><a href=\"/policies/privacy-policy\">Privacy Policy</a><br/><a href=\"/pages/return-policy\" title=\"Return Policy\">Return Policy</a><br/><a href=\"https://www.b2b-bollebrands.com/map-policy\" target=\"_blank\" title=\"https://www.b2b-bollebrands.com/map-policy\">MAP Policy</a><br/><a href=\"/policies/terms-of-service\">Terms of Use</a><br/><a href=\"/pages/retail-sales-agreement\">Retail Sales Agreement</a><br/><a href=\"/pages/accessibility-statement\">Accessibility Statement</a><br/><a href=\"/pages/esg\">Our ESG program</a><br/><a href=\"/pages/military-discount\">Military & First Responders Discount</a></p>",
                 "width": "100%",
                 "max_width": "none",
                 "alignment": "left",
