@@ -89,10 +89,15 @@
             "video_url": "https://www.youtube.com/watch?v=u4raGVJikx0",
             "video_autoplay": false,
             "video_loop": false,
+            "background": false,
             "alt": "How Happy lens tech works",
             "custom_width": 85,
             "custom_width_mobile": 100,
             "aspect_ratio": "16/9",
+            "mobile_enabled": false,
+            "swap_at": "992",
+            "source_mobile": "uploaded",
+            "video_url_mobile": "",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
@@ -862,7 +867,7 @@
                   "type": "image",
                   "name": "Goggles",
                   "settings": {
-                    "image": "shopify://shop_images/guide-happy-lens-goggles.png",
+                    "image": "shopify://shop_images/guide-happy-lens-goggles.webp",
                     "link": "",
                     "image_ratio": "adapt",
                     "width": "fill",
@@ -952,7 +957,8 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 0,
-        "padding-block-end": 56
+        "padding-block-end": 56,
+        "custom_class": ""
       }
     },
     "tech": {
@@ -1628,7 +1634,8 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "custom_class": ""
       }
     }
   },
