@@ -859,8 +859,7 @@
         "overlay": false,
         "overlay_color": "#00000000",
         "padding_top": 16,
-        "padding_bottom": 16,
-        "padding_bottom_desktop": 36
+        "padding_bottom": 16
       }
     },
     "spy_footer_utilities": {
@@ -1144,7 +1143,6 @@
       "name": "Footer Utilities",
       "settings": {
         "background_color": "#f2f2f2",
-        "text_color": "#1d2a2b",
         "show_top_border": false,
         "top_border_color": "#1d2a2b",
         "row_line_color": "#1d2a2b",
