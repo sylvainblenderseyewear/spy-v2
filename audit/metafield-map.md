@@ -103,6 +103,7 @@ These templates use Horizon built-in sections, branded via `settings_data.json`:
 | `cart.json` | Horizon `main-cart` + `product-list` ("You may also like") |
 | `404.json` | Horizon `main-404` + `product-list` ("Discover something new") |
 | `list-collections.json` | Horizon `main-collection-list` with `_collection-card` |
+| `page.snow-helmet-tech.json` | No metafields — all copy/art is section + block settings; the carousel reads the `snow-helmets` collection |
 
 ---
 

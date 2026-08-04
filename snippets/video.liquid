@@ -14,6 +14,9 @@
   @param {string} [additional_attributes] - Any additional HTML attributes
   @param {string} [video_type] - 'youtube' or 'vimeo'
   @param {boolean} [disable_controls] - Whether to disable controls. If true, only play/pause will be usable.
+  @param {boolean} [video_background] - Strips all player chrome for a decorative background video.
+                                        Vimeo gets background=1; YouTube gets the closest equivalent.
+                                        Pair it with video_autoplay and video_loop.
   @param {object} video - The Shopify video object or a string containing a YouTube ID or Vimeo ID
   @param {object} [block] - The block object
 
@@ -59,6 +62,10 @@
         assign video_src = video_src | append: '&controls=0'
         assign video_src = video_src | append: '&enablejsapi=1'
       endif
+      # No single background flag on YouTube — hide every piece of chrome we can
+      if video_background
+        assign video_src = video_src | append: '&controls=0&modestbranding=1&rel=0&showinfo=0&disablekb=1'
+      endif
       assign class = 'js-youtube'
     else
       assign video_src = 'https://player.vimeo.com/video/VIDEO_ID?' | replace: 'VIDEO_ID', video
@@ -76,6 +83,10 @@
       if disable_controls
         assign video_src = video_src | append: '&controls=0'
         assign video_src = video_src | append: '&api=1'
+      endif
+      # background=1 is Vimeo's one-flag version of autoplay + loop + muted + no chrome
+      if video_background
+        assign video_src = video_src | append: '&background=1'
       endif
       assign class = 'js-vimeo'
     endif

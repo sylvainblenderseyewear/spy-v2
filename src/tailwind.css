@@ -1089,53 +1089,474 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   margin-inline: auto;
 }
 
-/* ── ANSI Photochromic — Bootstrap `.container` is 1140px ────────────────
-   A custom-liquid block renders as a bare <div> with no width setting, and the
-   section centres its children, so each band would shrink to its own text.
-   Stretch them so the hero video and footer banner really go full bleed. */
-[data-template='page.ansi-photochromic'] .section-content-wrapper > * {
-  width: 100%;
-}
-
-/* Every band is a full-width section so the theme's own page margin never
+/* ── ANSI Photochromic ───────────────────────────────────────────────────
+   Every band is a full-width section so the theme's own page margin never
    doubles up with the source gutter. Width comes from the source container
-   instead — measured off global.css, and its breakpoints are custom, not
-   Bootstrap defaults: 540 / 720 / 1140 / 1440 at 544 / 769 / 992 / 1200,
-   always with 15px inner padding.
+   instead, whose breakpoints are custom rather than Bootstrap defaults:
+   540 / 720 / 1140 / 1440 at 544 / 769 / 992 / 1200, always with 15px padding.
 
-   The copy bands carry that ladder as utility classes in the template. The
-   product carousel cannot, so it gets the same steps here. */
-[data-template='page.ansi-photochromic']
-  :is(.section-resource-list__header, .section-resource-list__content) {
+   The bands are built from real blocks so an editor can change the copy, so the
+   ladder has to live here rather than on a wrapper's utility classes.
+
+   Each band opts in with a class typed into its "CSS class" setting, not by its
+   section ID: an ID changes the moment someone duplicates or re-adds the band,
+   and the styling would silently disappear. The product carousel is the one
+   exception — it has no class setting, so it stays template-scoped. */
+.ansi-band--intro .section-content-wrapper,
+.ansi-band--rows .section-content-wrapper,
+[data-template='page.ansi-photochromic'] .section-resource-list__header,
+[data-template='page.ansi-photochromic'] .section-resource-list__content,
+[data-template='page.ansi-photochromic'] .resource-list.resource-list__carousel {
   width: 100%;
   margin-inline: auto;
   padding-inline: 0.9375rem; /* 15px */
 }
 
 @media (min-width: 544px) {
-  [data-template='page.ansi-photochromic']
-    :is(.section-resource-list__header, .section-resource-list__content) {
+  .ansi-band--intro .section-content-wrapper,
+  .ansi-band--rows .section-content-wrapper,
+  [data-template='page.ansi-photochromic'] .section-resource-list__header,
+  [data-template='page.ansi-photochromic'] .section-resource-list__content,
+  [data-template='page.ansi-photochromic'] .resource-list.resource-list__carousel {
     max-width: 33.75rem; /* 540px */
   }
 }
 
 @media (min-width: 769px) {
-  [data-template='page.ansi-photochromic']
-    :is(.section-resource-list__header, .section-resource-list__content) {
+  .ansi-band--intro .section-content-wrapper,
+  .ansi-band--rows .section-content-wrapper,
+  [data-template='page.ansi-photochromic'] .section-resource-list__header,
+  [data-template='page.ansi-photochromic'] .section-resource-list__content,
+  [data-template='page.ansi-photochromic'] .resource-list.resource-list__carousel {
     max-width: 45rem; /* 720px */
   }
 }
 
 @media (min-width: 992px) {
-  [data-template='page.ansi-photochromic']
-    :is(.section-resource-list__header, .section-resource-list__content) {
+  .ansi-band--intro .section-content-wrapper,
+  .ansi-band--rows .section-content-wrapper,
+  [data-template='page.ansi-photochromic'] .section-resource-list__header,
+  [data-template='page.ansi-photochromic'] .section-resource-list__content,
+  [data-template='page.ansi-photochromic'] .resource-list.resource-list__carousel {
     max-width: 71.25rem; /* 1140px */
   }
 }
 
 @media (min-width: 1200px) {
-  [data-template='page.ansi-photochromic']
-    :is(.section-resource-list__header, .section-resource-list__content) {
+  .ansi-band--intro .section-content-wrapper,
+  .ansi-band--rows .section-content-wrapper,
+  [data-template='page.ansi-photochromic'] .section-resource-list__header,
+  [data-template='page.ansi-photochromic'] .section-resource-list__content,
+  [data-template='page.ansi-photochromic'] .resource-list.resource-list__carousel {
+    max-width: 90rem; /* 1440px */
+  }
+}
+
+/* The hero video and any bare block must fill their band, because the section
+   centres its children and an unsized block shrinks to its own content. */
+.ansi-band--bleed .section-content-wrapper > * {
+  width: 100%;
+}
+
+/* Source `.section-header` adds 3rem of margin AND 3rem of padding each side
+   from lg up, on top of the container's own 15px. */
+@media (min-width: 992px) {
+  .ansi-band--intro .section-content-wrapper {
+    padding-inline: 6.9375rem; /* 15px + 48 + 48 */
+  }
+}
+
+/* Content rows: halves are equal regardless of how wide the art is. The 20px
+   the source splits as 10px of padding per column is the row gap here, so each
+   column is 50% minus half that gap.
+
+   The basis has to be pinned rather than left as `flex: 1 1 0`: the art carries
+   an aspect-ratio, and that resolves its width off the row height and wins over
+   a zero basis, which pulled the halves to 670/710. max-width holds the cap. */
+@media (min-width: 768px) {
+  .ansi-band--rows .layout-panel-flex--row > :not(style) {
+    flex: 0 0 calc(50% - 10px);
+    max-width: calc(50% - 10px);
+    min-width: 0;
+  }
+}
+
+/* Below 768 the source stacks and puts the picture first in BOTH rows, so the
+   second row reverses. Its copy panel also grows from 20px to 30px of padding. */
+@media (max-width: 767px) {
+  .ansi-band--rows .image-block {
+    order: -1;
+  }
+
+  .ansi-band--rows .group-block .group-block {
+    padding: 30px !important;
+  }
+}
+
+/* ── Snow Goggle Tech ────────────────────────────────────────────────────
+   This page runs two width regimes next to each other. Headers, centred art
+   and the carousels sit in the shared .container ladder above. The 2-column
+   tech rows do not: they go edge to edge with Bootstrap's p-5 (48px) gutter
+   from lg up, which is why every band is unpadded here and each regime adds
+   its own inset.
+
+   Bands opt in by class, never by section ID — see the ANSI note. */
+.snowtech-band .section-content-wrapper {
+  width: 100%;
+  max-width: none;
+  padding-inline: 0;
+}
+
+/* Container ladder for everything except the tech rows. */
+.snowtech-band .section-content-wrapper > .spy-heading,
+.snowtech-band .section-content-wrapper > .spy-body-text,
+.snowtech-band--feature .section-content-wrapper > .image-block,
+[data-template='page.snow-tech'] .section-resource-list__header,
+[data-template='page.snow-tech'] .section-resource-list__content,
+[data-template='page.snow-tech'] .resource-list.resource-list__carousel {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 0.9375rem; /* 15px */
+}
+
+@media (min-width: 544px) {
+  .snowtech-band .section-content-wrapper > .spy-heading,
+  .snowtech-band .section-content-wrapper > .spy-body-text,
+  .snowtech-band--feature .section-content-wrapper > .image-block,
+  [data-template='page.snow-tech'] .section-resource-list__header,
+  [data-template='page.snow-tech'] .section-resource-list__content,
+  [data-template='page.snow-tech'] .resource-list.resource-list__carousel {
+    max-width: 33.75rem; /* 540px */
+  }
+}
+
+@media (min-width: 769px) {
+  .snowtech-band .section-content-wrapper > .spy-heading,
+  .snowtech-band .section-content-wrapper > .spy-body-text,
+  .snowtech-band--feature .section-content-wrapper > .image-block,
+  [data-template='page.snow-tech'] .section-resource-list__header,
+  [data-template='page.snow-tech'] .section-resource-list__content,
+  [data-template='page.snow-tech'] .resource-list.resource-list__carousel {
+    max-width: 45rem; /* 720px */
+  }
+}
+
+@media (min-width: 992px) {
+  .snowtech-band .section-content-wrapper > .spy-heading,
+  .snowtech-band .section-content-wrapper > .spy-body-text,
+  .snowtech-band--feature .section-content-wrapper > .image-block,
+  [data-template='page.snow-tech'] .section-resource-list__header,
+  [data-template='page.snow-tech'] .section-resource-list__content,
+  [data-template='page.snow-tech'] .resource-list.resource-list__carousel {
+    max-width: 71.25rem; /* 1140px */
+  }
+}
+
+@media (min-width: 1200px) {
+  .snowtech-band .section-content-wrapper > .spy-heading,
+  .snowtech-band .section-content-wrapper > .spy-body-text,
+  .snowtech-band--feature .section-content-wrapper > .image-block,
+  [data-template='page.snow-tech'] .section-resource-list__header,
+  [data-template='page.snow-tech'] .section-resource-list__content,
+  [data-template='page.snow-tech'] .resource-list.resource-list__carousel {
+    max-width: 90rem; /* 1440px */
+  }
+}
+
+/* Source .section-header carries px-lg-5 on top of the container padding. */
+@media (min-width: 992px) {
+  .snowtech-band .section-content-wrapper > .spy-heading,
+  .snowtech-band .section-content-wrapper > .spy-body-text {
+    padding-inline: 3.9375rem; /* 15px + 48px */
+  }
+}
+
+/* Tech rows: no container, just the 48px gutter the source's layout-row adds
+   from lg up. The rows are the band's only top-level group blocks. */
+@media (min-width: 992px) {
+  .snowtech-band--rows .section-content-wrapper > .group-block {
+    padding-inline: 3rem; /* 48px */
+  }
+}
+
+/* Halves must be pinned, not left as flex: 1 1 0 — the art carries an
+   aspect-ratio that resolves off the row height and beats a zero basis. */
+@media (min-width: 992px) {
+  .snowtech-band--rows .layout-panel-flex--row > :not(style) {
+    flex: 0 0 50%;
+    max-width: 50%;
+    min-width: 0;
+  }
+
+  /* Lens types split 8/4 rather than 6/6, and the art swaps side per row, so
+     key off the block type instead of child order. */
+  .snowtech-band--rows-8-4 .layout-panel-flex--row > .image-block {
+    flex-basis: 66.6667%;
+    max-width: 66.6667%;
+  }
+
+  .snowtech-band--rows-8-4 .layout-panel-flex--row > .group-block {
+    flex-basis: 33.3333%;
+    max-width: 33.3333%;
+  }
+}
+
+/* The source stacks at 992 (col-lg-*), but the group block's own
+   vertical_on_mobile only fires at 750, so close the gap here. Copy padding
+   is lg-only in the source too, hence dropping it with the row. */
+@media (max-width: 991px) {
+  .snowtech-band--rows .layout-panel-flex--row {
+    flex-flow: column nowrap;
+  }
+
+  .snowtech-band--rows .layout-panel-flex--row > :not(style) {
+    flex: 0 0 auto;
+    max-width: 100%;
+  }
+
+  .snowtech-band--rows .group-block .group-block {
+    padding: 0 !important;
+  }
+}
+
+/* ── Snow Helmet Tech ────────────────────────────────────────────────────
+   Same story as the ANSI bands: every band is a full-width section and the
+   width comes from the source container ladder, 540 / 720 / 1140 / 1440 at
+   544 / 769 / 992 / 1200.
+
+   The ladder below carries NO padding, because the source's `.row` cancels the
+   container's 15px with a -15px margin and hands it back as each column's own
+   padding. That is why every width here subtracts 30px instead: it is the
+   column's padding, not the container's.
+
+   Bands opt in by class from the section's "CSS class" setting, never by
+   section ID — an ID changes the moment an editor duplicates a band. */
+.sht-band .section-content-wrapper {
+  width: 100%;
+  max-width: none;
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+@media (min-width: 544px) {
+  .sht-band .section-content-wrapper {
+    max-width: 33.75rem; /* 540px */
+  }
+}
+
+@media (min-width: 769px) {
+  .sht-band .section-content-wrapper {
+    max-width: 45rem; /* 720px */
+  }
+}
+
+@media (min-width: 992px) {
+  .sht-band .section-content-wrapper {
+    max-width: 71.25rem; /* 1140px */
+  }
+}
+
+@media (min-width: 1200px) {
+  .sht-band .section-content-wrapper {
+    max-width: 90rem; /* 1440px */
+  }
+}
+
+/* col-8 of 12, less the column's own 15px each side — 930px at 1440. */
+/* max-width, not width: the type blocks carry a `w-full` utility, and Tailwind
+   is imported with `important`, so its width always wins — for !important
+   declarations a layer beats unlayered CSS, whatever the specificity. Capping
+   max-width sidesteps the fight, and margin-inline still centres the result. */
+.sht-band--c8 .section-content-wrapper > :not(style) {
+  max-width: calc(66.6667% - 30px);
+  margin-inline: auto;
+}
+
+/* Same column, but the source nests a second container inside the first here,
+   and the extra 15px each side costs 20px of column width: 910 not 930. */
+.sht-band--c8n .section-content-wrapper > :not(style) {
+  max-width: calc(66.6667% - 50px);
+  margin-inline: auto;
+}
+
+/* The Mips lock-up is served at 500px and shown at natural size. Three classes
+   so it outranks the column cap above. */
+.sht-band--c8n .section-content-wrapper > .image-block {
+  max-width: 500px;
+}
+
+/* Under 544 the column is narrower than the artwork. The source lets it spill
+   and take the page with it; keep it in its column instead, lined up with the
+   copy, so there is no sideways scroll on a phone. */
+@media (max-width: 543px) {
+  .sht-band--c8n .section-content-wrapper > .image-block {
+    max-width: calc(100% - 60px);
+  }
+}
+
+/* YouTube hands the embed over at a fixed 800 x 450, inside a col-12 that still
+   carries its own 15px each side. */
+.sht-band--video .section-content-wrapper > :not(style) {
+  max-width: min(800px, calc(100% - 30px));
+  margin-inline: auto;
+}
+
+/* Bare headings sit outside any container in the source. Their 48px side
+   margin is inert for centred copy that never wraps, so it is dropped. */
+.sht-band--bleed .section-content-wrapper {
+  max-width: none;
+}
+
+/* Content rows occupy columns 3-10, so the row is col-8 wide and its two
+   children split it. 15px per side is each column's own padding. */
+.sht-band--rows .section-content-wrapper > :not(style) {
+  width: 66.6667% !important;
+  margin-inline: auto;
+}
+
+/* Column padding lives here rather than in block settings, so there is one
+   source of truth — a `padding-inline` shorthand would silently eat a block's
+   own inline padding anyway. */
+.sht-band--rows .layout-panel-flex--row > :not(style) {
+  min-width: 0;
+  padding-inline: 15px;
+}
+
+/* The Active art adds pr-lg-3 on top of its column's 15px. `first-of-type`
+   rather than `first-child`: Horizon injects a per-block <style> as a real
+   sibling, and it also keeps this off the Passive row, where the copy leads. */
+.sht-band--r44 .layout-panel-flex--row > .image-block:first-of-type {
+  padding-right: 31px;
+}
+
+/* The ABS art is pushed 96px into its column (ml-lg-5 + pl-lg-5), its copy
+   adds pr-lg-1. */
+.sht-band--abs .layout-panel-flex--row > .image-block {
+  padding-left: 111px;
+}
+
+.sht-band--abs .layout-panel-flex--row > .group-block {
+  padding-right: 19px;
+}
+
+/* Basis is pinned rather than left at 0: the art carries an aspect-ratio, which
+   resolves its width from the row height and quietly beats a zero basis. */
+.sht-band--r26 .layout-panel-flex--row > .group-block {
+  flex: 0 0 25%;
+  max-width: 25%;
+}
+
+.sht-band--r26 .layout-panel-flex--row > .image-block {
+  flex: 0 0 75%;
+  max-width: 75%;
+}
+
+.sht-band--r44 .layout-panel-flex--row > .group-block,
+.sht-band--r44 .layout-panel-flex--row > .image-block {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+/* The ABS row is nudged 8px right by an ml-lg-2 utility. */
+@media (min-width: 992px) {
+  .sht-band--abs .layout-panel-flex--row {
+    margin-left: 8px;
+  }
+}
+
+/* The icon strip's row adds 16px of margin and 8px of padding per side on top
+   of the column's 15px, and the container padding survives this time. */
+@media (min-width: 992px) {
+  .sht-band--icons .section-content-wrapper > :not(style) {
+    width: calc(100% - 108px) !important;
+    margin-inline: auto;
+  }
+}
+
+/* Columns collapse at 992 in the source. Horizon's own mobile-column only fires
+   at 750, so the 750-991 gap is closed by hand and every band goes full width. */
+@media (max-width: 991px) {
+  .sht-band--c8 .section-content-wrapper > :not(style) {
+    max-width: calc(100% - 30px);
+  }
+
+  /* Stacked to col-12, but the nested container's own 15px each side still
+     applies, so this column is 30px narrower than the plain one. */
+  .sht-band--c8n .section-content-wrapper > :not(style) {
+    max-width: calc(100% - 60px);
+  }
+
+  .sht-band--icons .section-content-wrapper > :not(style) {
+    width: calc(100% - 30px) !important;
+  }
+
+  .sht-band--rows .section-content-wrapper > :not(style) {
+    width: 100% !important;
+  }
+
+  .sht-band--rows .layout-panel-flex--row {
+    flex-flow: column nowrap;
+  }
+
+  .sht-band--rows .layout-panel-flex--row > .group-block,
+  .sht-band--rows .layout-panel-flex--row > .image-block {
+    flex: 0 0 auto;
+    max-width: 100%;
+    width: 100% !important;
+  }
+
+  /* Stacked, so the desktop column offsets stop applying. */
+  .sht-band--r44 .layout-panel-flex--row > .image-block:first-of-type,
+  .sht-band--abs .layout-panel-flex--row > .image-block {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .sht-band--abs .layout-panel-flex--row > .group-block {
+    padding-right: 15px;
+  }
+
+  .sht-band--abs .layout-panel-flex--row {
+    margin-left: 0;
+  }
+}
+
+/* The carousel has no CSS-class setting, so it stays template-scoped. In
+   carousel mode `__content` is display:none — the real track is
+   `.resource-list.resource-list__carousel`. The source's product carousel swaps
+   the row's -15px margin for +16px from 769 up, so the track is 1378 at 1440. */
+[data-template='page.snow-helmet-tech'] .section-resource-list__content,
+[data-template='page.snow-helmet-tech'] .resource-list.resource-list__carousel {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 0.9375rem; /* 15px */
+}
+
+@media (min-width: 544px) {
+  [data-template='page.snow-helmet-tech'] .section-resource-list__content,
+  [data-template='page.snow-helmet-tech'] .resource-list.resource-list__carousel {
+    max-width: 33.75rem; /* 540px */
+  }
+}
+
+@media (min-width: 769px) {
+  [data-template='page.snow-helmet-tech'] .section-resource-list__content,
+  [data-template='page.snow-helmet-tech'] .resource-list.resource-list__carousel {
+    max-width: 45rem; /* 720px */
+    padding-inline: 1.9375rem; /* 15 + 16 */
+  }
+}
+
+@media (min-width: 992px) {
+  [data-template='page.snow-helmet-tech'] .section-resource-list__content,
+  [data-template='page.snow-helmet-tech'] .resource-list.resource-list__carousel {
+    max-width: 71.25rem; /* 1140px */
+  }
+}
+
+@media (min-width: 1200px) {
+  [data-template='page.snow-helmet-tech'] .section-resource-list__content,
+  [data-template='page.snow-helmet-tech'] .resource-list.resource-list__carousel {
     max-width: 90rem; /* 1440px */
   }
 }

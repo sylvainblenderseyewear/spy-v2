@@ -13,9 +13,35 @@
       "type": "section",
       "blocks": {
         "video": {
-          "type": "custom-liquid",
+          "type": "video",
+          "name": "ANSI hero video",
           "settings": {
-            "custom_liquid": "<div class=\"w-full\"><div class=\"relative w-full aspect-[1920/600] max-[991px]:hidden\"><iframe class=\"absolute inset-0 h-full w-full border-0\" src=\"https://player.vimeo.com/video/1077414998?background=1&amp;autoplay=1&amp;loop=1&amp;muted=1&amp;playsinline=1\" title=\"ANSI Photochromic\" allow=\"autoplay; fullscreen; picture-in-picture\" referrerpolicy=\"strict-origin-when-cross-origin\" loading=\"lazy\"></iframe></div><div class=\"relative w-full aspect-[400/600] min-[992px]:hidden\"><iframe class=\"absolute inset-0 h-full w-full border-0\" src=\"https://player.vimeo.com/video/1077418501?background=1&amp;autoplay=1&amp;loop=1&amp;muted=1&amp;playsinline=1\" title=\"ANSI Photochromic\" allow=\"autoplay; fullscreen; picture-in-picture\" referrerpolicy=\"strict-origin-when-cross-origin\" loading=\"lazy\"></iframe></div></div>"
+            "source": "url",
+            "video_url": "https://vimeo.com/1077414998",
+            "video_autoplay": true,
+            "video_loop": true,
+            "background": true,
+            "alt": "ANSI Photochromic",
+            "custom_width": 100,
+            "custom_width_mobile": 100,
+            "aspect_ratio": "auto",
+            "ratio_w": 1920,
+            "ratio_h": 600,
+            "mobile_enabled": true,
+            "swap_at": "992",
+            "source_mobile": "url",
+            "video_url_mobile": "https://vimeo.com/1077418501",
+            "ratio_w_mobile": 400,
+            "ratio_h_mobile": 600,
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
           },
           "blocks": {}
         }
@@ -50,22 +76,63 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "custom_class": "ansi-band ansi-band--bleed"
       }
     },
     "intro": {
       "type": "section",
       "blocks": {
-        "copy": {
-          "type": "custom-liquid",
+        "hdg": {
+          "type": "spy-heading",
+          "name": "Collection heading",
           "settings": {
-            "custom_liquid": "<div class=\"mx-auto w-full px-[15px] min-[544px]:max-w-[540px] min-[769px]:max-w-[720px] min-[992px]:max-w-[1140px] min-[1200px]:max-w-[1440px]\"><div class=\"w-full text-center text-[3rem] leading-[1.2] mb-12 min-[992px]:mx-12 min-[992px]:px-12\"><h2 class=\"table w-full text-center font-spy font-semibold leading-[1.2] text-[#1D2A2B] mt-[1em] mb-[0.5em] text-[calc(1.3rem+0.6vw)] min-[1200px]:text-[1.75rem]\">ANSI PHOTOCHROMIC COLLECTION</h2><p class=\"m-0 mb-4 text-[1.125rem] leading-[1.2] text-[#1D2A2B]\">Our ANSI-certified, photochromic eyewear is built for the bold, meeting the ultimate ANSI Z87-2+ standards for impact protection and light-adaptive photochromic lenses that seamlessly adjust to changing light conditions.</p></div></div>"
+            "text": "ANSI PHOTOCHROMIC COLLECTION",
+            "level": "h2",
+            "highlight": "",
+            "highlight_color": "#ee7624",
+            "size": 28,
+            "size_mobile": 23,
+            "weight": "600",
+            "line_height": 120,
+            "letter_spacing": 0,
+            "uppercase": true,
+            "text_color": "#1D2A2B",
+            "align": "center",
+            "align_mobile": "",
+            "max_width": 0,
+            "margin_top": 28,
+            "margin_bottom": 14,
+            "margin_top_mobile": 23,
+            "margin_bottom_mobile": 12
+          },
+          "blocks": {}
+        },
+        "body": {
+          "type": "spy-body-text",
+          "name": "Collection intro",
+          "settings": {
+            "text": "<p>Our ANSI-certified, photochromic eyewear is built for the bold, meeting the ultimate ANSI Z87-2+ standards for impact protection and light-adaptive photochromic lenses that seamlessly adjust to changing light conditions.</p>",
+            "highlight": "",
+            "highlight_color": "#ee7624",
+            "size": 18,
+            "size_mobile": 18,
+            "weight": "400",
+            "line_height": 120,
+            "text_color": "#1D2A2B",
+            "align": "center",
+            "align_mobile": "",
+            "max_width": 0,
+            "paragraph_gap": 25,
+            "margin_bottom": 16,
+            "margin_bottom_mobile": 16
           },
           "blocks": {}
         }
       },
       "block_order": [
-        "copy"
+        "hdg",
+        "body"
       ],
       "name": "ANSI — intro header",
       "settings": {
@@ -94,7 +161,8 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-end": 48,
+        "custom_class": "ansi-band ansi-band--intro"
       }
     },
     "frames": {
@@ -267,7 +335,7 @@
       },
       "name": "ANSI — product carousel",
       "settings": {
-        "collection": "",
+        "collection": "ansi-photochromic",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 4,
@@ -289,16 +357,330 @@
     "content_rows": {
       "type": "section",
       "blocks": {
-        "rows": {
-          "type": "custom-liquid",
+        "row1": {
+          "type": "group",
+          "name": "Row 1 — image left",
           "settings": {
-            "custom_liquid": "<div class=\"mx-auto w-full px-[15px] min-[544px]:max-w-[540px] min-[769px]:max-w-[720px] min-[992px]:max-w-[1140px] min-[1200px]:max-w-[1440px]\"><div class=\"flex flex-col min-[768px]:flex-row min-[768px]:[&:not(:last-child)]:mb-5\"><div class=\"w-full order-1 min-[768px]:order-none min-[768px]:w-1/2 min-[768px]:pr-[10px]\"><img src=\"{{ 'ansi-photochromic-half-banner-1.gif' | file_url }}\" alt=\"Photochromic Glasses\" width=\"800\" height=\"640\" loading=\"lazy\" decoding=\"async\" class=\"block w-full h-auto\"></div><div class=\"w-full order-2 min-[768px]:order-none min-[768px]:w-1/2 min-[768px]:pl-[10px]\"><div class=\"bg-[#f5f5f5] p-[30px] min-[768px]:flex min-[768px]:h-full min-[768px]:items-center min-[768px]:p-5\"><div><h2 class=\"mb-6 font-spy font-semibold leading-[1.2] text-[calc(1.3rem+0.6vw)] min-[1200px]:text-[1.75rem]\">HAPPY PHOTOCHROMIC</h2><p class=\"mt-0 mb-4 leading-[1.4] text-[16px] min-[768px]:text-[20px]\">A lens for all conditions infused with our Happy Lens&trade; technology. Through its chemical composition, this lens is able to darken in bright scenarios and lighten in dark scenarios, providing seamless transitions in changing environments.</p></div></div></div></div><div class=\"flex flex-col min-[768px]:flex-row min-[768px]:[&:not(:last-child)]:mb-5\"><div class=\"w-full order-2 min-[768px]:order-none min-[768px]:w-1/2 min-[768px]:pr-[10px]\"><div class=\"bg-[#f5f5f5] p-[30px] min-[768px]:flex min-[768px]:h-full min-[768px]:items-center min-[768px]:p-5\"><div><h2 class=\"mb-6 font-spy font-semibold leading-[1.2] text-[calc(1.3rem+0.6vw)] min-[1200px]:text-[1.75rem]\">ANSI Z87-2+ CERTIFICATION</h2><p class=\"mt-0 mb-4 leading-[1.4] text-[16px] min-[768px]:text-[20px]\">Our frames meet the American National Standards Institute&rsquo;s requirements for protection against optical hazards &mdash; flying debris, intense light, splashes, kicked up dirt, fly-fishing hooks, and more.</p></div></div></div><div class=\"w-full order-1 min-[768px]:order-none min-[768px]:w-1/2 min-[768px]:pl-[10px]\"><img src=\"{{ 'ansi-photochromic-half-banner-2.jpg' | file_url }}\" alt=\"Worker with Safety Glasses\" width=\"1000\" height=\"800\" loading=\"lazy\" decoding=\"async\" class=\"block w-full h-auto\"></div></div></div>"
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 20,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
           },
-          "blocks": {}
+          "blocks": {
+            "img": {
+              "type": "image",
+              "name": "Photochromic Glasses",
+              "settings": {
+                "image": "shopify://shop_images/ansi-photochromic-half-banner-1.gif",
+                "link": "",
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "copy": {
+              "type": "group",
+              "name": "Copy panel",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 0,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fill",
+                "custom_height": 100,
+                "background_media": "none",
+                "background_color": "#f5f5f5",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 20,
+                "padding-block-end": 20,
+                "padding-inline-start": 20,
+                "padding-inline-end": 20
+              },
+              "blocks": {
+                "hdg": {
+                  "type": "spy-heading",
+                  "settings": {
+                    "text": "HAPPY PHOTOCHROMIC",
+                    "level": "h2",
+                    "highlight": "",
+                    "highlight_color": "#ee7624",
+                    "size": 28,
+                    "size_mobile": 23,
+                    "weight": "600",
+                    "line_height": 120,
+                    "letter_spacing": 0,
+                    "uppercase": true,
+                    "text_color": "#1D2A2B",
+                    "align": "left",
+                    "align_mobile": "",
+                    "max_width": 0,
+                    "margin_top": 0,
+                    "margin_bottom": 24,
+                    "margin_top_mobile": 0,
+                    "margin_bottom_mobile": 24
+                  },
+                  "blocks": {}
+                },
+                "body": {
+                  "type": "spy-body-text",
+                  "settings": {
+                    "text": "<p>A lens for all conditions infused with our Happy Lens™ technology. Through its chemical composition, this lens is able to darken in bright scenarios and lighten in dark scenarios, providing seamless transitions in changing environments.</p>",
+                    "highlight": "",
+                    "highlight_color": "#ee7624",
+                    "size": 20,
+                    "size_mobile": 16,
+                    "weight": "400",
+                    "line_height": 140,
+                    "text_color": "#1D2A2B",
+                    "align": "left",
+                    "align_mobile": "",
+                    "max_width": 0,
+                    "paragraph_gap": 25,
+                    "margin_bottom": 16,
+                    "margin_bottom_mobile": 16
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "hdg",
+                "body"
+              ]
+            }
+          },
+          "block_order": [
+            "img",
+            "copy"
+          ]
+        },
+        "row2": {
+          "type": "group",
+          "name": "Row 2 — image right",
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 20,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "copy": {
+              "type": "group",
+              "name": "Copy panel",
+              "settings": {
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 0,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fill",
+                "custom_height": 100,
+                "background_media": "none",
+                "background_color": "#f5f5f5",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 20,
+                "padding-block-end": 20,
+                "padding-inline-start": 20,
+                "padding-inline-end": 20
+              },
+              "blocks": {
+                "hdg": {
+                  "type": "spy-heading",
+                  "settings": {
+                    "text": "ANSI Z87-2+ CERTIFICATION",
+                    "level": "h2",
+                    "highlight": "",
+                    "highlight_color": "#ee7624",
+                    "size": 28,
+                    "size_mobile": 23,
+                    "weight": "600",
+                    "line_height": 120,
+                    "letter_spacing": 0,
+                    "uppercase": true,
+                    "text_color": "#1D2A2B",
+                    "align": "left",
+                    "align_mobile": "",
+                    "max_width": 0,
+                    "margin_top": 0,
+                    "margin_bottom": 24,
+                    "margin_top_mobile": 0,
+                    "margin_bottom_mobile": 24
+                  },
+                  "blocks": {}
+                },
+                "body": {
+                  "type": "spy-body-text",
+                  "settings": {
+                    "text": "<p>Our frames meet the American National Standards Institute’s requirements for protection against optical hazards — flying debris, intense light, splashes, kicked up dirt, fly-fishing hooks, and more.</p>",
+                    "highlight": "",
+                    "highlight_color": "#ee7624",
+                    "size": 20,
+                    "size_mobile": 16,
+                    "weight": "400",
+                    "line_height": 140,
+                    "text_color": "#1D2A2B",
+                    "align": "left",
+                    "align_mobile": "",
+                    "max_width": 0,
+                    "paragraph_gap": 25,
+                    "margin_bottom": 16,
+                    "margin_bottom_mobile": 16
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "hdg",
+                "body"
+              ]
+            },
+            "img": {
+              "type": "image",
+              "name": "Worker with Safety Glasses",
+              "settings": {
+                "image": "shopify://shop_images/ansi-photochromic-half-banner-2.jpg",
+                "link": "",
+                "image_ratio": "adapt",
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "copy",
+            "img"
+          ]
         }
       },
       "block_order": [
-        "rows"
+        "row1",
+        "row2"
       ],
       "name": "ANSI — tech content rows",
       "settings": {
@@ -309,7 +691,7 @@
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 0,
+        "gap": 20,
         "section_width": "full-width",
         "section_height": "",
         "section_height_custom": 50,
@@ -327,51 +709,32 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "custom_class": "ansi-band ansi-band--rows"
       }
     },
     "footer_banner": {
-      "type": "section",
-      "blocks": {
-        "banner": {
-          "type": "custom-liquid",
-          "settings": {
-            "custom_liquid": "{%- assign cta_url = '' -%}<div class=\"relative w-full overflow-hidden\"><picture class=\"block w-full\"><source media=\"(min-width: 992px)\" srcset=\"{{ 'ansi-photochromic-footer-desktop.jpg' | file_url }}\"><img src=\"{{ 'ansi-photochromic-footer-mobile.jpg' | file_url }}\" alt=\"Shop all safety sunglasses\" loading=\"lazy\" decoding=\"async\" class=\"block w-full object-cover object-center aspect-[800/640] min-[992px]:aspect-[1920/440]\"></picture><a href=\"{{ cta_url | default: '#' }}\" class=\"absolute inset-0 block\"><div class=\"mx-auto flex h-full w-full items-end justify-center px-[15px] min-[544px]:max-w-[540px] min-[769px]:max-w-[720px] min-[992px]:max-w-[1140px] min-[992px]:items-center min-[992px]:justify-end min-[1200px]:max-w-[1440px]\"><div class=\"pt-4 px-4 pb-16 text-center text-white min-[992px]:text-left\"><h2 class=\"mb-2 pb-2 font-spy font-semibold leading-[1.2] text-[calc(1.3rem+0.6vw)] min-[1200px]:text-[1.75rem]\">SHOP ALL<br>SAFETY SUNGLASSES</h2><div class=\"block min-[768px]:inline-block\"><span class=\"inline-block rounded-none border border-[#1d2a2b] bg-white px-8 py-2 text-center text-[.875rem] font-normal uppercase leading-[1.5] text-[#1d2a2b] transition-colors duration-150 hover:border-[#1d2a2b] hover:bg-[#1d2a2b] hover:text-white\">SHOP SAFETY</span></div></div></div></a></div>"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "banner"
-      ],
+      "type": "spy-feature-link-banner",
       "name": "ANSI — shop safety banner",
       "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "center",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 0,
-        "section_width": "full-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "background_media": "none",
-        "background_color": "",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 48,
-        "padding-block-end": 0
+        "image_desktop": "shopify://shop_images/ansi-photochromic-footer-desktop.jpg",
+        "image_mobile": "shopify://shop_images/ansi-photochromic-footer-mobile.jpg",
+        "eyebrow": "",
+        "heading": "SHOP ALL\nSAFETY SUNGLASSES",
+        "cta_label": "SHOP SAFETY",
+        "link": "shopify://collections/safety-sunglasses",
+        "cta_style": "solid",
+        "heading_size": 28,
+        "heading_size_mobile": 23,
+        "content_align": "right",
+        "content_valign": "center",
+        "text_align": "left",
+        "content_align_mobile": "center",
+        "content_valign_mobile": "bottom",
+        "text_align_mobile": "center",
+        "show_overlay": false,
+        "content_width": "page",
+        "content_max_width": 1440
       }
     }
   },

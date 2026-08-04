@@ -2,34 +2,114 @@
 
 {% assign block_settings = block.settings %}
 
-{% capture video_style %}
-  {%  render 'spacing-style', settings: block_settings %}
-  {% render 'border-override', settings: block_settings %}
-   --size-style-width: {{ block_settings.custom_width }}%; --size-style-width-mobile: {{ block_settings.custom_width_mobile }}%;
-   --size-style-aspect-ratio: {% if block_settings.source == 'uploaded' %}{{ block_settings.video.aspect_ratio | default: 'auto' }}{% elsif block_settings.cover_image == blank %}{{ block_settings.aspect_ratio }}{% else %}auto{% endif %};
-{% endcapture %}
+{%- liquid
+  # Exact ratio wins when both numbers are set; otherwise keep the stock behaviour
+  # (the uploaded file's own ratio, or the aspect_ratio select for a URL).
+  if block_settings.ratio_w > 0 and block_settings.ratio_h > 0
+    assign ratio = block_settings.ratio_w | append: '/' | append: block_settings.ratio_h
+  elsif block_settings.source == 'uploaded'
+    assign ratio = block_settings.video.aspect_ratio | default: 'auto'
+  elsif block_settings.cover_image == blank
+    assign ratio = block_settings.aspect_ratio
+  else
+    assign ratio = 'auto'
+  endif
 
-{% if block_settings.source == 'uploaded' %}
-  {% render 'video',
+  # The phone slot may crop differently, so it carries its own ratio
+  if block_settings.ratio_w_mobile > 0 and block_settings.ratio_h_mobile > 0
+    assign ratio_mobile = block_settings.ratio_w_mobile | append: '/' | append: block_settings.ratio_h_mobile
+  else
+    assign ratio_mobile = ratio
+  endif
+
+  # A background video plays itself and shows no chrome, whatever the checkboxes say
+  if block_settings.background
+    assign video_autoplay = true
+    assign video_loop = true
+  else
+    assign video_autoplay = block_settings.video_autoplay
+    assign video_loop = block_settings.video_loop
+  endif
+
+  assign two_up = false
+  if block_settings.mobile_enabled
+    if block_settings.source_mobile == 'uploaded' and block_settings.video_mobile != blank
+      assign two_up = true
+    elsif block_settings.source_mobile == 'url' and block_settings.video_url_mobile != blank
+      assign two_up = true
+    endif
+  endif
+
+  # Fixed class strings so Tailwind can see them; only the choice is a setting
+  case block_settings.swap_at
+    when '768'
+      assign desktop_only = 'max-[767px]:hidden'
+      assign mobile_only = 'min-[768px]:hidden'
+    when '1200'
+      assign desktop_only = 'max-[1199px]:hidden'
+      assign mobile_only = 'min-[1200px]:hidden'
+    else
+      assign desktop_only = 'max-[991px]:hidden'
+      assign mobile_only = 'min-[992px]:hidden'
+  endcase
+-%}
+
+{%- capture style_base -%}
+  {%- render 'spacing-style', settings: block_settings -%}
+  {%- render 'border-override', settings: block_settings -%}
+  --size-style-width: {{ block_settings.custom_width }}%; --size-style-width-mobile: {{ block_settings.custom_width_mobile }}%;
+{%- endcapture -%}
+
+{% capture video_style %}{{ style_base }} --size-style-aspect-ratio: {{ ratio }};{% endcapture %}
+{% capture video_style_mobile %}{{ style_base }} --size-style-aspect-ratio: {{ ratio_mobile }};{% endcapture %}
+
+{%- comment -%}
+  One slot only unless a second asset is set. With two, the wrapper owns the editor
+  handle and each slot keeps its own ratio, so no media query is needed for sizing.
+{%- endcomment -%}
+{%- if two_up -%}
+  <div class="w-full" {{ block.shopify_attributes }}>
+    <div class="w-full {{ desktop_only }}">
+      {%- render 'video-slot',
+        source: block_settings.source,
+        video: block_settings.video,
+        video_url: block_settings.video_url,
+        cover_image: block_settings.cover_image,
+        alt: block_settings.alt,
+        video_style: video_style,
+        video_autoplay: video_autoplay,
+        video_loop: video_loop,
+        video_background: block_settings.background
+      -%}
+    </div>
+    <div class="w-full {{ mobile_only }}">
+      {%- render 'video-slot',
+        source: block_settings.source_mobile,
+        video: block_settings.video_mobile,
+        video_url: block_settings.video_url_mobile,
+        cover_image: block_settings.cover_image_mobile,
+        alt: block_settings.alt,
+        video_style: video_style_mobile,
+        video_autoplay: video_autoplay,
+        video_loop: video_loop,
+        video_background: block_settings.background
+      -%}
+    </div>
+  </div>
+{%- else -%}
+  {%- render 'video-slot',
+    source: block_settings.source,
     video: block_settings.video,
-    video_class: 'spacing-style size-style border-style',
-    video_loop: block_settings.video_loop,
+    video_url: block_settings.video_url,
+    cover_image: block_settings.cover_image,
+    alt: block_settings.alt,
     video_style: video_style,
-    video_preview_image: block_settings.video.preview_image,
+    video_autoplay: video_autoplay,
+    video_loop: video_loop,
+    video_background: block_settings.background,
     additional_attributes: block.shopify_attributes
-  %}
-{% else %}
-  {% render 'video',
-    video_from_url: true,
-    video: block_settings.video_url.id,
-    video_class: 'spacing-style size-style border-style',
-    video_type: block_settings.video_url.type,
-    video_style: video_style,
-    video_alt: block_settings.alt,
-    video_preview_image: block_settings.cover_image,
-    additional_attributes: block.shopify_attributes
-  %}
-{% endif %}
+  -%}
+{%- endif -%}
 
 {% stylesheet %}
   .placeholder-video {
@@ -86,10 +166,17 @@
       "default": true
     },
     {
+      "type": "checkbox",
+      "id": "background",
+      "label": "Background video",
+      "info": "Hides every player control for a decorative hero. Forces autoplay, loop and mute.",
+      "default": false
+    },
+    {
       "type": "image_picker",
       "id": "cover_image",
       "label": "t:settings.cover_image",
-      "visible_if": "{{ block.settings.source == 'url' and block.settings.video_autoplay == false }}"
+      "visible_if": "{{ block.settings.source == 'url' and block.settings.video_autoplay == false and block.settings.background == false }}"
     },
     {
       "type": "text",
@@ -146,6 +233,98 @@
         }
       ],
       "default": "auto"
+    },
+    {
+      "type": "number",
+      "id": "ratio_w",
+      "label": "Exact ratio — width",
+      "info": "For a size the list above cannot express, e.g. 1920 × 600. Set both to use it; leave empty for the list."
+    },
+    {
+      "type": "number",
+      "id": "ratio_h",
+      "label": "Exact ratio — height"
+    },
+    {
+      "type": "header",
+      "content": "Mobile video",
+      "info": "A second asset for narrow screens. Leave off to show the same video everywhere."
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_enabled",
+      "label": "Use a separate mobile video",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "swap_at",
+      "label": "Swap at",
+      "options": [
+        {
+          "value": "768",
+          "label": "768px"
+        },
+        {
+          "value": "992",
+          "label": "992px"
+        },
+        {
+          "value": "1200",
+          "label": "1200px"
+        }
+      ],
+      "default": "992",
+      "visible_if": "{{ block.settings.mobile_enabled }}"
+    },
+    {
+      "type": "select",
+      "id": "source_mobile",
+      "label": "t:settings.video_source",
+      "options": [
+        {
+          "value": "uploaded",
+          "label": "t:options.video_uploaded"
+        },
+        {
+          "value": "url",
+          "label": "t:options.video_external_url"
+        }
+      ],
+      "default": "uploaded",
+      "visible_if": "{{ block.settings.mobile_enabled }}"
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "t:settings.video",
+      "visible_if": "{{ block.settings.mobile_enabled and block.settings.source_mobile == 'uploaded' }}"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url_mobile",
+      "label": "t:settings.video_external_url",
+      "accept": ["youtube", "vimeo"],
+      "visible_if": "{{ block.settings.mobile_enabled and block.settings.source_mobile == 'url' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image_mobile",
+      "label": "t:settings.cover_image",
+      "visible_if": "{{ block.settings.mobile_enabled and block.settings.source_mobile == 'url' and block.settings.video_autoplay == false and block.settings.background == false }}"
+    },
+    {
+      "type": "number",
+      "id": "ratio_w_mobile",
+      "label": "Mobile exact ratio — width",
+      "info": "Falls back to the desktop ratio when empty.",
+      "visible_if": "{{ block.settings.mobile_enabled }}"
+    },
+    {
+      "type": "number",
+      "id": "ratio_h_mobile",
+      "label": "Mobile exact ratio — height",
+      "visible_if": "{{ block.settings.mobile_enabled }}"
     },
     {
       "type": "header",
