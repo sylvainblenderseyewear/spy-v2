@@ -1,0 +1,117 @@
+{%- comment -%}
+  The tile title — "JOIN", "BIRTHDAY REWARD".
+
+  Colour, size and weight come from the parent grid so all nine match. Each
+  override below only writes its variable when the editor sets one, so a blank
+  field keeps the shared value instead of clearing it.
+
+  Default tag is a paragraph: the band heading above this grid is styled text
+  rather than a real heading, so an h3 here would sit in the outline with no
+  parent. Switch it once that band becomes a proper heading.
+{%- endcomment -%}
+
+{%- liquid
+  assign tag = block.settings.tag | default: 'p'
+  assign own_size = block.settings.size_override
+-%}
+
+<{{ tag }}
+  class="
+    m-0 [margin-top:var(--rw-title-gap)]
+    [font-family:var(--rw-title-font,var(--font-body--family))]
+    [color:var(--rw-title-color,#2c393e)]
+    [font-size:var(--rw-title-size,14px)]
+    [font-weight:var(--rw-title-weight,500)]
+    [letter-spacing:var(--rw-title-tracking,0.3px)]
+    [text-transform:var(--rw-title-case,uppercase)]
+    leading-tight
+  "
+  style="
+    --rw-title-gap: {{ block.settings.space_above }}px;
+    --rw-title-font: {{ block.settings.font }};
+    --rw-title-case: {{ block.settings.case }};
+    {% if own_size > 0 %}--rw-title-size: {{ own_size }}px;{% endif %}
+    {% if block.settings.color_override != blank %}--rw-title-color: {{ block.settings.color_override }};{% endif %}
+  "
+  {{ block.shopify_attributes }}
+>{{ block.settings.title }}</{{ tag }}>
+
+{% schema %}
+{
+  "name": "Reward title",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "JOIN"
+    },
+    {
+      "type": "select",
+      "id": "tag",
+      "label": "Tag",
+      "options": [
+        { "value": "p", "label": "Paragraph" },
+        { "value": "h3", "label": "Heading 3" },
+        { "value": "h4", "label": "Heading 4" }
+      ],
+      "default": "p"
+    },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "Font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-body--family)"
+    },
+    {
+      "type": "select",
+      "id": "case",
+      "label": "Case",
+      "options": [
+        { "value": "none", "label": "As typed" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "header",
+      "content": "Overrides"
+    },
+    {
+      "type": "range",
+      "id": "size_override",
+      "label": "Size override",
+      "info": "0 uses the size set on the grid.",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "color_override",
+      "label": "Color override",
+      "info": "Leave empty to use the color set on the grid."
+    },
+    {
+      "type": "range",
+      "id": "space_above",
+      "label": "Space above",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    }
+  ]
+}
+{% endschema %}

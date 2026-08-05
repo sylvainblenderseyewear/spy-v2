@@ -1,0 +1,78 @@
+{%- comment -%}
+  The tile mark — one of the point-icon webp files.
+
+  Width comes from the parent grid so all nine marks match; the override below is
+  for the odd icon that reads too small or too large at the shared size. Intrinsic
+  width/height stay on the tag so the tile never jumps while the file loads.
+{%- endcomment -%}
+
+{%- liquid
+  assign image = block.settings.image
+  assign own_width = block.settings.width_override
+-%}
+
+<div
+  class="[margin-top:var(--rw-icon-gap)] [width:var(--rw-icon-w,32px)] max-w-full"
+  style="
+    --rw-icon-gap: {{ block.settings.space_above }}px;
+    {% if own_width > 0 %}--rw-icon-w: {{ own_width }}px;{% endif %}
+  "
+  {{ block.shopify_attributes }}
+>
+  {%- if image != blank -%}
+    <img
+      src="{{ image | image_url: width: 400 }}"
+      alt="{{ block.settings.alt | default: image.alt | escape }}"
+      width="{{ image.width }}"
+      height="{{ image.height }}"
+      loading="lazy"
+      decoding="async"
+      class="block w-full h-auto"
+    >
+  {%- else -%}
+    {%- comment -%} Keeps the tile the right height while an editor picks a file. {%- endcomment -%}
+    <div class="w-full aspect-square bg-[#d8d8d8]" aria-hidden="true"></div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Reward icon",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Icon",
+      "info": "Upload the webp mark in Content > Files, for example join-point.webp."
+    },
+    {
+      "type": "text",
+      "id": "alt",
+      "label": "Alt text",
+      "info": "Leave empty for a decorative mark when the title already says it."
+    },
+    {
+      "type": "range",
+      "id": "width_override",
+      "label": "Width override",
+      "info": "0 uses the width set on the grid.",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "space_above",
+      "label": "Space above",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}

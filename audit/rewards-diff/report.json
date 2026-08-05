@@ -1,0 +1,168 @@
+{
+  "d": {
+    "width": 1440,
+    "gridCols": "260.656px 260.672px 260.656px",
+    "gridGap": "10px / 9px",
+    "gridWidth": 800,
+    "tileCount": 9,
+    "tile": {
+      "w": 261,
+      "h": 228,
+      "bg": "rgb(240, 240, 240)",
+      "pad": "20px",
+      "ratio": "8 / 7"
+    },
+    "img": {
+      "src": "join-point.webp",
+      "w": 32
+    },
+    "title": {
+      "text": "JOIN",
+      "size": "14px",
+      "color": "rgb(44, 57, 62)",
+      "weight": "500",
+      "tracking": "0.3px",
+      "family": "DINNextLTPro"
+    },
+    "points": {
+      "text": "300 Points",
+      "size": "13px",
+      "color": "rgb(106, 108, 119)"
+    },
+    "ctaHiddenOpacity": "0",
+    "cta": {
+      "w": 150,
+      "h": 44,
+      "bg": "rgb(245, 127, 41)",
+      "color": "rgb(255, 255, 255)",
+      "size": "13px"
+    },
+    "hoverState": {
+      "tileBg": "rgb(255, 255, 255)",
+      "faceOpacity": "0",
+      "panelOpacity": "1",
+      "panelPointer": "auto"
+    },
+    "errors": [
+      "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
+      "Failed to load resource: the server responded with a status of 403 ()",
+      "Failed to load resource: the server responded with a status of 400 ()",
+      "[shopify-account] Menu \"customer-account-main-menu\" not found in Storefront API. Falling back to default menu items.",
+      "Failed to load resource: the server responded with a status of 403 ()",
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ]
+  },
+  "t": {
+    "width": 768,
+    "gridCols": "250px 250px 250px",
+    "gridGap": "10px / 9px",
+    "gridWidth": 768,
+    "tileCount": 9,
+    "tile": {
+      "w": 250,
+      "h": 219,
+      "bg": "rgb(240, 240, 240)",
+      "pad": "20px",
+      "ratio": "8 / 7"
+    },
+    "img": {
+      "src": "join-point.webp",
+      "w": 32
+    },
+    "title": {
+      "text": "JOIN",
+      "size": "14px",
+      "color": "rgb(44, 57, 62)",
+      "weight": "500",
+      "tracking": "0.3px",
+      "family": "DINNextLTPro"
+    },
+    "points": {
+      "text": "300 Points",
+      "size": "13px",
+      "color": "rgb(106, 108, 119)"
+    },
+    "ctaHiddenOpacity": "0",
+    "cta": {
+      "w": 150,
+      "h": 44,
+      "bg": "rgb(245, 127, 41)",
+      "color": "rgb(255, 255, 255)",
+      "size": "13px"
+    },
+    "hoverState": {
+      "tileBg": "rgb(255, 255, 255)",
+      "faceOpacity": "0",
+      "panelOpacity": "1",
+      "panelPointer": "auto"
+    },
+    "errors": [
+      "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
+      "Failed to load resource: the server responded with a status of 403 ()",
+      "Failed to load resource: the server responded with a status of 400 ()",
+      "[shopify-account] Menu \"customer-account-main-menu\" not found in Storefront API. Falling back to default menu items.",
+      "Failed to load resource: the server responded with a status of 403 ()",
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ]
+  },
+  "m": {
+    "width": 390,
+    "gridCols": "190.5px 190.5px",
+    "gridGap": "10px / 9px",
+    "gridWidth": 390,
+    "tileCount": 9,
+    "tile": {
+      "w": 191,
+      "h": 191,
+      "bg": "rgb(240, 240, 240)",
+      "pad": "14px",
+      "ratio": "1 / 1"
+    },
+    "img": {
+      "src": "join-point.webp",
+      "w": 28
+    },
+    "title": {
+      "text": "JOIN",
+      "size": "12px",
+      "color": "rgb(44, 57, 62)",
+      "weight": "500",
+      "tracking": "0.3px",
+      "family": "DINNextLTPro"
+    },
+    "points": {
+      "text": "300 Points",
+      "size": "11px",
+      "color": "rgb(106, 108, 119)"
+    },
+    "ctaHiddenOpacity": "0",
+    "cta": {
+      "w": 110,
+      "h": 44,
+      "bg": "rgb(245, 127, 41)",
+      "color": "rgb(255, 255, 255)",
+      "size": "11px"
+    },
+    "hoverState": {
+      "tileBg": "rgb(255, 255, 255)",
+      "faceOpacity": "0",
+      "panelOpacity": "1",
+      "panelPointer": "auto"
+    },
+    "errors": [
+      "Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
+      "Failed to load resource: the server responded with a status of 403 ()",
+      "Failed to load resource: the server responded with a status of 400 ()",
+      "[shopify-account] Menu \"customer-account-main-menu\" not found in Storefront API. Falling back to default menu items.",
+      "Failed to load resource: the server responded with a status of 403 ()",
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ]
+  },
+  "keyboard": {
+    "focused": true,
+    "panelOpacity": "1",
+    "tileBg": "rgb(255, 255, 255)",
+    "href": "https://shopify.com/84698038512/account?locale=en&region_country=US&buyer_flags=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzcHlkZXZzeWx2Lm15c2hvcGlmeS5jb20iLCJmbGFncyI6W10sImV4cCI6MTc4NjU1MTk0NywibmJmIjoxNzg1OTQ3MTQ3fQ.fgRcJkU7tQ_5SHBKZ9dN63yiiSKgdOzVkvbGaAmlzTA",
+    "loginHref": "https://spydevsylv.myshopify.com/customer_authentication/redirect?locale=en&region_country=US"
+  }
+}
