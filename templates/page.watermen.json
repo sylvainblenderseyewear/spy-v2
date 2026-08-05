@@ -83,7 +83,7 @@
                 "text": "<p>Fueled by our proprietary <strong>Happy Polar™</strong> and <strong>Happy Boost™</strong> lens tech, SPY+ delivers unmatched clarity, contrast, and glare-cutting performance built for life on the water.</p>",
                 "highlight": "",
                 "highlight_color": "#ee7624",
-                "size": 19,
+                "size": 19.2,
                 "size_mobile": 17,
                 "weight": "400",
                 "line_height": 180,
@@ -104,7 +104,7 @@
                 "text": "<p>Crafted for deckhands, captains, riders, and lifers who grind from sunup to sundown, SPY+ comes from a place where water, wind, and grit aren’t just elements—they’re a way of life.</p><p>From 4AM runs out of Point Loma to freezing dawn bites in Montauk, to full-send throttle punches to outrun the weather—we build gear for those who go.</p>",
                 "highlight": "",
                 "highlight_color": "#ee7624",
-                "size": 18,
+                "size": 18.4,
                 "size_mobile": 16,
                 "weight": "400",
                 "line_height": 180,
@@ -203,7 +203,7 @@
           "name": "t:names.product_card",
           "static": true,
           "settings": {
-            "product_card_gap": 4,
+            "product_card_gap": 0,
             "background_color": "",
             "border": "none",
             "border_width": 1,
@@ -226,7 +226,7 @@
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
-                "image_ratio": "adapt",
+                "image_ratio": "square",
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
@@ -251,9 +251,9 @@
               "settings": {},
               "blocks": {}
             },
-            "spy_color_count_hkXrAJ": {
-              "type": "spy-color-count",
-              "name": "Color Count",
+            "spy_variant_name_hkXrAJ": {
+              "type": "spy-variant-name",
+              "name": "Variant Name",
               "settings": {},
               "blocks": {}
             },
@@ -269,7 +269,7 @@
               "type": "product-title",
               "name": "t:names.product_title",
               "settings": {
-                "title_source": "product",
+                "title_source": "group",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -284,7 +284,7 @@
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
-                "padding-block-start": 4,
+                "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
@@ -320,7 +320,7 @@
             "product_card_gallery_eCNPeJ",
             "spy_quick_view_btn_M4hUjh",
             "spy_new_badge_fTWJ8m",
-            "spy_color_count_hkXrAJ",
+            "spy_variant_name_hkXrAJ",
             "spy_swatches_CqRm9T",
             "product_title_3WpyTJ",
             "price_YFxQDQ"
@@ -336,7 +336,7 @@
         "columns": 5,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
-        "columns_gap": 8,
+        "columns_gap": 0,
         "rows_gap": 24,
         "icons_style": "arrow",
         "icons_shape": "none",
@@ -402,8 +402,8 @@
         "border_opacity": 100,
         "border_color": "",
         "border_radius": 0,
-        "padding-block-start": 25,
-        "padding-block-end": 15,
+        "padding-block-start": 40,
+        "padding-block-end": 63,
         "custom_class": "wm-band wm-band--cta"
       }
     },
@@ -463,7 +463,7 @@
                 "line_height": 120,
                 "letter_spacing": 0,
                 "uppercase": true,
-                "text_color": "",
+                "text_color": "#000000",
                 "align": "center",
                 "align_mobile": "",
                 "max_width": 0,
@@ -484,14 +484,14 @@
                 "size": 18,
                 "size_mobile": 16,
                 "weight": "400",
-                "line_height": 150,
+                "line_height": 120,
                 "text_color": "",
                 "align": "center",
                 "align_mobile": "",
                 "max_width": 0,
                 "paragraph_gap": 25,
-                "margin_bottom": 0,
-                "margin_bottom_mobile": 0
+                "margin_bottom": 48,
+                "margin_bottom_mobile": 48
               },
               "blocks": {}
             }
@@ -534,8 +534,8 @@
             "link": "",
             "open_in_new_tab": false,
             "placeholder": "",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
+            "padding-block-start": 40,
+            "padding-block-end": 30,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
@@ -892,7 +892,7 @@
             "open_in_new_tab": false,
             "placeholder": "",
             "padding-block-start": 0,
-            "padding-block-end": 0,
+            "padding-block-end": 30,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
@@ -1247,7 +1247,7 @@
         "border_opacity": 100,
         "border_color": "",
         "border_radius": 0,
-        "padding-block-start": 48,
+        "padding-block-start": 8,
         "padding-block-end": 40,
         "custom_class": "wm-band wm-band--header wm-band--tech"
       }
@@ -1329,14 +1329,14 @@
                 "size": 18,
                 "size_mobile": 16,
                 "weight": "400",
-                "line_height": 150,
+                "line_height": 120,
                 "text_color": "",
                 "align": "center",
                 "align_mobile": "",
                 "max_width": 0,
                 "paragraph_gap": 25,
-                "margin_bottom": 0,
-                "margin_bottom_mobile": 0
+                "margin_bottom": 48,
+                "margin_bottom_mobile": 48
               },
               "blocks": {}
             }
@@ -1453,7 +1453,7 @@
         "border_opacity": 100,
         "border_color": "",
         "border_radius": 0,
-        "padding-block-start": 48,
+        "padding-block-start": 52,
         "padding-block-end": 0,
         "custom_class": "wm-band wm-band--header"
       }
@@ -1728,9 +1728,9 @@
                 "align_mobile": "",
                 "max_width": 0,
                 "margin_top": 0,
-                "margin_bottom": 14,
+                "margin_bottom": 0,
                 "margin_top_mobile": 0,
-                "margin_bottom_mobile": 14
+                "margin_bottom_mobile": 0
               },
               "blocks": {}
             }
@@ -1744,7 +1744,7 @@
           "name": "t:names.product_card",
           "static": true,
           "settings": {
-            "product_card_gap": 4,
+            "product_card_gap": 0,
             "background_color": "",
             "border": "none",
             "border_width": 1,
@@ -1767,7 +1767,7 @@
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
-                "image_ratio": "adapt",
+                "image_ratio": "square",
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
@@ -1792,9 +1792,9 @@
               "settings": {},
               "blocks": {}
             },
-            "spy_color_count_hkXrAJ": {
-              "type": "spy-color-count",
-              "name": "Color Count",
+            "spy_variant_name_hkXrAJ": {
+              "type": "spy-variant-name",
+              "name": "Variant Name",
               "settings": {},
               "blocks": {}
             },
@@ -1810,7 +1810,7 @@
               "type": "product-title",
               "name": "t:names.product_title",
               "settings": {
-                "title_source": "product",
+                "title_source": "group",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -1825,7 +1825,7 @@
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
-                "padding-block-start": 4,
+                "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
@@ -1861,7 +1861,7 @@
             "product_card_gallery_eCNPeJ",
             "spy_quick_view_btn_M4hUjh",
             "spy_new_badge_fTWJ8m",
-            "spy_color_count_hkXrAJ",
+            "spy_variant_name_hkXrAJ",
             "spy_swatches_CqRm9T",
             "product_title_3WpyTJ",
             "price_YFxQDQ"
@@ -1877,13 +1877,13 @@
         "columns": 5,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
-        "columns_gap": 8,
+        "columns_gap": 0,
         "rows_gap": 24,
         "icons_style": "arrow",
         "icons_shape": "none",
         "section_width": "page-width",
         "horizontal_alignment": "center",
-        "gap": 16,
+        "gap": 48,
         "background_color": "",
         "padding-block-start": 48,
         "padding-block-end": 0
@@ -1945,9 +1945,9 @@
                 "align_mobile": "",
                 "max_width": 0,
                 "margin_top": 0,
-                "margin_bottom": 14,
+                "margin_bottom": 0,
                 "margin_top_mobile": 0,
-                "margin_bottom_mobile": 14
+                "margin_bottom_mobile": 0
               },
               "blocks": {}
             }
@@ -1961,7 +1961,7 @@
           "name": "t:names.product_card",
           "static": true,
           "settings": {
-            "product_card_gap": 4,
+            "product_card_gap": 0,
             "background_color": "",
             "border": "none",
             "border_width": 1,
@@ -1984,7 +1984,7 @@
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
-                "image_ratio": "adapt",
+                "image_ratio": "square",
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
@@ -2009,9 +2009,9 @@
               "settings": {},
               "blocks": {}
             },
-            "spy_color_count_hkXrAJ": {
-              "type": "spy-color-count",
-              "name": "Color Count",
+            "spy_variant_name_hkXrAJ": {
+              "type": "spy-variant-name",
+              "name": "Variant Name",
               "settings": {},
               "blocks": {}
             },
@@ -2027,7 +2027,7 @@
               "type": "product-title",
               "name": "t:names.product_title",
               "settings": {
-                "title_source": "product",
+                "title_source": "group",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -2042,7 +2042,7 @@
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
-                "padding-block-start": 4,
+                "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
@@ -2078,7 +2078,7 @@
             "product_card_gallery_eCNPeJ",
             "spy_quick_view_btn_M4hUjh",
             "spy_new_badge_fTWJ8m",
-            "spy_color_count_hkXrAJ",
+            "spy_variant_name_hkXrAJ",
             "spy_swatches_CqRm9T",
             "product_title_3WpyTJ",
             "price_YFxQDQ"
@@ -2094,13 +2094,13 @@
         "columns": 5,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
-        "columns_gap": 8,
+        "columns_gap": 0,
         "rows_gap": 24,
         "icons_style": "arrow",
         "icons_shape": "none",
         "section_width": "page-width",
         "horizontal_alignment": "center",
-        "gap": 16,
+        "gap": 48,
         "background_color": "",
         "padding-block-start": 48,
         "padding-block-end": 0
@@ -2162,9 +2162,9 @@
                 "align_mobile": "",
                 "max_width": 0,
                 "margin_top": 0,
-                "margin_bottom": 14,
+                "margin_bottom": 0,
                 "margin_top_mobile": 0,
-                "margin_bottom_mobile": 14
+                "margin_bottom_mobile": 0
               },
               "blocks": {}
             }
@@ -2178,7 +2178,7 @@
           "name": "t:names.product_card",
           "static": true,
           "settings": {
-            "product_card_gap": 4,
+            "product_card_gap": 0,
             "background_color": "",
             "border": "none",
             "border_width": 1,
@@ -2201,7 +2201,7 @@
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
-                "image_ratio": "adapt",
+                "image_ratio": "square",
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
@@ -2226,9 +2226,9 @@
               "settings": {},
               "blocks": {}
             },
-            "spy_color_count_hkXrAJ": {
-              "type": "spy-color-count",
-              "name": "Color Count",
+            "spy_variant_name_hkXrAJ": {
+              "type": "spy-variant-name",
+              "name": "Variant Name",
               "settings": {},
               "blocks": {}
             },
@@ -2244,7 +2244,7 @@
               "type": "product-title",
               "name": "t:names.product_title",
               "settings": {
-                "title_source": "product",
+                "title_source": "group",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -2259,7 +2259,7 @@
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
-                "padding-block-start": 4,
+                "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
@@ -2295,7 +2295,7 @@
             "product_card_gallery_eCNPeJ",
             "spy_quick_view_btn_M4hUjh",
             "spy_new_badge_fTWJ8m",
-            "spy_color_count_hkXrAJ",
+            "spy_variant_name_hkXrAJ",
             "spy_swatches_CqRm9T",
             "product_title_3WpyTJ",
             "price_YFxQDQ"
@@ -2311,15 +2311,15 @@
         "columns": 5,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
-        "columns_gap": 8,
+        "columns_gap": 0,
         "rows_gap": 24,
         "icons_style": "arrow",
         "icons_shape": "none",
         "section_width": "page-width",
         "horizontal_alignment": "center",
-        "gap": 16,
+        "gap": 48,
         "background_color": "",
-        "padding-block-start": 48,
+        "padding-block-start": 28,
         "padding-block-end": 0
       }
     },
@@ -2400,14 +2400,14 @@
                 "size": 18,
                 "size_mobile": 16,
                 "weight": "400",
-                "line_height": 150,
+                "line_height": 120,
                 "text_color": "",
                 "align": "center",
                 "align_mobile": "",
                 "max_width": 0,
                 "paragraph_gap": 25,
-                "margin_bottom": 0,
-                "margin_bottom_mobile": 0
+                "margin_bottom": 48,
+                "margin_bottom_mobile": 48
               },
               "blocks": {}
             }
@@ -2447,7 +2447,7 @@
         "border_opacity": 100,
         "border_color": "",
         "border_radius": 0,
-        "padding-block-start": 48,
+        "padding-block-start": 8,
         "padding-block-end": 0,
         "custom_class": "wm-band wm-band--header"
       }
@@ -2502,7 +2502,8 @@
           "settings": {
             "background_color": "#f8f9fa",
             "height": "fit",
-            "position": "center"
+            "position": "center",
+            "show_dots": true
           },
           "blocks": {
             "slide1": {
@@ -3192,7 +3193,7 @@
         "text_align_mobile": "center",
         "show_overlay": false,
         "content_width": "page",
-        "content_max_width": 1140
+        "content_max_width": 1440
       }
     }
   },

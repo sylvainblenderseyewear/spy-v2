@@ -17,8 +17,9 @@
   maths, so the slider is keyboard- and screen-reader-operable for free.
 {%- endcomment -%}
 
+{%- comment -%} px-5 is the source container's 20px inset, so the stage starts at 240 {%- endcomment -%}
 <div
-  class="spy-lens-options w-full mx-auto max-w-[var(--lop-max)]"
+  class="spy-lens-options w-full mx-auto px-5 max-w-[var(--lop-max)]"
   style="--lop-max: {{ block.settings.max_width }}px;"
   data-spy-lens-options
   data-label-before="{{ block.settings.label_before | escape }}"

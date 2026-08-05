@@ -84,14 +84,14 @@
     {%- comment -%}
       Arrow scale — row 2, desktop only. The line is inset 80px each side so the
       50px icons sit outside it, and the icon row is pulled back up over the line.
-      50px above (40 under the circles + 10) and 60px below (30 + 30), per source.
+      55px above (15 under the circles + the grid's 40) and 30px below, per source.
     {%- endcomment -%}
     <div
       data-lens-scale
       class="
         max-[769px]:hidden
         min-[769px]:[grid-row:2] min-[769px]:[grid-column:1/-1]
-        min-[769px]:mt-[50px] min-[769px]:mb-[60px]
+        min-[769px]:mt-[55px] min-[769px]:mb-[30px]
       "
     >
       <div class="relative h-[2px] mx-20 bg-[var(--lo-line)]">

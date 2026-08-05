@@ -32,14 +32,17 @@
       assign align_d = 'md:items-start'
   endcase
 
-  assign text_d = section.settings.text_align | default: section.settings.content_align
-  case text_d
+  assign text_d_raw = section.settings.text_align | default: section.settings.content_align
+  case text_d_raw
     when 'center'
       assign text_d = 'md:text-center'
+      assign box_d = 'md:items-center'
     when 'right'
       assign text_d = 'md:text-right'
+      assign box_d = 'md:items-end'
     else
       assign text_d = 'md:text-left'
+      assign box_d = 'md:items-start'
   endcase
 
   case section.settings.content_align_mobile
@@ -51,14 +54,17 @@
       assign align_m = 'items-start'
   endcase
 
-  assign text_m = section.settings.text_align_mobile | default: section.settings.content_align_mobile
-  case text_m
+  assign text_m_raw = section.settings.text_align_mobile | default: section.settings.content_align_mobile
+  case text_m_raw
     when 'center'
       assign text_m = 'text-center'
+      assign box_m = 'items-center'
     when 'right'
       assign text_m = 'text-right'
+      assign box_m = 'items-end'
     else
       assign text_m = 'text-left'
+      assign box_m = 'items-start'
   endcase
 
   case section.settings.content_valign
@@ -154,14 +160,29 @@
         or section.settings.heading != blank
         or section.settings.cta_label != blank
     -%}
-      <div class="absolute inset-0 flex px-6 py-6 md:px-12 pointer-events-none {{ scrim }}">
+      {%- comment -%} Desktop insets are the source's: container 15px, copy box 16/16/64 {%- endcomment -%}
+      <div class="spy-feature-link-banner__overlay absolute inset-0 flex px-6 py-6 md:px-[15px] md:py-0 pointer-events-none {{ scrim }}">
         <div
           class="
-            flex flex-col gap-2 flex-1 {{ width_classes }}
-            {{ align_m }} {{ align_d }} {{ text_m }} {{ text_d }}
+            spy-feature-link-banner__content
+            flex flex-col flex-1 {{ width_classes }}
+            {{ align_m }} {{ align_d }}
             {{ valign_m }} {{ valign_d }}
           "
         >
+          {%- comment -%}
+            The copy box is shrink-to-fit so the whole block can sit right of the
+            container while its heading and button still share one left edge —
+            which is what the source does.
+          {%- endcomment -%}
+          <div
+            class="
+              spy-feature-link-banner__box
+              flex flex-col gap-2 w-fit max-w-full
+              md:px-4 md:pt-4 md:pb-16
+              {{ box_m }} {{ box_d }} {{ text_m }} {{ text_d }}
+            "
+          >
           {%- if section.settings.eyebrow != blank -%}
             <span class="text-spy-orange text-[11px] font-bold uppercase tracking-widest leading-none">
               {{ section.settings.eyebrow }}
@@ -169,9 +190,10 @@
           {%- endif -%}
 
           {%- if section.settings.heading != blank -%}
+            {%- comment -%} Source .banner-heading: 600 at 1.2, with 8px under it {%- endcomment -%}
             <h2
               class="
-                text-white font-bold uppercase leading-tight m-0 tracking-tight
+                text-white font-semibold uppercase leading-[1.2] m-0 pb-2 tracking-normal
                 text-[length:var(--flb-heading-mobile)] md:text-[length:var(--flb-heading)]
               "
             >
@@ -181,15 +203,16 @@
 
           {%- if section.settings.cta_label != blank -%}
             {%- if section.settings.cta_style == 'solid' -%}
-              <span class="inline-block w-fit mt-2 px-8 py-2 bg-white text-spy-ink border border-spy-ink text-sm leading-normal uppercase pointer-events-auto transition-colors duration-200 group-hover:bg-spy-ink group-hover:text-white">
+              <span class="inline-block w-fit px-8 py-2 bg-white text-spy-ink border border-spy-ink text-sm leading-normal uppercase pointer-events-auto transition-colors duration-200 group-hover:bg-spy-ink group-hover:text-white">
                 {{ section.settings.cta_label }}
               </span>
             {%- else -%}
-              <span class="inline-block text-white text-xs font-bold uppercase tracking-widest border-b border-white/60 pb-0.5 mt-2 leading-none pointer-events-auto">
+              <span class="inline-block text-white text-xs font-bold uppercase tracking-widest border-b border-white/60 pb-0.5 leading-none pointer-events-auto">
                 {{ section.settings.cta_label }}
               </span>
             {%- endif -%}
           {%- endif -%}
+          </div>
         </div>
       </div>
     {%- endif -%}

@@ -27,6 +27,13 @@
   if block.settings.height == 'fill'
     assign slide_position = 'stretch'
   endif
+
+  # Opt-in dot pagination, for carousels whose source draws one
+  capture carousel_controls
+    if block.settings.show_dots and slide_count > 1
+      render 'slideshow-controls', style: 'dots', item_count: slide_count, show_arrows: false
+    endif
+  endcapture
 -%}
 
 {% capture blocks_content %}
@@ -58,6 +65,7 @@
     slide_count: slide_count,
     slide_position: slide_position,
     slideshow_gutters: slideshow_gutters,
+    controls: carousel_controls,
     attributes: block.shopify_attributes
   %}
 </div>
@@ -112,6 +120,12 @@
       "id": "background_color",
       "label": "t:settings.background_color",
       "placeholder": "t:settings.default"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show dot pagination",
+      "default": false
     },
     {
       "type": "select",

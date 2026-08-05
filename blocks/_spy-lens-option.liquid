@@ -132,7 +132,8 @@
         {%- endif -%}
 
         {%- if block.settings.subtitle != blank -%}
-          <h3 class="text-[15px] font-bold text-black leading-[1.4] m-0 mb-3 max-[769px]:text-[16px]">
+          {%- comment -%} normal-case: the theme uppercases headings, the source runs this one as sentence case {%- endcomment -%}
+          <h3 class="text-[15px] font-bold normal-case text-black leading-[1.4] m-0 mb-3 max-[769px]:text-[16px]">
             {{ block.settings.subtitle }}
           </h3>
         {%- endif -%}

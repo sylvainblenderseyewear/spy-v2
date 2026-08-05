@@ -1903,28 +1903,30 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 }
 
 /* ── Watermen Collection ─────────────────────────────────────────────────
-   The source builds this page from SFCC content assets, so its widths are
-   inline max-widths per band rather than one container. Taken from the saved
-   capture's own <style> blocks in reference/waterman:
+   The source builds this page from SFCC content assets, so every band sets
+   its own measure inline instead of sharing one container. All numbers here
+   are computed styles read off the saved capture in reference/waterman, or
+   the capture's own <style> blocks:
 
-     intro            .max-width 700 + 20px padding  -> 660 measure
-     OUR TECH grid    .container ladder, .sfcc-custom-container padding 40/15
+     intro            700px box + a 50px tail
+     header bands     Bootstrap .container ladder, copy in the middle 2 of 4
+                      columns -> 690 measure (705 inside the tech container)
+     OUR TECH grid    .sfcc-custom-container padding 40/15, cols 690 + 30 gap
+     product carousel .container 1440/15 + .row margin 16 -> 1378 track, 5 up
      LENS OVERVIEW    .vlt-comparison-container  max-width 1200, padding 40/20
      LENS OPTIONS     .fishing-selector-container max-width 1000, padding 30/20
-     LENS BENEFITS    .hbc-carousel-container     max-width 1200
-     section headers  platform .section-header inside .container + px-lg-5
+     LENS BENEFITS    .hbc-carousel-container     max-width 1200, slide 480 tall
 
-   Typography already matched before this change; only the widths were off,
-   so nothing here touches font size, weight or colour.
-
-   Bands opt in by class, never by section ID — see the ANSI note above. */
+   Bands opt in by class, never by section ID — duplicating a band would
+   change the key. The carousels have no CSS-class setting, so they stay
+   scoped to the template. */
 .wm-band .section-content-wrapper {
   width: 100%;
   max-width: none;
   padding-inline: 0;
 }
 
-/* Intro copy: a fixed 660px measure, not a percentage of the viewport. */
+/* Intro copy: a fixed 700px measure, then the source's 50px gap to the frames. */
 .wm-band--intro .section-content-wrapper > .group-block {
   width: 100%;
   max-width: 43.75rem; /* 700px */
@@ -1932,12 +1934,12 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   margin-block-end: 50px;
 }
 
-/* Section headers and the tech grid follow the source container ladder. */
-.wm-band--header .spy-heading,
-.wm-band--header .spy-body-text,
-.wm-band--tech .section-content-wrapper > .group-block--width-fill,
+/* ── Container ladder ───────────────────────────────────────────────────
+   Bootstrap's .container, which the header bands, the tech grid and every
+   product carousel sit inside. */
+.wm-band--header .section-content-wrapper > .group-block,
+.wm-band--tech .section-content-wrapper > .group-block,
 [data-template='page.watermen'] .section-resource-list__header,
-[data-template='page.watermen'] .section-resource-list__content,
 [data-template='page.watermen'] .resource-list.resource-list__carousel {
   width: 100%;
   margin-inline: auto;
@@ -1945,70 +1947,251 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 }
 
 @media (min-width: 544px) {
-  .wm-band--header .spy-heading,
-  .wm-band--header .spy-body-text,
-  .wm-band--tech .section-content-wrapper > .group-block--width-fill,
+  .wm-band--header .section-content-wrapper > .group-block,
+  .wm-band--tech .section-content-wrapper > .group-block,
   [data-template='page.watermen'] .section-resource-list__header,
-  [data-template='page.watermen'] .section-resource-list__content,
   [data-template='page.watermen'] .resource-list.resource-list__carousel {
     max-width: 33.75rem; /* 540px */
   }
 }
 
 @media (min-width: 769px) {
-  .wm-band--header .spy-heading,
-  .wm-band--header .spy-body-text,
-  .wm-band--tech .section-content-wrapper > .group-block--width-fill,
+  .wm-band--header .section-content-wrapper > .group-block,
+  .wm-band--tech .section-content-wrapper > .group-block,
   [data-template='page.watermen'] .section-resource-list__header,
-  [data-template='page.watermen'] .section-resource-list__content,
   [data-template='page.watermen'] .resource-list.resource-list__carousel {
     max-width: 45rem; /* 720px */
   }
 }
 
 @media (min-width: 992px) {
-  .wm-band--header .spy-heading,
-  .wm-band--header .spy-body-text,
-  .wm-band--tech .section-content-wrapper > .group-block--width-fill,
+  .wm-band--header .section-content-wrapper > .group-block,
+  .wm-band--tech .section-content-wrapper > .group-block,
   [data-template='page.watermen'] .section-resource-list__header,
-  [data-template='page.watermen'] .section-resource-list__content,
   [data-template='page.watermen'] .resource-list.resource-list__carousel {
     max-width: 71.25rem; /* 1140px */
   }
 }
 
 @media (min-width: 1200px) {
-  .wm-band--header .spy-heading,
-  .wm-band--header .spy-body-text,
-  .wm-band--tech .section-content-wrapper > .group-block--width-fill,
+  .wm-band--header .section-content-wrapper > .group-block,
+  .wm-band--tech .section-content-wrapper > .group-block,
   [data-template='page.watermen'] .section-resource-list__header,
-  [data-template='page.watermen'] .section-resource-list__content,
   [data-template='page.watermen'] .resource-list.resource-list__carousel {
     max-width: 90rem; /* 1440px */
   }
 }
 
-/* .section-header adds px-lg-5 on top of the container from lg up. */
-@media (min-width: 992px) {
-  .wm-band--header .spy-heading,
-  .wm-band--header .spy-body-text {
-    padding-inline: 3.9375rem; /* 15px + 48px */
-  }
+/* Header copy sits in the middle two of the row's four columns. */
+.wm-band--header .spy-heading,
+.wm-band--header .spy-body-text {
+  max-width: 43.125rem; /* 690px */
+  margin-inline: auto;
 }
 
-/* .sfcc-custom-container is 40px/15px inside that container. */
-.wm-band--tech .section-content-wrapper > .group-block--width-fill {
-  padding-inline: 1.875rem; /* 15px container + 15px */
+/* Inside the tech container the row is 15px wider each side, so its half is 705. */
+.wm-band--tech .spy-heading,
+.wm-band--tech .spy-body-text {
+  max-width: 44.0625rem; /* 705px */
+  margin-inline: auto;
 }
 
-/* Each half of the tech grid is a Bootstrap col-md-6 with 15px gutters. */
+/* ── OUR TECH grid ──────────────────────────────────────────────────────
+   Two col-md-6 halves, 690 each with a 30px gutter, and the card copy runs
+   left inside .sfcc-card-content's 20px padding. */
 @media (min-width: 769px) {
   .wm-band--tech .layout-panel-flex--row > :not(style) {
-    flex: 0 0 50%;
-    max-width: 50%;
+    flex: 1 1 0;
     min-width: 0;
   }
 }
 
-/* The benefits carousel's 1200px cap lives with the other template-scoped
-   rules above, because the carousel section has no CSS-class setting. */
+/* col-md-6 drops to full width under the source's own md, which is 769 —
+   Horizon would keep the row side by side down to its 750px breakpoint. */
+@media (max-width: 768.98px) {
+  .wm-band--tech .layout-panel-flex--row {
+    flex-direction: column;
+  }
+}
+
+/* Tile copy is left-aligned in the source; the group centres its children by
+   default, so the type blocks need their own full-width box to align inside. */
+.wm-band--tech .layout-panel-flex--row .spy-heading,
+.wm-band--tech .layout-panel-flex--row .spy-body-text,
+.wm-band--tech .layout-panel-flex--row .spy-bullet-list {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+}
+
+/* ── Product carousels ──────────────────────────────────────────────────
+   Source: .container (1440/15) + .row margin-inline 16 -> a 1378 track, five
+   slick slides of 275.6 each with 16px of right padding, so the tile itself
+   measures 259.6. Slick has no gap, so the gutter is that padding. */
+[data-template='page.watermen'] .resource-list__carousel slideshow-slides {
+  --gutter-slide-width: 0px;
+  --resource-list-column-gap: 0px;
+}
+
+/* Below 769 the source's row keeps Bootstrap's -15px margin, so the track runs
+   the full container width; from 769 up it swaps to +16px and pulls in. */
+@media (min-width: 769px) {
+  [data-template='page.watermen'] .resource-list__carousel slideshow-slides {
+    --gutter-slide-width: 1rem; /* the .row's 16px */
+  }
+}
+
+@media (max-width: 768.98px) {
+  [data-template='page.watermen'] .resource-list.resource-list__carousel {
+    padding-inline: 0;
+  }
+}
+
+[data-template='page.watermen'] .resource-list__carousel .resource-list__slide {
+  --slide-width: calc(100% / var(--column-count));
+  padding-inline-end: 1rem;
+}
+
+/* Slick's own responsive steps: 5 up, then 3 at 1140, 2 at 720, 1 at 540. */
+@media (max-width: 1140px) {
+  [data-template='page.watermen'] .resource-list__carousel slideshow-slides {
+    --column-count: 3;
+  }
+}
+
+@media (max-width: 720px) {
+  [data-template='page.watermen'] .resource-list__carousel slideshow-slides {
+    --column-count: 2;
+  }
+}
+
+@media (max-width: 540px) {
+  [data-template='page.watermen'] .resource-list__carousel slideshow-slides {
+    --column-count: 1;
+  }
+}
+
+/* These tiles carry no rating and no Compare row, so the text band keeps the
+   source's plain 24px bottom padding instead of the PLP's reserved 40. */
+[data-template='page.watermen'] .product-card:not(:has(.spy-color-swatches)) .product-card__content {
+  padding-bottom: 1.5rem;
+}
+
+/* Arrows ride the viewport edge, half off-screen, the way slick leaves them.
+   35px circles, white on an orange glyph, centred on the tile. */
+[data-template='page.watermen'] .resource-list__carousel slideshow-arrows {
+  padding-inline: 0;
+  margin-inline: -0.875rem; /* -14px */
+}
+
+[data-template='page.watermen'] .resource-list__carousel .slideshow-control {
+  width: 2.1875rem; /* 35px */
+  height: 2.1875rem;
+  min-width: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--color-spy-orange);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-spy-orange) 60%, transparent);
+}
+
+/* The overhang must not open a horizontal scrollbar. */
+[data-template='page.watermen'] .section-resource-list {
+  overflow-x: clip;
+}
+
+/* ── CTA button ─────────────────────────────────────────────────────────
+   Source .fishing-button: plain 16px/400 label, no uppercasing, 15/30 padding. */
+.wm-band--cta :is(.button, .button-custom, .button-secondary) {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* The carousel pads its track by 16px so hover lifts aren't clipped, but the
+   selector also caught each card's own gallery slideshow — which squashed the
+   square media by 32px. Keep the padding on the track only. */
+.resource-list__carousel .card-gallery slideshow-slides {
+  margin-block: 0;
+  padding-block: 0;
+}
+
+/* ── LENS BENEFITS carousel ─────────────────────────────────────────────
+   Source .hbc-carousel: one 1200px slide with no peek, 50px white arrows
+   inset 20px, and square dots sitting 20px off the foot of the slide. */
+[data-template='page.watermen'] .section-carousel .carousel-content slideshow-slides > .card {
+  width: 100%;
+}
+
+[data-template='page.watermen'] .section-carousel slideshow-arrows {
+  padding-inline: 1.25rem; /* 20px */
+}
+
+[data-template='page.watermen'] .section-carousel .slideshow-control {
+  width: 3.125rem; /* 50px */
+  height: 3.125rem;
+  border-radius: 0;
+  background: rgb(255 255 255 / 0.9);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.1);
+  color: #000;
+}
+
+/* Source keeps both arrows drawn at either end; ours hides a disabled one.
+   It stays `disabled`, so it is still announced and unclickable. */
+[data-template='page.watermen'] .section-carousel .slideshow-control[disabled] {
+  display: flex;
+  opacity: 1;
+}
+
+/* Only the slides make a row here; the empty header block must not add a gap. */
+[data-template='page.watermen'] .section-carousel {
+  row-gap: 0;
+}
+
+[data-template='page.watermen'] .section-carousel slideshow-controls {
+  position: absolute;
+  inset-block-end: 1.25rem; /* 20px */
+  inset-inline: 0;
+  z-index: 10;
+  justify-content: center;
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+/* Source .hbc-dot: a flat 10px square, the active one darker and 1.2x. */
+[data-template='page.watermen'] .section-carousel .slideshow-controls__dots {
+  gap: 0.625rem;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  pointer-events: auto;
+}
+
+[data-template='page.watermen'] .section-carousel .slideshow-controls__dots button {
+  width: 0.625rem;
+  height: 0.625rem;
+  margin: 0;
+  border-radius: 0;
+}
+
+[data-template='page.watermen'] .section-carousel .slideshow-controls__dots button::after {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 0;
+  box-shadow: none;
+  background-color: rgb(0 0 0 / 0.3);
+}
+
+[data-template='page.watermen'] .section-carousel .slideshow-controls__dots button[aria-selected='true']::after {
+  background-color: rgb(0 0 0 / 0.8);
+  transform: scale(1.2);
+}
+
+/* ── Shop-all banner ────────────────────────────────────────────────────
+   The source's 1_column layout puts 48px of margin and 16px of padding above
+   the banner, on top of the benefits carousel's own 25px tail. */
+[data-template='page.watermen'] .spy-feature-link-banner {
+  margin-block-start: 4rem; /* 64px */
+}
