@@ -191,6 +191,10 @@
                         assign cart_disclosure_unique_id = 'drawer-' | append: item.index
                       endif
                     -%}
+                    {%- comment -%}
+                      Page only — the source prints the running quantity and a stock line
+                      under the variant list. The drawer keeps Horizon's tighter layout.
+                    {%- endcomment -%}
                     <div class="cart-items__title-row">
                       <a
                         href="{{ item.url }}"
@@ -280,6 +284,21 @@
                         <p>{{ item.selling_plan_allocation.selling_plan.name }}</p>
                       {%- endif -%}
 
+                      {%- comment -%} Source prints "Quantity : N" as a static line beside the picker {%- endcomment -%}
+                      {%- unless context == 'drawer' -%}
+                        <p class="spy-cart-item__qty-line">
+                          <span class="spy-cart-item__qty-label">{{ 'content.quantity' | t }}</span>
+                          <span class="spy-cart-item__qty-value">: {{ item.quantity }}</span>
+                        </p>
+                        <p class="spy-cart-item__stock">
+                          {%- if item.variant.available -%}
+                            {{ 'content.cart_in_stock' | t }}
+                          {%- else -%}
+                            {{ 'content.sold_out' | t }}
+                          {%- endif -%}
+                        </p>
+                      {%- endunless -%}
+
                       {%- if item.line_level_discount_allocations.size > 0 -%}
                         <ul
                           class="list-unstyled"
@@ -332,6 +351,16 @@
                   {% assign can_update_quantity = item.instructions.can_update_quantity
                     | default: true, allow_false: true
                   %}
+                  {%- comment -%}
+                    Source labels the two controls above them, in 12px grey caps.
+                    Aria-hidden: the picker and the remove button carry their own labels.
+                  {%- endcomment -%}
+                  {%- unless context == 'drawer' -%}
+                    <div class="spy-cart-item__control-labels" aria-hidden="true">
+                      <span class="spy-cart-item__control-label">{{ 'content.quantity' | t }}</span>
+                    </div>
+                  {%- endunless -%}
+
                   <div class="cart-items__quantity-controls">
                     {% render 'volume-pricing-info',
                       variant: item.variant,
@@ -358,8 +387,13 @@
                         hidden
                       {% endif %}
                     >
-                      {{- 'icon-delete.svg' | inline_asset_content -}}
-                      <span class="visually-hidden">{{ 'accessibility.remove' | t }}</span>
+                      {%- comment -%} Page shows the word, the drawer keeps the bin icon {%- endcomment -%}
+                      {%- if context == 'drawer' -%}
+                        {{- 'icon-delete.svg' | inline_asset_content -}}
+                        <span class="visually-hidden">{{ 'accessibility.remove' | t }}</span>
+                      {%- else -%}
+                        <span class="spy-cart-item__remove-text">{{ 'accessibility.remove' | t }}</span>
+                      {%- endif -%}
                     </button>
                   </div>
                 </td>

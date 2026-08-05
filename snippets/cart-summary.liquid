@@ -227,6 +227,22 @@
   -%}
 
   <div class="cart-totals__container{% if settings.show_installments %} cart-totals__container--has-installments{% endif %}">
+    {%- comment -%}
+      Source always shows a subtotal above the total. Horizon only prints one when a
+      cart-level discount exists (`cart-totals__original` above), so this covers the
+      plain case and hides itself when that one is already on screen.
+    {%- endcomment -%}
+    {%- if cart.cart_level_discount_applications.size == 0 -%}
+      <span class="cart-totals__item spy-cart-totals__subtotal">
+        <span class="cart-totals__original-label cart-primary-typography">
+          {{- 'content.cart_subtotal' | t -}}
+        </span>
+        <span class="cart-totals__original-value cart-secondary-typography">
+          {{- cart.items_subtotal_price | money -}}
+        </span>
+      </span>
+    {%- endif -%}
+
     <span
       class="cart-totals__item cart-totals__total"
       role="status"

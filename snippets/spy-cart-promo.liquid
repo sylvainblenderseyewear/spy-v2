@@ -1,0 +1,45 @@
+{%- doc -%}
+  Promo code entry for the cart page.
+
+  Shopify has no cart-page discount API, so this posts nowhere: the JS turns the
+  typed code into a visit to `/discount/{code}?redirect=/cart`, which applies it and
+  comes straight back. A code already on the cart is listed below the field so it can
+  be cleared the same way Horizon's discount pill does.
+
+  Sits under the line items, where the source puts it.
+
+  @example
+  {%- render 'spy-cart-promo' -%}
+{%- enddoc -%}
+
+<form
+  class="spy-cart-promo"
+  data-spy-cart-promo
+  action="{{ routes.cart_url }}"
+  method="get"
+>
+  <label class="spy-cart-promo__label" for="spy-promo-code">
+    {{ 'content.cart_promo_prompt' | t }}
+  </label>
+
+  <div class="spy-cart-promo__row">
+    <input
+      class="spy-cart-promo__input"
+      id="spy-promo-code"
+      name="promo"
+      type="text"
+      autocomplete="off"
+      autocapitalize="characters"
+      spellcheck="false"
+      aria-describedby="spy-promo-error"
+    >
+    <button class="spy-cart-promo__apply" type="submit">
+      {{ 'actions.apply' | t }}
+    </button>
+  </div>
+
+  {%- comment -%} Filled by the script when the field is empty; also the aria live region {%- endcomment -%}
+  <p class="spy-cart-promo__error" id="spy-promo-error" role="status" hidden></p>
+</form>
+
+<script src="{{ 'spy-cart-promo.js' | asset_url }}" defer></script>

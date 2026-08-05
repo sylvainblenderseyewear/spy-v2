@@ -43,16 +43,33 @@
       class="cart-page spacing-style{% if cart.empty? %} cart-page--empty{% endif %}"
       style="{% render 'spacing-style', settings: section.settings %}"
     >
+      {%- comment -%} Source puts a back link above the heading {%- endcomment -%}
+      <a
+        class="spy-cart__continue"
+        href="{{ settings.empty_cart_button_link | default: routes.all_products_collection_url }}"
+      >
+        &lt; {{ 'actions.continue_shopping' | t }}
+      </a>
+
       <div class="cart-page__title">
         {%- content_for 'block', id: 'cart-page-title', type: '_cart-title' %}
       </div>
 
       <div class="cart-page__items">
         {%- content_for 'block', id: 'cart-page-items', type: '_cart-products' %}
+
+        {%- comment -%}
+          Promo code — Shopify has no cart-page discount API, so this hands off to
+          /discount/{code}, which applies it and redirects back here.
+        {%- endcomment -%}
+        {%- unless cart.empty? -%}
+          {%- render 'spy-cart-promo' -%}
+        {%- endunless -%}
       </div>
 
       {%- unless cart.empty? -%}
         <div class="cart-page__summary">
+          <h2 class="spy-cart__summary-heading">{{ 'content.cart_order_summary' | t }}</h2>
           {%- content_for 'block', id: 'cart-page-summary', type: '_cart-summary' -%}
         </div>
       {%- endunless -%}

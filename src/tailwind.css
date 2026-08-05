@@ -886,6 +886,496 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════════════
+   Cart page — 1:1 with spyoptic.com (US)
+
+   Measurements in audit/page-spec-cart.md, read off reference/cart/Cart.html
+   with its own global.css live.
+
+   Everything is scoped to `.cart-page`, which only the cart *page* renders —
+   the cart *drawer* reuses the same snippets and must keep Horizon's layout.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Two columns: items then a 564px summary rail. Every child is placed explicitly —
+   Horizon's stock rule leans on auto-placement plus a subgrid, and the back link
+   we add above the heading would otherwise push the whole grid out of step.
+   Source order: back link, heading, then items and summary side by side. */
+@media screen and (min-width: 750px) {
+  /* !important because Horizon re-declares the columns at 1400px with its own
+     --sidebar-width, from a section {% stylesheet %} that loads after this file. */
+  /* Source splits Bootstrap 7/5, so the rail is proportional — a fixed 564px would
+     starve the item list at 768 (it drops to ~130px wide). 41.5% lands on the
+     source's 564 at 1440 and still leaves a usable list at tablet.
+     !important because Horizon re-declares the columns at 1400px with its own
+     --sidebar-width, from a section {% stylesheet %} that loads after this file. */
+  .cart-page {
+    grid-template-columns: minmax(0, 1fr) clamp(240px, 41.5%, 564px) !important;
+    grid-template-rows: min-content min-content auto;
+    gap: 0 32px;
+  }
+
+  .cart-page .spy-cart__continue {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .cart-page__title {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .cart-page__items {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  /* Horizon's own rules live in a section {% stylesheet %} that loads after this
+     file, so the summary placement needs the extra `.cart-page` specificity to
+     beat `grid-row: 1 / -1` + `subgrid` + `align-self: stretch`. */
+  .cart-page .cart-page__summary {
+    grid-column: 2;
+    grid-row: 3;
+    align-self: start;
+    height: auto;
+  }
+
+  /* Horizon adds a top margin between the title and the list, which would drop the
+     items 16px below the summary panel. In the source both columns start level. */
+  .cart-page .cart-page__title + .cart-page__items {
+    margin-block-start: 0;
+  }
+}
+
+/* Flex column, not grid: Horizon gives the inner `.cart-summary` a
+   `grid-row: 1 / -1`, which would span every row and bump our heading below it.
+   In a flex column, DOM order wins and the heading stays on top. */
+.cart-page .cart-page__summary {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Horizon sizes the summary's inner box off --sidebar-width (400px), which
+   overflows the page once the rail is narrower than that — it is at tablet.
+   Let it track the rail instead. */
+.cart-page :is(.cart-summary, .cart-summary__inner, .cart-totals, .cart-actions) {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* The ground belongs to the outer rail (one panel, like the source). Horizon
+   paints its own on `.cart-summary` too, which would stack a second grey box
+   inside the first. */
+.cart-page :is(.cart-summary, .cart-summary__inner) {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+/* ── Header band ────────────────────────────────────────────────────── */
+.cart-page .spy-cart__continue {
+  display: inline-block;
+  grid-column: 1 / -1;
+  margin-bottom: 16px;
+  color: #393939;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18.2px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.cart-page .spy-cart__continue:hover {
+  text-decoration: underline;
+}
+
+/* Source heading: "Your Cart (17)" at 24/28.8 600 */
+.cart-page .cart-title,
+.cart-page .cart-title * {
+  color: var(--color-spy-ink);
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  line-height: 28.8px !important;
+  text-transform: none !important;
+}
+
+.cart-page__title {
+  margin-bottom: 8px;
+}
+
+/* Horizon draws the count as a filled bubble; the source runs it inline in
+   brackets — "Your Cart (17)". Strip the pill and bracket the number. */
+.cart-page .cart-title .cart-bubble {
+  display: inline !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  /* the square is what wraps "(5)" onto three lines */
+  aspect-ratio: auto !important;
+  padding: 0;
+  border: 0;
+  background: none;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.cart-page .cart-title .cart-bubble__background {
+  display: none;
+}
+
+.cart-page .cart-title .cart-bubble__text {
+  position: static;
+  display: inline;
+  color: inherit;
+  font: inherit;
+}
+
+.cart-page .cart-title .cart-bubble__text::before {
+  content: '(';
+}
+
+.cart-page .cart-title .cart-bubble__text::after {
+  content: ')';
+}
+
+/* ── Line item ──────────────────────────────────────────────────────────
+   Source `.product-info`: a bordered card, 24px padding, 140px image, and a
+   details column that vertically centres against it. Horizon's row is a grid
+   with media/details/quantity/price areas, so the areas are re-proportioned
+   rather than the DOM rebuilt — the AJAX refs stay where they are. */
+.cart-page .cart-items__table-row {
+  padding: 24px;
+  border: 1px solid var(--color-spy-border);
+  margin-bottom: 0;
+  column-gap: 15px;
+  align-items: center;
+}
+
+/* The media track has to be redeclared, not just the image width: Horizon sizes
+   column 1 with a clamp that tops out at 7.5rem, so a 140px image inside it
+   would spill straight over the details column. */
+@container cart-items (min-width: 720px) {
+  .cart-page .cart-items__table-row {
+    grid-template-columns: 140px minmax(0, 1fr) auto minmax(6rem, auto);
+  }
+}
+
+/* Narrow container (tablet two-up, and mobile): the picker and price share the
+   row under the details, so the media track shrinks and nothing is forced wide. */
+@container cart-items (max-width: 719.98px) {
+  .cart-page .cart-items__table-row {
+    grid-template-columns: 100px minmax(0, 1fr) minmax(4rem, auto);
+    column-gap: 12px;
+  }
+
+  .cart-page .cart-items .quantity-selector {
+    width: 90px !important;
+  }
+}
+
+/* Horizon's divider variant would double the border up */
+.cart-page .cart-items--dividers .cart-items__table-row {
+  border-bottom: 1px solid var(--color-spy-border);
+  margin-bottom: 0;
+}
+
+/* Consecutive cards share an edge, like the source's stacked list */
+.cart-page .cart-items__table-row + .cart-items__table-row {
+  border-top: 0;
+}
+
+.cart-page .cart-items--dividers .cart-items__table-row:last-of-type {
+  border-block-end: 1px solid var(--color-spy-border);
+  padding-block-end: 24px;
+}
+
+/* Width comes from the grid track above, not from here — pinning 140px directly
+   would overflow the row wherever the track is narrower (it is at tablet). */
+.cart-page .cart-items__media-container {
+  aspect-ratio: 1 !important;
+  width: 100%;
+}
+
+.cart-page .cart-items__media-image {
+  object-fit: contain;
+}
+
+.cart-page .cart-items__details {
+  color: var(--color-spy-ink);
+}
+
+/* Name: 16/22.4 bold, 5px under it */
+.cart-page .cart-items__title {
+  color: var(--color-spy-ink);
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 22.4px !important;
+}
+
+.cart-page .cart-items__title-row {
+  margin-bottom: 5px;
+}
+
+/* Variant list + properties: 13/18.2 regular */
+.cart-page :is(.cart-items__variants, .cart-items__properties, .cart-items__variants-wrapper) ,
+.cart-page :is(.cart-items__variants, .cart-items__properties) :is(dt, dd) {
+  font-size: 13px !important;
+  line-height: 18.2px !important;
+}
+
+/* "Quantity : N" — label is 600, the number regular, both 13/18.2 */
+.cart-page .spy-cart-item__qty-line {
+  margin: 0;
+  font-size: 13px;
+  line-height: 18.2px;
+}
+
+.cart-page .spy-cart-item__qty-label {
+  font-weight: 600;
+}
+
+/* Stock line, the source's green */
+.cart-page .spy-cart-item__stock {
+  margin: 4px 0;
+  color: #88c290;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18.2px;
+}
+
+/* Hide Horizon's per-unit price — the source prints only the line total */
+.cart-page .cart-items__unit-price-wrapper {
+  display: none;
+}
+
+/* ── QUANTITY / REMOVE labels ───────────────────────────────────────────
+   12/16.8 uppercase #ababab, sitting above their controls. */
+.cart-page .spy-cart-item__control-labels {
+  margin-bottom: 8px;
+}
+
+.cart-page .spy-cart-item__control-label,
+.cart-page .spy-cart-item__remove-text {
+  color: #ababab;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16.8px;
+  text-transform: uppercase;
+}
+
+.cart-page .cart-items__quantity {
+  margin-top: 0;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Quantity picker: source is a 100x36 select. Horizon's stepper keeps its
+   buttons and input refs (the AJAX drives them) but takes the source's box. */
+.cart-page .cart-items .quantity-selector {
+  /* Horizon sets --quantity-selector-width: 105px from 750px up */
+  --quantity-selector-width: 100px;
+
+  width: 100px !important;
+  height: 36px !important;
+  border: 1px solid var(--color-spy-border);
+  border-radius: 0;
+  font-size: 13px;
+  line-height: 18.2px;
+}
+
+.cart-page .cart-items .quantity-selector input {
+  font-size: 13px;
+  text-align: center;
+}
+
+/* Remove is a word, not a bin, and it sits at the right of the row */
+.cart-page .cart-items__remove {
+  width: auto;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-decoration: none;
+}
+
+.cart-page .cart-items__remove:hover .spy-cart-item__remove-text {
+  text-decoration: underline;
+}
+
+/* Line total: 16/22.4 600 #222, hard right */
+.cart-page .cart-items__price {
+  color: #222;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  line-height: 22.4px !important;
+  text-align: right;
+}
+
+.cart-page .cart-items__price .compare-at-price {
+  margin-right: 4px;
+  color: #ababab;
+  text-decoration: line-through;
+}
+
+/* ── Order Summary ──────────────────────────────────────────────────────
+   564 wide, #f8f8f8, 16px padding, heading centred. */
+.cart-page__summary {
+  padding: 16px;
+  background-color: #f8f8f8;
+}
+
+.cart-page .spy-cart__summary-heading {
+  margin: 0 0 16px;
+  color: var(--color-spy-ink);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  text-align: center;
+  text-transform: none;
+}
+
+.cart-page .cart-totals__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  font-size: 16px;
+  line-height: 22.4px;
+}
+
+.cart-page :is(.cart-totals__total-label, .cart-totals__original-label) {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.cart-page :is(.cart-totals__total-value, .cart-totals__original-value) {
+  font-size: 16px !important;
+  font-weight: 600;
+  text-align: right;
+}
+
+.cart-page .cart-totals__total {
+  padding-top: 8px;
+}
+
+/* The source drops shipping and tax entirely — Shopify can't compute either
+   here, so Horizon's "taxes and shipping calculated at checkout" note goes too. */
+.cart-page .cart-totals__tax-note {
+  display: none;
+}
+
+/* Horizon puts a discount accordion in the summary; the source puts promo entry
+   under the line items, which spy-cart-promo now covers. One or the other. */
+.cart-page :is(.cart-discount, .cart-note__container, .cart__note) {
+  display: none;
+}
+
+/* Checkout: 54px tall, brand orange, square, 14/19.6 regular caps */
+.cart-page .cart__checkout-button {
+  min-height: 54px;
+  padding: 16px;
+  border: 1px solid var(--color-spy-orange);
+  border-radius: 0;
+  background-color: var(--color-spy-orange);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19.6px;
+  text-transform: uppercase;
+}
+
+.cart-page .cart__ctas {
+  margin-top: 16px;
+}
+
+/* ── Promo code ─────────────────────────────────────────────────────────
+   Sits under the line items: 72px tall, same 1px border as a line item. */
+/* 72 tall = 8 pad + 18 label + 2 gap + 36 field + 8 pad */
+.cart-page .spy-cart-promo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  padding: 8px 16px;
+  border: 1px solid var(--color-spy-border);
+}
+
+.cart-page .spy-cart-promo__label {
+  color: var(--color-spy-ink);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18.2px;
+}
+
+.cart-page .spy-cart-promo__row {
+  display: flex;
+  gap: 8px;
+}
+
+.cart-page .spy-cart-promo__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 36px;
+  padding: 6.4px 8px;
+  border: 1px solid var(--color-spy-border);
+  border-radius: 0;
+  background: #fff;
+  font-size: 13px;
+  line-height: 18.2px;
+}
+
+.cart-page .spy-cart-promo__apply {
+  flex: 0 0 auto;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--color-spy-orange);
+  border-radius: 0;
+  background: #fff;
+  color: var(--color-spy-orange);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18.2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.cart-page .spy-cart-promo__apply:hover {
+  background: var(--color-spy-orange);
+  color: #fff;
+}
+
+.cart-page .spy-cart-promo__error {
+  margin: 0;
+  color: var(--color-spy-gray);
+  font-size: 13px;
+  line-height: 18.2px;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────────────
+   Source keeps image-left / details-right per item and stacks the summary
+   below the list. Horizon already stacks below 750, so only the item box and
+   the summary rail need resetting. */
+@media screen and (max-width: 749.98px) {
+  .cart-page__summary {
+    margin-top: 24px;
+  }
+
+  .cart-page .cart-items__table-row {
+    padding: 16px;
+    column-gap: 12px;
+  }
+
+  .cart-page .cart-items__media,
+  .cart-page .cart-items__media-container {
+    width: 100px;
+  }
+}
+
 /* Footer links: plain, inherit colour, subtle hover */
 :is(.spy-footer, .spy-footer-utilities) a {
   color: inherit;
