@@ -772,10 +772,574 @@
             "text_color": ""
           },
           "blocks": {}
+        },
+        "rewards_grid": {
+          "type": "spy-rewards-grid",
+          "name": "Ways to earn",
+          "settings": {
+            "max_width": 800,
+            "columns_desktop": 3,
+            "columns_tablet": 3,
+            "columns_mobile": 2,
+            "column_gap": 9,
+            "row_gap": 10,
+            "tile_ratio": "8/7",
+            "tile_ratio_mobile": "1/1",
+            "tile_min_height": 0,
+            "tile_padding": 20,
+            "tile_padding_mobile": 14,
+            "tile_radius": 0,
+            "tile_background": "#f0f0f0",
+            "tile_background_hover": "{{ settings.color_palette.background }}",
+            "fade_duration": 250,
+            "icon_width": 32,
+            "icon_width_mobile": 28,
+            "title_color": "{{ settings.color_palette.foreground }}",
+            "title_size": 14,
+            "title_size_mobile": 12,
+            "title_weight": "500",
+            "title_tracking": 0.3,
+            "text_color": "{{ settings.color_palette.color1 }}",
+            "text_size": 13,
+            "text_size_mobile": 11,
+            "cta_background": "{{ settings.color_palette.color3 }}",
+            "cta_background_hover": "#cf6f1d",
+            "cta_color": "{{ settings.color_palette.background }}",
+            "cta_size": 13,
+            "cta_size_mobile": 11,
+            "cta_tracking": 0.5,
+            "cta_width": 150,
+            "cta_width_mobile": 110,
+            "cta_height": 44,
+            "cta_radius": 0,
+            "note_color": "{{ settings.color_palette.foreground }}",
+            "link_color": "{{ settings.color_palette.foreground }}",
+            "note_size": 13,
+            "note_size_mobile": 11,
+            "note_gap": 14
+          },
+          "blocks": {
+            "reward_join": {
+              "type": "_spy-reward-tile",
+              "name": "Join",
+              "settings": {
+                "cta_label": "SIGN UP",
+                "cta_url": "",
+                "note_text": "Already a member?",
+                "login_label": "Log in",
+                "login_url": "",
+                "context_label": "Join"
+              },
+              "blocks": {
+                "join_icon": {
+                  "type": "_spy-reward-icon",
+                  "name": "Icon",
+                  "settings": {
+                    "image": "shopify://shop_images/join-point.webp",
+                    "alt": "",
+                    "width_override": 0,
+                    "space_above": 0
+                  },
+                  "blocks": {}
+                },
+                "join_title": {
+                  "type": "_spy-reward-title",
+                  "name": "Title",
+                  "settings": {
+                    "title": "JOIN",
+                    "tag": "p",
+                    "font": "var(--font-body--family)",
+                    "case": "uppercase",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 14
+                  },
+                  "blocks": {}
+                },
+                "join_text": {
+                  "type": "_spy-reward-text",
+                  "name": "Points",
+                  "settings": {
+                    "text": "300 Points",
+                    "font": "var(--font-body--family)",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 4
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "join_icon",
+                "join_title",
+                "join_text"
+              ]
+            },
+            "reward_birthday": {
+              "type": "_spy-reward-tile",
+              "name": "Birthday reward",
+              "settings": {
+                "cta_label": "SIGN UP",
+                "cta_url": "",
+                "note_text": "Already a member?",
+                "login_label": "Log in",
+                "login_url": "",
+                "context_label": "Birthday reward"
+              },
+              "blocks": {
+                "birthday_icon": {
+                  "type": "_spy-reward-icon",
+                  "name": "Icon",
+                  "settings": {
+                    "image": "shopify://shop_images/birthday-point.webp",
+                    "alt": "",
+                    "width_override": 0,
+                    "space_above": 0
+                  },
+                  "blocks": {}
+                },
+                "birthday_title": {
+                  "type": "_spy-reward-title",
+                  "name": "Title",
+                  "settings": {
+                    "title": "BIRTHDAY REWARD",
+                    "tag": "p",
+                    "font": "var(--font-body--family)",
+                    "case": "uppercase",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 14
+                  },
+                  "blocks": {}
+                },
+                "birthday_text": {
+                  "type": "_spy-reward-text",
+                  "name": "Points",
+                  "settings": {
+                    "text": "100 Points",
+                    "font": "var(--font-body--family)",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 4
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "birthday_icon",
+                "birthday_title",
+                "birthday_text"
+              ]
+            },
+            "reward_review": {
+              "type": "_spy-reward-tile",
+              "name": "Leave a review",
+              "settings": {
+                "cta_label": "SIGN UP",
+                "cta_url": "",
+                "note_text": "Already a member?",
+                "login_label": "Log in",
+                "login_url": "",
+                "context_label": "Leave a review"
+              },
+              "blocks": {
+                "review_icon": {
+                  "type": "_spy-reward-icon",
+                  "name": "Icon",
+                  "settings": {
+                    "image": "shopify://shop_images/review-point.webp",
+                    "alt": "",
+                    "width_override": 0,
+                    "space_above": 0
+                  },
+                  "blocks": {}
+                },
+                "review_title": {
+                  "type": "_spy-reward-title",
+                  "name": "Title",
+                  "settings": {
+                    "title": "LEAVE A REVIEW",
+                    "tag": "p",
+                    "font": "var(--font-body--family)",
+                    "case": "uppercase",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 14
+                  },
+                  "blocks": {}
+                },
+                "review_text": {
+                  "type": "_spy-reward-text",
+                  "name": "Points",
+                  "settings": {
+                    "text": "25 Points",
+                    "font": "var(--font-body--family)",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 4
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "review_icon",
+                "review_title",
+                "review_text"
+              ]
+            },
+            "reward_shop": {
+              "type": "_spy-reward-tile",
+              "name": "Shop polarized",
+              "settings": {
+                "cta_label": "SIGN UP",
+                "cta_url": "",
+                "note_text": "Already a member?",
+                "login_label": "Log in",
+                "login_url": "",
+                "context_label": "Shop polarized"
+              },
+              "blocks": {
+                "shop_icon": {
+                  "type": "_spy-reward-icon",
+                  "name": "Icon",
+                  "settings": {
+                    "image": "shopify://shop_images/shop-point.webp",
+                    "alt": "",
+                    "width_override": 0,
+                    "space_above": 0
+                  },
+                  "blocks": {}
+                },
+                "shop_title": {
+                  "type": "_spy-reward-title",
+                  "name": "Title",
+                  "settings": {
+                    "title": "SHOP POLARIZED",
+                    "tag": "p",
+                    "font": "var(--font-body--family)",
+                    "case": "uppercase",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 14
+                  },
+                  "blocks": {}
+                },
+                "shop_text": {
+                  "type": "_spy-reward-text",
+                  "name": "Points",
+                  "settings": {
+                    "text": "25 Points",
+                    "font": "var(--font-body--family)",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 4
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "shop_icon",
+                "shop_title",
+                "shop_text"
+              ]
+            },
+            "reward_purchase": {
+              "type": "_spy-reward-tile",
+              "name": "Make a purchase",
+              "settings": {
+                "cta_label": "SIGN UP",
+                "cta_url": "",
+                "note_text": "Already a member?",
+                "login_label": "Log in",
+                "login_url": "",
+                "context_label": "Make a purchase"
+              },
+              "blocks": {
+                "purchase_icon": {
+                  "type": "_spy-reward-icon",
+                  "name": "Icon",
+                  "settings": {
+                    "image": "shopify://shop_images/purchase-point.webp",
+                    "alt": "",
+                    "width_override": 0,
+                    "space_above": 0
+                  },
+                  "blocks": {}
+                },
+                "purchase_title": {
+                  "type": "_spy-reward-title",
+                  "name": "Title",
+                  "settings": {
+                    "title": "MAKE A PURCHASE",
+                    "tag": "p",
+                    "font": "var(--font-body--family)",
+                    "case": "uppercase",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 14
+                  },
+                  "blocks": {}
+                },
+                "purchase_text": {
+                  "type": "_spy-reward-text",
+                  "name": "Points",
+                  "settings": {
+                    "text": "1 Point per $1 Spent",
+                    "font": "var(--font-body--family)",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 4
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "purchase_icon",
+                "purchase_title",
+                "purchase_text"
+              ]
+            },
+            "reward_facebook": {
+              "type": "_spy-reward-tile",
+              "name": "Like us on Facebook",
+              "settings": {
+                "cta_label": "SIGN UP",
+                "cta_url": "",
+                "note_text": "Already a member?",
+                "login_label": "Log in",
+                "login_url": "",
+                "context_label": "Like us on Facebook"
+              },
+              "blocks": {
+                "facebook_icon": {
+                  "type": "_spy-reward-icon",
+                  "name": "Icon",
+                  "settings": {
+                    "image": "shopify://shop_images/facebook-point.webp",
+                    "alt": "",
+                    "width_override": 0,
+                    "space_above": 0
+                  },
+                  "blocks": {}
+                },
+                "facebook_title": {
+                  "type": "_spy-reward-title",
+                  "name": "Title",
+                  "settings": {
+                    "title": "LIKE US ON FACEBOOK",
+                    "tag": "p",
+                    "font": "var(--font-body--family)",
+                    "case": "uppercase",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 14
+                  },
+                  "blocks": {}
+                },
+                "facebook_text": {
+                  "type": "_spy-reward-text",
+                  "name": "Points",
+                  "settings": {
+                    "text": "10 Points",
+                    "font": "var(--font-body--family)",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 4
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "facebook_icon",
+                "facebook_title",
+                "facebook_text"
+              ]
+            },
+            "reward_year": {
+              "type": "_spy-reward-tile",
+              "name": "3 purchases in a year",
+              "settings": {
+                "cta_label": "SIGN UP",
+                "cta_url": "",
+                "note_text": "Already a member?",
+                "login_label": "Log in",
+                "login_url": "",
+                "context_label": "3 purchases in a year"
+              },
+              "blocks": {
+                "year_icon": {
+                  "type": "_spy-reward-icon",
+                  "name": "Icon",
+                  "settings": {
+                    "image": "shopify://shop_images/year-point.webp",
+                    "alt": "",
+                    "width_override": 0,
+                    "space_above": 0
+                  },
+                  "blocks": {}
+                },
+                "year_title": {
+                  "type": "_spy-reward-title",
+                  "name": "Title",
+                  "settings": {
+                    "title": "3 PURCHASES IN A YEAR",
+                    "tag": "p",
+                    "font": "var(--font-body--family)",
+                    "case": "uppercase",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 14
+                  },
+                  "blocks": {}
+                },
+                "year_text": {
+                  "type": "_spy-reward-text",
+                  "name": "Points",
+                  "settings": {
+                    "text": "100 Points",
+                    "font": "var(--font-body--family)",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 4
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "year_icon",
+                "year_title",
+                "year_text"
+              ]
+            },
+            "reward_spend": {
+              "type": "_spy-reward-tile",
+              "name": "Spend over $200",
+              "settings": {
+                "cta_label": "SIGN UP",
+                "cta_url": "",
+                "note_text": "Already a member?",
+                "login_label": "Log in",
+                "login_url": "",
+                "context_label": "Spend over $200"
+              },
+              "blocks": {
+                "spend_icon": {
+                  "type": "_spy-reward-icon",
+                  "name": "Icon",
+                  "settings": {
+                    "image": "shopify://shop_images/spend-point.webp",
+                    "alt": "",
+                    "width_override": 0,
+                    "space_above": 0
+                  },
+                  "blocks": {}
+                },
+                "spend_title": {
+                  "type": "_spy-reward-title",
+                  "name": "Title",
+                  "settings": {
+                    "title": "SPEND OVER $200",
+                    "tag": "p",
+                    "font": "var(--font-body--family)",
+                    "case": "uppercase",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 14
+                  },
+                  "blocks": {}
+                },
+                "spend_text": {
+                  "type": "_spy-reward-text",
+                  "name": "Points",
+                  "settings": {
+                    "text": "25 Points",
+                    "font": "var(--font-body--family)",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 4
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "spend_icon",
+                "spend_title",
+                "spend_text"
+              ]
+            },
+            "reward_instagram": {
+              "type": "_spy-reward-tile",
+              "name": "Follow us on Instagram",
+              "settings": {
+                "cta_label": "SIGN UP",
+                "cta_url": "",
+                "note_text": "Already a member?",
+                "login_label": "Log in",
+                "login_url": "",
+                "context_label": "Follow us on Instagram"
+              },
+              "blocks": {
+                "instagram_icon": {
+                  "type": "_spy-reward-icon",
+                  "name": "Icon",
+                  "settings": {
+                    "image": "shopify://shop_images/instagram-point.webp",
+                    "alt": "",
+                    "width_override": 0,
+                    "space_above": 0
+                  },
+                  "blocks": {}
+                },
+                "instagram_title": {
+                  "type": "_spy-reward-title",
+                  "name": "Title",
+                  "settings": {
+                    "title": "FOLLOW US ON INSTAGRAM",
+                    "tag": "p",
+                    "font": "var(--font-body--family)",
+                    "case": "uppercase",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 14
+                  },
+                  "blocks": {}
+                },
+                "instagram_text": {
+                  "type": "_spy-reward-text",
+                  "name": "Points",
+                  "settings": {
+                    "text": "10 Points",
+                    "font": "var(--font-body--family)",
+                    "size_override": 0,
+                    "color_override": "",
+                    "space_above": 4
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "instagram_icon",
+                "instagram_title",
+                "instagram_text"
+              ]
+            }
+          },
+          "block_order": [
+            "reward_join",
+            "reward_birthday",
+            "reward_review",
+            "reward_shop",
+            "reward_purchase",
+            "reward_facebook",
+            "reward_year",
+            "reward_spend",
+            "reward_instagram"
+          ]
         }
       },
       "block_order": [
         "group_pHK6KW",
+        "rewards_grid",
         "heading",
         "page-content"
       ],
