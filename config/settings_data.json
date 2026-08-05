@@ -14,7 +14,7 @@
     "logo_height_mobile": 28,
     "favicon": "shopify://shop_images/favicon.png",
     "page_text_color": "{{ settings.color_palette.foreground }}",
-    "type_body_font": "barlow_n4",
+    "type_body_font": "serif",
     "type_subheading_font": "barlow_n5",
     "type_heading_font": "barlow_n7",
     "type_accent_font": "barlow_n7",
