@@ -1,0 +1,4 @@
+# Capture output — regenerate with shot.js / verify.js against the dev server
+# and `python -m http.server 8899 --directory reference`. The measured numbers
+# live in the committed *.json and in audit/page-spec-watermen.md.
+*.png

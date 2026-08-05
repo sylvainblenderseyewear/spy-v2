@@ -14,9 +14,11 @@ SFCC Page Designer. Every module is an `experience-assets-html` / `contentAsset`
 inferred from screenshots. Shared chrome comes from `global.css`.
 
 Container model: content assets are full-bleed; the ones that need a container open their own
-Bootstrap `.container` (1140px max, 15px inner padding). Section headers sit in a full-width
-`experience-layouts-3_column` at `col-lg-3 / col-lg-6 / col-lg-3`, so a header is **50% of the
-viewport**, while tiles under it are capped at 1140px.
+Bootstrap `.container`, which on this site tops out at **1440**, not 1140 — the ladder is
+540 / 720 / 1140 / 1440 at 544 / 769 / 992 / 1200, always with 15px inner padding. Section
+headers sit in a full-width `experience-layouts-3_column` at `col-lg-3 / col-lg-6 / col-lg-3`,
+so the copy measures the middle two of four columns: **690**, or **705** inside the tech
+container, whose row is 15px wider each side.
 
 ## Breakpoint
 
@@ -46,11 +48,15 @@ Only 5 and 6 are new blocks; 12 extended an existing unused section. Everything 
 ## Measurements
 
 ### Shared section header (`sectionHeader`)
-- h2 **28px / 600 / uppercase / lh 1.2**, centred, margin `1em 0 .5em` (= 28px / 14px)
-- subheader **18px**, `line-height: normal`
-- column width **50% of viewport** (720px at 1440)
-- Built with `custom-liquid` because the `text` block's `font_size` select has no 1.75rem —
-  an off-list value silently falls back to the fluid h2 preset (36.86px at 1440, 30px at 390).
+- h2 **28px / 600 / uppercase / lh 1.2**, centred, margin `1em 0 .5em` (= 28px / 14px).
+  Black `#000` on OUR TECH; the source's default ink elsewhere.
+- subheader **18px / lh 1.2 (21.6px)**, `margin-bottom: 16px`, then **48px** of clear space
+  before whatever the band holds
+- copy measure **690** (**705** in the tech container) — not half the viewport
+- Space above the h2 differs per band: 56 on OUR TECH, 52 on LENS OVERVIEW, 8 on LENS BENEFITS,
+  and 48 on the three lens rails (28 on BRONZE, whose header uses `margin: 0 0 48px`)
+- Built with `spy-heading` / `spy-body-text` because the stock `text` block's `font_size` select
+  has no 1.75rem — an off-list value silently falls back to the fluid h2 preset.
 
 ### 1 · Intro
 - container `max-width: 700px`, `padding: 40px 20px`, `margin-bottom: 50px`
@@ -63,14 +69,63 @@ Only 5 and 6 are new blocks; 12 extended an existing unused section. Everything 
 - Note: this orange is the source's button colour and differs from brand `#f57f29`.
 
 ### 4 · OUR TECH
-- band `#f5f5f5`, full-bleed; tiles capped at **1140px** with 15px inner padding
-  → each tile **540px**, gutter **30px**, first tile at x=165 in a 1440 viewport (verified)
+- band `#f5f5f5`, full-bleed, starting **48px** below the CTA (the row's own top margin);
+  `.sfcc-custom-container` is the 1440 container with `padding: 40px 15px`
+  → each tile **690px**, gutter **30px**, first tile at x=15 in a 1440 viewport (verified),
+  and every card carries a **30px** tail
 - tile art 1000×800 (**1.25**), full tile width
 - `.sfcc-card-content` `padding: 30px 20px`
 - title **18px / 700 / uppercase**, `letter-spacing: .5px`, `margin-bottom: 20px`
   (card 2 has `HAPPY BOOST™` inline in `#ee7624`)
 - bullets **14px / lh 1.6**, `li margin-bottom: 8px`, `padding-left: 20px`, `•` marker
 - stacks at `col-md-6` → below 768px
+
+### 2 / 7–9 · Product carousels — the collection-list card
+
+Source `.product-tile`, five up in a 1378 track:
+
+```
+.container   1440 max-width, padding 0 15   -> 1410 @ x15
+.row         margin 0 16                    -> 1378 @ x31
+slick slide  1378 / 5 = 275.6, padding-right 16 (the gutter)
+tile                                        -> 259.6
+```
+
+| part | source |
+|---|---|
+| gallery | 260 × 260, padding 26 (10%), image 208 — `image_ratio: square` |
+| tech stickers | 40 × 40, top 11.2, right 5, 4px apart |
+| Quick View | 228 × 34.8, margin `-43.2 16 8`, 12/400 uppercase, 1px `#f27e37` on white, hover only from 769 |
+| label band | padding `8 8 0`, badge + colourway stacked and centred |
+| badge | 13 / 700 uppercase `#f57d31`, 1px border, padding `3.2 12.8 0` |
+| colourway | 14.4 / 400 / 20.16, `#6c757d` — the **name**, not a colour count |
+| swatches | 48 × 48 on `#f8f8f8`, absolute over the labels, swapped in on hover |
+| text band | padding `10 8 24` — **24**, not the PLP's 40: these tiles carry no rating or Compare row |
+| title | 19.2 / 900 / 23.04 `#1d2a2b`, one line — the **model** name (`title_source: group`) |
+| price | 15 / **700** / 21 `#565656`; compare-at `#ababab` at 600 |
+
+Slick's responsive steps, reproduced in CSS: **5 up above 1140, 3 to 1140, 2 to 720, 1 to 540.**
+Below 769 the row keeps Bootstrap's `-15px` margin, so the track runs the full container width
+instead of pulling in 16px.
+
+Arrows are 35px circles, orange glyph on white, pulled 14px past the page edge — the source
+leaves them half off-screen, and `overflow-x: clip` on the section stops that opening a scrollbar.
+
+### Band rhythm (1440) — matched to within 0.5px
+
+| band | height |
+|---|---|
+| intro | 527.3 |
+| frames carousel | 404.6 |
+| shop-all CTA | 155.3 (107.3 + the 48 of white above the grey) |
+| OUR TECH | 1971.5 (header 196.4 + grid 1775.1) |
+| LENS OVERVIEW | 751.6 (header 240.4 + scale 511.2) |
+| LENS OPTIONS | 713.5 |
+| ICE BLUE / BLACK MIRROR | 534.2 each |
+| BRONZE | 514.2 |
+| LENS BENEFITS header | 196.4 |
+| LENS BENEFITS carousel | 525 (20 + 480 + 25) |
+| shop-all banner | 394 (48 + 16 + 330) |
 
 ### 5 · LENS OVERVIEW
 - container `max-width: 1200px`, `padding: 40px 20px`, white
@@ -79,7 +134,7 @@ Only 5 and 6 are new blocks; 12 extended an existing unused section. Everything 
   Arrow scale: 2px line, inset 80px each side, 8×16px triangle caps, sun/cloud **50×50**
   pulled up 25px over the line. Copy row: VLT **24px/600** `mb 30px`, condition **18px/600**
   `mb 8px`, description **16px / lh 1.4 / #666**.
-  Vertical rhythm: 40px under circles + 10px = **50px** to the scale, 30px + 30px = **60px** below it.
+  Vertical rhythm: 15px under the circle + the grid's 40px = **55px** to the scale, **30px** below it.
 - **mobile**: scale and copy row drop out. Circles **120×120** (photo inset 15px → 90×90) sit
   beside their own copy, threaded on a 2px vertical line at `left: 60px` (the circle centre),
   sun 40×40 at top, cloud 40×40 at bottom, items `margin-bottom: 40px`.
@@ -129,7 +184,9 @@ Only 5 and 6 are new blocks; 12 extended an existing unused section. Everything 
 ### 12 · Shop-all banner
 - separate desktop (1920×440) and mobile (800×640) art — per-breakpoint setting, no shared value
 - **no scrim**: the desktop art already carries a black panel for the copy
-- copy centre-right on desktop, bottom-centre on mobile, capped to a 1140px container
+- copy centre-right on desktop, bottom-centre on mobile. The copy box is shrink-to-fit against
+  the **15px container edge** with its own `padding: 16px 16px 64px`, so heading and button share
+  one left edge and the block sits 24px above centre
 - h2 **28px / 700 / white / uppercase**, two lines (`SHOP ALL` / `FISHING SUNGLASSES`)
 - CTA `.btn-outline-secondary.btn-square.btn-lg` → **white fill, `#1d2a2b` text and 1px border,
   radius 0, 14px, padding 8px 32px**; hover inverts
@@ -142,8 +199,8 @@ Only 5 and 6 are new blocks; 12 extended an existing unused section. Everything 
 | Intro h2 | 40px / 700 |
 | LENS OPTIONS h2 | 26px desktop, 22px mobile |
 | Benefit slide title | 40px desktop, 28px mobile |
-| OUR TECH tiles | 540px at x=165 / x=735, 30px gutter — source-exact |
-| Grey band | 1440 full-bleed; header 720 (50%) |
+| OUR TECH tiles | 690px at x=15 / x=735, 30px gutter — source-exact |
+| Grey band | 1440 full-bleed; header copy 705 wide at x=367.5 |
 | Lens overview | 1200 wide; circles 200px desktop / 120px mobile; scale 1160×27 desktop, hidden ≤768 |
 | Lens picker | 1000 wide; 4 swatches; panel swap, drag (`--cs` 18 → 77) and ArrowLeft (→72) all work |
 | Benefits carousel | capped 1200 |
@@ -186,13 +243,28 @@ dropped and Horizon's fluid preset takes over at ~36.9px.
 
 ## Outstanding before sign-off
 
-1. **Tag products `watermen`.** The `watermen` collection is a smart collection on `TAG = watermen`
-   and currently holds **0 products**, so rail 1 is empty. It fills itself once the migration tags
-   them — no template change needed.
-2. **Three lens-colourway collections don't exist.** Rails 7–9 (Ice Blue Mirror / Black Mirror /
-   Bronze) have empty collection pickers because the store has only broad-category collections plus
-   per-model ones keyed on `collection::<MODEL>` tags. Decide the convention — most likely smart
-   collections on a lens tag or on `spec.lens_name` — then point the three rails at them.
-3. **Set the two link targets**: the CTA button and the banner both point at the fishing
-   sunglasses collection (source: `/us/sunglasses/fishing-sunglasses/`), which also doesn't exist yet.
-4. Re-shoot 1440 / 768 / 390 against the source once the rails have products, for the overlay diff.
+Layout is source-exact at 1440 / 768 / 390 (see the band table above). What is left is data:
+
+1. **No tech badges.** `spec.technologies`, `spec.ansi_rating` and `spec.certifications` are empty
+   on all 40 products in the `watermen` collection, so the HB / ANSI Z87 stickers cannot render.
+   The block is wired and fills in from the migration.
+2. **No "New" or sale badges.** No product carries a `new` tag, `pdp.badge_new`, or a compare-at
+   price. Each card is therefore **3.4px shorter** than the source's badged tile — that is the
+   whole remaining height delta on the four rails.
+3. **No colour swatches.** One product per colourway and no variant media, so the hover swatch row
+   stays empty. Same blocker as the PLP.
+4. **Body text colour.** The source's global body ink is `#1d2a2b`; the theme token is `#2c393e`.
+   Left alone on purpose — it is a Layer 1 brand token and changing it moves every signed-off
+   page. Needs a decision.
+5. **The source carousel autoplays and loops** (`infinite: true`, `autoplaySpeed: 3000`).
+   Not reproduced: Horizon's resource list does not autoplay, and an auto-advancing carousel is an
+   accessibility regression. The visible consequence is that the previous arrow hides on the first
+   slide instead of being drawn half off-screen.
+6. **Set the two link targets**: the CTA button and the banner both point at the fishing
+   sunglasses collection (source: `/us/sunglasses/fishing-sunglasses/`), which does not exist yet.
+
+### A note on comparing against the capture
+
+`document.fonts` reports `DINNextLTPro … error` on `reference/waterman/` — the saved page has no
+font files, so it renders in Arial. Trust its **box geometry**, never its text widths or line
+breaks. Our page loads the real DIN, so a long paragraph legitimately breaks a word differently.

@@ -719,6 +719,16 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   font-weight: 700;
 }
 
+/* Stock Horizon prints the amount in `.price` with no label around it, so that
+   span is the source's `.sales` — bold. The compare-at stays at 600. */
+:is(collection-component, .section-resource-list) .product-card .price {
+  font-weight: 700 !important;
+}
+
+:is(collection-component, .section-resource-list) .product-card .compare-at-price {
+  font-weight: 600 !important;
+}
+
 :is(collection-component, .section-resource-list) .product-card .spy-price__compare {
   margin-right: 4px;
   color: #ababab;
@@ -2077,17 +2087,24 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   padding-bottom: 1.5rem;
 }
 
-/* Arrows ride the viewport edge, half off-screen, the way slick leaves them.
-   35px circles, white on an orange glyph, centred on the tile. */
+/* Arrows ride the viewport edge, half off-screen, the way slick leaves them:
+   35px circles, orange glyph on white, pulled 14px past the page edge. */
 [data-template='page.watermen'] .resource-list__carousel slideshow-arrows {
   padding-inline: 0;
-  margin-inline: -0.875rem; /* -14px */
+  margin-inline: -0.875rem; /* -14px, no container padding under 769 */
+}
+
+@media (min-width: 769px) {
+  [data-template='page.watermen'] .resource-list__carousel slideshow-arrows {
+    margin-inline: -1.8125rem; /* -14px, out past the container's 15px */
+  }
 }
 
 [data-template='page.watermen'] .resource-list__carousel .slideshow-control {
   width: 2.1875rem; /* 35px */
   height: 2.1875rem;
   min-width: 0;
+  min-height: 0;
   border: 0;
   border-radius: 50%;
   background: #fff;
@@ -2156,6 +2173,8 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   inset-inline: 0;
   z-index: 10;
   justify-content: center;
+  align-items: flex-end;
+  min-height: 0;
   mix-blend-mode: normal;
   pointer-events: none;
 }
@@ -2194,4 +2213,11 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    the banner, on top of the benefits carousel's own 25px tail. */
 [data-template='page.watermen'] .spy-feature-link-banner {
   margin-block-start: 4rem; /* 64px */
+}
+
+/* .sfcc-image-card drops to a 20px tail under the source's md. */
+@media (max-width: 768.98px) {
+  .wm-band--tech .section-content-wrapper > .group-block--width-fill .layout-panel-flex--row {
+    padding-block-end: 1.25rem;
+  }
 }
