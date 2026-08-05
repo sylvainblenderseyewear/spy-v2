@@ -635,7 +635,7 @@
       ],
       "name": "SPY Value Props",
       "settings": {
-        "background_color": "#F2F2F2",
+        "background_color": "#f2f2f2",
         "show_border": true,
         "border_color": "#1d2a2b",
         "column_gap": 30,

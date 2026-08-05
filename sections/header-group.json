@@ -76,16 +76,6 @@
             "link_4": ""
           },
           "blocks": {}
-        },
-        "spy-header-logo": {
-          "type": "_header-logo",
-          "static": true,
-          "settings": {
-            "hide_logo_on_home_page": false,
-            "padding-block-start": 0,
-            "padding-block-end": 0
-          },
-          "blocks": {}
         }
       },
       "block_order": [
@@ -97,9 +87,44 @@
       "settings": {
         "sticky": true
       }
+    },
+    "header_announcements_WXA98z": {
+      "type": "header-announcements",
+      "blocks": {
+        "announcement_rVHzjz": {
+          "type": "_announcement",
+          "settings": {
+            "text": "Shop our latest arrivals!",
+            "link": "",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "weight": "",
+            "letter_spacing": "normal",
+            "case": "none",
+            "text_color": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "announcement_rVHzjz"
+      ],
+      "name": "t:names.announcement_bar",
+      "settings": {
+        "speed": 5,
+        "section_width": "page-width",
+        "background_color": "#1D2A2B",
+        "text_color": "#ffffff",
+        "show_close_button": false,
+        "divider_width": 0,
+        "divider_color": "",
+        "padding-block-start": 15,
+        "padding-block-end": 15
+      }
     }
   },
   "order": [
-    "header_section"
+    "header_section",
+    "header_announcements_WXA98z"
   ]
 }
