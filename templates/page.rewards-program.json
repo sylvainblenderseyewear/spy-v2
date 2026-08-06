@@ -345,7 +345,7 @@
                 "open_in_new_tab": false,
                 "placeholder": "",
                 "padding-block-start": 20,
-                "padding-block-end": 0,
+                "padding-block-end": 20,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
@@ -738,6 +738,32 @@
             "group_Mpfk6T"
           ]
         },
+        "text_kxAexE": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p><strong>MORE WAYS TO EARN POINTS</strong></p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "2rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 20,
+            "padding-block-end": 10,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
         "rewards_grid": {
           "type": "spy-rewards-grid",
           "name": "Ways to earn",
@@ -802,42 +828,68 @@
                   "settings": {
                     "image": "shopify://shop_images/join-point.webp",
                     "alt": "",
-                    "width_override": 0,
+                    "width_override": 58,
                     "space_above": 0
                   },
                   "blocks": {}
                 },
-                "join_title": {
-                  "type": "_spy-reward-title",
-                  "name": "Title",
+                "text_VxNizC": {
+                  "type": "text",
+                  "name": "title",
                   "settings": {
-                    "title": "JOIN",
-                    "tag": "p",
+                    "text": "<p>JOIN</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "case": "uppercase",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 14
+                    "font_size": "1.25rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 10,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 },
-                "join_text": {
-                  "type": "_spy-reward-text",
-                  "name": "Points",
+                "text_n8gQUK": {
+                  "type": "text",
+                  "name": "t:names.text",
                   "settings": {
-                    "text": "300 Points",
+                    "text": "<p>300 Points</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 4
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 }
               },
               "block_order": [
                 "join_icon",
-                "join_title",
-                "join_text"
+                "text_VxNizC",
+                "text_n8gQUK"
               ]
             },
             "reward_birthday": {
@@ -858,42 +910,68 @@
                   "settings": {
                     "image": "shopify://shop_images/birthday-point.webp",
                     "alt": "",
-                    "width_override": 0,
+                    "width_override": 58,
                     "space_above": 0
                   },
                   "blocks": {}
                 },
-                "birthday_title": {
-                  "type": "_spy-reward-title",
-                  "name": "Title",
+                "text_k6zQNM": {
+                  "type": "text",
+                  "name": "title",
                   "settings": {
-                    "title": "BIRTHDAY REWARD",
-                    "tag": "p",
+                    "text": "<p>BIRTHDAY REWARD</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "case": "uppercase",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 14
+                    "font_size": "1.25rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 10,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 },
-                "birthday_text": {
-                  "type": "_spy-reward-text",
-                  "name": "Points",
+                "text_QFqUnh": {
+                  "type": "text",
+                  "name": "t:names.text",
                   "settings": {
-                    "text": "100 Points",
+                    "text": "<p>100 Points</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 4
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 }
               },
               "block_order": [
                 "birthday_icon",
-                "birthday_title",
-                "birthday_text"
+                "text_k6zQNM",
+                "text_QFqUnh"
               ]
             },
             "reward_review": {
@@ -914,42 +992,68 @@
                   "settings": {
                     "image": "shopify://shop_images/review-point.webp",
                     "alt": "",
-                    "width_override": 0,
+                    "width_override": 58,
                     "space_above": 0
                   },
                   "blocks": {}
                 },
-                "review_title": {
-                  "type": "_spy-reward-title",
-                  "name": "Title",
+                "text_LDr4pn": {
+                  "type": "text",
+                  "name": "title",
                   "settings": {
-                    "title": "LEAVE A REVIEW",
-                    "tag": "p",
+                    "text": "<p>LEAVE A REVIEW</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "case": "uppercase",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 14
+                    "font_size": "1.25rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 10,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 },
-                "review_text": {
-                  "type": "_spy-reward-text",
-                  "name": "Points",
+                "text_KUqA7Y": {
+                  "type": "text",
+                  "name": "t:names.text",
                   "settings": {
-                    "text": "25 Points",
+                    "text": "<p>25 Points</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 4
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 }
               },
               "block_order": [
                 "review_icon",
-                "review_title",
-                "review_text"
+                "text_LDr4pn",
+                "text_KUqA7Y"
               ]
             },
             "reward_shop": {
@@ -970,42 +1074,68 @@
                   "settings": {
                     "image": "shopify://shop_images/shop-point.webp",
                     "alt": "",
-                    "width_override": 0,
+                    "width_override": 58,
                     "space_above": 0
                   },
                   "blocks": {}
                 },
-                "shop_title": {
-                  "type": "_spy-reward-title",
-                  "name": "Title",
+                "text_VGnAH9": {
+                  "type": "text",
+                  "name": "title",
                   "settings": {
-                    "title": "SHOP POLARIZED",
-                    "tag": "p",
+                    "text": "<p>SHOP POLARIZED</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "case": "uppercase",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 14
+                    "font_size": "1.25rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 10,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 },
-                "shop_text": {
-                  "type": "_spy-reward-text",
-                  "name": "Points",
+                "text_dpKTGE": {
+                  "type": "text",
+                  "name": "t:names.text",
                   "settings": {
-                    "text": "25 Points",
+                    "text": "<p>25 Points</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 4
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 }
               },
               "block_order": [
                 "shop_icon",
-                "shop_title",
-                "shop_text"
+                "text_VGnAH9",
+                "text_dpKTGE"
               ]
             },
             "reward_purchase": {
@@ -1026,42 +1156,68 @@
                   "settings": {
                     "image": "shopify://shop_images/purchase-point.webp",
                     "alt": "",
-                    "width_override": 0,
+                    "width_override": 58,
                     "space_above": 0
                   },
                   "blocks": {}
                 },
-                "purchase_title": {
-                  "type": "_spy-reward-title",
-                  "name": "Title",
+                "text_YPPwLG": {
+                  "type": "text",
+                  "name": "title",
                   "settings": {
-                    "title": "MAKE A PURCHASE",
-                    "tag": "p",
+                    "text": "<p>MAKE A PURCHASE</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "case": "uppercase",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 14
+                    "font_size": "1.25rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 10,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 },
-                "purchase_text": {
-                  "type": "_spy-reward-text",
-                  "name": "Points",
+                "text_mXTj8Q": {
+                  "type": "text",
+                  "name": "t:names.text",
                   "settings": {
-                    "text": "1 Point per $1 Spent",
+                    "text": "<p>1 Point per $1 Spent</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 4
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 }
               },
               "block_order": [
                 "purchase_icon",
-                "purchase_title",
-                "purchase_text"
+                "text_YPPwLG",
+                "text_mXTj8Q"
               ]
             },
             "reward_facebook": {
@@ -1082,42 +1238,68 @@
                   "settings": {
                     "image": "shopify://shop_images/facebook-point.webp",
                     "alt": "",
-                    "width_override": 0,
+                    "width_override": 58,
                     "space_above": 0
                   },
                   "blocks": {}
                 },
-                "facebook_title": {
-                  "type": "_spy-reward-title",
-                  "name": "Title",
+                "text_bMygaB": {
+                  "type": "text",
+                  "name": "title",
                   "settings": {
-                    "title": "LIKE US ON FACEBOOK",
-                    "tag": "p",
+                    "text": "<p>LIKE US ON FACEBOOK</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "case": "uppercase",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 14
+                    "font_size": "1.25rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 10,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 },
-                "facebook_text": {
-                  "type": "_spy-reward-text",
-                  "name": "Points",
+                "text_e8MLiV": {
+                  "type": "text",
+                  "name": "t:names.text",
                   "settings": {
-                    "text": "10 Points",
+                    "text": "<p>10 Points</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 4
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 }
               },
               "block_order": [
                 "facebook_icon",
-                "facebook_title",
-                "facebook_text"
+                "text_bMygaB",
+                "text_e8MLiV"
               ]
             },
             "reward_year": {
@@ -1138,42 +1320,68 @@
                   "settings": {
                     "image": "shopify://shop_images/year-point.webp",
                     "alt": "",
-                    "width_override": 0,
+                    "width_override": 58,
                     "space_above": 0
                   },
                   "blocks": {}
                 },
-                "year_title": {
-                  "type": "_spy-reward-title",
-                  "name": "Title",
+                "text_XfDAr8": {
+                  "type": "text",
+                  "name": "title",
                   "settings": {
-                    "title": "3 PURCHASES IN A YEAR",
-                    "tag": "p",
+                    "text": "<p>3 PURCHASES IN A YEAR</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "case": "uppercase",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 14
+                    "font_size": "1.25rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 10,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 },
-                "year_text": {
-                  "type": "_spy-reward-text",
-                  "name": "Points",
+                "text_Ti6FCa": {
+                  "type": "text",
+                  "name": "t:names.text",
                   "settings": {
-                    "text": "100 Points",
+                    "text": "<p>100 Points</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 4
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 }
               },
               "block_order": [
                 "year_icon",
-                "year_title",
-                "year_text"
+                "text_XfDAr8",
+                "text_Ti6FCa"
               ]
             },
             "reward_spend": {
@@ -1194,42 +1402,68 @@
                   "settings": {
                     "image": "shopify://shop_images/spend-point.webp",
                     "alt": "",
-                    "width_override": 0,
+                    "width_override": 58,
                     "space_above": 0
                   },
                   "blocks": {}
                 },
-                "spend_title": {
-                  "type": "_spy-reward-title",
-                  "name": "Title",
+                "text_PAcMBY": {
+                  "type": "text",
+                  "name": "title",
                   "settings": {
-                    "title": "SPEND OVER $200",
-                    "tag": "p",
+                    "text": "<p>SPEND OVER $200</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "case": "uppercase",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 14
+                    "font_size": "1.25rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 10,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 },
-                "spend_text": {
-                  "type": "_spy-reward-text",
-                  "name": "Points",
+                "text_JtCJ8t": {
+                  "type": "text",
+                  "name": "t:names.text",
                   "settings": {
-                    "text": "25 Points",
+                    "text": "<p>25 Points</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 4
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 }
               },
               "block_order": [
                 "spend_icon",
-                "spend_title",
-                "spend_text"
+                "text_PAcMBY",
+                "text_JtCJ8t"
               ]
             },
             "reward_instagram": {
@@ -1250,42 +1484,68 @@
                   "settings": {
                     "image": "shopify://shop_images/instagram-point.webp",
                     "alt": "",
-                    "width_override": 0,
+                    "width_override": 58,
                     "space_above": 0
                   },
                   "blocks": {}
                 },
-                "instagram_title": {
-                  "type": "_spy-reward-title",
-                  "name": "Title",
+                "text_pGeF7k": {
+                  "type": "text",
+                  "name": "title",
                   "settings": {
-                    "title": "FOLLOW US ON INSTAGRAM",
-                    "tag": "p",
+                    "text": "<p>FOLLOW US ON INSTAGRAM</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "case": "uppercase",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 14
+                    "font_size": "1.25rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 10,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 },
-                "instagram_text": {
-                  "type": "_spy-reward-text",
-                  "name": "Points",
+                "text_Rr7MJY": {
+                  "type": "text",
+                  "name": "t:names.text",
                   "settings": {
-                    "text": "10 Points",
+                    "text": "<p>10 Points</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "custom",
                     "font": "var(--font-body--family)",
-                    "size_override": 0,
-                    "color_override": "",
-                    "space_above": 4
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
                   },
                   "blocks": {}
                 }
               },
               "block_order": [
                 "instagram_icon",
-                "instagram_title",
-                "instagram_text"
+                "text_pGeF7k",
+                "text_Rr7MJY"
               ]
             }
           },
@@ -1339,6 +1599,7 @@
       },
       "block_order": [
         "group_pHK6KW",
+        "text_kxAexE",
         "rewards_grid",
         "heading",
         "page-content"
