@@ -4,12 +4,22 @@
   if section.settings.background_color != blank
     render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
   endif
+
+  # Legal pages read as a typed document, so they use their own reading column
+  # instead of Horizon's 54rem one: 232.5px of margin each side on desktop.
+  assign legal_suffixes = 'terms-of-use'
+  assign legal_column = ''
+  if page.template_suffix != blank
+    if legal_suffixes contains page.template_suffix
+      assign legal_column = '[--page-content-width:calc(100%-40px)] min-[750px]:[--page-content-width:calc(100%-128px)] min-[1200px]:[--page-content-width:calc(100%-465px)]'
+    endif
+  endif
 %}
 
 <div
   class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
-<div class="section page-width-content{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}">
+<div class="section page-width-content {{ legal_column }}{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}">
   <div
     class="
       spacing-style

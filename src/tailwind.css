@@ -31,6 +31,9 @@
   --font-spy: "DINNextLTPro", "D-DIN", sans-serif;
   --font-sans: "DINNextLTPro", "D-DIN", sans-serif;
 
+  /* Legal pages (Terms of Use etc.) keep the source's typed-document serif */
+  --font-legal: "Times New Roman", Times, serif;
+
   /* Legacy brand var aliases (kept for rules that reference var(--spy-orange/--spy-slate)) */
   --spy-orange: #f57f29;
   --spy-slate:  #2c393e;
