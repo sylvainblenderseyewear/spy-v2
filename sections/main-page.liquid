@@ -7,7 +7,7 @@
 
   # Legal pages read as a typed document, so they use their own reading column
   # instead of Horizon's 54rem one: 232.5px of margin each side on desktop.
-  assign legal_suffixes = 'terms-of-use'
+  assign legal_suffixes = 'terms-of-use,privacy-policy' | split: ','
   assign legal_column = ''
   if page.template_suffix != blank
     if legal_suffixes contains page.template_suffix
