@@ -162,7 +162,7 @@
                 "style_class": "button-custom",
                 "custom_button_background": "{{ settings.color_palette.color3 }}",
                 "custom_button_text": "{{ settings.color_palette.background }}",
-                "custom_button_border": "{{ settings.color_palette.background }}",
+                "custom_button_border": "#FFFFFF26",
                 "link_text_color": "",
                 "width": "custom",
                 "custom_width": 15,
@@ -183,7 +183,7 @@
                 "style_class": "button-custom",
                 "custom_button_background": "{{ settings.color_palette.color3 }}",
                 "custom_button_text": "{{ settings.color_palette.background }}",
-                "custom_button_border": "{{ settings.color_palette.background }}",
+                "custom_button_border": "#FFFFFF26",
                 "link_text_color": "",
                 "width": "custom",
                 "custom_width": 15,
@@ -279,7 +279,7 @@
             "open_in_new_tab": false,
             "placeholder": "",
             "padding-block-start": 0,
-            "padding-block-end": 0,
+            "padding-block-end": 60,
             "padding-inline-start": 100,
             "padding-inline-end": 100
           },
@@ -772,8 +772,8 @@
             "link": "",
             "open_in_new_tab": false,
             "placeholder": "",
-            "padding-block-start": 0,
-            "padding-block-end": 50,
+            "padding-block-start": 50,
+            "padding-block-end": 60,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
@@ -798,7 +798,7 @@
                 "background_color": "#00000026",
                 "corner_radius": 0,
                 "padding-block-start": 20,
-                "padding-block-end": 10,
+                "padding-block-end": 40,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
@@ -1641,7 +1641,7 @@
             "link": "",
             "open_in_new_tab": false,
             "placeholder": "",
-            "padding-block-start": 30,
+            "padding-block-start": 60,
             "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
@@ -1734,7 +1734,7 @@
                 "open_in_new_tab": false,
                 "placeholder": "",
                 "padding-block-start": 25,
-                "padding-block-end": 25,
+                "padding-block-end": 65,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
@@ -2264,7 +2264,7 @@
         "full_width": true,
         "gap": 0,
         "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 40,
+        "padding-block-start": 65,
         "padding-block-end": 0
       }
     }
