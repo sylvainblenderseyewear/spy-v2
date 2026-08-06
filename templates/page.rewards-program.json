@@ -2240,11 +2240,70 @@
                         "padding-inline-end": 63
                       },
                       "blocks": {}
+                    },
+                    "referral_form": {
+                      "type": "spy-referral-form",
+                      "name": "Referral form",
+                      "settings": {
+                        "field_width": 581,
+                        "field_height": 48,
+                        "corner_radius": 0,
+                        "alignment": "center",
+                        "gap": 85,
+                        "gap_mobile": 40,
+                        "space_above": 28,
+                        "space_below": 40,
+                        "font": "var(--font-body--family)",
+                        "accent_color": "#e57e26",
+                        "accent_color_hover": "#cf6f1d",
+                        "border_color": "#cccccc",
+                        "text_color": "#242424",
+                        "placeholder_color": "#a6a6a6",
+                        "button_text_color": "#ffffff",
+                        "email_subject": "Referral program signup",
+                        "success_text": "Thanks — check your inbox for your referral link."
+                      },
+                      "blocks": {
+                        "referral_input": {
+                          "type": "_spy-referral-input",
+                          "name": "Email field",
+                          "settings": {
+                            "placeholder": "Your email address",
+                            "label": "Your email address",
+                            "field_name": "contact[email]",
+                            "input_type": "email",
+                            "required": true,
+                            "space_above": 24,
+                            "label_gap": 6,
+                            "padding_inline": 14,
+                            "label_size": 13,
+                            "size_override": 0
+                          },
+                          "blocks": {}
+                        },
+                        "referral_submit": {
+                          "type": "_spy-referral-submit",
+                          "name": "Next button",
+                          "settings": {
+                            "label": "Next",
+                            "case": "uppercase",
+                            "weight": "700",
+                            "tracking": 0.5,
+                            "size_override": 0
+                          },
+                          "blocks": {}
+                        }
+                      },
+                      "block_order": [
+                        "referral_input",
+                        "referral_submit"
+                      ]
                     }
                   },
                   "block_order": [
                     "text_rBVhhW",
-                    "text_rWPjPB"
+                    "text_rWPjPB",
+                    "referral_form"
                   ]
                 }
               },

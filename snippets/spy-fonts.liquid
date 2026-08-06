@@ -54,4 +54,31 @@
   body {
     font-family: var(--font-body--family);
   }
+
+  {%- comment -%}
+    Rewards page keeps the theme's own body font (Layer 1 — settings > Typography)
+    instead of the DIN override above, which is what the source page shows.
+
+    Scoped to <main data-template>, so the announcement bar, the rest of the
+    header and the footer all stay on DIN. All five families are switched
+    because the page's text blocks pick from body, accent and primary.
+  {%- endcomment -%}
+  {%- assign page_font = settings.type_body_font.family -%}
+  {%- if settings.type_body_font.fallback_families != blank -%}
+    {%- assign page_font = page_font | append: ', ' | append: settings.type_body_font.fallback_families -%}
+  {%- endif -%}
+  main[data-template="page.rewards-program"] {
+    {%- comment -%} Set outright too: anything that just inherits would otherwise
+    still read Tailwind's --font-sans off <body>. {%- endcomment -%}
+    font-family: {{ page_font }};
+    --font-body--family: {{ page_font }};
+    --font-subheading--family: {{ page_font }};
+    --font-heading--family: {{ page_font }};
+    --font-accent--family: {{ page_font }};
+    --font-primary--family: {{ page_font }};
+    {%- comment -%} Buttons need their own line: Horizon resolves these two at
+    :root, so they keep the root family unless restated here. {%- endcomment -%}
+    --button-font-family-primary: {{ page_font }};
+    --button-font-family-secondary: {{ page_font }};
+  }
 </style>
