@@ -2,9 +2,9 @@
   assign secondary_menu = block.settings.menu
 %}
 
-<div class="spy-utility-nav flex items-center gap-4 md:gap-6 lg:gap-20 max-md:flex-1 md:ml-auto" {{ block.shopify_attributes }}>
+<div class="spy-utility-nav flex items-center gap-4 min-[992px]:gap-6 lg:gap-20 max-[991px]:flex-1 min-[992px]:ml-auto" {{ block.shopify_attributes }}>
   {% if secondary_menu != blank %}
-    <ul class="hidden md:flex items-center gap-6 list-none m-0 p-0">
+    <ul class="hidden min-[992px]:flex items-center gap-6 list-none m-0 p-0">
       {% for link in secondary_menu.links %}
         <li>
           <a
@@ -25,7 +25,7 @@
   {% if block.settings.journal_label != blank %}
     <a
       href="{{ block.settings.journal_url | default: routes.root_url }}"
-      class="inline-block max-md:mx-auto text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline hover:text-spy-orange whitespace-nowrap"
+      class="inline-block max-[991px]:mx-auto text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline hover:text-spy-orange whitespace-nowrap"
       style="font-family: var(--font-heading--family);"
     >
       {{- block.settings.journal_label -}}
@@ -49,7 +49,7 @@
     {% if block.settings.show_store_locator and block.settings.store_locator_url != blank %}
       <a
         href="{{ block.settings.store_locator_url }}"
-        class="hidden md:flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange transition-colors"
+        class="hidden min-[992px]:flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange transition-colors"
         aria-label="{{ block.settings.store_locator_label }}"
         target="_blank"
         rel="noopener"
@@ -59,7 +59,7 @@
     {% endif %}
 
     {% if block.settings.show_account and shop.customer_accounts_enabled %}
-      <div class="account-button color-custom-popover hidden md:flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange transition-colors">
+      <div class="account-button color-custom-popover hidden min-[992px]:flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange transition-colors">
         <shopify-account
           menu="{{ block.settings.customer_account_menu }}"
           class="flex items-center justify-center [&:not(:defined)]:min-w-0 [&:not(:defined)]:h-auto [&::part(signed-out-avatar)]:p-0 [&::part(signed-out-avatar)]:min-w-0 [&::part(signed-out-avatar)]:min-h-0"
