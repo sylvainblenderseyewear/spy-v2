@@ -238,11 +238,27 @@
         "margin_left_mobile": 0,
         "margin_right_mobile": 0
       }
+    },
+    "favorite_products": {
+      "type": "spy-favorite-products",
+      "settings": {
+        "product_1": "spy-discord-black-sunglasses",
+        "product_2": "spy-cyrus-black-sunglasses",
+        "product_3": "spy-dirk-matte-black-sunglasses",
+        "product_4": "spy-bewilder-screen-matte-gunmetal-sunglasses",
+        "show_swatches": true,
+        "show_price": true,
+        "padding-block-start": 32,
+        "padding-block-end": 32,
+        "padding_inline": 50,
+        "padding_inline_mobile": 16
+      }
     }
   },
   "order": [
     "change_agents",
     "main",
-    "agent_video_qftYmh"
+    "agent_video_qftYmh",
+    "favorite_products"
   ]
 }
