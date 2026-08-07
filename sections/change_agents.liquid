@@ -1,0 +1,327 @@
+{%- comment -%}
+  Change Agents hero — one baked artwork band for the team subpages.
+
+  The black panel, the athlete name and the photo all live inside a single
+  image (1587.5 x 714.375), so nothing is overlaid here. The band is just
+  centered and capped at the artwork's own width.
+
+  Every side of the padding and the margin is a setting, per breakpoint, so
+  the band can be pulled in or pushed out without touching this file. Mobile
+  defaults to edge to edge — side padding would shrink a 20:9 band to a
+  stripe on a phone.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign img = s.image
+  assign alt = s.image_alt | default: page.title
+
+  # How much of the viewport the band gives up, so `sizes` stays honest
+  assign side_space = s.padding_left | plus: s.padding_right | plus: s.margin_left | plus: s.margin_right
+  assign side_space_small = s.padding_left_small | plus: s.padding_right_small | plus: s.margin_left_small | plus: s.margin_right_small
+-%}
+
+<div
+  class="
+    change-agents leading-[0]
+    mt-[var(--ca-mt-s)] mb-[var(--ca-mb-s)] ml-[var(--ca-ml-s)] mr-[var(--ca-mr-s)]
+    pt-[var(--ca-pt-s)] pb-[var(--ca-pb-s)] pl-[var(--ca-pl-s)] pr-[var(--ca-pr-s)]
+    min-[991px]:mt-[var(--ca-mt)] min-[991px]:mb-[var(--ca-mb)] min-[991px]:ml-[var(--ca-ml)] min-[991px]:mr-[var(--ca-mr)]
+    min-[991px]:pt-[var(--ca-pt)] min-[991px]:pb-[var(--ca-pb)] min-[991px]:pl-[var(--ca-pl)] min-[991px]:pr-[var(--ca-pr)]
+  "
+  style="
+    background-color: {{ s.background_color }};
+    --ca-pt: {{ s.padding_top }}px;
+    --ca-pb: {{ s.padding_bottom }}px;
+    --ca-pl: {{ s.padding_left }}px;
+    --ca-pr: {{ s.padding_right }}px;
+    --ca-pt-s: {{ s.padding_top_small }}px;
+    --ca-pb-s: {{ s.padding_bottom_small }}px;
+    --ca-pl-s: {{ s.padding_left_small }}px;
+    --ca-pr-s: {{ s.padding_right_small }}px;
+    --ca-mt: {{ s.margin_top }}px;
+    --ca-mb: {{ s.margin_bottom }}px;
+    --ca-ml: {{ s.margin_left }}px;
+    --ca-mr: {{ s.margin_right }}px;
+    --ca-mt-s: {{ s.margin_top_small }}px;
+    --ca-mb-s: {{ s.margin_bottom_small }}px;
+    --ca-ml-s: {{ s.margin_left_small }}px;
+    --ca-mr-s: {{ s.margin_right_small }}px;
+  "
+  {{ section.shopify_attributes }}
+>
+  {%- comment -%} mx-auto = the centering the design asks for {%- endcomment -%}
+  <div class="mx-auto w-full" style="max-width: {{ s.max_width }}px;">
+    {%- if img != blank -%}
+      <img
+        src="{{ img | image_url: width: 1588 }}"
+        srcset="
+          {{ img | image_url: width: 600 }} 600w,
+          {{ img | image_url: width: 990 }} 990w,
+          {{ img | image_url: width: 1588 }} 1588w,
+          {{ img | image_url: width: 2400 }} 2400w
+        "
+        sizes="(min-width: 991px) min({{ s.max_width | ceil }}px, calc(100vw - {{ side_space }}px)), calc(100vw - {{ side_space_small }}px)"
+        alt="{{ alt | escape }}"
+        width="{{ img.width }}"
+        height="{{ img.height }}"
+        loading="eager"
+        fetchpriority="high"
+        class="block h-auto w-full"
+      >
+    {%- elsif section.settings.fallback_file != blank -%}
+      {%- comment -%} Falls back to the file sitting in Content > Files {%- endcomment -%}
+      <img
+        src="{{ section.settings.fallback_file | file_url }}"
+        alt="{{ alt | escape }}"
+        width="1588"
+        height="714"
+        loading="eager"
+        fetchpriority="high"
+        class="block h-auto w-full"
+      >
+    {%- else -%}
+      {%- comment -%} Keeps the band clickable in the editor while empty {%- endcomment -%}
+      <div class="aspect-[1588/714] w-full bg-[#000]"></div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Change Agents",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero image",
+      "info": "Artwork is 1587.5 x 714.375px."
+    },
+    {
+      "type": "text",
+      "id": "fallback_file",
+      "label": "Fallback file name",
+      "info": "File from Content > Files, used when no image is picked.",
+      "default": "Axell_Hodes.png"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Alt text",
+      "info": "Defaults to the page title."
+    },
+    {
+      "type": "header",
+      "content": "Band"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Image max width",
+      "min": 800,
+      "max": 2000,
+      "step": 12.5,
+      "unit": "px",
+      "default": 1587.5
+    },
+    {
+      "type": "header",
+      "content": "Padding — 991px and up"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Left",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Right",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "header",
+      "content": "Padding — below 991px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_small",
+      "label": "Top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_small",
+      "label": "Bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left_small",
+      "label": "Left",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right_small",
+      "label": "Right",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Margin — 991px and up",
+      "info": "Space outside the band, so the background color stops before it."
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_left",
+      "label": "Left",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_right",
+      "label": "Right",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Margin — below 991px"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_small",
+      "label": "Top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_small",
+      "label": "Bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_left_small",
+      "label": "Left",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_right_small",
+      "label": "Right",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Change Agents",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

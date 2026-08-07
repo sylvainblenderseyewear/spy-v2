@@ -1,0 +1,529 @@
+{%- comment -%}
+  Agent Video — the video band on the Change Agents athlete pages.
+
+  Same block engine as Horizon's custom section (video / text / group blocks
+  nest inside it), but the band owns EVERY side of its padding and margin, per
+  breakpoint. Spacing is authored with Tailwind utilities reading the vars set
+  below, so an editor can move the band without a code change.
+
+  Margin sits outside the background color; padding sits inside it.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+
+  # "Page" keeps the theme's page margins, the same cap a stock section gets
+  case s.section_width
+    when 'full-width'
+      assign max_width = 'none'
+    when 'custom'
+      assign max_width = s.max_width | append: 'px'
+    else
+      assign max_width = 'min(var(--page-content-width), calc(100% - var(--page-margin) * 2))'
+  endcase
+
+  capture children
+    content_for 'blocks'
+  endcapture
+-%}
+
+<div
+  class="
+    agent-video
+    mt-[var(--av-mt-m)] mb-[var(--av-mb-m)] ml-[var(--av-ml-m)] mr-[var(--av-mr-m)]
+    min-[750px]:mt-[var(--av-mt)] min-[750px]:mb-[var(--av-mb)] min-[750px]:ml-[var(--av-ml)] min-[750px]:mr-[var(--av-mr)]
+  "
+  style="
+    --av-bg: {{ s.background_color | default: 'transparent' }};
+    --av-max: {{ max_width }};
+    --av-pt: {{ s.padding_top }}px;
+    --av-pb: {{ s.padding_bottom }}px;
+    --av-pl: {{ s.padding_left }}px;
+    --av-pr: {{ s.padding_right }}px;
+    --av-pt-m: {{ s.padding_top_mobile }}px;
+    --av-pb-m: {{ s.padding_bottom_mobile }}px;
+    --av-pl-m: {{ s.padding_left_mobile }}px;
+    --av-pr-m: {{ s.padding_right_mobile }}px;
+    --av-mt: {{ s.margin_top }}px;
+    --av-mb: {{ s.margin_bottom }}px;
+    --av-ml: {{ s.margin_left }}px;
+    --av-mr: {{ s.margin_right }}px;
+    --av-mt-m: {{ s.margin_top_mobile }}px;
+    --av-mb-m: {{ s.margin_bottom_mobile }}px;
+    --av-ml-m: {{ s.margin_left_mobile }}px;
+    --av-mr-m: {{ s.margin_right_mobile }}px;
+  "
+  {{ section.shopify_attributes }}
+>
+  {%- comment -%} The band: background and width cap live here, so margin stays outside the color {%- endcomment -%}
+  <div class="mx-auto w-full bg-[var(--av-bg)] [max-width:var(--av-max)]">
+    {%- comment -%}
+      Horizon's own layout classes, so nested group / video / text blocks size
+      themselves exactly as they do in a stock section.
+    {%- endcomment -%}
+    <div
+      class="
+        layout-panel-flex layout-panel-flex--{{ s.content_direction }} section-content-wrapper
+        {% if s.vertical_on_mobile %}mobile-column{% endif %}
+        pt-[var(--av-pt-m)] pb-[var(--av-pb-m)] pl-[var(--av-pl-m)] pr-[var(--av-pr-m)]
+        min-[750px]:pt-[var(--av-pt)] min-[750px]:pb-[var(--av-pb)] min-[750px]:pl-[var(--av-pl)] min-[750px]:pr-[var(--av-pr)]
+      "
+      style="{% render 'layout-panel-style', settings: s %}"
+    >
+      {{ children }}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Agent Video",
+  "tag": "section",
+  "class": "section-wrapper",
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "content_direction",
+      "label": "Direction",
+      "options": [
+        {
+          "value": "column",
+          "label": "Vertical"
+        },
+        {
+          "value": "row",
+          "label": "Horizontal"
+        }
+      ],
+      "default": "column"
+    },
+    {
+      "type": "checkbox",
+      "id": "vertical_on_mobile",
+      "label": "Stack on mobile",
+      "default": true,
+      "visible_if": "{{ section.settings.content_direction == 'row' }}"
+    },
+    {
+      "type": "select",
+      "id": "horizontal_alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        },
+        {
+          "value": "space-between",
+          "label": "Space between"
+        }
+      ],
+      "default": "center",
+      "visible_if": "{{ section.settings.content_direction == 'row' }}"
+    },
+    {
+      "type": "select",
+      "id": "vertical_alignment",
+      "label": "Position",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center",
+      "visible_if": "{{ section.settings.content_direction == 'row' }}"
+    },
+    {
+      "type": "select",
+      "id": "horizontal_alignment_flex_direction_column",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "visible_if": "{{ section.settings.content_direction != 'row' }}"
+    },
+    {
+      "type": "select",
+      "id": "vertical_alignment_flex_direction_column",
+      "label": "Position",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        },
+        {
+          "value": "space-between",
+          "label": "Space between"
+        }
+      ],
+      "default": "center",
+      "visible_if": "{{ section.settings.content_direction == 'column' }}"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Size"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page"
+        },
+        {
+          "value": "full-width",
+          "label": "Full"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 400,
+      "max": 2000,
+      "step": 20,
+      "unit": "px",
+      "default": 1400,
+      "visible_if": "{{ section.settings.section_width == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "placeholder": "Default"
+    },
+    {
+      "type": "header",
+      "content": "Padding — 750px and up",
+      "info": "Space inside the band, so the background color covers it."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Left",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Right",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Padding — below 750px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "label": "Left",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "label": "Right",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Margin — 750px and up",
+      "info": "Space outside the band, so the background color stops before it."
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_left",
+      "label": "Left",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_right",
+      "label": "Right",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Margin — below 750px"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_mobile",
+      "label": "Bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_left_mobile",
+      "label": "Left",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_right_mobile",
+      "label": "Right",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Agent Video",
+      "category": "SPY",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "padding_top": 32,
+        "padding_bottom": 32,
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 24
+      },
+      "blocks": {
+        "videos": {
+          "type": "group",
+          "name": "Videos",
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "gap": 12,
+            "width": "fill",
+            "height": "fit"
+          },
+          "blocks": {
+            "video_1": {
+              "type": "video",
+              "name": "Video 1",
+              "settings": {
+                "source": "url",
+                "video_url": "https://www.youtube.com/watch?v=3rIcLjh_qr8",
+                "video_loop": true,
+                "custom_width": 100,
+                "custom_width_mobile": 100,
+                "aspect_ratio": "16/9"
+              }
+            },
+            "video_2": {
+              "type": "video",
+              "name": "Video 2",
+              "settings": {
+                "source": "url",
+                "video_url": "https://www.youtube.com/watch?v=5e9UYy1U4Xs",
+                "video_loop": true,
+                "custom_width": 100,
+                "custom_width_mobile": 100,
+                "aspect_ratio": "16/9"
+              }
+            }
+          },
+          "block_order": ["video_1", "video_2"]
+        },
+        "heading": {
+          "type": "text",
+          "name": "Heading",
+          "settings": {
+            "text": "<h2><strong>AXELL'S FAVORITES</strong></h2>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "2rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty"
+          }
+        }
+      },
+      "block_order": ["videos", "heading"]
+    }
+  ]
+}
+{% endschema %}
