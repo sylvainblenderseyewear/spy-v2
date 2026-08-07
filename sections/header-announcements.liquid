@@ -12,7 +12,7 @@
 
 <div class="section-background color-custom-{{ section.id }}"></div>
 <aside
-  class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-custom-{{ section.id }}"
+  class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-custom-{{ section.id }} relative [border-block-end:var(--border-bottom-width)_solid_var(--color-border)]"
   id="spy-ann-{{ section.id }}"
   style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;{% if section.settings.divider_color != blank %} --color-border: {{ section.settings.divider_color }};{% endif %}"
 >
@@ -26,7 +26,13 @@
   %}
 
   <announcement-bar-component
-    class="announcement-bar__slider{% if show_arrows %} announcement-bar__slider--has-arrows{% endif %}"
+    class="
+      announcement-bar__slider
+      [display:flex] items-center justify-center relative
+      gap-9 max-md:gap-5
+      max-[749px]:[grid-column:1/-1]
+      {% if show_arrows %}announcement-bar__slider--has-arrows{% endif %}
+    "
     {% if autoplay == true %}
       autoplay="{{ section.settings.speed }}" aria-live="polite"
     {% endif %}
@@ -35,27 +41,26 @@
       {% render 'slideshow-arrows', icon_style: 'chevron' %}
     {% endif %}
 
-    <div class="announcement-bar__slides">
+    <div class="announcement-bar__slides [display:grid] [grid-template-areas:'stack'] w-auto max-w-full min-w-0">
       {% content_for 'blocks' %}
     </div>
-  </announcement-bar-component>
 
-  {% if section.settings.show_close_button %}
-    <button
-      class="announcement-bar__close"
-      type="button"
-      aria-label="Close announcement"
-    >
-      <span class="svg-wrapper">
-        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11.1765 12.025C11.4108 12.2594 11.7907 12.2594 12.025 12.025C12.2594 11.7907 12.2594 11.4108 12.025 11.1765L8.84931 8.00078L12.025 4.82505C12.2594 4.59073 12.2594 4.21083 12.025 3.97652C11.7907 3.7422 11.4108 3.7422 11.1765 3.97652L8.00078 7.15225L4.82505 3.97652C4.59073 3.7422 4.21083 3.7422 3.97652 3.97652C3.7422 4.21083 3.7422 4.59073 3.97652 4.82505L7.15225 8.00078L3.97652 11.1765C3.7422 11.4108 3.7422 11.7907 3.97652 12.025C4.21083 12.2594 4.59073 12.2594 4.82505 12.025L8.00078 8.84931L11.1765 12.025Z" fill="currentColor"/>
+    {% if section.settings.enable_close %}
+      <button
+        class="announcement-bar__close [display:inline-flex] shrink-0 items-center justify-center size-[12px] m-0 p-0 border-0 bg-transparent text-current leading-none opacity-90 transition-opacity duration-200 cursor-pointer hover:opacity-100"
+        type="button"
+        data-spy-ann-close
+        aria-label="{{ 'actions.close' | t }}"
+      >
+        <svg class="size-full" aria-hidden="true" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/>
         </svg>
-      </span>
-    </button>
-  {% endif %}
+      </button>
+    {% endif %}
+  </announcement-bar-component>
 </aside>
 
-{% if section.settings.show_close_button %}
+{% if section.settings.enable_close %}
   <script>
     (function () {
       var id = '{{ section.id }}';
@@ -69,128 +74,16 @@
         try { sessionStorage.setItem(key, '1'); } catch (e) {}
       }
 
-      try { if (sessionStorage.getItem(key)) dismiss(); } catch (e) {}
+      // Stays closed for the rest of the visit, but comes back in the editor
+      if (!window.Shopify || !Shopify.designMode) {
+        try { if (sessionStorage.getItem(key)) dismiss(); } catch (e) {}
+      }
 
-      var btn = aside && aside.querySelector('.announcement-bar__close');
+      var btn = aside && aside.querySelector('[data-spy-ann-close]');
       if (btn) btn.addEventListener('click', dismiss);
     })();
   </script>
 {% endif %}
-
-{% stylesheet %}
-  .announcement-bar {
-    border-block-end: var(--border-bottom-width) solid var(--color-border);
-    position: relative;
-  }
-
-  .announcement-bar__slider {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: relative;
-
-    @media screen and (max-width: 749px) {
-      grid-column: 1 / -1;
-    }
-  }
-
-  .announcement-bar__slides {
-    display: grid;
-    grid: [stack] auto / [stack] auto;
-    width: 100%;
-    max-width: 680px;
-    margin-inline: auto;
-  }
-
-  .announcement-bar__slider--has-arrows .announcement-bar__slides {
-    width: calc(100% - var(--button-size) * 2);
-  }
-
-  .announcement-bar__slides > * {
-    grid-area: stack;
-  }
-
-  .announcement-bar__slide {
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-    content-visibility: visible;
-    place-content: center;
-
-    &[aria-hidden='true'] {
-      opacity: 0;
-      visibility: hidden;
-    }
-  }
-
-  /* Safety net: never show arrows unless multiple slides are present */
-  .announcement-bar__slider:not(.announcement-bar__slider--has-arrows) slideshow-arrows {
-    display: none;
-  }
-
-  .announcement-bar__slider slideshow-arrows {
-    padding: 0;
-    mix-blend-mode: normal;
-  }
-
-  .announcement-bar__slider slideshow-arrows .slideshow-control {
-    color: var(--color-foreground);
-  }
-
-  .announcement-bar__slider .slideshow-control {
-    display: flex;
-    padding: 0;
-    width: var(--button-size);
-    height: var(--button-size);
-    align-items: center;
-    justify-content: center;
-    opacity: 1;
-    animation: none;
-
-    @media screen and (min-width: 750px) {
-      --slideshow-control-offset: calc((var(--button-size) - var(--icon-size-xs)) / 2);
-
-      .section--page-width &.slideshow-control--previous {
-        transform: translateX(var(--slideshow-control-offset));
-      }
-    }
-  }
-
-  .announcement-bar__slider .slideshow-control .svg-wrapper {
-    width: var(--icon-size-xs);
-    height: var(--icon-size-xs);
-  }
-
-  .announcement-bar__text:first-child {
-    margin: 0;
-  }
-
-  .announcement-bar__link {
-    position: absolute;
-    inset: 0;
-  }
-
-  .announcement-bar__close {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--padding-2xs, 4px);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: currentColor;
-    opacity: 0.7;
-    line-height: 0;
-    min-height: var(--minimum-touch-target, 44px);
-    min-width: var(--minimum-touch-target, 44px);
-
-    &:hover {
-      opacity: 1;
-    }
-  }
-{% endstylesheet %}
 
 {% schema %}
 {
@@ -237,7 +130,7 @@
       "type": "color",
       "id": "background_color",
       "label": "t:settings.background_color",
-      "default": "#f57f29"
+      "default": "#1d2a2b"
     },
     {
       "type": "color",
@@ -247,9 +140,9 @@
     },
     {
       "type": "checkbox",
-      "id": "show_close_button",
+      "id": "enable_close",
       "label": "Show close button",
-      "default": false
+      "default": true
     },
     {
       "type": "range",

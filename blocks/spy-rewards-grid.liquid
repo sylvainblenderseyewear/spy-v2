@@ -1,0 +1,587 @@
+{%- comment -%}
+  Rewards grid — one tile per way to earn points.
+
+  Colours and sizes live HERE, not on each tile. The tiles and their text blocks
+  read them as CSS variables, so all nine stay in sync from one place. Only the
+  wording and the two links sit on each tile, because a child block cannot read
+  its parent's settings — and per-tile wording helps anyway: the Facebook tile
+  can send people to Facebook.
+
+  Each `--x-d` / `--x-m` pair is picked once here, at 750px, so children just use
+  `var(--rw-title-size)` and never repeat the breakpoint.
+
+  Note: `[display:grid]`, not Tailwind's `grid`. Horizon's base.css owns a `.grid`
+  class of its own — the 14-column page layout with `grid-template-areas` — and
+  those named areas would force their own columns no matter what we set here.
+{%- endcomment -%}
+
+<div
+  class="
+    spy-rewards-grid [display:grid] w-full mx-auto
+    [max-width:var(--rw-max)]
+    [grid-template-columns:repeat(var(--rw-cols-m),minmax(0,1fr))]
+    min-[750px]:[grid-template-columns:repeat(var(--rw-cols-t),minmax(0,1fr))]
+    min-[990px]:[grid-template-columns:repeat(var(--rw-cols-d),minmax(0,1fr))]
+    [--rw-ratio:var(--rw-ratio-m)]
+    [--rw-pad:var(--rw-pad-m)]
+    [--rw-icon-w:var(--rw-icon-w-m)]
+    [--rw-title-size:var(--rw-title-size-m)]
+    [--rw-text-size:var(--rw-text-size-m)]
+    [--rw-cta-size:var(--rw-cta-size-m)]
+    [--rw-cta-w:var(--rw-cta-w-m)]
+    [--rw-note-size:var(--rw-note-size-m)]
+    min-[750px]:[--rw-ratio:var(--rw-ratio-d)]
+    min-[750px]:[--rw-pad:var(--rw-pad-d)]
+    min-[750px]:[--rw-icon-w:var(--rw-icon-w-d)]
+    min-[750px]:[--rw-title-size:var(--rw-title-size-d)]
+    min-[750px]:[--rw-text-size:var(--rw-text-size-d)]
+    min-[750px]:[--rw-cta-size:var(--rw-cta-size-d)]
+    min-[750px]:[--rw-cta-w:var(--rw-cta-w-d)]
+    min-[750px]:[--rw-note-size:var(--rw-note-size-d)]
+  "
+  style="
+    --rw-max: {{ block.settings.max_width }}px;
+    --rw-cols-d: {{ block.settings.columns_desktop }};
+    --rw-cols-t: {{ block.settings.columns_tablet }};
+    --rw-cols-m: {{ block.settings.columns_mobile }};
+    --rw-ratio-d: {{ block.settings.tile_ratio }};
+    --rw-ratio-m: {{ block.settings.tile_ratio_mobile }};
+    --rw-min-h: {{ block.settings.tile_min_height }}px;
+    --rw-pad-d: {{ block.settings.tile_padding }}px;
+    --rw-pad-m: {{ block.settings.tile_padding_mobile }}px;
+    --rw-radius: {{ block.settings.tile_radius }}px;
+    --rw-tile-bg: {{ block.settings.tile_background }};
+    --rw-tile-bg-hover: {{ block.settings.tile_background_hover }};
+    --rw-fade: {{ block.settings.fade_duration }}ms;
+    --rw-icon-w-d: {{ block.settings.icon_width }}px;
+    --rw-icon-w-m: {{ block.settings.icon_width_mobile }}px;
+    --rw-title-color: {{ block.settings.title_color }};
+    --rw-title-size-d: {{ block.settings.title_size }}px;
+    --rw-title-size-m: {{ block.settings.title_size_mobile }}px;
+    --rw-title-weight: {{ block.settings.title_weight }};
+    --rw-title-tracking: {{ block.settings.title_tracking }}px;
+    --rw-text-color: {{ block.settings.text_color }};
+    --rw-text-size-d: {{ block.settings.text_size }}px;
+    --rw-text-size-m: {{ block.settings.text_size_mobile }}px;
+    --rw-cta-bg: {{ block.settings.cta_background }};
+    --rw-cta-bg-hover: {{ block.settings.cta_background_hover }};
+    --rw-cta-color: {{ block.settings.cta_color }};
+    --rw-cta-size-d: {{ block.settings.cta_size }}px;
+    --rw-cta-size-m: {{ block.settings.cta_size_mobile }}px;
+    --rw-cta-tracking: {{ block.settings.cta_tracking }}px;
+    --rw-cta-w-d: {{ block.settings.cta_width }}px;
+    --rw-cta-w-m: {{ block.settings.cta_width_mobile }}px;
+    --rw-cta-h: {{ block.settings.cta_height }}px;
+    --rw-cta-radius: {{ block.settings.cta_radius }}px;
+    --rw-note-color: {{ block.settings.note_color }};
+    --rw-note-size-d: {{ block.settings.note_size }}px;
+    --rw-note-size-m: {{ block.settings.note_size_mobile }}px;
+    --rw-note-gap: {{ block.settings.note_gap }}px;
+    --rw-link-color: {{ block.settings.link_color }};
+    gap: {{ block.settings.row_gap }}px {{ block.settings.column_gap }}px;
+  "
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Rewards grid",
+  "tag": null,
+  "blocks": [{ "type": "_spy-reward-tile" }],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Grid max width",
+      "min": 600,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns — 990px and up",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "label": "Columns — 750 to 989px",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columns — below 750px",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Gap between columns",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "Gap between rows",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Tiles"
+    },
+    {
+      "type": "select",
+      "id": "tile_ratio",
+      "label": "Tile shape — 750px and up",
+      "info": "Auto lets the tallest tile in a row set the height.",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1/1", "label": "Square (1:1)" },
+        { "value": "8/7", "label": "Slightly wide (8:7)" },
+        { "value": "5/4", "label": "Landscape (5:4)" },
+        { "value": "4/3", "label": "Landscape (4:3)" },
+        { "value": "3/2", "label": "Wide (3:2)" }
+      ],
+      "default": "8/7"
+    },
+    {
+      "type": "select",
+      "id": "tile_ratio_mobile",
+      "label": "Tile shape — below 750px",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "1/1", "label": "Square (1:1)" },
+        { "value": "8/7", "label": "Slightly wide (8:7)" },
+        { "value": "5/4", "label": "Landscape (5:4)" },
+        { "value": "4/3", "label": "Landscape (4:3)" },
+        { "value": "3/2", "label": "Wide (3:2)" }
+      ],
+      "default": "1/1"
+    },
+    {
+      "type": "range",
+      "id": "tile_min_height",
+      "label": "Tile minimum height",
+      "info": "A floor for the shape above. Set the shape to Auto to use this on its own.",
+      "min": 0,
+      "max": 420,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "tile_padding",
+      "label": "Tile padding — 750px and up",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "tile_padding_mobile",
+      "label": "Tile padding — below 750px",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "tile_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "tile_background",
+      "label": "Tile background",
+      "default": "#f0f0f0"
+    },
+    {
+      "type": "color",
+      "id": "tile_background_hover",
+      "label": "Tile background on hover",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "fade_duration",
+      "label": "Hover fade",
+      "min": 0,
+      "max": 600,
+      "step": 25,
+      "unit": "ms",
+      "default": 250
+    },
+    {
+      "type": "header",
+      "content": "Icon"
+    },
+    {
+      "type": "range",
+      "id": "icon_width",
+      "label": "Icon width — 750px and up",
+      "min": 16,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "icon_width_mobile",
+      "label": "Icon width — below 750px",
+      "min": 16,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Title"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#2c393e"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size — 750px and up",
+      "min": 9,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Title size — below 750px",
+      "min": 8,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "range",
+      "id": "title_tracking",
+      "label": "Title letter spacing",
+      "min": 0,
+      "max": 4,
+      "step": 0.1,
+      "unit": "px",
+      "default": 0.3
+    },
+    {
+      "type": "header",
+      "content": "Points text"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#6a6c77"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size — 750px and up",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "text_size_mobile",
+      "label": "Text size — below 750px",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "header",
+      "content": "Hover button"
+    },
+    {
+      "type": "color",
+      "id": "cta_background",
+      "label": "Button background",
+      "default": "#e57e26"
+    },
+    {
+      "type": "color",
+      "id": "cta_background_hover",
+      "label": "Button background on hover",
+      "default": "#cf6f1d"
+    },
+    {
+      "type": "color",
+      "id": "cta_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "cta_size",
+      "label": "Button text size — 750px and up",
+      "min": 9,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "cta_size_mobile",
+      "label": "Button text size — below 750px",
+      "min": 8,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "cta_tracking",
+      "label": "Button letter spacing",
+      "min": 0,
+      "max": 4,
+      "step": 0.1,
+      "unit": "px",
+      "default": 0.5
+    },
+    {
+      "type": "range",
+      "id": "cta_width",
+      "label": "Button width — 750px and up",
+      "info": "Never wider than the tile.",
+      "min": 80,
+      "max": 320,
+      "step": 5,
+      "unit": "px",
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "cta_width_mobile",
+      "label": "Button width — below 750px",
+      "min": 60,
+      "max": 260,
+      "step": 5,
+      "unit": "px",
+      "default": 110
+    },
+    {
+      "type": "range",
+      "id": "cta_height",
+      "label": "Button height",
+      "min": 28,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "cta_radius",
+      "label": "Button corner radius",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Hover member line"
+    },
+    {
+      "type": "color",
+      "id": "note_color",
+      "label": "Text color",
+      "default": "#2c393e"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link color",
+      "default": "#2c393e"
+    },
+    {
+      "type": "range",
+      "id": "note_size",
+      "label": "Text size — 750px and up",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "note_size_mobile",
+      "label": "Text size — below 750px",
+      "min": 7,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "note_gap",
+      "label": "Space above the member line",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rewards grid",
+      "category": "SPY",
+      "blocks": [
+        {
+          "type": "_spy-reward-tile",
+          "name": "Join",
+          "blocks": [
+            { "type": "_spy-reward-icon" },
+            { "type": "_spy-reward-title", "settings": { "title": "JOIN" } },
+            { "type": "_spy-reward-text", "settings": { "text": "300 Points" } }
+          ]
+        },
+        {
+          "type": "_spy-reward-tile",
+          "name": "Birthday reward",
+          "blocks": [
+            { "type": "_spy-reward-icon" },
+            { "type": "_spy-reward-title", "settings": { "title": "BIRTHDAY REWARD" } },
+            { "type": "_spy-reward-text", "settings": { "text": "100 Points" } }
+          ]
+        },
+        {
+          "type": "_spy-reward-tile",
+          "name": "Leave a review",
+          "blocks": [
+            { "type": "_spy-reward-icon" },
+            { "type": "_spy-reward-title", "settings": { "title": "LEAVE A REVIEW" } },
+            { "type": "_spy-reward-text", "settings": { "text": "25 Points" } }
+          ]
+        },
+        {
+          "type": "_spy-reward-tile",
+          "name": "Shop polarized",
+          "blocks": [
+            { "type": "_spy-reward-icon" },
+            { "type": "_spy-reward-title", "settings": { "title": "SHOP POLARIZED" } },
+            { "type": "_spy-reward-text", "settings": { "text": "25 Points" } }
+          ]
+        },
+        {
+          "type": "_spy-reward-tile",
+          "name": "Make a purchase",
+          "blocks": [
+            { "type": "_spy-reward-icon" },
+            { "type": "_spy-reward-title", "settings": { "title": "MAKE A PURCHASE" } },
+            { "type": "_spy-reward-text", "settings": { "text": "1 Point per $1 Spent" } }
+          ]
+        },
+        {
+          "type": "_spy-reward-tile",
+          "name": "Like us on Facebook",
+          "blocks": [
+            { "type": "_spy-reward-icon" },
+            { "type": "_spy-reward-title", "settings": { "title": "LIKE US ON FACEBOOK" } },
+            { "type": "_spy-reward-text", "settings": { "text": "10 Points" } }
+          ]
+        },
+        {
+          "type": "_spy-reward-tile",
+          "name": "3 purchases in a year",
+          "blocks": [
+            { "type": "_spy-reward-icon" },
+            { "type": "_spy-reward-title", "settings": { "title": "3 PURCHASES IN A YEAR" } },
+            { "type": "_spy-reward-text", "settings": { "text": "100 Points" } }
+          ]
+        },
+        {
+          "type": "_spy-reward-tile",
+          "name": "Spend over $200",
+          "blocks": [
+            { "type": "_spy-reward-icon" },
+            { "type": "_spy-reward-title", "settings": { "title": "SPEND OVER $200" } },
+            { "type": "_spy-reward-text", "settings": { "text": "25 Points" } }
+          ]
+        },
+        {
+          "type": "_spy-reward-tile",
+          "name": "Follow us on Instagram",
+          "blocks": [
+            { "type": "_spy-reward-icon" },
+            { "type": "_spy-reward-title", "settings": { "title": "FOLLOW US ON INSTAGRAM" } },
+            { "type": "_spy-reward-text", "settings": { "text": "10 Points" } }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

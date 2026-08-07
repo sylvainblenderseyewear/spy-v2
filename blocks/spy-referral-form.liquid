@@ -1,0 +1,260 @@
+{%- doc -%}
+  Referral capture form — "GIVE $15, GET $15" on the rewards page.
+
+  Holds an email field block and a submit block. Sizes and colours live HERE so
+  both children stay the same width (581px) and height (48px) from one place;
+  a child cannot read its parent's settings, so they read `--rf-*` variables
+  instead and only override when the editor fills their own field.
+
+  Posts through Shopify's contact form, so it works with no app: the address
+  lands in the shop's inbox under the subject set below. Swap the form for the
+  referral provider (Yotpo/Swell) later and the two child blocks can stay —
+  point the input's `field_name` at whatever param that provider expects.
+{%- enddoc -%}
+
+{%- liquid
+  assign form_id = 'spy-referral-' | append: block.id
+
+  # Written out in full — Tailwind only picks up class names that appear literally.
+  # Arbitrary properties, not `flex`/`items-*`: Horizon's base.css owns those names.
+  assign stack = 'w-full [display:flex] [flex-direction:column]'
+  case block.settings.alignment
+    when 'start'
+      assign fields_class = stack | append: ' [align-items:flex-start]'
+    when 'end'
+      assign fields_class = stack | append: ' [align-items:flex-end]'
+    else
+      assign fields_class = stack | append: ' [align-items:center]'
+  endcase
+-%}
+
+<div
+  class="
+    spy-referral-form w-full
+    [--rf-gap:var(--rf-gap-m)]
+    min-[750px]:[--rf-gap:var(--rf-gap-d)]
+  "
+  style="
+    --rf-width: {{ block.settings.field_width }}px;
+    --rf-height: {{ block.settings.field_height }}px;
+    --rf-radius: {{ block.settings.corner_radius }}px;
+    --rf-gap-d: {{ block.settings.gap }}px;
+    --rf-gap-m: {{ block.settings.gap_mobile }}px;
+    --rf-font: {{ block.settings.font }};
+    --rf-accent: {{ block.settings.accent_color }};
+    --rf-accent-hover: {{ block.settings.accent_color_hover }};
+    --rf-border: {{ block.settings.border_color }};
+    --rf-text: {{ block.settings.text_color }};
+    --rf-placeholder: {{ block.settings.placeholder_color }};
+    --rf-button-text: {{ block.settings.button_text_color }};
+    padding-top: {{ block.settings.space_above }}px;
+    padding-bottom: {{ block.settings.space_below }}px;
+  "
+  {{ block.shopify_attributes }}
+>
+  {%- form 'contact', id: form_id, class: 'w-full m-0' -%}
+    {%- if form.posted_successfully? -%}
+      <p
+        class="m-0 mx-auto [max-width:var(--rf-width)] [font-family:var(--rf-font)] [color:var(--rf-accent)] text-[15px] leading-6"
+        role="status"
+      >
+        {{ block.settings.success_text }}
+      </p>
+    {%- else -%}
+      {%- if form.errors -%}
+        <p class="m-0 mb-3 [max-width:var(--rf-width)] [font-family:var(--rf-font)] text-[color:var(--color-spy-negative)] text-[14px] leading-5">
+          {{ form.errors | default_errors }}
+        </p>
+      {%- endif -%}
+
+      {%- comment -%} Tells the merchant which form the address came from {%- endcomment -%}
+      <input type="hidden" name="contact[subject]" value="{{ block.settings.email_subject | escape }}">
+    {%- endif -%}
+
+    {%- comment -%} Only one `content_for 'blocks'` is allowed per block, so the
+    success state hides the fields with this wrapper instead of skipping them.
+    A real flex box, not `display:contents` — unwrapping turns the whitespace
+    between the two child blocks into a phantom 14px item. {%- endcomment -%}
+    {%- if form.posted_successfully? -%}
+      {%- assign fields_class = 'hidden' -%}
+    {%- endif -%}
+    <div class="{{ fields_class }}">
+      {% content_for 'blocks' %}
+    </div>
+  {%- endform -%}
+</div>
+
+{% schema %}
+{
+  "name": "Referral form",
+  "tag": null,
+  "blocks": [
+    { "type": "_spy-referral-input" },
+    { "type": "_spy-referral-submit" }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "number",
+      "id": "field_width",
+      "label": "Field width (px)",
+      "info": "Never wider than the column.",
+      "default": 581
+    },
+    {
+      "type": "range",
+      "id": "field_height",
+      "label": "Field height",
+      "info": "Shared by the input and the button.",
+      "min": 32,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Space between input and button — 750px and up",
+      "min": 0,
+      "max": 140,
+      "step": 5,
+      "unit": "px",
+      "default": 85
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Space between input and button — below 750px",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "space_above",
+      "label": "Space above",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "space_below",
+      "label": "Space below",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "Font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-body--family)"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "info": "Button fill, plus the label and border on hover or focus.",
+      "default": "#e57e26"
+    },
+    {
+      "type": "color",
+      "id": "accent_color_hover",
+      "label": "Accent on hover",
+      "default": "#cf6f1d"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Input border at rest",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Typed text",
+      "default": "#242424"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_color",
+      "label": "Placeholder",
+      "default": "#a6a6a6"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Sending"
+    },
+    {
+      "type": "text",
+      "id": "email_subject",
+      "label": "Contact form subject",
+      "default": "Referral program signup"
+    },
+    {
+      "type": "text",
+      "id": "success_text",
+      "label": "Success message",
+      "default": "Thanks — check your inbox for your referral link."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Referral form",
+      "category": "SPY",
+      "blocks": [
+        { "type": "_spy-referral-input" },
+        { "type": "_spy-referral-submit" }
+      ]
+    }
+  ]
+}
+{% endschema %}

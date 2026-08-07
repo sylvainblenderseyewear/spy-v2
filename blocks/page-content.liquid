@@ -1,7 +1,40 @@
-
+{%- liquid
+  # Legal pages render as a plain typed document — serif, justified, centred
+  # underlined titles — instead of the brand sans stack.
+  assign legal_suffixes = 'terms-of-use,privacy-policy' | split: ','
+  assign legal_type = ''
+  if page.template_suffix != blank
+    if legal_suffixes contains page.template_suffix
+      capture legal_type
+        echo 'spy-legal font-legal text-[14px] leading-[1.5] text-justify hyphens-none '
+        # Word-pasted copy already carries blank paragraphs, so no extra p margins
+        echo '[&_p]:m-0 [&_p]:text-justify '
+        # only the document title is a bare align="center" p — body copy carries
+        # an inline text-align that Word left behind, so skip those
+        echo '[&_p[align=center]:not([style*=text-align])]:text-center '
+        echo '[&_p[align=center]:not([style*=text-align])+p:not([align=center])]:mt-[20px] '
+        # real headings, if the copy is ever re-authored in the editor
+        echo '[&_h1]:font-legal [&_h1]:text-[15px] [&_h1]:font-bold [&_h1]:leading-[1.5] [&_h1]:tracking-normal [&_h1]:text-center [&_h1]:underline [&_h1]:m-0 [&_h1]:mb-[10px] '
+        echo '[&_h2]:font-legal [&_h2]:text-[15px] [&_h2]:font-bold [&_h2]:leading-[1.5] [&_h2]:tracking-normal [&_h2]:text-center [&_h2]:underline [&_h2]:m-0 [&_h2]:mb-[20px] '
+        # sub-headings read as part of the copy, left aligned
+        echo '[&_h3]:font-legal [&_h3]:text-[14px] [&_h3]:font-bold [&_h3]:leading-[1.5] [&_h3]:tracking-normal [&_h3]:text-left [&_h3]:underline [&_h3]:m-0 [&_h3]:mt-[21px] '
+        echo '[&_h4]:font-legal [&_h4]:text-[14px] [&_h4]:font-bold [&_h4]:leading-[1.5] [&_h4]:tracking-normal [&_h4]:text-left [&_h4]:m-0 [&_h4]:mt-[21px] '
+        # lists keep the document indent; blank paragraphs already do the spacing
+        echo '[&_ul]:list-disc [&_ol]:list-decimal [&_ul]:pl-[2.5em] [&_ol]:pl-[2.5em] [&_ul]:my-0 [&_ol]:my-0 [&_li]:text-justify '
+        # Word writes a./b./c. sub-items as type="a" lists and Tailwind resets those.
+        # HTML matches the type value case-insensitively, so a/A both land here.
+        echo '[&_ol[type=a]]:list-[lower-alpha] [&_ol[type=i]]:list-[lower-roman] '
+        # inline runs the copy relies on
+        echo '[&_strong]:font-bold [&_b]:font-bold [&_u]:underline [&_a]:underline [&_em]:italic [&_i]:italic '
+        # rare tables in legal copy
+        echo '[&_table]:w-full [&_table]:border-collapse [&_table]:my-[1.2em] [&_th]:border [&_td]:border [&_th]:border-spy-border [&_td]:border-spy-border [&_th]:p-[8px] [&_td]:p-[8px] [&_th]:text-left'
+      endcapture
+    endif
+  endif
+-%}
 
 <div
-  class="page-content"
+  class="page-content {{ legal_type }}"
   style="
     {% if block.settings.text_color != blank %}
       --color: {{ block.settings.text_color }};

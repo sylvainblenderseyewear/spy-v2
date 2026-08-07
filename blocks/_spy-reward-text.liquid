@@ -1,0 +1,87 @@
+{%- comment -%}
+  The tile's supporting line — "300 Points", "1 Point per $1 Spent".
+
+  Inline rich text, not rich text: bold and links are useful here, a wrapping
+  paragraph with its own margins is not. Colour and size follow the parent grid;
+  the overrides only write their variable when an editor fills the field.
+{%- endcomment -%}
+
+{%- liquid
+  assign own_size = block.settings.size_override
+-%}
+
+<p
+  class="
+    m-0 [margin-top:var(--rw-text-gap)]
+    [font-family:var(--rw-text-font,var(--font-body--family))]
+    [color:var(--rw-text-color,#6a6c77)]
+    [font-size:var(--rw-text-size,13px)]
+    [text-wrap:pretty]
+    leading-snug
+  "
+  style="
+    --rw-text-gap: {{ block.settings.space_above }}px;
+    --rw-text-font: {{ block.settings.font }};
+    {% if own_size > 0 %}--rw-text-size: {{ own_size }}px;{% endif %}
+    {% if block.settings.color_override != blank %}--rw-text-color: {{ block.settings.color_override }};{% endif %}
+  "
+  {{ block.shopify_attributes }}
+>{{ block.settings.text }}</p>
+
+{% schema %}
+{
+  "name": "Reward text",
+  "tag": null,
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "300 Points"
+    },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "Font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-body--family)"
+    },
+    {
+      "type": "header",
+      "content": "Overrides"
+    },
+    {
+      "type": "range",
+      "id": "size_override",
+      "label": "Size override",
+      "info": "0 uses the size set on the grid.",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "color_override",
+      "label": "Color override",
+      "info": "Leave empty to use the color set on the grid."
+    },
+    {
+      "type": "range",
+      "id": "space_above",
+      "label": "Space above",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,192 @@
+{%- comment -%}
+  One reward tile — its icon/title/points, plus the sign-up call to action that
+  replaces them on hover.
+
+  Two layers. The face stays in flow so it can set the tile height when the shape
+  is Auto; the call to action sits on top of it, absolutely placed, and the two
+  cross-fade. Neither layer moves, so nothing shifts under the pointer.
+
+  Colours, sizes and the fade come from the parent grid as CSS variables — see
+  that block. Only the wording and the two links are per tile.
+
+  `focus-within` mirrors every `hover` rule so the call to action opens for
+  keyboard users too. The layers use opacity rather than the hidden attribute:
+  Tailwind runs in important mode here, so `.opacity-0` would outrank `[hidden]`
+  and the links would still be reachable but invisible. Opacity keeps them in the
+  tab order, and tabbing to one reveals the whole panel.
+{%- endcomment -%}
+
+{%- liquid
+  assign cta_url = block.settings.cta_url | default: routes.account_register_url
+  assign login_url = block.settings.login_url | default: routes.account_login_url
+
+  assign cta_aria = block.settings.cta_label
+  if block.settings.context_label != blank
+    assign cta_aria = cta_aria | append: ' — ' | append: block.settings.context_label
+  endif
+
+  assign login_aria = block.settings.login_label
+  if block.settings.context_label != blank
+    assign login_aria = login_aria | append: ' — ' | append: block.settings.context_label
+  endif
+-%}
+
+<div
+  class="
+    spy-reward-tile group relative isolate overflow-hidden
+    [display:flex] items-center justify-center text-center
+    [aspect-ratio:var(--rw-ratio,auto)]
+    [min-height:var(--rw-min-h,0px)]
+    [padding:var(--rw-pad,20px)]
+    [border-radius:var(--rw-radius,0px)]
+    [background-color:var(--rw-tile-bg,#f0f0f0)]
+    [transition:background-color_var(--rw-fade,250ms)_ease]
+    hover:[background-color:var(--rw-tile-bg-hover,#ffffff)]
+    focus-within:[background-color:var(--rw-tile-bg-hover,#ffffff)]
+  "
+  {{ block.shopify_attributes }}
+>
+  {%- comment -%} Face — the icon, title and points blocks. {%- endcomment -%}
+  <div
+    class="
+      [display:flex] flex-col items-center justify-center w-full
+      [transition:opacity_var(--rw-fade,250ms)_ease]
+      group-hover:opacity-0 group-focus-within:opacity-0
+    "
+  >
+    {% content_for 'blocks' %}
+  </div>
+
+  {%- comment -%} Hover panel — sign up, then the member line. {%- endcomment -%}
+  <div
+    class="
+      absolute inset-0 z-10 [display:flex] flex-col items-center justify-center
+      [padding:var(--rw-pad,20px)]
+      opacity-0 pointer-events-none
+      [transition:opacity_var(--rw-fade,250ms)_ease]
+      group-hover:opacity-100 group-hover:pointer-events-auto
+      group-focus-within:opacity-100 group-focus-within:pointer-events-auto
+    "
+  >
+    {%- if block.settings.cta_label != blank -%}
+      <a
+        href="{{ cta_url }}"
+        aria-label="{{ cta_aria | escape }}"
+        class="
+          [display:flex] items-center justify-center no-underline uppercase
+          w-full [max-width:var(--rw-cta-w,150px)]
+          [min-height:var(--rw-cta-h,44px)]
+          [border-radius:var(--rw-cta-radius,0px)]
+          [background-color:var(--rw-cta-bg,#e57e26)]
+          [color:var(--rw-cta-color,#ffffff)]
+          [font-size:var(--rw-cta-size,13px)]
+          [letter-spacing:var(--rw-cta-tracking,0.5px)]
+          font-medium leading-none
+          [transition:background-color_var(--rw-fade,250ms)_ease]
+          hover:[background-color:var(--rw-cta-bg-hover,#cf6f1d)]
+          focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+          focus-visible:[outline-color:var(--rw-cta-bg,#e57e26)]
+        "
+      >
+        {{ block.settings.cta_label }}
+      </a>
+    {%- endif -%}
+
+    {%- if block.settings.note_text != blank or block.settings.login_label != blank -%}
+      <p
+        class="
+          m-0 [margin-top:var(--rw-note-gap,14px)]
+          [color:var(--rw-note-color,#2c393e)]
+          [font-size:var(--rw-note-size,13px)]
+          leading-snug
+        "
+      >
+        {%- if block.settings.note_text != blank -%}
+          {{ block.settings.note_text }}
+        {%- endif -%}
+
+        {%- if block.settings.login_label != blank -%}
+          {% if block.settings.note_text != blank %} {% endif %}
+          <a
+            href="{{ login_url }}"
+            aria-label="{{ login_aria | escape }}"
+            class="
+              underline [text-underline-offset:2px]
+              [color:var(--rw-link-color,#2c393e)]
+              hover:no-underline
+              focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+              focus-visible:[outline-color:var(--rw-link-color,#2c393e)]
+            "
+          >{{ block.settings.login_label }}</a>
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Reward tile",
+  "tag": null,
+  "blocks": [
+    { "type": "_spy-reward-icon" },
+    { "type": "_spy-reward-title" },
+    { "type": "_spy-reward-text" },
+    { "type": "text" },
+    { "type": "image" },
+    { "type": "icon" },
+    { "type": "button" },
+    { "type": "group" }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hover button"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "SIGN UP"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button link",
+      "info": "Leave empty to use the account register page."
+    },
+    {
+      "type": "header",
+      "content": "Hover member line"
+    },
+    {
+      "type": "text",
+      "id": "note_text",
+      "label": "Text before the link",
+      "default": "Already a member?"
+    },
+    {
+      "type": "text",
+      "id": "login_label",
+      "label": "Link label",
+      "default": "Log in"
+    },
+    {
+      "type": "url",
+      "id": "login_url",
+      "label": "Link URL",
+      "info": "Leave empty to use the account login page."
+    },
+    {
+      "type": "header",
+      "content": "Accessibility"
+    },
+    {
+      "type": "text",
+      "id": "context_label",
+      "label": "Accessible context",
+      "info": "Added after the labels for screen readers, so nine \"Sign up\" links stay tellable apart. For example: Join."
+    }
+  ]
+}
+{% endschema %}

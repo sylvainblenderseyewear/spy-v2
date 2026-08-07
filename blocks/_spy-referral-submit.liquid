@@ -1,0 +1,104 @@
+{%- doc -%}
+  Submit button for the referral form — the orange "NEXT" bar.
+
+  Same width and height as the input above it, because both read the parent
+  form's `--rf-width` / `--rf-height`. The space above comes from the form's
+  `--rf-gap`, which is set per breakpoint there.
+{%- enddoc -%}
+
+{%- liquid
+  assign own_size = block.settings.size_override
+-%}
+
+<button
+  type="submit"
+  class="
+    block w-full m-0 border-0 cursor-pointer text-center transition-colors duration-150
+    [max-width:var(--rf-width,581px)]
+    [height:var(--rf-height,48px)]
+    [margin-top:var(--rf-gap,85px)]
+    [border-radius:var(--rf-radius,0px)]
+    [background-color:var(--rf-accent,#e57e26)]
+    hover:[background-color:var(--rf-accent-hover,#cf6f1d)]
+    [color:var(--rf-button-text,#ffffff)]
+    [font-family:var(--rf-font,var(--font-body--family))]
+    [font-size:var(--rf-button-size,15px)]
+    [font-weight:var(--rf-button-weight,700)]
+    [letter-spacing:var(--rf-button-tracking,0.5px)]
+    [text-transform:var(--rf-button-case,uppercase)]
+    focus-visible:[outline:2px_solid_var(--rf-accent,#e57e26)]
+    focus-visible:[outline-offset:2px]
+  "
+  style="
+    --rf-button-weight: {{ block.settings.weight }};
+    --rf-button-tracking: {{ block.settings.tracking }}px;
+    --rf-button-case: {{ block.settings.case }};
+    {% if own_size > 0 %}--rf-button-size: {{ own_size }}px;{% endif %}
+  "
+  {{ block.shopify_attributes }}
+>
+  {{ block.settings.label }}
+</button>
+
+{% schema %}
+{
+  "name": "Referral submit",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Next"
+    },
+    {
+      "type": "select",
+      "id": "case",
+      "label": "Case",
+      "options": [
+        { "value": "none", "label": "As typed" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "select",
+      "id": "weight",
+      "label": "Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "tracking",
+      "label": "Letter spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "unit": "px",
+      "default": 0.5
+    },
+    {
+      "type": "header",
+      "content": "Overrides"
+    },
+    {
+      "type": "range",
+      "id": "size_override",
+      "label": "Text size override",
+      "info": "0 uses the size set on the form.",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}

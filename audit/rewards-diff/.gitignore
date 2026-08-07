@@ -1,0 +1,3 @@
+# Capture output — regenerate against the dev server with the verify script.
+# The measured numbers live in the committed report.json.
+*.png
