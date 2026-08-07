@@ -9,6 +9,21 @@
  */
 {
   "sections": {
+    "change_agents": {
+      "type": "change_agents",
+      "settings": {
+        "image": "shopify://shop_images/Axell_Hodes.png",
+        "fallback_file": "Axell_Hodes.png",
+        "image_alt": "",
+        "background_color": "#000000",
+        "max_width": 1587.5,
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "padding_inline": 70,
+        "padding_top_small": 0,
+        "padding_bottom_small": 0
+      }
+    },
     "main": {
       "type": "main-page",
       "blocks": {
@@ -230,6 +245,7 @@
     }
   },
   "order": [
+    "change_agents",
     "main",
     "section_E636kq"
   ]

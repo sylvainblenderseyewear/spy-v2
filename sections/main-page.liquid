@@ -1,8 +1,10 @@
 
 
 {% liquid
-  if section.settings.background_color != blank
-    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  assign s = section.settings
+
+  if s.background_color != blank
+    render 'contrast-override', background_color: s.background_color, section_id: section.id
   endif
 
   # Legal pages read as a typed document, so they use their own reading column
@@ -14,12 +16,65 @@
       assign legal_column = '[--page-content-width:calc(100%-40px)] min-[750px]:[--page-content-width:calc(100%-128px)] min-[1200px]:[--page-content-width:calc(100%-465px)]'
     endif
   endif
+
+  # Spacing: desktop values, and the mobile set only when the editor asks for one
+  assign pad_desktop = s['padding-block-start'] | append: ',' | append: s['padding-block-end']
+  assign pad_desktop = pad_desktop | append: ',' | append: s.padding_left | append: ',' | append: s.padding_right
+
+  assign mar_desktop = s.margin_top | append: ',' | append: s.margin_bottom
+  assign mar_desktop = mar_desktop | append: ',' | append: s.margin_left | append: ',' | append: s.margin_right
+
+  if s.mobile_override
+    assign pad_mobile = s.padding_top_mobile | append: ',' | append: s.padding_bottom_mobile
+    assign pad_mobile = pad_mobile | append: ',' | append: s.padding_left_mobile | append: ',' | append: s.padding_right_mobile
+
+    assign mar_mobile = s.margin_top_mobile | append: ',' | append: s.margin_bottom_mobile
+    assign mar_mobile = mar_mobile | append: ',' | append: s.margin_left_mobile | append: ',' | append: s.margin_right_mobile
+  else
+    assign pad_mobile = pad_desktop
+    assign mar_mobile = mar_desktop
+  endif
 %}
 
+{%- comment -%}
+  One var per side, per breakpoint. Padding keeps Horizon's spacing scale so
+  existing pages measure the same; margin stays flat px.
+{%- endcomment -%}
+{%- capture spacing_vars -%}
+  {%- assign pad_names = 'pt,pb,pl,pr' | split: ',' -%}
+  {%- assign mar_names = 'mt,mb,ml,mr' | split: ',' -%}
+  {%- assign sets = 'd,m' | split: ',' -%}
+  {%- for set in sets -%}
+    {%- if set == 'd' -%}
+      {%- assign pad_vals = pad_desktop | split: ',' -%}
+      {%- assign mar_vals = mar_desktop | split: ',' -%}
+      {%- assign suffix = '' -%}
+    {%- else -%}
+      {%- assign pad_vals = pad_mobile | split: ',' -%}
+      {%- assign mar_vals = mar_mobile | split: ',' -%}
+      {%- assign suffix = '-m' -%}
+    {%- endif -%}
+    {%- for name in pad_names -%}
+      {%- assign v = pad_vals[forloop.index0] | plus: 0 -%}
+      --mp-{{ name }}{{ suffix }}:
+      {%- if v > 20 %} max(20px, calc(var(--spacing-scale) * {{ v }}px));
+      {%- else %} {{ v }}px;
+      {%- endif -%}
+    {%- endfor -%}
+    {%- for name in mar_names -%}
+      --mp-{{ name }}{{ suffix }}: {{ mar_vals[forloop.index0] | plus: 0 }}px;
+    {%- endfor -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
 <div
-  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  class="section-background{% if s.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
-<div class="section page-width-content {{ legal_column }}{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}">
+<div class="section page-width-content {{ legal_column }}{% if s.background_color != blank %} color-custom-{{ section.id }}{% endif %}">
+  {%- comment -%}
+    The vars below feed Horizon's own `spacing-style`, so padding and margin
+    land on every side without a second wrapper.
+  {%- endcomment -%}
   <div
     class="
       spacing-style
@@ -27,11 +82,19 @@
       layout-panel-flex--column
       section-content-wrapper
       mobile-column
-      {%- if section.settings.full_width %} force-full-width{% endif -%}
+      {% if s.full_width %}force-full-width{% endif %}
+      [--padding-block-start:var(--mp-pt-m)] [--padding-block-end:var(--mp-pb-m)]
+      [--padding-inline-start:var(--mp-pl-m)] [--padding-inline-end:var(--mp-pr-m)]
+      [--margin-block-start:var(--mp-mt-m)] [--margin-block-end:var(--mp-mb-m)]
+      [--margin-inline-start:var(--mp-ml-m)] [--margin-inline-end:var(--mp-mr-m)]
+      min-[750px]:[--padding-block-start:var(--mp-pt)] min-[750px]:[--padding-block-end:var(--mp-pb)]
+      min-[750px]:[--padding-inline-start:var(--mp-pl)] min-[750px]:[--padding-inline-end:var(--mp-pr)]
+      min-[750px]:[--margin-block-start:var(--mp-mt)] min-[750px]:[--margin-block-end:var(--mp-mb)]
+      min-[750px]:[--margin-inline-start:var(--mp-ml)] min-[750px]:[--margin-inline-end:var(--mp-mr)]
     "
     style="
-      {% render 'layout-panel-style', settings: section.settings %}
-      {% render 'spacing-style', settings: section.settings %}
+      {% render 'layout-panel-style', settings: s %}
+      {{ spacing_vars }}
     "
   >
     {% content_for 'blocks' %}
@@ -102,8 +165,8 @@
       "id": "padding-block-start",
       "label": "t:settings.top",
       "min": 0,
-      "max": 100,
-      "step": 1,
+      "max": 200,
+      "step": 2,
       "unit": "px",
       "default": 0
     },
@@ -112,10 +175,174 @@
       "id": "padding-block-end",
       "label": "t:settings.bottom",
       "min": 0,
-      "max": 100,
-      "step": 1,
+      "max": 200,
+      "step": 2,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Margin",
+      "info": "Space outside the content, so a background color stops before it."
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_left",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_right",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile spacing",
+      "info": "Off means phones reuse the values above."
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_override",
+      "label": "Separate values below 750px",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.mobile_override }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.mobile_override }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "label": "Padding left",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.mobile_override }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "label": "Padding right",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.mobile_override }}"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_mobile",
+      "label": "Margin top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.mobile_override }}"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_mobile",
+      "label": "Margin bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.mobile_override }}"
+    },
+    {
+      "type": "range",
+      "id": "margin_left_mobile",
+      "label": "Margin left",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.mobile_override }}"
+    },
+    {
+      "type": "range",
+      "id": "margin_right_mobile",
+      "label": "Margin right",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.mobile_override }}"
     }
   ]
 }
