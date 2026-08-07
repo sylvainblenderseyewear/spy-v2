@@ -12,16 +12,27 @@
     "change_agents": {
       "type": "change_agents",
       "settings": {
-        "image": "shopify://shop_images/Axell_Hodes.png",
+        "image": "shopify://shop_images/Axell_Hodes.jpg",
         "fallback_file": "Axell_Hodes.png",
         "image_alt": "",
-        "background_color": "#000000",
+        "background_color": "{{ settings.color_palette.background }}",
         "max_width": 1587.5,
-        "padding_top": 20,
+        "padding_top": 0,
         "padding_bottom": 20,
-        "padding_inline": 70,
+        "padding_left": 158,
+        "padding_right": 158,
         "padding_top_small": 0,
-        "padding_bottom_small": 0
+        "padding_bottom_small": 0,
+        "padding_left_small": 0,
+        "padding_right_small": 0,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_left": 0,
+        "margin_right": 0,
+        "margin_top_small": 0,
+        "margin_bottom_small": 0,
+        "margin_left_small": 0,
+        "margin_right_small": 0
       }
     },
     "main": {
@@ -71,7 +82,22 @@
         "gap": 32,
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 0,
-        "padding-block-end": 80
+        "padding-block-end": 80,
+        "padding_left": 0,
+        "padding_right": 0,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_left": 0,
+        "margin_right": 0,
+        "mobile_override": false,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "margin_left_mobile": 0,
+        "margin_right_mobile": 0
       }
     },
     "section_E636kq": {
