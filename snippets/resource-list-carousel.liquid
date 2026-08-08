@@ -69,6 +69,16 @@
     .slideshow-control--next {
       margin-inline-start: auto;
     }
+
+    /* Product-card rails need always-visible nav, not the hover-reveal used on hero slideshows */
+    slideshow-arrows .slideshow-control {
+      opacity: 1;
+    }
+
+    .slideshow-control--shape-circle {
+      color: var(--spy-orange, #f57f29);
+      box-shadow: 0 0 9px 0 rgb(0 0 0 / 10%);
+    }
   }
 
   @container resource-list-carousel (max-width: 749px) {
