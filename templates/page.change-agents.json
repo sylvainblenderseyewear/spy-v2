@@ -17,7 +17,7 @@
         "background_color": "rgba(0,0,0,0)",
         "max_width": 3000,
         "padding_top": 0,
-        "padding_bottom": 80,
+        "padding_bottom": 20,
         "padding_left": 80,
         "padding_right": 80,
         "padding_top_small": 0,
@@ -36,8 +36,8 @@
         "line_height": 1.6,
         "background_color": "#ffffff",
         "max_width": 940,
-        "padding_top": 64,
-        "padding_bottom": 56
+        "padding_top": 30,
+        "padding_bottom": 30
       }
     },
     "gallery": {
