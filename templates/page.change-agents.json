@@ -125,7 +125,7 @@
               "settings": {
                 "image": "shopify://shop_images/Chris-Rasman-2.jpg",
                 "title": "Chris Rasman",
-                "link": "",
+                "link": "shopify://pages/chris-rasman",
                 "image_alt": "",
                 "focal_point": "center"
               },
@@ -137,7 +137,7 @@
               "settings": {
                 "image": "shopify://shop_images/Jeremy-McGrath-2.jpg",
                 "title": "Jeremy McGrath",
-                "link": "",
+                "link": "shopify://pages/jeremy-mcgrath",
                 "image_alt": "",
                 "focal_point": "center"
               },
@@ -149,7 +149,7 @@
               "settings": {
                 "image": "shopify://shop_images/25-SPY-Digital-ChangeAgents-AustenSweetin-1200x1200px.jpg",
                 "title": "Austen Sweetin",
-                "link": "",
+                "link": "shopify://pages/austen-sweetin",
                 "image_alt": "",
                 "focal_point": "center"
               },
