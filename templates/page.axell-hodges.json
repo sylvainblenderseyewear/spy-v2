@@ -90,7 +90,7 @@
         "margin_left": 0,
         "margin_right": 0,
         "mobile_override": true,
-        "padding_top_mobile": 0,
+        "padding_top_mobile": 50,
         "padding_bottom_mobile": 0,
         "padding_left_mobile": 50,
         "padding_right_mobile": 50,
