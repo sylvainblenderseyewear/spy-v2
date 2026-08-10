@@ -196,37 +196,10 @@
             "video_bAwjRQ",
             "video_affj6n"
           ]
-        },
-        "text_wRQhMc": {
-          "type": "text",
-          "name": "Heading",
-          "settings": {
-            "text": "<h2><strong>AXELL'S FAVORITES</strong></h2>",
-            "width": "100%",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "custom",
-            "font": "var(--font-body--family)",
-            "font_size": "2rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "text_color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
         }
       },
       "block_order": [
-        "group_e7YfDe",
-        "text_wRQhMc"
+        "group_e7YfDe"
       ],
       "name": "Agent Video",
       "settings": {
@@ -257,11 +230,56 @@
         "margin_left_mobile": 0,
         "margin_right_mobile": 0
       }
+    },
+    "spy_favorite_products_iWdYQA": {
+      "type": "spy-favorite-products",
+      "name": "Favorite products",
+      "settings": {
+        "product_1": "spy-bewilder-optical-55-translucent-sage-green-sunglasses",
+        "product_2": "spy-bewilder-optical-55-translucent-salmon-sunglasses",
+        "product_3": "spy-bewilder-optical-55-translucent-sage-green-sunglasses",
+        "product_4": "spy-boundless-optical-55-gloss-peach-pink-tort-sunglasses",
+        "heading": "BALARAM'S FAVORITES",
+        "heading_alignment": "center",
+        "heading_size": 30,
+        "heading_size_mobile": 20,
+        "heading_spacing": 24,
+        "section_width": "page",
+        "max_width": 1440,
+        "columns_desktop": 4,
+        "columns_tablet": 2,
+        "columns_mobile": 2,
+        "gap_horizontal": 16,
+        "gap_vertical": 24,
+        "gap_horizontal_mobile": 16,
+        "gap_vertical_mobile": 24,
+        "padding-block-start": 32,
+        "padding-block-end": 32,
+        "padding_inline": 50,
+        "padding_block_start_mobile": 24,
+        "padding_block_end_mobile": 24,
+        "padding_inline_mobile": 16,
+        "label_colors_one": "1 color available",
+        "label_colors_many": "[count] colors available",
+        "show_swatches": true,
+        "swatch_count": 4,
+        "show_price": true,
+        "label_price_from": "Starting from",
+        "product_card_gap": 0,
+        "section_background_color": "",
+        "background_color": "",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0
+      }
     }
   },
   "order": [
     "spy_change_agents_hero_GVh4YE",
     "main",
-    "agent_video_VQJU3L"
+    "agent_video_VQJU3L",
+    "spy_favorite_products_iWdYQA"
   ]
 }
