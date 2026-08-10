@@ -91,10 +91,205 @@
         "margin_left_mobile": 0,
         "margin_right_mobile": 0
       }
+    },
+    "agent_video_MbDK7x": {
+      "type": "agent-video",
+      "blocks": {
+        "group_h84Lqg": {
+          "type": "group",
+          "name": "Videos",
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "video_pXKpqB": {
+              "type": "video",
+              "name": "Video 1",
+              "settings": {
+                "source": "url",
+                "video_url": "https://www.youtube.com/watch?v=3rIcLjh_qr8",
+                "video_autoplay": false,
+                "video_loop": true,
+                "background": false,
+                "alt": "",
+                "custom_width": 100,
+                "custom_width_mobile": 100,
+                "aspect_ratio": "16/9",
+                "mobile_enabled": false,
+                "swap_at": "992",
+                "source_mobile": "uploaded",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "video_GUbpGM": {
+              "type": "video",
+              "name": "Video 2",
+              "settings": {
+                "source": "url",
+                "video_url": "https://www.youtube.com/watch?v=5e9UYy1U4Xs",
+                "video_autoplay": false,
+                "video_loop": true,
+                "background": false,
+                "alt": "",
+                "custom_width": 100,
+                "custom_width_mobile": 100,
+                "aspect_ratio": "16/9",
+                "mobile_enabled": false,
+                "swap_at": "992",
+                "source_mobile": "uploaded",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "video_yWNcjf": {
+              "type": "video",
+              "name": "t:names.video",
+              "settings": {
+                "source": "uploaded",
+                "video_autoplay": false,
+                "video_loop": true,
+                "background": false,
+                "alt": "",
+                "custom_width": 100,
+                "custom_width_mobile": 100,
+                "aspect_ratio": "auto",
+                "mobile_enabled": false,
+                "swap_at": "992",
+                "source_mobile": "uploaded",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_color": "",
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "video_pXKpqB",
+            "video_GUbpGM",
+            "video_yWNcjf"
+          ]
+        },
+        "text_7hbdJP": {
+          "type": "text",
+          "name": "Heading",
+          "settings": {
+            "text": "<h2><strong>AXELL'S FAVORITES</strong></h2>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "2rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "group_h84Lqg",
+        "text_7hbdJP"
+      ],
+      "name": "Agent Video",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "max_width": 1400,
+        "background_color": "",
+        "padding_top": 32,
+        "padding_bottom": 32,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 24,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_left": 0,
+        "margin_right": 0,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "margin_left_mobile": 0,
+        "margin_right_mobile": 0
+      }
     }
   },
   "order": [
     "spy_change_agents_hero_wdWAGy",
-    "main"
+    "main",
+    "agent_video_MbDK7x"
   ]
 }
