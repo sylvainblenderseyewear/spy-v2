@@ -9,6 +9,24 @@
  */
 {
   "sections": {
+    "spy_change_agents_hero_pAkgpY": {
+      "type": "spy-change-agents-hero",
+      "name": "SPY Change Agents Hero",
+      "settings": {
+        "image_desktop": "shopify://shop_images/zi.jpg",
+        "image_alt": "",
+        "background_color": "#000000",
+        "max_width": 1600,
+        "padding_top": 0,
+        "padding_bottom": 20,
+        "padding_left": 158,
+        "padding_right": 158,
+        "padding_top_small": 0,
+        "padding_bottom_small": 40,
+        "padding_left_small": 16,
+        "padding_right_small": 16
+      }
+    },
     "main": {
       "type": "main-page",
       "blocks": {
@@ -22,10 +40,12 @@
             "alignment": "left",
             "type_preset": "h2",
             "font": "var(--font-primary--family)",
+            "font_size": "1rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
+            "text_color": "",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -38,7 +58,9 @@
         },
         "page-content": {
           "type": "page-content",
-          "settings": {},
+          "settings": {
+            "text_color": ""
+          },
           "blocks": {}
         }
       },
@@ -48,14 +70,31 @@
       ],
       "settings": {
         "content_direction": "column",
+        "full_width": false,
         "gap": 32,
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 40,
-        "padding-block-end": 80
+        "padding-block-end": 80,
+        "padding_left": 0,
+        "padding_right": 0,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_left": 0,
+        "margin_right": 0,
+        "mobile_override": false,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "margin_left_mobile": 0,
+        "margin_right_mobile": 0
       }
     }
   },
   "order": [
+    "spy_change_agents_hero_pAkgpY",
     "main"
   ]
 }
