@@ -9,14 +9,14 @@
  */
 {
   "sections": {
-    "spy_change_agents_hero_pAkgpY": {
+    "spy_change_agents_hero_VDL4Jr": {
       "type": "spy-change-agents-hero",
       "name": "SPY Change Agents Hero",
       "settings": {
-        "image_desktop": "shopify://shop_images/JEREMY_MCGRATH.jpg",
+        "image_desktop": "shopify://shop_images/AUSTEN_SWEETIN.jpg",
         "image_alt": "",
         "background_color": "{{ settings.color_palette.background }}",
-        "max_width": 1600,
+        "max_width": 1575,
         "padding_top": 0,
         "padding_bottom": 20,
         "padding_left": 158,
@@ -92,15 +92,15 @@
         "margin_right_mobile": 0
       }
     },
-    "spy_favorite_products_c9mHYJ": {
+    "spy_favorite_products_7DnQcf": {
       "type": "spy-favorite-products",
       "name": "Favorite products",
       "settings": {
         "product_1": "spy-bewilder-optical-53-honey-tort-sunglasses",
-        "product_2": "spy-bewilder-optical-55-translucent-sage-green-sunglasses",
-        "product_3": "spy-boundless-gaming-matte-black-sunglasses",
-        "product_4": "spy-boundless-optical-53-soft-translucent-blush-sunglasses",
-        "heading": "JEREMY'S FAVORITES",
+        "product_2": "spy-bewilder-optical-53-translucent-sage-green-sunglasses",
+        "product_3": "spy-bewilder-optical-55-translucent-salmon-sunglasses",
+        "product_4": "spy-boundless-screen-matte-crystal-sunglasses",
+        "heading": "AUSTEN'S FAVORITES",
         "heading_alignment": "center",
         "heading_size": 30,
         "heading_size_mobile": 20,
@@ -138,8 +138,8 @@
     }
   },
   "order": [
-    "spy_change_agents_hero_pAkgpY",
+    "spy_change_agents_hero_VDL4Jr",
     "main",
-    "spy_favorite_products_c9mHYJ"
+    "spy_favorite_products_7DnQcf"
   ]
 }
