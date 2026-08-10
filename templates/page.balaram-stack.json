@@ -245,7 +245,7 @@
         "heading_size_mobile": 20,
         "heading_spacing": 24,
         "section_width": "page",
-        "max_width": 1440,
+        "max_width": 1280,
         "columns_desktop": 4,
         "columns_tablet": 2,
         "columns_mobile": 2,
