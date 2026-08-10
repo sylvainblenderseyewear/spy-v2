@@ -101,7 +101,7 @@
               "settings": {
                 "image": "shopify://shop_images/Axell_hodges_bio_pic.png",
                 "title": "Axell Hodges",
-                "link": "",
+                "link": "shopify://pages/axell-hodges",
                 "image_alt": "",
                 "focal_point": "center"
               },
