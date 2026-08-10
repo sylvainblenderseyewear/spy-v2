@@ -113,7 +113,7 @@
               "settings": {
                 "image": "shopify://shop_images/25-SPY-Digital-Website-ChangeAgents-BalaramStack-Portrait-1200x1200px.jpg",
                 "title": "Balaram Stack",
-                "link": "",
+                "link": "shopify://pages/balaram-stack",
                 "image_alt": "",
                 "focal_point": "center"
               },
