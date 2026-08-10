@@ -25,7 +25,7 @@
             "font_size": "2rem",
             "line_height": "normal",
             "letter_spacing": "normal",
-            "case": "none",
+            "case": "uppercase",
             "wrap": "pretty",
             "text_color": "",
             "background": false,
