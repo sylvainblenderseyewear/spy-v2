@@ -40,6 +40,33 @@
     },
     {
       "type": "collection-title"
+    },
+    {
+      "type": "image"
+    },
+    {
+      "type": "icon"
+    },
+    {
+      "type": "video"
+    },
+    {
+      "type": "_divider"
+    },
+    {
+      "type": "custom-liquid"
+    },
+    {
+      "type": "spy-heading"
+    },
+    {
+      "type": "spy-body-text"
+    },
+    {
+      "type": "spy-bullet-list"
+    },
+    {
+      "type": "@app"
     }
   ],
   "tag": null,
@@ -119,6 +146,29 @@
       "default": 8
     },
     {
+      "type": "range",
+      "id": "content_inset",
+      "label": "Text inset",
+      "info": "Space between the text and the image edge.",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ block.settings.placement == \"on_image\" }}"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Text width",
+      "info": "Caps the text column so headlines wrap where you want.",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
       "type": "header",
       "content": "t:content.appearance"
     },
@@ -183,6 +233,50 @@
       "label": "t:settings.border_radius",
       "min": 0,
       "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 50,
       "step": 1,
       "unit": "px",
       "default": 0
