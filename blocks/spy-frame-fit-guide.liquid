@@ -166,6 +166,8 @@
         </button>
       </div>
 
+      {%- comment -%} Source modal body keeps 16px around the widget, so it never touches the panel edge {%- endcomment -%}
+      <div class="min-h-0 flex-1 overflow-y-auto p-4">
       {%- comment -%}
         Source sets the widget's own base type (13px/1.5, #111) and a thin grey
         scrollbar, so inner copy does not inherit the page scale. It also caps
@@ -489,6 +491,7 @@
             <div class="text-[10px] leading-[1.6] text-[#bbb] [&_a]:text-spy-orange [&_a]:no-underline [&_p]:mb-4 [&_p]:mt-0 hover:[&_a]:underline">{{ block.settings.footer_note }}</div>
           </div>
         {%- endif -%}
+      </div>
       </div>
     </div>
   </div>
