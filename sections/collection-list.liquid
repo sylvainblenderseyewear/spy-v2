@@ -47,8 +47,21 @@
   </div>
 
   {% if section.settings.content_source == 'products' and section.settings.heading != blank %}
+    {%- comment -%}
+      Source section header: 28px / 600 / uppercase, centred, margin 28px 0 14px.
+      The size is Bootstrap's RFS curve — calc(1.3rem + 0.6vw) until it hits the
+      1.75rem cap at a 1200px viewport, which min() expresses without a query.
+    {%- endcomment -%}
     <div class="section-resource-list__header">
-      <h2 class="type-h2">{{ section.settings.heading }}</h2>
+      <h2
+        class="
+          type-h2 m-0 mt-7 mb-3.5 text-center uppercase font-semibold
+          leading-[1.2] tracking-normal
+          text-[length:min(1.75rem,calc(1.3rem_+_0.6vw))]
+        "
+      >
+        {{- section.settings.heading -}}
+      </h2>
     </div>
   {% endif %}
 
