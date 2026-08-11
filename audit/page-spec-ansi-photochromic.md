@@ -126,19 +126,38 @@ Band 3 is the exception — `product-list` has no class setting, so it stays tem
 
 ### Cost of making it editable
 
-`spy-heading` and `spy-body-text` express type as fixed px per breakpoint, switching at 769px.
-The source scales its `h2` fluidly with `calc(1.3rem + 0.6vw)` below 1200px. The rebuild is
-exact at ≥1200 (28px) and within 0.1px at 390 (23 vs 23.1), but runs up to ~2.6px large between
-769 and 1199. The content-row paragraph switches at 769 rather than the source's 768 — a
-one-pixel-wide window at exactly 768.
+`spy-body-text` still expresses type as fixed px per breakpoint, switching at 769px, and the
+content-row paragraph therefore switches at 769 rather than the source's 768 — a one-pixel-wide
+window at exactly 768. `spy-heading` no longer has this limitation; see "Header type" below.
 
-`spy-feature-link-banner` switches placement at 768px where the source switches at 992px, sets
-its heading `font-bold` (700) where the source computes 600, and uses its own overlay padding
-rather than the source's `1rem 1rem 4rem 1rem`. Its `solid` CTA, however, already computes to
-the source button exactly.
+`spy-feature-link-banner` **now switches at the source's 992px** and its heading computes 600,
+both verified against the capture (see the table below). It still uses its own overlay padding
+rather than the source's `1rem 1rem 4rem 1rem`. Its `solid` CTA already computes to the source
+button exactly.
 
-These were accepted deliberately in exchange for editor-editable copy, under the constraint of
-using only blocks and sections that already exist.
+The overlay padding was accepted deliberately in exchange for editor-editable copy, under the
+constraint of using only blocks and sections that already exist.
+
+### Header type — resolved
+
+The ±2.6px approximation described above is gone. `spy-heading` and `spy-feature-link-banner`
+carry a **"Scale with the viewport"** setting that emits `min(<size>px, calc(1.3rem + 0.6vw))`,
+which is the source's RFS curve exactly — the cap and the curve cross at 1200, so it needs no
+media query. It is on for all three section headers and the footer banner heading here.
+
+Measured against `reference/ANSI_Photochromic/`, ours vs the capture, identical at every width:
+
+| Width | Banner band | Banner heading | Section headers |
+|---|---|---|---|
+| 1440 | 330 / 330 | 28px left | 28px |
+| 1200 | 275 / 275 | 28px left | 28px |
+| 992 | 227 / 227 | 26.752px left | 26.752px |
+| 991 | 793 / 793 | 26.746px centre | 26.746px |
+| 768 | 614 / 614 | 25.408px centre | 25.408px |
+| 390 | 312 / 312 | 23.14px centre | 23.14px |
+
+The footer banner's own art swap is `<picture media="(min-width: 992px)">` and its overlay uses
+`justify-content-lg-*`, so 992 is the source's break for both the art and the copy placement.
 
 The hero no longer costs anything: with `ratio_w`/`ratio_h` and `swap_at` it hits 1920/600 and
 400/600 exactly, and swaps at the source's 992px.
