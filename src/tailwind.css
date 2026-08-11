@@ -17,8 +17,9 @@
   --color-spy-muted:   #a6a6a6; /* source content-muted */
   --color-spy-label:   #6c757d; /* source swatches-label — colourway name on the card */
   --color-spy-surface: #f9f9f9; /* source surface-primary — tiles, scale track */
-  --color-spy-positive: #4bb151; /* source sentiment-positive — In Stock */
+  --color-spy-positive: #4bb151; /* source sentiment-positive — In Stock (PDP) */
   --color-spy-negative: #d7403a; /* source sentiment-negative — Sold Out */
+  --color-spy-cart-stock: #88c290; /* source's In Stock green on the cart page — measured separately from the PDP token above */
   --color-spy-input-border: #cccccc; /* source select/input outline */
 
   /* Spacing overrides */
@@ -907,14 +908,18 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   /* !important because Horizon re-declares the columns at 1400px with its own
      --sidebar-width, from a section {% stylesheet %} that loads after this file. */
   /* Source splits Bootstrap 7/5, so the rail is proportional — a fixed 564px would
-     starve the item list at 768 (it drops to ~130px wide). 41.5% lands on the
-     source's 564 at 1440 and still leaves a usable list at tablet.
+     starve the item list at 768 (it drops to ~130px wide). 43.5% lands on the
+     source's 564 at 1440 (given this site's actual page-width and the 32px gap
+     below) and still leaves a usable list at tablet.
      !important because Horizon re-declares the columns at 1400px with its own
      --sidebar-width, from a section {% stylesheet %} that loads after this file. */
   .cart-page {
-    grid-template-columns: minmax(0, 1fr) clamp(240px, 41.5%, 564px) !important;
+    grid-template-columns: minmax(0, 1fr) clamp(240px, 43.5%, 564px) !important;
     grid-template-rows: min-content min-content auto;
-    gap: 0 32px;
+    /* !important: Horizon's own unguarded `.cart-page { gap: 0 var(--padding-5xl) }`
+       (48px) sits in a section stylesheet that loads after this file, so at equal
+       specificity it silently wins and this 32px never actually applied. */
+    gap: 0 32px !important;
   }
 
   .cart-page .spy-cart__continue {
@@ -980,7 +985,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   display: inline-block;
   grid-column: 1 / -1;
   margin-bottom: 16px;
-  color: #393939;
+  color: var(--color-spy-text-2);
   font-size: 13px;
   font-weight: 600;
   line-height: 18.2px;
@@ -1127,6 +1132,11 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   line-height: 18.2px !important;
 }
 
+/* Source's bold "Color:" label — .font-weight-bold is 600 */
+.cart-page .spy-cart-item__variant-label {
+  font-weight: 600;
+}
+
 /* "Quantity : N" — label is 600, the number regular, both 13/18.2 */
 .cart-page .spy-cart-item__qty-line {
   margin: 0;
@@ -1138,13 +1148,18 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   font-weight: 600;
 }
 
-/* Stock line, the source's green */
+/* Stock line: source's cart-page green when available, the shared sentiment
+   red (same as PDP) when sold out — was a bare hex with no sold-out state. */
 .cart-page .spy-cart-item__stock {
   margin: 4px 0;
-  color: #88c290;
+  color: var(--color-spy-cart-stock);
   font-size: 13px;
   font-weight: 400;
   line-height: 18.2px;
+}
+
+.cart-page .spy-cart-item__stock--sold-out {
+  color: var(--color-spy-negative);
 }
 
 /* Hide Horizon's per-unit price — the source prints only the line total */
@@ -1239,11 +1254,14 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   text-transform: none;
 }
 
+/* Explicit ink, not the inherited site foreground (--color-spy-slate) — the
+   source's Order Summary text is a slightly darker, distinct shade. */
 .cart-page .cart-totals__item {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 16px;
+  color: var(--color-spy-ink);
   font-size: 16px;
   line-height: 22.4px;
 }
@@ -1331,25 +1349,26 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   line-height: 18.2px;
 }
 
+/* Source overrides the generic orange .btn-primary with a more specific
+   .promo-code-form .promo-code-btn rule: flat grey, black text, not orange. */
 .cart-page .spy-cart-promo__apply {
   flex: 0 0 auto;
   height: 36px;
   padding: 0 16px;
-  border: 1px solid var(--color-spy-orange);
+  border: 1px solid #f2f2f2;
   border-radius: 0;
-  background: #fff;
-  color: var(--color-spy-orange);
+  background: #f2f2f2;
+  color: #000;
   font-size: 13px;
   font-weight: 600;
   line-height: 18.2px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .cart-page .spy-cart-promo__apply:hover {
-  background: var(--color-spy-orange);
-  color: #fff;
+  background: #e6e6e6;
 }
 
 .cart-page .spy-cart-promo__error {
@@ -1368,9 +1387,17 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     margin-top: 24px;
   }
 
+  /* Source uses Bootstrap .p-2 below md (0.5rem = 8px), only stepping up to
+     .p-md-4 (24px, set in the base rule above) at 768+. */
   .cart-page .cart-items__table-row {
-    padding: 16px;
+    padding: 8px;
     column-gap: 12px;
+  }
+
+  /* The unguarded desktop rule above pins the last card's bottom padding to
+     24px for the divider — reset it to match the 8px mobile padding. */
+  .cart-page .cart-items--dividers .cart-items__table-row:last-of-type {
+    padding-block-end: 8px;
   }
 
   .cart-page .cart-items__media,
@@ -1423,7 +1450,11 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     overscroll-behavior: none;
   }
 
-  @media screen and (min-width: 750px) {
+  /* Matches the hamburger's own min-[992px]:hidden breakpoint below — the
+     desktop nav only takes over at 992px (source's real collapse point,
+     confirmed in audit/design-tokens.md and repeated overflow notes across
+     the other page specs), not Tailwind's 768px `md`. */
+  @media screen and (min-width: 992px) {
     html.spy-nav-open .page-wrapper {
       transform: none;
     }

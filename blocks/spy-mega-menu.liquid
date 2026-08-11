@@ -4,11 +4,11 @@
 %}
 
 <nav
-  class="spy-mega-menu flex items-center self-stretch max-md:order-first md:flex-1 md:justify-center"
+  class="spy-mega-menu flex items-center self-stretch max-[991px]:order-first min-[992px]:flex-1 min-[992px]:justify-center"
   aria-label="{{ 'accessibility.header_navigation_label' | t }}"
   {{ block.shopify_attributes }}
 >
-  <ul class="hidden md:flex items-stretch h-full gap-4 lg:gap-8 list-none m-0 p-0">
+  <ul class="hidden min-[992px]:flex items-stretch h-full gap-4 lg:gap-8 list-none m-0 p-0">
     {% for link in menu.links %}
       {% liquid
         assign link_handle = link.title | handleize
@@ -67,7 +67,7 @@
 
   <button
     type="button"
-    class="spy-nav-toggle relative z-[70] flex items-center justify-center w-11 h-11 cursor-pointer text-spy-ink md:hidden button-unstyled"
+    class="spy-nav-toggle relative z-[70] flex items-center justify-center w-11 h-11 cursor-pointer text-spy-ink min-[992px]:hidden button-unstyled"
     aria-label="{{ 'accessibility.menu' | t }}"
     aria-expanded="false"
     aria-controls="spy-mobile-nav"
@@ -75,7 +75,7 @@
     <span class="block w-5 h-5">{{- 'spy-fa-bars.svg' | inline_asset_content -}}</span>
   </button>
 
-  <div id="spy-mobile-nav" class="spy-nav md:hidden fixed inset-0 z-[60] invisible pointer-events-none [html.spy-nav-open_&]:visible" aria-hidden="true">
+  <div id="spy-mobile-nav" class="spy-nav min-[992px]:hidden fixed inset-0 z-[60] invisible pointer-events-none [html.spy-nav-open_&]:visible" aria-hidden="true">
     <div class="spy-nav__overlay absolute top-[var(--spy-nav-top,50px)] left-0 right-0 bottom-0 bg-black/40 opacity-0 transition-opacity duration-[350ms] ease-spy-nav touch-none overscroll-contain pointer-events-auto [html.spy-nav-open_&]:opacity-100 motion-reduce:transition-none" data-nav-close></div>
 
     <div class="spy-nav__panel absolute left-0 top-0 bottom-0 w-[var(--spy-nav-width)] bg-white overflow-hidden -translate-x-full transition-[translate] duration-[350ms] ease-spy-nav pointer-events-auto [html.spy-nav-open_&]:translate-x-0 motion-reduce:transition-none">

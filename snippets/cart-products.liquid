@@ -240,7 +240,11 @@
                         <dl class="cart-items__variants">
                           {%- for option in item.options_with_values -%}
                             <div class="cart-items__variant">
-                              <dt class="visually-hidden">{{ option.name }}:</dt>
+                              {%- comment -%}
+                                Source prints the option name as a bold visible label
+                                ("Color: Dusty Pink-..."), not screen-reader-only text.
+                              {%- endcomment -%}
+                              <dt class="{% if context == 'drawer' %}visually-hidden{% else %}spy-cart-item__variant-label{% endif %}">{{ option.name }}:</dt>
                               <dd>
                                 {{- option.value -}}
                                 {%- if forloop.last != true %},&nbsp;{% endif -%}
@@ -290,7 +294,7 @@
                           <span class="spy-cart-item__qty-label">{{ 'content.quantity' | t }}</span>
                           <span class="spy-cart-item__qty-value">: {{ item.quantity }}</span>
                         </p>
-                        <p class="spy-cart-item__stock">
+                        <p class="spy-cart-item__stock{% unless item.variant.available %} spy-cart-item__stock--sold-out{% endunless %}">
                           {%- if item.variant.available -%}
                             {{ 'content.cart_in_stock' | t }}
                           {%- else -%}
