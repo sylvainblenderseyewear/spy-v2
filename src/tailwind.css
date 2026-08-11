@@ -2705,6 +2705,33 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   pointer-events: none;
 }
 
+/* The source stacks the slide at its own 768px break and gives the art a flat
+   300px band with the image contained inside it. Horizon stacks the card at
+   750px instead and sizes the media off a ratio, which left a side-by-side
+   slide between 750 and 768 and a 599px-tall image once it did stack. */
+@media (max-width: 768.98px) {
+  [data-template='page.watermen'] .section-carousel .card__inner {
+    flex-direction: column;
+  }
+
+  [data-template='page.watermen'] .section-carousel .card__inner > :not(style) {
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 auto;
+  }
+
+  [data-template='page.watermen'] .section-carousel .card__inner .image-block {
+    height: 18.75rem; /* 300px */
+    background: #f8f9fa;
+  }
+
+  [data-template='page.watermen'] .section-carousel .card__inner .image-block__image {
+    height: 100%;
+    aspect-ratio: auto;
+    object-fit: contain;
+  }
+}
+
 /* Source .hbc-dot: a flat 10px square, the active one darker and 1.2x. */
 [data-template='page.watermen'] .section-carousel .slideshow-controls__dots {
   gap: 0.625rem;
