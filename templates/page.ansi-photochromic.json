@@ -104,7 +104,8 @@
             "margin_top": 28,
             "margin_bottom": 14,
             "margin_top_mobile": 23,
-            "margin_bottom_mobile": 12
+            "margin_bottom_mobile": 12,
+            "fluid": true
           },
           "blocks": {}
         },
@@ -382,7 +383,8 @@
                     "margin_top": 0,
                     "margin_bottom": 24,
                     "margin_top_mobile": 0,
-                    "margin_bottom_mobile": 24
+                    "margin_bottom_mobile": 24,
+                    "fluid": true
                   },
                   "blocks": {}
                 },
@@ -518,7 +520,8 @@
                     "margin_top": 0,
                     "margin_bottom": 24,
                     "margin_top_mobile": 0,
-                    "margin_bottom_mobile": 24
+                    "margin_bottom_mobile": 24,
+                    "fluid": true
                   },
                   "blocks": {}
                 },
@@ -635,7 +638,8 @@
         "text_align_mobile": "center",
         "show_overlay": false,
         "content_width": "page",
-        "content_max_width": 1440
+        "content_max_width": 1440,
+        "heading_fluid": true
       }
     }
   },
