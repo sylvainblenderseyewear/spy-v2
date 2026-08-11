@@ -10,6 +10,19 @@ scripts stripped, Word's inline styles kept. Paste into the matching Shopify pag
 | `terms-of-use.html` | `terms-of-use` | `Terms and Conditions.html` | Word paste: 70 of 71 paragraphs carry inline `font-family: Times New Roman; font-size: 10pt; line-height: 1.6em`. |
 | `privacy-policy.html` | `privacy-policy` | `nam_Privacy_Policy.html` | Word paste with **4 tables + 12 list items the current Shopify page is missing**. Body text inherits Calibri 11pt from Word's `.MsoNormal` rule (in the source `<head>`, not inline) — the theme must supply that base. |
 
+## Admin steps left to do
+
+1. **Create the page**: Content → Pages → Add page, title `Legal Notices`, handle `legal-notices`,
+   theme template `legal-notices` (already in the theme).
+2. **Paste the bodies**: open each page, switch the body editor to HTML (`<>`), and replace the
+   content with the matching file above. Paste in HTML view — the visual editor strips the
+   `style` attributes the Word copy depends on.
+3. Privacy Policy must be replaced, not appended: the live body is missing its 4 tables and 9 of
+   its 12 list items.
+
+The theme side is done: `blocks/page-content.liquid` gives each `template_suffix` its own base
+type, and `sections/main-page.liquid` gives each one the source's reading column.
+
 Measured source type (1440, real fonts):
 
 | Page | Font | Size / line-height | Align | Content inset (doc 1425) |
