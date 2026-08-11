@@ -48,7 +48,14 @@ Only 5 and 6 are new blocks; 12 extended an existing unused section. Everything 
 ## Measurements
 
 ### Shared section header (`sectionHeader`)
-- h2 **28px / 600 / uppercase / lh 1.2**, centred, margin `1em 0 .5em` (= 28px / 14px).
+- h2 is **fluid**, not a flat 28px: `global.css` gives it Bootstrap's RFS,
+  `font-size: calc(1.3rem + 0.6vw)` with a `1.75rem` cap from a 1200px viewport →
+  **28px ≥1200 · 25.408px @768 · 23.14px @390**. Reproduced as
+  `min(28px, calc(1.3rem + 0.6vw))`, which needs no media query because the cap
+  and the curve cross at exactly 1200. The first pass read this as 28px at every
+  breakpoint and locked it there, leaving every header ~10% large at 768 and ~21%
+  at 390.
+- weight **600**, uppercase, lh 1.2, centred, margin `1em 0 .5em` (= 28px / 14px).
   Black `#000` on OUR TECH; the source's default ink elsewhere.
 - subheader **18px / lh 1.2 (21.6px)**, `margin-bottom: 16px`, then **48px** of clear space
   before whatever the band holds
@@ -176,13 +183,20 @@ leaves them half off-screen, and `overflow-x: clip` on the section stops that op
 - title **40px / 700 / #1a1a1a** lh 1.2 `mb 15px`; subtitle **22px / 500 / #444** `mb 20px`;
   body **18px / lh 1.7 / #666**
 - arrows 50×50 `rgba(255,255,255,.9)` inset 20px; dots 10px squares, active `scale(1.2)`
-- mobile: stacks, image 300px tall, text `padding: 30px 20px 40px`, title **28px** centred,
-  subtitle **18px** centred, body **16px**, dots below
+- mobile: stacks at the source's own **`max-width: 768px`** — not Horizon's 750px, which
+  left the slide side-by-side through 768–750 and then sized the art off a 1.25 ratio
+  (599px tall at 749). `.hbc-image-section` is a flat **300px** band on `#f8f9fa` with
+  the image `object-fit: contain`. Text `padding: 30px 20px 40px`, title **28px** centred,
+  subtitle **18px** centred, body **16px** left, dots below
 - Slides: Color Enhancement → *Happy Boost™ Lens*; White Balance → *Happy™ Polar Lens*;
   Polarization → *ANSI Z87-2+ Certification* (no subtitle); Contrast → *Prescription Ready* (no subtitle)
 
 ### 12 · Shop-all banner
 - separate desktop (1920×440) and mobile (800×640) art — per-breakpoint setting, no shared value
+- the swap is at **992px** (the source's `lg`), not `md`. Verified on the capture by fresh
+  loads either side of it: band **227px at 992** with the heading flush left, **793px at 991**
+  with it centred. Tailwind's `md:` (768) put the desktop crop across 768–991, where the
+  source still uses the mobile one — a 438px band error at 768.
 - **no scrim**: the desktop art already carries a black panel for the copy
 - copy centre-right on desktop, bottom-centre on mobile. The copy box is shrink-to-fit against
   the **15px container edge** with its own `padding: 16px 16px 64px`, so heading and button share
@@ -195,7 +209,11 @@ leaves them half off-screen, and `overflow-x: clip` on the section stops that op
 
 | Check | Result |
 |---|---|
-| Section header h2 | 28px / 600 at every breakpoint |
+| Section header h2 | 28 / 25.408 / 23.14 at 600 — matches the source RFS curve at 1440 / 768 / 390 |
+| Rail headings | were rendering Horizon's `type-h2` (48 / 36.864 / 30 at 700, left-aligned); now on the header type above |
+| Rail card height | 401.3 vs the source's 404.6 — the −3.3 is the missing NEW badge, nothing else |
+| Benefits slide | side-by-side at 769, stacked with a 300px image band at 768 / 767 / 750 |
+| Shop-all banner | 330 @1440 · 227 @992 · 793 @991 · 614 @768 · 312 @390, all matching |
 | Intro h2 | 40px / 700 |
 | LENS OPTIONS h2 | 26px desktop, 22px mobile |
 | Benefit slide title | 40px desktop, 28px mobile |
@@ -207,10 +225,26 @@ leaves them half off-screen, and `overflow-x: clip` on the section stops that op
 | Console / page errors | none from theme code |
 | Horizontal overflow | none at 1440 / 390 |
 
-**Known issue, pre-existing and not from this page:** at **768px** the document scrolls to
-1182px. The culprits are `nav.spy-mega-menu` and `.spy-utility-nav` — the desktop nav turns on
-at Tailwind's `md` (768px) but does not fit. Reproduced with the identical 1182px value on
-`/`, `/pages/happy-boost` and `/pages/happy-lens`, so it is a header bug to fix once, globally.
+The 768px document-overflow noted in the first pass (1182px wide, from `nav.spy-mega-menu`
+and `.spy-utility-nav`) is **fixed** — the page now measures 768/768 with no horizontal
+scroll at any of the three widths.
+
+### A recurring trap: Tailwind's `md` is not the source's break
+
+Three of the six defects found in the re-diff were the same mistake — a Horizon or Tailwind
+breakpoint standing in for a source one. The source has **no break at 768px-and-up**; its
+ladder is 544 / 769 / 992 / 1200, and individual components add their own `max-width: 768px`.
+So `md:` (min-width 768) is always wrong by at least a pixel, and often by a whole step:
+
+| Component | Source break | What we had |
+|---|---|---|
+| Lens-benefits slide | `max-width: 768px` | Horizon's card stacking at 750px |
+| Shop-all banner art + copy | `min-width: 992px` | `md:` → 768px |
+| Section header size | fluid, no break | flat 28px with a 769px step |
+
+When in doubt, measure the capture either side of the candidate break with a **fresh load** —
+resizing a loaded page leaves Slick tracks and `<img>` selections stale (see the note at the
+end of this file).
 
 ## Editability
 
@@ -243,7 +277,19 @@ dropped and Horizon's fluid preset takes over at ~36.9px.
 
 ## Outstanding before sign-off
 
-Layout is source-exact at 1440 / 768 / 390 (see the band table above). What is left is data:
+Six layout defects found in a re-diff after the rails moved onto `collection-list` are fixed
+(rail heading type, RFS header scaling, card text band, benefits stacking, benefits image band,
+banner break). One layout question and the data gaps are left.
+
+### Open decision — the rails group by model
+
+The rails render one card per **model** with `N colors available` and `Starting from $X`; the
+source renders one tile per **colourway** with the colourway name and a plain price, giving
+10 / 14 / 10 / 1 tiles against our 9 / 11 / 10 / 1. The type on both is identical — only the
+content and the row count differ. This came in with the grouped card and reversing it also moves
+the PLP, so it needs a call rather than a quiet fix.
+
+### Data
 
 1. **No tech badges.** `spec.technologies`, `spec.ansi_rating` and `spec.certifications` are empty
    on all 40 products in the `watermen` collection, so the HB / ANSI Z87 stickers cannot render.
@@ -262,6 +308,13 @@ Layout is source-exact at 1440 / 768 / 390 (see the band table above). What is l
    slide instead of being drawn half off-screen.
 6. **Set the two link targets**: the CTA button and the banner both point at the fishing
    sunglasses collection (source: `/us/sunglasses/fishing-sunglasses/`), which does not exist yet.
+7. **`HELM` prices at `Starting from $0`** in the ICE BLUE rail — a staging price, not a template
+   fault.
+8. **`CYRUS` reports a different colour count per rail** — `4 colors available` in ICE BLUE,
+   `15` in BLACK MIRROR, for the same model. The count should come from the model collection and
+   be identical; looks like a real bug in the grouping lookup, worth chasing on its own.
+9. **No redirect row** for `/us/sunglasses/watermen-collection.html` → `/pages/watermen` in
+   `audit/redirect-urls.csv`.
 
 ### A note on comparing against the capture
 
