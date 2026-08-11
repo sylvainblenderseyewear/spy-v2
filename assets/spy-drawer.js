@@ -1,7 +1,33 @@
 // Opens the PDP side drawers (lens tech, fit guide). One listener for the page:
 // any [data-spy-drawer-open="id"] opens that drawer, the veil / cross / Escape close it.
 (() => {
+  // The PDP column is a sticky stacking context, so a fixed drawer left inside it
+  // still ranks below the header and gets painted over. Move it to <body>, where
+  // its z-index counts page-wide.
+  const portal = (drawer) => {
+    if (drawer.parentElement === document.body) return;
+    // A re-render in the editor would otherwise leave the old copy behind.
+    if (drawer.id) {
+      document.querySelectorAll('[data-spy-drawer]').forEach((el) => {
+        if (el !== drawer && el.id === drawer.id) el.remove();
+      });
+    }
+    document.body.appendChild(drawer);
+    // Moving the node drops its pending style, so settle it before the class flips.
+    void drawer.offsetWidth;
+  };
+
+  const portalAll = () => document.querySelectorAll('[data-spy-drawer]').forEach(portal);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', portalAll);
+  } else {
+    portalAll();
+  }
+  document.addEventListener('shopify:section:load', portalAll);
+
   const openDrawer = (drawer, trigger) => {
+    portal(drawer);
     drawer.dataset.open = '';
     drawer.setAttribute('aria-hidden', 'false');
     trigger?.setAttribute('aria-expanded', 'true');
