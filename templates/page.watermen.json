@@ -165,7 +165,6 @@
       "blocks": {},
       "name": "Watermen — frames carousel",
       "settings": {
-        "collection": "watermen",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 10,
@@ -200,7 +199,8 @@
         "border_color": "",
         "border_radius": 0,
         "padding-inline-start": 0,
-        "padding-inline-end": 0
+        "padding-inline-end": 0,
+        "collection_list": ["watermen"]
       }
     },
     "frames_cta": {
@@ -1532,7 +1532,6 @@
       "blocks": {},
       "name": "Watermen — ice blue mirror",
       "settings": {
-        "collection": "watermen-ice-blue",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 14,
@@ -1568,7 +1567,10 @@
         "border_radius": 0,
         "padding-inline-start": 0,
         "padding-inline-end": 0,
-        "heading": "HAPPY BOOST ICE BLUE MIRROR"
+        "heading": "HAPPY BOOST ICE BLUE MIRROR",
+        "collection_list": [
+          "watermen-ice-blue"
+        ]
       }
     },
     "black_mirror": {
@@ -1576,7 +1578,6 @@
       "blocks": {},
       "name": "Watermen — black mirror",
       "settings": {
-        "collection": "watermen-black-mirror",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 10,
@@ -1612,7 +1613,10 @@
         "border_radius": 0,
         "padding-inline-start": 0,
         "padding-inline-end": 0,
-        "heading": "HAPPY BOOST BLACK MIRROR"
+        "heading": "HAPPY BOOST BLACK MIRROR",
+        "collection_list": [
+          "watermen-black-mirror"
+        ]
       }
     },
     "bronze": {
@@ -1620,7 +1624,6 @@
       "blocks": {},
       "name": "Watermen — bronze",
       "settings": {
-        "collection": "watermen-bronze",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 1,
@@ -1656,7 +1659,10 @@
         "border_radius": 0,
         "padding-inline-start": 0,
         "padding-inline-end": 0,
-        "heading": "HAPPY BOOST BRONZE"
+        "heading": "HAPPY BOOST BRONZE",
+        "collection_list": [
+          "watermen-bronze"
+        ]
       }
     },
     "lens_benefits_header": {

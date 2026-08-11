@@ -54,67 +54,78 @@
 
   {% if section.settings.content_source == 'products' %}
     {%- liquid
-      assign product_collection = section.settings.collection
+      # Pool products across every collection picked in "Collections", so the
+      # section can mix as many collections as the merchant wants.
+      assign product_pool = blank
+      for coll in section.settings.collection_list
+        if coll == blank
+          continue
+        endif
+        if product_pool == blank
+          assign product_pool = coll.products
+        else
+          assign product_pool = product_pool | concat: coll.products
+        endif
+      endfor
+
       assign group_sep = '~|~'
       assign group_seen = group_sep
       assign group_card_count = 0
     -%}
     {% capture list_items %}
-      {% if product_collection != blank and product_collection.products.size > 0 %}
+      {% if product_pool != blank and product_pool.size > 0 %}
         {%- capture groups -%}
-          {%- render 'spy-product-groups', products: product_collection.products -%}
+          {%- render 'spy-product-groups', products: product_pool -%}
         {%- endcapture -%}
         {%- liquid
           assign groups = groups | strip | split: '~#~'
           assign group_keys = groups[0] | split: group_sep
           assign group_counts = groups[1] | split: group_sep
         -%}
-        {% paginate product_collection.products by 50 %}
-          {% for product in product_collection.products %}
+        {% for product in product_pool %}
+          {% liquid
+            if group_card_count >= max_items
+              break
+            endif
+
+            capture group_name
+              render 'spy-group-name', product: product
+            endcapture
+            assign group_name = group_name | strip
+            if group_name == ''
+              assign group_key = 'ungrouped-' | append: product.id
+            else
+              assign group_key = group_name | handleize
+            endif
+            assign group_probe = group_sep | append: group_key | append: group_sep
+          %}
+
+          {% unless group_seen contains group_probe %}
+            {% if group_card_count > 0 %}
+              <!--@list/split-->
+            {% endif %}
             {% liquid
-              if group_card_count >= max_items
-                break
-              endif
-
-              capture group_name
-                render 'spy-group-name', product: product
-              endcapture
-              assign group_name = group_name | strip
-              if group_name == ''
-                assign group_key = 'ungrouped-' | append: product.id
-              else
-                assign group_key = group_name | handleize
-              endif
-              assign group_probe = group_sep | append: group_key | append: group_sep
+              assign group_seen = group_seen | append: group_key | append: group_sep
+              assign group_count = 1
+              for candidate_key in group_keys
+                if candidate_key == group_key
+                  assign group_count = group_counts[forloop.index0] | plus: 0
+                  break
+                endif
+              endfor
+              assign group_card_count = group_card_count | plus: 1
             %}
-
-            {% unless group_seen contains group_probe %}
-              {% if group_card_count > 0 %}
-                <!--@list/split-->
-              {% endif %}
-              {% liquid
-                assign group_seen = group_seen | append: group_key | append: group_sep
-                assign group_count = 1
-                for candidate_key in group_keys
-                  if candidate_key == group_key
-                    assign group_count = group_counts[forloop.index0] | plus: 0
-                    break
-                  endif
-                endfor
-                assign group_card_count = group_card_count | plus: 1
+            <div class="resource-list__item">
+              {% render 'spy-grouped-product-card',
+                product: product,
+                group_name: group_name,
+                group_count: group_count,
+                block: section,
+                product_view_context: 'collection'
               %}
-              <div class="resource-list__item">
-                {% render 'spy-grouped-product-card',
-                  product: product,
-                  group_name: group_name,
-                  group_count: group_count,
-                  block: section,
-                  product_view_context: 'collection'
-                %}
-              </div>
-            {% endunless %}
-          {% endfor %}
-        {% endpaginate %}
+            </div>
+          {% endunless %}
+        {% endfor %}
       {% endif %}
     {% endcapture %}
 
@@ -229,13 +240,7 @@
       "type": "collection_list",
       "id": "collection_list",
       "label": "t:settings.collection_list",
-      "info": "Collections mode only."
-    },
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "t:settings.collection",
-      "info": "Products mode only."
+      "info": "In products mode, every product from every collection here is pooled together before grouping by model."
     },
     {
       "type": "text",
