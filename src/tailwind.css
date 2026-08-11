@@ -2607,9 +2607,10 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 }
 
 /* These tiles carry no rating and no Compare row, so the text band keeps the
-   source's plain 24px bottom padding instead of the PLP's reserved 40. */
-[data-template='page.watermen'] .product-card:not(:has(.spy-color-swatches)) .product-card__content {
-  padding-bottom: 1.5rem;
+   source's plain 24px bottom padding instead of the PLP's reserved 40. The old
+   selector skipped any card with a label band, which is now every rail card. */
+[data-template='page.watermen'] .product-card .spy-tile-body {
+  padding-bottom: 1.5rem; /* 24px */
 }
 
 /* Arrows ride the viewport edge, half off-screen, the way slick leaves them:
