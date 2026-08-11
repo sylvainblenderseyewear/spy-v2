@@ -32,23 +32,29 @@
     data-spy-drawer-close
   ></div>
 
+  {%- comment -%} Panel is full-bleed under 544px, 500px above — the source's own breakpoint {%- endcomment -%}
   <div
-    class="absolute right-0 top-0 flex h-full w-[min(500px,100vw)] translate-x-full flex-col gap-0 bg-white shadow-[-4px_0_24px_rgba(0,0,0,0.08)] transition-transform duration-300 ease-out group-data-[open]:translate-x-0 motion-reduce:transition-none"
+    class="absolute right-0 top-0 flex h-full w-full translate-x-full flex-col gap-0 bg-white shadow-[-4px_0_24px_rgba(0,0,0,0.08)] transition-transform duration-300 ease-out group-data-[open]:translate-x-0 min-[544px]:w-[500px] motion-reduce:transition-none"
     data-spy-drawer-panel
   >
-    <button
-      type="button"
-      class="absolute right-3 top-3 z-10 flex cursor-pointer items-center border-none bg-transparent p-1.5 text-[color:var(--color-spy-text)] hover:text-spy-orange"
-      aria-label="{{ 'accessibility.close' | t | default: 'Close' }}"
-      data-spy-drawer-close
-    >
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-        <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </button>
+    {%- comment -%}
+      Source header holds nothing but the close glyph: 16px of padding either side
+      of a single line. The × is a text character and scales with the viewport.
+    {%- endcomment -%}
+    <div class="flex shrink-0 items-start justify-end">
+      <button
+        type="button"
+        class="cursor-pointer border-none bg-transparent p-4 text-[calc(1.3rem_+_0.6vw)] font-extralight leading-none text-black opacity-50 [text-shadow:0_1px_0_#fff] hover:opacity-75"
+        aria-label="{{ 'accessibility.close' | t | default: 'Close' }}"
+        data-spy-drawer-close
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
 
-    {%- comment -%} Source sets the panel's own base type so copy ignores the page scale {%- endcomment -%}
-    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain pt-11 text-[13px] leading-[1.5] text-[#111] [scrollbar-color:#ddd_#fff] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-[2px] [&::-webkit-scrollbar-thumb]:bg-[#ddd] [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar]:w-1">
+    {%- comment -%} Source body keeps 16px around the content, and sets the panel's
+    own base type so copy ignores the page scale {%- endcomment -%}
+    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 text-[13px] leading-[1.5] text-[#111] [scrollbar-color:#ddd_#fff] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-[2px] [&::-webkit-scrollbar-thumb]:bg-[#ddd] [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar]:w-1">
       {%- if show_accent -%}
         <div class="h-[3px] shrink-0 bg-spy-orange"></div>
       {%- endif -%}
