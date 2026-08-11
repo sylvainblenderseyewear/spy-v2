@@ -7,15 +7,22 @@
     render 'contrast-override', background_color: s.background_color, section_id: section.id
   endif
 
-  # Legal pages read as a typed document, so they use their own reading column
-  # instead of Horizon's 54rem one: 232.5px of margin each side on desktop.
-  assign legal_suffixes = 'terms-of-use,privacy-policy' | split: ','
+  # Legal pages follow the source's Bootstrap container (540/720/1140/1440 + 15px
+  # gutters) instead of Horizon's 54rem reading column. From 992px the source row
+  # adds 48px of side padding, and Terms adds another 48 on top of that.
+  # Horizon caps the centre column at 100% - 2 × --page-margin (3.5rem), which is
+  # narrower than the source's container, so these pages drop the margin to 5px.
+  assign legal_grid = '[--page-margin:5px] [--page-content-width:calc(100%-30px)] min-[544px]:[--page-content-width:510px] min-[769px]:[--page-content-width:690px] '
   assign legal_column = ''
-  if page.template_suffix != blank
-    if legal_suffixes contains page.template_suffix
-      assign legal_column = '[--page-content-width:calc(100%-40px)] min-[750px]:[--page-content-width:calc(100%-128px)] min-[1200px]:[--page-content-width:calc(100%-465px)]'
-    endif
-  endif
+
+  case page.template_suffix
+    when 'privacy-policy'
+      assign legal_column = legal_grid | append: 'min-[992px]:[--page-content-width:1110px] min-[1200px]:[--page-content-width:min(1410px,calc(100%-30px))]'
+    when 'legal-notices'
+      assign legal_column = legal_grid | append: 'min-[992px]:[--page-content-width:1014px] min-[1200px]:[--page-content-width:min(1314px,calc(100%-126px))]'
+    when 'terms-of-use'
+      assign legal_column = legal_grid | append: 'min-[992px]:[--page-content-width:918px] min-[1200px]:[--page-content-width:min(1218px,calc(100%-222px))]'
+  endcase
 
   # Spacing: desktop values, and the mobile set only when the editor asks for one
   assign pad_desktop = s['padding-block-start'] | append: ',' | append: s['padding-block-end']
