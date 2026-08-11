@@ -26,6 +26,17 @@
     assign body = body | replace: block.settings.highlight, hl
   endif
 
+  # Source headings use Bootstrap's RFS: calc(1.3rem + 0.6vw) up to the desktop
+  # size, which they reach at a 1200px viewport. min() says that in one value, so
+  # the curve needs no breakpoint and the desktop setting stays the cap.
+  if block.settings.fluid
+    assign size_css = 'min(' | append: block.settings.size | append: 'px, calc(1.3rem + 0.6vw))'
+    assign size_mobile_css = size_css
+  else
+    assign size_css = block.settings.size | append: 'px'
+    assign size_mobile_css = block.settings.size_mobile | append: 'px'
+  endif
+
   case block.settings.align
     when 'center'
       assign align = 'text-center'
@@ -66,8 +77,8 @@
       {% if block.settings.max_width > 0 %}max-w-[var(--sh-max)] mx-auto{% endif %}
     "
     style="
-      --sh-size: {{ block.settings.size }}px;
-      --sh-size-mobile: {{ block.settings.size_mobile }}px;
+      --sh-size: {{ size_css }};
+      --sh-size-mobile: {{ size_mobile_css }};
       --sh-weight: {{ block.settings.weight }};
       --sh-leading: {{ block.settings.line_height | divided_by: 100.0 }};
       --sh-tracking: {{ block.settings.letter_spacing }}px;
@@ -137,6 +148,13 @@
       "step": 1,
       "unit": "px",
       "default": 28
+    },
+    {
+      "type": "checkbox",
+      "id": "fluid",
+      "label": "Scale with the viewport",
+      "info": "Matches the source: grows with the window up to the desktop size, which it reaches at 1200px. Ignores the mobile size.",
+      "default": false
     },
     {
       "type": "range",

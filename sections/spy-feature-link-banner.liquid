@@ -100,12 +100,23 @@
 
 {%- unless skip_section -%}
   {%- assign banner_alt = section.settings.heading | strip_newlines | escape -%}
+  {%- liquid
+    # Source headings scale on Bootstrap's RFS curve up to the desktop size,
+    # which they hit at a 1200px viewport. min() covers both sides in one value.
+    if section.settings.heading_fluid
+      assign flb_heading = 'min(' | append: section.settings.heading_size | append: 'px, calc(1.3rem + 0.6vw))'
+      assign flb_heading_mobile = flb_heading
+    else
+      assign flb_heading = section.settings.heading_size | append: 'px'
+      assign flb_heading_mobile = section.settings.heading_size_mobile | append: 'px'
+    endif
+  -%}
   <div
     class="spy-feature-link-banner relative w-full overflow-hidden"
     style="
       --flb-max: {{ section.settings.content_max_width }}px;
-      --flb-heading: {{ section.settings.heading_size }}px;
-      --flb-heading-mobile: {{ section.settings.heading_size_mobile }}px;
+      --flb-heading: {{ flb_heading }};
+      --flb-heading-mobile: {{ flb_heading_mobile }};
     "
     {{ section.shopify_attributes }}
   >
@@ -287,6 +298,13 @@
       "step": 1,
       "unit": "px",
       "default": 48
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_fluid",
+      "label": "Scale with the viewport",
+      "info": "Matches the source: grows with the window up to the desktop size, which it reaches at 1200px. Ignores the mobile size.",
+      "default": false
     },
     {
       "type": "range",
