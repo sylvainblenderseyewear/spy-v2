@@ -4,6 +4,10 @@
   Separate desktop and mobile art, because the source crops these banners
   differently per breakpoint rather than reflowing one file.
 
+  The swap sits at 992px — the source's `lg`, verified on the capture: the art
+  and the copy alignment both flip between 991 and 992. Tailwind's `md` (768)
+  left the mobile art out of the 768–991 range, where the source still uses it.
+
   Placement is set per breakpoint too, so the copy can sit bottom-centre on a phone
   and centre-right on a desktop off one block. The scrim is optional: art that
   already carries a dark panel for the text doesn't want a second one over it.
@@ -25,24 +29,24 @@
 
   case section.settings.content_align
     when 'center'
-      assign align_d = 'md:items-center'
+      assign align_d = 'min-[992px]:items-center'
     when 'right'
-      assign align_d = 'md:items-end'
+      assign align_d = 'min-[992px]:items-end'
     else
-      assign align_d = 'md:items-start'
+      assign align_d = 'min-[992px]:items-start'
   endcase
 
   assign text_d_raw = section.settings.text_align | default: section.settings.content_align
   case text_d_raw
     when 'center'
-      assign text_d = 'md:text-center'
-      assign box_d = 'md:items-center'
+      assign text_d = 'min-[992px]:text-center'
+      assign box_d = 'min-[992px]:items-center'
     when 'right'
-      assign text_d = 'md:text-right'
-      assign box_d = 'md:items-end'
+      assign text_d = 'min-[992px]:text-right'
+      assign box_d = 'min-[992px]:items-end'
     else
-      assign text_d = 'md:text-left'
-      assign box_d = 'md:items-start'
+      assign text_d = 'min-[992px]:text-left'
+      assign box_d = 'min-[992px]:items-start'
   endcase
 
   case section.settings.content_align_mobile
@@ -69,11 +73,11 @@
 
   case section.settings.content_valign
     when 'top'
-      assign valign_d = 'md:justify-start'
+      assign valign_d = 'min-[992px]:justify-start'
     when 'center'
-      assign valign_d = 'md:justify-center'
+      assign valign_d = 'min-[992px]:justify-center'
     else
-      assign valign_d = 'md:justify-end'
+      assign valign_d = 'min-[992px]:justify-end'
   endcase
 
   case section.settings.content_valign_mobile
@@ -138,7 +142,7 @@
           alt: banner_alt,
           sizes: '100vw',
           widths: '750, 1100, 1500, 2000',
-          class: 'hidden md:block w-full h-auto object-cover'
+          class: 'hidden min-[992px]:block w-full h-auto object-cover'
       }}
     {%- endif -%}
 
@@ -152,7 +156,7 @@
           alt: banner_alt,
           sizes: '100vw',
           widths: '390, 550, 800',
-          class: 'block md:hidden w-full h-auto object-cover'
+          class: 'block min-[992px]:hidden w-full h-auto object-cover'
       }}
     {%- elsif desktop_img != blank -%}
       {{
@@ -163,7 +167,7 @@
           alt: banner_alt,
           sizes: '100vw',
           widths: '390, 550, 800',
-          class: 'block md:hidden w-full h-auto object-cover'
+          class: 'block min-[992px]:hidden w-full h-auto object-cover'
       }}
     {%- endif -%}
 
@@ -172,7 +176,7 @@
         or section.settings.cta_label != blank
     -%}
       {%- comment -%} Desktop insets are the source's: container 15px, copy box 16/16/64 {%- endcomment -%}
-      <div class="spy-feature-link-banner__overlay absolute inset-0 flex px-6 py-6 md:px-[15px] md:py-0 pointer-events-none {{ scrim }}">
+      <div class="spy-feature-link-banner__overlay absolute inset-0 flex px-6 py-6 min-[992px]:px-[15px] min-[992px]:py-0 pointer-events-none {{ scrim }}">
         <div
           class="
             spy-feature-link-banner__content
@@ -190,7 +194,7 @@
             class="
               spy-feature-link-banner__box
               flex flex-col gap-2 w-fit max-w-full
-              md:px-4 md:pt-4 md:pb-16
+              min-[992px]:px-4 min-[992px]:pt-4 min-[992px]:pb-16
               {{ box_m }} {{ box_d }} {{ text_m }} {{ text_d }}
             "
           >
@@ -205,7 +209,7 @@
             <h2
               class="
                 text-white font-semibold uppercase leading-[1.2] m-0 pb-2 tracking-normal
-                text-[length:var(--flb-heading-mobile)] md:text-[length:var(--flb-heading)]
+                text-[length:var(--flb-heading-mobile)] min-[992px]:text-[length:var(--flb-heading)]
               "
             >
               {{ section.settings.heading | newline_to_br }}
