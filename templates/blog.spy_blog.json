@@ -12,6 +12,8 @@
     "hero": {
       "type": "spy-blog-hero",
       "settings": {
+        "image_desktop": "shopify://shop_images/watermen-footer-desktop.jpg",
+        "image_mobile": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-CLASSICS-HOVER.webp",
         "alt": ""
       }
     },
