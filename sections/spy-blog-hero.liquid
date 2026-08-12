@@ -1,0 +1,85 @@
+{%- doc -%}
+  Journal hero — the full-bleed banner above the blog search and post grid.
+
+  The source ships a DIFFERENT crop per breakpoint, not one image scaled: desktop art
+  is 1920x600 (3.2:1) and mobile 800x1200 (2:3), swapped by a `<picture>` media query
+  at 992px. Both draw at 100% width with their own natural height, so the section has
+  no height setting — the art's ratio sets it, exactly like the source's `.banner-image`.
+
+  Image comes from section settings (Layer 2) so an editor picks it in the theme editor.
+{%- enddoc -%}
+
+{%- liquid
+  assign img_desktop = section.settings.image_desktop
+  assign img_mobile = section.settings.image_mobile | default: img_desktop
+  assign alt_text = section.settings.alt | default: blog.title
+-%}
+
+{%- if img_desktop != blank or img_mobile != blank -%}
+  <div class="w-full overflow-hidden leading-[0]" {{ section.shopify_attributes }}>
+    <picture>
+      {%- if img_desktop != blank -%}
+        {%- comment -%}
+          width/height per source: the two crops have very different ratios, so the
+          browser needs each one's own box to reserve or the page jumps on load.
+        {%- endcomment -%}
+        <source
+          media="(min-width: 992px)"
+          srcset="{% render 'spy-srcset', image: img_desktop, widths: '1100,1500,2000,2800' %}"
+          sizes="100vw"
+          width="{{ img_desktop.width }}"
+          height="{{ img_desktop.height }}"
+        >
+      {%- endif -%}
+      <img
+        src="{{ img_mobile | image_url: width: 800 }}"
+        srcset="{% render 'spy-srcset', image: img_mobile, widths: '375,550,800,1200' %}"
+        sizes="100vw"
+        alt="{{ alt_text | escape }}"
+        width="{{ img_mobile.width }}"
+        height="{{ img_mobile.height }}"
+        loading="eager"
+        fetchpriority="high"
+        class="block h-auto w-full object-cover"
+      >
+    </picture>
+  </div>
+{%- elsif request.design_mode -%}
+  {%- comment -%} Editor-only placeholder so the section is selectable before art is picked {%- endcomment -%}
+  <div class="flex aspect-[3.2/1] w-full items-center justify-center bg-spy-tile text-[14px] text-spy-gray">
+    Pick a Journal hero image
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Journal Hero",
+  "enabled_on": {
+    "templates": ["blog"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Source art: desktop 1920x600 (992px and up), mobile 800x1200 (under 992px). The banner keeps each image's own ratio — no height to set."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Image — desktop (992px and up)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Image — mobile (under 992px)",
+      "info": "Falls back to the desktop image when empty."
+    },
+    {
+      "type": "text",
+      "id": "alt",
+      "label": "Alt text",
+      "info": "Leave empty to use the blog title."
+    }
+  ],
+  "presets": []
+}
+{% endschema %}

@@ -1,0 +1,216 @@
+{%- doc -%}
+  Journal listing — keyword search box over the post grid, 1:1 with spyoptic.com/us/spy-blog/.
+
+  Measured off the source (computed styles, all four widths):
+    container   15px gutters, 540px max under 992px, fluid above it
+    search      #f8f8f8 box, 16px pad, 48px under the hero, 172x36 white field,
+                1px #1d2a2b border, square, 13/18.2 text, icon 8px in from the left
+    grid        Bootstrap row: -15px pull, 15px per column, 24px row gap, 80px above
+    columns     1 under 992px · 3 from 992 · 4 from 1200
+    card        square thumbnail on #f8f8f8, text block 16px under it,
+                date 16/22.4 w200, title 20/24 w700, body 16/22.4 w400, all #333e47
+    pagination  24px above, centred, 12/16.8 caps, square, active fills orange
+
+  The card thumbnail is the post's featured image; when a post has none, the first
+  image in its body stands in (that is the hero the writer put at the top of the post).
+
+  Search filters the rendered posts on title, excerpt and tags as you type — the source
+  does the same over one AJAX page of 24. See assets/spy-blog-search.js.
+{%- enddoc -%}
+
+<div
+  class="mx-auto w-full max-w-[540px] px-[15px] min-[992px]:max-w-none"
+  data-spy-blog
+  {{ section.shopify_attributes }}
+>
+  {%- if section.settings.show_search -%}
+    <div class="mx-auto mt-12 w-fit gap-4 bg-spy-tile p-4 [display:flex]">
+      <div class="relative">
+        <label class="sr-only" for="spy-blog-search-{{ section.id }}">
+          {{- section.settings.search_placeholder -}}
+        </label>
+        <input
+          id="spy-blog-search-{{ section.id }}"
+          {%- comment -%} rounded-none: Horizon's base.css rounds inputs 4px, the source is square {%- endcomment -%}
+          class="block w-[172px] rounded-none border border-spy-ink bg-white py-2 pl-8 pr-1 text-[13px] leading-[18.2px] text-spy-ink placeholder:text-spy-label focus:outline-none focus-visible:ring-2 focus-visible:ring-spy-orange"
+          type="search"
+          name="q"
+          value=""
+          autocomplete="off"
+          placeholder="{{ section.settings.search_placeholder | escape }}"
+          data-spy-blog-search
+        >
+        {%- comment -%} Icon sits inside the field's 32px left pad, centred on the line {%- endcomment -%}
+        <span class="pointer-events-none absolute inset-y-0 left-2 w-[15px] items-center text-spy-ink [display:flex]">
+          <svg class="h-[15px] w-[15px]" viewBox="0 0 1792 1792" fill="currentColor" aria-hidden="true">
+            <path d="M1216 832q0-185-131.5-316.5t-316.5-131.5-316.5 131.5-131.5 316.5 131.5 316.5 316.5 131.5 316.5-131.5 131.5-316.5zm512 832q0 52-38 90t-90 38q-54 0-90-38l-343-342q-179 124-399 124-143 0-273.5-55.5t-225-150-150-225-55.5-273.5 55.5-273.5 150-225 225-150 273.5-55.5 273.5 55.5 225 150 150 225 55.5 273.5q0 220-124 399l343 343q37 37 37 90z"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- paginate blog.articles by section.settings.posts_per_page -%}
+    <div class="-mx-[15px] mt-20 flex-wrap gap-y-6 [display:flex]" data-spy-blog-grid>
+      {%- for article in blog.articles -%}
+        {%- liquid
+          # Featured image first; otherwise the first image in the post body
+          assign card_image = article.image
+          assign body_image_src = ''
+          if card_image == blank
+            assign img_chunks = article.content | split: '<img'
+            if img_chunks.size > 1
+              assign img_tag = img_chunks[1] | split: '>' | first
+              assign src_chunks = img_tag | split: 'src="'
+              if src_chunks.size > 1
+                assign body_image_src = src_chunks[1] | split: '"' | first
+              endif
+            endif
+          endif
+
+          if article.excerpt != blank
+            assign excerpt = article.excerpt | strip_html | strip
+          else
+            assign excerpt = article.content | strip_html | strip | truncatewords: 40
+          endif
+
+          assign tag_text = article.tags | join: ' '
+          assign search_index = article.title | append: ' ' | append: excerpt | append: ' ' | append: tag_text
+        -%}
+        <article
+          class="w-full px-[15px] min-[992px]:w-1/3 min-[1200px]:w-1/4"
+          data-spy-blog-card
+          data-search="{{ search_index | downcase | escape }}"
+        >
+          <a class="block no-underline" href="{{ article.url }}">
+            <div class="aspect-square w-full overflow-hidden bg-spy-tile">
+              {%- if card_image != blank -%}
+                {{
+                  card_image
+                  | image_url: width: 800
+                  | image_tag:
+                    loading: 'lazy',
+                    alt: article.title,
+                    sizes: '(min-width: 1200px) 25vw, (min-width: 992px) 33vw, 100vw',
+                    widths: '300, 400, 500, 700, 800',
+                    class: 'h-full w-full object-cover'
+                }}
+              {%- elsif body_image_src != blank -%}
+                <img
+                  class="h-full w-full object-cover"
+                  src="{{ body_image_src }}"
+                  alt="{{ article.title | escape }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </div>
+
+            <div class="mt-4 text-left">
+              <div class="pb-2 text-[16px] font-extralight leading-[22.4px] text-spy-dark">
+                {{- article.published_at | date: '%-m/%-d/%y' -}}
+              </div>
+              <div>
+                <span class="mb-1 inline-block text-[20px] font-bold leading-[24px] text-spy-dark">
+                  {{- article.title -}}
+                </span>
+              </div>
+              {%- if excerpt != blank -%}
+                <div class="overflow-hidden">
+                  <p class="m-0 text-[16px] leading-[22.4px] text-spy-dark">{{ excerpt }}</p>
+                </div>
+              {%- endif -%}
+            </div>
+          </a>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} Shown by JS only when a keyword matches nothing {%- endcomment -%}
+    <p
+      class="mt-20 hidden text-center text-[16px] leading-[22.4px] text-spy-dark"
+      data-spy-blog-empty
+    >
+      {{ section.settings.no_results_text }}
+    </p>
+
+    {%- comment -%} Live region: keyboard and screen-reader users hear the filtered count {%- endcomment -%}
+    <p class="sr-only" role="status" aria-live="polite" data-spy-blog-status></p>
+
+    {%- if paginate.pages > 0 -%}
+      <div class="mt-6 justify-center gap-2 [display:flex]" data-spy-blog-pagination>
+        {%- if paginate.pages <= 1 -%}
+          {%- comment -%} Source prints a single active "1" even with one page {%- endcomment -%}
+          <span
+            class="border border-spy-orange bg-spy-orange px-3 py-2 text-[12px] uppercase leading-[16.8px] text-spy-ink"
+            aria-current="page"
+          >
+            1
+          </span>
+        {%- else -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a
+                class="border border-spy-orange bg-white px-3 py-2 text-[12px] uppercase leading-[16.8px] text-spy-orange transition-colors hover:bg-spy-orange hover:text-white"
+                href="{{ part.url }}"
+              >
+                {{- part.title -}}
+              </a>
+            {%- elsif part.title == paginate.current_page -%}
+              <span
+                class="border border-spy-orange bg-spy-orange px-3 py-2 text-[12px] uppercase leading-[16.8px] text-spy-ink"
+                aria-current="page"
+              >
+                {{- part.title -}}
+              </span>
+            {%- else -%}
+              <span class="border border-spy-border bg-white px-3 py-2 text-[12px] uppercase leading-[16.8px] text-spy-muted">
+                {{- part.title -}}
+              </span>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+<script src="{{ 'spy-blog-search.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Journal Posts",
+  "enabled_on": {
+    "templates": ["blog"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show keyword search",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search by keyword"
+    },
+    {
+      "type": "text",
+      "id": "no_results_text",
+      "label": "No results text",
+      "default": "No posts match your search."
+    },
+    {
+      "type": "range",
+      "id": "posts_per_page",
+      "label": "Posts per page",
+      "min": 4,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    }
+  ],
+  "presets": []
+}
+{% endschema %}

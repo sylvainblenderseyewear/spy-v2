@@ -17,6 +17,8 @@
   --color-spy-muted:   #a6a6a6; /* source content-muted */
   --color-spy-label:   #6c757d; /* source swatches-label — colourway name on the card */
   --color-spy-surface: #f9f9f9; /* source surface-primary — tiles, scale track */
+  --color-spy-tile:    #f8f8f8; /* source light-grey ground — swatches, cart summary, blog thumbs */
+  --color-spy-dark:    #333e47; /* source $charcoal — blog card date, title and body */
   --color-spy-positive: #4bb151; /* source sentiment-positive — In Stock (PDP) */
   --color-spy-negative: #d7403a; /* source sentiment-negative — Sold Out */
   --color-spy-cart-stock: #88c290; /* source's In Stock green on the cart page — measured separately from the PDP token above */
