@@ -42,6 +42,7 @@
 <div
   class="
     collection-card
+    spacing-style
     border-style
     {% if block_settings.placement == 'on_image' %}collection-card--image-bg{% endif %}
     {% if section.settings.layout_type == 'bento' %}collection-card--image-height-fixed{% endif %}
@@ -54,6 +55,7 @@
   {% endif %}
   style="
     {% render 'border-override', settings: block_settings %}
+    {% render 'spacing-style', settings: block_settings %}
     --horizontal-alignment: {{ block_settings.horizontal_alignment }};
     --vertical-alignment: {{ block_settings.vertical_alignment }};
     --background-overlay-color: {{ block_settings.overlay_color }};
@@ -71,7 +73,14 @@
   </a>
   <div class="collection-card__inner">
     {{ card_image }}
-    <div class="collection-card__content layout-panel-flex--column">
+    {%- comment -%} Inset only bites over the image; 16px keeps the old --padding-lg look {%- endcomment -%}
+    <div
+      class="collection-card__content layout-panel-flex--column"
+      style="
+        {% if block_settings.placement == 'on_image' %}padding: {{ block_settings.content_inset | default: 16 }}px;{% endif %}
+        {% if block_settings.content_width != blank and block_settings.content_width < 100 %}max-width: {{ block_settings.content_width }}%;{% endif %}
+      "
+    >
       {{ children }}
     </div>
   </div>

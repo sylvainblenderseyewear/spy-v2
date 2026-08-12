@@ -80,11 +80,22 @@
   endif
 
   assign drawer_id = 'spy-fit-guide-' | append: block.id
+
+  comment
+    Source opens on "How to measure". Editors can flip it, but with no frame
+    data there is only one panel, so that one always wins.
+  endcomment
+  assign active_tab = block.settings.default_tab | default: 'howto'
+  if has_frame_tab == false
+    assign active_tab = 'howto'
+  endif
+
   comment
     Source type: condensed uppercase for labels, tracked out. Uses the theme
-    heading font so a font swap in settings carries through.
+    heading font so a font swap in settings carries through. Line-height is the
+    widget's inherited 1.5 — the labels never set their own.
   endcomment
-  assign label_cls = 'font-bold uppercase text-[10px] leading-none tracking-[0.25em] text-spy-orange m-0 mb-2.5'
+  assign label_cls = 'font-semibold uppercase text-[10px] leading-[1.5] tracking-[2.5px] text-spy-orange m-0 mb-2.5'
 -%}
 
 <div class="spy-frame-fit-guide" {{ block.shopify_attributes }}>
@@ -110,7 +121,8 @@
         stroke-width="0.8"
       />
     </svg>
-    <span class="underline underline-offset-[3px]">{{ block.settings.fallback_label | default: 'Size Chart' }}</span>
+    {%- comment -%} Plain underline, browser default offset — same as the source link {%- endcomment -%}
+    <span class="underline">{{ block.settings.fallback_label | default: 'Size Chart' }}</span>
   </button>
 
   {%- comment -%}
@@ -133,43 +145,56 @@
       data-spy-fit-guide-close
     ></div>
 
+    {%- comment -%} Panel is full-bleed under 544px, 500px above — the source's own breakpoint {%- endcomment -%}
     <div
-      class="absolute right-0 top-0 flex h-full w-[min(500px,100vw)] translate-x-full flex-col gap-0 bg-white shadow-[-4px_0_24px_rgba(0,0,0,0.08)] transition-transform duration-300 ease-out group-data-[open]:translate-x-0 motion-reduce:transition-none"
+      class="absolute right-0 top-0 flex h-full w-full translate-x-full flex-col gap-0 bg-white shadow-[-4px_0_24px_rgba(0,0,0,0.08)] transition-transform duration-300 ease-out group-data-[open]:translate-x-0 min-[544px]:w-[500px] motion-reduce:transition-none"
       data-spy-fit-panel
     >
-      <button
-        type="button"
-        class="absolute right-3 top-3 z-10 flex cursor-pointer items-center border-none bg-transparent p-1.5 text-[color:var(--color-spy-text)] hover:text-spy-orange"
-        aria-label="{{ 'accessibility.close' | t | default: 'Close' }}"
-        data-spy-fit-guide-close
-      >
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-          <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </button>
+      {%- comment -%}
+        Source header holds nothing but the close glyph, so the bar is 16px of
+        padding either side of a single line — about 61px at desktop. The × is a
+        text character, not an icon, and it scales with the viewport like the source.
+      {%- endcomment -%}
+      <div class="flex shrink-0 items-start justify-end">
+        <button
+          type="button"
+          class="cursor-pointer border-none bg-transparent p-4 text-[calc(1.3rem_+_0.6vw)] font-extralight leading-none text-black opacity-50 [text-shadow:0_1px_0_#fff] hover:opacity-75"
+          aria-label="{{ 'accessibility.close' | t | default: 'Close' }}"
+          data-spy-fit-guide-close
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
 
       {%- comment -%}
         Source sets the widget's own base type (13px/1.5, #111) and a thin grey
-        scrollbar, so inner copy does not inherit the page scale.
+        scrollbar, so inner copy does not inherit the page scale. It also caps
+        itself at 70vh and scrolls inside that, leaving the panel white below.
       {%- endcomment -%}
-      <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain text-[13px] leading-[1.5] text-[#111] [scrollbar-color:#ddd_#fff] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-[2px] [&::-webkit-scrollbar-thumb]:bg-[#ddd] [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar]:w-1">
-        {%- comment -%} Header: 3px orange rule, eyebrow, condensed title, grey sub {%- endcomment -%}
-        <div class="border-b border-[#ebebeb] px-5 pb-[18px] pt-11">
+      <div class="max-h-[70vh] overflow-y-auto overflow-x-hidden overscroll-contain text-[13px] leading-[1.5] text-[#111] [scrollbar-color:#ddd_#fff] [scrollbar-width:thin] [touch-action:pan-y] [&::-webkit-scrollbar-thumb]:rounded-[2px] [&::-webkit-scrollbar-thumb]:bg-[#ddd] [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar]:w-1">
+        {%- comment -%} Header: 3px orange rule, eyebrow, condensed title, grey sub.
+        No top padding — the close bar above already supplies it. {%- endcomment -%}
+        <div class="border-b border-[#ebebeb] px-5 pb-[18px]">
           <div class="mb-4 h-[3px] bg-spy-orange"></div>
-          <p class="m-0 mb-[5px] text-[10px] font-normal uppercase leading-none tracking-[0.3em] text-spy-orange">{{ block.settings.eyebrow }}</p>
-          <h2 class="m-0 mb-1.5 text-[26px] font-bold uppercase leading-none tracking-[0.08em] text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ block.settings.title }}</h2>
+          <p class="m-0 mb-[5px] text-[10px] font-normal uppercase leading-[1.5] tracking-[3px] text-spy-orange" style="font-family: var(--font-heading--family);">{{ block.settings.eyebrow }}</p>
+          {%- comment -%} Title breaks where the editor breaks it — source splits "Frame Fit / Guide" {%- endcomment -%}
+          <h2 class="m-0 mb-1.5 text-[26px] font-bold uppercase leading-none tracking-[2px] text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ block.settings.title | escape | newline_to_br }}</h2>
           <p class="m-0 text-[12px] font-light leading-[1.5] text-[#999]">{{ block.settings.subtitle }}</p>
         </div>
 
         {%- comment -%} Tabs. Only shown when there is a frame tab to switch to. {%- endcomment -%}
         {%- if has_frame_tab -%}
+          {%- liquid
+            assign tab_cls = '-mb-px flex-1 cursor-pointer border-0 border-b-2 border-transparent bg-transparent px-2 py-[11px] select-none text-center text-[11px] font-semibold uppercase tracking-[1.5px] text-[#bbb] transition-colors duration-200 aria-selected:border-b-spy-orange aria-selected:text-[color:var(--color-spy-text)] aria-[selected=false]:hover:text-[#666]'
+          -%}
           <div class="flex gap-0 border-b border-[#ebebeb]" role="tablist">
             <button
               type="button"
               role="tab"
-              aria-selected="true"
+              aria-selected="{% if active_tab == 'frame' %}true{% else %}false{% endif %}"
               aria-controls="{{ drawer_id }}-frame"
-              class="-mb-px flex-1 cursor-pointer border-0 border-b-2 border-transparent bg-transparent px-2 py-[11px] select-none text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[#bbb] transition-colors aria-selected:border-b-spy-orange aria-selected:text-[color:var(--color-spy-text)]"
+              class="{{ tab_cls }}"
+              style="font-family: var(--font-heading--family);"
               data-spy-tab="frame"
             >
               {{ block.settings.tab_frame_label }}
@@ -177,9 +202,10 @@
             <button
               type="button"
               role="tab"
-              aria-selected="false"
+              aria-selected="{% if active_tab == 'howto' %}true{% else %}false{% endif %}"
               aria-controls="{{ drawer_id }}-howto"
-              class="-mb-px flex-1 cursor-pointer border-0 border-b-2 border-transparent bg-transparent px-2 py-[11px] select-none text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[#bbb] transition-colors aria-selected:border-b-spy-orange aria-selected:text-[color:var(--color-spy-text)]"
+              class="{{ tab_cls }}"
+              style="font-family: var(--font-heading--family);"
               data-spy-tab="howto"
             >
               {{ block.settings.tab_howto_label }}
@@ -189,7 +215,7 @@
 
         {%- comment -%} ── This frame ───────────────────────────────── {%- endcomment -%}
         {%- if has_frame_tab -%}
-          <div id="{{ drawer_id }}-frame" role="tabpanel" data-spy-panel="frame">
+          <div id="{{ drawer_id }}-frame" role="tabpanel" class="{% unless active_tab == 'frame' %}hidden{% endunless %}" data-spy-panel="frame">
             {%- comment -%} Diagrams sit on the grey band, 18/20 in, 14 under {%- endcomment -%}
             {%- if diagram_front != blank or diagram_profile != blank -%}
               <div class="border-b border-[#ebebeb] bg-[#f6f6f6] px-5 pb-[14px] pt-[18px]">
@@ -198,13 +224,13 @@
                   {%- if diagram_front != blank -%}
                     <div class="flex flex-col items-center gap-[5px]">
                       <img src="{{ diagram_front }}" alt="{{ front_alt | escape }}" loading="lazy" class="block h-auto w-full">
-                      <span class="text-center text-[9px] uppercase tracking-[0.167em] text-[#bbb]">{{ block.settings.front_caption }}</span>
+                      <span class="text-center text-[9px] uppercase tracking-[1.5px] text-[#bbb]">{{ block.settings.front_caption }}</span>
                     </div>
                   {%- endif -%}
                   {%- if diagram_profile != blank -%}
                     <div class="flex flex-col items-center gap-[5px]">
                       <img src="{{ diagram_profile }}" alt="{{ profile_alt | escape }}" loading="lazy" class="block h-auto w-full">
-                      <span class="text-center text-[9px] uppercase tracking-[0.167em] text-[#bbb]">{{ block.settings.profile_caption }}</span>
+                      <span class="text-center text-[9px] uppercase tracking-[1.5px] text-[#bbb]">{{ block.settings.profile_caption }}</span>
                     </div>
                   {%- endif -%}
                 </div>
@@ -215,9 +241,13 @@
               <div class="border-b border-[#ebebeb] bg-white px-5 py-[18px]">
                 <p class="{{ label_cls }}" style="font-family: var(--font-heading--family);">{{ block.settings.measurements_label }}</p>
                 <table class="w-full border-collapse">
-                  <tbody class="[&_td]:border-b [&_td]:border-[#f3f3f3] [&_td]:py-2 [&_tr:last-child_td]:border-b-0">
+                  <tbody class="[&_td]:border-b [&_td]:border-[#f3f3f3] [&_td]:py-[9px] [&_td]:align-middle [&_tr:last-child_td]:border-b-0">
                     {%- liquid
-                      assign unit_cls = 'text-[11px] font-normal text-[#bbb]'
+                      comment
+                        Unit stays on the body font — the cell around it is set
+                        in the heading face for the number.
+                      endcomment
+                      assign unit_cls = 'text-[11px] font-normal text-[#bbb] [font-family:var(--font-body--family)]'
                       assign val_cls = 'text-right text-[18px] font-semibold whitespace-nowrap text-[color:var(--color-spy-text)]'
                       assign name_cls = 'text-[12px] text-[#666]'
                     -%}
@@ -299,17 +329,18 @@
                     <div class="{% unless forloop.last %}mb-[18px]{% endunless %}">
                       <div class="mb-2 flex items-center justify-between gap-3">
                         <p class="{{ label_cls }} mb-0" style="font-family: var(--font-heading--family);">{{ row_label }}</p>
-                        <span class="rounded-[2px] bg-[#111] px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[0.09em] text-white" style="font-family: var(--font-heading--family);">{{ row_tag }}</span>
+                        <span class="rounded-[2px] bg-[#111] px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[1px] text-white" style="font-family: var(--font-heading--family);">{{ row_tag }}</span>
                       </div>
                       {%- if row_desc != blank -%}
-                        <p class="mt-1.5 mb-2 text-[11px] font-light leading-[1.5] text-[#999]">{{ row_desc }}</p>
+                        {%- comment -%} 6px above, 16px below — the source leaves the p its default bottom margin {%- endcomment -%}
+                        <p class="mt-1.5 mb-4 text-[11px] font-light leading-[1.5] text-[#999]">{{ row_desc }}</p>
                       {%- endif -%}
                       {%- if active_i >= 0 -%}
                         <div class="[display:grid] grid-cols-4 gap-1">
                           {%- for sz in sizes -%}
                             {%- liquid
                               assign i = forloop.index0
-                              assign pill = 'rounded-[3px] border-[1.5px] px-0.5 py-2 text-center text-[12px] font-semibold uppercase tracking-[0.083em] '
+                              assign pill = 'rounded-[3px] border-[1.5px] px-0.5 py-2 text-center text-[12px] font-semibold uppercase tracking-[1px] '
                               assign diff = i | minus: active_i
                               if diff < 0
                                 assign diff = 0 | minus: diff
@@ -341,10 +372,10 @@
         {%- endif -%}
 
         {%- comment -%} ── How to measure ──────────────────────────── {%- endcomment -%}
-        <div id="{{ drawer_id }}-howto" role="tabpanel" class="px-5 py-[18px]{% if has_frame_tab %} hidden{% endif %}" data-spy-panel="howto">
+        <div id="{{ drawer_id }}-howto" role="tabpanel" class="px-5 py-[18px]{% unless active_tab == 'howto' %} hidden{% endunless %}" data-spy-panel="howto">
           {%- if block.settings.howto_intro != blank -%}
             {%- comment -%} div, not p: richtext brings its own p and nesting breaks it {%- endcomment -%}
-            <div class="mb-[18px] text-[12px] font-light leading-[1.6] text-[#666] [&_p]:m-0 [&_strong]:font-semibold [&_strong]:text-[color:var(--color-spy-text)]">{{ block.settings.howto_intro }}</div>
+            <div class="mb-[18px] text-[12px] font-light leading-[1.6] text-[#666] [&_p]:m-0 [&_strong]:font-medium [&_strong]:text-[color:var(--color-spy-text)]">{{ block.settings.howto_intro }}</div>
           {%- endif -%}
 
           <p class="{{ label_cls }}" style="font-family: var(--font-heading--family);">{{ block.settings.steps_label }}</p>
@@ -353,38 +384,57 @@
             Three steps: 28px numbered rail on the left (first one orange), copy and
             a line-art panel on the right. Diagrams traced from the source SVGs.
           {%- endcomment -%}
+          {%- liquid
+            comment
+              Collect the filled steps first so the rail numbers stay 1,2,3 and
+              the last one really is last — blanking a middle step used to leave
+              a dangling connector and a stray rule.
+            endcomment
+            assign steps = ''
+            for i in (1..3)
+              assign t_key = 'step_' | append: i | append: '_title'
+              assign x_key = 'step_' | append: i | append: '_text'
+              assign s_title = block.settings[t_key]
+              if s_title == blank
+                continue
+              endif
+              assign s_text = block.settings[x_key]
+              assign steps = steps | append: i | append: '~#~' | append: s_title | append: '~#~' | append: s_text | append: '~||~'
+            endfor
+            assign steps = steps | split: '~||~'
+          -%}
           <div>
-            {%- for i in (1..3) -%}
+            {%- for step in steps -%}
               {%- liquid
-                assign t_key = 'step_' | append: i | append: '_title'
-                assign x_key = 'step_' | append: i | append: '_text'
-                assign s_title = block.settings[t_key]
-                assign s_text = block.settings[x_key]
+                assign parts = step | split: '~#~'
+                assign i = parts[0]
+                assign s_title = parts[1]
+                assign s_text = parts[2]
               -%}
-              {%- if s_title != blank -%}
-                <div class="flex gap-3 border-b border-[#f3f3f3] py-[14px]">
+                <div class="flex gap-3 border-b border-[#f3f3f3] py-[14px] last:border-b-0">
                   <div class="flex w-7 shrink-0 flex-col items-center">
-                    <div class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full text-[13px] font-bold text-white {% if forloop.first %}bg-spy-orange{% else %}bg-[#111]{% endif %}" style="font-family: var(--font-heading--family);">{{ i }}</div>
+                    <div class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full text-[13px] font-bold text-white {% if forloop.first %}bg-spy-orange{% else %}bg-[#111]{% endif %}" style="font-family: var(--font-heading--family);">{{ forloop.index }}</div>
                     {%- unless forloop.last -%}
                       <div class="mt-1 min-h-[10px] w-px flex-1 bg-[#e8e8e8]"></div>
                     {%- endunless -%}
                   </div>
                   <div class="min-w-0 flex-1">
-                    <div class="mb-1 text-[14px] font-semibold uppercase tracking-[0.04em] text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ s_title }}</div>
-                    <p class="m-0 text-[11.5px] font-light leading-[1.55] text-[#777]">{{ s_text }}</p>
-                    <div class="mt-2.5 flex justify-center rounded-[4px] bg-[#f6f6f6] p-2 [&_svg]:h-auto [&_svg]:w-full">
+                    <div class="mb-1 text-[14px] font-semibold uppercase tracking-[0.5px] text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ s_title }}</div>
+                    {%- comment -%} Keeps its default 16px bottom margin, like the source {%- endcomment -%}
+                    <p class="mt-0 mb-4 text-[11.5px] font-light leading-[1.55] text-[#777]">{{ s_text }}</p>
+                    {%- comment -%} Diagram is capped at 160px and centred in the grey panel {%- endcomment -%}
+                    <div class="mt-2.5 flex justify-center rounded-[4px] bg-[#f6f6f6] p-2 [&_svg]:h-auto [&_svg]:w-full [&_svg]:max-w-[160px] [&_svg]:[font-family:var(--font-heading--family)]">
                       {%- case i -%}
-                        {%- when 1 -%}
+                        {%- when '1' -%}
                           <svg viewBox="0 0 150 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><ellipse cx="75" cy="44" rx="30" ry="34" fill="none" stroke="#ccc" stroke-width="1.5"/><ellipse cx="45" cy="46" rx="4" ry="6" fill="none" stroke="#ccc" stroke-width="1.5"/><ellipse cx="105" cy="46" rx="4" ry="6" fill="none" stroke="#ccc" stroke-width="1.5"/><line x1="45" y1="28" x2="105" y2="28" stroke="var(--color-spy-orange)" stroke-width="1.5" stroke-dasharray="3,2"/><line x1="45" y1="25" x2="45" y2="31" stroke="var(--color-spy-orange)" stroke-width="1.5"/><line x1="105" y1="25" x2="105" y2="31" stroke="var(--color-spy-orange)" stroke-width="1.5"/><text x="75" y="23" text-anchor="middle" font-size="8" fill="var(--color-spy-orange)" font-weight="600">{{ s_title | upcase }}</text><path d="M61 31 Q68 27 75 29" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/><path d="M75 29 Q82 27 89 31" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/></svg>
-                        {%- when 2 -%}
+                        {%- when '2' -%}
                           <svg viewBox="0 0 150 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="10" y="15" width="30" height="22" rx="5" fill="none" stroke="#ccc" stroke-width="1.5"/><path d="M40 22 L120 24 Q128 25 128 32" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/><circle cx="40" cy="22" r="2.5" fill="var(--color-spy-orange)"/><line x1="40" y1="50" x2="128" y2="50" stroke="var(--color-spy-orange)" stroke-width="1.2" stroke-dasharray="3,2"/><line x1="40" y1="47" x2="40" y2="53" stroke="var(--color-spy-orange)" stroke-width="1.2"/><line x1="128" y1="47" x2="128" y2="53" stroke="var(--color-spy-orange)" stroke-width="1.2"/><text x="84" y="46" text-anchor="middle" font-size="7" fill="var(--color-spy-orange)" font-weight="600">{{ s_title | upcase }}</text></svg>
-                        {%- when 3 -%}
+                        {%- when '3' -%}
                           <svg viewBox="0 0 150 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><ellipse cx="75" cy="38" rx="28" ry="30" fill="none" stroke="#ccc" stroke-width="1.5"/><path d="M60 22 Q75 18 90 22" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/><path d="M58 50 Q75 54 92 50" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/><line x1="48" y1="22" x2="48" y2="50" stroke="var(--color-spy-orange)" stroke-width="1.2" stroke-dasharray="2,2"/><line x1="45" y1="22" x2="51" y2="22" stroke="var(--color-spy-orange)" stroke-width="1.2"/><line x1="45" y1="50" x2="51" y2="50" stroke="var(--color-spy-orange)" stroke-width="1.2"/><text x="38" y="38" text-anchor="middle" font-size="7" fill="var(--color-spy-orange)" font-weight="600" transform="rotate(-90,38,38)">{{ s_title | upcase }}</text></svg>
                       {%- endcase -%}
                     </div>
                   </div>
                 </div>
-              {%- endif -%}
             {%- endfor -%}
           </div>
 
@@ -396,7 +446,7 @@
             <p class="{{ label_cls }} mt-5" style="font-family: var(--font-heading--family);">{{ block.settings.ref_label }}</p>
             <table class="mt-4 w-full border-collapse text-[11px]">
               <thead>
-                <tr class="[&_th]:bg-[#111] [&_th]:px-2 [&_th]:py-[7px] [&_th]:text-left [&_th]:text-[10px] [&_th]:font-semibold [&_th]:uppercase [&_th]:tracking-[0.15em] [&_th]:text-white">
+                <tr class="[&_th]:bg-[#111] [&_th]:px-2 [&_th]:py-[7px] [&_th]:text-left [&_th]:text-[10px] [&_th]:font-semibold [&_th]:uppercase [&_th]:tracking-[1.5px] [&_th]:text-white">
                   {%- assign heads = block.settings.ref_heads | split: '|' -%}
                   {%- for h in heads -%}
                     <th style="font-family: var(--font-heading--family);">{{ h | strip }}</th>
@@ -412,7 +462,7 @@
                     <tr>
                       {%- for c in cells -%}
                         {%- if forloop.first -%}
-                          <td><span class="text-[12px] font-bold tracking-[0.08em] text-[#111]" style="font-family: var(--font-heading--family);">{{ c | strip }}</span></td>
+                          <td><span class="text-[12px] font-bold tracking-[1px] text-[#111]" style="font-family: var(--font-heading--family);">{{ c | strip }}</span></td>
                         {%- else -%}
                           <td>{{ c | strip }}</td>
                         {%- endif -%}
@@ -427,8 +477,8 @@
           {%- if block.settings.tip_text != blank -%}
             {%- comment -%} Source tip: cream panel with an orange rule down the left {%- endcomment -%}
             <div class="mt-4 rounded-r-[4px] border-l-[3px] border-spy-orange bg-[#fff8f3] px-3 py-2.5">
-              <div class="mb-[3px] text-[10px] font-bold uppercase tracking-[0.2em] text-spy-orange" style="font-family: var(--font-heading--family);">{{ block.settings.tip_label }}</div>
-              <p class="m-0 text-[11px] font-light leading-[1.5] text-[#666]">{{ block.settings.tip_text }}</p>
+              <div class="mb-[3px] text-[10px] font-bold uppercase tracking-[2px] text-spy-orange" style="font-family: var(--font-heading--family);">{{ block.settings.tip_label }}</div>
+              <p class="mt-0 mb-4 text-[11px] font-light leading-[1.5] text-[#666]">{{ block.settings.tip_text }}</p>
             </div>
           {%- endif -%}
         </div>
@@ -436,7 +486,7 @@
         {%- if block.settings.footer_note != blank -%}
           <div class="border-t border-[#ebebeb] bg-white px-5 py-3.5">
             {%- comment -%} div, not p: richtext brings its own p and nesting breaks it {%- endcomment -%}
-            <div class="text-[10px] leading-[1.6] text-[#bbb] [&_p]:m-0 [&_a]:text-spy-orange [&_a]:no-underline hover:[&_a]:underline">{{ block.settings.footer_note }}</div>
+            <div class="text-[10px] leading-[1.6] text-[#bbb] [&_a]:text-spy-orange [&_a]:no-underline [&_p]:mb-4 [&_p]:mt-0 hover:[&_a]:underline">{{ block.settings.footer_note }}</div>
           </div>
         {%- endif -%}
       </div>
@@ -452,6 +502,14 @@
     const trigger = wrap.querySelector('[data-spy-fit-guide-open]');
     const modal = wrap.querySelector('[data-spy-fit-guide-modal]');
     if (!trigger || !modal) return;
+
+    // The PDP column is a sticky stacking context, so a fixed drawer left inside
+    // it still loses to the header. Move it to <body>, where its z-index counts.
+    // Re-rendering in the editor would leave the old copy behind, so drop that first.
+    document.querySelectorAll('[data-spy-fit-guide-modal]').forEach((el) => {
+      if (el !== modal && el.id === modal.id) el.remove();
+    });
+    document.body.appendChild(modal);
 
     const open = () => {
       modal.setAttribute('aria-hidden', 'false');
@@ -469,17 +527,17 @@
     };
 
     trigger.addEventListener('click', open);
-    wrap.querySelectorAll('[data-spy-fit-guide-close]').forEach((el) => el.addEventListener('click', close));
+    modal.querySelectorAll('[data-spy-fit-guide-close]').forEach((el) => el.addEventListener('click', close));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && modal.dataset.open !== undefined) close();
     });
 
     // Tabs
-    const tabs = [...wrap.querySelectorAll('[data-spy-tab]')];
+    const tabs = [...modal.querySelectorAll('[data-spy-tab]')];
     tabs.forEach((tab) => {
       tab.addEventListener('click', () => {
         tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
-        wrap.querySelectorAll('[data-spy-panel]').forEach((panel) => {
+        modal.querySelectorAll('[data-spy-panel]').forEach((panel) => {
           panel.classList.toggle('hidden', panel.dataset.spyPanel !== tab.dataset.spyTab);
         });
       });
@@ -495,11 +553,22 @@
     { "type": "text", "id": "fallback_label", "label": "Link label", "info": "Trigger text on the PDP — the source calls it \"Size Chart\"", "default": "Size Chart" },
     { "type": "header", "content": "Drawer header" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "SPY Optic" },
-    { "type": "text", "id": "title", "label": "Title", "default": "Frame Fit Guide" },
+    { "type": "textarea", "id": "title", "label": "Title", "info": "Line breaks are kept — the source splits it over two lines", "default": "Frame Fit\nGuide" },
     { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Find your fit using frame specs or learn to measure at home." },
     { "type": "header", "content": "Tabs" },
     { "type": "text", "id": "tab_frame_label", "label": "First tab", "default": "This Frame" },
     { "type": "text", "id": "tab_howto_label", "label": "Second tab", "default": "How to Measure" },
+    {
+      "type": "select",
+      "id": "default_tab",
+      "label": "Open on",
+      "info": "Falls back to \"How to measure\" when the frame has no guide data",
+      "options": [
+        { "value": "frame", "label": "This frame" },
+        { "value": "howto", "label": "How to measure" }
+      ],
+      "default": "howto"
+    },
     { "type": "header", "content": "This frame" },
     { "type": "text", "id": "diagrams_label", "label": "Diagrams heading", "info": "Drawings and measurements come from the collection's Fit Guide metafield (custom.fit_guide)", "default": "Frame Diagrams" },
     { "type": "text", "id": "front_caption", "label": "Front caption", "default": "Front View" },
@@ -525,7 +594,7 @@
     { "type": "text", "id": "ref_heads", "label": "Reference columns", "info": "Separate with |", "default": "Size | Temple Width | Temple Arm" },
     { "type": "textarea", "id": "ref_rows", "label": "Reference rows", "info": "One row per line, cells separated with |", "default": "SM | 125 – 132mm | 130 – 135mm\nMD | 133 – 140mm | 135 – 140mm\nLG | 141 – 148mm | 140 – 145mm\nXL | 149mm+ | 145mm+" },
     { "type": "text", "id": "tip_label", "label": "Tip label", "default": "Pro Tip" },
-    { "type": "textarea", "id": "tip_text", "label": "Tip text", "default": "If you're between sizes, go up — a slightly wider frame is easier to adjust than one that pinches." },
+    { "type": "textarea", "id": "tip_text", "label": "Tip text", "default": "If you're between sizes, go up — a slightly wider frame is easier to adjust than one that pinches. Our lenses are surfaced for optical clarity edge-to-edge, so coverage won't suffer." },
     { "type": "header", "content": "Footer" },
     { "type": "richtext", "id": "footer_note", "label": "Footer note", "default": "<p>Measurements may vary slightly by colorway. Questions? <a href=\"/pages/contact-us\">Chat with our team.</a></p>" }
   ],

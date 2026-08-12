@@ -95,7 +95,8 @@ Two different content widths are in play:
   `custom-liquid` block so it takes the band's text colour.
 * Right: `<ul>` right-aligned, `li { width:45px; margin:0 }`;
   visa/mastercard/paypal/amex = 40 × 24 centred in the 45 slot; apple-pay & google-pay = **45 × 45**
-  (they set the 45px row height).
+  (they set the 45px row height). Build pins the slot to **45 × 45** so the row keeps its height
+  while the marks lazy-load.
 * < 769px: cells stack and centre; rows get 16px side padding; `.container` = 540 (768) / 100% (390).
 
 ## 5. Copyright — `.notice`
@@ -105,7 +106,12 @@ Two different content widths are in play:
   only visible on mobile).
 * Right: `list-inline`, `li margin-right 8px`, links inherit colour, **underline on hover**:
   Terms & Conditions · Privacy Policy · Privacy Preferences · Legal Notices.
-* < 769px: both cells centre and stack (2 lines @768, legal wraps to 2 lines @390).
+  Link gap = 8px margin + the collapsed space → **11.34** in the source, **10.9** in DIN.
+  Horizon's `:is(h1…p) > a:hover` fades links to 70% — cancelled with `[&_a:hover]:text-inherit`
+  so hover only underlines, like the source.
+* < 769px: both cells centre and stack (2 lines @768, legal wraps to 2 lines @390). The source
+  centres via `ul { text-align:center }`, so the build centres **both** `.text-block` and its `p`
+  (the block's own alignment setting lands on the `p`).
 
 ## Font caveat — do NOT trust text widths from the saved copy
 
@@ -151,6 +157,10 @@ Every band height matches to <1px except the two deltas below.
    Same box, same position, same order (Facebook · Twitter · Instagram).
 4. **Locale flag**: only `US` has a flag asset (`spy-flag-us.svg`). Add more when other
    markets go live.
+5. **Back-to-top button not built**: the source has a global `position:fixed` button
+   (bottom 30 / right 20, 40 × 40 white circle, chevron `#272727` 20px,
+   `box-shadow 0 3px 6px rgba(0,0,0,.2)`) that lives in the footer markup. Out of scope for the
+   bands; build it when the global chrome is done.
 
 ## Assets to re-host
 

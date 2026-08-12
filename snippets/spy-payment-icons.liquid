@@ -25,7 +25,8 @@
         endif
       endfor
     -%}
-    <li class="w-[45px] shrink-0 items-center justify-center [display:flex]">
+    {%- comment -%} Fixed 45px slot keeps the row height while the marks lazy-load. {%- endcomment -%}
+    <li class="h-[45px] w-[45px] shrink-0 items-center justify-center [display:flex]">
       {%- if idx >= 0 -%}
         {%- assign file = files[idx] -%}
         <img
