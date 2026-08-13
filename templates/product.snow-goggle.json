@@ -312,6 +312,7 @@
                 "badge_3_text": "Discount calculated on the original price.",
                 "badge_3_icon": "",
                 "badge_3_link_text": "See conditions",
+                "badge_3_link_url": "/pages/offers-and-conditions",
                 "badge_4_text": "Pay in 4 installments with no fees using",
                 "badge_4_icon": "",
                 "badge_4_logo": "paypal",
