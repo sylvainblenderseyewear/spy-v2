@@ -20,15 +20,16 @@
             "level": "h1",
             "size": 28,
             "size_mobile": 24,
-            "weight": "600",
+            "weight": "500",
             "line_height": 130,
             "letter_spacing": 0,
             "uppercase": false,
             "text_color": "#1d2a2b",
             "align": "left",
+            "width": "normal",
             "show_rule": true,
             "rule_gap": 20,
-            "rule_width": 1,
+            "rule_width": 2,
             "rule_color": "#1d2a2b"
           },
           "blocks": {}
@@ -48,6 +49,7 @@
             "line_height": 140,
             "text_color": "#1d2a2b",
             "align": "left",
+            "width": "normal",
             "gap": 6,
             "margin_top": 10,
             "margin_bottom": 0
@@ -72,6 +74,7 @@
             "hover_background_color": "#2c393e",
             "hover_icon_color": "#ffffff",
             "align": "center",
+            "width": "normal",
             "margin_top": 24,
             "margin_bottom": 32
           },
