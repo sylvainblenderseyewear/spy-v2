@@ -1,0 +1,238 @@
+{%- comment -%}
+  Blog post title + the rule under it.
+
+  The stock `text` block can't do this: its font_size is a fixed select with no
+  28px value, and the source draws a hairline between the title and the meta line.
+  Both live here so the pair can never drift apart.
+
+  Size, weight and the rule each keep a mobile value; the switch is 769px, same as
+  the rest of the blog templates.
+{%- endcomment -%}
+
+{%- liquid
+  assign heading = block.settings.text | default: article.title
+
+  case block.settings.align
+    when 'center'
+      assign align = 'text-center'
+    when 'right'
+      assign align = 'text-right'
+    else
+      assign align = 'text-left'
+  endcase
+
+  assign tag = block.settings.level | default: 'h1'
+
+  # Same vars the content block uses, so the header always lines up with the body
+  case block.settings.width
+    when 'narrow'
+      assign width_class = 'max-w-[var(--narrow-content-width)] mx-auto'
+    when 'wide'
+      assign width_class = 'max-w-[var(--wide-content-width)] mx-auto'
+    when 'full'
+      assign width_class = ''
+    else
+      assign width_class = 'max-w-[var(--normal-content-width)] mx-auto'
+  endcase
+-%}
+
+{%- if heading != blank -%}
+  <div class="w-full {{ width_class }}" {{ block.shopify_attributes }}>
+    <{{ tag }}
+      class="
+        spy-article-title m-0 w-full {{ align }}
+        text-[length:var(--at-size-mobile)] min-[769px]:text-[length:var(--at-size)]
+        font-[number:var(--at-weight)] leading-[var(--at-leading)]
+        tracking-[var(--at-tracking)] text-[color:var(--at-color)]
+        {% if block.settings.uppercase %}uppercase{% else %}normal-case{% endif %}
+      "
+      style="
+        --at-size: {{ block.settings.size }}px;
+        --at-size-mobile: {{ block.settings.size_mobile }}px;
+        --at-weight: {{ block.settings.weight }};
+        --at-leading: {{ block.settings.line_height | divided_by: 100.0 }};
+        --at-tracking: {{ block.settings.letter_spacing }}px;
+        --at-color: {{ block.settings.text_color | default: '#1d2a2b' }};
+      "
+    >{{ heading }}</{{ tag }}>
+
+    {%- if block.settings.show_rule -%}
+      {%- comment -%} border-0 first: Horizon's base.css gives <hr> its own border {%- endcomment -%}
+      <hr
+        class="
+          spy-article-title__rule w-full border-0 border-b-[length:var(--at-rule-w)]
+          border-solid border-[color:var(--at-rule-color)]
+          mt-[var(--at-rule-gap)]
+        "
+        style="
+          --at-rule-w: {{ block.settings.rule_width }}px;
+          --at-rule-color: {{ block.settings.rule_color }};
+          --at-rule-gap: {{ block.settings.rule_gap }}px;
+        "
+      >
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Article title",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Title",
+      "info": "Leave empty to use the post title."
+    },
+    {
+      "type": "select",
+      "id": "level",
+      "label": "Heading level",
+      "info": "Affects meaning for search and screen readers, not the size.",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "p", "label": "None (plain text)" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "header",
+      "content": "Type"
+    },
+    {
+      "type": "range",
+      "id": "size",
+      "label": "Size — desktop",
+      "min": 12,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "size_mobile",
+      "label": "Size — mobile",
+      "min": 12,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "weight",
+      "label": "Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line height",
+      "min": 90,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "default": 130
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter spacing",
+      "min": -2,
+      "max": 8,
+      "step": 0.5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "label": "Uppercase",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Colour",
+      "default": "#1d2a2b"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "info": "Match the post body keeps the title and its line the same width as the content.",
+      "options": [
+        { "value": "normal", "label": "Match the post body" },
+        { "value": "narrow", "label": "Narrow" },
+        { "value": "wide", "label": "Wide" },
+        { "value": "full", "label": "Full width" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Rule"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rule",
+      "label": "Show line under the title",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rule_gap",
+      "label": "Space above the line",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "rule_width",
+      "label": "Line thickness",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "rule_color",
+      "label": "Line colour",
+      "default": "#1d2a2b"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article title",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}
