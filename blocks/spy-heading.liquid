@@ -62,6 +62,12 @@
   else
     assign case_class = 'normal-case'
   endif
+
+  # Mobile tracking only splits off when asked, so existing headings keep one value
+  assign tracking_mobile = block.settings.letter_spacing
+  if block.settings.custom_letter_spacing_mobile
+    assign tracking_mobile = block.settings.letter_spacing_mobile
+  endif
 -%}
 
 {%- if block.settings.text != blank -%}
@@ -70,7 +76,7 @@
       spy-heading w-full {{ align }} {{ align_m }} {{ case_class }}
       text-[length:var(--sh-size-mobile)] min-[769px]:text-[length:var(--sh-size)]
       font-[number:var(--sh-weight)] leading-[var(--sh-leading)]
-      tracking-[var(--sh-tracking)]
+      tracking-[var(--sh-tracking-mobile)] min-[769px]:tracking-[var(--sh-tracking)]
       mt-[var(--sh-mt-mobile)] mb-[var(--sh-mb-mobile)]
       min-[769px]:mt-[var(--sh-mt)] min-[769px]:mb-[var(--sh-mb)]
       {% if block.settings.text_color != blank %}text-[color:var(--sh-color)]{% endif %}
@@ -82,6 +88,7 @@
       --sh-weight: {{ block.settings.weight }};
       --sh-leading: {{ block.settings.line_height | divided_by: 100.0 }};
       --sh-tracking: {{ block.settings.letter_spacing }}px;
+      --sh-tracking-mobile: {{ tracking_mobile }}px;
       --sh-mt: {{ block.settings.margin_top }}px;
       --sh-mb: {{ block.settings.margin_bottom }}px;
       --sh-mt-mobile: {{ block.settings.margin_top_mobile }}px;
@@ -143,7 +150,7 @@
       "type": "range",
       "id": "size",
       "label": "Size — desktop",
-      "min": 12,
+      "min": 8,
       "max": 96,
       "step": 1,
       "unit": "px",
@@ -160,7 +167,7 @@
       "type": "range",
       "id": "size_mobile",
       "label": "Size — mobile",
-      "min": 10,
+      "min": 8,
       "max": 72,
       "step": 1,
       "unit": "px",
@@ -199,6 +206,24 @@
       "step": 0.5,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_letter_spacing_mobile",
+      "label": "Separate letter spacing on mobile",
+      "info": "Off means phones reuse the value above.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing_mobile",
+      "label": "Letter spacing — mobile",
+      "min": -2,
+      "max": 8,
+      "step": 0.5,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.custom_letter_spacing_mobile }}"
     },
     {
       "type": "checkbox",
