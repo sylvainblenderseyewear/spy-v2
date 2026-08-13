@@ -312,6 +312,148 @@
               },
               "blocks": {}
             },
+            "product_recommendations_upsell": {
+              "type": "product-recommendations",
+              "name": "Complete your selection",
+              "blocks": {
+                "spy_heading_upsell": {
+                  "type": "spy-heading",
+                  "name": "Heading",
+                  "settings": {
+                    "text": "Complete your selection",
+                    "level": "h3",
+                    "highlight": "",
+                    "highlight_color": "#ee7624",
+                    "size": 14,
+                    "fluid": false,
+                    "size_mobile": 14,
+                    "weight": "700",
+                    "line_height": 120,
+                    "letter_spacing": 0,
+                    "custom_letter_spacing_mobile": false,
+                    "letter_spacing_mobile": 0,
+                    "uppercase": false,
+                    "text_color": "",
+                    "align": "left",
+                    "align_mobile": "",
+                    "max_width": 0,
+                    "margin_top": 48,
+                    "margin_bottom": 0,
+                    "margin_top_mobile": 48,
+                    "margin_bottom_mobile": 0
+                  },
+                  "blocks": {}
+                },
+                "static-product-card": {
+                  "type": "_product-card",
+                  "name": "t:names.product_card",
+                  "static": true,
+                  "settings": {
+                    "product_card_gap": 8,
+                    "background_color": "",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 8,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {
+                    "product_card_gallery": {
+                      "type": "_product-card-gallery",
+                      "name": "t:names.product_card_media",
+                      "settings": {
+                        "image_ratio": "adapt",
+                        "border": "none",
+                        "border_width": 1,
+                        "border_opacity": 100,
+                        "border_color": "",
+                        "border_radius": 0,
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "product_title": {
+                      "type": "product-title",
+                      "name": "t:names.product_title",
+                      "settings": {
+                        "width": "100%",
+                        "max_width": "normal",
+                        "alignment": "center",
+                        "type_preset": "rte",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "wrap": "pretty",
+                        "text_color": "",
+                        "background": false,
+                        "background_color": "#00000026",
+                        "corner_radius": 0,
+                        "padding-block-start": 4,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "price": {
+                      "type": "price",
+                      "settings": {
+                        "show_sale_price_first": true,
+                        "show_installments": false,
+                        "show_tax_info": false,
+                        "type_preset": "h6",
+                        "width": "100%",
+                        "alignment": "center",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "text_color": "",
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "product_card_gallery",
+                    "product_title",
+                    "price"
+                  ]
+                }
+              },
+              "block_order": [
+                "spy_heading_upsell"
+              ],
+              "settings": {
+                "recommendation_type": "complementary",
+                "layout_type": "carousel",
+                "carousel_on_mobile": true,
+                "max_products": 4,
+                "columns_gap": 16,
+                "rows_gap": 16,
+                "icons_style": "chevron",
+                "icons_shape": "none",
+                "gap": 16,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            },
             "spy_yotpo_reviews_A1": {
               "type": "spy-yotpo-reviews",
               "name": "Yotpo Reviews",
@@ -357,6 +499,7 @@
             "spy_trust_badges_A1",
             "spy_description_A1",
             "spy_spec_table_A1",
+            "product_recommendations_upsell",
             "spy_yotpo_reviews_A1"
           ]
         }
