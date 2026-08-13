@@ -24,6 +24,25 @@
       assign legal_column = legal_grid | append: 'min-[992px]:[--page-content-width:918px] min-[1200px]:[--page-content-width:min(1218px,calc(100%-222px))]'
   endcase
 
+  # Pages whose source is a plain centred box (max-width + side gutters) rather
+  # than Horizon's reading column set their own width here. Horizon resolves the
+  # content to min(--page-content-width, 100% - 2 x --page-margin), so the gutter
+  # is the margin and the cap is the box minus both gutters.
+  # The classes stay literal so Tailwind can find them; the numbers ride in on
+  # inline custom properties. A built-up class name is invisible to the scanner
+  # and silently compiles to nothing.
+  assign width_column = ''
+  assign width_vars = ''
+  if s.content_max_width > 0
+    assign inner_width = s.content_max_width | minus: s.content_gutter | minus: s.content_gutter
+    assign width_column = '[--page-content-width:var(--sec-cw)] [--page-margin:var(--sec-gutter-m)] min-[769px]:[--page-margin:var(--sec-gutter)]'
+    capture width_vars
+      echo '--sec-cw:' | append: inner_width | append: 'px;'
+      echo '--sec-gutter:' | append: s.content_gutter | append: 'px;'
+      echo '--sec-gutter-m:' | append: s.content_gutter_mobile | append: 'px;'
+    endcapture
+  endif
+
   # Spacing: desktop values, and the mobile set only when the editor asks for one
   assign pad_desktop = s['padding-block-start'] | append: ',' | append: s['padding-block-end']
   assign pad_desktop = pad_desktop | append: ',' | append: s.padding_left | append: ',' | append: s.padding_right
@@ -77,7 +96,10 @@
 <div
   class="section-background{% if s.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
-<div class="section page-width-content {{ legal_column }}{% if s.background_color != blank %} color-custom-{{ section.id }}{% endif %}">
+<div
+  class="section page-width-content {{ legal_column }}{{ width_column }}{% if s.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  {% if width_vars != blank %}style="{{ width_vars }}"{% endif %}
+>
   {%- comment -%}
     The vars below feed Horizon's own `spacing-style`, so padding and margin
     land on every side without a second wrapper.
@@ -162,6 +184,43 @@
       "id": "background_color",
       "label": "t:settings.background_color",
       "placeholder": "t:settings.default"
+    },
+    {
+      "type": "header",
+      "content": "Content width",
+      "info": "For pages built as a plain centred box. 0 keeps the theme reading column."
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Max width",
+      "min": 0,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_gutter",
+      "label": "Side gutter — desktop",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 20,
+      "visible_if": "{{ section.settings.content_max_width > 0 }}"
+    },
+    {
+      "type": "range",
+      "id": "content_gutter_mobile",
+      "label": "Side gutter — mobile",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 15,
+      "visible_if": "{{ section.settings.content_max_width > 0 }}"
     },
     {
       "type": "header",
