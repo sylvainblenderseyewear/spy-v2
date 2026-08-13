@@ -1,0 +1,250 @@
+{%- comment -%}
+  Responsive card grid — nests any theme blocks (cards) and reflows them.
+
+  Exists because the stock `group` block hard-codes `flex-wrap: nowrap` in row
+  direction above 750px, so a row of cards can never reflow to fewer columns.
+
+  Two sizing modes:
+  - Auto-fit mirrors the source's `repeat(auto-fit, minmax(Npx, 1fr))`: columns
+    are added as soon as they fit, so the count changes at the real content
+    width instead of a guessed breakpoint.
+  - Fixed gives an explicit count per breakpoint (769px / 992px) when a design
+    needs the same columns regardless of available width.
+
+  Card padding and hover both live here rather than on each child: the source
+  styles every `.spy-oc-offer-card` from one rule, and `group` can't vary
+  padding per breakpoint or draw a hover shadow. Both stay off at 0 / unchecked
+  so the block is pure layout unless a page opts in.
+{%- endcomment -%}
+
+{%- liquid
+  assign auto = false
+  if block.settings.sizing == 'auto'
+    assign auto = true
+  endif
+
+  assign has_pad = false
+  if block.settings.card_padding > 0 or block.settings.card_padding_mobile > 0
+    assign has_pad = true
+  endif
+-%}
+
+<div
+  class="
+    spy-card-grid [display:grid] w-full items-stretch
+    {% if auto %}
+      {%- comment -%} Source pins one column below 769px, then lets auto-fit take over {%- endcomment -%}
+      grid-cols-[repeat(var(--scg-cols-mobile),minmax(0,1fr))]
+      min-[769px]:grid-cols-[repeat(auto-fit,minmax(min(var(--scg-min),100%),1fr))]
+    {% else %}
+      grid-cols-[repeat(var(--scg-cols-mobile),minmax(0,1fr))]
+      min-[769px]:grid-cols-[repeat(var(--scg-cols-tablet),minmax(0,1fr))]
+      min-[992px]:grid-cols-[repeat(var(--scg-cols-desktop),minmax(0,1fr))]
+    {% endif %}
+    [gap:var(--scg-gap-mobile)] min-[769px]:[gap:var(--scg-gap)]
+    {% if has_pad %}
+      [&>.group-block]:[padding:var(--scg-pad-mobile)]
+      min-[769px]:[&>.group-block]:[padding:var(--scg-pad)]
+    {% endif %}
+    {% if block.settings.hover_shadow %}
+      [&>.group-block]:[transition:box-shadow_var(--scg-hover-ms)_ease]
+      [&>.group-block:hover]:[box-shadow:var(--scg-shadow)]
+    {% endif %}
+  "
+  style="
+    --scg-cols-mobile: {{ block.settings.columns_mobile }};
+    {% if auto %}
+      --scg-min: {{ block.settings.min_column_width }}px;
+    {% else %}
+      --scg-cols-tablet: {{ block.settings.columns_tablet }};
+      --scg-cols-desktop: {{ block.settings.columns_desktop }};
+    {% endif %}
+    --scg-gap: {{ block.settings.gap }}px;
+    --scg-gap-mobile: {{ block.settings.gap_mobile }}px;
+    {% if has_pad %}
+      --scg-pad: {{ block.settings.card_padding }}px;
+      --scg-pad-mobile: {{ block.settings.card_padding_mobile }}px;
+    {% endif %}
+    {% if block.settings.hover_shadow %}
+      --scg-hover-ms: {{ block.settings.hover_duration }}ms;
+      --scg-shadow: 0 {{ block.settings.hover_offset_y }}px {{ block.settings.hover_blur }}px {{ block.settings.hover_shadow_color }};
+    {% endif %}
+  "
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Card grid",
+  "tag": null,
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
+  ],
+  "settings": [
+    {
+      "type": "select",
+      "id": "sizing",
+      "label": "Column sizing",
+      "info": "Auto-fit adds a column as soon as one fits, like the source. Fixed pins a count per breakpoint.",
+      "options": [
+        { "value": "auto", "label": "Auto-fit (minimum card width)" },
+        { "value": "fixed", "label": "Fixed columns per breakpoint" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "range",
+      "id": "min_column_width",
+      "label": "Minimum card width",
+      "min": 120,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 280,
+      "visible_if": "{{ block.settings.sizing == 'auto' }}"
+    },
+    {
+      "type": "header",
+      "content": "Gap"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap — desktop",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Gap — mobile",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Columns"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "visible_if": "{{ block.settings.sizing == 'fixed' }}"
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "label": "Tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2,
+      "visible_if": "{{ block.settings.sizing == 'fixed' }}"
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Mobile",
+      "info": "Applies below 769px in both sizing modes.",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Card padding",
+      "info": "Leave at 0 to let each card keep its own padding."
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Desktop",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "card_padding_mobile",
+      "label": "Mobile",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Card hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_shadow",
+      "label": "Shadow on hover",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "hover_shadow_color",
+      "label": "Shadow color",
+      "default": "#0000001a",
+      "visible_if": "{{ block.settings.hover_shadow }}"
+    },
+    {
+      "type": "range",
+      "id": "hover_offset_y",
+      "label": "Shadow drop",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 4,
+      "visible_if": "{{ block.settings.hover_shadow }}"
+    },
+    {
+      "type": "range",
+      "id": "hover_blur",
+      "label": "Shadow blur",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 15,
+      "visible_if": "{{ block.settings.hover_shadow }}"
+    },
+    {
+      "type": "range",
+      "id": "hover_duration",
+      "label": "Transition",
+      "min": 0,
+      "max": 600,
+      "step": 10,
+      "unit": "ms",
+      "default": 200,
+      "visible_if": "{{ block.settings.hover_shadow }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Card grid",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

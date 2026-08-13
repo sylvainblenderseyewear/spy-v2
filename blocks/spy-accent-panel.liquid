@@ -1,0 +1,179 @@
+{%- comment -%}
+  Accent panel — background box with a left accent bar, nesting any theme blocks.
+
+  Exists because the stock `group` block's border is a uniform shorthand on all
+  four sides, so it can't draw a bar on the left only, and its padding is one
+  value for every screen. Used for the callout box and, with the bar set to 0,
+  any plain tinted panel.
+
+  Margins live here because Horizon's spacer block switches at 749px while the
+  source switches at 768px; keeping the gaps on the panel puts every break on
+  the same 769px line.
+{%- endcomment -%}
+
+{%- capture children %}
+  {% content_for 'blocks' %}
+{% endcapture %}
+
+<div
+  class="spy-accent-panel w-full
+    max-[769px]:[padding:var(--sap-pad-mobile)]
+    [margin-block:var(--sap-mt-mobile)_var(--sap-mb-mobile)]
+    min-[769px]:[margin-block:var(--sap-mt)_var(--sap-mb)]"
+  style="
+    background-color: {{ block.settings.background_color }};
+    border-left: {{ block.settings.accent_width }}px solid {{ block.settings.accent_color | default: 'var(--color-foreground)' }};
+    padding-block: {{ block.settings.padding_block_start }}px {{ block.settings.padding_block_end }}px;
+    padding-inline: {{ block.settings.padding_inline_start }}px {{ block.settings.padding_inline_end }}px;
+    --sap-pad-mobile: {{ block.settings.padding_mobile }}px;
+    --sap-mt: {{ block.settings.margin_top }}px;
+    --sap-mb: {{ block.settings.margin_bottom }}px;
+    --sap-mt-mobile: {{ block.settings.margin_top_mobile }}px;
+    --sap-mb-mobile: {{ block.settings.margin_bottom_mobile }}px;
+  "
+  {{ block.shopify_attributes }}
+>{{ children }}</div>
+
+{% schema %}
+{
+  "name": "Accent panel",
+  "tag": null,
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
+  ],
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#f8f8f8"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent bar color",
+      "info": "Leave empty to use the theme's text color.",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "accent_width",
+      "label": "Accent bar width",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_block_start",
+      "label": "Top",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "padding_block_end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "padding_inline_start",
+      "label": "Left",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_inline_end",
+      "label": "Right",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Padding — mobile (all sides)",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Spacing — desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Above",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Below",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Spacing — mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_mobile",
+      "label": "Above",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_mobile",
+      "label": "Below",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Accent panel",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}
