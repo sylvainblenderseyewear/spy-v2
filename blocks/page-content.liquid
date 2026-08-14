@@ -1,12 +1,17 @@
 {%- liquid
-  # The three legal pages were each pasted from a different tool, so each one
-  # gets the base type its source really uses. Sizes live on the wrapper only —
+  # Each of these pages was pasted from a different tool, so each one gets the
+  # base type its source really uses. Sizes live on the wrapper only —
   # the copy carries Word's own inline styles and those must keep winning.
-  assign legal_type = ''
+  assign page_type = ''
+
+  # Inline runs every page below relies on
+  capture rte_runs
+    echo '[&_strong]:font-bold [&_b]:font-bold [&_u]:underline [&_a]:underline [&_em]:italic [&_i]:italic '
+  endcapture
 
   # Runs and lists every legal document relies on
   capture legal_shared
-    echo '[&_strong]:font-bold [&_b]:font-bold [&_u]:underline [&_a]:underline [&_em]:italic [&_i]:italic '
+    echo rte_runs
     echo '[&_ul]:list-disc [&_ol]:list-decimal [&_ul]:my-0 [&_ol]:my-0 '
     # Word writes a./b./c. sub-items as type="a" lists and Tailwind resets those.
     # HTML matches the type value case-insensitively, so a/A both land here.
@@ -16,7 +21,7 @@
   case page.template_suffix
     when 'terms-of-use'
       # Source: Word paste, Times New Roman 10pt / 1.6em, justified
-      capture legal_type
+      capture page_type
         echo 'spy-legal font-legal text-[13.3333px] leading-[1.6] text-justify hyphens-none '
         # source row (48) + markup (48/16) padding, and only from 992px up
         echo 'min-[992px]:pt-[96px] min-[992px]:pb-[64px] '
@@ -29,7 +34,7 @@
     when 'privacy-policy'
       # Source: Word paste, Calibri 11pt / normal, justified; tables carry their
       # own widths and run border-less
-      capture legal_type
+      capture page_type
         echo 'spy-legal font-word-sans text-[14.6667px] leading-normal text-justify hyphens-none '
         echo '[&_p:not([style])]:m-0 '
         echo '[&_p[align=center]:not([style*=text-align])]:text-center '
@@ -37,9 +42,23 @@
         echo '[&_table]:border-collapse '
         echo legal_shared
       endcapture
+    when 'shipping'
+      # Source: hand-written markup in the brand sans on Bootstrap's own type scale
+      capture page_type
+        echo 'text-[16px] leading-[1.4] '
+        echo '[&_h2]:text-[calc(1.3rem_+_0.6vw)] min-[1200px]:[&_h2]:text-[28px] [&_h2]:font-semibold '
+        echo '[&_h2]:leading-[1.2] [&_h2]:tracking-normal [&_h2]:normal-case [&_h2]:m-0 [&_h2]:mb-2 '
+        # Blank paragraphs carry the spacing between the blocks, so they keep their margin
+        echo '[&_p]:m-0 [&_p]:mb-4 '
+        echo '[&_ul]:list-disc [&_ol]:list-decimal [&_ul]:pl-[40px] [&_ol]:pl-[40px] '
+        echo '[&_ul]:m-0 [&_ul]:mb-4 [&_ol]:m-0 [&_ol]:mb-4 '
+        # Nested list rides tight under its parent item and swaps the marker
+        echo '[&_ul_ul]:mb-0 [&_ul_ul]:list-[circle] [&_ol_ol]:mb-0 '
+        echo rte_runs
+      endcapture
     when 'legal-notices'
       # Source: hand-written markup in the brand sans, headings fluid below 1200
-      capture legal_type
+      capture page_type
         echo 'spy-legal text-[16px] leading-[1.4] '
         # source row padding, from 992px up
         echo 'min-[992px]:py-[48px] '
@@ -52,7 +71,7 @@
 -%}
 
 <div
-  class="page-content {{ legal_type }}"
+  class="page-content {{ page_type }}"
   style="
     {% if block.settings.text_color != blank %}
       --color: {{ block.settings.text_color }};

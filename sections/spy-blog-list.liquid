@@ -2,13 +2,14 @@
   Journal listing — keyword search box over the post grid, 1:1 with spyoptic.com/us/spy-blog/.
 
   Measured off the source (computed styles, all four widths):
-    container   15px gutters, 540px max under 992px, fluid above it
+    container   Bootstrap widths, 15px gutters: 540 · 720 (768) · 960 (992) · 1140 (1200)
     search      #f8f8f8 box, 16px pad, 48px under the hero, 172x36 white field,
                 1px #1d2a2b border, square, 13/18.2 text, icon 8px in from the left
     grid        Bootstrap row: -15px pull, 15px per column, 24px row gap, 80px above
     columns     1 under 992px · 3 from 992 · 4 from 1200
     card        square thumbnail on #f8f8f8, text block 16px under it,
                 date 16/22.4 w200, title 20/24 w700, body 16/22.4 w400, all #333e47
+                body text = the article's admin Excerpt, nothing else
     pagination  24px above, centred, 12/16.8 caps, square, active fills orange
 
   The card thumbnail is the post's featured image; when a post has none, the first
@@ -19,7 +20,7 @@
 {%- enddoc -%}
 
 <div
-  class="mx-auto w-full max-w-[540px] px-[15px] min-[992px]:max-w-none"
+  class="mx-auto w-full max-w-[540px] px-[15px] min-[768px]:max-w-[720px] min-[992px]:max-w-[960px] min-[1200px]:max-w-[1140px]"
   data-spy-blog
   {{ section.shopify_attributes }}
 >
@@ -68,11 +69,8 @@
             endif
           endif
 
-          if article.excerpt != blank
-            assign excerpt = article.excerpt | strip_html | strip
-          else
-            assign excerpt = article.content | strip_html | strip | truncatewords: 40
-          endif
+          # Summary comes from the admin Excerpt field only — never the post body
+          assign excerpt = article.excerpt | strip_html | strip
 
           assign tag_text = article.tags | join: ' '
           assign search_index = article.title | append: ' ' | append: excerpt | append: ' ' | append: tag_text
