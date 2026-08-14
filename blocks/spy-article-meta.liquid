@@ -1,0 +1,243 @@
+{%- comment -%}
+  Blog post meta line — "11/19/2024 | Spy Optic".
+
+  Custom because the stock details block prints the Shopify author name and has no
+  size control. The source always signs posts with the brand, so the byline is a
+  text setting that defaults to "Spy Optic"; tick "Use the post author" for a real byline.
+{%- endcomment -%}
+
+{%- liquid
+  case block.settings.date_format
+    when 'us_padded'
+      assign date_text = article.published_at | date: '%m/%d/%Y'
+    when 'long'
+      assign date_text = article.published_at | date: '%B %-d, %Y'
+    else
+      assign date_text = article.published_at | date: '%-m/%-d/%Y'
+  endcase
+
+  if block.settings.use_article_author
+    assign byline = article.author
+  else
+    assign byline = block.settings.author_text
+  endif
+
+  case block.settings.align
+    when 'center'
+      assign align = 'justify-center text-center'
+    when 'right'
+      assign align = 'justify-end text-right'
+    else
+      assign align = 'justify-start text-left'
+  endcase
+
+  # Same vars the content block uses, so the meta line always lines up with the body
+  case block.settings.width
+    when 'narrow'
+      assign width_class = 'max-w-[var(--narrow-content-width)] mx-auto'
+    when 'wide'
+      assign width_class = 'max-w-[var(--wide-content-width)] mx-auto'
+    when 'full'
+      assign width_class = ''
+    else
+      assign width_class = 'max-w-[var(--normal-content-width)] mx-auto'
+  endcase
+-%}
+
+{%- if block.settings.show_date or byline != blank -%}
+  {%- comment -%} [display:flex] not `flex`: Horizon's base.css adds its own gap {%- endcomment -%}
+  <div
+    class="
+      spy-article-meta w-full items-baseline flex-wrap [display:flex] {{ align }} {{ width_class }}
+      gap-x-[var(--am-gap)] gap-y-1
+      text-[length:var(--am-size-mobile)] min-[769px]:text-[length:var(--am-size)]
+      font-[number:var(--am-weight)] leading-[var(--am-leading)] text-[color:var(--am-color)]
+      mt-[var(--am-mt)] mb-[var(--am-mb)]
+    "
+    style="
+      --am-size: {{ block.settings.size }}px;
+      --am-size-mobile: {{ block.settings.size_mobile }}px;
+      --am-weight: {{ block.settings.weight }};
+      --am-leading: {{ block.settings.line_height | divided_by: 100.0 }};
+      --am-color: {{ block.settings.text_color | default: '#1d2a2b' }};
+      --am-gap: {{ block.settings.gap }}px;
+      --am-mt: {{ block.settings.margin_top }}px;
+      --am-mb: {{ block.settings.margin_bottom }}px;
+    "
+    {{ block.shopify_attributes }}
+  >
+    {%- if block.settings.show_date -%}
+      <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ date_text }}</time>
+    {%- endif -%}
+
+    {%- if block.settings.show_date and byline != blank -%}
+      <span aria-hidden="true">{{ block.settings.separator }}</span>
+    {%- endif -%}
+
+    {%- if byline != blank -%}
+      <span>{{ byline }}</span>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Article details",
+  "tag": null,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show the date",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "date_format",
+      "label": "Date format",
+      "options": [
+        { "value": "us", "label": "11/19/2024" },
+        { "value": "us_padded", "label": "11/19/2024 (padded)" },
+        { "value": "long", "label": "November 19, 2024" }
+      ],
+      "default": "us"
+    },
+    {
+      "type": "text",
+      "id": "separator",
+      "label": "Separator",
+      "default": "|"
+    },
+    {
+      "type": "text",
+      "id": "author_text",
+      "label": "Byline",
+      "default": "Spy Optic"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_article_author",
+      "label": "Use the post author",
+      "info": "Off keeps the byline above on every post.",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Type"
+    },
+    {
+      "type": "range",
+      "id": "size",
+      "label": "Size — desktop",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "size_mobile",
+      "label": "Size — mobile",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "weight",
+      "label": "Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line height",
+      "min": 90,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "default": 140
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Colour",
+      "default": "#1d2a2b"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "info": "Match the post body keeps the line the same width as the content.",
+      "options": [
+        { "value": "normal", "label": "Match the post body" },
+        { "value": "narrow", "label": "Narrow" },
+        { "value": "wide", "label": "Wide" },
+        { "value": "full", "label": "Full width" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Space around the separator",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Space above",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Space below",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article details",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}
