@@ -7,21 +7,36 @@
     render 'contrast-override', background_color: s.background_color, section_id: section.id
   endif
 
-  # Legal pages follow the source's Bootstrap container (540/720/1140/1440 + 15px
-  # gutters) instead of Horizon's 54rem reading column. From 992px the source row
+  # Legal and support pages follow the source's Bootstrap container (540/720/1140/1440
+  # + 15px gutters) instead of Horizon's 54rem reading column. From 992px the source row
   # adds 48px of side padding, and Terms adds another 48 on top of that.
   # Horizon caps the centre column at 100% - 2 × --page-margin (3.5rem), which is
   # narrower than the source's container, so these pages drop the margin to 5px.
-  assign legal_grid = '[--page-margin:5px] [--page-content-width:calc(100%-30px)] min-[544px]:[--page-content-width:510px] min-[769px]:[--page-content-width:690px] '
-  assign legal_column = ''
+  assign source_grid = '[--page-margin:5px] [--page-content-width:calc(100%-30px)] min-[544px]:[--page-content-width:510px] min-[769px]:[--page-content-width:690px] '
+  assign page_column = ''
 
   case page.template_suffix
     when 'privacy-policy'
-      assign legal_column = legal_grid | append: 'min-[992px]:[--page-content-width:1110px] min-[1200px]:[--page-content-width:min(1410px,calc(100%-30px))]'
+      assign page_column = source_grid | append: 'min-[992px]:[--page-content-width:1110px] min-[1200px]:[--page-content-width:min(1410px,calc(100%-30px))]'
     when 'legal-notices'
-      assign legal_column = legal_grid | append: 'min-[992px]:[--page-content-width:1014px] min-[1200px]:[--page-content-width:min(1314px,calc(100%-126px))]'
+      assign page_column = source_grid | append: 'min-[992px]:[--page-content-width:1014px] min-[1200px]:[--page-content-width:min(1314px,calc(100%-126px))]'
     when 'terms-of-use'
-      assign legal_column = legal_grid | append: 'min-[992px]:[--page-content-width:918px] min-[1200px]:[--page-content-width:min(1218px,calc(100%-222px))]'
+      assign page_column = source_grid | append: 'min-[992px]:[--page-content-width:918px] min-[1200px]:[--page-content-width:min(1218px,calc(100%-222px))]'
+    when 'shipping'
+      # Source column is col-lg-8 of the 1440 container less the row's 48px side
+      # margins — 834px at full width, and it never gets wider than that.
+      capture page_column
+        echo source_grid
+        echo 'min-[992px]:[--page-content-width:min(834px,calc(66.6667%-126px))] '
+        # The title sits in its own block, so its type has to be set from out here
+        echo '[&_h1]:text-[calc(1.325rem_+_0.9vw)] min-[1200px]:[&_h1]:text-[32px] '
+        echo '[&_h1]:font-semibold [&_h1_strong]:font-semibold [&_h1]:leading-[1.2] '
+        echo '[&_h1]:tracking-normal [&_h1]:normal-case [&_h1]:mb-2 '
+        # Source keeps an empty paragraph under the title: 8px + 38.4px of it
+        echo '[&_.section-content-wrapper]:gap-[38.4px] '
+        # Row only adds its top padding from 992px up
+        echo 'min-[992px]:[&_.section-content-wrapper]:pt-[48px] '
+      endcapture
   endcase
 
   # Pages whose source is a plain centred box (max-width + side gutters) rather
@@ -97,7 +112,7 @@
   class="section-background{% if s.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
 <div
-  class="section page-width-content {{ legal_column }}{{ width_column }}{% if s.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  class="section page-width-content {{ page_column }}{{ width_column }}{% if s.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
   {% if width_vars != blank %}style="{{ width_vars }}"{% endif %}
 >
   {%- comment -%}
