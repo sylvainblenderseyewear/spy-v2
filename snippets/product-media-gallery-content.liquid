@@ -101,21 +101,30 @@
     endif
   endif
 
+  # No dedicated photo for this variant yet? Still hide every OTHER variant's
+  # photo instead of dumping the whole product's media in unfiltered - a bare
+  # "else" here used to skip the hide_variants filter and blow up the gallery.
   assign sorted_media = '' | split: ','
   if selected_variant_media
     assign sorted_media = sorted_media | concat: selected_product.media | where: 'id', selected_variant_media.id
+  endif
 
-    for media in selected_product.media
-      if block_settings.hide_variants and variant_images contains media.src and sorted_media.size > 0
-        continue
-      endif
+  for media in selected_product.media
+    if selected_variant_media and media.id == selected_variant_media.id
+      continue
+    endif
 
-      if media.id != selected_variant_media.id
-        assign found_media = selected_product.media | where: 'id', media.id
-        assign sorted_media = sorted_media | concat: found_media
-      endif
-    endfor
-  else
+    if block_settings.hide_variants and variant_images contains media.src
+      continue
+    endif
+
+    assign found_media = selected_product.media | where: 'id', media.id
+    assign sorted_media = sorted_media | concat: found_media
+  endfor
+
+  # Every photo belongs to some other variant, so hiding them all leaves an
+  # empty gallery. Show the product's media rather than a 0px hole.
+  if sorted_media.size == 0
     assign sorted_media = selected_product.media
   endif
   assign has_image_drop = sorted_media | has: 'media_type', 'image'
