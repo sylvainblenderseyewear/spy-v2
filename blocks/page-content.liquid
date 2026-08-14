@@ -80,7 +80,15 @@
   "
 >
   <rte-formatter>
-    {{ page.content }}
+    {%- comment -%}
+      Page body first. Legal Notices falls back to the source copy so the page
+      is never blank before an editor pastes it in the admin.
+    {%- endcomment -%}
+    {%- if page.content != blank -%}
+      {{ page.content }}
+    {%- elsif page.template_suffix == 'legal-notices' -%}
+      {%- render 'legal-notices-content' -%}
+    {%- endif -%}
   </rte-formatter>
 </div>
 
