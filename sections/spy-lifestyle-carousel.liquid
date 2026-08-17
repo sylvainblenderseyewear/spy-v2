@@ -1,10 +1,14 @@
 {%- doc -%}
   Horizontal lifestyle strip under the product grid.
 
-  Source geometry: square images 399px wide in 423px cells (12px gutter each side), so about
-  3.2 cells show at 1440 and the count follows the viewport. Tall translucent side arrows,
-  51px wide and full height, with an orange angle glyph. Scroll-snap gives native dragging,
-  so the JS only moves the track a cell at a time.
+  Source geometry (slick, verified live): cells are FLUID, not fixed. The scroller keeps a
+  50px peek on each side and every cell is `(trackWidth - 100) / slidesToShow` wide —
+  4 up from 992px, 3 from 769px, 1.5 below. Inside a cell the image is inset 4px left and
+  20px right, so neighbours sit 24px apart. Arrows are tall translucent side bars, 51px
+  wide, with an orange angle glyph.
+
+  The loop is breakpoint-specific too: infinite from 769px up (so a slice of the previous
+  image always shows at rest), finite below it, where the arrows hide at each end.
 
   Data: pdp.feature_carousel (list.file). That definition does not exist yet, so it falls
   back to the product's own images and can be capped in the editor.
@@ -27,58 +31,68 @@
 
 {%- if items != blank -%}
   {%- comment -%}
-    The source row sits in the page container but bleeds 15px past it, so the first image
-    lands on the page margin (41 + 12 = 53 at 1440) and the arrows sit at 41. Inset lives
-    here, not on the scroller — padding on a snap container gets cancelled by snapping.
+    The source row sits in the page container but bleeds 15px past it, so the track lands
+    on the page margin (41 at 1440). Inset lives here; the 50px peek lives on the scroller.
   {%- endcomment -%}
   <div
-    class="spy-strip relative mx-auto my-8 max-w-[1440px] px-px min-[769px]:px-[17px] min-[1200px]:px-[41px] min-[1800px]:px-[57px]"
+    class="spy-strip mx-auto my-8 max-w-[1440px] px-px min-[769px]:px-[17px] min-[1200px]:px-[41px] min-[1800px]:px-[57px]"
     data-spy-strip
     {{ section.shopify_attributes }}
   >
-    {%- comment -%}
-      display via square brackets because Horizon's base.css owns the .flex class name and
-      adds a 14.4px gap. Keep comments outside the tag — a whitespace-trimming comment tag
-      eats the newline after "<div" and glues the tag name onto the class attribute.
-    {%- endcomment -%}
-    <div
-      class="spy-strip__track [display:flex] snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      data-spy-strip-track
-    >
-      {%- for img in items limit: limit -%}
-        {%- comment -%} 423px cell = 399px image + 12px each side, as the source track measures {%- endcomment -%}
-        <div class="shrink-0 basis-[280px] snap-start px-3 min-[750px]:basis-[423px]">
-          <img
-            src="{{ img | image_url: width: 800 }}"
-            srcset="{{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 800 }} 800w, {{ img | image_url: width: 1200 }} 1200w"
-            sizes="(min-width: 750px) 399px, 256px"
-            alt="{{ img.alt | default: p.title | escape }}"
-            width="399"
-            height="399"
-            loading="lazy"
-            class="block aspect-square w-full bg-white object-contain"
-          >
-        </div>
-      {%- endfor -%}
-    </div>
+    {%- comment -%} Arrows anchor to the track, not the padded shell — the source puts them at -1px {%- endcomment -%}
+    <div class="relative">
+      {%- comment -%}
+        display via square brackets because Horizon's base.css owns the .flex class name and
+        adds a 14.4px gap. px-[50px] is slick's centerPadding: it makes the peek, and it also
+        shrinks the percentage basis below so a cell matches slick's slideWidth exactly.
+        Keep comments outside the tag — a whitespace-trimming comment tag eats the newline
+        after "<div" and glues the tag name onto the class attribute.
+      {%- endcomment -%}
+      <div
+        class="spy-strip__track [display:flex] snap-x snap-mandatory overflow-x-auto px-[50px] scroll-pl-[50px] [--spy-show:1.5] min-[769px]:[--spy-show:3] min-[992px]:[--spy-show:4] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        data-spy-strip-track
+      >
+        {%- for img in items limit: limit -%}
+          {%- comment -%} 4px left / 20px right, the way the source's p-1 + padding-right stack up {%- endcomment -%}
+          <div class="spy-strip__cell shrink-0 basis-[calc(100%_/_var(--spy-show))] snap-start py-1 pl-1 pr-5" data-spy-strip-cell>
+            <img
+              src="{{ img | image_url: width: 800 }}"
+              srcset="{{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 800 }} 800w, {{ img | image_url: width: 1200 }} 1200w"
+              sizes="(min-width: 992px) 25vw, (min-width: 769px) 33vw, 50vw"
+              alt="{{ img.alt | default: p.title | escape }}"
+              width="399"
+              height="399"
+              loading="lazy"
+              class="block aspect-square w-full bg-white object-contain"
+            >
+          </div>
+        {%- endfor -%}
+      </div>
 
-    {%- comment -%} Source arrows: 51px wide, full height, 75% white, orange glyph at 48px {%- endcomment -%}
-    <button
-      type="button"
-      class="absolute inset-y-0 left-0 z-[1] flex w-[51px] cursor-pointer items-center justify-center border-0 bg-white/75 px-2 text-[color:var(--color-spy-orange)] transition-opacity disabled:pointer-events-none disabled:opacity-0"
-      data-spy-strip-prev
-      aria-label="{{ 'accessibility.slideshow_previous' | t }}"
-    >
-      <svg class="inline max-w-none align-middle" width="20" height="48" viewBox="0 0 20 48" fill="none" aria-hidden="true"><path d="M15 8L6 24L15 40" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <button
-      type="button"
-      class="absolute inset-y-0 right-0 z-[1] flex w-[51px] cursor-pointer items-center justify-center border-0 bg-white/75 px-2 text-[color:var(--color-spy-orange)] transition-opacity disabled:pointer-events-none disabled:opacity-0"
-      data-spy-strip-next
-      aria-label="{{ 'accessibility.slideshow_next' | t }}"
-    >
-      <svg class="inline max-w-none align-middle" width="20" height="48" viewBox="0 0 20 48" fill="none" aria-hidden="true"><path d="M5 8L14 24L5 40" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
+      {%- comment -%}
+        Source arrows: 51px wide (35 + 8 padding each side), full height, 75% white ground,
+        glyph #f27e37 at 75%. The glyph is FontAwesome's angle-left/right; the SVG below
+        redraws it at its measured ink box — 0.325em wide by 0.5563em tall, 45 degree legs —
+        so 15.6x26.7 at the desktop 48px step and 10.4x17.8 at the 32px one.
+      {%- endcomment -%}
+      <button
+        type="button"
+        class="absolute inset-y-0 -left-px z-[2] flex w-[51px] cursor-pointer items-center justify-center border-0 bg-white/75 px-2 text-[color:var(--color-spy-orange)] disabled:hidden hover:[&_svg]:opacity-100"
+        data-spy-strip-prev
+        aria-label="{{ 'accessibility.slideshow_previous' | t }}"
+      >
+        <svg class="block h-[17.8px] w-[10.4px] opacity-75 min-[992px]:h-[26.7px] min-[992px]:w-[15.6px]" viewBox="0 0 156 267" fill="none" aria-hidden="true"><path d="M145 11L22.5 133.5L145 256" stroke="currentColor" stroke-width="32"/></svg>
+      </button>
+      <button
+        type="button"
+        class="absolute inset-y-0 -right-px z-[2] flex w-[51px] cursor-pointer items-center justify-center border-0 bg-white/75 px-2 text-[color:var(--color-spy-orange)] disabled:hidden hover:[&_svg]:opacity-100"
+        data-spy-strip-next
+        aria-label="{{ 'accessibility.slideshow_next' | t }}"
+      >
+        {%- comment -%} pl matches the source's .slick-next::before padding-left, which nudges the glyph right {%- endcomment -%}
+        <svg class="block h-[17.8px] w-[13.6px] pl-[3.2px] opacity-75 min-[992px]:h-[26.7px] min-[992px]:w-[18.8px]" viewBox="0 0 156 267" fill="none" aria-hidden="true"><path d="M11 11L133.5 133.5L11 256" stroke="currentColor" stroke-width="32"/></svg>
+      </button>
+    </div>
   </div>
 
   <script src="{{ 'spy-strip-carousel.js' | asset_url }}" defer></script>
