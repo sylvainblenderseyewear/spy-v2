@@ -38,10 +38,34 @@ Container: `padding: 48px 0`, `margin: 0 -15px`, flex. Two children.
 
 ### 3a — Lifestyle carousel (`.product-images-horizontal-gallery`)
 
-- container 1343 wide, **414.4** tall, `margin: 0 -15px`
-- 8 real slides (21 nodes incl. slick clones for the infinite loop)
-- slide cell **423** wide, image **399×399** → 24px gutter (12px each side)
-- ~3.17 cells visible at 1440
+Config is authoritative, from the element's own `data-slick` attribute:
+
+```json
+{"slidesToShow":1.5,"centerMode":true,"mobileFirst":true,"infinite":false,
+ "responsive":[{"breakpoint":992,"settings":{"slidesToShow":4,"infinite":true}},
+               {"breakpoint":769,"settings":{"slidesToShow":3,"infinite":true}}]}
+```
+
+`mobileFirst: true` makes those breakpoints **min-widths**, so: under 769 → 1.5 up and no
+loop; 769+ → 3 up, looping; 992+ → 4 up, looping.
+
+- cells are **fluid**, never fixed: `.slick-list` carries `padding: 0 50px` (slick's
+  `centerPadding`) and each cell is `(listWidth − 100) / slidesToShow`
+- the row is container-**fluid**: no max width, so cells keep growing past 1440
+- insets are **symmetric**, page padding − 15: **1/1**, **17/17**, **41/41**, **57/57**
+- `slidesToShow` steps at **770 and 993**, not 769/992 — slick's `mobileFirst` compares
+  `innerWidth > breakpoint`. Page padding steps on the CSS breakpoints (inclusive), so a
+  769px window pairs the 32px-tier inset with the 1.5-up ladder. The loop shares the 770 line.
+- live slide widths, measured with slick running: 182 @390, 414 @769, 207 @770, 281 @992,
+  211 @993, 311 @1440, 393 @1800
+- image inset inside a cell: 4px left/top/bottom, 20px right (`.gallery-image.p-1` + a
+  20px right pad) → neighbours 24px apart
+- arrows 51px wide, full height, `rgba(255,255,255,0.75)`, orange glyph at a 32px step
+  below 992 and 48px above; a disabled arrow is `display: none !important`
+
+⚠️ The slide widths **baked into the saved DOM** (423px, track 8883px) come from whatever
+window the page was captured at — not 1440. Derive cell width from the formula above; never
+read it off the saved markup.
 - images: `26-SPY-Digital-PDP-CyrusSwitch-Carousel-1…8.png`, natural 1200×1200
 - arrows are **full-height side buttons**, not the round ones from the main gallery:
   `51 × 414.4`, `background: rgba(255,255,255,0.75)`, colour `#f27e37`, `padding: 0 8px`,

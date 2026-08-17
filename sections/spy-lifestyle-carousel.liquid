@@ -1,14 +1,30 @@
 {%- doc -%}
   Horizontal lifestyle strip under the product grid.
 
-  Source geometry (slick, verified live): cells are FLUID, not fixed. The scroller keeps a
-  50px peek on each side and every cell is `(trackWidth - 100) / slidesToShow` wide —
-  4 up from 992px, 3 from 769px, 1.5 below. Inside a cell the image is inset 4px left and
-  20px right, so neighbours sit 24px apart. Arrows are tall translucent side bars, 51px
-  wide, with an orange angle glyph.
+  Source geometry (measured on the live page with slick running): cells are FLUID, not fixed.
+  The scroller keeps a 50px peek on each side and every cell is
+  `(trackWidth - 100) / slidesToShow` wide. Inside a cell the image is inset 4px left and
+  20px right, so neighbours sit 24px apart. Arrows are tall translucent side bars, 51px wide,
+  with an orange angle glyph.
 
-  The loop is breakpoint-specific too: infinite from 769px up (so a slice of the previous
-  image always shows at rest), finite below it, where the arrows hide at each end.
+  slidesToShow steps at 770 and 993, not 769 and 992: slick's mobileFirst compares
+  `window.innerWidth > breakpoint`, so a 992px window still gets the 769 tier. The page
+  padding steps on the CSS breakpoints (inclusive), which is why a 769px window shows the
+  32px-tier inset with the 1.5-up ladder.
+
+  The loop follows the same 770 boundary: infinite above it (so a slice of the previous image
+  always shows at rest), finite below, where the arrows hide at each end.
+
+  Vertical rhythm is viewport-independent and comes from the section, not the cells: 64px
+  above (48 section padding + 16 on the gallery wrapper) and 48px below (16 + the banner's
+  32). The track's 7.4px bottom pad reproduces the descender slack the source gets for free
+  from laying its cells out as inline-block in a 22.4px line box; drop it if that changes.
+  Cell HEIGHT is derived, not fixed — the art is square, so it follows cell width.
+
+  Images match the source's fill mode: width 100%, height auto, object-fit fill. With height
+  auto the box already carries the file's own ratio, so nothing crops and nothing letterboxes;
+  a non-square file just makes its cell taller or shorter instead. The width/height attributes
+  come from the file so the reserved space matches and the row does not shift on load.
 
   Data: pdp.feature_carousel (list.file). That definition does not exist yet, so it falls
   back to the product's own images and can be capped in the editor.
@@ -31,11 +47,14 @@
 
 {%- if items != blank -%}
   {%- comment -%}
-    The source row sits in the page container but bleeds 15px past it, so the track lands
-    on the page margin (41 at 1440). Inset lives here; the 50px peek lives on the scroller.
+    The row bleeds 15px past the container on BOTH sides, so the inset is the page padding
+    minus 15: measured live at 1/1, 17/17, 41/41, 57/57. It is container-FLUID — no max width,
+    so at 1800 the cells keep growing instead of centring in a 1440 box. The inset also sets
+    the track width every cell divides, so getting it wrong shifts every cell by
+    15/slidesToShow. Inset lives here; the 50px peek lives on the scroller.
   {%- endcomment -%}
   <div
-    class="spy-strip mx-auto my-8 max-w-[1440px] px-px min-[769px]:px-[17px] min-[1200px]:px-[41px] min-[1800px]:px-[57px]"
+    class="spy-strip mt-16 mb-12 px-px min-[769px]:px-[17px] min-[1200px]:px-[41px] min-[1800px]:px-[57px]"
     data-spy-strip
     {{ section.shopify_attributes }}
   >
@@ -49,7 +68,7 @@
         after "<div" and glues the tag name onto the class attribute.
       {%- endcomment -%}
       <div
-        class="spy-strip__track [display:flex] snap-x snap-mandatory overflow-x-auto px-[50px] scroll-pl-[50px] [--spy-show:1.5] min-[769px]:[--spy-show:3] min-[992px]:[--spy-show:4] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        class="spy-strip__track [display:flex] snap-x snap-mandatory overflow-x-auto px-[50px] pb-[7.4px] scroll-pl-[50px] [--spy-show:1.5] min-[770px]:[--spy-show:3] min-[993px]:[--spy-show:4] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         data-spy-strip-track
       >
         {%- for img in items limit: limit -%}
@@ -60,10 +79,10 @@
               srcset="{{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 800 }} 800w, {{ img | image_url: width: 1200 }} 1200w"
               sizes="(min-width: 992px) 25vw, (min-width: 769px) 33vw, 50vw"
               alt="{{ img.alt | default: p.title | escape }}"
-              width="399"
-              height="399"
+              width="{{ img.width | default: 1200 }}"
+              height="{{ img.height | default: 1200 }}"
               loading="lazy"
-              class="block aspect-square w-full bg-white object-contain"
+              class="block h-auto w-full bg-white object-fill"
             >
           </div>
         {%- endfor -%}

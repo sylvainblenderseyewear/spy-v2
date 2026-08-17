@@ -13,7 +13,7 @@
  */
 (function () {
   const SELECTOR = '[data-spy-strip]';
-  const LOOP_FROM = '(min-width: 769px)';
+  const LOOP_FROM = '(min-width: 770px)'; // slick's mobileFirst is innerWidth > 769
   const SETTLE_MS = 120;
 
   function cells(track) {
