@@ -23,6 +23,7 @@
   --color-spy-negative: #d7403a; /* source sentiment-negative — Sold Out */
   --color-spy-cart-stock: #88c290; /* source's In Stock green on the cart page — measured separately from the PDP token above */
   --color-spy-input-border: #cccccc; /* source select/input outline */
+  --color-spy-price:   #565656; /* source recommendation card price */
 
   /* Spacing overrides */
   --spacing-page: 1.5rem;   /* default page gutter */
@@ -1766,6 +1767,8 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   padding: 1rem !important;
 }
 
+
+
 /* Title / inventory in source tokens */
 [data-testid="product-information"] .product-title,
 [data-testid="product-information"] h1 {
@@ -2779,3 +2782,77 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     padding-block-end: 1.25rem;
   }
 }
+
+/* ── PDP recommendations ("You Might Also Like") ──────────────────────
+   Live reference: row inset to the page container with the same 15px bleed as the
+   lifestyle strip (41/41 at 1440), heading 48/57.6 centred, card title 19.2/23.04
+   weight 900, price 15/21 weight 600 in #565656, and 35px round white arrows.
+   Scoped CSS because these are Horizon's own nodes, not our markup.
+   ──────────────────────────────────────────────────────────────────── */
+
+/* Horizon already insets the carousel: slideshow-slides carries a 56px page-gutter pad,
+   and that pad is also the divisor for slide width. So retune IT rather than padding the
+   parent — a second inset would shrink every slide by 2*56/columns. Source inset is the
+   page padding minus its 15px bleed. */
+product-recommendations .resource-list__carousel slideshow-slides {
+  padding-inline: 1px;
+}
+@media (min-width: 769px) {
+  product-recommendations .resource-list__carousel slideshow-slides {
+    padding-inline: 17px;
+  }
+}
+@media (min-width: 1200px) {
+  product-recommendations .resource-list__carousel slideshow-slides {
+    padding-inline: 41px;
+  }
+}
+@media (min-width: 1800px) {
+  product-recommendations .resource-list__carousel slideshow-slides {
+    padding-inline: 57px;
+  }
+}
+
+/* Type colour: the section's colour scheme paints slate, the source uses body ink */
+product-recommendations .spy-heading,
+product-recommendations .product-card .text-block {
+  color: var(--color-spy-ink);
+}
+product-recommendations .product-card .price,
+product-recommendations .product-card .price__regular {
+  font-size: 0.9375rem;
+  line-height: 1.3125rem;
+  font-weight: 600;
+  color: var(--color-spy-price);
+}
+
+/* Arrows: 35px white disc, orange glyph, same shadow as the gallery pair */
+product-recommendations .slideshow-control {
+  /* min-width is var(--minimum-touch-target) = 44px, which clamps width up; clear both.
+     35px still clears the 24px WCAG 2.2 AA target size. */
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: 2.1875rem !important;
+  height: 2.1875rem !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  color: var(--color-spy-orange-ui) !important;
+  box-shadow: 0 0 9px 0 rgb(119 119 119 / 0.1);
+}
+product-recommendations .slideshow-control svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Exactly four across at desktop. Horizon's slide width is
+   `(100% - gaps - var(--peek-next-slide-size)) / columns`, and that peek is what leaves
+   ~4.7 cards showing; the live row shows a flat 4. Zero the peek rather than forcing a
+   width — width fights the card's own sizing and collapses the image. Verified at 1440,
+   so narrower widths keep Horizon's responsive behaviour. */
+@media (min-width: 1200px) {
+  product-recommendations .resource-list__carousel .resource-list__slide {
+    --peek-next-slide-size: 0px;
+  }
+}
+
