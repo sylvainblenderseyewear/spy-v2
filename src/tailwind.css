@@ -6,7 +6,8 @@
    ──────────────────────────────────────────────────────────────────── */
 @theme {
   /* Brand colors */
-  --color-spy-orange:  #f57f29;
+  --color-spy-orange:  #f57f29; /* brand/nav orange — live .nav-link is #f57d31 */
+  --color-spy-orange-ui: #f27e37; /* source interactive orange: links, arrows, ATC */
   --color-spy-slate:   #2c393e;
   --color-spy-ink:     #1d2a2b; /* header/nav text on the live site */
   --color-spy-gray:    #6a6c77;
@@ -107,7 +108,7 @@
 
 .button--primary,
 [data-testid="add-to-cart-button"] {
-  --button-background: #f57f29;
+  --button-background: var(--color-spy-orange-ui);
   --button-text: #ffffff;
 }
 
@@ -1692,7 +1693,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   border-radius: 18px !important;
   background: #fff !important;
   box-shadow: 0 0 9px 0 rgba(119, 119, 119, 0.1);
-  color: #f27e37 !important;
+  color: var(--color-spy-orange-ui) !important;
   transition: box-shadow 0.3s cubic-bezier(0.5, 0.25, 0, 1);
   pointer-events: auto;
 }
@@ -1765,6 +1766,9 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   font-size: 0.875rem;
   font-weight: 400 !important;
   padding: 1rem !important;
+  /* live carries a 1px border, which is what makes the box 54 not 52; transparent
+     shows the fill through it, so it never mismatches the palette colour */
+  border: 1px solid transparent !important;
 }
 
 
