@@ -1777,6 +1777,15 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   display: none;
 }
 
+/* Hover: the source takes the primary CTA to #272727, it does not darken the orange.
+   Horizon's button-custom path has no hover setting, so it bucket-shifts the base and
+   lands on #e7610f. Point it at the theme's own primary-button hover variable instead,
+   so the colour stays a Layer 1 setting. Beats the generated .button-custom--<id>:hover
+   on specificity, whatever order the section style lands in. */
+[data-testid="product-information"] .add-to-cart-button:hover {
+  --button-background-color: var(--color-primary-button-hover-background);
+  --button-border-color: var(--color-primary-button-hover-background);
+}
 
 /* Title / inventory in source tokens */
 [data-testid="product-information"] .product-title,

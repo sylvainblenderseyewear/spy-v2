@@ -66,7 +66,7 @@
     "type_font_weight_button_primary": "500",
     "type_font_size_button_primary": "14",
     "button_text_case_primary": "uppercase",
-    "primary_button_hover_background": "#1D2A2B",
+    "primary_button_hover_background": "#272727",
     "primary_button_hover_text": "{{ settings.color_palette.background }}",
     "primary_button_hover_transition": 0.2,
     "palette_secondary_button_background": "rgba(0,0,0,0)",
