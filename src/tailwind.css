@@ -2874,3 +2874,34 @@ product-recommendations .slideshow-control svg {
   }
 }
 
+/* ── Gallery stage width is fixed, rail or no rail ─────────────────────
+   Horizon builds the two-column gallery grid only when a rail exists
+   (`slideshow-component:has(slideshow-controls[thumbnails])`) and sizes the rail track
+   `auto`. Two problems: a one-image product has no rail, so the component falls back to
+   flex and the stage claims the whole column (image jumped 566 → 667 at 1440); and an
+   `auto` track is emergent, so the rail drifted below its own setting at narrower widths
+   (85 / 69.4 / 53.75 at 1440 / 992 / 768 for an 85px setting).
+
+   Declaring the template for BOTH states fixes both: the stage becomes a pure function of
+   the column at every breakpoint, and the thumbnail_width setting is honoured literally.
+
+   The stage is placed by name because the children are auto-placed — normally Horizon's
+   `order: -1` on the rail is what pushes the stage into the wide cell, and with no rail
+   there is nothing to reorder.
+   ──────────────────────────────────────────────────────────────────── */
+@media screen and (min-width: 750px) {
+  [data-testid='product-information'] media-gallery slideshow-component {
+    display: grid;
+    /* !important because Horizon's own rule carries two :has() pseudo-classes and
+       out-specifies this one whenever a rail is present — without it the track stays
+       `auto` with a rail and 85px without, which is the very drift being fixed. */
+    grid-template:
+      'controls container' auto
+      'controls arrows' min-content
+      / var(--thumbnail-width, 85px) minmax(0, 1fr) !important;
+  }
+
+  [data-testid='product-information'] media-gallery slideshow-component > slideshow-container {
+    grid-area: container;
+  }
+}
