@@ -1771,6 +1771,11 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   border: 1px solid transparent !important;
 }
 
+/* Source ATC is label only. Horizon's shared add-to-cart snippet injects a cart glyph,
+   and quick-add wants to keep it, so hide it here instead of editing the snippet. */
+[data-testid="product-information"] .add-to-cart-icon {
+  display: none;
+}
 
 
 /* Title / inventory in source tokens */
