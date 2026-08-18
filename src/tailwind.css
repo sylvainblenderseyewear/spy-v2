@@ -2905,3 +2905,19 @@ product-recommendations .slideshow-control svg {
     grid-area: container;
   }
 }
+
+/* ── PDP feature banner ───────────────────────────────────────────────
+   Below 992 the source keeps this block collapsed behind a "<model> Features"
+   heading; from 992 up the heading is gone and the panel is always open. A closed
+   <details> is hidden two different ways depending on the engine, so force both:
+   older engines hide the slotted child, Chrome 131+ hides ::details-content.
+   ──────────────────────────────────────────────────────────────────── */
+@media (min-width: 992px) {
+  details.spy-feature-banner > .spy-feature-banner__panel {
+    display: block;
+  }
+  details.spy-feature-banner::details-content {
+    content-visibility: visible;
+    block-size: auto;
+  }
+}

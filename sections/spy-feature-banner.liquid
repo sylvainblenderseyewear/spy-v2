@@ -1,12 +1,22 @@
 {%- doc -%}
   Full-bleed feature banner under the product grid.
 
-  The source breaks this out of the page container to 100vw at 768px and up, with 2rem above
-  and below, and swaps a separate image per breakpoint by `display` — desktop art 1920x801,
-  mobile 800x1200. Never one shared value (CLAUDE.md rule 7).
+  Measured on the live page, the behaviour turns on TWO independent breakpoints:
 
-  Data: pdp.feature_banner_desktop / pdp.feature_banner_mobile. Those definitions do not
-  exist yet, so section settings stand in meanwhile.
+  - 768px decides which FILE is used. Below it the mobile crop (800x1200), from it the
+    desktop crop (1920x801). Height is always width / the file's own ratio — no crop,
+    no fixed height.
+  - 768px also decides the BLEED. From 768 up the wrapper is 100vw centred on the
+    viewport; below it the banner stays inside the container, inset by the 16px page
+    padding.
+  - 992px decides VISIBILITY. Below it the whole block is a collapsed accordion headed
+    "<model> Features" (16px uppercase, 24px tall, 16px below). From 992 up the heading
+    is gone and the panel is always open.
+
+  Margins are 32px top and bottom at every width.
+
+  Data: pdp.feature_banner_desktop / pdp.feature_banner_mobile (product level, file
+  reference, images only). Section settings stand in for products with no banner.
 {%- enddoc -%}
 
 {%- liquid
@@ -17,49 +27,77 @@
   assign desktop = p.metafields.pdp.feature_banner_desktop.value | default: section.settings.image_desktop
   assign mobile = p.metafields.pdp.feature_banner_mobile.value | default: section.settings.image_mobile
   assign alt_text = section.settings.alt | default: p.title
+
+  # The source heads this with the MODEL name, not the colourway, so prefer the model
+  # collection the product points at and fall back to the product title.
+  assign model_name = p.metafields.custom.collection.value.title | default: p.title
+  assign model_heading = model_name | append: ' Features'
+  assign heading = section.settings.heading | default: model_heading
 -%}
 
 {%- if desktop != blank or mobile != blank -%}
-  {%- comment -%}
-    Full-bleed: centre a 100vw box on the viewport, same as the source's
-    `left: 50%; margin-inline: -50vw; width: 100vw`.
-  {%- endcomment -%}
-  <div
-    class="spy-feature-banner relative left-1/2 my-8 w-screen max-w-[100vw] -translate-x-1/2 overflow-hidden leading-[0]"
-    {{ section.shopify_attributes }}
-  >
-    {%- if desktop != blank -%}
-      <div class="hidden md:block">
-        {{
-          desktop
-          | image_url: width: 2000
-          | image_tag:
-            loading: 'lazy',
-            alt: alt_text,
-            sizes: '100vw',
-            widths: '750, 1100, 1500, 2000',
-            class: 'w-full h-auto block'
-        }}
-      </div>
-    {%- endif -%}
+  <details class="spy-feature-banner group my-8" {{ section.shopify_attributes }}>
+    {%- comment -%} Tap target below 992 only; CSS forces the panel open above it {%- endcomment -%}
+    <summary
+      class="spy-feature-banner__summary mb-4 flex h-6 cursor-pointer select-none list-none items-center gap-1 pr-[27px] pl-[35px] text-[16px] font-normal uppercase leading-[22.4px] text-[color:var(--color-spy-ink)] [&::-webkit-details-marker]:hidden min-[992px]:hidden"
+    >
+      {{ heading }}
+      {%- comment -%}
+        The source glyph here is fa-angle-down (U+F107) — thinner and narrower than the
+        fa-chevron-down the description/tech panels use. Traced from the live font: 10.29px
+        advance, 8.9x5.2 ink, ~1.4px stroke. Open state swaps to angle-up, same shape flipped.
+        The 4px gap is the collapsed space the source markup leaves before the glyph.
+      {%- endcomment -%}
+      <svg
+        class="h-4 w-[10.29px] shrink-0 transition-transform duration-300 ease-in-out group-open:rotate-180"
+        viewBox="0 0 10.29 16"
+        fill="none"
+        aria-hidden="true"
+      ><path d="M0.7 6.225 5.145 9.775 9.59 6.225" stroke="currentColor" stroke-width="1.37" stroke-linecap="butt" stroke-linejoin="miter"/></svg>
+    </summary>
 
-    {%- comment -%} Desktop art stands in on mobile when no mobile crop is set {%- endcomment -%}
-    {%- assign small = mobile | default: desktop -%}
-    {%- if small != blank -%}
-      <div class="block md:hidden">
-        {{
-          small
-          | image_url: width: 800
-          | image_tag:
-            loading: 'lazy',
-            alt: alt_text,
-            sizes: '100vw',
-            widths: '375, 550, 750, 800',
-            class: 'w-full h-auto block'
-        }}
+    <div class="spy-feature-banner__panel">
+      {%- comment -%}
+        Bleed from 768 up only: 100vw centred on the viewport. Below that the banner sits
+        in the container behind the page padding.
+      {%- endcomment -%}
+      <div
+        class="relative px-4 leading-[0] md:left-1/2 md:w-screen md:max-w-[100vw] md:-translate-x-1/2 md:overflow-hidden md:px-0"
+      >
+        {%- if desktop != blank -%}
+          <div class="hidden md:block">
+            {{
+              desktop
+              | image_url: width: 1920
+              | image_tag:
+                loading: 'lazy',
+                alt: alt_text,
+                sizes: '100vw',
+                widths: '750, 1100, 1500, 1920',
+                class: 'w-full h-auto block'
+            }}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Desktop art stands in on mobile when no mobile crop is set {%- endcomment -%}
+        {%- assign small = mobile | default: desktop -%}
+        {%- if small != blank -%}
+          <div class="block md:hidden">
+            {{
+              small
+              | image_url: width: 800
+              | image_tag:
+                loading: 'lazy',
+                alt: alt_text,
+                sizes: '100vw',
+                widths: '375, 550, 750, 800',
+                class: 'w-full h-auto block'
+            }}
+          </div>
+        {%- endif -%}
       </div>
-    {%- endif -%}
-  </div>
+    </div>
+  </details>
 {%- endif -%}
 
 {% schema %}
@@ -71,10 +109,11 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Falls back to these when pdp.feature_banner_desktop / pdp.feature_banner_mobile are empty. Source art: desktop 1920x801, mobile 800x1200."
+      "content": "Reads pdp.feature_banner_desktop / pdp.feature_banner_mobile on the product. These stand in when those are empty. Source art: desktop 1920x801, mobile 800x1200."
     },
     { "type": "image_picker", "id": "image_desktop", "label": "Desktop image (768px and up)" },
     { "type": "image_picker", "id": "image_mobile", "label": "Mobile image (under 768px)" },
+    { "type": "text", "id": "heading", "label": "Accordion heading (under 992px)", "info": "Defaults to the model collection name plus \"Features\"." },
     { "type": "text", "id": "alt", "label": "Alt text" }
   ],
   "presets": []

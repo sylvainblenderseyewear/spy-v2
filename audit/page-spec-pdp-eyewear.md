@@ -86,6 +86,25 @@
 - **Position:** below tech info table, above carousels
 - **Assets:** `pdp.feature_banner_desktop` (file) + `pdp.feature_banner_mobile` (file)
 - **RESPONSIVE:** yes — separate images, separate settings
+- **Source markup:** `.pdp-content-asset-wrapper > .full-width-container.pdp-content-override > .pdp-feature-container > img.pdp-feature-image.desktop-image|mobile-image`
+- **Measured on Cyrus Switch (live, 2026-08-18):**
+  - Margins 32px (2rem) top and bottom at every width.
+  - `.full-width-container` is `width:100%` below 768; from 768 up it goes
+    `left:50%; margin-inline:-50vw; width:100vw; max-width:100vw; overflow:hidden`.
+  - `.pdp-feature-image` is `width:100%; height:auto; display:block` — the art scales to
+    the box, never crops. Height is always width ÷ the file's own ratio.
+  - **768px swaps the FILE** (`.desktop-image`/`.mobile-image` toggle `display`), not just the layout.
+    Desktop crop 1920×801 (ratio 2.397), mobile crop 800×1200 (ratio 0.667).
+  - Rendered: 1440 → 1440×601 full-bleed · 768 → 768×320 full-bleed · 390 → 343×515 inset 16px each side.
+- **Accordion (below 992px only):** whole block collapses behind a "&lt;Model&gt; Features" heading.
+  - Heading 16px/22.4px, weight 400, uppercase, `#1d2a2b`, 24px tall, 16px below, **35px left inset**
+    (27px right) at both 390 and 768 — note this is 7px further in than the Description /
+    Technical-information buttons (28px), a source inconsistency we reproduce.
+  - Glyph is FontAwesome **`fa-angle-down` U+F107** (closed) / **`fa-angle-up` U+F106** (open) —
+    thinner and narrower than the `fa-chevron-down` on the Description/Tech panels.
+    16px, inline right after the text, no float, no margin; 10.29px advance, 8.9×5.2px ink,
+    ~1.4px stroke. A collapsed space in the markup leaves a 3.84px gap before it.
+  - From 992 up the heading is gone (`d-lg-none`) and the panel is always open.
 
 ---
 
