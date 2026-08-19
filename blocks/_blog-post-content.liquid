@@ -1,5 +1,16 @@
 
 
+{%- liquid
+  # Migrated posts ship their own <style> block, and it styles the page BODY:
+  # `body{margin:0;padding:30px 20px;font-family:Helvetica;font-size:14px}`.
+  # That padding pushed the header, post and footer 20px in on every article,
+  # and the font overrode the brand face. Rename the selector so the rule can
+  # never match — the rest of the post's CSS (.blog-content, .two-col-images,
+  # image helpers) is what the markup needs, so it stays.
+  assign post_html = article.content | replace: 'body{', '.spy-post-body-noop{'
+  assign post_html = post_html | replace: 'body {', '.spy-post-body-noop {'
+-%}
+
 <div
   class="blog-post-content rte"
   style="
@@ -10,7 +21,7 @@
   "
 >
   <rte-formatter>
-    {{ article.content }}
+    {{ post_html }}
   </rte-formatter>
 </div>
 

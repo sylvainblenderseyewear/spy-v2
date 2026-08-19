@@ -2921,3 +2921,14 @@ product-recommendations .slideshow-control svg {
     block-size: auto;
   }
 }
+
+/* ── Journal post body ────────────────────────────────────────────────
+   Design column is 800px, not Horizon's 42rem (672) reading width. Title, meta,
+   social row and post content all cap themselves at --normal-content-width, so
+   re-pointing that one variable moves the whole column. Scoped to the template
+   so every other reading column keeps its own width. Below 800 the column just
+   takes the page's own width.
+   ──────────────────────────────────────────────────────────────────── */
+[data-template='article.spy_blog-post'] {
+  --normal-content-width: 800px;
+}

@@ -2,7 +2,9 @@
   Journal listing — keyword search box over the post grid, 1:1 with spyoptic.com/us/spy-blog/.
 
   Measured off the source (computed styles, all four widths):
-    container   Bootstrap widths, 15px gutters: 540 · 720 (768) · 960 (992) · 1140 (1200)
+    container   15px gutters: 540 · 720 (768) · 960 (992) · 1440 (1200)
+                — the 1200 step is the 1410 design width plus both gutters, so the cards
+                  line up with the rest of the site's wide pages
     search      #f8f8f8 box, 16px pad, 48px under the hero, 172x36 white field,
                 1px #1d2a2b border, square, 13/18.2 text, icon 8px in from the left
     grid        Bootstrap row: -15px pull, 15px per column, 24px row gap, 80px above
@@ -20,7 +22,7 @@
 {%- enddoc -%}
 
 <div
-  class="mx-auto w-full max-w-[540px] px-[15px] min-[768px]:max-w-[720px] min-[992px]:max-w-[960px] min-[1200px]:max-w-[1140px]"
+  class="mx-auto w-full max-w-[540px] px-[15px] min-[768px]:max-w-[720px] min-[992px]:max-w-[960px] min-[1200px]:max-w-[1440px]"
   data-spy-blog
   {{ section.shopify_attributes }}
 >
