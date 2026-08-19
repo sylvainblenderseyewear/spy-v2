@@ -26,8 +26,8 @@
   a non-square file just makes its cell taller or shorter instead. The width/height attributes
   come from the file so the reserved space matches and the row does not shift on load.
 
-  Data: pdp.feature_carousel (list.file). That definition does not exist yet, so it falls
-  back to the product's own images and can be capped in the editor.
+  Data: pdp.feature_carousel (list.file), and nothing else — a product with no images in
+  that metafield renders no section at all, rather than standing in product shots.
 {%- enddoc -%}
 
 {%- liquid
@@ -39,10 +39,9 @@
   assign limit = section.settings.max_images | default: 8
 -%}
 
+{%- comment -%} Metafield only: no images set means no strip at all {%- endcomment -%}
 {%- if shots != blank and shots.size > 0 -%}
   {%- assign items = shots -%}
-{%- elsif section.settings.use_product_images and p.images.size > 0 -%}
-  {%- assign items = p.images -%}
 {%- endif -%}
 
 {%- if items != blank -%}
@@ -126,13 +125,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Uses pdp.feature_carousel when that metafield definition lands. Source art is square, 1200x1200."
-    },
-    {
-      "type": "checkbox",
-      "id": "use_product_images",
-      "label": "Fall back to the product's images",
-      "default": true
+      "content": "Images come from the product metafield pdp.feature_carousel. With none set the section does not render. Source art is square, 1200x1200."
     },
     { "type": "range", "id": "max_images", "label": "Images", "min": 3, "max": 12, "step": 1, "default": 8 }
   ],
