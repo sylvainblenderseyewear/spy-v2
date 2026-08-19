@@ -1,0 +1,157 @@
+{%- doc -%}
+  PDP colour picker — one 56px thumb per colourway, current one outlined,
+  sold-out ones faded with the diagonal bar. Shared by the PDP swatch block and
+  the quick view dialog.
+
+  Colourways come from the product's colour option when it has more than one
+  value (combined listing). Staging has one product per colourway instead, so we
+  fall back to the model collection — the same one the breadcrumb uses.
+
+  @param {object} product - Product the picker belongs to
+  @param {string} [wrapper_class] - Replaces the default top margin
+  @param {string} [shopify_attributes] - Block attributes, when a block renders it
+
+  @example
+  {%- render 'spy-color-picker', product: closest.product -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign p = product
+
+  assign color_option = nil
+  if p != blank
+    for opt in p.options_with_values
+      assign opt_lower = opt.name | downcase
+      if opt_lower == 'frame color' or opt_lower == 'color' or opt_lower == 'colour'
+        assign color_option = opt
+        break
+      endif
+    endfor
+  endif
+
+  assign has_option_colors = false
+  if color_option != nil and color_option.values.size > 1
+    assign has_option_colors = true
+  endif
+
+  comment
+    No real colour option — find the model collection (first one that is not a
+    broad category), same rule as the breadcrumb.
+  endcomment
+  assign model_col = nil
+  if has_option_colors == false and p != blank
+    assign category_handles = 'sunglasses,eyeglasses,goggles,snow-goggles,moto-goggles,snow-helmets,gear,accessories' | split: ','
+    for col in p.collections
+      if col.handle == 'frontpage' or col.handle == 'all'
+        continue
+      endif
+      unless category_handles contains col.handle
+        assign model_col = col
+        break
+      endunless
+    endfor
+  endif
+-%}
+
+{%- if p != blank -%}
+{%- liquid
+  assign swatch_base = 'spy-swatches__item relative block h-14 w-14 rounded-[2px] bg-white overflow-hidden'
+  assign swatch_off = swatch_base | append: ' border border-[color:var(--color-spy-border)]'
+  assign swatch_on = swatch_base | append: ' border-2 border-[color:var(--color-spy-text)]'
+  comment
+    Sold-out colourway: half-faded with a thin diagonal bar across the thumb,
+    same as the source's .swatch-not-orderable (69x2px, 45deg, #f2f2f2).
+  endcomment
+  assign swatch_oos = ' spy-swatches__item--oos opacity-50 after:content-[""] after:absolute after:block after:top-[25px] after:-left-2 after:h-[2px] after:w-[69px] after:rotate-45 after:bg-[#f2f2f2] after:pointer-events-none'
+-%}
+<div class="spy-swatches flex flex-wrap items-center gap-2 {{ wrapper_class | default: 'mt-[22px]' }}" {{ shopify_attributes }}>
+  {%- if has_option_colors -%}
+    {%- for v in color_option.values -%}
+      {%- assign media = v.variant.featured_media | default: p.featured_media -%}
+      {%- if media != blank -%}
+        {%- liquid
+          if v.selected
+            assign cls = swatch_on
+          else
+            assign cls = swatch_off
+          endif
+          comment
+            A colour with no orderable variant counts as sold out.
+          endcomment
+          assign v_available = false
+          if v.variant.available
+            assign v_available = true
+          endif
+          unless v_available
+            assign cls = cls | append: swatch_oos
+          endunless
+        -%}
+        <a
+          href="{{ v.variant.url | default: p.url }}"
+          class="{{ cls }}"
+          {% if v.selected %}aria-current="true"{% endif %}
+          {% unless v_available %}data-spy-oos aria-describedby="spy-oos-note"{% endunless %}
+          aria-label="{{ p.title | escape }} – {{ v.name | escape }}{% unless v_available %} ({{ 'products.product.sold_out' | t }}){% endunless %}"
+        >
+          <img
+            src="{{ media | image_url: width: 160 }}"
+            alt="{{ v.name | escape }}"
+            width="56"
+            height="56"
+            loading="lazy"
+            class="m-auto block h-[90%] w-[90%] object-contain"
+          >
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- elsif model_col != nil -%}
+    {%- for sp in model_col.products -%}
+      {%- if sp.featured_media != blank -%}
+        {%- liquid
+          if sp.id == p.id
+            assign cls = swatch_on
+          else
+            assign cls = swatch_off
+          endif
+          comment
+            One product per colourway in staging, so stock is read off the
+            product itself rather than a variant.
+          endcomment
+          assign sp_available = sp.available
+          unless sp_available
+            assign cls = cls | append: swatch_oos
+          endunless
+        -%}
+        <a
+          href="{{ sp.url }}"
+          class="{{ cls }}"
+          {% if sp.id == p.id %}aria-current="true"{% endif %}
+          {% unless sp_available %}data-spy-oos{% endunless %}
+          aria-label="{{ sp.title | escape }}{% unless sp_available %} ({{ 'products.product.sold_out' | t }}){% endunless %}"
+        >
+          <img
+            src="{{ sp.featured_media | image_url: width: 160 }}"
+            alt="{{ sp.title | escape }}"
+            width="56"
+            height="56"
+            loading="lazy"
+            class="m-auto block h-[90%] w-[90%] object-contain"
+          >
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- elsif p.featured_media != blank -%}
+    {%- comment -%} single colourway — still show it, marked as current {%- endcomment -%}
+    <span class="{{ swatch_on }}" aria-label="{{ p.title | escape }}">
+      <img
+        src="{{ p.featured_media | image_url: width: 160 }}"
+        alt="{{ p.title | escape }}"
+        width="56"
+        height="56"
+        loading="lazy"
+        class="m-auto block h-[90%] w-[90%] object-contain"
+      >
+    </span>
+  {%- endif -%}
+</div>
+{%- endif -%}

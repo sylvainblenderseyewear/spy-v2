@@ -2250,6 +2250,10 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "spy_quick_view_modal": {
+      "type": "spy-quick-view",
+      "settings": {}
     }
   },
   "order": [
@@ -2263,6 +2267,7 @@
     "goggles_header",
     "goggles",
     "lenses_header",
-    "lenses"
+    "lenses",
+    "spy_quick_view_modal"
   ]
 }

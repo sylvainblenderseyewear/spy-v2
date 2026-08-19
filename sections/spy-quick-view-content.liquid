@@ -1,151 +1,219 @@
+{%- comment -%}
+  Quick View body — fetched by spy-quick-view.js with ?section_id= and dropped
+  into the dialog shell.
+
+  Same two-column split as the source: gallery on 7/12, product info on 5/12,
+  stacked under 769px. The info column is the PDP column trimmed to what the
+  dialog shows, and it reuses the PDP blocks/snippets so both stay in step.
+  Only image media is carried over — video stays on the full PDP.
+{%- endcomment -%}
+
 {%- liquid
-  assign p           = product
-  assign vlt          = p.metafields.spec.vlt_percent.value
-  assign lens_cat     = p.metafields.spec.lens_category.value
-  assign base_tint    = p.metafields.spec.base_tint.value
-  assign mirror_tint  = p.metafields.spec.mirror_tint.value
-  assign polarized    = p.metafields.spec.polarized.value
-  assign technologies = p.metafields.spec.technologies.value
-  assign avail_v      = p.selected_or_first_available_variant
+  assign p = product
+  assign variant = p.selected_or_first_available_variant
+
+  comment
+    Every media type rides along, like the source carousel. Staging is images
+    only today, so the video branch stays dormant until the migration lands.
+  endcomment
+  assign gallery = p.media
+
+  assign title_class = 'block text-[30px] font-normal uppercase leading-[36px] text-[color:var(--color-spy-ink)]'
 -%}
 
-<div class="spy-qv-content" data-product-id="{{ p.id }}" data-product-handle="{{ p.handle }}">
+<div
+  class="spy-qv-product"
+  data-spy-qv-product
+  data-product-id="{{ p.id }}"
+  data-product-handle="{{ p.handle }}"
+  data-product-url="{{ p.url }}"
+>
+  {%- comment -%} Stacked layout leads with the name, so it moves out of the info column {%- endcomment -%}
+  <h2 class="{{ title_class }} px-[15px] pb-2 min-[769px]:hidden">{{ p.title }}</h2>
 
-  <div class="mb-4">
-    <h2 class="text-[clamp(1.25rem,3vw,1.75rem)] font-bold uppercase leading-[1.1] m-0 mb-2 text-spy-slate">{{ p.title }}</h2>
-    <div class="spy-qv-content__price text-base font-semibold">
-      {%- if avail_v.compare_at_price > avail_v.price -%}
-        <span class="spy-qv-content__price--sale text-[#e53935]">{{ avail_v.price | money }}</span>
-        <s class="spy-qv-content__price--compare text-[#999] ml-1.5 font-normal text-sm">{{ avail_v.compare_at_price | money }}</s>
-      {%- else -%}
-        <span>{{ avail_v.price | money }}</span>
-      {%- endif -%}
-    </div>
-  </div>
+  <div class="[display:flex] flex-wrap">
+    {%- comment -%} ── Gallery ─────────────────────────────────────────── {%- endcomment -%}
+    <div class="w-full px-[30px] min-[769px]:w-[58.333333%]">
+      {%- if gallery.size > 0 -%}
+        <div class="relative" data-spy-qv-gallery>
+          <div class="relative">
+            {%- comment -%} Scroll-snap track — no JS needed for the swipe, only for the arrows {%- endcomment -%}
+            <div
+              class="[display:flex] snap-x snap-mandatory overflow-x-auto scroll-smooth overscroll-x-contain [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              data-spy-qv-track
+            >
+              {%- for media in gallery -%}
+                <div class="w-full shrink-0 snap-start p-px" data-spy-qv-slide="{{ forloop.index0 }}">
+                  <div class="aspect-square w-full [&_iframe]:h-full [&_iframe]:w-full [&_video]:h-full [&_video]:w-full [&_video]:object-contain">
+                    {%- case media.media_type -%}
+                      {%- when 'video', 'external_video' -%}
+                        {%- comment -%} Same player the PDP uses, so behaviour matches {%- endcomment -%}
+                        {%- render 'video',
+                          video: media,
+                          video_loop: true,
+                          widths: '600, 900, 1200',
+                          sizes: '(min-width: 1200px) 586px, (min-width: 992px) 418px, (min-width: 769px) 262px, 100vw',
+                          loading: 'lazy'
+                        -%}
+                      {%- else -%}
+                        <img
+                          src="{{ media.preview_image | image_url: width: 1200 }}"
+                          srcset="
+                            {{ media.preview_image | image_url: width: 600 }} 600w,
+                            {{ media.preview_image | image_url: width: 900 }} 900w,
+                            {{ media.preview_image | image_url: width: 1200 }} 1200w
+                          "
+                          sizes="(min-width: 1200px) 586px, (min-width: 992px) 418px, (min-width: 769px) 262px, 100vw"
+                          alt="{{ media.preview_image.alt | default: p.title | escape }}"
+                          width="1200"
+                          height="1200"
+                          loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                          class="block h-full w-full object-contain"
+                        >
+                    {%- endcase -%}
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
 
-  {%- if lens_cat != blank or vlt != blank or base_tint != blank or technologies != blank -%}
-  <div class="max-[375px]:grid max-[375px]:grid-cols-2 min-[375px]:flex min-[375px]:flex-wrap gap-x-4 gap-y-2 py-3 border-t border-b border-spy-border mb-5">
-    {%- if lens_cat != blank -%}
-      <div class="flex flex-col gap-0.5 min-w-[60px]">
-        <span class="text-[10px] font-bold uppercase tracking-[0.08em] text-spy-gray">Lens</span>
-        <span class="text-[13px] font-semibold text-spy-slate">{{ lens_cat }}</span>
-      </div>
-    {%- endif -%}
-    {%- if vlt != blank -%}
-      <div class="flex flex-col gap-0.5 min-w-[60px]">
-        <span class="text-[10px] font-bold uppercase tracking-[0.08em] text-spy-gray">VLT</span>
-        <span class="text-[13px] font-semibold text-spy-slate">{{ vlt }}%</span>
-      </div>
-    {%- endif -%}
-    {%- if base_tint != blank -%}
-      <div class="flex flex-col gap-0.5 min-w-[60px]">
-        <span class="text-[10px] font-bold uppercase tracking-[0.08em] text-spy-gray">Base Tint</span>
-        <span class="text-[13px] font-semibold text-spy-slate">{{ base_tint }}</span>
-      </div>
-    {%- endif -%}
-    {%- if mirror_tint != blank -%}
-      <div class="flex flex-col gap-0.5 min-w-[60px]">
-        <span class="text-[10px] font-bold uppercase tracking-[0.08em] text-spy-gray">Mirror</span>
-        <span class="text-[13px] font-semibold text-spy-slate">{{ mirror_tint }}</span>
-      </div>
-    {%- endif -%}
-    {%- if polarized -%}
-      <div class="flex flex-col gap-0.5 min-w-[60px]">
-        <span class="text-[10px] font-bold uppercase tracking-[0.08em] text-spy-gray">Polarized</span>
-        <span class="text-[13px] font-semibold text-spy-slate">Yes</span>
-      </div>
-    {%- endif -%}
-    {%- if technologies != blank -%}
-      <div class="w-full flex flex-wrap gap-1.5 pt-2">
-        {%- for tech in technologies -%}
-          {%- assign tech_name = tech.fields.name.value -%}
-          {%- if tech_name != blank -%}
-            <span class="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-[0.05em] text-spy-orange border border-spy-orange px-2 py-0.5">{{- tech_name -}}</span>
+            {%- if gallery.size > 1 -%}
+              {%- comment -%} Source arrows: 35px pill, brand orange chevron, shadow deepens on hover {%- endcomment -%}
+              {%- capture arrow_class -%}
+                absolute top-1/2 z-[2] -translate-y-1/2 [display:flex] h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[18px] border-none bg-white p-0 text-[color:var(--color-spy-orange-ui)] opacity-75 shadow-[0_0_9px_0_rgba(119,119,119,0.1)] transition-[opacity,box-shadow] duration-300 hover:opacity-100 hover:shadow-[0_0_9px_0_rgba(119,119,119,0.4)] disabled:opacity-40
+              {%- endcapture -%}
+
+              <button type="button" class="{{ arrow_class }} left-0" aria-label="{{ 'accessibility.previous' | t | default: 'Previous' }}" data-spy-qv-prev>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+                  <path d="M12.5 4L6.5 10l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button type="button" class="{{ arrow_class }} right-0" aria-label="{{ 'accessibility.next' | t | default: 'Next' }}" data-spy-qv-next>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+                  <path d="M7.5 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            {%- endif -%}
+          </div>
+
+          {%- comment -%} Thumb strip sits under the image here, and only from 992px up {%- endcomment -%}
+          {%- if gallery.size > 1 -%}
+            <div class="mt-1 hidden flex-wrap gap-1 min-[992px]:[display:flex]" data-spy-qv-thumbs>
+              {%- for media in gallery -%}
+                <button
+                  type="button"
+                  class="relative h-[85px] w-[85px] cursor-pointer rounded-[2px] border-2 border-solid border-transparent bg-transparent p-0 transition-colors [&.is-active]:border-[color:var(--color-spy-orange-ui)]{% if forloop.first %} is-active{% endif %}"
+                  aria-label="{{ p.title | escape }} — {{ media.media_type }} {{ forloop.index }}"
+                  data-spy-qv-thumb="{{ forloop.index0 }}"
+                >
+                  <img
+                    src="{{ media.preview_image | image_url: width: 170 }}"
+                    alt=""
+                    width="85"
+                    height="85"
+                    loading="lazy"
+                    class="block h-full w-full object-contain"
+                  >
+                  {%- unless media.media_type == 'image' -%}
+                    {%- comment -%} Play badge marks the video thumb, as on the source rail {%- endcomment -%}
+                    <span class="absolute inset-0 [display:flex] items-center justify-center text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.5)]" aria-hidden="true">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" focusable="false">
+                        <path d="M8 5v14l11-7L8 5Z"/>
+                      </svg>
+                    </span>
+                  {%- endunless -%}
+                </button>
+              {%- endfor -%}
+            </div>
           {%- endif -%}
-        {%- endfor -%}
-      </div>
-    {%- endif -%}
-  </div>
-  {%- endif -%}
-
-  {%- form 'product', p, id: 'spy-qv-form', class: 'spy-qv-content__form' -%}
-    {%- for option in p.options_with_values -%}
-      {%- assign opt_idx = option.position | minus: 1 -%}
-      {%- assign selected_val = avail_v.options[opt_idx] -%}
-      <div class="mb-4">
-        <p class="text-xs font-bold uppercase tracking-[0.06em] m-0 mb-2 text-spy-slate">
-          {{ option.name }}:
-          <span class="spy-qv-content__option-selected font-normal normal-case" data-position="{{ option.position }}">{{ selected_val }}</span>
-        </p>
-        <div class="flex flex-wrap gap-1.5">
-          {%- for value in option.values -%}
-            <button
-              type="button"
-              class="spy-qv-content__swatch px-3 py-1.5 border border-spy-border bg-transparent cursor-pointer text-xs font-semibold text-spy-slate transition-colors hover:border-spy-orange hover:text-spy-orange [&.is-selected]:!bg-spy-slate [&.is-selected]:!text-white [&.is-selected]:!border-spy-slate{% if value == selected_val %} !bg-spy-slate !text-white !border-spy-slate{% endif %}"
-              data-option-position="{{ option.position }}"
-              data-option-value="{{ value | escape }}"
-            >{{ value }}</button>
-          {%- endfor -%}
         </div>
-      </div>
-    {%- endfor -%}
-
-    <input type="hidden" name="id" value="{{ avail_v.id }}">
-
-    <div class="flex flex-col gap-2.5 mt-5 mb-5">
-      <button
-        type="submit"
-        class="w-full py-3.5 px-6 bg-spy-orange text-white border-0 cursor-pointer text-[13px] font-bold uppercase tracking-[0.08em] transition-opacity hover:opacity-[0.88] disabled:opacity-45 disabled:cursor-not-allowed"
-        {% unless avail_v.available %}disabled{% endunless %}
-      >
-        {%- if avail_v.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}
-      </button>
-      <a href="{{ p.url }}" class="block text-center text-xs font-semibold uppercase tracking-[0.06em] text-spy-slate no-underline py-1.5 border-b border-current w-fit mx-auto">View Full Details &#x2192;</a>
+      {%- endif -%}
     </div>
-  {%- endform -%}
 
-  {%- assign has_spec = false -%}
-  {%- if p.metafields.spec.reference.value != blank
-    or p.metafields.spec.fit.value != blank
-    or p.metafields.spec.weight_g.value != blank
-    or p.metafields.spec.frame_material.value != blank -%}
-    {%- assign has_spec = true -%}
-  {%- endif -%}
+    {%- comment -%} ── Product info ────────────────────────────────────── {%- endcomment -%}
+    <div class="w-full px-[15px] min-[769px]:w-[41.666667%]">
+      <h2 class="{{ title_class }} mb-2 hidden min-[769px]:block">{{ p.title }}</h2>
 
-  {%- if has_spec -%}
-  <details class="group border-t border-solid border-t-[color:var(--color-border,#e5e5e5)] mt-2">
-    <summary class="flex justify-between items-center py-3.5 cursor-pointer text-[13px] font-bold uppercase tracking-[0.08em] text-[color:var(--color-foreground,#2c393e)] list-none select-none [&::-webkit-details-marker]:hidden">
-      Technical Information
-      <span class="text-[18px] font-light leading-none transition-transform"><span class="group-open:hidden">+</span><span class="hidden group-open:block">−</span></span>
-    </summary>
-    <table class="w-full border-collapse text-[13px] pb-4 [&_tr]:border-t [&_tr]:border-solid [&_tr]:border-t-[color:var(--color-border,#e5e5e5)] [&_th]:text-left [&_th]:py-2 [&_th]:pr-3 [&_th]:pl-0 [&_th]:font-semibold [&_th]:w-[45%] [&_th]:align-top [&_th]:text-[color:var(--color-foreground-secondary,#6a6c77)] [&_td]:py-2 [&_td]:align-top [&_td]:text-[color:var(--color-foreground,#2c393e)]">
-      {%- if p.metafields.spec.reference.value != blank -%}
-        <tr><th>Reference</th><td>{{ p.metafields.spec.reference.value }}</td></tr>
-      {%- endif -%}
-      {%- if p.metafields.spec.fit.value != blank -%}
-        <tr><th>Fit</th><td>{{ p.metafields.spec.fit.value }}</td></tr>
-      {%- endif -%}
-      {%- if p.metafields.spec.weight_g.value != blank -%}
-        <tr><th>Weight</th><td>{{ p.metafields.spec.weight_g.value }}g</td></tr>
-      {%- endif -%}
-      {%- if p.metafields.spec.frame_material.value != blank -%}
-        <tr><th>Frame Material</th><td>{{ p.metafields.spec.frame_material.value }}</td></tr>
-      {%- endif -%}
-      {%- if p.metafields.spec.lens_material.value != blank -%}
-        <tr><th>Lens Material</th><td>{{ p.metafields.spec.lens_material.value }}</td></tr>
-      {%- endif -%}
-      {%- if p.metafields.spec.lens_coating.value != blank -%}
-        <tr><th>Lens Coating</th><td>{{ p.metafields.spec.lens_coating.value }}</td></tr>
-      {%- endif -%}
-    </table>
-  </details>
-  {%- endif -%}
+      <div class="[display:flex] flex-wrap items-center gap-x-3 gap-y-1 pb-2">
+        <div class="text-[16px] font-bold leading-[1.4] text-[color:var(--color-spy-text)]" data-spy-qv-price>
+          {%- if variant.compare_at_price > variant.price -%}
+            <span class="text-[color:var(--color-spy-sale)]">{{ variant.price | money }}</span>
+            <s class="ml-1.5 font-normal text-[color:var(--color-spy-muted)]">{{ variant.compare_at_price | money }}</s>
+          {%- else -%}
+            <span>{{ variant.price | money }}</span>
+          {%- endif -%}
+        </div>
+        {% content_for 'block', type: 'spy-rating', id: 'qv-rating', closest.product: p %}
+      </div>
 
+      <hr class="my-4 h-px border-none bg-[color:var(--color-spy-border)]">
+
+      {%- comment -%}
+        Source keeps 38px between the rule and the swatches (16px off the rule plus
+        an empty label row). The picker's own 22px would collapse into the rule's
+        margin and land 16px short, so set the gap here.
+      {%- endcomment -%}
+      {%- render 'spy-color-picker', product: p, wrapper_class: 'mt-[38px]' -%}
+
+      {% content_for 'block', type: 'spy-frame-summary', id: 'qv-frame-summary', closest.product: p %}
+
+      {%- comment -%}
+        Size Chart sits between the lens rows and the stock line, as on the source.
+        The block ships its own inline script and portals its drawer to <body>, so
+        spy-quick-view.js re-runs that script after each fetch.
+      {%- endcomment -%}
+      {% content_for 'block', type: 'spy-frame-fit-guide', id: 'qv-fit-guide', closest.product: p %}
+
+      {% content_for 'block', type: 'spy-stock-status', id: 'qv-stock', closest.product: p %}
+
+      {%- comment -%}
+        Horizon's own buy buttons, so the dialog shares the PDP cart flow (cart
+        count, error states). The wrapper repaints the button to the source's
+        full-width orange bar and drops the shared snippet's cart glyph, the same
+        two things the PDP does — the block's own default is the secondary style.
+      {%- endcomment -%}
+      <div class="spy-qv-buy [&_.add-to-cart-button]:w-full [&_.add-to-cart-button]:border [&_.add-to-cart-button]:border-solid [&_.add-to-cart-button]:border-[color:var(--color-spy-orange-ui)] [&_.add-to-cart-button]:bg-[color:var(--color-spy-orange-ui)] [&_.add-to-cart-button]:p-4 [&_.add-to-cart-button]:text-[14px] [&_.add-to-cart-button]:font-normal [&_.add-to-cart-button]:uppercase [&_.add-to-cart-button]:leading-[1.4] [&_.add-to-cart-button]:text-white [&_.add-to-cart-button:hover]:bg-[color:var(--color-primary-button-hover-background)] [&_.add-to-cart-button:hover]:border-[color:var(--color-primary-button-hover-background)] [&_.add-to-cart-icon]:hidden [&_.product-form-buttons]:gap-0">
+        {% content_for 'block', type: 'buy-buttons', id: 'qv-buy-buttons', closest.product: p %}
+      </div>
+
+      {%- comment -%}
+        The dialog cannot reach the PDP block's settings, so it carries its own
+        copy of the reinsurance rows. Keep the two in step when the promise changes.
+      {%- endcomment -%}
+      {%- render 'spy-trust-badges', settings: section.settings -%}
+    </div>
+  </div>
 </div>
 
 {% schema %}
 {
   "name": "Quick View Content",
-  "settings": []
+  "settings": [
+    { "type": "header", "content": "Badge 1" },
+    { "type": "text", "id": "badge_1_text", "label": "Text", "default": "Free Shipping for any order over $100" },
+    { "type": "text", "id": "badge_1_link_text", "label": "Inline link text" },
+    { "type": "text", "id": "badge_1_link_url", "label": "Inline link URL" },
+    { "type": "header", "content": "Badge 2" },
+    { "type": "text", "id": "badge_2_text", "label": "Text", "default": "Easy Returns for 30 days" },
+    { "type": "text", "id": "badge_2_link_text", "label": "Inline link text" },
+    { "type": "text", "id": "badge_2_link_url", "label": "Inline link URL" },
+    { "type": "header", "content": "Badge 3" },
+    { "type": "text", "id": "badge_3_text", "label": "Text", "default": "Discount calculated on the original price." },
+    { "type": "text", "id": "badge_3_link_text", "label": "Inline link text", "default": "See conditions" },
+    { "type": "text", "id": "badge_3_link_url", "label": "Inline link URL", "default": "/pages/offers-and-conditions" },
+    { "type": "header", "content": "Badge 4" },
+    { "type": "text", "id": "badge_4_text", "label": "Text", "default": "Pay in 4 installments with no fees using" },
+    {
+      "type": "select",
+      "id": "badge_4_logo",
+      "label": "Inline logo",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "paypal", "label": "PayPal" }
+      ],
+      "default": "paypal"
+    },
+    { "type": "header", "content": "Badge 5" },
+    { "type": "text", "id": "badge_5_text", "label": "Text", "default": "Lifetime warranty on all sunglasses" }
+  ]
 }
 {% endschema %}

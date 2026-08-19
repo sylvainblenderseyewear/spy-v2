@@ -1,18 +1,62 @@
-<div class="spy-qv-wrapper group" {{ section.shopify_attributes }}>
-  <div class="spy-qv-overlay fixed inset-0 bg-black/55 z-[999] opacity-0 pointer-events-none transition-opacity duration-200 ease-[ease] group-data-[open]:opacity-100 group-data-[open]:pointer-events-auto"></div>
+{%- comment -%}
+  Quick View shell — the empty dialog every PLP card opens. spy-quick-view.js
+  fills the body from the spy-quick-view-content section.
+
+  Geometry follows the source modal: a light grey veil (#e6e6e6 at 60%, not a
+  black scrim), a white sheet centred in the viewport, and Bootstrap's width
+  ladder — full bleed under 544px, then 500 / 800 / 1140.
+
+  Stacking sits just under the PDP drawers (1001), so a Size Chart opened from
+  inside the dialog covers it once its own script moves it to <body>.
+{%- endcomment -%}
+
+<div class="spy-qv group/qv" data-spy-qv-root {{ section.shopify_attributes }}>
   <div
-    class="spy-qv-modal fixed z-[1000] bg-white overflow-y-auto opacity-0 pointer-events-none transition-[opacity,translate] duration-200 ease-[ease] [-webkit-overflow-scrolling:touch] group-data-[open]:opacity-100 group-data-[open]:pointer-events-auto min-[750px]:top-1/2 min-[750px]:left-1/2 min-[750px]:-translate-x-1/2 min-[750px]:translate-y-[calc(-50%_+_16px)] min-[750px]:w-[min(660px,95vw)] min-[750px]:max-h-[90vh] min-[750px]:pt-10 min-[750px]:px-8 min-[750px]:pb-8 min-[750px]:group-data-[open]:translate-y-[-50%] max-[750px]:top-auto max-[750px]:right-0 max-[750px]:bottom-0 max-[750px]:left-0 max-[750px]:w-full max-[750px]:max-h-[92vh] max-[750px]:translate-y-[20px] max-[750px]:rounded-t-xl max-[750px]:pt-10 max-[750px]:px-5 max-[750px]:pb-8 max-[750px]:group-data-[open]:translate-y-0"
+    class="fixed inset-0 z-[990] bg-[color:var(--color-spy-border)] opacity-0 pointer-events-none transition-opacity duration-150 ease-linear group-data-[open]/qv:opacity-60 group-data-[open]/qv:pointer-events-auto motion-reduce:transition-none"
+    data-spy-qv-close
+  ></div>
+
+  {%- comment -%} Scroll layer, so a tall dialog scrolls with the page behind it locked {%- endcomment -%}
+  <div
+    class="fixed inset-0 z-[1000] hidden overflow-y-auto overflow-x-hidden overscroll-contain outline-none group-data-[open]/qv:block"
     role="dialog"
     aria-modal="true"
-    aria-label="Quick View"
+    aria-label="{{ section.settings.dialog_label | default: 'Quick view' }}"
     aria-hidden="true"
+    data-spy-qv-layer
   >
-    <button class="spy-qv-modal__close absolute top-3 right-3 bg-transparent border-0 cursor-pointer p-1.5 flex items-center justify-center text-spy-slate hover:text-spy-orange transition-colors" type="button" aria-label="Close quick view">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-        <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </button>
-    <div class="spy-qv-modal__content"></div>
+    {%- comment -%}
+      Source dialog: margin .5rem full-bleed, then 1.75rem auto with a max-width
+      per breakpoint. It slides down 50px on open, like .modal.fade.
+    {%- endcomment -%}
+    <div
+      class="relative m-2 [display:flex] min-h-[calc(100%_-_16px)] items-center -translate-y-[50px] transition-transform duration-300 ease-out group-data-[open]/qv:translate-y-0 min-[544px]:mx-auto min-[544px]:my-7 min-[544px]:min-h-[calc(100%_-_56px)] min-[544px]:max-w-[500px] min-[992px]:max-w-[800px] min-[1200px]:max-w-[1140px] motion-reduce:transition-none"
+      data-spy-qv-dialog
+    >
+      <div class="relative w-full [display:flex] flex-col bg-white pb-6">
+        <div class="[display:flex] items-start justify-between p-4">
+          <a
+            class="text-[16px] font-semibold leading-[1.4] text-[color:var(--color-spy-orange-ui)] no-underline hover:underline"
+            href="#"
+            data-spy-qv-pdp-link
+          >
+            {{ section.settings.full_details_label | default: 'View Full Details' }}
+          </a>
+
+          {%- comment -%} Source close is a text glyph that scales with the viewport {%- endcomment -%}
+          <button
+            type="button"
+            class="-m-4 ml-auto block cursor-pointer border-none bg-transparent p-4 text-[calc(1.3rem_+_0.6vw)] font-extralight leading-none text-black opacity-50 [text-shadow:0_1px_0_#fff] hover:opacity-75 min-[1200px]:text-[1.75rem]"
+            aria-label="{{ 'accessibility.close' | t | default: 'Close' }}"
+            data-spy-qv-close
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="relative min-h-[200px] flex-1 p-4" data-spy-qv-body></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -21,6 +65,19 @@
 {% schema %}
 {
   "name": "Quick View Modal",
-  "settings": []
+  "settings": [
+    {
+      "type": "text",
+      "id": "full_details_label",
+      "label": "Full details link",
+      "default": "View Full Details"
+    },
+    {
+      "type": "text",
+      "id": "dialog_label",
+      "label": "Dialog accessible name",
+      "default": "Quick view"
+    }
+  ]
 }
 {% endschema %}

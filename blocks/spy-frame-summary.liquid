@@ -49,31 +49,47 @@
   endif
 -%}
 
+{%- liquid
+  comment
+    Measured off the source PDP: 24px under the swatches, Ref at 16/24, then 12px
+    to the first row and 16px between rows. Label is the design system's label-m
+    (14/20 bold uppercase, 0.5% tracking), value is 16/1.4.
+  endcomment
+  assign label_cls = 'text-[14px] leading-[20px] font-bold uppercase tracking-[0.005em] text-[color:var(--color-spy-ink)]'
+  assign value_cls = 'text-[16px] leading-[1.4] text-[color:var(--color-spy-ink)]'
+  assign row_gap = 'mt-4'
+  if ref_val != blank
+    assign row_gap = 'mt-3'
+  endif
+-%}
+
 {%- if has_any -%}
-<div class="pt-5 text-[color:var(--color-spy-text)]" {{ block.shopify_attributes }}>
+<div class="pt-6 text-[color:var(--color-spy-text)]" {{ block.shopify_attributes }}>
 
   {%- if ref_val != blank -%}
-    <div class="text-[15px] text-[color:var(--color-spy-muted)]">Ref : {{ ref_val }}</div>
+    <div class="text-[16px] leading-6 text-[color:var(--color-spy-muted)]">Ref : {{ ref_val }}</div>
   {%- endif -%}
 
   {%- if color_val != blank -%}
-    <div class="mt-[18px]">
-      <div class="text-[14px] leading-[20px] font-bold uppercase tracking-[0.005em] text-[color:var(--color-spy-ink)]">{{ block.settings.color_label | default: 'Frame' }}</div>
-      <div class="text-[15px] leading-[1.4] text-[color:var(--color-spy-text-2)]">{{ color_val }}</div>
+    <div class="{{ row_gap }}">
+      <div class="{{ label_cls }}">{{ block.settings.color_label | default: 'Frame' }}</div>
+      <div class="{{ value_cls }}">{{ color_val }}</div>
     </div>
+    {%- assign row_gap = 'mt-4' -%}
   {%- endif -%}
 
   {%- if lens_val != blank -%}
-    <div class="mt-[18px]">
-      <div class="text-[14px] leading-[20px] font-bold uppercase tracking-[0.005em] text-[color:var(--color-spy-ink)]">Lens</div>
-      <div class="text-[15px] leading-[1.4] text-[color:var(--color-spy-text-2)]">{{ lens_val }}</div>
+    <div class="{{ row_gap }}">
+      <div class="{{ label_cls }}">Lens</div>
+      <div class="{{ value_cls }}">{{ lens_val }}</div>
     </div>
+    {%- assign row_gap = 'mt-4' -%}
   {%- endif -%}
 
   {%- if extra_val != blank -%}
-    <div class="mt-[18px]">
-      <div class="text-[14px] leading-[20px] font-bold uppercase tracking-[0.005em] text-[color:var(--color-spy-ink)]">Extra Lens</div>
-      <div class="text-[15px] leading-[1.4] text-[color:var(--color-spy-text-2)]">{{ extra_val }}</div>
+    <div class="{{ row_gap }}">
+      <div class="{{ label_cls }}">Extra Lens</div>
+      <div class="{{ value_cls }}">{{ extra_val }}</div>
     </div>
   {%- endif -%}
 

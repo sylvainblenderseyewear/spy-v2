@@ -1,0 +1,113 @@
+{%- doc -%}
+  Reinsurance box under the ATC — up to five icon rows split by thin rules.
+  Shared by the PDP block and the quick view dialog, which cannot reach the PDP
+  block's settings and so passes its own.
+
+  @param {object} settings - Holds badge_N_text / _icon / _link_text / _link_url / _logo
+  @param {string} [extra_class] - Extra classes on the box
+  @param {string} [shopify_attributes] - Block attributes, when a block renders it
+
+  @example
+  {%- render 'spy-trust-badges', settings: block.settings -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign badge_count = 0
+  for i in (1..5)
+    assign text_key = 'badge_' | append: i | append: '_text'
+    if settings[text_key] != blank
+      assign badge_count = badge_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if badge_count > 0 -%}
+<div
+  class="border border-spy-border p-3 mt-8 text-[0.875rem] font-normal leading-5 tracking-[0.01em] text-[color:var(--color-spy-text-2)] {{ extra_class }}"
+  {{ shopify_attributes }}
+>
+  {%- assign shown = 0 -%}
+  {%- for i in (1..5) -%}
+    {%- liquid
+      assign text_key = 'badge_' | append: i | append: '_text'
+      assign icon_key = 'badge_' | append: i | append: '_icon'
+      assign link_text_key = 'badge_' | append: i | append: '_link_text'
+      assign link_url_key = 'badge_' | append: i | append: '_link_url'
+      assign logo_key = 'badge_' | append: i | append: '_logo'
+      assign badge_text = settings[text_key]
+      assign badge_icon = settings[icon_key]
+      assign link_text = settings[link_text_key]
+      assign link_url = settings[link_url_key]
+      assign badge_logo = settings[logo_key]
+    -%}
+    {%- if badge_text != blank -%}
+      {%- if shown > 0 -%}
+        <hr class="my-3 border-t border-spy-border">
+      {%- endif -%}
+      {%- comment -%} gap-3 also cancels the wider flex gap the theme sets here {%- endcomment -%}
+      <div class="flex items-center gap-3">
+        {%- if badge_icon != blank -%}
+          <span class="shrink-0 flex h-6 w-6 items-center justify-center leading-[0]" aria-hidden="true">
+            {{ badge_icon }}
+          </span>
+        {%- else -%}
+          {%- case i -%}
+            {%- when 1 -%}
+              {%- comment -%} truck — slightly darker than the row text, as on the source {%- endcomment -%}
+              <svg class="shrink-0 text-[color:var(--color-spy-text)]" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <path d="M14 18V6C14 5.46957 13.7893 4.96086 13.4142 4.58579C13.0391 4.21071 12.5304 4 12 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V17C2 17.2652 2.10536 17.5196 2.29289 17.7071C2.48043 17.8946 2.73478 18 3 18H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15 18H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M19 18H21C21.2652 18 21.5196 17.8946 21.7071 17.7071C21.8946 17.5196 22 17.2652 22 17V13.35C21.9996 13.1231 21.922 12.903 21.78 12.726L18.3 8.376C18.2065 8.25888 18.0878 8.16428 17.9528 8.0992C17.8178 8.03412 17.6699 8.00021 17.52 8H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M17 20C18.1046 20 19 19.1046 19 18C19 16.8954 18.1046 16 17 16C15.8954 16 15 16.8954 15 18C15 19.1046 15.8954 20 17 20Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7 20C8.10457 20 9 19.1046 9 18C9 16.8954 8.10457 16 7 16C5.89543 16 5 16.8954 5 18C5 19.1046 5.89543 20 7 20Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            {%- when 2 -%}
+              <svg class="shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <path d="M9 14L4 9L9 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4 9H14.5C15.2223 9 15.9375 9.14226 16.6048 9.41866C17.272 9.69506 17.8784 10.1002 18.3891 10.6109C18.8998 11.1216 19.3049 11.728 19.5813 12.3952C19.8577 13.0625 20 13.7777 20 14.5C20 15.2223 19.8577 15.9375 19.5813 16.6048C19.3049 17.272 18.8998 17.8784 18.3891 18.3891C17.8784 18.8998 17.272 19.3049 16.6048 19.5813C15.9375 19.8577 15.2223 20 14.5 20H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            {%- when 3 -%}
+              <svg class="shrink-0" width="24" height="24" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
+                <path d="M6 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m-1 0a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0"/>
+                <path d="M2 1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 1 6.586V2a1 1 0 0 1 1-1m0 5.586 7 7L13.586 9l-7-7H2z"/>
+              </svg>
+            {%- when 4 -%}
+              {%- comment -%} card is 22px on the source, not 24 {%- endcomment -%}
+              <svg class="shrink-0" width="22" height="22" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
+                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/>
+                <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+              </svg>
+            {%- when 5 -%}
+              <svg class="shrink-0" width="24" height="24" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
+                <path d="M3.1.7a.5.5 0 0 1 .4-.2h9a.5.5 0 0 1 .4.2l2.976 3.974c.149.185.156.45.01.644L8.4 15.3a.5.5 0 0 1-.8 0L.1 5.3a.5.5 0 0 1 0-.6zm11.386 3.785-1.806-2.41-.776 2.413zm-3.633.004.961-2.989H4.186l.963 2.995zM5.47 5.495 8 13.366l2.532-7.876zm-1.371-.999-.78-2.422-1.818 2.425zM1.499 5.5l5.113 6.817-2.192-6.82zm7.889 6.817 5.123-6.83-2.928.002z"/>
+              </svg>
+          {%- endcase -%}
+        {%- endif -%}
+        <span>
+          {{- badge_text -}}
+          {%- if link_text != blank -%}
+            {%- if link_url != blank -%}
+              <a class="ml-1 text-spy-orange no-underline hover:underline" href="{{ link_url }}">{{ link_text }}</a>
+            {%- else -%}
+              {%- comment -%} no page picked yet — keep the look, drop the dead link {%- endcomment -%}
+              <span class="ml-1 text-spy-orange">{{ link_text }}</span>
+            {%- endif -%}
+          {%- endif -%}
+          {%- comment -%} fixed size — the theme stretches bare images {%- endcomment -%}
+          {%- if badge_logo == 'paypal' -%}
+            <img
+              class="ml-1 inline-block h-6 w-10 max-w-none align-middle"
+              src="{{ 'spy-paypal.svg' | asset_url }}"
+              alt="PayPal"
+              width="40"
+              height="24"
+              loading="lazy"
+            >
+          {%- endif -%}
+        </span>
+      </div>
+      {%- assign shown = shown | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%}
+</div>
+{%- endif -%}

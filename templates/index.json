@@ -1302,6 +1302,10 @@
         "padding-block-end": 0,
         "custom_class": ""
       }
+    },
+    "spy_quick_view_modal": {
+      "type": "spy-quick-view",
+      "settings": {}
     }
   },
   "order": [
@@ -1311,6 +1315,7 @@
     "product_list_ikCdrT",
     "section_QGBQym",
     "product_list_PdnycH",
-    "section_gpMr7q"
+    "section_gpMr7q",
+    "spy_quick_view_modal"
   ]
 }

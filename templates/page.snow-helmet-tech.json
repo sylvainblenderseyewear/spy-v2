@@ -1467,6 +1467,10 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "spy_quick_view_modal": {
+      "type": "spy-quick-view",
+      "settings": {}
     }
   },
   "order": [
@@ -1479,6 +1483,7 @@
     "construction",
     "features",
     "shop_heading",
-    "helmets"
+    "helmets",
+    "spy_quick_view_modal"
   ]
 }
