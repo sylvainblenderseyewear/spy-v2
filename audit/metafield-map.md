@@ -17,6 +17,7 @@
 | Technical Information | `blocks/spy-spec-table.liquid` | All `spec.*` fields + `goggle.*` + `helmet.*` (conditionally) |
 | Yotpo Reviews | `blocks/spy-yotpo-reviews.liquid` | Yotpo app widget via `snippets/yotpo-reviews.liquid` |
 | Feature Banner | `sections/spy-feature-banner.liquid` | `pdp.feature_banner_desktop`, `pdp.feature_banner_mobile` |
+| Lifestyle Carousel | `sections/spy-lifestyle-carousel.liquid` | `pdp.feature_carousel` (list.file_reference) — no images means the section does not render |
 
 ---
 
