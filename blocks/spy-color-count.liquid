@@ -1,3 +1,15 @@
+{%- doc -%}
+  Colourway label under the card image — the source's `.swatches-label`.
+
+  Prints "N colors available" when the model has several colourways, the single
+  colour's name when it has one, and stays empty (but keeps its height) when the
+  product carries no colour data at all.
+
+  Combined listings answer this from the product's own colour option. Staging
+  ships one product per colourway instead, so the count then comes from the
+  model's collection — the same source the grouped PLP card reads.
+{%- enddoc -%}
+
 {%- liquid
   assign p = closest.product
   assign color_option = nil
@@ -9,20 +21,41 @@
     endif
   endfor
 
-  # Many colours -> count; single colour -> its name; none -> empty but reserved
-  assign label = ''
+  assign count = 0
   if color_option != nil
-    assign cc = color_option.values.size
-    if cc > 1
-      assign label = cc | append: ' colors available'
-    else
-      assign label = color_option.values.first.name
+    assign count = color_option.values.size
+  endif
+
+  # One product per colourway reads as a single colour, so ask the model collection
+  if count < 2
+    capture group_name
+      render 'spy-group-name', product: p
+    endcapture
+    assign group_name = group_name | strip
+
+    capture model_facts
+      render 'spy-model-collection-facts', product: p, group_name: group_name
+    endcapture
+    assign model_count = model_facts | strip | split: '~^~' | first | plus: 0
+    if model_count > count
+      assign count = model_count
     endif
+  endif
+
+  # Many colours -> count; single colour -> its name, or the count the grouped
+  # PLP card prints when the catalogue has no colour option; none -> empty but reserved
+  assign label = ''
+  if count > 1
+    assign label = count | append: ' colors available'
+  elsif color_option != nil
+    assign label = color_option.values.first.name
+  elsif model_count == 1
+    assign label = '1 color available'
   endif
 -%}
 
 {%- comment -%} Always rendered so the slot keeps its height, even with no colour data {%- endcomment -%}
-<p class="spy-color-count text-[10px] font-semibold text-spy-gray m-0" {{ block.shopify_attributes }}>{{ label }}</p>
+<p class="spy-color-count text-[0.9rem] font-normal text-spy-label m-0" {{ block.shopify_attributes }}>{{ label }}</p>
 
 {% schema %}
 {

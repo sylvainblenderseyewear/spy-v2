@@ -24,7 +24,8 @@
   --color-spy-negative: #d7403a; /* source sentiment-negative — Sold Out */
   --color-spy-cart-stock: #88c290; /* source's In Stock green on the cart page — measured separately from the PDP token above */
   --color-spy-input-border: #cccccc; /* source select/input outline */
-  --color-spy-price:   #565656; /* source recommendation card price */
+  --color-spy-price:   #565656; /* source card price — PLP tile */
+  --color-spy-price-reco: #242424; /* source card price — PDP recommendation tile */
 
   /* Spacing overrides */
   --spacing-page: 1.5rem;   /* default page gutter */
@@ -2836,12 +2837,17 @@ product-recommendations .spy-heading,
 product-recommendations .product-card .text-block {
   color: var(--color-spy-ink);
 }
-product-recommendations .product-card .price,
-product-recommendations .product-card .price__regular {
-  font-size: 0.9375rem;
-  line-height: 1.3125rem;
-  font-weight: 600;
-  color: var(--color-spy-price);
+/* Price: the reco tile prints bigger and darker than the PLP tile. The source's
+   `.price` wrapper stays 15/21/600 #565656, but the `.sales` span that holds the
+   visible text is 18/28 weight 500 in #242424 — measured on 8 cards, both rows.
+   !important because the shared card rule carries it too, and the extra
+   `.section-resource-list` outranks that rule's `:is()` prefix. */
+product-recommendations .section-resource-list .product-card :is(.price, .spy-price),
+product-recommendations .section-resource-list .product-card .price__regular {
+  font-size: 1.125rem !important;
+  line-height: 1.75rem !important;
+  font-weight: 500 !important;
+  color: var(--color-spy-price-reco) !important;
 }
 
 /* Arrows: 35px white disc, orange glyph, same shadow as the gallery pair */

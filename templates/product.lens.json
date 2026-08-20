@@ -392,7 +392,7 @@
           "name": "t:names.product_card",
           "static": true,
           "settings": {
-            "product_card_gap": 8,
+            "product_card_gap": 0,
             "background_color": "",
             "border": "none",
             "border_width": 1,
@@ -405,6 +405,12 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "spy_tech_badge_reco": {
+              "type": "spy-tech-badge",
+              "name": "Tech Badge",
+              "settings": {},
+              "blocks": {}
+            },
             "product_card_gallery_DNizbJ": {
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
@@ -419,6 +425,32 @@
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "spy_quick_view_btn_reco": {
+              "type": "spy-quick-view-btn",
+              "name": "Quick View Button",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_new_badge_reco": {
+              "type": "spy-new-badge",
+              "name": "New Badge",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_color_count_reco": {
+              "type": "spy-color-count",
+              "name": "Color Count",
+              "settings": {},
+              "blocks": {}
+            },
+            "spy_swatches_reco": {
+              "type": "spy-swatches",
+              "name": "Color Preview",
+              "settings": {
+                "display": "card"
               },
               "blocks": {}
             },
@@ -443,7 +475,8 @@
                 "padding-block-start": 4,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-inline-end": 0,
+                "title_source": "group"
               },
               "blocks": {}
             },
@@ -471,7 +504,12 @@
             }
           },
           "block_order": [
+            "spy_tech_badge_reco",
             "product_card_gallery_DNizbJ",
+            "spy_quick_view_btn_reco",
+            "spy_new_badge_reco",
+            "spy_color_count_reco",
+            "spy_swatches_reco",
             "product_title_M7MJkb",
             "price_gLWgA6"
           ]
