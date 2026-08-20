@@ -13,6 +13,7 @@
   @param {string} [loading] - Loading attribute
   @param {string} [additional_attributes] - Any additional HTML attributes
   @param {string} [video_type] - 'youtube' or 'vimeo'
+  @param {string} [video_hash] - Vimeo privacy hash, needed for unlisted videos
   @param {boolean} [disable_controls] - Whether to disable controls. If true, only play/pause will be usable.
   @param {boolean} [video_background] - Strips all player chrome for a decorative background video.
                                         Vimeo gets background=1; YouTube gets the closest equivalent.
@@ -69,6 +70,11 @@
       assign class = 'js-youtube'
     else
       assign video_src = 'https://player.vimeo.com/video/VIDEO_ID?' | replace: 'VIDEO_ID', video
+
+      # Unlisted videos refuse to play without it
+      if video_hash != blank
+        assign video_src = video_src | append: 'h=' | append: video_hash
+      endif
 
       if video_autoplay == false and video_preview_image != blank
         assign video_src = video_src | append: '&autoplay=1'

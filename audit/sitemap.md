@@ -60,7 +60,7 @@ spyoptic.com/
 │   ├── Snow Tech  /us/SnowTech.html
 │   ├── Snow Helmet Tech  /us/SnowHelmetTech.html
 │   ├── Happy Lens  /us/HappyLens.html (TBC)
-│   └── Happy Boost  /us/HappyBoost.html (TBC)
+│   └── Happy Boost  /us/happyboost.html (confirmed — lowercase, mixed case 404s)
 │
 ├── [JOURNAL / BLOG]
 │   ├── Listing  /us/spy-blog/                      → blog

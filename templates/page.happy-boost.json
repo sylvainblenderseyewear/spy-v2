@@ -80,9 +80,10 @@
               "type": "video",
               "name": "Hero video",
               "settings": {
-                "source": "uploaded",
+                "source": "url",
+                "video_url": "https://vimeo.com/717814420/b5c22e9648",
                 "video_autoplay": false,
-                "video_loop": true,
+                "video_loop": false,
                 "alt": "Happy Boost",
                 "custom_width": 83,
                 "custom_width_mobile": 100,
