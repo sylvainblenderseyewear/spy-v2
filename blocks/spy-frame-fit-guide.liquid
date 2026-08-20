@@ -6,6 +6,10 @@
   grey veil, with two tabs. "This frame" reads the collection's custom.fit_guide
   metaobject (drawings + measurements, rows appear only when filled). "How to
   measure" is the same copy for every product, so it lives in block settings.
+
+  Opens on "This frame" (the source opens on "How to measure") — see default_tab.
+  Frames whose guide has no drawings/measurements/size still open on "How to measure",
+  since their first panel would only hold the spec.fit fallback scale.
 {%- enddoc -%}
 
 {%- liquid
@@ -82,11 +86,22 @@
   assign drawer_id = 'spy-fit-guide-' | append: block.id
 
   comment
-    Source opens on "How to measure". Editors can flip it, but with no frame
-    data there is only one panel, so that one always wins.
+    Landing on "This frame" only pays off when the guide really filled it. Nearly
+    every frame has spec.fit, so the tab alone is not proof — without drawings,
+    measurements or a size the panel is one fit scale and "How to measure" is the
+    better first read.
   endcomment
-  assign active_tab = block.settings.default_tab | default: 'howto'
-  if has_frame_tab == false
+  assign has_guide_data = false
+  if diagram_front != blank or diagram_profile != blank or has_measures or frame_size != blank
+    assign has_guide_data = true
+  endif
+
+  comment
+    We open on "This frame" — the frame's own numbers are what people came for.
+    The source opens on "How to measure"; editors can flip it back.
+  endcomment
+  assign active_tab = block.settings.default_tab | default: 'frame'
+  if has_frame_tab == false or has_guide_data == false
     assign active_tab = 'howto'
   endif
 
@@ -514,7 +529,21 @@
     });
     document.body.appendChild(modal);
 
+    // Tabs
+    const tabs = [...modal.querySelectorAll('[data-spy-tab]')];
+    const panels = [...modal.querySelectorAll('[data-spy-panel]')];
+    const showTab = (name) => {
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.spyTab === name)));
+      panels.forEach((p) => p.classList.toggle('hidden', p.dataset.spyPanel !== name));
+    };
+    tabs.forEach((tab) => tab.addEventListener('click', () => showTab(tab.dataset.spyTab)));
+
+    // Liquid already picked the landing tab, so read it off the markup and go back
+    // there on every open — an earlier visit's switch should not stick.
+    const landingTab = (tabs.find((t) => t.getAttribute('aria-selected') === 'true') || tabs[0])?.dataset.spyTab;
+
     const open = () => {
+      if (landingTab) showTab(landingTab);
       modal.setAttribute('aria-hidden', 'false');
       modal.dataset.open = '';
       trigger.setAttribute('aria-expanded', 'true');
@@ -533,17 +562,6 @@
     modal.querySelectorAll('[data-spy-fit-guide-close]').forEach((el) => el.addEventListener('click', close));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && modal.dataset.open !== undefined) close();
-    });
-
-    // Tabs
-    const tabs = [...modal.querySelectorAll('[data-spy-tab]')];
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
-        modal.querySelectorAll('[data-spy-panel]').forEach((panel) => {
-          panel.classList.toggle('hidden', panel.dataset.spyPanel !== tab.dataset.spyTab);
-        });
-      });
     });
   })();
 </script>
@@ -565,12 +583,12 @@
       "type": "select",
       "id": "default_tab",
       "label": "Open on",
-      "info": "Falls back to \"How to measure\" when the frame has no guide data",
+      "info": "Falls back to \"How to measure\" unless the frame's Fit Guide has drawings, measurements or a size — a fit value on its own is not enough to open on",
       "options": [
         { "value": "frame", "label": "This frame" },
         { "value": "howto", "label": "How to measure" }
       ],
-      "default": "howto"
+      "default": "frame"
     },
     { "type": "header", "content": "This frame" },
     { "type": "text", "id": "diagrams_label", "label": "Diagrams heading", "info": "Drawings and measurements come from the collection's Fit Guide metafield (custom.fit_guide)", "default": "Frame Diagrams" },
