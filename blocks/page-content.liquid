@@ -3,6 +3,7 @@
   # base type its source really uses. Sizes live on the wrapper only —
   # the copy carries Word's own inline styles and those must keep winning.
   assign page_type = ''
+  assign word_bullets = false
 
   # Inline runs every page below relies on
   capture rte_runs
@@ -16,6 +17,44 @@
     # Word writes a./b./c. sub-items as type="a" lists and Tailwind resets those.
     # HTML matches the type value case-insensitively, so a/A both land here.
     echo '[&_ol[type=a]]:list-[lower-alpha] [&_ol[type=i]]:list-[lower-roman] '
+  endcapture
+
+  # Word's geometry only fits the source's 1110px column: the paste uses two-column
+  # spacer tables (~642px of fixed cell widths), inch-deep nested indents and
+  # justified type. On a phone that overflows sideways and reads as a mess, so below
+  # 992px we drop Word's layout and run the copy as one plain column. Desktop keeps
+  # the source 1:1 — every rule here is inside max-[992px].
+  # Inline styles carry the values we are undoing, so these need `!`.
+  capture word_mobile
+    # One readable column: no justified rivers, no words pushed past the edge
+    echo 'max-[992px]:text-left max-[992px]:break-words '
+    echo 'max-[992px]:[&_[style*=justify]]:text-left! '
+    # Spacer tables stack, so their two bullet columns become one list
+    echo 'max-[992px]:[&_table]:block max-[992px]:[&_tbody]:block '
+    echo 'max-[992px]:[&_tr]:block max-[992px]:[&_td]:block '
+    echo 'max-[992px]:[&_table]:w-full! max-[992px]:[&_td]:w-full! '
+    echo 'max-[992px]:[&_table]:ml-0! max-[992px]:[&_td]:pl-0! max-[992px]:[&_td]:pr-0! '
+    # A stacked table is just a list now, so it needs its own gap from the copy
+    echo 'max-[992px]:[&_table]:my-[0.75em]! '
+    # Row heights are written in points and leave dead gaps once cells stack
+    echo 'max-[992px]:[&_tr]:h-auto! max-[992px]:[&_td]:h-auto! '
+    # Word's wrapper divs exist only to indent, so flatten them
+    echo 'max-[992px]:[&_div]:ml-0! max-[992px]:[&_div]:mr-0! '
+    echo 'max-[992px]:[&_div]:pl-0! max-[992px]:[&_div]:pr-0! '
+    # Inch-deep paragraph indents go; hanging bullets/numbers keep a 1em step
+    echo 'max-[992px]:[&_p]:ml-0! max-[992px]:[&_p]:mr-0! max-[992px]:[&_li]:ml-0! '
+    echo 'max-[992px]:[&_ol]:ml-0! max-[992px]:[&_ul]:ml-0! '
+    echo 'max-[992px]:[&_ol]:pl-[1.5em]! max-[992px]:[&_ul]:pl-[1.5em]! '
+    echo 'max-[992px]:[&_p[style*=text-indent]]:pl-[1.1em]! '
+    echo 'max-[992px]:[&_p[style*=text-indent]]:indent-[-1.1em]! '
+    echo 'max-[992px]:[&_h3]:ml-0! max-[992px]:[&_h3]:pl-[1.1em]! '
+    echo 'max-[992px]:[&_h3]:indent-[-1.1em]! '
+    # Word marks its second level with a Courier "o" — flattening the indents
+    # would lose that, so step those rows back in one level
+    echo 'max-[992px]:[&_p:has(span[style*=Courier])]:pl-[2.6em]! '
+    # Word pads each fake bullet with a 13-space run — drop it, keep one space
+    echo 'max-[992px]:[&_span[style*=Symbol]>span]:text-[0px]! '
+    echo 'max-[992px]:[&_span[style*=Symbol]]:mr-[0.45em] '
   endcapture
 
   case page.template_suffix
@@ -41,7 +80,10 @@
         echo '[&_ul]:pl-[2.5em] [&_ol]:pl-[2.5em] '
         echo '[&_table]:border-collapse '
         echo legal_shared
+        echo word_mobile
       endcapture
+      # The body in the admin lost its list markup, so the bullets are plain text
+      assign word_bullets = true
     when 'shipping'
       # Source: hand-written markup in the brand sans on Bootstrap's own type scale
       capture page_type
@@ -79,7 +121,7 @@
     {% endif %}
   "
 >
-  <rte-formatter>
+  <rte-formatter{% if word_bullets %} word-bullets{% endif %}>
     {%- comment -%}
       Page body first. Legal Notices falls back to the source copy so the page
       is never blank before an editor pastes it in the admin.
