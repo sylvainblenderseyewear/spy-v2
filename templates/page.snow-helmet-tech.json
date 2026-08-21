@@ -1366,8 +1366,8 @@
               "blocks": {}
             },
             "new_badge": {
-              "type": "spy-new-badge",
-              "name": "New Badge",
+              "type": "spy-product-badge",
+              "name": "Product Badge",
               "settings": {},
               "blocks": {}
             },

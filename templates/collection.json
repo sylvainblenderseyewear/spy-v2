@@ -155,8 +155,8 @@
               "settings": {},
               "blocks": {}
             },
-            "spy_new_badge_A1": {
-              "type": "spy-new-badge",
+            "spy_product_badge_A1": {
+              "type": "spy-product-badge",
               "name": "Badge",
               "settings": {},
               "blocks": {}
@@ -228,7 +228,7 @@
             "spy_tech_badge_A1",
             "card-gallery",
             "spy_quick_view_btn_A1",
-            "spy_new_badge_A1",
+            "spy_product_badge_A1",
             "spy_variant_name_A1",
             "swatches_card",
             "product_title_card",
