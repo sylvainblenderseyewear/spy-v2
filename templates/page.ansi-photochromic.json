@@ -168,7 +168,45 @@
     },
     "frames": {
       "type": "collection-list",
-      "blocks": {},
+      "blocks": {
+        "static-collection-card": {
+          "type": "_collection-card",
+          "static": true,
+          "name": "Model card",
+          "settings": {
+            "placement": "below_image",
+            "horizontal_alignment": "center",
+            "collection_card_gap": 12,
+            "content_width": 100
+          },
+          "blocks": {
+            "collection-card-image": {
+              "type": "_collection-card-image",
+              "static": true,
+              "settings": {
+                "image_ratio": "adapt"
+              },
+              "blocks": {}
+            },
+            "title": {
+              "type": "collection-title",
+              "name": "Model name",
+              "settings": {
+                "width": "100%",
+                "alignment": "center",
+                "type_preset": "custom",
+                "font_size": "1.125rem",
+                "line_height": "tight",
+                "case": "uppercase"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "title"
+          ]
+        }
+      },
       "name": "ANSI — frames carousel",
       "settings": {
         "layout_type": "carousel",
@@ -187,7 +225,7 @@
         "background_color": "",
         "padding-block-start": 0,
         "padding-block-end": 0,
-        "content_source": "products",
+        "content_source": "collections",
         "label_colors_one": "1 color available",
         "label_colors_many": "[count] colors available",
         "happy_boost_icon": "",
@@ -207,7 +245,10 @@
         "padding-inline-start": 0,
         "padding-inline-end": 0,
         "collection_list": [
-          "ansi-photochromic"
+          "rebar-ansi",
+          "rebar-se-ansi",
+          "logan",
+          "dirk"
         ]
       }
     },

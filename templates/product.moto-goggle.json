@@ -446,9 +446,9 @@
               "settings": {},
               "blocks": {}
             },
-            "spy_new_badge_reco": {
-              "type": "spy-new-badge",
-              "name": "New Badge",
+            "spy_product_badge_reco": {
+              "type": "spy-product-badge",
+              "name": "Product Badge",
               "settings": {},
               "blocks": {}
             },
@@ -519,7 +519,7 @@
             "spy_tech_badge_reco",
             "product_card_gallery_DNizbJ",
             "spy_quick_view_btn_reco",
-            "spy_new_badge_reco",
+            "spy_product_badge_reco",
             "spy_color_count_reco",
             "spy_swatches_reco",
             "product_title_M7MJkb",

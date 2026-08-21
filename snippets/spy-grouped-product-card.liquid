@@ -211,7 +211,7 @@
         <div class="spy-tile-labels">
           {%- comment -%} Badge slot always renders so every card keeps the same height {%- endcomment -%}
           {%- capture badge_text -%}{%- render 'spy-product-badge-text', product: product -%}{%- endcapture -%}
-          <div class="spy-new-badge">
+          <div class="spy-product-badge">
             {%- if badge_text != blank -%}
               <span class="spy-badge-pill border border-spy-orange text-spy-orange">{{ badge_text | strip }}</span>
             {%- endif -%}

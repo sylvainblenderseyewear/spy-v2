@@ -443,14 +443,14 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* Badge slot collapses to nothing when the card earns no badge, so the label
    alone bottoms out against the 48px minimum. */
-:is(collection-component, .section-resource-list) .product-card .spy-new-badge {
+:is(collection-component, .section-resource-list) .product-card .spy-product-badge {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 0;
 }
 
-:is(collection-component, .section-resource-list) .product-card .spy-new-badge:empty {
+:is(collection-component, .section-resource-list) .product-card .spy-product-badge:empty {
   display: none;
 }
 
@@ -574,7 +574,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 :is(collection-component, .section-resource-list)
   .product-card:not(:has(.spy-color-swatches))
-  .spy-new-badge {
+  .spy-product-badge {
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -586,13 +586,13 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    behind it — so the :empty collapse used by the grouped card is undone. */
 :is(collection-component, .section-resource-list)
   .product-card:not(:has(.spy-color-swatches))
-  .spy-new-badge:empty {
+  .spy-product-badge:empty {
   display: flex;
 }
 
 :is(collection-component, .section-resource-list)
   .product-card:not(:has(.spy-color-swatches))
-  .spy-new-badge:has(.spy-badge-pill) {
+  .spy-product-badge:has(.spy-badge-pill) {
   min-height: var(--spy-flat-badge-slot-filled);
   padding-bottom: 8px;
 }
@@ -631,7 +631,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
   :is(collection-component, .section-resource-list)
     .product-card:not(:has(.spy-color-swatches)):hover
-    :is(.spy-color-count, .spy-variant-name, .spy-new-badge) {
+    :is(.spy-color-count, .spy-variant-name, .spy-product-badge) {
     opacity: 0;
     visibility: hidden;
   }

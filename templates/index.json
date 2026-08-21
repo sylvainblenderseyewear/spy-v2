@@ -519,9 +519,9 @@
               "settings": {},
               "blocks": {}
             },
-            "spy_new_badge_fTWJ8m": {
-              "type": "spy-new-badge",
-              "name": "New Badge",
+            "spy_product_badge_fTWJ8m": {
+              "type": "spy-product-badge",
+              "name": "Product Badge",
               "settings": {},
               "blocks": {}
             },
@@ -593,7 +593,7 @@
             "spy_tech_badge_XQ6chg",
             "product_card_gallery_eCNPeJ",
             "spy_quick_view_btn_M4hUjh",
-            "spy_new_badge_fTWJ8m",
+            "spy_product_badge_fTWJ8m",
             "spy_color_count_hkXrAJ",
             "spy_swatches_CqRm9T",
             "product_title_3WpyTJ",
@@ -831,9 +831,9 @@
                   "settings": {},
                   "blocks": {}
                 },
-                "spy_new_badge_Pecb6U": {
-                  "type": "spy-new-badge",
-                  "name": "New Badge",
+                "spy_product_badge_Pecb6U": {
+                  "type": "spy-product-badge",
+                  "name": "Product Badge",
                   "settings": {},
                   "blocks": {}
                 },
@@ -904,7 +904,7 @@
               "block_order": [
                 "product_card_gallery_BqjrYw",
                 "spy_quick_view_btn_VCreVR",
-                "spy_new_badge_Pecb6U",
+                "spy_product_badge_Pecb6U",
                 "spy_color_count_mqeWCD",
                 "spy_swatches_wkQtdT",
                 "product_title_g3rMjk",
@@ -997,9 +997,9 @@
               "settings": {},
               "blocks": {}
             },
-            "spy_new_badge_iEXewE": {
-              "type": "spy-new-badge",
-              "name": "New Badge",
+            "spy_product_badge_iEXewE": {
+              "type": "spy-product-badge",
+              "name": "Product Badge",
               "settings": {},
               "blocks": {}
             },
@@ -1071,7 +1071,7 @@
             "spy_tech_badge_pypXzk",
             "product_card_gallery_VHLzAk",
             "spy_quick_view_btn_TppTmt",
-            "spy_new_badge_iEXewE",
+            "spy_product_badge_iEXewE",
             "spy_color_count_YGg4PE",
             "spy_swatches_qAzhNx",
             "product_title_fdpLnW",
