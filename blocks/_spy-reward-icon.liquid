@@ -4,6 +4,10 @@
   Width comes from the parent grid so all nine marks match; the override below is
   for the odd icon that reads too small or too large at the shared size. Intrinsic
   width/height stay on the tag so the tile never jumps while the file loads.
+
+  The override is one number for every screen, so it rides the grid's mobile scale
+  to stay in proportion on small screens. Without an override the grid already has
+  a mobile width, so nothing is scaled twice.
 {%- endcomment -%}
 
 {%- liquid
@@ -15,7 +19,7 @@
   class="[margin-top:var(--rw-icon-gap)] [width:var(--rw-icon-w,32px)] max-w-full"
   style="
     --rw-icon-gap: {{ block.settings.space_above }}px;
-    {% if own_width > 0 %}--rw-icon-w: {{ own_width }}px;{% endif %}
+    {% if own_width > 0 %}--rw-icon-w: calc({{ own_width }}px * var(--rw-scale, 1));{% endif %}
   "
   {{ block.shopify_attributes }}
 >

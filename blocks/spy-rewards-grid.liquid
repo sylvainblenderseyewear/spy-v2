@@ -13,7 +13,42 @@
   Note: `[display:grid]`, not Tailwind's `grid`. Horizon's base.css owns a `.grid`
   class of its own — the 14-column page layout with `grid-template-areas` — and
   those named areas would force their own columns no matter what we set here.
+
+  `--rw-scale` is the mobile safety net for children that carry ONE fixed size for
+  every screen: a stock text block set to 1.25rem, or an icon with a width override.
+  It is 1 from 750px up, so the rules below are a no-op on desktop. Blocks with
+  their own mobile setting (title, points, icon without an override) ignore it.
+
+  A last row holding a single tile reads as a gap, so that tile stretches across the
+  row. Whether it happens depends on the tile count against the columns at that width
+  — nine tiles sit evenly in three columns but leave one over in two — so the check
+  runs once per breakpoint below and the class is written only where it is needed.
 {%- endcomment -%}
+
+{%- liquid
+  assign tile_count = block.blocks.size
+
+  assign lone_d = false
+  assign lone_t = false
+  assign lone_m = false
+
+  if block.settings.stretch_last and tile_count > 1
+    assign left_over = tile_count | modulo: block.settings.columns_desktop
+    if left_over == 1
+      assign lone_d = true
+    endif
+
+    assign left_over = tile_count | modulo: block.settings.columns_tablet
+    if left_over == 1
+      assign lone_t = true
+    endif
+
+    assign left_over = tile_count | modulo: block.settings.columns_mobile
+    if left_over == 1
+      assign lone_m = true
+    endif
+  endif
+-%}
 
 <div
   class="
@@ -38,6 +73,22 @@
     min-[750px]:[--rw-cta-size:var(--rw-cta-size-d)]
     min-[750px]:[--rw-cta-w:var(--rw-cta-w-d)]
     min-[750px]:[--rw-note-size:var(--rw-note-size-d)]
+    [--rw-scale:var(--rw-scale-m)]
+    min-[750px]:[--rw-scale:1]
+    [&_.text-block.custom-font-size]:[font-size:calc(var(--font-size)*var(--rw-scale,1))]
+    [&_.text-block.custom-font-size>*]:[font-size:calc(var(--font-size)*var(--rw-scale,1))]
+    {%- if lone_m %}
+      max-[749px]:[&>.spy-reward-tile:last-child]:[grid-column:1/-1]
+      max-[749px]:[&>.spy-reward-tile:last-child]:[aspect-ratio:auto]
+    {%- endif %}
+    {%- if lone_t %}
+      min-[750px]:max-[989px]:[&>.spy-reward-tile:last-child]:[grid-column:1/-1]
+      min-[750px]:max-[989px]:[&>.spy-reward-tile:last-child]:[aspect-ratio:auto]
+    {%- endif %}
+    {%- if lone_d %}
+      min-[990px]:[&>.spy-reward-tile:last-child]:[grid-column:1/-1]
+      min-[990px]:[&>.spy-reward-tile:last-child]:[aspect-ratio:auto]
+    {%- endif %}
   "
   style="
     --rw-max: {{ block.settings.max_width }}px;
@@ -78,6 +129,7 @@
     --rw-note-size-m: {{ block.settings.note_size_mobile }}px;
     --rw-note-gap: {{ block.settings.note_gap }}px;
     --rw-link-color: {{ block.settings.link_color }};
+    --rw-scale-m: {{ block.settings.mobile_scale | divided_by: 100.0 }};
     gap: {{ block.settings.row_gap }}px {{ block.settings.column_gap }}px;
   "
   {{ block.shopify_attributes }}
@@ -151,6 +203,24 @@
       "step": 1,
       "unit": "px",
       "default": 10
+    },
+    {
+      "type": "checkbox",
+      "id": "stretch_last",
+      "label": "Stretch a lone last tile",
+      "info": "When the tile count leaves one tile alone on the last row, it fills the row instead of sitting to one side. Its height follows its content.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "mobile_scale",
+      "label": "Mobile scale for fixed sizes",
+      "info": "Below 750px, shrinks children that have one size for every screen — a text block with a set font size, or an icon with a width override. Blocks with their own mobile setting are not touched.",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 75
     },
     {
       "type": "header",
