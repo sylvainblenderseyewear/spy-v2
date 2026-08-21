@@ -166,8 +166,26 @@
 
     {% capture list_items %}
       {% for collection in section_collections limit: max_items %}
+        {%- assign card_product = collection.products.first -%}
         <div class="resource-list__item">
-          {% content_for 'block', type: '_collection-card', id: 'static-collection-card', closest.collection: collection %}
+          {%- if card_product != blank -%}
+            {%- comment -%}
+              One card per collection, drawn as the PLP model card: the collection's first
+              product carries the image, the collection itself the name, colourway count,
+              price range and hover thumbnails.
+            {%- endcomment -%}
+            {% render 'spy-grouped-product-card',
+              product: card_product,
+              group_name: collection.title,
+              group_count: collection.all_products_count,
+              group_collection: collection,
+              block: section,
+              product_view_context: 'collection'
+            %}
+          {%- else -%}
+            {%- comment -%} Empty collection, or an unset slot in the editor — keep the stock tile {%- endcomment -%}
+            {% content_for 'block', type: '_collection-card', id: 'static-collection-card', closest.collection: collection %}
+          {%- endif -%}
         </div>
         {% unless forloop.last %}
           <!--@list/split-->

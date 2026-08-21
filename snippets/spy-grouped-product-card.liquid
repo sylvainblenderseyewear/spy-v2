@@ -17,6 +17,7 @@
   @param {object} product - the colourway that represents the group
   @param {string} group_name - model name from the `collection: xxx` tag
   @param {number} group_count - how many colourways the group holds
+  @param {object} [group_collection] - the model's collection, when the caller already holds it
   @param {object} [block] - calling block, for appearance + label settings
   @param {string} [image_sizes] - sizes attribute for the card image
   @param {string} [product_view_context] - context passed to the view event
@@ -63,8 +64,9 @@
   assign show_swatches = block_settings.show_swatches
   assign swatch_count = block_settings.swatch_count | default: 4
 
-  assign model_collection = nil
-  if show_swatches and group_name != blank
+  # A card built from a collection is handed its model; the rest match on the group name
+  assign model_collection = group_collection
+  if model_collection == blank and show_swatches and group_name != blank
     assign group_key = group_name | handleize
     assign group_title = group_name | downcase | strip
     for col in product.collections
