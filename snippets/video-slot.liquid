@@ -17,6 +17,24 @@
   @param {string} [additional_attributes] - Extra attributes, e.g. the editor handle
 {%- enddoc -%}
 
+{%- liquid
+  # Unlisted Vimeo videos only play with their privacy hash, and the video_url
+  # object hands Liquid the bare id. The setting still holds the whole URL, so
+  # read the hash back off it — /ID/HASH and ?h=HASH are both valid share forms.
+  assign vimeo_hash = ''
+  assign url_string = video_url | append: ''
+  if source != 'uploaded' and url_string contains 'vimeo'
+    if url_string contains 'h='
+      assign vimeo_hash = url_string | split: 'h=' | last | split: '&' | first
+    else
+      assign url_tail = url_string | split: '?' | first | split: '/' | last
+      if url_tail != video_url.id
+        assign vimeo_hash = url_tail
+      endif
+    endif
+  endif
+-%}
+
 {%- if source == 'uploaded' -%}
   {% render 'video',
     video: video,
@@ -34,6 +52,7 @@
     video: video_url.id,
     video_class: 'spacing-style size-style border-style',
     video_type: video_url.type,
+    video_hash: vimeo_hash,
     video_autoplay: video_autoplay,
     video_loop: video_loop,
     video_style: video_style,
