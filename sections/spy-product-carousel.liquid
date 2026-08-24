@@ -1,0 +1,413 @@
+{%- comment -%}
+  Product carousel — the homepage product rail.
+
+  The source runs slick with a four-step ladder keyed to the WINDOW width, not to a
+  container: 5 across above 1140, 3 down to 721, 2 down to 541, and a single centred
+  card with a 50px peek at 540 and below. Horizon's own carousel only knows one
+  desktop count plus a mobile card size, so this section owns the rail instead and
+  reuses the shared product card block for the cards themselves.
+
+  Slides sit flush (no gap) and each carries 8px of side padding, which is where the
+  16px visual gutter between cards comes from — same trick the source uses.
+
+  Arrows only appear where the source shows them: slick hides them when every slide
+  already fits, so a 5-product rail has none on desktop.
+{%- endcomment -%}
+
+{%- liquid
+  assign coll = section.settings.collection
+  assign max_items = section.settings.max_products
+
+  assign c_sm = section.settings.count_mobile | default: 1
+  assign c_md = section.settings.count_small | default: 2
+  assign c_lg = section.settings.count_tablet | default: 3
+  assign c_xl = section.settings.count_desktop | default: 5
+  assign peek = section.settings.peek | default: 0
+
+  # Mobile keeps a centred card with a peek either side; the wider steps divide evenly.
+  # The peek is the track's own padding, so the card is a full 100% of what is left —
+  # subtracting it again here would shrink the card twice over.
+  assign basis_sm = 'calc(100% / ' | append: c_sm | append: ')'
+  assign basis_md = 'calc(100% / ' | append: c_md | append: ')'
+  assign basis_lg = 'calc(100% / ' | append: c_lg | append: ')'
+  assign basis_xl = 'calc(100% / ' | append: c_xl | append: ')'
+
+  # Each visibility flag resolves to a literal class string so Tailwind can see it
+  if section.settings.arrows_mobile
+    assign arrow_sm = '[display:flex]'
+  else
+    assign arrow_sm = 'hidden'
+  endif
+  if section.settings.arrows_tablet
+    assign arrow_md = 'min-[541px]:[display:flex]'
+  else
+    assign arrow_md = 'min-[541px]:hidden'
+  endif
+  if section.settings.arrows_desktop
+    assign arrow_xl = 'min-[1141px]:[display:flex]'
+  else
+    assign arrow_xl = 'min-[1141px]:hidden'
+  endif
+  assign arrow_classes = arrow_sm | append: ' ' | append: arrow_md | append: ' ' | append: arrow_xl
+
+  if section.settings.dots_mobile
+    assign dot_classes = '[display:flex] min-[541px]:hidden'
+  else
+    assign dot_classes = 'hidden'
+  endif
+-%}
+
+{%- comment -%}
+  section-resource-list is the scope the shared product-card CSS hangs off. Without it
+  the card renders unstyled — the swatch thumb balloons to the full card width.
+{%- endcomment -%}
+<div
+  class="spy-product-carousel section-resource-list mt-[var(--spc-mt)] mb-[var(--spc-mb)]"
+  style="
+    --spc-b-sm: {{ basis_sm }}; --spc-b-md: {{ basis_md }};
+    --spc-b-lg: {{ basis_lg }}; --spc-b-xl: {{ basis_xl }};
+    --spc-peek: {{ peek }}px;
+    --spc-inset-m: {{ section.settings.track_inset_mobile }}px;
+    --spc-inset-d: {{ section.settings.track_inset }}px;
+    --spc-mt: {{ section.settings.margin_top }}px;
+    --spc-mb: {{ section.settings.margin_bottom }}px;
+    --spc-arrow: {{ section.settings.arrow_size }}px;
+  "
+  {{ section.shopify_attributes }}
+>
+  {%- comment -%} Brings in the shared .resource-list__item rules the card leans on {%- endcomment -%}
+  {%- render 'resource-list-styles' -%}
+
+  <spy-product-rail class="block relative">
+    <button
+      type="button"
+      data-prev
+      aria-label="Previous"
+      class="{{ arrow_classes }} absolute z-[2] top-[48%] left-[5px] -translate-y-1/2 h-[var(--spc-arrow)] w-[var(--spc-arrow)] items-center justify-center rounded-full bg-white text-spy-orange-ui shadow-[0_0_9px_0_rgba(119,119,119,0.35)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-spy-orange"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <div
+      data-track
+      class="spy-product-carousel__track [display:flex] overflow-x-auto snap-x snap-mandatory mx-[var(--spc-inset-m)] min-[992px]:mx-[var(--spc-inset-d)] px-[var(--spc-peek)] min-[541px]:px-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+    >
+      {%- if coll != blank and coll.products.size > 0 -%}
+        {%- for product in coll.products limit: max_items -%}
+          <div
+            data-slide
+            class="spy-product-carousel__slide shrink-0 grow-0 min-w-0 px-2 snap-center min-[541px]:snap-start basis-[var(--spc-b-sm)] min-[541px]:basis-[var(--spc-b-md)] min-[721px]:basis-[var(--spc-b-lg)] min-[1141px]:basis-[var(--spc-b-xl)]"
+          >
+            {%- comment -%}
+              resource-list__item gives the card its grid layout; h-auto cancels the
+              height:100% that comes with it, which would collapse inside a flex rail.
+            {%- endcomment -%}
+            <div class="resource-list__item h-auto">
+              {%- content_for 'block',
+                type: '_product-card',
+                id: 'static-product-card',
+                closest.product: product,
+                product_view_context: 'collection'
+              -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Placeholder cards keep the rail measurable in the editor {%- endcomment -%}
+        {%- for i in (1..max_items) -%}
+          <div
+            data-slide
+            class="spy-product-carousel__slide shrink-0 grow-0 min-w-0 px-2 snap-center min-[541px]:snap-start basis-[var(--spc-b-sm)] min-[541px]:basis-[var(--spc-b-md)] min-[721px]:basis-[var(--spc-b-lg)] min-[1141px]:basis-[var(--spc-b-xl)]"
+          >
+            {%- comment -%} h-auto cancels the grid's height:100%, which collapses in a flex rail {%- endcomment -%}
+            <div class="resource-list__item h-auto">
+              {%- content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: null -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    <button
+      type="button"
+      data-next
+      aria-label="Next"
+      class="{{ arrow_classes }} absolute z-[2] top-[48%] right-[5px] -translate-y-1/2 h-[var(--spc-arrow)] w-[var(--spc-arrow)] items-center justify-center rounded-full bg-white text-spy-orange-ui shadow-[0_0_9px_0_rgba(119,119,119,0.35)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-spy-orange"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M9.5 5.5 16 12l-6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    {%- comment -%} Source dots: 10px solid ink circles, 4px apart, 16px off the bottom {%- endcomment -%}
+    <div data-dots class="{{ dot_classes }} absolute inset-x-0 bottom-4 items-center justify-center gap-2" aria-hidden="true"></div>
+  </spy-product-rail>
+</div>
+
+<script>
+  // Product rail: native scroll-snap, arrows step one card, dots track the page.
+  if (!customElements.get('spy-product-rail')) {
+    customElements.define(
+      'spy-product-rail',
+      class SpyProductRail extends HTMLElement {
+        // A second rail on the page upgrades while it is still being parsed, so its
+        // children are not there yet. Wait for them before wiring anything up.
+        connectedCallback() {
+          if (this._ready) return;
+          const start = () => {
+            if (this._ready) return;
+            this._ready = true;
+            this.init();
+          };
+          if (this.querySelector('[data-track]')) start();
+          else if (document.readyState === 'loading')
+            document.addEventListener('DOMContentLoaded', start, { once: true });
+          else requestAnimationFrame(start);
+        }
+
+        init() {
+          this.track = this.querySelector('[data-track]');
+          if (!this.track) return;
+          this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+          this.querySelector('[data-prev]')?.addEventListener('click', () => this.step(-1));
+          this.querySelector('[data-next]')?.addEventListener('click', () => this.step(1));
+
+          this.dots = this.querySelector('[data-dots]');
+          this.buildDots();
+          this.track.addEventListener('scroll', () => this.queueSync());
+          window.addEventListener('resize', () => this.queueSync());
+        }
+
+        get slides() {
+          return Array.from(this.track.querySelectorAll('[data-slide]'));
+        }
+
+        buildDots() {
+          if (!this.dots) return;
+          this.dots.replaceChildren();
+          this.slides.forEach((_, i) => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.setAttribute('aria-label', String(i + 1));
+            b.className = 'h-[10px] w-[10px] rounded-full bg-spy-ink border-0 p-0';
+            b.addEventListener('click', () => this.scrollToIndex(i));
+            this.dots.appendChild(b);
+          });
+        }
+
+        queueSync() {
+          clearTimeout(this._t);
+          this._t = setTimeout(() => this.sync(), 80);
+        }
+
+        // Keep the dots in step with whatever card is nearest the scroll position
+        sync() {
+          if (!this.dots) return;
+          const x = this.track.scrollLeft;
+          let best = 0;
+          let dist = Infinity;
+          this.slides.forEach((s, i) => {
+            const d = Math.abs(s.offsetLeft - this.track.offsetLeft - x);
+            if (d < dist) {
+              dist = d;
+              best = i;
+            }
+          });
+          Array.from(this.dots.children).forEach((d, i) => {
+            d.setAttribute('aria-current', i === best ? 'true' : 'false');
+          });
+        }
+
+        scrollToIndex(i) {
+          const s = this.slides[i];
+          if (!s) return;
+          this.track.scrollTo({
+            left: s.offsetLeft - this.track.offsetLeft,
+            behavior: this.reduceMotion ? 'auto' : 'smooth',
+          });
+        }
+
+        step(dir) {
+          const s = this.slides[0];
+          if (!s) return;
+          this.track.scrollBy({
+            left: s.getBoundingClientRect().width * dir,
+            behavior: this.reduceMotion ? 'auto' : 'smooth',
+          });
+        }
+      }
+    );
+  }
+</script>
+
+{% schema %}
+{
+  "name": "SPY Product Carousel",
+  "tag": "div",
+  "class": "spy-product-carousel-section",
+  "blocks": [{ "type": "@app" }],
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Products",
+      "min": 1,
+      "max": 16,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Cards across"
+    },
+    {
+      "type": "range",
+      "id": "count_desktop",
+      "label": "1141px and up",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "count_tablet",
+      "label": "721–1140px",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "count_small",
+      "label": "541–720px",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "count_mobile",
+      "label": "540px and below",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "peek",
+      "label": "Peek either side (540px and below)",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 50,
+      "info": "Matches slick's centre mode. Set 0 for full-width cards."
+    },
+    {
+      "type": "header",
+      "content": "Track inset"
+    },
+    {
+      "type": "range",
+      "id": "track_inset",
+      "label": "992px and up",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "track_inset_mobile",
+      "label": "Below 992px",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows_mobile",
+      "label": "Arrows at 540px and below",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows_tablet",
+      "label": "Arrows from 541px",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows_desktop",
+      "label": "Arrows from 1141px",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "dots_mobile",
+      "label": "Dots at 540px and below",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "arrow_size",
+      "label": "Arrow size",
+      "min": 24,
+      "max": 56,
+      "step": 1,
+      "unit": "px",
+      "default": 35
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Above",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Below",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Product Carousel",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

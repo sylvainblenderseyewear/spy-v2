@@ -16,8 +16,38 @@
 {%- liquid
   assign desktop_img = section.settings.image_desktop
   assign mobile_img = section.settings.image_mobile
-  if desktop_img == blank and mobile_img == blank
+  assign is_video = false
+  if section.settings.media_type == 'video'
+    assign is_video = true
+  endif
+
+  comment
+    A video needs an explicit box — the iframe has no intrinsic size the way an image
+    does — so each breakpoint carries its own ratio.
+  endcomment
+  assign ratio = section.settings.ratio_w | append: ' / ' | append: section.settings.ratio_h
+  assign ratio_mobile = section.settings.ratio_w_mobile | append: ' / ' | append: section.settings.ratio_h_mobile
+
+  # Filters can't run inside a render tag, so the style strings are built here
+  assign video_style = '--size-style-aspect-ratio: ' | append: ratio | append: ';'
+  assign video_style_mobile = '--size-style-aspect-ratio: ' | append: ratio_mobile | append: ';'
+  assign cover_mobile = section.settings.cover_image_mobile | default: section.settings.cover_image
+
+  if is_video
+    if section.settings.video_url == blank and section.settings.video_url_mobile == blank
+      assign skip_section = true
+    endif
+  elsif desktop_img == blank and mobile_img == blank
     assign skip_section = true
+  endif
+
+  comment
+    "banner" makes the whole tile one link, which is what the big promo bands do.
+    "cta" links only the button — the source hero works that way.
+  endcomment
+  assign wrap_link = false
+  if section.settings.link != blank and section.settings.link_scope != 'cta'
+    assign wrap_link = true
   endif
 
   comment
@@ -89,11 +119,19 @@
       assign valign_m = 'justify-end'
   endcase
 
-  if section.settings.content_width == 'page'
-    assign width_classes = 'mx-auto max-w-[var(--flb-max)]'
-  else
-    assign width_classes = 'w-full'
-  endif
+  comment
+    The source lays the copy inside Bootstrap's .container, whose cap steps
+    540 / 720 / 1140 / 1440 at 544 / 769 / 992 / 1200 with a flat 15px gutter.
+    "container" reproduces that ladder; "page" is a single cap; "full" opts out.
+  endcomment
+  case section.settings.content_width
+    when 'container'
+      assign width_classes = 'mx-auto w-full min-[544px]:max-w-[540px] min-[769px]:max-w-[720px] min-[992px]:max-w-[1140px] min-[1200px]:max-w-[1440px]'
+    when 'page'
+      assign width_classes = 'mx-auto w-full max-w-[var(--flb-max)]'
+    else
+      assign width_classes = 'w-full'
+  endcase
 
   if section.settings.show_overlay
     assign scrim = 'bg-gradient-to-t from-black/55 to-transparent'
@@ -116,21 +154,60 @@
     endif
   -%}
   <div
-    class="spy-feature-link-banner relative w-full overflow-hidden"
+    class="spy-feature-link-banner relative w-full overflow-hidden mt-[var(--flb-mt-m)] mb-[var(--flb-mb-m)] min-[992px]:mt-[var(--flb-mt-d)] min-[992px]:mb-[var(--flb-mb-d)]"
     style="
       --flb-max: {{ section.settings.content_max_width }}px;
       --flb-heading: {{ flb_heading }};
       --flb-heading-mobile: {{ flb_heading_mobile }};
+      --flb-mt-m: {{ section.settings.margin_top_mobile | default: 0 }}px;
+      --flb-mb-m: {{ section.settings.margin_bottom_mobile | default: 0 }}px;
+      --flb-mt-d: {{ section.settings.margin_top | default: 0 }}px;
+      --flb-mb-d: {{ section.settings.margin_bottom | default: 0 }}px;
     "
     {{ section.shopify_attributes }}
   >
-    {%- if section.settings.link != blank -%}
+    {%- if wrap_link -%}
       <a
         href="{{ section.settings.link }}"
         class="group block no-underline"
         aria-label="{{ section.settings.eyebrow | default: banner_alt }}"
       >
     {%- endif -%}
+
+    {%- if is_video -%}
+      {%- comment -%} Desktop video {%- endcomment -%}
+      {%- if section.settings.video_url != blank -%}
+        <div class="hidden min-[992px]:block w-full">
+          {%- render 'video-slot',
+            source: 'url',
+            video_url: section.settings.video_url,
+            cover_image: section.settings.cover_image,
+            alt: banner_alt,
+            video_style: video_style,
+            video_autoplay: true,
+            video_loop: true,
+            video_background: true
+          -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Mobile video, falling back to the desktop file {%- endcomment -%}
+      {%- assign small_video = section.settings.video_url_mobile | default: section.settings.video_url -%}
+      {%- if small_video != blank -%}
+        <div class="block min-[992px]:hidden w-full">
+          {%- render 'video-slot',
+            source: 'url',
+            video_url: small_video,
+            cover_image: cover_mobile,
+            alt: banner_alt,
+            video_style: video_style_mobile,
+            video_autoplay: true,
+            video_loop: true,
+            video_background: true
+          -%}
+        </div>
+      {%- endif -%}
+    {%- else -%}
 
     {%- comment -%} Desktop art {%- endcomment -%}
     {%- if desktop_img != blank -%}
@@ -170,17 +247,18 @@
           class: 'block min-[992px]:hidden w-full h-auto object-cover'
       }}
     {%- endif -%}
+    {%- endif -%}
 
     {%- if section.settings.eyebrow != blank
         or section.settings.heading != blank
         or section.settings.cta_label != blank
     -%}
-      {%- comment -%} Desktop insets are the source's: container 15px, copy box 16/16/64 {%- endcomment -%}
-      <div class="spy-feature-link-banner__overlay absolute inset-0 flex px-6 py-6 min-[992px]:px-[15px] min-[992px]:py-0 pointer-events-none {{ scrim }}">
+      {%- comment -%} Source insets, every width: container gutter 15px, copy box 16/16/64 {%- endcomment -%}
+      <div class="spy-feature-link-banner__overlay absolute inset-0 flex pointer-events-none {{ scrim }}">
         <div
           class="
             spy-feature-link-banner__content
-            flex flex-col flex-1 {{ width_classes }}
+            flex flex-col h-full px-[15px] {{ width_classes }}
             {{ align_m }} {{ align_d }}
             {{ valign_m }} {{ valign_d }}
           "
@@ -193,8 +271,7 @@
           <div
             class="
               spy-feature-link-banner__box
-              flex flex-col gap-2 w-fit max-w-full
-              min-[992px]:px-4 min-[992px]:pt-4 min-[992px]:pb-16
+              flex flex-col gap-2 w-fit max-w-full px-4 pt-4 pb-16
               {{ box_m }} {{ box_d }} {{ text_m }} {{ text_d }}
             "
           >
@@ -217,14 +294,21 @@
           {%- endif -%}
 
           {%- if section.settings.cta_label != blank -%}
+            {%- comment -%} Only the button carries the link when the banner itself does not {%- endcomment -%}
+            {%- liquid
+              assign cta_tag = 'span'
+              if wrap_link == false and section.settings.link != blank
+                assign cta_tag = 'a'
+              endif
+            -%}
             {%- if section.settings.cta_style == 'solid' -%}
-              <span class="inline-block w-fit px-8 py-2 bg-white text-spy-ink border border-spy-ink text-sm leading-normal uppercase pointer-events-auto transition-colors duration-200 group-hover:bg-spy-ink group-hover:text-white">
+              <{{ cta_tag }}{% if cta_tag == 'a' %} href="{{ section.settings.link }}"{% endif %} class="group inline-block w-fit px-8 py-2 bg-white text-spy-ink border border-spy-ink text-sm leading-normal uppercase no-underline pointer-events-auto transition-colors duration-150 ease-in-out hover:bg-spy-ink hover:text-white group-hover:bg-spy-ink group-hover:text-white">
                 {{ section.settings.cta_label }}
-              </span>
+              </{{ cta_tag }}>
             {%- else -%}
-              <span class="inline-block text-white text-xs font-bold uppercase tracking-widest border-b border-white/60 pb-0.5 leading-none pointer-events-auto">
+              <{{ cta_tag }}{% if cta_tag == 'a' %} href="{{ section.settings.link }}"{% endif %} class="inline-block text-white text-xs font-bold uppercase tracking-widest border-b border-white/60 pb-0.5 leading-none no-underline pointer-events-auto">
                 {{ section.settings.cta_label }}
-              </span>
+              </{{ cta_tag }}>
             {%- endif -%}
           {%- endif -%}
           </div>
@@ -232,7 +316,7 @@
       </div>
     {%- endif -%}
 
-    {%- if section.settings.link != blank -%}
+    {%- if wrap_link -%}
       </a>
     {%- endif -%}
   </div>
@@ -244,15 +328,94 @@
   "tag": "div",
   "settings": [
     {
+      "type": "select",
+      "id": "media_type",
+      "label": "Media",
+      "options": [
+        { "value": "image", "label": "Image" },
+        { "value": "video", "label": "Video" }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "Desktop video (992px and up)",
+      "accept": ["youtube", "vimeo"],
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url_mobile",
+      "label": "Mobile video",
+      "accept": ["youtube", "vimeo"],
+      "info": "Falls back to the desktop video if blank.",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image",
+      "label": "Desktop poster",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image_mobile",
+      "label": "Mobile poster",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "range",
+      "id": "ratio_w",
+      "label": "Desktop video ratio — width",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 32,
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "range",
+      "id": "ratio_h",
+      "label": "Desktop video ratio — height",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 10,
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "range",
+      "id": "ratio_w_mobile",
+      "label": "Mobile video ratio — width",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 2,
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "range",
+      "id": "ratio_h_mobile",
+      "label": "Mobile video ratio — height",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 3,
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
       "type": "image_picker",
       "id": "image_desktop",
-      "label": "Desktop image"
+      "label": "Desktop image",
+      "visible_if": "{{ section.settings.media_type != 'video' }}"
     },
     {
       "type": "image_picker",
       "id": "image_mobile",
       "label": "Mobile image",
-      "info": "Falls back to desktop image if blank"
+      "info": "Falls back to desktop image if blank",
+      "visible_if": "{{ section.settings.media_type != 'video' }}"
     },
     {
       "type": "header",
@@ -278,6 +441,16 @@
       "type": "url",
       "id": "link",
       "label": "Link"
+    },
+    {
+      "type": "select",
+      "id": "link_scope",
+      "label": "What the link covers",
+      "options": [
+        { "value": "banner", "label": "The whole banner" },
+        { "value": "cta", "label": "The CTA only" }
+      ],
+      "default": "banner"
     },
     {
       "type": "select",
@@ -414,10 +587,11 @@
       "id": "content_width",
       "label": "Content width",
       "options": [
+        { "value": "container", "label": "Source container (540/720/1140/1440)" },
         { "value": "full", "label": "Full width" },
         { "value": "page", "label": "Page width" }
       ],
-      "default": "full"
+      "default": "container"
     },
     {
       "type": "range",
@@ -429,6 +603,50 @@
       "unit": "px",
       "default": 1140,
       "visible_if": "{{ section.settings.content_width == 'page' }}"
+    },
+    {
+      "type": "header",
+      "content": "Space around the banner"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_mobile",
+      "label": "Above (below 992px)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_mobile",
+      "label": "Below (below 992px)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Above (992px and up)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Below (992px and up)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
     }
   ],
   "presets": [

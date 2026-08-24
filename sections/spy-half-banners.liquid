@@ -1,0 +1,189 @@
+{%- comment -%}
+  Half banners — a row of image banners with a CTA laid over each.
+
+  The source builds this as a Bootstrap row of col-lg-6 columns: side by side from
+  992px, stacked full width below it. The row pulls out by the 15px gutter and each
+  column pads back in, so at 1440 each banner lands at 697.5px inside a 1425px band.
+
+  Every banner keeps its own desktop and mobile art because the source crops them
+  per breakpoint. Art height is always width / the file's own ratio — nothing is
+  cropped. The headline is usually baked into the artwork, so the heading is optional
+  and the CTA sits bottom-centre inside the same 16/16/64 copy box the big banners use.
+{%- endcomment -%}
+
+{%- liquid
+  assign shown = 0
+  for block in section.blocks
+    if block.settings.image_desktop != blank or block.settings.image_mobile != blank
+      assign shown = shown | plus: 1
+    endif
+  endfor
+  if shown == 0
+    assign skip_section = true
+  endif
+
+  comment
+    The source builds this with a -15px row and +15px columns, which nets out to flush
+    outer edges and a 30px channel between banners. A gap gives the identical result
+    without hanging 30px outside the viewport.
+  endcomment
+  assign per_row = section.settings.columns
+  assign gap = section.settings.gutter | times: 2
+  assign gaps_total = per_row | minus: 1 | times: gap
+  assign basis = 'calc((100% - ' | append: gaps_total | append: 'px) / ' | append: per_row | append: ')'
+-%}
+
+{%- unless skip_section -%}
+  <div
+    class="spy-half-banners mt-[var(--shb-mt)] mb-[var(--shb-mb)]"
+    style="--shb-mt: {{ section.settings.margin_top }}px; --shb-mb: {{ section.settings.margin_bottom }}px; --shb-gap: {{ gap }}px; --shb-basis: {{ basis }};"
+    {{ section.shopify_attributes }}
+  >
+    {%- comment -%} The channel only opens once the banners sit side by side {%- endcomment -%}
+    <div class="[display:flex] flex-wrap min-[992px]:gap-[var(--shb-gap)]">
+      {%- for block in section.blocks -%}
+        {%- assign desktop_img = block.settings.image_desktop -%}
+        {%- assign mobile_img = block.settings.image_mobile | default: block.settings.image_desktop -%}
+        {%- if desktop_img == blank and mobile_img == blank -%}{%- continue -%}{%- endif -%}
+        {%- assign banner_alt = block.settings.heading | default: block.settings.cta_label | strip_newlines | escape -%}
+
+        <div
+          class="spy-half-banners__col basis-full min-[992px]:basis-[var(--shb-basis)] shrink-0 grow-0 [display:flex]"
+          {{ block.shopify_attributes }}
+        >
+          <a
+            href="{{ block.settings.link | default: '#' }}"
+            class="spy-half-banners__banner group relative block w-full overflow-hidden no-underline"
+            {% if block.settings.cta_label == blank and block.settings.heading == blank %}aria-label="{{ banner_alt }}"{% endif %}
+          >
+            {%- if desktop_img != blank -%}
+              {{
+                desktop_img
+                | image_url: width: 1400
+                | image_tag:
+                  loading: 'lazy',
+                  alt: banner_alt,
+                  sizes: '(max-width: 991px) 100vw, 50vw',
+                  widths: '600, 800, 1000, 1400',
+                  class: 'hidden min-[992px]:block w-full h-auto object-cover'
+              }}
+            {%- endif -%}
+
+            {%- if mobile_img != blank -%}
+              {{
+                mobile_img
+                | image_url: width: 1000
+                | image_tag:
+                  loading: 'lazy',
+                  alt: banner_alt,
+                  sizes: '100vw',
+                  widths: '390, 550, 800, 1000',
+                  class: 'block min-[992px]:hidden w-full h-auto object-cover'
+              }}
+            {%- endif -%}
+
+            {%- if block.settings.heading != blank or block.settings.cta_label != blank -%}
+              {%- comment -%} Source insets: container gutter 15px, copy box 16/16/64, bottom-centre {%- endcomment -%}
+              <div class="absolute inset-0 [display:flex] pointer-events-none">
+                <div class="[display:flex] flex-col h-full w-full px-[15px] items-center justify-end">
+                  <div class="[display:flex] flex-col gap-2 items-center text-center w-fit max-w-full px-4 pt-4 pb-16">
+                    {%- if block.settings.heading != blank -%}
+                      <h2
+                        class="text-white font-semibold uppercase leading-[1.2] m-0 pb-2 tracking-normal text-[length:var(--shb-h-m)] min-[992px]:text-[length:var(--shb-h-d)]"
+                        style="--shb-h-m: {{ block.settings.heading_size_mobile }}px; --shb-h-d: {{ block.settings.heading_size }}px;"
+                      >
+                        {{ block.settings.heading | newline_to_br }}
+                      </h2>
+                    {%- endif -%}
+
+                    {%- if block.settings.cta_label != blank -%}
+                      <span class="inline-block w-fit px-8 py-2 bg-white text-spy-ink border border-spy-ink text-sm leading-normal uppercase pointer-events-auto transition-colors duration-150 ease-in-out group-hover:bg-spy-ink group-hover:text-white">
+                        {{ block.settings.cta_label }}
+                      </span>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
+          </a>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Half Banners",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Banners per row (992px and up)",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 2,
+      "info": "Always stacked below 992px."
+    },
+    {
+      "type": "range",
+      "id": "gutter",
+      "label": "Gutter",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Above",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Below",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        { "type": "image_picker", "id": "image_desktop", "label": "Desktop image (992px and up)" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Mobile image", "info": "Falls back to the desktop image." },
+        { "type": "textarea", "id": "heading", "label": "Heading", "info": "Leave empty when the artwork already carries the headline." },
+        { "type": "range", "id": "heading_size", "label": "Heading size (992px and up)", "min": 16, "max": 96, "step": 1, "unit": "px", "default": 48 },
+        { "type": "range", "id": "heading_size_mobile", "label": "Heading size (below 992px)", "min": 14, "max": 64, "step": 1, "unit": "px", "default": 26 },
+        { "type": "text", "id": "cta_label", "label": "CTA label" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Half Banners",
+      "category": "SPY",
+      "blocks": [{ "type": "banner" }, { "type": "banner" }]
+    }
+  ]
+}
+{% endschema %}

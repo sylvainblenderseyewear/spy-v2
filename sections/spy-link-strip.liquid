@@ -1,0 +1,145 @@
+{%- comment -%}
+  Link strip — one centred link used as a section heading.
+
+  The source renders this as a bare full-width div with margins and a single
+  oversized link inside: no container, no cap, no underline. Size is fixed in px
+  at every breakpoint (35px on the homepage), and line-height is the inherited
+  1.4 body ratio, which is where the 49px band height comes from.
+{%- endcomment -%}
+
+{%- liquid
+  assign label = section.settings.label
+  if label == blank
+    assign skip_section = true
+  endif
+
+  case section.settings.color
+    when 'ink'
+      assign color_class = 'text-spy-ink'
+    when 'white'
+      assign color_class = 'text-white'
+    when 'slate'
+      assign color_class = 'text-spy-slate'
+    else
+      assign color_class = 'text-spy-orange-ui'
+  endcase
+-%}
+
+{%- unless skip_section -%}
+  <div
+    class="spy-link-strip mt-[var(--sls-mt)] mb-[var(--sls-mb)]"
+    style="--sls-mt: {{ section.settings.margin_top }}px; --sls-mb: {{ section.settings.margin_bottom }}px; --sls-size: {{ section.settings.font_size }}px;"
+    {{ section.shopify_attributes }}
+  >
+    <div class="text-center">
+      {%- if section.settings.link != blank -%}
+        <a
+          href="{{ section.settings.link }}"
+          class="{{ color_class }} no-underline hover:no-underline inline-block leading-[1.4] text-[length:var(--sls-size)]"
+          style="font-family: {{ section.settings.font }}; font-weight: {{ section.settings.font_weight }};"
+        >{{ label }}</a>
+      {%- else -%}
+        <span
+          class="{{ color_class }} inline-block leading-[1.4] text-[length:var(--sls-size)]"
+          style="font-family: {{ section.settings.font }}; font-weight: {{ section.settings.font_weight }};"
+        >{{ label }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Link Strip",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Text",
+      "default": "SHOP NEW ARRIVALS"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 14,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "default": 35
+    },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "Font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "Body" },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)", "label": "Heading" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-body--family)"
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "color",
+      "label": "Colour",
+      "options": [
+        { "value": "orange", "label": "Brand orange" },
+        { "value": "ink", "label": "Ink" },
+        { "value": "slate", "label": "Slate" },
+        { "value": "white", "label": "White" }
+      ],
+      "default": "orange"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Above",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Below",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Link Strip",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}
