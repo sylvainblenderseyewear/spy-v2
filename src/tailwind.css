@@ -621,19 +621,44 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    scope to, and Horizon's full-card `.product-card__link` overlay sits above
    the text anyway, so a region test could never fire. Hovering the title
    therefore also reveals the thumbs — the one behaviour this path can't match. */
-@media screen and (min-width: 769px) {
-  :is(collection-component, .section-resource-list)
-    .product-card:not(:has(.spy-color-swatches)):hover
-    .spy-swatches {
-    opacity: 1;
-    visibility: visible;
-  }
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches)):hover
+  .spy-swatches {
+  opacity: 1;
+  visibility: visible;
+}
 
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches)):hover
+  :is(.spy-color-count, .spy-variant-name, .spy-product-badge) {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* The band path takes the source's 8px inline inset from `.spy-tile-body`. The flat
+   path has no band, so its parts carry the inset themselves — without it a long title
+   ellipsises 16px too late and the label runs wider than the source's. !important
+   because the shared title rule zeroes that block's padding. */
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches))
+  :is(.spy-product-badge, .spy-color-count, .spy-variant-name, product-price),
+:is(collection-component, .section-resource-list)
+  .product-card:not(:has(.spy-color-swatches))
+  [ref="productTitleLink"]
+  .text-block {
+  padding-inline: 8px !important;
+}
+
+/* Horizon already insets the whole card below 750px, same as the band path drops its own */
+@media screen and (max-width: 749.98px) {
   :is(collection-component, .section-resource-list)
-    .product-card:not(:has(.spy-color-swatches)):hover
-    :is(.spy-color-count, .spy-variant-name, .spy-product-badge) {
-    opacity: 0;
-    visibility: hidden;
+    .product-card:not(:has(.spy-color-swatches))
+    :is(.spy-product-badge, .spy-color-count, .spy-variant-name, product-price),
+  :is(collection-component, .section-resource-list)
+    .product-card:not(:has(.spy-color-swatches))
+    [ref="productTitleLink"]
+    .text-block {
+    padding-inline: 0 !important;
   }
 }
 

@@ -49,7 +49,8 @@
     assign label = count | append: ' colors available'
   elsif color_option != nil
     assign label = color_option.values.first.name
-  elsif model_count == 1
+  else
+    # The grouped card counts the model as one when it knows nothing else, so match it
     assign label = '1 color available'
   endif
 -%}
