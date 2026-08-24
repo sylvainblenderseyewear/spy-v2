@@ -9,6 +9,10 @@
   Colours, sizes and the fade come from the parent grid as CSS variables — see
   that block. Only the wording and the two links are per tile.
 
+  No `overflow-hidden` on the tile: it zeroes a grid item's automatic minimum size,
+  so a tile that is one line too tall for its shape gets cut off instead of growing.
+  Letting it grow keeps the row even, because grid items stretch to the tallest one.
+
   `focus-within` mirrors every `hover` rule so the call to action opens for
   keyboard users too. The layers use opacity rather than the hidden attribute:
   Tailwind runs in important mode here, so `.opacity-0` would outrank `[hidden]`
@@ -33,7 +37,7 @@
 
 <div
   class="
-    spy-reward-tile group relative isolate overflow-hidden
+    spy-reward-tile group relative isolate
     [display:flex] items-center justify-center text-center
     [aspect-ratio:var(--rw-ratio,auto)]
     [min-height:var(--rw-min-h,0px)]

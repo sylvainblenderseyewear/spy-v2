@@ -92,6 +92,7 @@
             "highlight": "",
             "highlight_color": "#ee7624",
             "size": 28,
+            "fluid": true,
             "size_mobile": 23,
             "weight": "600",
             "line_height": 120,
@@ -104,8 +105,7 @@
             "margin_top": 28,
             "margin_bottom": 14,
             "margin_top_mobile": 23,
-            "margin_bottom_mobile": 12,
-            "fluid": true
+            "margin_bottom_mobile": 12
           },
           "blocks": {}
         },
@@ -171,8 +171,8 @@
       "blocks": {
         "static-collection-card": {
           "type": "_collection-card",
-          "static": true,
           "name": "Model card",
+          "static": true,
           "settings": {
             "placement": "below_image",
             "horizontal_alignment": "center",
@@ -209,9 +209,27 @@
       },
       "name": "ANSI — frames carousel",
       "settings": {
+        "content_source": "collections",
+        "collection_list": [
+          "rebar-ansi",
+          "rebar-se-ansi",
+          "logan",
+          "dirk"
+        ],
+        "max_products": 4,
+        "label_colors_one": "1 color available",
+        "label_colors_many": "[count] colors available",
+        "show_swatches": true,
+        "swatch_count": 4,
+        "show_price": true,
+        "label_price_from": "Starting from",
+        "product_card_gap": 0,
+        "happy_boost_icon": "",
+        "mips_icon": "",
+        "bonus_lens_icon": "",
+        "deadbolt_icon": "",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
-        "max_products": 4,
         "columns": 4,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
@@ -220,36 +238,10 @@
         "icons_style": "arrow",
         "icons_shape": "circle",
         "section_width": "full-width",
-        "horizontal_alignment": "center",
         "gap": 16,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "content_source": "collections",
-        "label_colors_one": "1 color available",
-        "label_colors_many": "[count] colors available",
-        "happy_boost_icon": "",
-        "mips_icon": "",
-        "bonus_lens_icon": "",
-        "deadbolt_icon": "",
-        "show_swatches": true,
-        "swatch_count": 4,
-        "show_price": true,
-        "label_price_from": "Starting from",
-        "product_card_gap": 0,
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-inline-start": 0,
-        "padding-inline-end": 0,
-        "collection_list": [
-          "rebar-ansi",
-          "rebar-se-ansi",
-          "logan",
-          "dirk"
-        ]
+        "padding-block-end": 0
       }
     },
     "content_rows": {
@@ -367,6 +359,7 @@
                     "highlight": "",
                     "highlight_color": "#ee7624",
                     "size": 28,
+                    "fluid": true,
                     "size_mobile": 23,
                     "weight": "600",
                     "line_height": 120,
@@ -379,8 +372,7 @@
                     "margin_top": 0,
                     "margin_bottom": 24,
                     "margin_top_mobile": 0,
-                    "margin_bottom_mobile": 24,
-                    "fluid": true
+                    "margin_bottom_mobile": 24
                   },
                   "blocks": {}
                 },
@@ -504,6 +496,7 @@
                     "highlight": "",
                     "highlight_color": "#ee7624",
                     "size": 28,
+                    "fluid": true,
                     "size_mobile": 23,
                     "weight": "600",
                     "line_height": 120,
@@ -516,8 +509,7 @@
                     "margin_top": 0,
                     "margin_bottom": 24,
                     "margin_top_mobile": 0,
-                    "margin_bottom_mobile": 24,
-                    "fluid": true
+                    "margin_bottom_mobile": 24
                   },
                   "blocks": {}
                 },
@@ -625,6 +617,7 @@
         "link": "shopify://collections/safety-sunglasses",
         "cta_style": "solid",
         "heading_size": 28,
+        "heading_fluid": true,
         "heading_size_mobile": 23,
         "content_align": "right",
         "content_valign": "center",
@@ -634,8 +627,7 @@
         "text_align_mobile": "center",
         "show_overlay": false,
         "content_width": "page",
-        "content_max_width": 1440,
-        "heading_fluid": true
+        "content_max_width": 1440
       }
     }
   },

@@ -728,6 +728,82 @@
     }
   }
 
+  /* Rewards page: stack the art over a black copy panel below 750, instead of the
+     overlay every other hero uses. Scoped to the template so no other hero moves.
+     Once the media grid leaves the overlay, the section's own grid gives us the two
+     rows for free. !important only where a block writes the value inline. */
+  @media screen and (max-width: 749px) {
+    main[data-template='page.rewards-program'] .hero {
+      /* Height follows the art + copy, not the "medium" preset */
+      min-height: 0;
+    }
+
+    /* Extra .hero to outweigh Horizon's `.shopify-section .section` transparency
+       reset. Art sits flush under the header, so the top padding goes too. */
+    main[data-template='page.rewards-program'] .hero .hero__container {
+      align-items: start;
+      background-color: #000;
+      --padding-block-start: 0px !important;
+      --padding-block-end: 0px !important;
+    }
+
+    /* Row 1: art back in flow, at the mobile asset's own ratio */
+    main[data-template='page.rewards-program'] .hero__media-grid {
+      position: relative;
+      inset: auto;
+    }
+
+    main[data-template='page.rewards-program'] .hero__media-grid :is(img, svg) {
+      height: auto;
+    }
+
+    /* Row 2: copy panel, centred, no desktop indent */
+    main[data-template='page.rewards-program'] .hero__content-wrapper {
+      padding-block: 24px 28px;
+    }
+
+    main[data-template='page.rewards-program'] .hero__content-wrapper,
+    main[data-template='page.rewards-program'] .hero__content-wrapper .group-block-content {
+      --horizontal-alignment: center !important;
+    }
+
+    main[data-template='page.rewards-program'] .hero__content-wrapper .group-block {
+      --padding-inline-start: 0px !important;
+      --padding-inline-end: 0px !important;
+    }
+
+    main[data-template='page.rewards-program'] .hero__content-wrapper .text-block {
+      --text-align: center !important;
+      /* Full-width boxes centre on their own, so no fit-content + auto margin */
+      --width: 100% !important;
+    }
+
+    /* The sub-copy is authored as two blocks ("...EARN POINTS" + "WHEN YOU SHOP"),
+       but the design reads it as one sentence that breaks on the line, not on the
+       block. Laying the copy group out as text flow instead of a flex column lets
+       the two run together; only the sub-copy goes inline, so the headings still
+       stack. The 18px the second block carried as padding moves to the group,
+       since block padding buys no height on an inline box. */
+    main[data-template='page.rewards-program']
+      .hero__content-wrapper
+      .group-block-content:has(.text-block--full-width) {
+      display: block;
+      text-align: center;
+      padding-block-end: 18px;
+    }
+
+    main[data-template='page.rewards-program'] .hero__content-wrapper .text-block--full-width,
+    main[data-template='page.rewards-program'] .hero__content-wrapper .text-block--full-width > * {
+      display: inline;
+    }
+
+    /* Both CTAs go edge to edge — the group is already mobile-column */
+    main[data-template='page.rewards-program'] .hero__content-wrapper a[class*='button'] {
+      --size-style-width-mobile: 100% !important;
+      --size-style-width-mobile-min: 100% !important;
+    }
+  }
+
   .hero__blurred-image img,
   .hero__blurred-image svg {
     position: absolute;

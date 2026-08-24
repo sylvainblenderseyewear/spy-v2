@@ -28,7 +28,7 @@
           "type": "spy-utility-nav",
           "settings": {
             "journal_label": "+JOURNAL+",
-            "journal_url": "shopify://blogs/journal",
+            "journal_url": "shopify://blogs/spy_blog",
             "menu": "",
             "show_search": true,
             "show_store_locator": true,
@@ -94,14 +94,9 @@
         "announcement_rVHzjz": {
           "type": "_announcement",
           "settings": {
-            "text": "Shop our latest arrivals!",
-            "link": "",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "weight": "",
-            "letter_spacing": "normal",
-            "case": "none",
-            "text_color": ""
+            "icon": "🔥",
+            "label": "Check out the sale section",
+            "url": ""
           },
           "blocks": {}
         }
@@ -113,9 +108,9 @@
       "settings": {
         "speed": 5,
         "section_width": "page-width",
-        "background_color": "#1D2A2B",
+        "background_color": "#1d2a2b",
         "text_color": "#ffffff",
-        "show_close_button": false,
+        "enable_close": true,
         "divider_width": 0,
         "divider_color": "",
         "padding-block-start": 15,
