@@ -53,6 +53,29 @@
     assign tech = technologies | first
   endif
 
+  # Most colourways only carry the technology as text ("Happy") while the logo lives
+  # on the metaobject, so match that text against each entry's alias list. Keeps the
+  # mapping in data: add an alias in the metaobject, no code change.
+  if tech == nil and tech_text != blank
+    assign tech_key = tech_text | downcase | strip
+    for entry in shop.metaobjects.technology.values
+      if tech != nil
+        break
+      endif
+      assign entry_name = entry.name.value | downcase | strip
+      if entry_name == tech_key
+        assign tech = entry
+      endif
+      for alias in entry.aliases.value
+        assign alias_key = alias | downcase | strip
+        if alias_key == tech_key
+          assign tech = entry
+          break
+        endif
+      endfor
+    endfor
+  endif
+
   assign drawer_logo = block.settings.drawer_logo
   assign drawer_title = block.settings.drawer_title
   assign drawer_blurb = block.settings.drawer_blurb
@@ -157,22 +180,20 @@
       # Metaobject first (it can supply the logo), else the variant's text value.
       assign tech_name = tech_text
       assign icon_src = ''
-      if technologies != blank
-        assign first_tech = technologies | first
-        if first_tech != blank
-          assign tech_name = first_tech.name.value | default: tech_text
-          assign tech_icon_file = first_tech.icon.value
-          assign icon_src = tech_icon_file | image_url: width: 200
-          if icon_src == blank
-            assign icon_src = tech_icon_file.url
-          endif
-          # Source draws the logo at its own size, no class on the img. The art is
-          # 100x20, so cap the height at 20 and let the width follow the ratio.
-          # It stays INLINE like the source, so it shares the 28px lead line box
-          # and the tile keeps its 76px height.
-          assign icon_w = tech_icon_file.width | default: 100
-          assign icon_h = tech_icon_file.height | default: 20
+      # `tech` is the product's linked entry, or the one matched from the text above
+      if tech != nil
+        assign tech_name = tech.name.value | default: tech_text
+        assign tech_icon_file = tech.icon.value
+        assign icon_src = tech_icon_file | image_url: width: 200
+        if icon_src == blank
+          assign icon_src = tech_icon_file.url
         endif
+        # Source draws the logo at its own size, no class on the img. The art is
+        # 100x20, so cap the height at 20 and let the width follow the ratio.
+        # It stays INLINE like the source, so it shares the 28px lead line box
+        # and the tile keeps its 76px height.
+        assign icon_w = tech_icon_file.width | default: 100
+        assign icon_h = tech_icon_file.height | default: 20
       endif
     -%}
     {%- if tech_name != blank or icon_src != blank -%}
