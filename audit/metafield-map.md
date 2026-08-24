@@ -9,7 +9,7 @@
 | Block / Section | File | Metafield(s) Read |
 |---|---|---|
 | Breadcrumbs | `blocks/spy-breadcrumbs.liquid` | `product.collections` (first non-all/non-frontpage) |
-| Lens Info | `blocks/spy-lens-info.liquid` | `spec.vlt_percent`, `spec.lens_category`, `spec.base_tint`, `spec.mirror_tint`, `spec.polarized`, `spec.technologies` → `technology.name`, `.icon`; `goggle.otg` |
+| Lens Info | `blocks/spy-lens-info.liquid` | `spec.vlt_percent`, `spec.lens_category`, `spec.base_tint`, `spec.mirror_tint`, `spec.polarized`, `spec.technologies` → `technology.name`, `.icon`; `goggle.otg`. With no `spec.technologies`, `spec.lens_technology` text is matched against `technology.aliases` so the logo still resolves — add an alias, no code change. |
 | Variant picker | Horizon `variant-picker` block | `product.options_with_values`, `variant.swatch` (file) |
 | Frame Fit Guide | `blocks/spy-frame-fit-guide.liquid` | **Collection**: `custom.fit_guide` → `fit_guide.frame_name`, `.image_front`, `.image_side`, `.temple_width`, `.temple_length`, `.lens_height`, `.frame_fit`, `.temple_pressure`, `.frame_size` (smallest collection wins). Fallback: `spec.fit` |
 | Buy Buttons | Horizon `buy-buttons` block | — |
