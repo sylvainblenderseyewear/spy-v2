@@ -50,7 +50,12 @@
         id="header-group"
         class="has-[[data-spy-sticky]]:sticky has-[[data-spy-sticky]]:top-0 has-[[data-spy-sticky]]:z-50"
       >
-        {% sections 'header-group' %}
+        {% comment %} 404 gets the source's stripped chrome: logo only, no nav. {% endcomment %}
+        {% if request.page_type == '404' %}
+          {% sections 'header-404-group' %}
+        {% else %}
+          {% sections 'header-group' %}
+        {% endif %}
       </div>
 
       <script>
@@ -123,7 +128,8 @@
 
       <main
         id="MainContent"
-        class="content-for-layout"
+        {% comment %} grow keeps the short 404 page's footer on the viewport bottom, like the source. {% endcomment %}
+        class="content-for-layout{% if request.page_type == '404' %} grow{% endif %}"
         role="main"
         data-page-transition-enabled="{{ settings.page_transition_enabled }}"
         data-product-transition="{{ settings.transition_to_main_product }}"
@@ -133,7 +139,11 @@
       </main>
 
       <footer>
-        {% sections 'footer-group' %}
+        {% if request.page_type == '404' %}
+          {% sections 'footer-404-group' %}
+        {% else %}
+          {% sections 'footer-group' %}
+        {% endif %}
       </footer>
     </div>
 

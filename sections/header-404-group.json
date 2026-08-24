@@ -1,0 +1,18 @@
+{
+  "type": "header",
+  "name": "404 header",
+  "sections": {
+    "slim_header": {
+      "type": "spy-slim-header",
+      "settings": {
+        "logo_width": 80,
+        "logo_height": 40,
+        "background_color": "#ffffff",
+        "height": 110,
+        "height_mobile": 56,
+        "padding": 16
+      }
+    }
+  },
+  "order": ["slim_header"]
+}

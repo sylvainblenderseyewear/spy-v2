@@ -1,0 +1,115 @@
+{%- comment -%}
+  Slim footer brand band — dark strip with the centred SPY logo. This is all the
+  source keeps of the footer on checkout-style pages (404): no menus, no social,
+  no signup. The utility rows below it come from spy-footer-utilities.
+{%- endcomment -%}
+
+{%- liquid
+  assign bg = section.settings.background_color
+
+  if bg != blank
+    render 'contrast-override', background_color: bg, section_id: section.id
+  endif
+-%}
+
+<div
+  class="spy-slim-footer w-full{% if bg != blank %} color-custom-{{ section.id }}{% endif %}"
+  style="{% if bg != blank %}background-color: {{ bg }};{% endif %}"
+  {{ section.shopify_attributes }}
+>
+  <div
+    class="mx-auto w-full px-[15px] text-center min-[544px]:max-w-[540px] min-[769px]:max-w-[720px] min-[992px]:max-w-[1140px] min-[1200px]:max-w-[1440px]"
+  >
+    <div
+      class="w-full justify-center [display:flex] [padding-block:var(--brand-pad-mobile)] min-[769px]:[padding-block:var(--brand-pad)]"
+      style="--brand-pad: {{ section.settings.padding }}px; --brand-pad-mobile: {{ section.settings.padding_mobile }}px;"
+    >
+      <a
+        href="{{ routes.root_url }}"
+        class="block [&_svg]:block [&_svg]:h-[var(--logo-h)] [&_svg]:w-auto"
+        style="--logo-h: {{ section.settings.logo_height }}px;"
+        aria-label="{{ shop.name }}"
+      >
+        {%- if section.settings.logo != blank -%}
+          <img
+            src="{{ section.settings.logo | image_url: width: 320 }}"
+            alt="{{ shop.name | escape }}"
+            class="block h-[var(--logo-h)] w-auto"
+            loading="lazy"
+          >
+        {%- else -%}
+          {{- 'spy-logo.svg' | inline_asset_content -}}
+        {%- endif -%}
+      </a>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SPY Slim Footer",
+  "tag": "section",
+  "class": "section-wrapper",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "Leave empty to use the built-in SPY logo."
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo height",
+      "min": 40,
+      "max": 140,
+      "step": 1,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "header",
+      "content": "Band"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#272727"
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding — desktop",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Padding — mobile",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Slim Footer",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

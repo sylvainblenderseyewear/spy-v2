@@ -1,0 +1,255 @@
+{%- comment -%}
+  404 content — "Sorry!" over a one-line message and a full-width orange CTA.
+
+  The title sits outside the container (full-bleed, centred) and the message
+  inside it, exactly like the source. The button keeps Bootstrap's
+  row/col-sm-6 maths: the row pulls out 15px each side, the half column pads
+  15px back in, so the button is 690px wide inside a 1440 container.
+
+  Type scales with the viewport the way the source does (RFS): it grows until
+  1200px, where it hits the desktop size and stops. base = size - slope * 12.
+{%- endcomment -%}
+
+{%- liquid
+  assign title_slope = 0.9
+  assign message_slope = 0.6
+
+  assign title_base = title_slope | times: 12 | times: -1 | plus: section.settings.title_size
+  assign message_base = message_slope | times: 12 | times: -1 | plus: section.settings.message_size
+
+  assign button_url = section.settings.button_link | default: routes.root_url
+
+  # Horizon's h1/h2 styles are uppercase brand-wide; the source's 404 is not
+  if section.settings.uppercase
+    assign case_class = 'uppercase'
+  else
+    assign case_class = 'normal-case'
+  endif
+-%}
+
+<div
+  class="spy-404 w-full"
+  style="
+    background-color: {{ section.settings.background_color }};
+    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+  "
+  {{ section.shopify_attributes }}
+>
+  {%- if section.settings.title != blank -%}
+    <h1
+      class="mt-4 mb-2 w-full {{ case_class }} text-center text-[length:var(--t-size)] font-[number:var(--t-weight)] leading-[var(--t-leading)] text-[color:var(--t-color)]"
+      style="
+        --t-size: min({{ section.settings.title_size }}px, calc({{ title_base }}px + {{ title_slope }}vw));
+        --t-weight: {{ section.settings.title_weight }};
+        --t-leading: {{ section.settings.line_height | divided_by: 100.0 }};
+        --t-color: {{ section.settings.text_color }};
+      "
+    >
+      {{- section.settings.title -}}
+    </h1>
+  {%- endif -%}
+
+  <div class="mx-auto w-full px-[15px] min-[544px]:max-w-[540px] min-[769px]:max-w-[720px] min-[992px]:max-w-[1140px] min-[1200px]:max-w-[1440px]">
+    {%- if section.settings.message != blank -%}
+      <h2
+        class="mb-2 w-full {{ case_class }} text-center text-[length:var(--m-size)] font-[number:var(--m-weight)] leading-[var(--m-leading)] text-[color:var(--m-color)]"
+        style="
+          --m-size: min({{ section.settings.message_size }}px, calc({{ message_base }}px + {{ message_slope }}vw));
+          --m-weight: {{ section.settings.title_weight }};
+          --m-leading: {{ section.settings.line_height | divided_by: 100.0 }};
+          --m-color: {{ section.settings.text_color }};
+        "
+      >
+        {{- section.settings.message -}}
+      </h2>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
+      {%- comment -%} [display:flex] not `flex`: Horizon's base.css owns that class name. {%- endcomment -%}
+      <div class="-mx-[15px] justify-center [display:flex]">
+        <div class="w-full px-[15px] min-[544px]:w-1/2">
+          <a
+            href="{{ button_url }}"
+            class="
+              block w-full border border-[color:var(--btn-bg)] bg-[var(--btn-bg)] px-3 py-2 text-center
+              align-middle text-[12px] font-normal uppercase leading-[1.4] text-[color:var(--btn-text)] no-underline
+              transition-[color,background-color,border-color,box-shadow] duration-150 ease-in-out
+              hover:border-[color:var(--btn-bg-hover)] hover:bg-[var(--btn-bg-hover)] hover:text-[color:var(--btn-text-hover)]
+              focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--btn-bg)]
+            "
+            style="
+              --btn-bg: {{ section.settings.button_background }};
+              --btn-text: {{ section.settings.button_text_color }};
+              --btn-bg-hover: {{ section.settings.button_background_hover }};
+              --btn-text-hover: {{ section.settings.button_text_color_hover }};
+            "
+          >
+            {{- section.settings.button_label -}}
+          </a>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SPY 404",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Sorry!"
+    },
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Message",
+      "default": "We cannot find the page you are looking for!"
+    },
+    {
+      "type": "header",
+      "content": "Type"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#1d2a2b"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "info": "Desktop size. Smaller screens scale down to it, like the source.",
+      "min": 20,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "message_size",
+      "label": "Message size",
+      "info": "Desktop size. Smaller screens scale down to it, like the source.",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "label": "Uppercase",
+      "info": "Off matches the source, even though the theme's headings are uppercase.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line height",
+      "min": 90,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "default": 120
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Label",
+      "default": "Continue Shopping"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link",
+      "info": "Empty links to the home page."
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Background",
+      "default": "#f27e37"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_background_hover",
+      "label": "Background — hover",
+      "default": "#272727"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color_hover",
+      "label": "Text — hover",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Band"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY 404",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

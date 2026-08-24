@@ -1,0 +1,131 @@
+{%- comment -%}
+  Slim header — logo only, centred. The source serves the 404 (and other
+  checkout-style pages) with the whole nav stripped out, so there is no menu,
+  search or cart here. The logo sits near the top: the band is 110px tall on
+  desktop but the logo stays at 21.2px, like the source.
+{%- endcomment -%}
+
+<div
+  class="spy-slim-header w-full min-h-[var(--slim-h-mobile)] min-[769px]:min-h-[var(--slim-h)]"
+  style="
+    background-color: {{ section.settings.background_color }};
+    --slim-h: {{ section.settings.height }}px;
+    --slim-h-mobile: {{ section.settings.height_mobile }}px;
+  "
+  {{ section.shopify_attributes }}
+>
+  {%- comment -%} [display:flex] not `flex`: Horizon's base.css owns that class name. {%- endcomment -%}
+  <div
+    class="w-full items-center justify-center [display:flex]"
+    style="padding: {{ section.settings.padding }}px;"
+  >
+    <a
+      href="{{ routes.root_url }}"
+      class="block py-[5.2px] [&_svg]:block [&_svg]:h-[var(--logo-h)] [&_svg]:w-[var(--logo-w)]"
+      style="--logo-w: {{ section.settings.logo_width }}px; --logo-h: {{ section.settings.logo_height }}px;"
+      aria-label="{{ shop.name }}"
+    >
+      {%- if section.settings.logo != blank -%}
+        <img
+          src="{{ section.settings.logo | image_url: width: 320 }}"
+          alt="{{ shop.name | escape }}"
+          width="{{ section.settings.logo_width }}"
+          height="{{ section.settings.logo_height }}"
+          class="block h-[var(--logo-h)] w-[var(--logo-w)]"
+          loading="eager"
+        >
+      {%- else -%}
+        {{- 'spy-logo.svg' | inline_asset_content -}}
+      {%- endif -%}
+    </a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SPY Slim Header",
+  "tag": "header",
+  "class": "spy-slim-header-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "Leave empty to use the built-in SPY logo."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 40,
+      "max": 140,
+      "step": 1,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo height",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Band"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Min height — desktop",
+      "min": 56,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 110
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Min height — mobile",
+      "min": 40,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Slim Header",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}
