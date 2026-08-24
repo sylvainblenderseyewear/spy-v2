@@ -1331,7 +1331,7 @@
           "name": "t:names.product_card",
           "static": true,
           "settings": {
-            "product_card_gap": 4,
+            "product_card_gap": 0,
             "background_color": "",
             "border": "none",
             "border_width": 1,
