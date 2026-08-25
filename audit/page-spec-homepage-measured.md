@@ -384,17 +384,34 @@ the `:active` and focus-ring states added to match.
 Verified by driving a real pointer: idle `#1d2a2b`/white → banner-wide hover **no change** → button
 hover white/`#1d2a2b`, with no image transform or opacity shift either way.
 
-### Broken nav links discovered
+### The five 404 collections — now created and published
 
-The mega-menu points at **five collections that 404** on the storefront: `fishing-sunglasses`,
-`lifestyle`, `classics`, `trail-collection`, `blue-light-glasses`. This is pre-existing and affects the
-header, not just the homepage. Only verified 200s are wired on this page, so those five tiles
-(Fishing, Lifestyle, Classics, Trail, Blue Light) render unlinked rather than sending people to a 404.
-Wire them the moment the collections are published.
+The mega-menu pointed at five collections that 404'd. `blue-light-glasses` already existed with 17
+products and was simply missing from the Online Store publication; the other four did not exist.
 
-Every link on the homepage now resolves: hero → `moto-goggles`, tiles → `snow-goggles` /
-`safety-sunglasses` / `moto-goggles`, Region → `sunglasses`, strip → `sunglasses`, Watermen →
-`pages/watermen`, half banners → `pages/rewards-program` and `collections/happy-boost`.
+Staging has no activity taxonomy — the only product tags are `collection::<MODEL>` grouping tags — so
+membership was derived from the source's own category pages and mapped onto those tags:
+
+| collection | source page | models | products |
+|---|---|---|---|
+| `fishing-sunglasses` | `/us/sunglasses/fishing-sunglasses/` | Mainline ANSI, Overhaul, Overhaul XL, Rebar ANSI, Region, Region XL | 27 |
+| `lifestyle` | `/us/collections/sunglasses/lifestyle-collection/` | Cyrus, Discord, Discord SLAYCO, Helm | 31 |
+| `classics` | `/us/collections/sunglasses/classics-collection/` | Bounty, Cooper, Dirk, General, Logan, Rocky | 21 |
+| `trail-collection` | `/us/collections/sunglasses/trail-collection/` | Monolith Speed, Overhaul, Overhaul XL, Super Flynn | 19 |
+
+All four are smart collections with disjunctive `TAG EQUALS collection::<MODEL>` rules, so they keep
+themselves up to date as products are tagged. All five are published and return 200.
+
+**Every homepage link now resolves**, and all 8 tiles are real anchors: Snow → `snow-goggles`,
+Safety → `safety-sunglasses`, Fishing → `fishing-sunglasses`, Lifestyle → `lifestyle`,
+Classics → `classics`, Moto → `moto-goggles`, Trail → `trail-collection`,
+Blue Light → `blue-light-glasses`. Hero → `moto-goggles`, Region and Watermen banners →
+`fishing-sunglasses` (the source's own target), strip → `sunglasses`, half banners →
+`pages/rewards-program` and `collections/happy-boost`.
+
+The Watermen rail was repointed at `fishing-sunglasses` too, which is exactly the model set the source
+shows in that row. It still renders several colourways of the same model where the source shows one
+card per model — the rail has no model-grouping, unlike Horizon's `product-list`.
 
 ### Known, deliberate non-ports
 

@@ -43,7 +43,7 @@
             "image": "shopify://shop_images/fishing.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-FISHING-HOVER_jpg.webp",
             "label": "Fishing",
-            "link": ""
+            "link": "shopify://collections/fishing-sunglasses"
           }
         },
         "tile_ypbPi3": {
@@ -52,7 +52,7 @@
             "image": "shopify://shop_images/lifestyle.webp",
             "hover_image": "shopify://shop_images/lifestyle-hover.webp",
             "label": "Lifestyle",
-            "link": ""
+            "link": "shopify://collections/lifestyle"
           }
         },
         "tile_aydk6r": {
@@ -61,7 +61,7 @@
             "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-CLASSICS.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-CLASSICS-HOVER.webp",
             "label": "Classics",
-            "link": ""
+            "link": "shopify://collections/classics"
           }
         },
         "tile_PtCzT4": {
@@ -79,7 +79,7 @@
             "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-TRAILV2.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-TRAIL-HOVER.webp",
             "label": "Trail",
-            "link": ""
+            "link": "shopify://collections/trail-collection"
           }
         },
         "tile_TRD7Kn": {
@@ -88,7 +88,7 @@
             "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-BLUE_LIGHTV2.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-BLUELIGHT-HOVER.webp",
             "label": "Blue Light",
-            "link": ""
+            "link": "shopify://collections/blue-light-glasses"
           }
         }
       },
@@ -136,7 +136,7 @@
         "eyebrow": "",
         "heading": "REGION XL",
         "cta_label": "SHOP NOW",
-        "link": "shopify://collections/sunglasses",
+        "link": "shopify://collections/fishing-sunglasses",
         "cta_style": "solid",
         "heading_size": 62,
         "heading_fluid": false,
@@ -328,7 +328,7 @@
         "eyebrow": "",
         "heading": "WATERMEN COLLECTION",
         "cta_label": "SHOP NOW",
-        "link": "shopify://pages/watermen",
+        "link": "shopify://collections/fishing-sunglasses",
         "cta_style": "solid",
         "heading_size": 48,
         "heading_fluid": false,
@@ -481,7 +481,7 @@
         }
       },
       "settings": {
-        "collection": "sunglasses",
+        "collection": "fishing-sunglasses",
         "max_products": 5,
         "count_desktop": 5,
         "count_tablet": 3,
