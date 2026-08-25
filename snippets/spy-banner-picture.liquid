@@ -1,0 +1,64 @@
+{%- doc -%}
+  Responsive banner artwork as a real <picture>.
+
+  The source serves these as <picture> with `<source media="(min-width: 992px)">` for the
+  landscape crop and a second source for the portrait one, so the browser fetches exactly
+  one file. Showing and hiding two <img> tags with classes looks the same but downloads
+  both — on a full-bleed banner that is a wasted 1920px asset on every phone.
+
+  Height always comes from the file's own ratio: no aspect-ratio, no crop.
+
+  @param {object} desktop - image for 992px and up
+  @param {object} [mobile] - image below 992px; falls back to desktop
+  @param {string} [alt] - alt text
+  @param {string} [sizes] - sizes attribute, defaults to 100vw
+  @param {string} [class] - classes for the <img>
+  @param {string} [loading] - lazy (default) or eager
+
+  @example
+  {%- render 'spy-banner-picture', desktop: img_d, mobile: img_m, alt: 'Region XL' -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign small = mobile | default: desktop
+  assign img_class = class | default: 'w-full h-auto block'
+  assign img_sizes = sizes | default: '100vw'
+  assign img_loading = loading | default: 'lazy'
+-%}
+
+{%- if desktop != blank or small != blank -%}
+  <picture>
+    {%- if desktop != blank -%}
+      <source
+        media="(min-width: 992px)"
+        srcset="
+          {{ desktop | image_url: width: 750 }} 750w,
+          {{ desktop | image_url: width: 1100 }} 1100w,
+          {{ desktop | image_url: width: 1500 }} 1500w,
+          {{ desktop | image_url: width: 2000 }} 2000w
+        "
+        sizes="{{ img_sizes }}"
+      >
+    {%- endif -%}
+    {%- if small != blank -%}
+      <source
+        media="(min-width: 320px)"
+        srcset="
+          {{ small | image_url: width: 390 }} 390w,
+          {{ small | image_url: width: 550 }} 550w,
+          {{ small | image_url: width: 800 }} 800w,
+          {{ small | image_url: width: 1000 }} 1000w
+        "
+        sizes="{{ img_sizes }}"
+      >
+    {%- endif -%}
+    {%- assign fallback = desktop | default: small -%}
+    <img
+      src="{{ fallback | image_url: width: 1500 }}"
+      alt="{{ alt }}"
+      loading="{{ img_loading }}"
+      decoding="async"
+      class="{{ img_class }}"
+    >
+  </picture>
+{%- endif -%}

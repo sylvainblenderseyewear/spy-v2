@@ -52,6 +52,7 @@
     class="spy-category-tiles__carousel block relative"
     data-loop="{{ show_arrows }}"
     data-display="{{ display_count }}"
+    data-speed="{{ section.settings.transition_speed }}"
   >
     {%- if show_arrows -%}
       <button
@@ -78,11 +79,16 @@
         {%- if img == blank and label == blank -%}{%- continue -%}{%- endif -%}
         {%- assign tile_alt = label | escape -%}
 
-        <a
+        {%- comment -%}
+          A tile with no link is a plain div, not <a href="#">. A dead anchor is
+          focusable, announced as a link and goes nowhere when clicked.
+        {%- endcomment -%}
+        {%- if link != blank -%}{%- assign card_tag = 'a' -%}{%- else -%}{%- assign card_tag = 'div' -%}{%- endif -%}
+        <{{ card_tag }}
           data-card
           draggable="false"
           class="spy-category-tiles__card group relative shrink-0 grow-0 min-w-0 snap-start no-underline w-[var(--spy-tile-w-sm)] h-[var(--spy-tile-h-sm)] min-[769px]:w-[var(--spy-tile-w-md)] min-[769px]:h-[var(--spy-tile-h-md)] min-[992px]:w-[var(--spy-tile-w-lg)] min-[992px]:h-[var(--spy-tile-h-lg)]"
-          href="{{ link | default: '#' }}"
+          {% if link != blank %}href="{{ link }}"{% endif %}
           {{ block.shopify_attributes }}
         >
           {%- comment %} Source insets the art 88% x 90% and pins it to the top, not the middle {% endcomment -%}
@@ -124,7 +130,7 @@
               </div>
             {%- endif -%}
           </div>
-        </a>
+        </{{ card_tag }}>
       {%- endfor -%}
     </div>
 
@@ -313,13 +319,40 @@
           return clone;
         }
 
-        // One card per click
+        // One card per click, glided over the source's slick speed rather than
+        // the browser's own smooth-scroll timing
         step(dir) {
           const card = this.track.querySelector('[data-card]');
           if (!card) return;
           const gap = parseFloat(getComputedStyle(this.track).columnGap) || 0;
           const amount = (card.getBoundingClientRect().width + gap) * dir;
-          this.track.scrollBy({ left: amount, behavior: this.reduceMotion ? 'auto' : 'smooth' });
+          this.tween(this.track.scrollLeft + amount);
+        }
+
+        tween(to) {
+          const track = this.track;
+          const speed = parseInt(this.dataset.speed, 10) || 200;
+          if (this.reduceMotion || speed <= 0) {
+            track.scrollLeft = to;
+            return;
+          }
+          const from = track.scrollLeft;
+          const dist = to - from;
+          if (!dist) return;
+          // Snap fights a scripted scroll, so it is parked for the duration
+          track.style.setProperty('scroll-snap-type', 'none', 'important');
+          const t0 = performance.now();
+          const ease = (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+          const frame = (now) => {
+            const p = Math.min(1, (now - t0) / speed);
+            track.scrollLeft = from + dist * ease(p);
+            if (p < 1) requestAnimationFrame(frame);
+            else {
+              track.style.removeProperty('scroll-snap-type');
+              this.normalize();
+            }
+          };
+          requestAnimationFrame(frame);
         }
 
         // Silently jump between clones and their real twins for a seamless loop
@@ -458,6 +491,17 @@
       "default": -50,
       "label": "Space below",
       "info": "Negative pulls the next section up into the card's empty strip."
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "label": "Glide duration",
+      "min": 0,
+      "max": 600,
+      "step": 50,
+      "unit": "ms",
+      "default": 200,
+      "info": "The source runs this carousel at 200ms."
     },
     {
       "type": "range",

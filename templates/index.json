@@ -18,7 +18,7 @@
             "image": "shopify://shop_images/snow.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SNOW-HOVER_jpg.webp",
             "label": "Snow",
-            "link": ""
+            "link": "shopify://collections/snow-goggles"
           }
         },
         "tile_Xyd7Pd": {
@@ -27,7 +27,7 @@
             "image": "shopify://shop_images/safety.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SAFETY-HOVER_jpg.webp",
             "label": "Safety",
-            "link": ""
+            "link": "shopify://collections/safety-sunglasses"
           }
         },
         "tile_qWTqGU": {
@@ -70,7 +70,7 @@
             "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-MOTO.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-MOTO-HOVER.jpg",
             "label": "Moto",
-            "link": ""
+            "link": "shopify://collections/moto-goggles"
           }
         },
         "tile_b7znmT": {
@@ -132,7 +132,7 @@
       "type": "spy-feature-link-banner",
       "settings": {
         "image_desktop": "shopify://shop_images/region_xl.webp",
-        "image_mobile": "",
+        "image_mobile": "shopify://shop_images/26-SPY-Digital-Homepage-Banner-Week25-Region-Mobile-800x1200px.jpg",
         "eyebrow": "",
         "heading": "REGION XL",
         "cta_label": "SHOP NOW",
@@ -160,7 +160,7 @@
       "type": "spy-link-strip",
       "settings": {
         "label": "SHOP NEW ARRIVALS",
-        "link": "shopify://collections/new-arrivals",
+        "link": "shopify://collections/sunglasses",
         "font_size": 35,
         "font": "var(--font-body--family)",
         "font_weight": "400",
@@ -324,7 +324,7 @@
       "type": "spy-feature-link-banner",
       "settings": {
         "image_desktop": "shopify://shop_images/watermen_collection.webp",
-        "image_mobile": "",
+        "image_mobile": "shopify://shop_images/26-SPY-Digital-Homepage-Banner-Week21-Watermens-Mobile-800x1200.jpg",
         "eyebrow": "",
         "heading": "WATERMEN COLLECTION",
         "cta_label": "SHOP NOW",
@@ -523,7 +523,7 @@
             "heading_size": 48,
             "heading_size_mobile": 26,
             "cta_label": "SHOP HAPPY BOOST",
-            "link": "shopify://pages/happy-boost"
+            "link": "shopify://collections/happy-boost"
           }
         }
       },
@@ -544,8 +544,8 @@
         "media_type": "video",
         "video_url": "https://vimeo.com/1218129261",
         "video_url_mobile": "https://vimeo.com/1218129262",
-        "ratio_w": 32,
-        "ratio_h": 10,
+        "ratio_w": 12,
+        "ratio_h": 5,
         "ratio_w_mobile": 2,
         "ratio_h_mobile": 3,
         "image_desktop": "",
@@ -553,7 +553,7 @@
         "eyebrow": "",
         "heading": "",
         "cta_label": "SHOP MX GOGGLES",
-        "link": "shopify://collections/all",
+        "link": "shopify://collections/moto-goggles",
         "link_scope": "cta",
         "cta_style": "solid",
         "heading_size": 62,

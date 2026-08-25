@@ -58,6 +58,12 @@
 -%}
 
 {%- comment -%}
+  The source scrolls a whole page of cards on the wider steps — 3 at a time in the
+  721–1140 band, 2 at a time in 541–720 — and only single-steps at the extremes.
+  It also wraps around at 540 and below. Both are read straight off its slick config.
+{%- endcomment -%}
+
+{%- comment -%}
   section-resource-list is the scope the shared product-card CSS hangs off. Without it
   the card renders unstyled — the swatch thumb balloons to the full card width.
 {%- endcomment -%}
@@ -78,7 +84,15 @@
   {%- comment -%} Brings in the shared .resource-list__item rules the card leans on {%- endcomment -%}
   {%- render 'resource-list-styles' -%}
 
-  <spy-product-rail class="block relative">
+  <spy-product-rail
+    class="block relative"
+    data-step-mobile="{{ section.settings.scroll_mobile }}"
+    data-step-small="{{ section.settings.scroll_small }}"
+    data-step-tablet="{{ section.settings.scroll_tablet }}"
+    data-step-desktop="{{ section.settings.scroll_desktop }}"
+    data-wrap-mobile="{{ section.settings.wrap_mobile }}"
+    data-speed="{{ section.settings.transition_speed }}"
+  >
     <button
       type="button"
       data-prev
@@ -141,8 +155,17 @@
       </svg>
     </button>
 
-    {%- comment -%} Source dots: 10px solid ink circles, 4px apart, 16px off the bottom {%- endcomment -%}
-    <div data-dots class="{{ dot_classes }} absolute inset-x-0 bottom-4 items-center justify-center gap-2" aria-hidden="true"></div>
+    {%- comment -%}
+      Source dots: 10px solid ink circles, 4px apart, 16px off the bottom.
+      These are real buttons, so the group must not be aria-hidden — that would leave
+      focusable controls unreachable to a screen reader.
+    {%- endcomment -%}
+    <div
+      data-dots
+      class="{{ dot_classes }} absolute inset-x-0 bottom-4 items-center justify-center gap-2"
+      role="group"
+      aria-label="Choose a product"
+    ></div>
   </spy-product-rail>
 </div>
 
@@ -171,14 +194,108 @@
           this.track = this.querySelector('[data-track]');
           if (!this.track) return;
           this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          this.speed = parseInt(this.dataset.speed, 10) || 300;
 
           this.querySelector('[data-prev]')?.addEventListener('click', () => this.step(-1));
           this.querySelector('[data-next]')?.addEventListener('click', () => this.step(1));
 
           this.dots = this.querySelector('[data-dots]');
           this.buildDots();
+          this.setupDrag();
           this.track.addEventListener('scroll', () => this.queueSync());
           window.addEventListener('resize', () => this.queueSync());
+        }
+
+        // How many cards one arrow click moves, per the source's slidesToScroll
+        get stepSize() {
+          const w = window.innerWidth;
+          let key = 'desktop';
+          if (w <= 540) key = 'mobile';
+          else if (w <= 720) key = 'small';
+          else if (w <= 1140) key = 'tablet';
+          return parseInt(this.dataset['step' + key[0].toUpperCase() + key.slice(1)], 10) || 1;
+        }
+
+        // The source only wraps around at 540 and below
+        get wraps() {
+          return window.innerWidth <= 540 && this.dataset.wrapMobile === 'true';
+        }
+
+        // Mouse drag. Touch keeps the browser's own scrolling.
+        setupDrag() {
+          const track = this.track;
+          let down = false;
+          let startX = 0;
+          let startScroll = 0;
+          let moved = false;
+
+          track.addEventListener('pointerdown', (e) => {
+            if (e.pointerType !== 'mouse') return;
+            down = true;
+            moved = false;
+            startX = e.clientX;
+            startScroll = track.scrollLeft;
+            // Utilities compile !important, so inline styles need the priority flag
+            track.style.setProperty('cursor', 'grabbing', 'important');
+            track.style.setProperty('scroll-snap-type', 'none', 'important');
+            track.setPointerCapture(e.pointerId);
+          });
+
+          track.addEventListener('pointermove', (e) => {
+            if (!down) return;
+            const dx = e.clientX - startX;
+            if (Math.abs(dx) > 3) moved = true;
+            track.scrollLeft = startScroll - dx;
+          });
+
+          const end = () => {
+            if (!down) return;
+            down = false;
+            track.style.removeProperty('cursor');
+            track.style.removeProperty('scroll-snap-type');
+          };
+          track.addEventListener('pointerup', end);
+          track.addEventListener('pointercancel', end);
+
+          // Swallow the click after a real drag so the card link does not open
+          track.addEventListener(
+            'click',
+            (e) => {
+              if (moved) {
+                e.preventDefault();
+                e.stopPropagation();
+                moved = false;
+              }
+            },
+            true
+          );
+
+          track.addEventListener('dragstart', (e) => e.preventDefault());
+        }
+
+        // Timed tween so the glide matches slick's speed instead of the browser's default
+        tween(to) {
+          const track = this.track;
+          const max = track.scrollWidth - track.clientWidth;
+          const target = Math.max(0, Math.min(to, max));
+          if (this.reduceMotion || this.speed <= 0) {
+            track.scrollLeft = target;
+            return;
+          }
+          const from = track.scrollLeft;
+          const dist = target - from;
+          if (!dist) return;
+          // Snap fights a scripted scroll, so it is parked for the duration
+          track.style.setProperty('scroll-snap-type', 'none', 'important');
+          const t0 = performance.now();
+          const ease = (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+          const frame = (now) => {
+            const p = Math.min(1, (now - t0) / this.speed);
+            track.scrollLeft = from + dist * ease(p);
+            if (p < 1) requestAnimationFrame(frame);
+            else track.style.removeProperty('scroll-snap-type');
+          };
+          requestAnimationFrame(frame);
         }
 
         get slides() {
@@ -224,19 +341,23 @@
         scrollToIndex(i) {
           const s = this.slides[i];
           if (!s) return;
-          this.track.scrollTo({
-            left: s.offsetLeft - this.track.offsetLeft,
-            behavior: this.reduceMotion ? 'auto' : 'smooth',
-          });
+          this.tween(s.offsetLeft - this.track.offsetLeft);
         }
 
+        // One page of cards per click, wrapping at the ends where the source wraps
         step(dir) {
           const s = this.slides[0];
           if (!s) return;
-          this.track.scrollBy({
-            left: s.getBoundingClientRect().width * dir,
-            behavior: this.reduceMotion ? 'auto' : 'smooth',
-          });
+          const track = this.track;
+          const max = track.scrollWidth - track.clientWidth;
+          const amount = s.getBoundingClientRect().width * this.stepSize * dir;
+          const next = track.scrollLeft + amount;
+
+          if (this.wraps) {
+            if (next > max + 1) return this.tween(0);
+            if (next < -1) return this.tween(max);
+          }
+          this.tween(next);
         }
       }
     );
@@ -339,6 +460,64 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Cards moved per arrow click"
+    },
+    {
+      "type": "range",
+      "id": "scroll_desktop",
+      "label": "1141px and up",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "scroll_tablet",
+      "label": "721–1140px",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "scroll_small",
+      "label": "541–720px",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "scroll_mobile",
+      "label": "540px and below",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "wrap_mobile",
+      "label": "Wrap around at 540px and below",
+      "default": true,
+      "info": "Matches the source, which only loops at the smallest step."
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "label": "Glide duration",
+      "min": 0,
+      "max": 800,
+      "step": 50,
+      "unit": "ms",
+      "default": 300,
+      "info": "Slick's default is 300ms."
     },
     {
       "type": "header",

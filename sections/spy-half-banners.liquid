@@ -56,31 +56,13 @@
             class="spy-half-banners__banner group relative block w-full overflow-hidden no-underline"
             {% if block.settings.cta_label == blank and block.settings.heading == blank %}aria-label="{{ banner_alt }}"{% endif %}
           >
-            {%- if desktop_img != blank -%}
-              {{
-                desktop_img
-                | image_url: width: 1400
-                | image_tag:
-                  loading: 'lazy',
-                  alt: banner_alt,
-                  sizes: '(max-width: 991px) 100vw, 50vw',
-                  widths: '600, 800, 1000, 1400',
-                  class: 'hidden min-[992px]:block w-full h-auto object-cover'
-              }}
-            {%- endif -%}
-
-            {%- if mobile_img != blank -%}
-              {{
-                mobile_img
-                | image_url: width: 1000
-                | image_tag:
-                  loading: 'lazy',
-                  alt: banner_alt,
-                  sizes: '100vw',
-                  widths: '390, 550, 800, 1000',
-                  class: 'block min-[992px]:hidden w-full h-auto object-cover'
-              }}
-            {%- endif -%}
+            {%- comment -%} One <picture> so only the needed crop is fetched {%- endcomment -%}
+            {%- render 'spy-banner-picture',
+              desktop: desktop_img,
+              mobile: mobile_img,
+              alt: banner_alt,
+              sizes: '(max-width: 991px) 100vw, 50vw'
+            -%}
 
             {%- if block.settings.heading != blank or block.settings.cta_label != blank -%}
               {%- comment -%} Source insets: container gutter 15px, copy box 16/16/64, bottom-centre {%- endcomment -%}
@@ -97,7 +79,7 @@
                     {%- endif -%}
 
                     {%- if block.settings.cta_label != blank -%}
-                      <span class="inline-block w-fit px-8 py-2 bg-white text-spy-ink border border-spy-ink text-sm leading-normal uppercase pointer-events-auto transition-colors duration-150 ease-in-out group-hover:bg-spy-ink group-hover:text-white">
+                      <span class="inline-block w-fit px-8 py-2 bg-white text-spy-ink border border-spy-ink text-sm leading-normal uppercase no-underline pointer-events-auto transition-[color,background-color,border-color,box-shadow] duration-150 ease-[cubic-bezier(0.42,0,0.58,1)] hover:bg-spy-ink hover:text-white active:bg-spy-ink active:text-white focus-visible:shadow-[0_0_0_0.2rem_rgba(29,42,43,0.5)]">
                         {{ block.settings.cta_label }}
                       </span>
                     {%- endif -%}

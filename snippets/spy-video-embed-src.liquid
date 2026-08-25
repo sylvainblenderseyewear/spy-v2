@@ -1,0 +1,44 @@
+{%- doc -%}
+  Echoes the background-video embed URL for a `video_url` setting.
+
+  Exists so a section can hand both the desktop and the mobile URL to one player and
+  swap between them, instead of rendering two iframes and letting the browser fetch a
+  video nobody can see.
+
+  Unlisted Vimeo videos only play with their privacy hash, and the `video_url` object
+  hands Liquid the bare id — so the hash is read back off the raw setting string, the
+  same way `video-slot` does it. Both /ID/HASH and ?h=HASH are valid share forms.
+
+  @param {object} video_url - the video_url setting
+  @param {string} [title] - unused here, kept for call-site clarity
+
+  @example
+  {%- capture src %}{% render 'spy-video-embed-src', video_url: settings.video_url %}{% endcapture -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign raw = video_url | append: ''
+  assign hash = ''
+  if raw contains 'vimeo'
+    if raw contains 'h='
+      assign hash = raw | split: 'h=' | last | split: '&' | first
+    else
+      assign tail = raw | split: '?' | first | split: '/' | last
+      if tail != video_url.id
+        assign hash = tail
+      endif
+    endif
+  endif
+-%}
+
+{%- comment -%}
+  The source sets autoplay / loop / muted / playsinline and `controls: false` — not
+  Vimeo's `background=1`. Background mode looks the same but also blocks all
+  interaction, so the parameter set is matched to the source's instead.
+{%- endcomment -%}
+{%- if video_url.type == 'vimeo' -%}
+  {%- capture params -%}autoplay=1&muted=1&loop=1&controls=0&playsinline=1{%- if hash != blank -%}&h={{ hash }}{%- endif -%}{%- endcapture -%}
+  {{- 'https://player.vimeo.com/video/' | append: video_url.id | append: '?' | append: params -}}
+{%- elsif video_url.type == 'youtube' -%}
+  {{- 'https://www.youtube.com/embed/' | append: video_url.id | append: '?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&playlist=' | append: video_url.id -}}
+{%- endif -%}
