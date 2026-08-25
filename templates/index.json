@@ -18,9 +18,7 @@
             "image": "shopify://shop_images/snow.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SNOW-HOVER_jpg.webp",
             "label": "Snow",
-            "link": "",
-            "aspect_ratio": "custom",
-            "custom_aspect_ratio": "3/4.2"
+            "link": ""
           }
         },
         "tile_Xyd7Pd": {
@@ -29,18 +27,14 @@
             "image": "shopify://shop_images/safety.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SAFETY-HOVER_jpg.webp",
             "label": "Safety",
-            "link": "",
-            "aspect_ratio": "custom",
-            "custom_aspect_ratio": "3/4.2"
+            "link": ""
           }
         },
         "tile_qWTqGU": {
           "type": "tile",
           "settings": {
             "label": "",
-            "link": "",
-            "aspect_ratio": "3:4",
-            "custom_aspect_ratio": ""
+            "link": ""
           }
         },
         "tile_AkPFxa": {
@@ -49,9 +43,7 @@
             "image": "shopify://shop_images/fishing.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-FISHING-HOVER_jpg.webp",
             "label": "Fishing",
-            "link": "",
-            "aspect_ratio": "custom",
-            "custom_aspect_ratio": "3/4.2"
+            "link": ""
           }
         },
         "tile_ypbPi3": {
@@ -60,9 +52,7 @@
             "image": "shopify://shop_images/lifestyle.webp",
             "hover_image": "shopify://shop_images/lifestyle-hover.webp",
             "label": "Lifestyle",
-            "link": "",
-            "aspect_ratio": "custom",
-            "custom_aspect_ratio": "3/4.2"
+            "link": ""
           }
         },
         "tile_aydk6r": {
@@ -71,9 +61,7 @@
             "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-CLASSICS.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-CLASSICS-HOVER.webp",
             "label": "Classics",
-            "link": "",
-            "aspect_ratio": "custom",
-            "custom_aspect_ratio": "3/4.2"
+            "link": ""
           }
         },
         "tile_PtCzT4": {
@@ -82,9 +70,7 @@
             "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-MOTO.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-MOTO-HOVER.jpg",
             "label": "Moto",
-            "link": "",
-            "aspect_ratio": "custom",
-            "custom_aspect_ratio": "3/4.2"
+            "link": ""
           }
         },
         "tile_b7znmT": {
@@ -93,9 +79,7 @@
             "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-TRAILV2.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-TRAIL-HOVER.webp",
             "label": "Trail",
-            "link": "",
-            "aspect_ratio": "custom",
-            "custom_aspect_ratio": "3/4.2"
+            "link": ""
           }
         },
         "tile_TRD7Kn": {
@@ -104,9 +88,7 @@
             "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-BLUE_LIGHTV2.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-BLUELIGHT-HOVER.webp",
             "label": "Blue Light",
-            "link": "",
-            "aspect_ratio": "custom",
-            "custom_aspect_ratio": "3/4.2"
+            "link": ""
           }
         }
       },
@@ -189,24 +171,6 @@
     },
     "spy_new_arrivals_carousel": {
       "type": "spy-product-carousel",
-      "settings": {
-        "collection": "sunglasses",
-        "max_products": 5,
-        "count_desktop": 5,
-        "count_tablet": 3,
-        "count_small": 2,
-        "count_mobile": 1,
-        "peek": 50,
-        "track_inset": 16,
-        "track_inset_mobile": 0,
-        "arrows_mobile": true,
-        "arrows_tablet": false,
-        "arrows_desktop": false,
-        "dots_mobile": true,
-        "arrow_size": 35,
-        "margin_top": 0,
-        "margin_bottom": 0
-      },
       "blocks": {
         "static-product-card": {
           "type": "_product-card",
@@ -336,6 +300,24 @@
             "price_YFxQDQ"
           ]
         }
+      },
+      "settings": {
+        "collection": "sunglasses",
+        "max_products": 5,
+        "count_desktop": 5,
+        "count_tablet": 3,
+        "count_small": 2,
+        "count_mobile": 1,
+        "peek": 50,
+        "track_inset": 16,
+        "track_inset_mobile": 0,
+        "arrows_mobile": true,
+        "arrows_tablet": false,
+        "arrows_desktop": false,
+        "dots_mobile": true,
+        "arrow_size": 35,
+        "margin_top": 0,
+        "margin_bottom": 0
       }
     },
     "spy_watermen_banner": {
@@ -368,24 +350,6 @@
     },
     "spy_watermen_carousel": {
       "type": "spy-product-carousel",
-      "settings": {
-        "collection": "sunglasses",
-        "max_products": 5,
-        "count_desktop": 5,
-        "count_tablet": 3,
-        "count_small": 2,
-        "count_mobile": 1,
-        "peek": 50,
-        "track_inset": 16,
-        "track_inset_mobile": 0,
-        "arrows_mobile": true,
-        "arrows_tablet": true,
-        "arrows_desktop": false,
-        "dots_mobile": true,
-        "arrow_size": 35,
-        "margin_top": 0,
-        "margin_bottom": 0
-      },
       "blocks": {
         "static-product-card": {
           "type": "_product-card",
@@ -515,6 +479,24 @@
             "price_YFxQDQ"
           ]
         }
+      },
+      "settings": {
+        "collection": "sunglasses",
+        "max_products": 5,
+        "count_desktop": 5,
+        "count_tablet": 3,
+        "count_small": 2,
+        "count_mobile": 1,
+        "peek": 50,
+        "track_inset": 16,
+        "track_inset_mobile": 0,
+        "arrows_mobile": true,
+        "arrows_tablet": true,
+        "arrows_desktop": false,
+        "dots_mobile": true,
+        "arrow_size": 35,
+        "margin_top": 0,
+        "margin_bottom": 0
       }
     },
     "spy_half_banners": {
