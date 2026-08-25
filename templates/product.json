@@ -199,7 +199,7 @@
                     "yotpo_product_reviews_star_rating_Rqzckf": {
                       "type": "shopify://apps/yotpo-product-reviews/blocks/star-rating/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
                       "settings": {
-                        "product": "{{closest.product}}"
+                        "product": "{{ closest.product }}"
                       }
                     },
                     "spy_rating_A1": {
