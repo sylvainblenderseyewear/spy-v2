@@ -70,7 +70,7 @@
 
     <div
       data-track
-      class="spy-category-tiles__track [display:flex] overflow-x-auto snap-x snap-mandatory select-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden{% if show_arrows %} cursor-grab{% endif %}"
+      class="spy-category-tiles__track [&[data-dragging]_a]:pointer-events-none [&[data-dragging]_button]:pointer-events-none [display:flex] overflow-x-auto snap-x snap-mandatory select-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden{% if show_arrows %} cursor-grab{% endif %}"
     >
       {%- for block in section.blocks -%}
         {%- assign img = block.settings.image -%}
@@ -177,6 +177,8 @@
           let startX = 0;
           let startScroll = 0;
           let moved = false;
+          let downX = 0;
+          let downY = 0;
           let lastX = 0;
           let lastT = 0;
           let velocity = 0;
@@ -186,6 +188,8 @@
             this.clearSnapRestore();
             down = true;
             moved = false;
+            downX = e.clientX;
+            downY = e.clientY;
             velocity = 0;
             startX = e.clientX;
             startScroll = track.scrollLeft;
@@ -194,13 +198,19 @@
             // Utilities are compiled !important, so inline styles need the priority flag to win
             track.style.setProperty('cursor', 'grabbing', 'important');
             track.style.setProperty('scroll-snap-type', 'none', 'important');
-            track.setPointerCapture(e.pointerId);
+            // No setPointerCapture: it retargets the click to the track, which kills
+            // every link and button inside the cards.
           });
 
-          track.addEventListener('pointermove', (e) => {
+          window.addEventListener('pointermove', (e) => {
             if (!down) return;
             const dx = e.clientX - startX;
-            if (Math.abs(dx) > 3) moved = true;
+            // Past the threshold this is a drag, not a click. Flagging the track kills
+            // pointer events on the cards, so mouseup cannot land on a link or button.
+            if (Math.abs(dx) > 3) {
+              moved = true;
+              track.dataset.dragging = '';
+            }
             track.scrollLeft = startScroll - dx;
 
             const now = performance.now();
@@ -213,6 +223,7 @@
           const end = () => {
             if (!down) return;
             down = false;
+            setTimeout(() => delete track.dataset.dragging, 0);
             track.style.removeProperty('cursor');
             // Glide a little in the flick direction, then ease onto the nearest card
             const projected = track.scrollLeft - velocity * 150;
@@ -221,14 +232,17 @@
             // so the release eases in instead of jumping, and touch keeps snapping
             this.restoreSnapAfterSettle();
           };
-          track.addEventListener('pointerup', end);
-          track.addEventListener('pointercancel', end);
+          window.addEventListener('pointerup', end);
+          window.addEventListener('pointercancel', end);
 
           // Swallow the click after a real drag so the card link does not open
           track.addEventListener(
             'click',
             (e) => {
-              if (moved) {
+              // Compare against where the press started. pointermove can be swallowed
+              // by a native image drag, so `moved` alone is not reliable.
+              const travelled = Math.hypot(e.clientX - downX, e.clientY - downY);
+              if (moved || travelled > 5) {
                 e.preventDefault();
                 e.stopPropagation();
                 moved = false;
