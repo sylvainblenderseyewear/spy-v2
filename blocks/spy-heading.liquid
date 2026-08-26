@@ -98,7 +98,22 @@
       {% if block.settings.max_width > 0 %}--sh-max: {{ block.settings.max_width }}px;{% endif %}
     "
     {{ block.shopify_attributes }}
-  >{{ body }}</{{ tag }}>
+  >
+    {%- comment -%}
+      Optional link, so a heading can double as a standalone text link — the source
+      does this for the homepage's oversized "SHOP NEW ARRIVALS". Colour and size stay
+      on the heading; the anchor only inherits them.
+    {%- endcomment -%}
+    {%- if block.settings.link != blank -%}
+      <a
+        href="{{ block.settings.link }}"
+        class="text-inherit no-underline hover:no-underline hover:opacity-100"
+        {% if block.settings.open_in_new_tab %}target="_blank" rel="noopener"{% endif %}
+      >{{ body }}</a>
+    {%- else -%}
+      {{ body }}
+    {%- endif -%}
+  </{{ tag }}>
 {%- endif -%}
 
 {% schema %}
@@ -111,6 +126,19 @@
       "id": "text",
       "label": "Heading",
       "default": "Section heading"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link",
+      "info": "Turns the whole heading into a link. Colour and size stay as set above."
+    },
+    {
+      "type": "checkbox",
+      "id": "open_in_new_tab",
+      "label": "Open in a new tab",
+      "default": false,
+      "visible_if": "{{ block.settings.link != blank }}"
     },
     {
       "type": "select",

@@ -156,19 +156,6 @@
         "margin_bottom": 0
       }
     },
-    "spy_new_arrivals_link": {
-      "type": "spy-link-strip",
-      "settings": {
-        "label": "SHOP NEW ARRIVALS",
-        "link": "shopify://collections/sunglasses",
-        "font_size": 35,
-        "font": "var(--font-body--family)",
-        "font_weight": "400",
-        "color": "orange",
-        "margin_top": 25,
-        "margin_bottom": 40
-      }
-    },
     "spy_new_arrivals_carousel": {
       "type": "spy-product-carousel",
       "blocks": {
@@ -572,6 +559,48 @@
         "margin_bottom_mobile": 0,
         "margin_top": 0,
         "margin_bottom": 0
+      }
+    },
+    "spy_new_arrivals_link": {
+      "type": "section",
+      "blocks": {
+        "new_arrivals_link": {
+          "type": "spy-heading",
+          "settings": {
+            "text": "SHOP NEW ARRIVALS",
+            "link": "shopify://collections/sunglasses",
+            "open_in_new_tab": false,
+            "level": "p",
+            "size": 35,
+            "fluid": false,
+            "size_mobile": 35,
+            "weight": "400",
+            "line_height": 140,
+            "letter_spacing": 0,
+            "uppercase": false,
+            "text_color": "#f27e37",
+            "align": "center",
+            "margin_top": 25,
+            "margin_bottom": 40,
+            "margin_top_mobile": 25,
+            "margin_bottom_mobile": 40,
+            "max_width": 0
+          }
+        }
+      },
+      "block_order": [
+        "new_arrivals_link"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "section_width": "full-width",
+        "section_height": "fit",
+        "gap": 0,
+        "background_media": "none",
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     }
   },
