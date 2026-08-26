@@ -212,12 +212,6 @@
               "settings": {},
               "blocks": {}
             },
-            "spy_color_count_hkXrAJ": {
-              "type": "spy-color-count",
-              "name": "Color Count",
-              "settings": {},
-              "blocks": {}
-            },
             "spy_swatches_CqRm9T": {
               "type": "spy-swatches",
               "name": "Color Preview",
@@ -274,6 +268,12 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "spy_variant_name_hp": {
+              "type": "spy-variant-name",
+              "name": "Colourway Name",
+              "settings": {},
+              "blocks": {}
             }
           },
           "block_order": [
@@ -281,7 +281,7 @@
             "product_card_gallery_eCNPeJ",
             "spy_quick_view_btn_M4hUjh",
             "spy_product_badge_fTWJ8m",
-            "spy_color_count_hkXrAJ",
+            "spy_variant_name_hp",
             "spy_swatches_CqRm9T",
             "product_title_3WpyTJ",
             "price_YFxQDQ"
@@ -391,12 +391,6 @@
               "settings": {},
               "blocks": {}
             },
-            "spy_color_count_hkXrAJ": {
-              "type": "spy-color-count",
-              "name": "Color Count",
-              "settings": {},
-              "blocks": {}
-            },
             "spy_swatches_CqRm9T": {
               "type": "spy-swatches",
               "name": "Color Preview",
@@ -453,6 +447,12 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "spy_variant_name_hp": {
+              "type": "spy-variant-name",
+              "name": "Colourway Name",
+              "settings": {},
+              "blocks": {}
             }
           },
           "block_order": [
@@ -460,7 +460,7 @@
             "product_card_gallery_eCNPeJ",
             "spy_quick_view_btn_M4hUjh",
             "spy_product_badge_fTWJ8m",
-            "spy_color_count_hkXrAJ",
+            "spy_variant_name_hp",
             "spy_swatches_CqRm9T",
             "product_title_3WpyTJ",
             "price_YFxQDQ"
