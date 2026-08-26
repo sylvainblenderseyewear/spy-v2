@@ -1,6 +1,6 @@
 // Quick View dialog: any [data-spy-qv="handle"] opens the shell in
 // spy-quick-view.liquid and fills it with the spy-quick-view-content section.
-// The gallery arrows/thumbs and the colour picker are wired after each fetch.
+// The gallery arrows and the colour picker are wired after each fetch.
 (() => {
   const SECTION = 'spy-quick-view-content';
 
@@ -32,9 +32,9 @@
 
     const track = gallery.querySelector('[data-spy-qv-track]');
     const slides = [...gallery.querySelectorAll('[data-spy-qv-slide]')];
-    const thumbs = [...gallery.querySelectorAll('[data-spy-qv-thumb]')];
     if (!track || slides.length < 2) return;
 
+    // Arrows only — the source dialog has no thumbnail rail. Swipe handles touch.
     const goTo = (index) => {
       const slide = slides[Math.max(0, Math.min(index, slides.length - 1))];
       if (slide) track.scrollTo({ left: slide.offsetLeft - track.offsetLeft, behavior: 'smooth' });
@@ -44,17 +44,6 @@
 
     gallery.querySelector('[data-spy-qv-prev]')?.addEventListener('click', () => goTo(current() - 1));
     gallery.querySelector('[data-spy-qv-next]')?.addEventListener('click', () => goTo(current() + 1));
-    thumbs.forEach((thumb) => thumb.addEventListener('click', () => goTo(Number(thumb.dataset.spyQvThumb))));
-
-    // Keep the active thumb in step with a swipe as well as with the arrows
-    let frame = 0;
-    track.addEventListener('scroll', () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const index = current();
-        thumbs.forEach((thumb, i) => thumb.classList.toggle('is-active', i === index));
-      });
-    });
   };
 
   /* ── colourways ──────────────────────────────────────────────────────── */

@@ -95,36 +95,11 @@
             {%- endif -%}
           </div>
 
-          {%- comment -%} Thumb strip sits under the image here, and only from 992px up {%- endcomment -%}
-          {%- if gallery.size > 1 -%}
-            <div class="mt-1 hidden flex-wrap gap-1 min-[992px]:[display:flex]" data-spy-qv-thumbs>
-              {%- for media in gallery -%}
-                <button
-                  type="button"
-                  class="relative h-[85px] w-[85px] cursor-pointer rounded-[2px] border-2 border-solid border-transparent bg-transparent p-0 transition-colors [&.is-active]:border-[color:var(--color-spy-orange-ui)]{% if forloop.first %} is-active{% endif %}"
-                  aria-label="{{ p.title | escape }} — {{ media.media_type }} {{ forloop.index }}"
-                  data-spy-qv-thumb="{{ forloop.index0 }}"
-                >
-                  <img
-                    src="{{ media.preview_image | image_url: width: 170 }}"
-                    alt=""
-                    width="85"
-                    height="85"
-                    loading="lazy"
-                    class="block h-full w-full object-contain"
-                  >
-                  {%- unless media.media_type == 'image' -%}
-                    {%- comment -%} Play badge marks the video thumb, as on the source rail {%- endcomment -%}
-                    <span class="absolute inset-0 [display:flex] items-center justify-center text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.5)]" aria-hidden="true">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" focusable="false">
-                        <path d="M8 5v14l11-7L8 5Z"/>
-                      </svg>
-                    </span>
-                  {%- endunless -%}
-                </button>
-              {%- endfor -%}
-            </div>
-          {%- endif -%}
+          {%- comment -%}
+            No thumbnail rail here. The source ships the markup but never shows it:
+            its .slick-paging-wrapper computes to height 0 with overflow hidden and
+            holds an absolutely positioned rail, so the dialog is arrows only.
+          {%- endcomment -%}
         </div>
       {%- endif -%}
     </div>
