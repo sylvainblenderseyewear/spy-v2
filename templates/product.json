@@ -203,18 +203,11 @@
                         "empty_label": "Write a review"
                       },
                       "blocks": {}
-                    },
-                    "yotpo_product_reviews_star_rating_6kQUVN": {
-                      "type": "shopify://apps/yotpo-product-reviews/blocks/star-rating/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
-                      "settings": {
-                        "product": "{{closest.product}}"
-                      }
                     }
                   },
                   "block_order": [
                     "price_tVjtKg",
-                    "spy_rating_A1",
-                    "yotpo_product_reviews_star_rating_6kQUVN"
+                    "spy_rating_A1"
                   ]
                 },
                 "spy_stock_A1": {
@@ -232,6 +225,12 @@
                 "group_price_row",
                 "spy_stock_A1"
               ]
+            },
+            "yotpo_product_reviews_star_rating_VbPMBB": {
+              "type": "shopify://apps/yotpo-product-reviews/blocks/star-rating/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
+              "settings": {
+                "product": "{{closest.product}}"
+              }
             },
             "spy_swatches_A1": {
               "type": "spy-swatches",
@@ -569,6 +568,7 @@
           },
           "block_order": [
             "group_icgrde",
+            "yotpo_product_reviews_star_rating_VbPMBB",
             "spy_swatches_A1",
             "spy_frame_summary_A1",
             "spy_frame_fit_guide_A1",
@@ -607,6 +607,49 @@
       "settings": {
         "heading": "",
         "alt": ""
+      }
+    },
+    "1787843154625a3635": {
+      "type": "_blocks",
+      "blocks": {
+        "yotpo_product_reviews_reviews_JkTjg3": {
+          "type": "shopify://apps/yotpo-product-reviews/blocks/reviews/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
+          "settings": {
+            "product": "{{closest.product}}"
+          }
+        }
+      },
+      "block_order": [
+        "yotpo_product_reviews_reviews_JkTjg3"
+      ],
+      "name": "Yotpo Reviews",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     },
     "product_recommendations_qggXJq": {
@@ -821,57 +864,14 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
-    },
-    "1787843154625a3635": {
-      "type": "_blocks",
-      "blocks": {
-        "yotpo_product_reviews_reviews_JkTjg3": {
-          "type": "shopify://apps/yotpo-product-reviews/blocks/reviews/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
-          "settings": {
-            "product": "{{closest.product}}"
-          }
-        }
-      },
-      "block_order": [
-        "yotpo_product_reviews_reviews_JkTjg3"
-      ],
-      "name": "Yotpo Reviews",
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "background_media": "none",
-        "background_color": "",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
     }
   },
   "order": [
     "main",
     "spy_lifestyle_carousel",
     "spy_feature_banner_A1",
+    "1787843154625a3635",
     "product_recommendations_qggXJq",
-    "1787669224036f0bcb",
-    "1787843154625a3635"
+    "1787669224036f0bcb"
   ]
 }
