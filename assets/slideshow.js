@@ -343,6 +343,9 @@ export class Slideshow extends Component {
   play(interval = this.autoplayInterval) {
     if (this.#interval) return;
 
+    // Auto-advancing motion is opt-out for anyone who asked the OS for less of it
+    if (prefersReducedMotion()) return;
+
     this.paused = false;
 
     this.#interval = setInterval(() => {
@@ -418,7 +421,7 @@ export class Slideshow extends Component {
    * @type {number}
    */
   set current(value) {
-    const { current, thumbnails, dots, slides, previous, next } = this.refs;
+    const { current, thumbnails, dots } = this.refs;
 
     this.#current = value;
 
@@ -428,8 +431,19 @@ export class Slideshow extends Component {
       controls?.forEach((el, i) => el.setAttribute('aria-selected', `${i === value}`));
     }
 
-    if (previous) previous.disabled = Boolean(!this.infinite && value === 0);
-    if (next) next.disabled = Boolean(!this.infinite && slides && this.nextIndex >= slides.length);
+    this.updateArrowState();
+  }
+
+  /**
+   * Syncs the arrows with the current index. Also has to run once the slide count
+   * per view is measured, since that decides where the rail runs out.
+   */
+  updateArrowState() {
+    const { previous, next } = this.refs;
+    const { slides } = this;
+
+    if (previous) previous.disabled = Boolean(!this.infinite && this.#current === 0);
+    if (next) next.disabled = Boolean(!this.infinite && slides && this.nextIndex > this.lastReachableIndex);
   }
 
   get infinite() {
@@ -440,18 +454,60 @@ export class Slideshow extends Component {
     return this.#visibleSlides;
   }
 
-  get previousIndex() {
-    const { current, visibleSlides } = this;
-    const modifier = visibleSlides.length > 1 ? visibleSlides.length : 1;
+  /**
+   * How many slides one arrow click moves. Unset means a whole page of visible slides.
+   * @returns {number|null}
+   */
+  get slideStep() {
+    const value = parseInt(this.getAttribute('slide-step') ?? '', 10);
 
-    return current - modifier;
+    if (Number.isNaN(value) || value < 1) return null;
+
+    return value;
+  }
+
+  /**
+   * Slides moved per arrow click.
+   * @returns {number}
+   */
+  get stepSize() {
+    const { visibleSlides } = this;
+
+    return this.slideStep ?? (visibleSlides.length > 1 ? visibleSlides.length : 1);
+  }
+
+  /**
+   * Last slide the rail can rest on. Stepping card by card must stop once the tail
+   * is in view, or the arrow stays live while nothing moves.
+   * @returns {number}
+   */
+  get lastReachableIndex() {
+    const { slides, visibleSlides } = this;
+    const count = slides?.length ?? 0;
+
+    if (!count) return 0;
+    if (!this.slideStep) return count - 1;
+
+    return Math.max(0, count - Math.max(visibleSlides.length, 1));
+  }
+
+  get previousIndex() {
+    const previous = this.current - this.stepSize;
+
+    if (previous >= 0) return previous;
+
+    // Looping back from the head lands on the flush tail, not on a card the rail can't rest on
+    return this.infinite ? this.lastReachableIndex : previous;
   }
 
   get nextIndex() {
-    const { current, visibleSlides } = this;
-    const modifier = visibleSlides.length > 1 ? visibleSlides.length : 1;
+    const { slides } = this;
+    const next = this.current + this.stepSize;
 
-    return current + modifier;
+    if (next <= this.lastReachableIndex) return next;
+
+    // Past the tail: wrap when looping, otherwise stay out of range so the arrow disables
+    return this.infinite ? 0 : Math.min(next, slides?.length ?? 0);
   }
 
   get atStart() {
@@ -938,6 +994,9 @@ export class Slideshow extends Component {
         slide.setAttribute('aria-hidden', `${!isVisible}`);
       });
     });
+
+    // Arrow state depends on how many slides fit, which is only known now
+    this.updateArrowState();
 
     return visibleSlides.length;
   }

@@ -26,6 +26,21 @@
   if settings.icons_style != 'none'
     assign show_arrows = true
   endif
+
+  # Source rails move one card per arrow click; 'page' keeps Horizon's screenful jump
+  assign slide_step = 1
+  if settings.carousel_scroll == 'page'
+    assign slide_step = blank
+  endif
+
+  assign autoplay = false
+  if settings.carousel_autoplay
+    assign autoplay = true
+  endif
+  assign autoplay_speed = settings.carousel_autoplay_speed | default: 3
+
+  # An auto-advancing rail has to wrap, or it just parks on the last card
+  assign infinite = autoplay
 %}
 
 {% capture slides %}
@@ -47,7 +62,10 @@
     icon_style: settings.icons_style,
     icon_shape: settings.icons_shape,
     auto_hide_controls: false,
-    infinite: false,
+    infinite: infinite,
+    autoplay: autoplay,
+    autoplay_speed: autoplay_speed,
+    slide_step: slide_step,
     initial_slide: 0,
     slide_count: slide_count,
     slideshow_gutters: slideshow_gutters

@@ -303,9 +303,11 @@ the PLP, so it needs a call rather than a quiet fix.
    Left alone on purpose — it is a Layer 1 brand token and changing it moves every signed-off
    page. Needs a decision.
 5. **The source carousel autoplays and loops** (`infinite: true`, `autoplaySpeed: 3000`).
-   Not reproduced: Horizon's resource list does not autoplay, and an auto-advancing carousel is an
-   accessibility regression. The visible consequence is that the previous arrow hides on the first
-   slide instead of being drawn half off-screen.
+   Reproduced: the four rails run `carousel_autoplay` at 3s with `carousel_scroll: card`, so an arrow
+   click and an autoplay tick both move exactly one card, and the rail wraps once its tail is flush.
+   Both arrows now stay drawn half off-screen like the source, since a looping rail never disables one.
+   The a11y cover is Horizon's own: motion stops while the pointer is over the rail or the tab is
+   hidden, and `prefers-reduced-motion` keeps it still.
 6. **Set the two link targets**: the CTA button and the banner both point at the fishing
    sunglasses collection (source: `/us/sunglasses/fishing-sunglasses/`), which does not exist yet.
 7. **`HELM` prices at `Starting from $0`** in the ICE BLUE rail — a staging price, not a template

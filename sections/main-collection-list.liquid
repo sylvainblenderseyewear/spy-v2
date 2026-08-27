@@ -266,6 +266,42 @@
       "visible_if": "{{ section.settings.icons_style != 'none' and section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile == true }}"
     },
     {
+      "type": "select",
+      "id": "carousel_scroll",
+      "label": "Arrows scroll by",
+      "options": [
+        {
+          "value": "card",
+          "label": "One card"
+        },
+        {
+          "value": "page",
+          "label": "A full row"
+        }
+      ],
+      "default": "card",
+      "visible_if": "{{ section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile == true }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_autoplay",
+      "label": "Move on its own",
+      "info": "Advances one card at a time and loops. Stops while the pointer is over the rail, and stays still for reduced-motion visitors.",
+      "default": false,
+      "visible_if": "{{ section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile == true }}"
+    },
+    {
+      "type": "range",
+      "id": "carousel_autoplay_speed",
+      "label": "Seconds between cards",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 3,
+      "visible_if": "{{ section.settings.carousel_autoplay }}"
+    },
+    {
       "type": "header",
       "content": "t:content.section_layout"
     },

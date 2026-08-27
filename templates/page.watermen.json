@@ -6,8 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */
-{
+ */{
   "sections": {
     "intro": {
       "type": "section",
@@ -200,7 +199,12 @@
         "border_radius": 0,
         "padding-inline-start": 0,
         "padding-inline-end": 0,
-        "collection_list": ["watermen"]
+        "collection_list": [
+          "watermen"
+        ],
+        "carousel_scroll": "card",
+        "carousel_autoplay": true,
+        "carousel_autoplay_speed": 3
       }
     },
     "frames_cta": {
@@ -1572,7 +1576,10 @@
         "heading": "HAPPY BOOST ICE BLUE MIRROR",
         "collection_list": [
           "watermen-ice-blue"
-        ]
+        ],
+        "carousel_scroll": "card",
+        "carousel_autoplay": true,
+        "carousel_autoplay_speed": 3
       }
     },
     "black_mirror": {
@@ -1618,7 +1625,10 @@
         "heading": "HAPPY BOOST BLACK MIRROR",
         "collection_list": [
           "watermen-black-mirror"
-        ]
+        ],
+        "carousel_scroll": "card",
+        "carousel_autoplay": true,
+        "carousel_autoplay_speed": 3
       }
     },
     "bronze": {
@@ -1664,7 +1674,10 @@
         "heading": "HAPPY BOOST BRONZE",
         "collection_list": [
           "watermen-bronze"
-        ]
+        ],
+        "carousel_scroll": "card",
+        "carousel_autoplay": true,
+        "carousel_autoplay_speed": 3
       }
     },
     "lens_benefits_header": {
