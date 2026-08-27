@@ -6,29 +6,40 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign bg = section.settings.background_color
+  assign s = section.settings
+  assign bg = s.background_color
 
   if bg != blank
-    render 'contrast-override', background_color: bg, text_color: section.settings.text_color, section_id: section.id
+    render 'contrast-override', background_color: bg, text_color: s.text_color, section_id: section.id
   endif
 -%}
 
 <div
-  class="spy-footer-utilities w-full{% if bg != blank %} color-custom-{{ section.id }}{% endif %}{% if section.settings.show_top_border %} border-t{% endif %}"
-  style="{% if bg != blank %}background-color: {{ bg }};{% endif %}{% if section.settings.show_top_border %} border-top-color: {{ section.settings.top_border_color }};{% endif %}"
+  class="spy-footer-utilities w-full{% if bg != blank %} color-custom-{{ section.id }}{% endif %}{% if s.show_top_border %} border-t{% endif %}"
+  style="{% if bg != blank %}background-color: {{ bg }};{% endif %}{% if s.show_top_border %} border-top-color: {{ s.top_border_color }};{% endif %}"
   {{ section.shopify_attributes }}
 >
   <div
     class="spy-footer-utilities__inner w-full
       [&>.group-block]:w-full [&>.group-block]:[padding-block:var(--row-pad)] [&>.group-block:not(:last-child)]:border-b [&>.group-block:not(:last-child)]:[border-bottom-color:var(--row-line)]
       max-[769px]:[&>.group-block]:px-4
-      [&>.group-block>.group-block-content]:mx-auto [&>.group-block>.group-block-content]:w-full [&>.group-block>.group-block-content]:px-[15px]
-      min-[544px]:[&>.group-block>.group-block-content]:max-w-[540px] min-[769px]:[&>.group-block>.group-block-content]:max-w-[720px] min-[992px]:[&>.group-block>.group-block-content]:max-w-[1140px] min-[1200px]:[&>.group-block>.group-block-content]:max-w-[1440px]
+      [&>.group-block>.group-block-content]:mx-auto [&>.group-block>.group-block-content]:w-full [&>.group-block>.group-block-content]:px-[var(--util-gutter,15px)]
+      min-[544px]:[&>.group-block>.group-block-content]:max-w-[var(--util-max-sm,540px)] min-[769px]:[&>.group-block>.group-block-content]:max-w-[var(--util-max-md,720px)] min-[992px]:[&>.group-block>.group-block-content]:max-w-[var(--util-max-lg,1140px)] min-[1200px]:[&>.group-block>.group-block-content]:max-w-[var(--util-max-xl,1440px)]
       max-[769px]:[&>.group-block>.group-block-content]:flex-col max-[769px]:[&>.group-block>.group-block-content]:items-center max-[769px]:[&>.group-block>.group-block-content]:gap-0
       max-[769px]:[&_.group-block-content]:justify-center max-[769px]:[&_.text-block]:text-center max-[769px]:[&_.text-block_p]:text-center
-      [&_a:not(:last-child)]:mr-2 [&_a:hover]:underline [&_a:hover]:text-inherit
+      [&_a:not(:last-child)]:mr-[var(--util-link-gap,8px)] [&_a:hover]:underline [&_a:hover]:text-inherit
       [&_svg]:block [&_svg]:shrink-0"
-    style="--row-pad: {{ section.settings.row_padding }}px; --row-line: {{ section.settings.row_line_color }};"
+    style="
+      --row-pad: {{ s.row_padding }}px;
+      --row-line: {{ s.row_line_color }};
+      --util-gutter: {{ s.gutter }}px;
+      --util-max-sm: {{ s.max_width_sm }}px;
+      --util-max-md: {{ s.max_width_md }}px;
+      --util-max-lg: {{ s.max_width_lg }}px;
+      --util-max-xl: {{ s.max_width_xl }}px;
+      --util-link-gap: {{ s.link_gap }}px;
+      --spy-pay-slot: {{ s.payment_slot }}px;
+    "
   >
     {% content_for 'blocks' %}
   </div>
@@ -84,8 +95,83 @@
     },
     {
       "type": "header",
+      "content": "Content width"
+    },
+    {
+      "type": "range",
+      "id": "gutter",
+      "label": "Side gutter",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "max_width_sm",
+      "label": "Max width from 544px",
+      "min": 400,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 540
+    },
+    {
+      "type": "range",
+      "id": "max_width_md",
+      "label": "Max width from 769px",
+      "min": 600,
+      "max": 1100,
+      "step": 10,
+      "unit": "px",
+      "default": 720
+    },
+    {
+      "type": "range",
+      "id": "max_width_lg",
+      "label": "Max width from 992px",
+      "min": 900,
+      "max": 1400,
+      "step": 10,
+      "unit": "px",
+      "default": 1140
+    },
+    {
+      "type": "range",
+      "id": "max_width_xl",
+      "label": "Max width from 1200px",
+      "min": 1000,
+      "max": 1800,
+      "step": 10,
+      "unit": "px",
+      "default": 1440
+    },
+    {
+      "type": "header",
       "content": "Rows"
     },
+    {
+      "type": "range",
+      "id": "link_gap",
+      "label": "Gap between inline links",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "payment_slot",
+      "label": "Payment icon slot",
+      "min": 24,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 45
+    },
+
     {
       "type": "color",
       "id": "row_line_color",

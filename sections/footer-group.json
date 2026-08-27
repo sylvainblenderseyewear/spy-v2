@@ -860,7 +860,10 @@
         "overlay_color": "rgba(0,0,0,0)",
         "padding_top": 16,
         "padding_bottom": 16,
-        "padding_bottom_desktop": 36
+        "padding_bottom_desktop": 36,
+        "social_height": 50.39,
+        "social_gap": 13.67,
+        "heading_line_height": 22.4
       }
     },
     "spy_footer_utilities": {

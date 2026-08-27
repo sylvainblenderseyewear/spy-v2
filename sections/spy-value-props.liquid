@@ -15,11 +15,15 @@
 >
   {%- comment -%} [display:grid] not `grid`: Horizon's own .grid class would add 14 track areas. {%- endcomment -%}
   <div
-    class="spy-value-props__inner mx-auto w-[calc((100%_+_30px)_*_0.8333333_-_30px)] items-start [display:grid] grid-cols-2 min-[769px]:grid-cols-4
+    class="spy-value-props__inner mx-auto w-[calc((100%_+_30px)_*_var(--vp-col,0.8333333)_-_30px)] items-start [display:grid] [grid-template-columns:repeat(var(--vp-cols-mobile,2),minmax(0,1fr))] min-[769px]:[grid-template-columns:repeat(var(--vp-cols,4),minmax(0,1fr))]
       [&>.group-block]:h-full [&>.group-block]:[padding-block:var(--vp-pad-top)_var(--vp-pad-bottom)]
-      [&_.icon-block\_\_media]:h-[72px] [&_.icon-block\_\_media]:w-auto"
+      [&_.icon-block\_\_media]:h-[var(--vp-icon-h,72px)] [&_.icon-block\_\_media]:w-auto"
     style="
       column-gap: {{ section.settings.column_gap }}px;
+      --vp-col: {{ section.settings.content_columns | divided_by: 12.0 }};
+      --vp-cols: {{ section.settings.columns }};
+      --vp-cols-mobile: {{ section.settings.columns_mobile }};
+      --vp-icon-h: {{ section.settings.icon_height }}px;
       --vp-pad-top: {{ section.settings.padding_top }}px;
       --vp-pad-bottom: {{ section.settings.padding_bottom }}px;
     "
@@ -43,6 +47,45 @@
     {
       "type": "header",
       "content": "Band"
+    },
+    {
+      "type": "range",
+      "id": "content_columns",
+      "label": "Content width",
+      "info": "Columns of the source's 12-column grid. 10 = the live footer.",
+      "min": 6,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns (from 769px)",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "icon_height",
+      "label": "Icon height",
+      "min": 24,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 72
     },
     {
       "type": "color",

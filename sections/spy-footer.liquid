@@ -6,8 +6,9 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign bg = section.settings.background_color
-  assign img = section.settings.background_image
+  assign s = section.settings
+  assign bg = s.background_color
+  assign img = s.background_image
 
   if bg != blank
     render 'contrast-override', background_color: bg, section_id: section.id
@@ -26,23 +27,39 @@
       style="background-image: url({{ img | image_url: width: 3000 }});"
       role="presentation"
     ></div>
-    {%- if section.settings.overlay -%}
-      <div class="absolute inset-0" style="background-color: {{ section.settings.overlay_color }};"></div>
+    {%- if s.overlay -%}
+      <div class="absolute inset-0" style="background-color: {{ s.overlay_color }};"></div>
     {%- endif -%}
   {%- endif -%}
 
   {%- comment -%} [display:flex] not `flex`: Horizon's own .flex class would add a gap. {%- endcomment -%}
   <div
-    class="spy-footer__inner relative mx-auto w-[calc((100%_+_30px)_*_0.8333333_-_30px)] items-start gap-0 [display:flex] flex-col
-      [&>.group-block]:order-1 [&>.group-block]:w-full [&>.spy-fmenu]:mb-4 [&>.spy-fmenu]:w-full
+    class="spy-footer__inner relative mx-auto w-[calc((100%_+_30px)_*_var(--fw-col,0.8333333)_-_30px)] items-start gap-0 [display:flex] flex-col
+      [&>.group-block]:order-1 [&>.group-block]:w-full [&>.spy-fmenu]:mb-[var(--fw-stack-gap,16px)] [&>.spy-fmenu]:w-full
       min-[769px]:flex-row min-[769px]:flex-wrap min-[769px]:justify-between min-[769px]:[&>.spy-fmenu]:w-auto
       min-[992px]:flex-nowrap min-[992px]:justify-start
-      min-[992px]:[&>.group-block]:order-none min-[992px]:[&>.group-block]:w-auto min-[992px]:[&>.group-block]:shrink-0 min-[992px]:[&>.group-block]:grow-0 min-[992px]:[&>.group-block]:basis-[calc((100%_+_30px)_*_0.1666667_-_30px)]
-      min-[992px]:[&>.spy-fmenu:first-of-type]:ml-[54px] min-[992px]:[&>.spy-fmenu:not(:first-of-type)]:ml-auto
-      [&_.icon-block\_\_media]:h-[70px] [&_.icon-block\_\_media]:w-auto
-      [&_.social-icons\_\_wrapper]:h-[50.39px] [&_.social-icons\_\_wrapper]:items-start [&_.social-icons\_\_wrapper]:gap-[13.67px] [&_.social-icons\_\_wrapper]:pt-[2px] [&_.social-icons\_\_icon-wrapper:has(a[href*=twitter])]:order-1 [&_.social-icons\_\_icon-wrapper:has(a[href*=instagram])]:order-2
+      min-[992px]:[&>.group-block]:order-none min-[992px]:[&>.group-block]:w-auto min-[992px]:[&>.group-block]:shrink-0 min-[992px]:[&>.group-block]:grow-0 min-[992px]:[&>.group-block]:basis-[calc((100%_+_30px)_*_var(--fw-brand,0.1666667)_-_30px)]
+      min-[992px]:[&>.spy-fmenu:first-of-type]:ml-[var(--fw-brand-gap,54px)] min-[992px]:[&>.spy-fmenu:not(:first-of-type)]:ml-auto
+      [&_.icon-block\_\_media]:h-[var(--fw-logo-h,70px)] [&_.icon-block\_\_media]:w-auto
+      [&_.social-icons\_\_wrapper]:h-[var(--fw-social-h,50.39px)] [&_.social-icons\_\_wrapper]:items-start [&_.social-icons\_\_wrapper]:gap-[var(--fw-social-gap,13.67px)] [&_.social-icons\_\_wrapper]:pt-[2px] [&_.social-icons\_\_icon-wrapper:has(a[href*=twitter])]:order-1 [&_.social-icons\_\_icon-wrapper:has(a[href*=instagram])]:order-2
       min-[992px]:[padding-bottom:var(--pb-desktop)]"
-    style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px; --pb-desktop: {{ section.settings.padding_bottom_desktop }}px;"
+    style="
+      padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px;
+      --pb-desktop: {{ s.padding_bottom_desktop }}px;
+      --fw-col: {{ s.content_columns | divided_by: 12.0 }};
+      --fw-brand: {{ s.brand_columns | divided_by: 12.0 }};
+      --fw-brand-gap: {{ s.brand_gap }}px;
+      --fw-stack-gap: {{ s.stack_gap }}px;
+      --fw-logo-h: {{ s.logo_height }}px;
+      --fw-social-h: {{ s.social_height }}px;
+      --fw-social-gap: {{ s.social_gap }}px;
+      --spy-fmenu-heading-size: {{ s.heading_size }}px;
+      --spy-fmenu-heading-lh: {{ s.heading_line_height }}px;
+      --spy-fmenu-heading-weight: {{ s.heading_weight }};
+      --spy-fmenu-heading-case: {{ s.heading_case }};
+      --spy-fmenu-link-size: {{ s.link_size }}px;
+      --spy-fmenu-link-lh: {{ s.link_line_height }}px;
+    "
   >
     {% content_for 'blocks' %}
   </div>
@@ -97,6 +114,142 @@
       "alpha": true,
       "default": "#00000000",
       "visible_if": "{{ section.settings.overlay }}"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "content_columns",
+      "label": "Content width",
+      "info": "Columns of the source's 12-column grid. 10 = the live footer.",
+      "min": 6,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "brand_columns",
+      "label": "Brand column width",
+      "info": "Logo / social column, in grid columns.",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "unit": "col",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "brand_gap",
+      "label": "Gap after brand column",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "stack_gap",
+      "label": "Gap between stacked columns",
+      "info": "Below 769px, where the link columns become accordions.",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Brand column"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo height",
+      "min": 20,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "number",
+      "id": "social_height",
+      "label": "Social row height (px)",
+      "default": 50
+    },
+    {
+      "type": "number",
+      "id": "social_gap",
+      "label": "Gap between social icons (px)",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Menu type"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "number",
+      "id": "heading_line_height",
+      "label": "Heading line height (px)",
+      "default": 22
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "select",
+      "id": "heading_case",
+      "label": "Heading case",
+      "options": [
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "capitalize", "label": "Title case" },
+        { "value": "none", "label": "As typed" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "link_size",
+      "label": "Link size",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "link_line_height",
+      "label": "Link line height",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 20
     },
     {
       "type": "header",

@@ -6,7 +6,8 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign bg = section.settings.background_color
+  assign s = section.settings
+  assign bg = s.background_color
 
   if bg != blank
     render 'contrast-override', background_color: bg, section_id: section.id
@@ -19,22 +20,39 @@
   {{ section.shopify_attributes }}
 >
   <div
-    class="spy-signup__inner mx-auto w-[calc((100%_+_30px)_*_0.8333333_-_30px)]"
-    style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;"
+    class="spy-signup__inner mx-auto w-[calc((100%_+_30px)_*_var(--su-col,0.8333333)_-_30px)]"
+    style="
+      padding-block: {{ s.padding_top }}px {{ s.padding_bottom }}px;
+      --su-col: {{ s.content_columns | divided_by: 12.0 }};
+    "
   >
     {%- comment -%} [display:flex] not `flex`: Horizon's own .flex class would add a gap. {%- endcomment -%}
     <div
       class="spy-signup__form mx-auto w-full justify-center [display:flex] flex-col
-        [&_.text-block]:w-full [&_.text-block]:max-w-none [&_.text-block]:px-[6px] [&_.text-block]:font-semibold [&_.text-block]:leading-[32px] [&_.text-block_p]:leading-[32px]
+        [&_.text-block]:w-full [&_.text-block]:max-w-none [&_.text-block]:px-[6px] [&_.text-block]:font-semibold [&_.text-block]:leading-[var(--su-heading-lh,32px)] [&_.text-block_p]:leading-[var(--su-heading-lh,32px)]
         [&_.email-signup-block]:w-full [&_.email-signup-block]:min-w-0 [&_.email-signup\_\_form]:w-full
-        [&_.email-signup\_\_input-group]:w-[calc(100%_-_6px)] [&_.email-signup\_\_input-group]:flex-row [&_.email-signup\_\_input-group]:gap-4
-        [&_.email-signup\_\_input]:h-[54px] [&_.email-signup\_\_input]:w-auto [&_.email-signup\_\_input]:flex-1 [&_.email-signup\_\_input]:rounded-[4px] [&_.email-signup\_\_input]:border [&_.email-signup\_\_input]:border-solid [&_.email-signup\_\_input]:border-[#949596] [&_.email-signup\_\_input]:bg-white [&_.email-signup\_\_input]:py-0 [&_.email-signup\_\_input]:pl-4 [&_.email-signup\_\_input]:pr-0 [&_.email-signup\_\_input]:text-[20px] [&_.email-signup\_\_input]:text-black
-        [&_.email-signup\_\_input::placeholder]:uppercase [&_.email-signup\_\_input::placeholder]:text-[#757575]
-        [&_.email-signup\_\_button]:h-[54px] [&_.email-signup\_\_button]:w-[70px] [&_.email-signup\_\_button]:shrink-0 [&_.email-signup\_\_button]:grow-0 [&_.email-signup\_\_button]:rounded-[6px] [&_.email-signup\_\_button]:border-0 [&_.email-signup\_\_button]:bg-white [&_.email-signup\_\_button]:px-[10px] [&_.email-signup\_\_button]:py-0 [&_.email-signup\_\_button]:text-[13px] [&_.email-signup\_\_button]:font-bold [&_.email-signup\_\_button]:uppercase [&_.email-signup\_\_button]:leading-none [&_.email-signup\_\_button]:text-[#111]"
+        [&_.email-signup\_\_input-group]:w-[calc(100%_-_6px)] [&_.email-signup\_\_input-group]:flex-row [&_.email-signup\_\_input-group]:gap-[var(--su-field-gap,16px)]
+        [&_.email-signup\_\_input]:h-[var(--su-field-h,54px)] [&_.email-signup\_\_input]:w-auto [&_.email-signup\_\_input]:flex-1 [&_.email-signup\_\_input]:rounded-[var(--su-input-radius,4px)] [&_.email-signup\_\_input]:border [&_.email-signup\_\_input]:border-solid [&_.email-signup\_\_input]:border-[color:var(--su-input-border,#949596)] [&_.email-signup\_\_input]:bg-[color:var(--su-input-bg,#ffffff)] [&_.email-signup\_\_input]:py-0 [&_.email-signup\_\_input]:pl-4 [&_.email-signup\_\_input]:pr-0 [&_.email-signup\_\_input]:text-[length:var(--su-input-size,20px)] [&_.email-signup\_\_input]:text-[color:var(--su-input-color,#000000)]
+        [&_.email-signup\_\_input::placeholder]:uppercase [&_.email-signup\_\_input::placeholder]:text-[color:var(--su-placeholder,#757575)]
+        [&_.email-signup\_\_button]:h-[var(--su-field-h,54px)] [&_.email-signup\_\_button]:w-[var(--su-button-w,70px)] [&_.email-signup\_\_button]:shrink-0 [&_.email-signup\_\_button]:grow-0 [&_.email-signup\_\_button]:rounded-[var(--su-button-radius,6px)] [&_.email-signup\_\_button]:border-0 [&_.email-signup\_\_button]:bg-[color:var(--su-button-bg,#ffffff)] [&_.email-signup\_\_button]:px-[10px] [&_.email-signup\_\_button]:py-0 [&_.email-signup\_\_button]:text-[length:var(--su-button-size,13px)] [&_.email-signup\_\_button]:font-bold [&_.email-signup\_\_button]:uppercase [&_.email-signup\_\_button]:leading-none [&_.email-signup\_\_button]:text-[color:var(--su-button-color,#111111)]"
       style="
-        max-width: {{ section.settings.form_width }}px;
-        min-height: {{ section.settings.form_height }}px;
-        gap: {{ section.settings.gap }}px;
+        max-width: {{ s.form_width }}px;
+        min-height: {{ s.form_height }}px;
+        gap: {{ s.gap }}px;
+        --su-field-gap: {{ s.field_gap }}px;
+        --su-field-h: {{ s.field_height }}px;
+        --su-input-radius: {{ s.input_radius }}px;
+        --su-input-border: {{ s.input_border_color }};
+        --su-input-bg: {{ s.input_background }};
+        --su-input-color: {{ s.input_text_color }};
+        --su-input-size: {{ s.input_text_size }}px;
+        --su-placeholder: {{ s.placeholder_color }};
+        --su-button-w: {{ s.button_width }}px;
+        --su-button-radius: {{ s.button_radius }}px;
+        --su-button-bg: {{ s.button_background }};
+        --su-button-color: {{ s.button_text_color }};
+        --su-button-size: {{ s.button_text_size }}px;
+        --su-heading-lh: {{ s.heading_line_height }}px;
       "
     >
       {% content_for 'blocks' %}
@@ -68,8 +86,25 @@
       "default": "#272727"
     },
     {
+      "type": "range",
+      "id": "content_columns",
+      "label": "Content width",
+      "info": "Columns of the source's 12-column grid. 10 = the live footer.",
+      "min": 6,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 10
+    },
+    {
       "type": "header",
       "content": "Form"
+    },
+    {
+      "type": "number",
+      "id": "heading_line_height",
+      "label": "Heading line height (px)",
+      "default": 32
     },
     {
       "type": "range",
@@ -100,6 +135,116 @@
       "step": 1,
       "unit": "px",
       "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Field & button"
+    },
+    {
+      "type": "range",
+      "id": "field_height",
+      "label": "Height",
+      "min": 32,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "field_gap",
+      "label": "Gap between field and button",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "input_radius",
+      "label": "Field corner radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "input_text_size",
+      "label": "Field text size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Field background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Field border",
+      "default": "#949596"
+    },
+    {
+      "type": "color",
+      "id": "input_text_color",
+      "label": "Field text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_color",
+      "label": "Placeholder text",
+      "default": "#757575"
+    },
+    {
+      "type": "range",
+      "id": "button_width",
+      "label": "Button width",
+      "min": 40,
+      "max": 240,
+      "step": 2,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button corner radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "label": "Button text size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#111111"
     },
     {
       "type": "header",

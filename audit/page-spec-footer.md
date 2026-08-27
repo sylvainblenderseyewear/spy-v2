@@ -135,6 +135,23 @@ and colours ARE reliable. The build reproduces the source's *layout algorithm*
 Menus come from Shopify menus `footer-company` · `footer-services` · `footer-policy` ·
 `footer-programs` (created with the previously hard-coded links).
 
+### Editor settings (added 2026-08-27)
+
+Every measurement above is now a theme setting, defaulting to the source value, so the whole
+footer can be re-proportioned with no code. Values feed CSS vars on each band's inner wrapper;
+the Tailwind classes read them with the source number as a fallback.
+
+| Band | Settings |
+|---|---|
+| `spy-value-props` | content width (grid columns) · columns desktop / mobile · icon height · column gap · padding · colours |
+| `spy-email-signup` | content width · form box · heading line height · field height / radius / text size · field + button colours · button width / radius · gaps |
+| `spy-footer` | content width · brand column width + gap · stacked-column gap · logo height · social height + gap · menu heading size / line height / weight / case · link size + line height |
+| `spy-footer-utilities` | gutter · the four container max-widths · inline link gap · payment slot · row padding + line |
+
+`spy-footer-menu` reads the menu type from its parent band (`--spy-fmenu-*`), so all four
+columns stay in step. Sub-pixel source values (social row 50.39, social gap 13.67, heading
+line height 22.4) are `number` settings and are pinned in `footer-group.json`.
+
 ### Measured parity (source → build)
 
 | Viewport | Source total | Build total |
