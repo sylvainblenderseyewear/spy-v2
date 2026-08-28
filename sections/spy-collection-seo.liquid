@@ -1,25 +1,95 @@
+{%- doc -%}
+  Bottom-of-PLP SEO copy, the way the source shows it: an 870px centred column
+  clipped to 80px with a "Read more" toggle underneath, left-aligned to the page
+  edge rather than to the copy.
+
+  Content comes from the `collection.seo_content` metafield. Headings inside it
+  render as the source's 25px uppercase titles; paragraphs as 16px body.
+{%- enddoc -%}
+
 {%- liquid
   assign seo_meta = collection.metafields.collection.seo_content
   if seo_meta == blank or seo_meta.value == blank
     assign skip_section = true
   endif
+
+  assign label_more = section.settings.label_more | default: 'Read more'
+  assign label_less = section.settings.label_less | default: 'Read less'
+  assign clamp_height = section.settings.collapsed_height | default: 80
+
+  # Source keeps this toggle dark — the orange one belongs to the intro copy
+  assign toggle_classes = 'cursor-pointer bg-transparent border-0 p-0 font-[inherit] text-[12px] font-normal uppercase leading-[1.4] text-spy-ink'
 -%}
 
 {%- unless skip_section -%}
-<div class="border-t border-spy-border py-12" {{ section.shopify_attributes }}>
-  <div class="page-width max-w-[720px] rte text-[14px] leading-[1.6] text-spy-gray">
-    {{ seo_meta | metafield_tag }}
+  <div class="page-width mt-6 mb-4" {{ section.shopify_attributes }}>
+    <spy-read-more data-spy-read-more>
+      {% comment %} Clipped to the source's 80px until the toggle opens it {% endcomment %}
+      <div
+        class="overflow-hidden h-[var(--seo-clamp)] data-[open]:h-auto"
+        style="--seo-clamp: {{ clamp_height }}px;"
+        id="collection-seo-{{ section.id }}"
+        data-clamp
+      >
+        <div
+          class="
+            mx-auto max-w-[870px] text-center
+            [&_h2]:m-0 [&_h2]:mb-2 [&_h2]:text-[25px] [&_h2]:font-semibold [&_h2]:uppercase [&_h2]:leading-[30px] [&_h2]:text-spy-ink
+            [&_h3]:m-0 [&_h3]:mb-2 [&_h3]:text-[25px] [&_h3]:font-semibold [&_h3]:uppercase [&_h3]:leading-[30px] [&_h3]:text-spy-ink
+            [&_p]:m-0 [&_p]:mb-4 [&_p]:text-[16px] [&_p]:leading-[22.4px] [&_p]:text-spy-ink
+            [&_a]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1
+          "
+        >
+          {{ seo_meta | metafield_tag }}
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="{{ toggle_classes }}"
+        data-more
+        aria-expanded="false"
+        aria-controls="collection-seo-{{ section.id }}"
+      >
+        {{- label_more -}}
+        {%- render 'spy-caret', direction: 'down' -%}
+      </button>
+
+      <button
+        type="button"
+        class="{{ toggle_classes }}"
+        data-less
+        hidden
+        aria-expanded="true"
+        aria-controls="collection-seo-{{ section.id }}"
+      >
+        {{- label_less -}}
+        {%- render 'spy-caret', direction: 'up' -%}
+      </button>
+    </spy-read-more>
   </div>
-</div>
+
+  <script src="{{ 'spy-read-more.js' | asset_url }}" defer></script>
 {%- endunless -%}
 
 {% schema %}
 {
   "name": "Collection SEO Copy",
-  "enabled_on": {
-    "templates": ["collection"]
-  },
-  "settings": [],
+  "settings": [
+    {
+      "type": "range",
+      "id": "collapsed_height",
+      "label": "Collapsed height",
+      "info": "How much copy shows before Read more. Source uses 80px.",
+      "min": 40,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    { "type": "text", "id": "label_more", "label": "Expand label", "default": "Read more" },
+    { "type": "text", "id": "label_less", "label": "Collapse label", "default": "Read less" }
+  ],
   "presets": []
 }
 {% endschema %}

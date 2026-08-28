@@ -6,9 +6,13 @@
   wins when it's filled, for collections that need richer markup than the plain
   description field allows.
 
-  Collapsed it prints the first 130 characters (cut on a word, never mid-word) with
-  "Read more" inline; expanded it prints the full text with "Read less" underneath.
-  Short copy skips the toggle entirely.
+  Collapsed it prints ONE line clipped with a CSS ellipsis — same as the source, so
+  the cut point follows the column width instead of a fixed character count — with
+  "Read more" inline right after it. Expanded it prints the full text with
+  "Read less" underneath. Short copy skips the toggle entirely.
+
+  The collapsed line is a % of the row: the source uses 50% from 544px up and 100%
+  below that, where the toggle wraps onto its own line.
 {%- enddoc -%}
 
 {%- liquid
@@ -28,56 +32,56 @@
   assign flat = body_html | replace: '</p>', ' ' | replace: '</li>', ' ' | replace: '</div>', ' '
   assign plain = flat | newline_to_br | replace: '<br />', ' ' | strip_html | strip
 
+  # CSS does the clipping; this only decides whether the toggle is worth showing
   assign truncated = false
-  assign preview = plain
-
   if plain.size > limit
     assign truncated = true
-
-    # The "..." counts inside the limit, so the collapsed line matches the source
-    assign text_limit = limit | minus: 3
-    assign preview = plain | slice: 0, text_limit
-
-    # Keep whole words: drop the last one unless the cut already landed on a space
-    assign next_char = plain | slice: text_limit, 1
-    unless next_char == ' '
-      assign words = preview | split: ' '
-      assign keep = words.size | minus: 1
-      assign preview = ''
-      for word in words limit: keep
-        assign preview = preview | append: word | append: ' '
-      endfor
-    endunless
-
-    assign preview = preview | strip
   endif
 
   assign label_more = block.settings.label_more | default: 'Read more'
   assign label_less = block.settings.label_less | default: 'Read less'
 
-  assign copy_classes = 'text-[15px] leading-[1.6] text-[color:var(--color-spy-text)]'
+  assign width_mobile = block.settings.collapsed_width_mobile | default: 100
+  assign width_desktop = block.settings.collapsed_width_desktop | default: 50
+
+  assign copy_classes = 'text-[16px] leading-[1.4] text-spy-ink'
   assign rte_classes = '[&_p]:m-0 [&_p+p]:mt-3 [&_a]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1'
   # No display utility on purpose: it would beat the browser's own [hidden] rule
   # and leave the collapsed button on screen
-  assign toggle_classes = 'cursor-pointer whitespace-nowrap bg-transparent border-0 p-0 font-[inherit] text-[15px] leading-[1.6] text-spy-orange hover:underline'
+  assign toggle_classes = 'cursor-pointer whitespace-nowrap bg-transparent border-0 p-0 font-[inherit] text-[16px] leading-[1.4] text-spy-orange-ui'
 -%}
 
 {%- if body_html != blank -%}
-  <spy-read-more data-spy-read-more {{ block.shopify_attributes }}>
+  {% comment %}
+    Clearfix keeps the floated line inside the block so the 16px gap below holds.
+    w-full + min-w-0: the row is a flex parent, so the nowrap line would otherwise
+    size this to the full text width and push the page sideways.
+  {% endcomment %}
+  <spy-read-more
+    class="mb-4 block w-full min-w-0 after:block after:clear-both after:content-['']"
+    data-spy-read-more
+    {{ block.shopify_attributes }}
+  >
     {%- if truncated -%}
-      <p class="m-0 {{ copy_classes }}" data-preview>
-        {{- preview }}...
-        <button
-          type="button"
-          class="{{ toggle_classes }}"
-          data-more
-          aria-expanded="false"
-          aria-controls="collection-intro-{{ block.id }}"
-        >
-          {{- label_more -}}
-          {%- render 'spy-caret', direction: 'down' -%}
-        </button>
+      {% comment %} Source floats the clipped line so the toggle sits beside it, then wraps under it on mobile {% endcomment %}
+      <p
+        class="float-left m-0 w-[var(--intro-w-mobile)] overflow-hidden text-ellipsis whitespace-nowrap min-[544px]:w-[var(--intro-w-desktop)] {{ copy_classes }}"
+        style="--intro-w-mobile: {{ width_mobile }}%; --intro-w-desktop: {{ width_desktop }}%;"
+        data-preview
+      >
+        {{- plain -}}
       </p>
+
+      <button
+        type="button"
+        class="{{ toggle_classes }}"
+        data-more
+        aria-expanded="false"
+        aria-controls="collection-intro-{{ block.id }}"
+      >
+        {{- label_more -}}
+        {%- render 'spy-caret', direction: 'down' -%}
+      </button>
 
       <div id="collection-intro-{{ block.id }}" class="{{ copy_classes }} {{ rte_classes }}" data-full hidden>
         {{ body_html }}
@@ -115,9 +119,31 @@
     },
     {
       "type": "range",
+      "id": "collapsed_width_desktop",
+      "label": "Collapsed line width (desktop)",
+      "info": "Share of the row the one-line preview fills before it clips. Source uses 50%.",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "collapsed_width_mobile",
+      "label": "Collapsed line width (mobile)",
+      "info": "Below 544px. At 100% the toggle wraps onto its own line, like the source.",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
       "id": "char_limit",
-      "label": "Characters shown when collapsed",
-      "info": "Cut on the nearest word before this count.",
+      "label": "Show the toggle past this many characters",
+      "info": "Shorter copy prints in full with no Read more.",
       "min": 60,
       "max": 400,
       "step": 10,
