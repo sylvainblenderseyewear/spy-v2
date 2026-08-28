@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "locator": {
+      "type": "spy-store-locator",
+      "settings": {
+        "widget_tag": "map_w3rgrzyq",
+        "full_height": true,
+        "panel_width": 512,
+        "min_height": 640,
+        "desktop_breakpoint": 1020,
+        "units": "km",
+        "filter_dropdown": true,
+        "names_first": true,
+        "results_heading": "Find a Spy Optic dealer",
+        "card_subtitle_prefix": "Spy Optic",
+        "label_call": "Call us",
+        "label_more": "More info",
+        "label_directions": "Directions",
+        "show_switcher": true,
+        "label_list": "List",
+        "label_map": "Map",
+        "no_stockist_css": false,
+        "custom_class": ""
+      }
+    }
+  },
+  "order": ["locator"]
+}

@@ -1,0 +1,284 @@
+{%- comment -%}
+  Store locator — Stockist widget skinned to match stores.spyoptic.com.
+
+  The widget draws its own markup, so the shell here is thin: a sized wrapper
+  plus the config the widget reads off `window` before it boots. Everything
+  visual lives in src/tailwind.css under "Store locator".
+
+  Two things to know:
+  - The config script must run BEFORE widget.min.js, so it sits above it.
+  - Stockist v2 hides its markup in a closed shadow root until the account
+    sets css_isolation:false. Until then the skin below is inert.
+    See audit/stockist-feasibility.md.
+{%- endcomment -%}
+
+{%- liquid
+  assign tag = section.settings.widget_tag | strip
+  assign panel = section.settings.panel_width | default: 512
+  assign bp = section.settings.desktop_breakpoint | default: 1024
+  assign heading = section.settings.results_heading
+-%}
+
+{%- if tag == blank -%}
+  {%- if request.design_mode -%}
+    <div class="p-8 text-center text-sm text-spy-gray">
+      Add your Stockist widget tag in the section settings to show the locator.
+    </div>
+  {%- endif -%}
+{%- else -%}
+
+<div
+  class="spy-locator {{ section.settings.custom_class }}"
+  data-spy-locator
+  data-full-height="{{ section.settings.full_height }}"
+  style="--spy-locator-panel: {{ panel }}px; --spy-locator-min: {{ section.settings.min_height }}px;"
+  {{ section.shopify_attributes }}
+>
+  {%- if heading != blank -%}
+    <p class="spy-locator__heading">{{ heading }}</p>
+  {%- endif -%}
+
+  <stockist-store-locator data-stockist-widget-tag="{{ tag }}">
+    <span class="spy-locator__loading">{{ 'general.loading' | t | default: 'Loading store locator…' }}</span>
+  </stockist-store-locator>
+
+  {%- if section.settings.show_switcher -%}
+    <div class="spy-locator__switcher" data-spy-locator-switcher hidden>
+      <button type="button" class="spy-locator__tab is-active" data-spy-locator-view="list" aria-pressed="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.01M3.75 12h.01M3.75 17.25h.01"/></svg>
+        <span>{{ section.settings.label_list }}</span>
+      </button>
+      <button type="button" class="spy-locator__tab" data-spy-locator-view="map" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z"/></svg>
+        <span>{{ section.settings.label_map }}</span>
+      </button>
+    </div>
+  {%- endif -%}
+</div>
+
+<script>
+  // Read by widget.min.js at boot — must be set before the async script runs.
+  window.__stockist_desktop_breakpoint = {{ bp | json }};
+  window.__stockist_distance_units = {{ section.settings.units | json }};
+  window.__stockist_show_filter_dropdown = {{ section.settings.filter_dropdown | json }};
+  window.__stockist_autocomplete_names_first = {{ section.settings.names_first | json }};
+  {%- if section.settings.no_stockist_css -%}
+    window.__stockist_no_css = true;
+  {%- endif -%}
+
+  // Widget copy, so the strings live in the theme editor rather than the
+  // Stockist dashboard. Returning undefined falls back to Stockist's own text.
+  window.__stockist_override_translation = function (lang, key) {
+    var strings = {
+      search_placeholder: {{ section.settings.text_search_placeholder | json }},
+      initial_message: {{ section.settings.text_initial_message | json }},
+      no_results: {{ section.settings.text_no_results | json }},
+      geolocation_button: {{ section.settings.text_geolocate | json }},
+      filter_dropdown_button: {{ section.settings.text_filter_button | json }},
+      directions_link: {{ section.settings.label_directions | json }}
+    };
+    var v = strings[key];
+    return v ? v : undefined;
+  };
+
+  // Our own card markup, in place of Stockist's. Used for the list and the map popup.
+  window.__stockist_build_result_template = function (ctx) {
+    var l = ctx.location || {};
+    var wrap = document.createElement('div');
+    wrap.className = 'spy-loc-card' + (ctx.placement === 'map' ? ' spy-loc-card--popup' : '');
+
+    var esc = function (v) {
+      return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    };
+    var join = function (parts, sep) {
+      return parts.filter(function (p) { return p; }).join(sep || ' ');
+    };
+
+    var dist = l.distance != null ? esc(l.distance) + ' ' + esc(l.distance_units || '') : '';
+    var street = join([l.address_line_1, l.address_line_2], ', ');
+    var locality = join([l.postal_code, l.city]);
+    var region = join([locality, l.country], ', ');
+    var tel = String(l.phone || '').replace(/[^\d+]/g, '');
+
+    var html = '<div class="spy-loc-card__top">'
+      + '<span class="spy-loc-card__name">' + esc(l.name) + '</span>'
+      + (dist ? '<span class="spy-loc-card__badge">' + dist + '</span>' : '')
+      + '</div>';
+
+    if (l.city) {
+      html += '<span class="spy-loc-card__sub">' + esc('{{ section.settings.card_subtitle_prefix }}') + ' ' + esc(l.city) + '</span>';
+    }
+    if (locality) {
+      html += '<address class="spy-loc-card__addr">' + esc(locality) + '</address>';
+    }
+
+    html += '<div class="spy-loc-card__detail">';
+    if (street) html += '<span class="spy-loc-card__line">' + esc(street) + '</span>';
+    if (region) html += '<span class="spy-loc-card__line">' + esc(region) + '</span>';
+    if (l.phone) html += '<span class="spy-loc-card__phone">' + esc(l.phone) + '</span>';
+
+    html += '<div class="spy-loc-card__actions">';
+    if (tel) {
+      html += '<a class="spy-loc-card__btn spy-loc-card__btn--ghost" href="tel:' + esc(tel) + '">'
+        + esc('{{ section.settings.label_call }}') + '</a>';
+    }
+    if (l.website) {
+      html += '<a class="spy-loc-card__btn spy-loc-card__btn--solid" href="' + esc(l.website) + '" target="_blank" rel="noopener">'
+        + esc('{{ section.settings.label_more }}') + '</a>';
+    } else if (l.latitude && l.longitude) {
+      html += '<a class="spy-loc-card__btn spy-loc-card__btn--solid" target="_blank" rel="noopener"'
+        + ' href="https://www.google.com/maps/dir/?api=1&destination=' + esc(l.latitude) + ',' + esc(l.longitude) + '">'
+        + esc('{{ section.settings.label_directions }}') + '</a>';
+    }
+    html += '</div></div>';
+
+    wrap.innerHTML = html;
+    return wrap;
+  };
+</script>
+<script async src="https://stockist.co/embed/v1/widget.min.js"></script>
+<script src="{{ 'spy-store-locator.js' | asset_url }}" defer></script>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SPY Store Locator",
+  "class": "spy-store-locator-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "widget_tag",
+      "label": "Stockist widget tag",
+      "default": "map_w3rgrzyq",
+      "info": "From Stockist → Installation, e.g. map_w3rgrzyq"
+    },
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "checkbox",
+      "id": "full_height",
+      "label": "Fill the viewport",
+      "default": true,
+      "info": "Locator fills the screen below the header, like the source. Turn off to use the minimum height instead."
+    },
+    {
+      "type": "range",
+      "id": "panel_width",
+      "label": "Results panel width",
+      "min": 320,
+      "max": 640,
+      "step": 8,
+      "unit": "px",
+      "default": 512
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Minimum height",
+      "min": 400,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "default": 640
+    },
+    {
+      "type": "range",
+      "id": "desktop_breakpoint",
+      "label": "Desktop breakpoint",
+      "min": 700,
+      "max": 1200,
+      "step": 10,
+      "unit": "px",
+      "default": 1020,
+      "info": "Below this the panel and map stack. 1024 avoids the squeezed map the source shows at 768."
+    },
+    { "type": "header", "content": "Search" },
+    {
+      "type": "select",
+      "id": "units",
+      "label": "Distance units",
+      "options": [
+        { "value": "km", "label": "Kilometres" },
+        { "value": "mi", "label": "Miles" }
+      ],
+      "default": "km"
+    },
+    {
+      "type": "checkbox",
+      "id": "filter_dropdown",
+      "label": "Show filters as a dropdown",
+      "default": true,
+      "info": "Matches the source's \"Spy Optic Products\" chip."
+    },
+    {
+      "type": "checkbox",
+      "id": "names_first",
+      "label": "Show store names in autocomplete",
+      "default": true
+    },
+    { "type": "header", "content": "Text" },
+    {
+      "type": "text",
+      "id": "results_heading",
+      "label": "Results heading",
+      "default": "Find a Spy Optic dealer"
+    },
+    {
+      "type": "text",
+      "id": "card_subtitle_prefix",
+      "label": "Card subtitle prefix",
+      "default": "Spy Optic",
+      "info": "Shown before the city, e.g. \"Spy Optic San Diego\"."
+    },
+    { "type": "text", "id": "label_call", "label": "Call button", "default": "Call us" },
+    { "type": "text", "id": "label_more", "label": "Website button", "default": "More info" },
+    { "type": "text", "id": "label_directions", "label": "Directions button", "default": "Directions" },
+    { "type": "header", "content": "Widget text" },
+    {
+      "type": "text",
+      "id": "text_search_placeholder",
+      "label": "Search placeholder",
+      "default": "City, zipcode, name..."
+    },
+    {
+      "type": "text",
+      "id": "text_initial_message",
+      "label": "Before searching",
+      "default": "Enter search criteria or locate yourself to see nearby locations."
+    },
+    {
+      "type": "text",
+      "id": "text_no_results",
+      "label": "No results",
+      "default": "No Spy Optic dealers found nearby. Try widening your search."
+    },
+    { "type": "text", "id": "text_geolocate", "label": "Geolocate button", "default": "Geolocate myself" },
+    { "type": "text", "id": "text_filter_button", "label": "Filter button", "default": "Spy Optic Products" },
+    { "type": "header", "content": "Mobile" },
+    {
+      "type": "checkbox",
+      "id": "show_switcher",
+      "label": "Show List / Map switcher",
+      "default": true
+    },
+    { "type": "text", "id": "label_list", "label": "List tab", "default": "List" },
+    { "type": "text", "id": "label_map", "label": "Map tab", "default": "Map" },
+    { "type": "header", "content": "Advanced" },
+    {
+      "type": "checkbox",
+      "id": "no_stockist_css",
+      "label": "Drop Stockist's own stylesheet",
+      "default": false,
+      "info": "Only turn on once the theme skin covers everything, or the widget will be unstyled."
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "CSS class"
+    }
+  ],
+  "presets": [{ "name": "SPY Store Locator" }]
+}
+{% endschema %}

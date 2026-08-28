@@ -47,6 +47,11 @@
   --spy-orange: #f57f29;
   --spy-slate:  #2c393e;
 
+  /* Store locator — the two neutrals the Stockist widget needs that the brand
+     palette has no equivalent for. Everything else reuses the tokens above. */
+  --color-spy-loc-field: #eeedf1; /* search field, ghost button, inactive tab */
+  --color-spy-loc-line:  #d8d7e0; /* hairlines, badge outline, map ground */
+
   /* Mobile nav drawer (was :root in spy-mega-menu) */
   --spy-nav-width: 280px;
   --ease-spy-nav:  cubic-bezier(0.4, 0, 0.2, 1);
@@ -2962,4 +2967,372 @@ product-recommendations .slideshow-control svg {
    ──────────────────────────────────────────────────────────────────── */
 [data-template='article.spy_blog-post'] {
   --normal-content-width: 800px;
+}
+
+
+/* ── Store locator (Stockist widget) ──────────────────────────────────────
+   Shape mirrors stores.spyoptic.com: a fixed results panel beside a full-bleed
+   map, both filling the viewport under the header. Palette is SPY's, not the
+   source's cool grey — our page, borrowed layout.
+
+   Stockist's own `horizontal_list_left` grid already IS that shape, so we don't
+   re-template it. We drive it through the widget's own custom properties, which
+   is the supported route. The !important flags below are load-bearing: the
+   widget writes these two inline from JS
+   (`f("--stockist-side-panel-width", ...)`), and an inline declaration beats any
+   stylesheet rule without them.
+
+   None of this applies while the account has css_isolation:true — the widget
+   renders in a closed shadow root and nothing here reaches it.
+   See audit/page-spec-store-locator.md and audit/stockist-feasibility.md. */
+
+.spy-locator {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: var(--spy-locator-min, 640px);
+  background-color: #fff;
+}
+
+.spy-locator[data-full-height='true'] {
+  height: calc(100dvh - var(--spy-locator-offset, 0px));
+  min-height: var(--spy-locator-min, 640px);
+}
+
+/* spy-store-locator.js moves this into .stockist-result-panel so it sits
+   between the filter row and the list, as the source does. */
+.spy-locator__heading {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 16px 16px 0;
+  font-family: var(--font-spy);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--color-spy-text);
+}
+
+.spy-locator__loading {
+  display: block;
+  padding: 32px 16px;
+  font-family: var(--font-spy);
+  font-size: 16px;
+  color: var(--color-spy-gray);
+}
+
+/* The widget's own custom element sits between the flex parent and
+   #stockist-widget, and it is display:block — without this it collapses to
+   content height and the map never fills. */
+.spy-locator > stockist-store-locator {
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* ── Widget variables ──────────────────────────────────────────────────── */
+.spy-locator #stockist-widget {
+  --stockist-side-panel-width: var(--spy-locator-panel, 512px) !important;
+  --stockist-inset-margin: 0px !important;
+  --stockist-desktop-height: 100% !important;
+  --stockist-feature-color: var(--color-spy-orange) !important;
+  --stockist-feature-contrast-color: #fff !important;
+  --stockist-text-color: var(--color-spy-text) !important;
+  --stockist-geolocation-color: var(--color-spy-ink) !important;
+  --stockist-input-height: 53px !important;
+  --stockist-input-border: none !important;
+  --stockist-border-radius: 4px !important;
+
+  height: 100%;
+  font-family: var(--font-spy);
+}
+
+/* Padding is re-declared on .stockist-layout-desktop, so an inherited value
+   from #stockist-widget would lose. Zero it here and pad .stockist-results
+   ourselves, which keeps the panel exactly --spy-locator-panel wide. */
+.spy-locator #stockist-widget .stockist-layout {
+  --stockist-side-panel-padding: 0px !important;
+
+  height: 100%;
+}
+
+/* ── Results panel ─────────────────────────────────────────────────────── */
+.spy-locator #stockist-widget .stockist-results {
+  padding: 16px;
+}
+
+/* Stockist gutters the panel away from the map with a 16px right margin, and
+   insets the search box by 1px for its focus ring. The source runs the panel
+   flush to the map edge, so both go. */
+.spy-locator #stockist-widget .stockist-search-form,
+.spy-locator #stockist-widget .stockist-result-panel,
+.spy-locator #stockist-widget .stockist-search-wrapper {
+  margin: 0 !important;
+}
+
+/* ── Search field ──────────────────────────────────────────────────────── */
+.spy-locator #stockist-widget .stockist-search-form {
+  padding: 0;
+}
+
+.spy-locator #stockist-widget .stockist-search-wrapper {
+  height: 53px;
+  background-color: var(--color-spy-loc-field);
+  border-bottom: 1px solid var(--color-spy-loc-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.spy-locator #stockist-widget .stockist-search-field input {
+  padding: 16px;
+  font-family: var(--font-spy);
+  font-size: 14px;
+  color: var(--color-spy-text);
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+/* The source has no submit button — Enter and the suggestion list do the work. */
+.spy-locator #stockist-widget .stockist-search-submit {
+  display: none;
+}
+
+/* ── Filter row ────────────────────────────────────────────────────────── */
+.spy-locator #stockist-widget .stockist-search-filters {
+  padding: 16px;
+  border-bottom: 1px solid var(--color-spy-loc-field);
+}
+
+.spy-locator #stockist-widget .stockist-search-filter-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  font-family: var(--font-spy);
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
+  cursor: pointer;
+  background-color: var(--color-spy-ink);
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+
+.spy-locator #stockist-widget .stockist-search-filter-dropdown {
+  min-width: 240px;
+  padding: 12px;
+  background-color: #fff;
+  border: 1px solid var(--color-spy-loc-line);
+  border-radius: 6px;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%);
+}
+
+.spy-locator #stockist-widget .stockist-search-filter {
+  font-family: var(--font-spy);
+  font-size: 14px;
+  color: var(--color-spy-text);
+}
+
+/* ── Result card ───────────────────────────────────────────────────────── */
+.spy-locator #stockist-widget .stockist-result {
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+  border: 0;
+}
+
+.spy-loc-card {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  font-family: var(--font-spy);
+  cursor: pointer;
+}
+
+.spy-loc-card__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.spy-loc-card__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--color-spy-text);
+}
+
+.spy-loc-card__badge {
+  flex: 0 0 auto;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-spy-text-2);
+  white-space: nowrap;
+  background-color: var(--color-spy-loc-field);
+  border: 1px solid var(--color-spy-loc-line);
+  border-radius: 4px;
+}
+
+.spy-loc-card__sub,
+.spy-loc-card__addr,
+.spy-loc-card__line,
+.spy-loc-card__phone {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 20px;
+  color: var(--color-spy-text);
+}
+
+.spy-loc-card__sub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.spy-loc-card__addr {
+  margin-top: 8px;
+}
+
+/* Detail and actions appear only once Stockist marks the card selected. */
+.spy-loc-card__detail {
+  display: none;
+  flex-direction: column;
+  margin-top: 8px;
+}
+
+.stockist-selected .spy-loc-card,
+.spy-loc-card--popup {
+  background-color: var(--color-spy-surface);
+}
+
+.stockist-selected .spy-loc-card__detail,
+.spy-loc-card--popup .spy-loc-card__detail {
+  display: flex;
+}
+
+.spy-loc-card--popup {
+  padding: 12px;
+  cursor: auto;
+}
+
+.spy-loc-card__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.spy-loc-card__btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.spy-loc-card__btn--ghost {
+  color: var(--color-spy-ink);
+  background-color: var(--color-spy-loc-field);
+}
+
+.spy-loc-card__btn--solid {
+  color: #fff;
+  background-color: var(--color-spy-ink);
+}
+
+.spy-loc-card__btn--ghost:hover {
+  background-color: var(--color-spy-loc-line);
+}
+
+.spy-loc-card__btn--solid:hover {
+  background-color: var(--color-spy-orange);
+}
+
+/* ── Mobile: the widget stacks itself; we only add the List / Map swap ──── */
+.spy-locator__switcher {
+  display: flex;
+  flex: 0 0 auto;
+  background-color: #fff;
+  border-top: 1px solid var(--color-spy-loc-line);
+}
+
+.spy-locator__switcher[hidden] {
+  display: none;
+}
+
+.spy-locator__tab {
+  display: inline-flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-family: var(--font-spy);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-spy-ink);
+  cursor: pointer;
+  background-color: var(--color-spy-loc-field);
+  border: 0;
+}
+
+.spy-locator__tab svg {
+  width: 20px;
+  height: 20px;
+}
+
+.spy-locator__tab.is-active {
+  color: #fff;
+  background-color: var(--color-spy-ink);
+}
+
+/* data-mobile comes from spy-store-locator.js and mirrors the widget's own
+   breakpoint setting, so the two can't drift apart. */
+.spy-locator[data-view='list'] #stockist-widget .stockist-map,
+.spy-locator[data-view='map'] #stockist-widget .stockist-result-panel {
+  display: none;
+}
+
+/* Stockist ships a "fill parent" mode for exactly this, but it is written as
+   :host(.stockist-fill-parent) — shadow-DOM only, so unreachable here.
+
+   Reproducing it needs the tracks to follow the switcher, not just the hidden
+   pane: a 1fr track keeps its share even when its only item is display:none, so
+   sizing both bands flexibly leaves a gap where the hidden one was. Give the
+   height to whichever band is on screen and zero the other.
+
+   !important because the widget writes its row sizes from JS. Track order comes
+   from its grid-template-areas: intro-top · form-top · results-top ·
+   intro-left · form-left · results-left · results-bottom · b2 — the map spans
+   rows 4-6, the results panel is row 7. */
+.spy-locator[data-mobile='true'][data-view='list'] #stockist-widget .stockist-layout-mobile {
+  grid-template-rows:
+    min-content min-content min-content
+    0 0 0
+    minmax(0, 1fr) min-content !important;
+}
+
+.spy-locator[data-mobile='true'][data-view='map'] #stockist-widget .stockist-layout-mobile {
+  grid-template-rows:
+    min-content min-content min-content
+    minmax(0, 1fr) 0 0
+    0 min-content !important;
+}
+
+.spy-locator[data-mobile='true'] #stockist-widget .stockist-layout-mobile .stockist-result-panel {
+  height: 100% !important;
+}
+
+/* The map's own grid-area spans the three map rows; with two of them zeroed it
+   lands short and above the fold. Pin it to the one live track instead. */
+.spy-locator[data-mobile='true'][data-view='map'] #stockist-widget .stockist-map {
+  grid-row: 4 / 5 !important;
+  grid-column: 1 / -1 !important;
+  height: 100% !important;
 }

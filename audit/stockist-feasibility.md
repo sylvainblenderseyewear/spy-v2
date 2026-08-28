@@ -1,0 +1,360 @@
+# Stockist feasibility — can it reproduce `stores.spyoptic.com/en-gb`?
+
+---
+
+## 0. The SPY account — read live from the public config API
+
+Tag **`map_w3rgrzyq`** (from the embed snippet). Config is public and unauthenticated:
+`https://stockist.co/api/v1/map_w3rgrzyq/widget.js` · last modified `2026-08-27 11:22:45 PST`.
+
+**State: freshly installed, entirely default, no data.**
+
+| Fact | Value | Consequence |
+|---|---|---|
+| `filters` | `[]` | the reference's 5 product filters don't exist yet |
+| `custom_fields` | `[]` | none |
+| Locations | **0** | verified nil at San Diego, Paris, Milan, Toronto, Berlin |
+| `custom_css` | `""` | nothing styled yet |
+| `css_isolation` | **`true`** | closed shadow DOM is live — confirmed on this tag |
+| `map.preview` | **`true`** | **no map key** — map works only during trial |
+| `whitelabel` | **`false`** | "Powered by Stockist" branding shows |
+
+Rendering the supplied snippet confirms the isolation empirically:
+
+| Load | `stockist-*` classes reachable | `host.shadowRoot` |
+|---|---|---|
+| as supplied | **0** | `null` |
+| `?stnoshadow` | **31** | `null` |
+
+The widget also renders this notice over the map:
+> *Stockist needs a map key from Mapbox or Google to show your map. However, you can preview the map
+> during the trial period… To finish setup and remove this notice, add a map key to your Stockist account.*
+
+### Config deltas vs the reference
+
+| Setting | Now | Target | Note |
+|---|---|---|---|
+| `layout` | `horizontal_list_left` | same | ✅ already correct |
+| `search.mode` | `bounds` | same | ✅ search-as-you-pan already on |
+| `map.type` | `mapbox` | same | ✅ closest engine to the reference's MapLibre |
+| `side_panel_width` | `350` | `512` | |
+| `container.height` | `600` | full viewport | |
+| `desktop_breakpoint` | `700` | `1024` | dodges the reference's broken 768 |
+| `units` | `mi` | `km` + Miles toggle | reference is en-gb |
+| `geolocation.button` | **`none`** | in-field button | reference has one |
+| `browser_geolocation` | `mobile` | desktop too | |
+| `autocomplete_types` | `["regions"]` | `+ addresses` | |
+| `search.name_autocomplete` | `false` | `true` | reference blends store names |
+| `feature_color` | `#333333` | `#f57f29` | |
+| `overview.color` | `#333333` | `#f57f29` | cluster colour |
+| `markers` | default red `#ea4335`, 27×43 | SPY orange teardrop + cross | |
+| `filters` | `[]` | 5 product categories | |
+
+> **Note on exposure:** the tag appears in page source, and both `/widget.js` and
+> `/locations/search` are unauthenticated. Once populated, the full dealer list is publicly
+> downloadable as JSON. This matches the current Leadformance site (also a public locator), so it is
+> not a new exposure — but it should be a conscious decision, not a surprise.
+
+---
+
+Verified 2026-08-28 by dissecting the live Stockist v2 widget (`stockist.co/embed/v1/widget.min.js`,
+280 KB), its account config API, and a local harness rendering a real Stockist widget.
+Target spec: `audit/page-spec-store-locator.md`.
+
+**Verdict: yes — substantially closer than Stockist's own documentation suggests.**
+The public help pages understate the product badly. Source inspection found a result-template
+override, an events API, ~90 runtime flags and a native filter-dropdown UI, none of which are
+documented in the customization articles.
+
+---
+
+## 1. The one thing that decides everything: Shadow DOM
+
+Stockist v2 renders inside a **closed** shadow root:
+
+```js
+t.attachShadow({ mode: "closed" })
+  .appendChild(document.createComment(
+    ' Need to change styling? Add your CSS to Stockist under "Settings > Appearance > Custom CSS" '))
+```
+
+Closed means `element.shadowRoot === null`: **no external CSS and no external JS can reach inside.**
+Verified — on `stockist.co/demo` a full-document sweep finds **0** `stockist-*` classes.
+
+But the decision is a config value, not a hard-coded one:
+
+```js
+d = T => document.location.search?.includes?.(T)          // reads the QUERY STRING
+L = () => {                                               // "useCssIsolation"
+  let T = e.css_isolation;                                // ← per-account config
+  if (f() !== e.layout_version) T = (f() == "2");
+  if (d("stshadow")) T = true; else if (d("stnoshadow")) T = false;
+  return T && document.head.attachShadow && window.customElements;
+}
+```
+
+Loading the same demo with **`?stnoshadow`** renders into the light DOM — the same sweep now finds
+**36** `stockist-*` classes. Proven.
+
+> **Action required:** `css_isolation` is served from `/api/v1/{tag}/widget.js` per account.
+> Ask Stockist support to set **`css_isolation: false`** on the SPY account.
+> `?stnoshadow` is a debug flag (it reads `document.location.search`) and must not be shipped.
+
+### Isolation by layout version — measured
+
+| Mode | `stockist-*` classes reachable | Widget root | Layout engine |
+|---|---|---|---|
+| **v2 (default)** | **0** — closed shadow root | — | — |
+| v1 (`?stv10`) | 29 | `#stockist-widget` | `display: block`, floats |
+| v1.1 (`?stv11`) | 37 | `#stockist-widget` | `display: block`, floats |
+| v2 + `?stnoshadow` | 38 | `.stockist-layout` | **`display: grid`** |
+
+**v1 and v1.1 render in the light DOM with no ticket required** — layout version is a self-serve
+toggle in Settings → Appearance. This is why the Blenders theme
+(`reference/blenderseyewear/assets/theme.css`) could style `#stockist-widget .stockist-side-panel`
+and `.stockist-result-list` with ordinary CSS.
+
+So there is no hard blocker, only a quality trade:
+
+- **Route A — v2 + `css_isolation:false`** (preferred). Native CSS grid; re-templating
+  `grid-template-columns` to `512px 1fr` is one declaration. Newest feature set. Needs a support ticket.
+- **Route B — v1.1** (fallback, self-serve today). Light DOM out of the box, but the layout is
+  `.stockist-horizontal` > `.stockist-side-panel` + `.stockist-map` sized by Stockist's own JS.
+  Forcing the reference grid onto it partly works and partly fights back — measured: the panel
+  took `512px` but the map kept its JS-computed `1120px`. Older widget, more CSS combat.
+
+`__stockist_build_result_template` is checked **before** the version branch
+(`H && (B=H(...)); B || (B = isLayoutVersion("2") ? … : …)`), so the custom card template works on
+both routes.
+
+---
+
+## 2. Widget DOM (light-DOM mode) — verified live
+
+```
+.stockist-layout                                    display: GRID   ← re-templatable
+├── form.stockist-search-form
+│   ├── .stockist-search-fields-horizontal
+│   │   ├── .stockist-search-query
+│   │   │   └── .stockist-search-wrapper
+│   │   │       ├── button.stockist-geolocation-button > .stockist-icon
+│   │   │       └── .stockist-search-field
+│   │   │           ├── input
+│   │   │           ├── .stockist-autocomplete
+│   │   │           └── button.stockist-clear-search-button
+│   │   └── .stockist-search-submit > button.stockist-search-button
+│   └── .stockist-search-filters
+│       └── .stockist-filter-scroll > fieldset > .stockist-search-filter-inputs
+│           └── label.stockist-search-filter.stockist-search-filter-{id}
+├── .stockist-result-panel
+│   └── .stockist-results
+│       └── li.stockist-result.stockist-list-result   (or .stockist-result-status)
+└── .stockist-map.stockist-map-google
+    └── .stockist-map-inner
+```
+
+**`.stockist-layout` is `display: grid`.** Overriding `grid-template-columns` to `512px 1fr` and
+placing the children by `grid-column` / `grid-row` reproduces the reference shell.
+Measured in the harness: **`grid-template-columns: 512px 928px`**, map at `x 512, w 928` — an exact
+match to the reference at 1440.
+
+### Result-card classes (map 1:1 onto the reference card)
+`.stockist-result-name` · `-distance` / `-distance-text` · `-address` · `-addr-locality` ·
+`-addr-country` · `.stockist-address-city` / `-state` / `-postal-code` · `-phone` ·
+`-directions-link` · `-view-on-map-link` · `-website` · `-image` · `-filters` / `-filter-name` ·
+`-custom-fields` / `-custom-field-name` / `-custom-field-text` · `-count` · `-notes` · `-details`
+
+### Autocomplete classes
+`.stockist-autocomplete-icon-place` · `.stockist-autocomplete-icon-store` ·
+`-group` / `-group-heading` · `-text-primary` / `-text-secondary` · `-matched` · `-selected`
+
+Stockist's autocomplete **already blends places and store names with primary/secondary text** —
+the same pattern the reference uses.
+
+---
+
+## 3. Undocumented capabilities found in source
+
+### Custom result template — the big one
+```js
+let H = window.__stockist_build_result_template;
+H && (B = H({ location: E, placement: "list" }));   // also placement: "map" for popups
+```
+A user-supplied function returning an `HTMLElement` **replaces Stockist's card markup entirely**,
+for both the list card and the map popup. The reference card can be reproduced exactly — our own
+markup, our own Tailwind classes. `location` carries the full API record (§5).
+
+### Events API
+`__stockist_widget_` + `domloaded` · `listchanged` · `location_selected` · `mapchanged` ·
+`mapcreated` · `mappopupshown` · `prequery` · `resultsreceived`
+
+`resultsreceived` receives `{ results, query: { source, region, input_iso_code, search_term … } }`.
+Enough to drive a mobile List/Map toggle and react to selection.
+
+### Runtime flags (`window.__stockist_*`, ~90 total)
+| Flag | Use for |
+|---|---|
+| `__stockist_desktop_breakpoint` | **set 1024** — avoids the reference's broken 768 |
+| `__stockist_show_filter_dropdown` | native chip + dropdown — the reference's filter pattern |
+| `__stockist_distance_units` | km ⇄ mi (the reference's "Miles" checkbox) |
+| `__stockist_pre_selected_query` / `_filters` | deep links |
+| `__stockist_mapbox_key` / `_mapbox_style` | Mapbox with a custom Studio style |
+| `__stockist_leaflet_tileconfig` | **Leaflet + arbitrary tiles** — a third map option |
+| `__stockist_autocomplete_names_first` / `_result_types` | blended places + stores |
+| `__stockist_override_translation` | every UI string |
+| `__stockist_no_css` | drop Stockist's stylesheet entirely |
+| `__stockist_tags_to_pins` | different pin per filter tag |
+| `__stockist_show_all_on_empty_search`, `__stockist_trigger_geolocation`, `__stockist_disable_map` | initial state |
+
+### Account config (`/api/v1/{tag}/widget.js`)
+`layout` (`horizontal_list_left` …) · `side_panel_width` · `desktop_breakpoint` · `container.height` ·
+`mobile_map_display` · `mobile_list_height` · `units` · `max_results` · `max_distance` ·
+**`search.mode: "bounds"`** · `search.radius_options` · `search.name_autocomplete` / `name_full` ·
+`geolocation.*` · `overview.behavior: "clusters"` · `filter_operator` · `filter_display` ·
+`feature_color` · `custom_css` · `country_lock` · `languages.*` · `map.type` (`google` | `mapbox`)
+
+**`search.mode: "bounds"` is search-as-you-move-the-map** — this closes a gap I previously called
+unreachable. The reference's "Move the map to load results" / "View more results" pill is a
+bounds-mode search with restyled copy.
+
+---
+
+## 4. Reference → Stockist mapping
+
+### Reachable
+| Reference feature | Mechanism |
+|---|---|
+| `512px + 1fr` full-height grid | override `grid-template-columns` on `.stockist-layout` — **verified** |
+| Search bar (grey, icon-left, clear ×) | `.stockist-search-wrapper` + CSS — **near-exact already** |
+| Geolocate button in the field | `.stockist-geolocation-button` |
+| Blended place + store autocomplete | native; `autocomplete_types`, `name_autocomplete` |
+| Filter chip + dropdown panel | `__stockist_show_filter_dropdown` + CSS |
+| 5 product filters | Stockist filters — **needs tags applied to every location** |
+| km ⇄ mi toggle | `units` / `__stockist_distance_units` |
+| Result card (name, badge, subtitle, address) | `__stockist_build_result_template` |
+| Active card → phone + Call / More info | template + `location_selected` |
+| Search-on-pan pill | `search.mode: "bounds"` + restyled copy |
+| Orange SPY pins | custom marker image; `tags_to_pins` for per-category pins |
+| All UI strings | `languages` / `__stockist_override_translation` |
+| Avoid the broken 768 | `__stockist_desktop_breakpoint: 1024` |
+| Mobile List/Map toggle | custom UI + events API |
+| "Spy Optic presence" grid | our own theme section |
+
+### Still not reachable
+| Gap | Why |
+|---|---|
+| **MapLibre + the exact vector style** | Google or Mapbox only (Leaflet tiles are a partial third path). Closest match: Mapbox Studio style built to imitate it |
+| **Store detail pages** (`/shop/{id}/{slug}`) | no per-location URLs; would have to be built as Shopify pages/metaobjects |
+| **Country / state / county / city indexes** | widget is client-rendered; zero server HTML |
+| **Locale picker** | belongs to the standalone app; Shopify uses Markets |
+| **2,261 locations** | Stockist Premium caps at **2,000** |
+
+---
+
+## 5. Fallback — custom UI on the Stockist API
+
+The search API is **public and unauthenticated** — tag only, no key:
+
+```
+GET https://stockist.co/api/v1/{tag}/locations/search
+      ?tag={tag}&latitude=&longitude=&filter_operator=and&distance=&sort=name
+```
+
+Returns per location:
+`id, name, latitude, longitude, address_line_1, address_line_2, city, state, postal_code,
+country, full_address, phone, website, email, description, image_url, priority,
+filters[{id,name,position}], custom_fields[], distance, distance_units`
+
+So if `css_isolation: false` is refused, we can still keep Stockist as the data store and render
+our own MapLibre UI — a true 1:1 shell. Bigger build, but no vendor lock on the design.
+(`/locations/overview.js` returns geohash-clustered points for the zoomed-out view.)
+
+---
+
+## 6. Open items before build
+
+1. **`css_isolation: false`** from Stockist support (Route A). Not blocking — Route B (layout v1.1)
+   is self-serve — but Route A is materially cleaner and worth the ticket.
+2. **Widget tag** for the SPY account (Stockist → Installation) — the `data-stockist-widget-tag`
+   value, e.g. `u4084`. Nothing can be embedded or tested without it.
+3. **Map key referrer allow-list** — Stockist's Google/Mapbox key is domain-restricted. Add
+   `localhost:9292` (and the `*.myshopify.com` preview host) or the map dies with
+   `RefererNotAllowedMapError`, exactly as the public demo does on localhost.
+4. **Storefront password** for `spydevsylv.myshopify.com` — needed for preview-URL verification;
+   `shopify theme dev` covers local work.
+5. **Plan tier** — 2,261 > 2,000. Restrict via `country_lock` to US + CA (1,131), or negotiate.
+6. **Location data + filter tags** — the 5 product categories must be tagged per location.
+7. **Map provider** — Mapbox (custom Studio style) is the closest to the reference.
+8. **SEO** — decide whether `stores.spyoptic.com` stays as the canonical locator.
+
+## 7. Harness
+
+`scratchpad/loc/harness/proof.html` — a working page that loads a real Stockist widget, re-templates
+the grid to `512px 1fr`, and supplies a reference-shaped card via `__stockist_build_result_template`.
+Serve it and load with `?stnoshadow`.
+
+Note: the public demo account's Google Maps key rejects `localhost`
+(`RefererNotAllowedMapError`), which blocks geocoding and therefore live results in the harness.
+That is a demo-account restriction, not a Stockist limitation — it disappears on the SPY account.
+
+---
+
+## 9. Build log — what shipped, and what it took
+
+Files: `sections/spy-store-locator.liquid` · `assets/spy-store-locator.js` ·
+`templates/page.store-locator.json` · skin at the end of `src/tailwind.css` ·
+page **Find a Store** (`/pages/store-locator`).
+Verified on `shopify theme dev` at 1440 / 768 / 390 with `?stnoshadow`.
+Screenshots: `audit/store-locator/build/`.
+
+### Measured against the source spec
+
+| | Source | Built | |
+|---|---|---|---|
+| Grid columns @1440 | `512px 928px` | `512px 918px` | ✓ (918 = 1430 content width) |
+| Search bar | 512 × 53 | 512 × 53 | ✓ |
+| Panel flush to map | yes | yes | ✓ |
+| Fills viewport, no page scroll | yes | yes | ✓ all three widths |
+| Mobile List/Map switcher | 37px, dark active | 37px, dark active | ✓ |
+| Result card type | 16/600 · 12/500 badge · 14/300 | identical | ✓ |
+
+### Four things that fought back
+
+1. **Specificity.** Stockist's layout rules are `#stockist-widget .a.b` — (1,2,0). A
+   `.spy-locator .stockist-layout` override (0,2,0) never lands. The fix is not
+   `!important` everywhere: the widget exposes custom properties
+   (`--stockist-side-panel-width`, `--stockist-desktop-height`, `--stockist-feature-color`,
+   `--stockist-input-height`, `--stockist-border-radius`, …), and its own
+   `horizontal_list_left` grid already *is* the source's shape. Drive the variables and the
+   native layout produces the target. Only the variables themselves need `!important`,
+   because the widget writes them inline from JS (`f("--stockist-side-panel-width", …)`).
+
+2. **The custom element breaks the height chain.** `<stockist-store-locator>` sits between
+   the flex wrapper and `#stockist-widget` and is `display:block`, so it collapses to content
+   height and the map never fills. It needs `flex: 1 1 auto; min-height: 0` explicitly.
+
+3. **`1fr` tracks hold space for hidden items.** Sizing both mobile bands flexibly left a gap
+   where the hidden pane had been. The row template has to follow the switcher — height to the
+   visible band, `0` to the other. Stockist ships a `fill-parent` mode for this, but it is
+   written `:host(.stockist-fill-parent)` — shadow-DOM only, so unreachable in the very mode
+   we need for styling.
+
+4. **The offset is not the header.** The locator starts at y=93 while the header is 50px —
+   announcement bar and main padding make up the rest. Measuring the wrapper's own distance
+   from the top of the scroll container is exact and drops all header-selector guessing.
+
+### Copy is theme-owned, not dashboard-owned
+`window.__stockist_override_translation(lang, key)` is wired to section settings, so
+`search_placeholder`, `initial_message`, `no_results`, `geolocation_button`,
+`filter_dropdown_button` and `directions_link` are editable in the theme editor. Verified live:
+the field reads "City, zipcode, name…" and the empty state matches the source.
+
+### Blocked on the account, not on code
+- **Shadow root** — as-shipped the page renders the widget unstyled; the skin is inert until
+  `css_isolation:false`. Verified on tag `map_w3rgrzyq`: 0 reachable classes as shipped, 31 with
+  `?stnoshadow`.
+- **No map key** — Leaflet fallback plus the trial notice. `search.mode:"bounds"` means no map
+  eventually means no results.
+- **No locations, no filters** — the filter row does not render at all, so its skin is untested.
+- **`geolocation.button:"none"`** — the source has a geolocate button in the field; ours has none
+  until that account setting changes.
