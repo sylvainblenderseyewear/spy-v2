@@ -1,0 +1,58 @@
+{%- doc -%}
+  Renders the source's "Category" refinement — a list of top-level category
+  links, not a Shopify facet. Sits first in the filter sidebar.
+
+  @param {object} menu - The link list to render (top level only)
+  @param {string} label - Group heading
+  @param {string} sectionId - The section ID, for a unique details id
+  @param {string} [suffix] - Extra id suffix so the panel and drawer don't clash
+{%- enddoc -%}
+
+{% if menu != blank and menu.links.size > 0 %}
+  <details
+    id="Facet-Details-{{ sectionId }}-spy-category-{{ suffix | default: 'panel' }}"
+    class="facets__panel group mb-6"
+  >
+    {% comment %} Same header shell as the facets: rule under the title, +/- marker {% endcomment %}
+    <summary
+      class="facets__summary mb-2 flex cursor-pointer select-none list-none items-center justify-between gap-3 border-0 border-b border-solid border-b-spy-ink pb-2 [&::-webkit-details-marker]:hidden"
+    >
+      <span class="facets__label me-0 text-[16px] font-semibold uppercase leading-[1.4] text-spy-ink">
+        {{- label | default: 'Category' -}}
+      </span>
+
+      <span
+        class="relative block h-2.5 w-2.5 shrink-0"
+        aria-hidden="true"
+      >
+        <span class="absolute left-0 top-1 block h-0.5 w-2.5 bg-spy-ink"></span>
+        <span class="absolute left-1 top-0 block h-2.5 w-0.5 bg-spy-ink group-open:hidden"></span>
+      </span>
+    </summary>
+
+    <ul class="m-0 list-none p-0">
+      {% for link in menu.links %}
+        {% liquid
+          assign is_current = false
+          if link.active or link.child_active
+            assign is_current = true
+          endif
+        %}
+        <li class="m-0 p-0">
+          <a
+            class="
+              block text-[16px] leading-[22.4px] text-spy-ink no-underline
+              {%- if is_current %} font-semibold{% else %} font-normal{% endif %}
+            "
+            href="{{ link.url }}"
+            {% if is_current %}
+              aria-current="page"
+            {% endif %}
+          >
+            {{- link.title -}}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </details>
+{% endif %}

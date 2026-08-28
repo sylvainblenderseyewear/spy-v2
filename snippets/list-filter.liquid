@@ -37,7 +37,7 @@
 {% capture accordion_children %}
   <details
     id="Facet-Details-{{ sectionId }}-{{ filter.param_name | escape | replace: '.', '-' }}"
-    class="facets__panel{% if is_vertical %} group{% endif %}"
+    class="facets__panel{% if is_vertical %} group mb-6{% endif %}"
     {% if filter_style == 'horizontal' %}
       data-auto-close-details="desktop"
     {% endif %}
@@ -46,24 +46,26 @@
     <summary
       class="
         facets__summary
-        {%- if is_vertical %} cursor-pointer select-none list-none items-center justify-between gap-3 border-b border-solid border-b-spy-text pt-[23px] pb-3.5 [&::-webkit-details-marker]:hidden{% endif %}
+        {%- if is_vertical %} mb-2 cursor-pointer select-none list-none items-center justify-between gap-3 border-b border-solid border-b-spy-ink pb-2 [&::-webkit-details-marker]:hidden{% endif %}
       "
     >
       <span
         class="
           facets__label
-          {%- if is_vertical %} me-0 text-[13px] font-bold uppercase leading-[18px] tracking-[0.06em] text-spy-text{% endif %}
+          {%- if is_vertical %} me-0 text-[16px] font-semibold uppercase leading-[1.4] text-spy-ink{% endif %}
         "
       >
         {{- filter.label -}}
       </span>
 
       {% if is_vertical %}
+        {% comment %} Source draws the marker as two 2px bars, not a text glyph {% endcomment %}
         <span
-          class="shrink-0 text-[18px] font-light leading-none text-spy-text"
+          class="relative block h-2.5 w-2.5 shrink-0"
           aria-hidden="true"
         >
-          <span class="group-open:hidden">+</span><span class="hidden group-open:block">−</span>
+          <span class="absolute left-0 top-1 block h-0.5 w-2.5 bg-spy-ink"></span>
+          <span class="absolute left-1 top-0 block h-2.5 w-0.5 bg-spy-ink group-open:hidden"></span>
         </span>
       {% endif %}
 
@@ -185,7 +187,8 @@
           class="
             facets__inputs-wrapper
             {%- if is_swatch or is_image or should_use_pills %} facets__inputs-wrapper--row{% endif %}
-            {%- if is_vertical %} my-0 pt-2.5 {% if is_swatch %}pb-4{% else %}pb-2{% endif %}{% endif %}
+            {%- comment -%} Source body sits flush: the 8px gap comes from the header's own margin {%- endcomment -%}
+            {%- if is_vertical %} my-0 py-0{% endif %}
           "
           ref="showMoreContent"
         >
@@ -222,11 +225,11 @@
               {%- if should_use_pills %} facets__inputs-list--grid{% endif %} list-unstyled
               {%- if is_swatch %} facets__inputs-list--swatches{% if show_swatch_label %} facets__inputs-list--swatches-grid{% endif %}{% endif %}
               {%- if is_image %} facets__inputs-list--images{% endif %}
-              {%- comment -%} SPY sidebar: 5-up swatch grid, and zero-gap text rows so line-height sets the pitch {%- endcomment -%}
-              {%- if is_vertical %}{% if is_swatch and show_swatch_label == false %} grid grid-cols-5 gap-3{% elsif is_swatch == false and is_image == false %} gap-0{% endif %}{% endif %}
+              {%- comment -%} SPY sidebar: swatches wrap 5-up on a 16px gutter, text rows let line-height set the pitch {%- endcomment -%}
+              {%- if is_vertical %}{% if is_swatch and show_swatch_label == false %} [display:flex] flex-wrap gap-4{% elsif is_swatch == false and is_image == false %} gap-0{% endif %}{% endif %}
             "
             {% if is_swatch %}
-              style="--swatch-columns: {{ swatch_columns }};{% if is_vertical %} --variant-picker-swatch-width: 34px; --variant-picker-swatch-height: 34px;{% endif %}"
+              style="--swatch-columns: {{ swatch_columns }};{% if is_vertical %} --variant-picker-swatch-width: 32px; --variant-picker-swatch-height: 30px;{% endif %}"
             {% endif %}
             {% if is_image %}
               style="--image-columns: {{ image_columns }};"
@@ -252,6 +255,7 @@
                 data-skip-node-update="true"
                 class="
                   facets__inputs-list-item
+                  {%- if is_vertical and is_swatch == false and is_image == false %} pb-2{% endif %}
                   {% if hidden_class %} {{ hidden_class }}{% endif %}
                   {% if is_disabled %} facets__inputs-list-item--disabled{% endif %}
                 "
@@ -360,10 +364,10 @@
                     </label>
                   </fieldset>
                 {% elsif is_vertical %}
-                  {% comment %} Plain text row — the checkbox stays for facets.js, just visually hidden {% endcomment %}
+                  {% comment %} Source facet row: 16px square box with a tick, 8px before the label {% endcomment %}
                   <label
                     class="
-                      flex items-center text-[15px] leading-[22px] text-spy-text
+                      [display:flex] min-h-6 items-center gap-2 text-[16px] leading-[22.4px] text-spy-ink
                       {%- if is_disabled %} cursor-not-allowed opacity-40{% else %} cursor-pointer{% endif %}
                     "
                     on:pointerenter="/prefetchPage"
@@ -384,7 +388,11 @@
                       {% endif %}
                       ref="facetInputs[]"
                     >
-                    <span class="peer-checked:font-bold peer-focus-visible:outline peer-focus-visible:outline-1 peer-focus-visible:outline-offset-2">
+                    <span
+                      class="relative block h-4 w-4 shrink-0 border border-solid border-spy-ink bg-white after:absolute after:left-[4px] after:top-px after:hidden after:h-2 after:w-1 after:rotate-45 after:border-0 after:border-b-2 after:border-r-2 after:border-solid after:border-spy-ink after:content-[''] peer-checked:after:block peer-focus-visible:outline peer-focus-visible:outline-1 peer-focus-visible:outline-offset-2"
+                      aria-hidden="true"
+                    ></span>
+                    <span>
                       {{- value.label -}}
                     </span>
                   </label>

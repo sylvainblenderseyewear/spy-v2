@@ -7,7 +7,106 @@
   @param {boolean} show_filter_label - Whether to show the filter label
   @param {string} results_url - The results URL
   @param {boolean} should_show_clear_all - Whether to show the clear all button
+  @param {string} [variant] - 'bar' renders the source's chip row for the controls bar
 {%- enddoc -%}
+
+{% if variant == 'bar' %}
+  {% comment %} Source keeps active filters in the top bar, between FILTER and Sort {% endcomment %}
+  {% liquid
+    assign has_bar_pills = false
+    for filter in filters
+      if filter.type == 'price_range'
+        if filter.min_value.value != null or filter.max_value.value != null
+          assign has_bar_pills = true
+        endif
+      elsif filter.active_values.size > 0
+        assign has_bar_pills = true
+      endif
+    endfor
+  %}
+
+  <div class="mx-4 flex-1">
+    <ul
+      class="m-0 mx-2 [display:flex] list-none items-center p-0"
+      style="--variant-picker-swatch-width: 24px; --variant-picker-swatch-height: 30px;"
+    >
+      {%- for filter in filters -%}
+        {% if filter.type == 'price_range' %}
+          {% if filter.min_value.value != null or filter.max_value.value != null %}
+            <li class="m-0 p-0">
+              <facet-remove-component
+                class="[display:flex] cursor-pointer items-center gap-2 border-0 bg-transparent px-3 py-2 text-[12px] font-normal capitalize leading-[1.4] text-spy-ink"
+                data-url="{{ filter.url_to_remove }}"
+                tabindex="0"
+                role="button"
+                on:click="/removeFilter?form="
+                on:keydown="/removeFilter?form="
+              >
+                {%- if filter.min_value.value != null and filter.max_value.value != null -%}
+                  {{- filter.min_value.value | money }}–{{ filter.max_value.value | money -}}
+                {%- elsif filter.min_value.value != null -%}
+                  {{- filter.min_value.value | money }}–{{ filter.range_max | money -}}
+                {%- else -%}
+                  {{- 0 | money }}–{{ filter.max_value.value | money -}}
+                {%- endif -%}
+                <span
+                  class="svg-wrapper block h-[9px] w-[9px] shrink-0"
+                  style="--icon-stroke-width: 1px; --close-icon-opacity: 1;"
+                >
+                  {{- 'icon-filters-close.svg' | inline_asset_content -}}
+                </span>
+                <span class="visually-hidden">{{ 'actions.remove' | t }}</span>
+              </facet-remove-component>
+            </li>
+          {% endif %}
+        {% else %}
+          {%- for value in filter.active_values -%}
+            <li class="m-0 p-0">
+              <facet-remove-component
+                class="[display:flex] cursor-pointer items-center gap-2 border-0 bg-transparent px-3 py-2 text-[12px] font-normal capitalize leading-[1.4] text-spy-ink"
+                data-url="{{ value.url_to_remove }}"
+                tabindex="0"
+                role="button"
+                on:click="/removeFilter?form="
+                on:keydown="/removeFilter?form="
+              >
+                {% if value.swatch %}
+                  {% render 'swatch', swatch: value.swatch, mode: 'pill' %}
+                {% else %}
+                  {{ value.label | escape }}
+                {% endif %}
+
+                <span
+                  class="svg-wrapper block h-[9px] w-[9px] shrink-0"
+                  style="--icon-stroke-width: 1px; --close-icon-opacity: 1;"
+                >
+                  {{- 'icon-filters-close.svg' | inline_asset_content -}}
+                </span>
+                <span class="visually-hidden">{{ 'actions.remove' | t }}</span>
+              </facet-remove-component>
+            </li>
+          {%- endfor -%}
+        {% endif %}
+      {%- endfor -%}
+
+      {% if has_bar_pills %}
+        <li class="m-0 p-0">
+          <facet-remove-component data-url="{{ results_url }}">
+            <button
+              type="button"
+              class="cursor-pointer border-0 bg-transparent px-3 py-2 text-[12px] font-normal uppercase leading-[1.4] text-spy-ink"
+              ref="clearButton"
+              on:click="/removeFilter?form="
+              on:keydown="/removeFilter?form="
+            >
+              {{- 'actions.reset' | t -}}
+            </button>
+          </facet-remove-component>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+{% else %}
 
 <div class="facets-remove facets-remove--mobile-and-vertical">
   {%- if filters -%}
@@ -99,6 +198,7 @@
     </facet-remove-component>
   {% endif %}
 </div>
+{% endif %}
 
 {% stylesheet %}
   /* Facets - Remove buttons */

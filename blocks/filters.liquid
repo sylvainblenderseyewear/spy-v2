@@ -75,6 +75,9 @@
 
   # Use collection.id if available (normal collection). Don't fall back to handle — non-numeric IDs fail GID validation.
   assign collection_id = results.id | default: collection.id
+
+  # Facets the source doesn't show (Shopify serves Availability by default). Compared lowercased.
+  assign hidden_filter_labels = block_settings.hidden_filters | downcase | replace: ' ', '' | prepend: ',' | append: ','
 -%}
 
 {%- liquid
@@ -111,9 +114,9 @@
       style="{% render 'spacing-style', settings: block_settings %}{% if block_settings.text_label_case == 'uppercase' %} --facet-label-transform: uppercase;{% endif %}"
     >
       {% if block_settings.enable_filtering %}
-        <vertical-filters-toggle-component data-target="vertical-filters-panel">
+        <vertical-filters-toggle-component class="block py-4" data-target="vertical-filters-panel">
           <button
-            class="cursor-pointer rounded-none border-0 bg-spy-orange px-3.5 py-[9px] text-[11px] font-bold uppercase leading-none tracking-[0.08em] text-white"
+            class="ms-1 cursor-pointer rounded-none border border-solid border-spy-orange-ui bg-spy-orange-ui px-3 py-2 text-[12px] font-normal uppercase leading-[1.4] text-white"
             type="button"
             on:click="/toggle"
             aria-expanded="false"
@@ -122,6 +125,15 @@
             {{ 'blocks.filter' | t }}
           </button>
         </vertical-filters-toggle-component>
+      {% endif %}
+
+      {% if block_settings.enable_filtering %}
+        {% render 'filter-remove-buttons',
+          filters: filters,
+          results_url: results_url,
+          show_filter_label: block_settings.show_filter_label,
+          variant: 'bar'
+        %}
       {% endif %}
 
       {% if block_settings.enable_sorting %}
@@ -185,18 +197,35 @@
           ref="facetsForm"
         >
           {% if should_show_pane %}
-            {% render 'filter-remove-buttons',
-              filters: filters,
-              results_url: results_url,
-              show_filter_label: block_settings.show_filter_label,
-              should_show_clear_all: true
-            %}
+            {% if block_settings.filter_style != 'vertical' %}
+              {% render 'filter-remove-buttons',
+                filters: filters,
+                results_url: results_url,
+                show_filter_label: block_settings.show_filter_label,
+                should_show_clear_all: true
+              %}
+            {% endif %}
 
             {% if block_settings.enable_filtering %}
               {% assign total_active_values = 0 %}
 
               {% capture rendered_filters %}
+                {% if block_settings.filter_style == 'vertical' and block_settings.show_category_links %}
+                  {% render 'spy-filter-category',
+                    menu: block_settings.category_links_menu,
+                    label: block_settings.category_links_label,
+                    sectionId: section.id,
+                    suffix: 'panel'
+                  %}
+                {% endif %}
+
                 {%- for filter in filters -%}
+                  {% liquid
+                    assign filter_label_key = filter.label | downcase | replace: ' ', '' | prepend: ',' | append: ','
+                    if hidden_filter_labels contains filter_label_key
+                      continue
+                    endif
+                  %}
                   {% case filter.type %}
                     {% when 'price_range' %}
                       {%- liquid
@@ -232,7 +261,8 @@
                 {%- endfor -%}
               {% endcapture %}
 
-              <div class="facets__filters-wrapper">
+              {% comment %} Source rules span the full sidebar column — drop Horizon's inset {% endcomment %}
+              <div class="facets__filters-wrapper{% if block_settings.filter_style == 'vertical' %} min-[750px]:me-0{% endif %}">
                 {% if block_settings.filter_style == 'horizontal' %}
                   {% liquid
                     assign more_attributes = 'on:click="#filters-drawer/toggle"'
@@ -435,7 +465,22 @@
                 {% assign total_active_values = 0 %}
                 {% assign is_active = false %}
 
+                {% if block_settings.show_category_links %}
+                  {% render 'spy-filter-category',
+                    menu: block_settings.category_links_menu,
+                    label: block_settings.category_links_label,
+                    sectionId: section.id,
+                    suffix: 'drawer'
+                  %}
+                {% endif %}
+
                 {%- for filter in filters -%}
+                  {% liquid
+                    assign filter_label_key = filter.label | downcase | replace: ' ', '' | prepend: ',' | append: ','
+                    if hidden_filter_labels contains filter_label_key
+                      continue
+                    endif
+                  %}
                   {% case filter.type %}
                     {% when 'price_range' %}
                       {%- liquid
@@ -1345,6 +1390,41 @@
     },
     {
       "type": "header",
+      "content": "Category links"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_category_links",
+      "label": "Show category group",
+      "info": "Adds the source's \"Category\" group above the facets — top-level links from the menu below.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "category_links_label",
+      "label": "Category group heading",
+      "default": "Category"
+    },
+    {
+      "type": "link_list",
+      "id": "category_links_menu",
+      "label": "Category menu",
+      "info": "Only the top-level items are used.",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Hidden facets"
+    },
+    {
+      "type": "text",
+      "id": "hidden_filters",
+      "label": "Facets to hide",
+      "info": "Comma-separated facet names to leave out, e.g. Availability.",
+      "default": "Availability"
+    },
+    {
+      "type": "header",
       "content": "t:content.appearance"
     },
     {
@@ -1426,7 +1506,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 20,
+      "default": 32,
       "visible_if": "{{ block.settings.filter_style == 'vertical' }}"
     }
   ]
