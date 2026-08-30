@@ -82,7 +82,7 @@
 {%- endcomment -%}
 {%- if found and row.size > 1 -%}
   <nav class="spy-category-links" aria-label="{{ 'breadcrumbs.collections' | t }}">
-    <div class="w-full pt-[52px] pb-4 text-center">
+    <div class="w-full pt-12 text-center">
       {%- for link in row -%}
         <a href="{{ link.url }}" class="mx-[3px] my-[3px] inline-flex items-center whitespace-nowrap border border-solid border-spy-orange-ui bg-white px-3 py-2 align-middle text-[12px] font-normal uppercase leading-[1.4] tracking-normal text-spy-orange-ui no-underline transition-colors hover:bg-spy-orange-ui hover:text-white"{% if link.current %} aria-current="page"{% endif %}>
           {{- link.title -}}

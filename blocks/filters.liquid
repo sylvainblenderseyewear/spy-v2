@@ -111,7 +111,8 @@
     {% # These elements are always rendered in the horizontal bar that's why we apply the .facets--horizontal class %}
     <div
       class="facets facets--horizontal facets-controls-wrapper spacing-style"
-      style="{% render 'spacing-style', settings: block_settings %}{% if block_settings.text_label_case == 'uppercase' %} --facet-label-transform: uppercase;{% endif %}"
+      {%- comment -%} Source opens a band between this bar and the results row {%- endcomment -%}
+      style="{% render 'spacing-style', settings: block_settings %} margin-block-end: {{ block_settings.facets_margin_bottom }}px;{% if block_settings.text_label_case == 'uppercase' %} --facet-label-transform: uppercase;{% endif %}"
     >
       {% if block_settings.enable_filtering %}
         <vertical-filters-toggle-component class="block py-4" data-target="vertical-filters-panel">
@@ -759,7 +760,6 @@
       grid-column: column-1 / column-12;
       color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
       gap: 0 var(--facets-form-horizontal-gap);
-      padding-bottom: var(--padding-xs);
     }
   }
 
