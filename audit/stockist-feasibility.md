@@ -358,3 +358,56 @@ the field reads "City, zipcode, name…" and the empty state matches the source.
 - **No locations, no filters** — the filter row does not render at all, so its skin is untested.
 - **`geolocation.button:"none"`** — the source has a geolocate button in the field; ours has none
   until that account setting changes.
+
+---
+
+## 10. Pixel comparison against the live page
+
+Both pages measured with one shared probe at 1440 / 768 / 390, ours via `?stnoshadow`.
+Raw numbers: `audit/store-locator/compare/measurements.json`. Screenshots alongside it.
+
+### Fixed in this pass
+
+| Gap | Was | Now |
+|---|---|---|
+| Empty-state title | absent — "Find a Spy Optic dealer" showed before any search | "Search for a location", centred, offset **80px** exactly at all three widths |
+| Results heading | always visible | only once results exist (`data-has-results`) |
+| Empty block anchoring | vertically centred (offset 332px) | top-anchored, matching the source |
+| Stockist's pin icon in empty state | shown | hidden — the source has no icon there |
+| Input line-height | 19.6px | **20px** |
+| Input height | 52px | **53px** |
+| Double divider | 1px on the filter row *and* on top of the list | list border removed, matching the source |
+
+`.stockist-result-status` is a **column** flex container, so `justify-content` is its
+vertical axis — that one caught me out and is why the empty block was centred.
+
+### Remaining differences, and why
+
+**Account-gated — no code fix exists:**
+- **Filter row** absent (`filters: []`). Costs 67px of the search block, so our grid rows read
+  `53px` where the source reads `120px`.
+- **Geolocate button** absent (`geolocation.button: "none"`). The source insets the input 48px to
+  clear its icon; ours applies that padding only via
+  `:has(.stockist-geolocation-button)`, so it appears the moment the setting is turned on rather
+  than leaving a blank indent today.
+- **Map** is the Leaflet fallback with a trial notice — no map key.
+- **Result cards** unverifiable against live — zero locations.
+
+**Deliberate, and I would not change them:**
+- **DIN, not Roboto.** The locator subdomain falls back to Roboto because it is a third-party app
+  that never loads the brand font. DIN is correct here.
+- **Text `#242424`, not pure black** — the brand token, and what spyoptic.com itself uses.
+- **Header offset 93px vs 64px.** The source has a stripped app header with a locale picker; ours
+  sits under the real SPY header and announcement bar.
+- **768 is full-width, not a 241px map.** The source keeps its hard 512px panel at 768 and crushes
+  the map — a defect already logged in the page spec. Ours stacks and offers List/Map.
+- **A 10px scrollbar.** The source sets `body { overflow: hidden }`, which also makes its own footer
+  unreachable. Ours is a real Shopify page with a reachable footer.
+- **Field background sits on `.stockist-search-wrapper`, not the input.** The source overlays its
+  geolocate button inside the input's padding; Stockist renders it as a flex sibling, so the
+  wrapper has to carry the background. Renders identically.
+
+### One flake worth knowing
+A single run threw `_stockistConfigCallback_map_w3rgrzyq is not defined` — Stockist's JSONP config
+script beating its own bundle. Not reproducible across 4 subsequent loads (widget rendered every
+time) and it self-recovers. Stockist-side load-order race, not ours.

@@ -67,17 +67,47 @@
   }
 
   /**
-   * The source puts the results heading between the filter row and the list.
-   * We can't render it there — Stockist owns that DOM — so move it in once the
-   * widget exists. In shadow-DOM mode the panel is unreachable and the heading
-   * simply stays where the section rendered it.
+   * Two headings, and the source shows exactly one at a time:
+   * - "Find a Spy Optic dealer" sits above the list, but only once there are results
+   * - "Search for a location" titles the empty state, centred above Stockist's message
+   *
+   * Both belong inside DOM Stockist owns, so we move them in and put them back
+   * whenever it re-renders. In shadow-DOM mode nothing is reachable and they stay
+   * where the section rendered them.
    */
-  function placeHeading(root) {
-    const heading = root.querySelector('.spy-locator__heading');
-    if (!heading) return;
+  function placeHeadings(root) {
     const panel = root.querySelector('.stockist-result-panel');
-    if (!panel || heading.parentElement === panel) return;
-    panel.insertBefore(heading, panel.firstChild);
+    if (!panel) return;
+
+    const heading = root.querySelector('[data-spy-locator-results-heading]');
+    if (heading && heading.parentElement !== panel) {
+      panel.insertBefore(heading, panel.firstChild);
+    }
+
+    const emptyTitle = root.querySelector('[data-spy-locator-empty-title]');
+    const message = root.querySelector('.stockist-result-message');
+    const messageText = root.querySelector('.stockist-result-message-text');
+    if (emptyTitle && message && messageText && emptyTitle.parentElement !== message) {
+      message.insertBefore(emptyTitle, messageText);
+    }
+  }
+
+  function syncResultState(root) {
+    const hasResults = !!root.querySelector('.stockist-result');
+    root.dataset.hasResults = String(hasResults);
+    const emptyTitle = root.querySelector('[data-spy-locator-empty-title]');
+    if (emptyTitle) emptyTitle.hidden = hasResults;
+  }
+
+  /** Stockist rebuilds the list on every query, so re-place and re-check after each. */
+  function watchResults(root) {
+    const panel = root.querySelector('.stockist-result-panel');
+    if (!panel || panel.dataset.spyLocatorWatched) return;
+    panel.dataset.spyLocatorWatched = 'true';
+    new MutationObserver(() => {
+      placeHeadings(root);
+      syncResultState(root);
+    }).observe(panel, { childList: true, subtree: true });
   }
 
   function init(root) {
@@ -95,7 +125,9 @@
   function refresh() {
     document.querySelectorAll('[data-spy-locator]').forEach((root) => {
       init(root);
-      placeHeading(root);
+      placeHeadings(root);
+      syncResultState(root);
+      watchResults(root);
       size(root);
       syncSwitcher(root);
     });

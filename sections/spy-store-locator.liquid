@@ -35,7 +35,13 @@
   {{ section.shopify_attributes }}
 >
   {%- if heading != blank -%}
-    <p class="spy-locator__heading">{{ heading }}</p>
+    <p class="spy-locator__heading" data-spy-locator-results-heading>{{ heading }}</p>
+  {%- endif -%}
+
+  {%- if section.settings.text_empty_title != blank -%}
+    <p class="spy-locator__empty-title" data-spy-locator-empty-title hidden>
+      {{ section.settings.text_empty_title }}
+    </p>
   {%- endif -%}
 
   <stockist-store-locator data-stockist-widget-tag="{{ tag }}">
@@ -241,6 +247,12 @@
       "id": "text_search_placeholder",
       "label": "Search placeholder",
       "default": "City, zipcode, name..."
+    },
+    {
+      "type": "text",
+      "id": "text_empty_title",
+      "label": "Before searching — title",
+      "default": "Search for a location"
     },
     {
       "type": "text",

@@ -1,0 +1,549 @@
+{
+ "LIVE": {
+  "390": {
+   "viewport": {
+    "w": 390,
+    "h": 844
+   },
+   "docScroll": {
+    "sw": 390,
+    "cw": 390
+   },
+   "grid": {
+    "x": 0,
+    "y": 56,
+    "w": 375,
+    "h": 788,
+    "display": "flex",
+    "grid-template-columns": "none",
+    "grid-template-rows": "none"
+   },
+   "input": {
+    "x": 0,
+    "y": 56,
+    "w": 375,
+    "h": 53,
+    "font-size": "14px",
+    "font-weight": "400",
+    "line-height": "20px",
+    "color": "rgb(0, 0, 0)",
+    "font-family": "Roboto, sans-serif",
+    "background-color": "rgb(238, 237, 241)",
+    "padding": "16px 16px 16px 48px",
+    "border-bottom": "1px solid lab(91.6229 -0.159115 -2.26791)",
+    "border-radius": "0px",
+    "ph": "City, zipcode, name..."
+   },
+   "wrapper": {
+    "x": 0,
+    "y": 56,
+    "w": 375,
+    "h": 53,
+    "background-color": "rgba(0, 0, 0, 0)",
+    "border-bottom": "0px solid lab(91.6229 -0.159115 -2.26791)",
+    "height": "53px"
+   },
+   "results": {
+    "x": 0,
+    "y": 176,
+    "w": 375,
+    "h": 631,
+    "padding": "16px",
+    "overflow-y": "auto"
+   },
+   "map": {
+    "x": 0,
+    "y": 0,
+    "w": 0,
+    "h": 0
+   },
+   "emptyHeading": {
+    "x": 113.22,
+    "y": 256,
+    "w": 148.55,
+    "h": 24,
+    "text": "Search for a location",
+    "font-size": "16px",
+    "font-weight": "600",
+    "line-height": "24px",
+    "color": "rgb(0, 0, 0)",
+    "font-family": "Roboto, sans-serif",
+    "align": "center"
+   },
+   "emptyBtn": {
+    "x": 107.2,
+    "y": 392,
+    "w": 160.58,
+    "h": 44,
+    "text": "Geolocate myself",
+    "font-size": "14px",
+    "font-weight": "500",
+    "line-height": "20px",
+    "color": "rgb(0, 0, 0)",
+    "font-family": "Roboto, sans-serif",
+    "background-color": "rgba(0, 0, 0, 0)",
+    "padding": "10px",
+    "border-radius": "8px"
+   },
+   "resultsText": [
+    "Search for a location",
+    "Enter search criteria or locate yourself to see nearby locations.",
+    "Geolocate myself"
+   ],
+   "geoBtn": {
+    "x": 0,
+    "y": 60.5,
+    "w": 44,
+    "h": 44
+   },
+   "filterBar": {
+    "x": 0,
+    "y": 109,
+    "w": 375,
+    "h": 67
+   }
+  },
+  "768": {
+   "viewport": {
+    "w": 768,
+    "h": 1024
+   },
+   "docScroll": {
+    "sw": 768,
+    "cw": 768
+   },
+   "grid": {
+    "x": 0,
+    "y": 56,
+    "w": 753,
+    "h": 968,
+    "display": "grid",
+    "grid-template-columns": "512px 241px",
+    "grid-template-rows": "120px 848px"
+   },
+   "input": {
+    "x": 0,
+    "y": 56,
+    "w": 512,
+    "h": 53,
+    "font-size": "14px",
+    "font-weight": "400",
+    "line-height": "20px",
+    "color": "rgb(0, 0, 0)",
+    "font-family": "Roboto, sans-serif",
+    "background-color": "rgb(238, 237, 241)",
+    "padding": "16px 16px 16px 48px",
+    "border-bottom": "1px solid lab(91.6229 -0.159115 -2.26791)",
+    "border-radius": "0px",
+    "ph": "City, zipcode, name..."
+   },
+   "wrapper": {
+    "x": 0,
+    "y": 56,
+    "w": 512,
+    "h": 53,
+    "background-color": "rgba(0, 0, 0, 0)",
+    "border-bottom": "0px solid lab(91.6229 -0.159115 -2.26791)",
+    "height": "53px"
+   },
+   "results": {
+    "x": 0,
+    "y": 176,
+    "w": 512,
+    "h": 848,
+    "padding": "16px",
+    "overflow-y": "auto"
+   },
+   "map": {
+    "x": 512,
+    "y": 56,
+    "w": 241,
+    "h": 968
+   },
+   "emptyHeading": {
+    "x": 181.72,
+    "y": 256,
+    "w": 148.55,
+    "h": 24,
+    "text": "Search for a location",
+    "font-size": "16px",
+    "font-weight": "600",
+    "line-height": "24px",
+    "color": "rgb(0, 0, 0)",
+    "font-family": "Roboto, sans-serif",
+    "align": "center"
+   },
+   "emptyBtn": {
+    "x": 175.7,
+    "y": 368,
+    "w": 160.58,
+    "h": 44,
+    "text": "Geolocate myself",
+    "font-size": "14px",
+    "font-weight": "500",
+    "line-height": "20px",
+    "color": "rgb(0, 0, 0)",
+    "font-family": "Roboto, sans-serif",
+    "background-color": "rgba(0, 0, 0, 0)",
+    "padding": "10px",
+    "border-radius": "8px"
+   },
+   "resultsText": [
+    "Search for a location",
+    "Enter search criteria or locate yourself to see nearby locations.",
+    "Geolocate myself"
+   ],
+   "geoBtn": {
+    "x": 0,
+    "y": 60.5,
+    "w": 44,
+    "h": 44
+   },
+   "filterBar": {
+    "x": 0,
+    "y": 109,
+    "w": 512,
+    "h": 67
+   }
+  },
+  "1440": {
+   "viewport": {
+    "w": 1440,
+    "h": 900
+   },
+   "docScroll": {
+    "sw": 1440,
+    "cw": 1440
+   },
+   "grid": {
+    "x": 0,
+    "y": 64,
+    "w": 1425,
+    "h": 836,
+    "display": "grid",
+    "grid-template-columns": "512px 913px",
+    "grid-template-rows": "120px 716px"
+   },
+   "input": {
+    "x": 0,
+    "y": 64,
+    "w": 512,
+    "h": 53,
+    "font-size": "14px",
+    "font-weight": "400",
+    "line-height": "20px",
+    "color": "rgb(0, 0, 0)",
+    "font-family": "Roboto, sans-serif",
+    "background-color": "rgb(238, 237, 241)",
+    "padding": "16px 16px 16px 48px",
+    "border-bottom": "1px solid lab(91.6229 -0.159115 -2.26791)",
+    "border-radius": "0px",
+    "ph": "City, zipcode, name..."
+   },
+   "wrapper": {
+    "x": 0,
+    "y": 64,
+    "w": 512,
+    "h": 53,
+    "background-color": "rgba(0, 0, 0, 0)",
+    "border-bottom": "0px solid lab(91.6229 -0.159115 -2.26791)",
+    "height": "53px"
+   },
+   "results": {
+    "x": 0,
+    "y": 184,
+    "w": 512,
+    "h": 716,
+    "padding": "16px",
+    "overflow-y": "auto"
+   },
+   "map": {
+    "x": 512,
+    "y": 64,
+    "w": 913,
+    "h": 836
+   },
+   "emptyHeading": {
+    "x": 181.72,
+    "y": 264,
+    "w": 148.55,
+    "h": 24,
+    "text": "Search for a location",
+    "font-size": "16px",
+    "font-weight": "600",
+    "line-height": "24px",
+    "color": "rgb(0, 0, 0)",
+    "font-family": "Roboto, sans-serif",
+    "align": "center"
+   },
+   "emptyBtn": {
+    "x": 175.7,
+    "y": 376,
+    "w": 160.58,
+    "h": 44,
+    "text": "Geolocate myself",
+    "font-size": "14px",
+    "font-weight": "500",
+    "line-height": "20px",
+    "color": "rgb(0, 0, 0)",
+    "font-family": "Roboto, sans-serif",
+    "background-color": "rgba(0, 0, 0, 0)",
+    "padding": "10px",
+    "border-radius": "8px"
+   },
+   "resultsText": [
+    "Search for a location",
+    "Enter search criteria or locate yourself to see nearby locations.",
+    "Geolocate myself"
+   ],
+   "geoBtn": {
+    "x": 0,
+    "y": 68.5,
+    "w": 44,
+    "h": 44
+   },
+   "filterBar": {
+    "x": 0,
+    "y": 117,
+    "w": 512,
+    "h": 67
+   }
+  }
+ },
+ "OURS": {
+  "390": {
+   "viewport": {
+    "w": 390,
+    "h": 844
+   },
+   "docScroll": {
+    "sw": 380,
+    "cw": 380
+   },
+   "grid": {
+    "x": 0,
+    "y": 93,
+    "w": 380,
+    "h": 714,
+    "display": "grid",
+    "grid-template-columns": "380px 0px",
+    "grid-template-rows": "0px 53px 0px 0px 0px 0px 661px 0px"
+   },
+   "input": {
+    "x": 0,
+    "y": 93,
+    "w": 380,
+    "h": 53,
+    "font-size": "14px",
+    "font-weight": "400",
+    "line-height": "20px",
+    "color": "rgb(36, 36, 36)",
+    "font-family": "DINNextLTPro, D-DIN, sans-serif",
+    "background-color": "rgba(0, 0, 0, 0)",
+    "padding": "16px",
+    "border-bottom": "0px none rgb(36, 36, 36)",
+    "border-radius": "0px",
+    "ph": "City, zipcode, name..."
+   },
+   "wrapper": {
+    "x": 0,
+    "y": 93,
+    "w": 380,
+    "h": 53,
+    "background-color": "rgb(238, 237, 241)",
+    "border-bottom": "1px solid rgb(216, 215, 224)",
+    "height": "53px"
+   },
+   "results": {
+    "x": 0,
+    "y": 146,
+    "w": 380,
+    "h": 627,
+    "padding": "16px",
+    "overflow-y": "auto"
+   },
+   "map": {
+    "x": 0,
+    "y": 0,
+    "w": 0,
+    "h": 0
+   },
+   "emptyHeading": {
+    "x": 116.94,
+    "y": 226,
+    "w": 146.13,
+    "h": 24,
+    "text": "Search for a location",
+    "font-size": "16px",
+    "font-weight": "600",
+    "line-height": "24px",
+    "color": "rgb(36, 36, 36)",
+    "font-family": "DINNextLTPro, D-DIN, sans-serif",
+    "align": "center"
+   },
+   "emptyBtn": null,
+   "resultsText": [
+    "Search for a location",
+    "Enter search criteria or locate yourself to see nearby locations."
+   ],
+   "geoBtn": null,
+   "filterBar": null
+  },
+  "768": {
+   "viewport": {
+    "w": 768,
+    "h": 1024
+   },
+   "docScroll": {
+    "sw": 758,
+    "cw": 758
+   },
+   "grid": {
+    "x": 0,
+    "y": 93,
+    "w": 758,
+    "h": 894,
+    "display": "grid",
+    "grid-template-columns": "758px 0px",
+    "grid-template-rows": "0px 53px 0px 0px 0px 0px 841px 0px"
+   },
+   "input": {
+    "x": 0,
+    "y": 93,
+    "w": 758,
+    "h": 53,
+    "font-size": "14px",
+    "font-weight": "400",
+    "line-height": "20px",
+    "color": "rgb(36, 36, 36)",
+    "font-family": "DINNextLTPro, D-DIN, sans-serif",
+    "background-color": "rgba(0, 0, 0, 0)",
+    "padding": "16px",
+    "border-bottom": "0px none rgb(36, 36, 36)",
+    "border-radius": "0px",
+    "ph": "City, zipcode, name..."
+   },
+   "wrapper": {
+    "x": 0,
+    "y": 93,
+    "w": 758,
+    "h": 53,
+    "background-color": "rgb(238, 237, 241)",
+    "border-bottom": "1px solid rgb(216, 215, 224)",
+    "height": "53px"
+   },
+   "results": {
+    "x": 0,
+    "y": 146,
+    "w": 758,
+    "h": 807,
+    "padding": "16px",
+    "overflow-y": "auto"
+   },
+   "map": {
+    "x": 0,
+    "y": 0,
+    "w": 0,
+    "h": 0
+   },
+   "emptyHeading": {
+    "x": 305.92,
+    "y": 226,
+    "w": 146.13,
+    "h": 24,
+    "text": "Search for a location",
+    "font-size": "16px",
+    "font-weight": "600",
+    "line-height": "24px",
+    "color": "rgb(36, 36, 36)",
+    "font-family": "DINNextLTPro, D-DIN, sans-serif",
+    "align": "center"
+   },
+   "emptyBtn": null,
+   "resultsText": [
+    "Search for a location",
+    "Enter search criteria or locate yourself to see nearby locations."
+   ],
+   "geoBtn": null,
+   "filterBar": null
+  },
+  "1440": {
+   "viewport": {
+    "w": 1440,
+    "h": 900
+   },
+   "docScroll": {
+    "sw": 1440,
+    "cw": 1440
+   },
+   "grid": {
+    "x": 0,
+    "y": 93,
+    "w": 1430,
+    "h": 807,
+    "display": "grid",
+    "grid-template-columns": "512px 918px",
+    "grid-template-rows": "0px 0px 0px 0px 53px 754px 0px 0px"
+   },
+   "input": {
+    "x": 0,
+    "y": 93,
+    "w": 512,
+    "h": 53,
+    "font-size": "14px",
+    "font-weight": "400",
+    "line-height": "20px",
+    "color": "rgb(36, 36, 36)",
+    "font-family": "DINNextLTPro, D-DIN, sans-serif",
+    "background-color": "rgba(0, 0, 0, 0)",
+    "padding": "16px",
+    "border-bottom": "0px none rgb(36, 36, 36)",
+    "border-radius": "0px",
+    "ph": "City, zipcode, name..."
+   },
+   "wrapper": {
+    "x": 0,
+    "y": 93,
+    "w": 512,
+    "h": 53,
+    "background-color": "rgb(238, 237, 241)",
+    "border-bottom": "1px solid rgb(216, 215, 224)",
+    "height": "53px"
+   },
+   "results": {
+    "x": 0,
+    "y": 146,
+    "w": 512,
+    "h": 720,
+    "padding": "16px",
+    "overflow-y": "auto"
+   },
+   "map": {
+    "x": 512,
+    "y": 93,
+    "w": 918,
+    "h": 807
+   },
+   "emptyHeading": {
+    "x": 182.92,
+    "y": 226,
+    "w": 146.13,
+    "h": 24,
+    "text": "Search for a location",
+    "font-size": "16px",
+    "font-weight": "600",
+    "line-height": "24px",
+    "color": "rgb(36, 36, 36)",
+    "font-family": "DINNextLTPro, D-DIN, sans-serif",
+    "align": "center"
+   },
+   "emptyBtn": null,
+   "resultsText": [
+    "Search for a location",
+    "Enter search criteria or locate yourself to see nearby locations."
+   ],
+   "geoBtn": null,
+   "filterBar": null
+  }
+ }
+}

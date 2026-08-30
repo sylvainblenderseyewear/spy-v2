@@ -3000,7 +3000,8 @@ product-recommendations .slideshow-control svg {
 }
 
 /* spy-store-locator.js moves this into .stockist-result-panel so it sits
-   between the filter row and the list, as the source does. */
+   between the filter row and the list, as the source does. The source only
+   shows it once a search has returned something. */
 .spy-locator__heading {
   flex: 0 0 auto;
   margin: 0;
@@ -3010,6 +3011,25 @@ product-recommendations .slideshow-control svg {
   font-weight: 600;
   line-height: 24px;
   color: var(--color-spy-text);
+}
+
+.spy-locator:not([data-has-results='true']) .spy-locator__heading {
+  display: none;
+}
+
+/* Titles the empty state, centred above Stockist's message. */
+.spy-locator__empty-title {
+  margin: 0;
+  font-family: var(--font-spy);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--color-spy-text);
+  text-align: center;
+}
+
+.spy-locator__empty-title[hidden] {
+  display: none;
 }
 
 .spy-locator__loading {
@@ -3056,8 +3076,46 @@ product-recommendations .slideshow-control svg {
 }
 
 /* ── Results panel ─────────────────────────────────────────────────────── */
+/* Stockist puts a 1px rule on top of the list; the source puts that divider on
+   the filter row instead, which we already do — keeping both is a double line. */
 .spy-locator #stockist-widget .stockist-results {
+  height: 100%;
   padding: 16px;
+  overflow-y: auto;
+  border-top: 0;
+}
+
+/* Empty / no-results state. The source centres it horizontally but anchors it to
+   the top of the panel: title lands 80px down — 16px from .stockist-results plus
+   the block's own 64px. It has no icon, so Stockist's pin is dropped to match. */
+/* Column flex — so justify-content is the vertical axis here, not the horizontal. */
+.spy-locator #stockist-widget .stockist-result-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.spy-locator #stockist-widget .stockist-result-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 64px 16px;
+  text-align: center;
+}
+
+.spy-locator #stockist-widget .stockist-result-message-icon {
+  display: none;
+}
+
+.spy-locator #stockist-widget .stockist-result-message-text {
+  font-family: var(--font-spy);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--color-spy-text);
+  opacity: 0.8;
 }
 
 /* Stockist gutters the panel away from the map with a 16px right margin, and
@@ -3083,13 +3141,23 @@ product-recommendations .slideshow-control svg {
 }
 
 .spy-locator #stockist-widget .stockist-search-field input {
+  height: 53px;
   padding: 16px;
   font-family: var(--font-spy);
   font-size: 14px;
+  line-height: 20px;
   color: var(--color-spy-text);
   background-color: transparent;
   border: 0;
   border-radius: 0;
+}
+
+/* The source insets the text 48px to clear the geolocate icon. Only do that when
+   the button is actually rendered — it is off in the account today
+   (geolocation.button:"none"), and a blank indent would read as a bug. */
+.spy-locator #stockist-widget .stockist-search-wrapper:has(.stockist-geolocation-button)
+  .stockist-search-field input {
+  padding-left: 48px;
 }
 
 /* The source has no submit button — Enter and the suggestion list do the work. */
