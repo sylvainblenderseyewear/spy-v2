@@ -44,6 +44,22 @@
     </p>
   {%- endif -%}
 
+  {%- comment -%}
+    The source offers a geolocate button in its empty state. Stockist places its
+    own button either in the field or beside it, never here — so this one calls
+    the widget's __stockist_trigger_geolocation directly. Stays hidden until the
+    script confirms that function exists.
+  {%- endcomment -%}
+  {%- if section.settings.show_empty_geolocate and section.settings.text_geolocate != blank -%}
+    <button type="button" class="spy-locator__geo" data-spy-locator-geo hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="7"/>
+        <path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/>
+      </svg>
+      <span>{{ section.settings.text_geolocate }}</span>
+    </button>
+  {%- endif -%}
+
   <stockist-store-locator data-stockist-widget-tag="{{ tag }}">
     <span class="spy-locator__loading">{{ 'general.loading' | t | default: 'Loading store locator…' }}</span>
   </stockist-store-locator>
@@ -280,6 +296,13 @@
       "default": "No Spy Optic dealers found nearby. Try widening your search."
     },
     { "type": "text", "id": "text_geolocate", "label": "Geolocate button", "default": "Geolocate myself" },
+    {
+      "type": "checkbox",
+      "id": "show_empty_geolocate",
+      "label": "Geolocate button in the empty state",
+      "default": true,
+      "info": "Matches the source. Hides itself if the browser or widget can't geolocate."
+    },
     { "type": "text", "id": "text_filter_button", "label": "Filter button", "default": "Spy Optic Products" },
     { "type": "header", "content": "Mobile" },
     {

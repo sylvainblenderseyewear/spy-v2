@@ -472,3 +472,53 @@ Of the visible difference: the **map**, the **filter row** and the **geolocate c
 account settings, not code. The panel's typography, spacing, colour and layout are done. Until
 `css_isolation:false`, a real visitor sees none of it anyway — the widget renders unstyled in a
 closed shadow root.
+
+---
+
+## 12. Main-window pixel pass
+
+Header and footer stay as the theme's own — confirmed. This pass targeted only the locator body.
+
+To reach the parts gated behind account settings, the JSONP config callback was patched **in a test
+harness only** (`_stockistConfigCallback_map_w3rgrzyq` intercepted via `addInitScript`) to switch on
+`geolocation.button: "inline"` and inject five filters. Nothing shipped — but it rendered the filter
+row and geolocate control, and exposed five real layout bugs that were invisible while those
+settings were off.
+
+### Bugs the simulation found
+
+| Symptom | Cause |
+|---|---|
+| Filter row sat **beside** the search field | `.stockist-search-fields-horizontal` is the flex row and the filter block is one of *its* children, not a sibling of it |
+| Chip was 51px tall, not 34 | it inherits `--stockist-input-height` (53px) — the *field's* height |
+| Chip 25px too narrow | Stockist's dropdown button ships text only; the source's has a chevron |
+| Filter row inset 8px, 2px too tall | `--stockist-form-spacing` margin on the row, plus a 1px focus-ring margin on the chip |
+| Geolocate icon 37px, input double-inset | Stockist renders the button as a real flex sibling, not an overlay — so the input must *not* also carry the source's 48px left padding |
+
+### Now matching live exactly
+
+| | Source | Ours |
+|---|---|---|
+| Filter band | `0,y 512×67` | `0,y 512×67` |
+| Filter chip | `16,y 160.66×34`, radius 6 | `16,y 159.83×34`, radius 6 |
+| Geolocate in field | 48px slot, 22px icon | 48px slot, 22px icon |
+| Search input | 464px after the icon slot, 53 tall | identical |
+| Empty title | **+80px** into the panel | **+80** |
+| Empty sub | **+112**, w352, h48 | **+112**, w352, h48 |
+| Geolocate button | **+192**, h44, 2px border, radius 8 | **+192**, h44, 2px border, radius 8 |
+
+Sub-pixel width deltas (159.83 vs 160.66; 153.47 vs 160.58) are DIN vs Roboto glyph widths — a
+consequence of using the brand font, not a layout error.
+
+### Built rather than borrowed
+- **Chevron on the filter chip** — drawn as a `mask-image` so it takes the chip's colour.
+- **Empty-state geolocate button** — Stockist places its own button in the field or beside it, never
+  in the empty state. Ours calls `window.__stockist_trigger_geolocation()`, which the widget defines,
+  so it is a real control. It hides itself when that function or `navigator.geolocation` is absent.
+- Both are pre-styled to the measured source values, so they land correctly the moment the account
+  settings are switched on.
+
+### Left over
+The **map** — still the Leaflet fallback with its trial notice, and still the single largest visual
+difference. Only the Mapbox key closes it. Filters and the geolocate button remain switched off in
+the account; the CSS for both is verified and waiting.

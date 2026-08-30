@@ -90,13 +90,37 @@
     if (emptyTitle && message && messageText && emptyTitle.parentElement !== message) {
       message.insertBefore(emptyTitle, messageText);
     }
+
+    const geo = root.querySelector('[data-spy-locator-geo]');
+    if (geo && message && geo.parentElement !== message) message.appendChild(geo);
+  }
+
+  /** Our empty-state geolocate button drives the widget's own trigger. */
+  function wireGeolocate(root) {
+    const geo = root.querySelector('[data-spy-locator-geo]');
+    if (!geo || geo.dataset.spyLocatorWired) return;
+    geo.dataset.spyLocatorWired = 'true';
+    geo.addEventListener('click', () => {
+      if (typeof window.__stockist_trigger_geolocation === 'function') {
+        window.__stockist_trigger_geolocation();
+      }
+    });
   }
 
   function syncResultState(root) {
     const hasResults = !!root.querySelector('.stockist-result');
     root.dataset.hasResults = String(hasResults);
+
     const emptyTitle = root.querySelector('[data-spy-locator-empty-title]');
     if (emptyTitle) emptyTitle.hidden = hasResults;
+
+    // Only offer geolocate while the panel is empty, and only if it can work.
+    const geo = root.querySelector('[data-spy-locator-geo]');
+    if (geo) {
+      const usable = typeof window.__stockist_trigger_geolocation === 'function'
+        && 'geolocation' in navigator;
+      geo.hidden = hasResults || !usable;
+    }
   }
 
   /** Stockist rebuilds the list on every query, so re-place and re-check after each. */
@@ -126,6 +150,7 @@
     document.querySelectorAll('[data-spy-locator]').forEach((root) => {
       init(root);
       placeHeadings(root);
+      wireGeolocate(root);
       syncResultState(root);
       watchResults(root);
       size(root);

@@ -23,7 +23,8 @@
         "custom_class": "",
         "leaflet_tiles": "",
         "leaflet_attribution": "",
-        "text_empty_title": "Search for a location"
+        "text_empty_title": "Search for a location",
+        "show_empty_geolocate": true
       }
     }
   },

@@ -3151,7 +3151,12 @@ product-recommendations .slideshow-control svg {
 }
 
 /* ── Search field ──────────────────────────────────────────────────────── */
-.spy-locator #stockist-widget .stockist-search-form {
+/* .stockist-search-fields-horizontal is the flex row, and the filter block is one
+   of its children — so left as-is the filters sit beside the search field. The
+   source stacks them: field, then filters on their own band below. */
+.spy-locator #stockist-widget .stockist-search-form,
+.spy-locator #stockist-widget .stockist-search-fields-horizontal {
+  display: block;
   padding: 0;
 }
 
@@ -3175,12 +3180,26 @@ product-recommendations .slideshow-control svg {
   border-radius: 0;
 }
 
-/* The source insets the text 48px to clear the geolocate icon. Only do that when
-   the button is actually rendered — it is off in the account today
-   (geolocation.button:"none"), and a blank indent would read as a bug. */
-.spy-locator #stockist-widget .stockist-search-wrapper:has(.stockist-geolocation-button)
-  .stockist-search-field input {
-  padding-left: 48px;
+/* The source overlays its geolocate icon inside the input's 48px left padding.
+   Stockist renders it as a real flex sibling instead, so it takes the 48px
+   itself and the input keeps normal padding — same result, different mechanics.
+   Off in the account today (geolocation.button:"none"); sized here so it lands
+   right when switched on. */
+.spy-locator #stockist-widget .stockist-geolocation-button {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 53px;
+  padding: 0;
+  color: var(--color-spy-ink);
+  background: none;
+  border: 0;
+  border-radius: 0;
+}
+
+.spy-locator #stockist-widget .stockist-geolocation-button .stockist-icon,
+.spy-locator #stockist-widget .stockist-geolocation-button svg {
+  width: 22px;
+  height: 22px;
 }
 
 /* The source has no submit button — Enter and the suggestion list do the work. */
@@ -3189,24 +3208,49 @@ product-recommendations .slideshow-control svg {
 }
 
 /* ── Filter row ────────────────────────────────────────────────────────── */
+/* Stockist insets this by --stockist-form-spacing; the source runs it flush. */
 .spy-locator #stockist-widget .stockist-search-filters {
+  margin: 0;
   padding: 16px;
   border-bottom: 1px solid var(--color-spy-loc-field);
 }
 
+/* Explicit height — the chip otherwise picks up --stockist-input-height (53px),
+   which is the search field's size, not the source's 34px chip. */
 .spy-locator #stockist-widget .stockist-search-filter-button {
   display: inline-flex;
+  height: 34px;
+  margin: 0;
   align-items: center;
   gap: 8px;
   padding: 6px 10px;
   font-family: var(--font-spy);
   font-size: 14px;
   font-weight: 400;
+  line-height: 20px;
   color: #fff;
   cursor: pointer;
   background-color: var(--color-spy-ink);
   border: 1px solid transparent;
   border-radius: 6px;
+}
+
+/* The source's chip carries a chevron; Stockist's dropdown button ships text
+   only, which leaves it ~25px short. Drawn rather than imported so it inherits
+   the chip's colour. */
+.spy-locator #stockist-widget .stockist-search-filter-button::after {
+  width: 16px;
+  height: 16px;
+  content: '';
+  background-color: currentcolor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  transition: transform 0.2s ease;
+}
+
+.spy-locator #stockist-widget .stockist-search-filter-button[aria-expanded='true']::after {
+  transform: rotate(180deg);
 }
 
 .spy-locator #stockist-widget .stockist-search-filter-dropdown {
@@ -3426,4 +3470,49 @@ product-recommendations .slideshow-control svg {
   grid-row: 4 / 5 !important;
   grid-column: 1 / -1 !important;
   height: 100% !important;
+}
+
+/* Empty-state geolocate button — the source's outlined control. Ours calls the
+   widget's __stockist_trigger_geolocation, since Stockist never renders one here.
+   Scoped through #stockist-widget because the script moves it inside, where
+   Stockist's own button rules would otherwise win. */
+.spy-locator #stockist-widget .spy-locator__geo,
+.spy-locator__geo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  /* 24 + the message's own 8px gap = the source's 32px */
+  margin-top: 24px;
+  padding: 10px;
+  font-family: var(--font-spy);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--color-spy-ink);
+  cursor: pointer;
+  background: none;
+  border: 2px solid var(--color-spy-ink);
+  border-radius: 8px;
+}
+
+.spy-locator #stockist-widget .spy-locator__geo[hidden],
+.spy-locator__geo[hidden] {
+  display: none;
+}
+
+/* Stockist sets svg { stroke: none } inside the widget, and CSS beats the
+   element's own stroke attribute — so restate it here. */
+.spy-locator #stockist-widget .spy-locator__geo svg,
+.spy-locator__geo svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentcolor;
+}
+
+.spy-locator #stockist-widget .spy-locator__geo:hover,
+.spy-locator__geo:hover {
+  color: #fff;
+  background-color: var(--color-spy-ink);
 }
