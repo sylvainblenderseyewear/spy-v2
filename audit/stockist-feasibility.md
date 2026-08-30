@@ -411,3 +411,64 @@ vertical axis — that one caught me out and is why the empty block was centred.
 A single run threw `_stockistConfigCallback_map_w3rgrzyq is not defined` — Stockist's JSONP config
 script beating its own bundle. Not reproducible across 4 subsequent loads (widget rendered every
 time) and it self-recovers. Stockist-side load-order race, not ours.
+
+---
+
+## 11. Honest visual audit — why the two pages still look different
+
+§10 claimed "pixel-accurate wherever comparable". That was true of the elements measured and
+misleading about the page as a whole. Side by side the two still read as different pages. Weighted
+by screen area, here is why.
+
+### The map is 918 of 1430px — 64% of the page
+
+| | Source | Ours |
+|---|---|---|
+| Engine | MapLibre GL + **TomTom** `basic_street-light` | **Leaflet fallback** |
+| Palette | muted — pale blue water, cream land | saturated blue water, olive land |
+| Overlay | "Move the map to load results" pill, top-centre | none |
+| Notice | none | large white "needs a map key" panel |
+| Zoom | top-right, two buttons | bottom-right, three |
+
+All of it follows from having no map key. This single item accounts for most of the impression that
+the pages differ, and **no amount of CSS closes it** — the tiles, controls and overlay all belong to
+whichever map engine Stockist picks, and it only picks Mapbox once a key exists.
+
+I tried the one code-level lever that exists — `window.__stockist_leaflet_tileconfig`, which does
+work — pointed at CARTO Voyager, the closest free match to TomTom's style. **CARTO now gates its
+basemaps**: every tile came back stamped *"API KEY REQUIRED"*, which is worse than the default. Same
+story for Stadia and Stamen. The setting is kept (`Map → Fallback basemap tiles`) and defaults to
+blank; the real fix is the Mapbox key.
+
+### The filter row is missing entirely
+
+The source's left panel has a dark `Spy Optic Products ⌄` chip on a 67px band with a divider under
+it. Ours has nothing there, because the account defines no filters. That is also why our grid rows
+read `53px` where the source reads `120px` — the whole band is absent, so everything below sits 67px
+higher.
+
+### Both geolocate affordances are missing
+
+The source has a crossed-pin icon inside the search field (22×22 at x=11) and an outlined
+**Geolocate myself** button under the empty state (160×44, 2px border, radius 8). Ours has neither —
+`geolocation.button: "none"`. Both are now pre-styled to the measured values, so they appear correctly
+the moment the setting is switched on.
+
+### What genuinely does match
+
+Measured identical against live at 1440:
+
+| | Source | Ours |
+|---|---|---|
+| Panel column | 512px | 512px |
+| Search field | 512 × 53, `#eeedf1` | 512 × 53, `#eeedf1` |
+| Empty block | x16 · w480 · padding 64 | x16 · w480 · padding 64 |
+| Empty title | 16/600, centred, +80px | 16/600, centred, +80px |
+| Empty sub | x80 · w352 · h48 · 16/24 · opacity .8 | x80 · w352 · h48 · 16/24 · opacity .8 |
+
+### Scorecard
+
+Of the visible difference: the **map**, the **filter row** and the **geolocate controls** are three
+account settings, not code. The panel's typography, spacing, colour and layout are done. Until
+`css_isolation:false`, a real visitor sees none of it anyway — the widget renders unstyled in a
+closed shadow root.

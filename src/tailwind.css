@@ -31,7 +31,7 @@
   --spacing-page: 1.5rem;   /* default page gutter */
 
   /* Sort control: trigger box and its dropdown share one width so they can't drift */
-  --spacing-sort-trigger: 180px;
+  --spacing-sort-trigger: 181.58px;
 
   /* Typography — D-DIN stands in for DIN Next LT Pro until licensed files arrive */
   --font-spy: "DINNextLTPro", "D-DIN", sans-serif;
@@ -3097,13 +3097,36 @@ product-recommendations .slideshow-control svg {
   height: 100%;
 }
 
+/* 64px all round, not just top/bottom — that is what wraps the sub-line at 352px
+   inside the 480px block, as the source does. */
 .spy-locator #stockist-widget .stockist-result-message {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding: 64px 16px;
+  padding: 64px;
   text-align: center;
+}
+
+/* Geolocate button under the empty state. Off in the account today
+   (geolocation.button:"none"); styled here so it lands right when switched on. */
+.spy-locator #stockist-widget .stockist-result-message .stockist-geolocation-button,
+.spy-locator #stockist-widget .stockist-results .stockist-geolocation-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  height: 44px;
+  margin-top: 24px;
+  padding: 10px;
+  font-family: var(--font-spy);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--color-spy-ink);
+  background: none;
+  border: 2px solid var(--color-spy-ink);
+  border-radius: 8px;
 }
 
 .spy-locator #stockist-widget .stockist-result-message-icon {

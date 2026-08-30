@@ -72,6 +72,19 @@
     window.__stockist_no_css = true;
   {%- endif -%}
 
+  {%- if section.settings.leaflet_tiles != blank -%}
+    // Basemap for Stockist's Leaflet fallback, which is what runs until a Mapbox
+    // key is added. Ignored once a key exists — Stockist switches to Mapbox then.
+    window.__stockist_leaflet_tileconfig = [
+      {{ section.settings.leaflet_tiles | json }},
+      {
+        attribution: {{ section.settings.leaflet_attribution | json }},
+        subdomains: 'abcd',
+        maxZoom: 20
+      }
+    ];
+  {%- endif -%}
+
   // Widget copy, so the strings live in the theme editor rather than the
   // Stockist dashboard. Returning undefined falls back to Stockist's own text.
   window.__stockist_override_translation = function (lang, key) {
@@ -277,6 +290,19 @@
     },
     { "type": "text", "id": "label_list", "label": "List tab", "default": "List" },
     { "type": "text", "id": "label_map", "label": "Map tab", "default": "Map" },
+    { "type": "header", "content": "Map" },
+    {
+      "type": "text",
+      "id": "leaflet_tiles",
+      "label": "Fallback basemap tiles",
+      "info": "Optional XYZ tile URL, used only while Stockist has no map key and falls back to Leaflet. Leave blank for Stockist's default. Note that most muted basemaps (CARTO, Stadia) now need their own key — adding the Mapbox key in Stockist is the real fix."
+    },
+    {
+      "type": "text",
+      "id": "leaflet_attribution",
+      "label": "Basemap attribution",
+      "info": "Required by most tile providers."
+    },
     { "type": "header", "content": "Advanced" },
     {
       "type": "checkbox",

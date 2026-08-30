@@ -20,9 +20,14 @@
         "label_list": "List",
         "label_map": "Map",
         "no_stockist_css": false,
-        "custom_class": ""
+        "custom_class": "",
+        "leaflet_tiles": "",
+        "leaflet_attribution": "",
+        "text_empty_title": "Search for a location"
       }
     }
   },
-  "order": ["locator"]
+  "order": [
+    "locator"
+  ]
 }
