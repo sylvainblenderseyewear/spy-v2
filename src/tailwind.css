@@ -3498,6 +3498,9 @@ product-recommendations .slideshow-control svg {
   align-items: center;
   gap: 8px;
   height: 44px;
+  /* The source's box is 160.58 wide. DIN sets the same label ~5px narrower than
+     its Roboto, so pin the floor and let a longer label still grow past it. */
+  min-width: 160px;
   /* 24 + the message's own 8px gap = the source's 32px */
   margin-top: 24px;
   padding: 10px;
