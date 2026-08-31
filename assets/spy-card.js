@@ -25,6 +25,8 @@
   function swapImage(card, url) {
     const img = mainImg(card);
     if (!img || !url) return;
+    // Already showing it — skip, so moving within a thumb doesn't re-fetch
+    if (img.getAttribute('src') === url) return;
     saveOriginal(img);
     img.setAttribute('srcset', url);
     img.setAttribute('src', url);
@@ -42,9 +44,13 @@
     const card = e.target.closest?.('product-card');
     if (!card) return;
 
-    // Left a thumbnail (and not landing on another) → back to default image
+    // Left the thumbnail ROW → back to the default image.
+    // Testing the row, not the individual thumb, on purpose: the thumbs sit 8px
+    // apart, and that gap is not a thumb. Testing `.spy-swatches__item` here made
+    // every move between two colours restore-then-swap, so the image flashed back
+    // to the default between each one.
     const item = e.target.closest?.('.spy-swatches__item');
-    if (item && !e.relatedTarget?.closest?.('.spy-swatches__item')) {
+    if (item && !e.relatedTarget?.closest?.('.spy-swatches')) {
       restoreImage(card);
     }
 
