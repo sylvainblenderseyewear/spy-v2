@@ -67,19 +67,14 @@
   }
 
   /**
-   * Two headings, and the source shows exactly one at a time:
-   * - "Find a Spy Optic dealer" sits above the list, but only once there are results
-   * - "Search for a location" titles the empty state, centred above Stockist's message
+   * Two headings, and the source shows one at a time:
+   * - "Find a Spy Optic dealer" above the list, only once there are results
+   * - "Search for a location" titling the empty state, above Stockist's message
    *
-   * Both belong inside DOM Stockist owns, so we move them in and put them back
-   * whenever it re-renders. In shadow-DOM mode nothing is reachable and they stay
-   * where the section rendered them.
-   */
-  /**
-   * Hold our own references to the injected nodes. Stockist rebuilds the results
-   * panel on every query, which tears them out of the document — but a node kept
-   * in a variable survives removal, so the same elements can be put straight
-   * back. Re-querying the DOM would find nothing after the first rebuild.
+   * Both live in DOM Stockist owns, so we move them in. It rebuilds the results
+   * panel on every query, which tears them out of the document — but a node held
+   * in a variable survives removal, so the same elements go straight back.
+   * Re-querying the DOM would find nothing after the first rebuild.
    */
   const owned = new WeakMap();
 
@@ -120,7 +115,7 @@
 
   /** Our empty-state geolocate button drives the widget's own trigger. */
   function wireGeolocate(root) {
-    const geo = root.querySelector('[data-spy-locator-geo]');
+    const { geo } = ours(root);
     if (!geo || geo.dataset.spyLocatorWired) return;
     geo.dataset.spyLocatorWired = 'true';
     geo.addEventListener('click', () => {

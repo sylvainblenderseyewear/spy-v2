@@ -613,3 +613,34 @@ With the skin inert, the widget keeps its account height of 600px inside our 807
 wrapper, leaving ~207px of white below it. That is a symptom of the blocker, not a defect — a
 one-line `height: auto` on `[data-placed='false']` would collapse it, at the cost of a brief layout
 jump once the flag is flipped. Left alone deliberately.
+
+### Injected nodes were destroyed on the first re-render
+
+A second, worse fault behind the same symptom. Stockist rebuilds `.stockist-result-panel` on every
+query, which tears our injected title and geolocate button out of the document. `placeHeadings` and
+`syncResultState` both re-queried the DOM for them, so after the first rebuild they found nothing and
+the elements were gone for the rest of the session — measured as `DESTROYED`, not merely hidden.
+
+Fixed by holding the nodes in a `WeakMap` keyed on the section root. A node removed from the document
+stays alive while something references it, so the same elements are put straight back after each
+rebuild — no cloning, and the geolocate click handler survives with them.
+
+### Empty state vs no-results
+
+Stockist labels the panel `.stockist-instructions` before anything is searched and
+`.stockist-no-results` once a search returns nothing. Our title and geolocate button now show only in
+the first — the source's "Search for a location" state. Pairing that title with "no dealers found"
+contradicts itself.
+
+| state | panel class | title | geo button |
+|---|---|---|---|
+| initial | `stockist-instructions` | shown @183 | shown @176 |
+| after map move | `stockist-no-results` | hidden | hidden |
+
+### Why the client's screenshot showed "no dealers found"
+
+Not a defect. `search.mode: "bounds"` means Stockist re-queries whenever the map moves; the account
+has **zero locations**, so any bounds search comes back empty and the message switches. Reproduced by
+panning the map — and note **0 network requests**: with `preload: true` the widget reads its cached
+overview and answers locally. The live site shows its initial message only because its map had not
+been moved; with 2,261 dealers the same pan returns a list. This resolves on data import.
