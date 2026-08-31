@@ -109,6 +109,15 @@
 
 /* Brand vars --spy-orange/--spy-slate + nav vars moved into @theme (top of file). */
 
+/* Sidebar track has to carry the panel (250px) plus its gutter, otherwise the
+   panel's margin-right overflows the track and the first card sits flush against
+   the filters. Source keeps 250 + 32. */
+.collection-wrapper:has(#vertical-filters-panel:not(.hidden)) {
+  @media screen and (min-width: 750px) {
+    --sidebar-track-width: 282px;
+  }
+}
+
 .color-scheme-announcement a,
 .color-scheme-announcement { color: #fff; }
 

@@ -110,12 +110,12 @@
   {% if block_settings.filter_style == 'vertical' %}
     {% # These elements are always rendered in the horizontal bar that's why we apply the .facets--horizontal class %}
     <div
-      class="facets facets--horizontal facets-controls-wrapper spacing-style"
+      class="facets facets--horizontal facets-controls-wrapper spacing-style min-[750px]:[column-gap:16px]"
       {%- comment -%} Source opens a band between this bar and the results row {%- endcomment -%}
       style="{% render 'spacing-style', settings: block_settings %} margin-block-end: {{ block_settings.facets_margin_bottom }}px;{% if block_settings.text_label_case == 'uppercase' %} --facet-label-transform: uppercase;{% endif %}"
     >
       {% if block_settings.enable_filtering %}
-        <vertical-filters-toggle-component class="block py-4" data-target="vertical-filters-panel">
+        <vertical-filters-toggle-component class="block py-4 min-[750px]:w-[250px]" data-target="vertical-filters-panel">
           <button
             class="ms-1 cursor-pointer rounded-none border border-solid border-spy-orange-ui bg-spy-orange-ui px-3 py-2 text-[12px] font-normal uppercase leading-[1.4] text-white"
             type="button"
@@ -160,6 +160,7 @@
         hidden
       {% endif %}
       facets-block-wrapper
+      {%- if block_settings.filter_style == 'vertical' %} min-[750px]:w-auto{% endif %}
       facets-block-wrapper--{{ block_settings.filter_style }}
       {%- if has_custom_color %} color-custom-{{ block.id }}{% endif %}
       {%- if block_settings.filter_width == 'full-width' %} facets-block-wrapper--full-width{% endif %}

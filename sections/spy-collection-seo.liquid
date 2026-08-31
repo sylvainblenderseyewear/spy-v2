@@ -22,7 +22,7 @@
 -%}
 
 {%- unless skip_section -%}
-  <div class="page-width mt-6 mb-4" {{ section.shopify_attributes }}>
+  <div class="mt-6 mb-4 px-[calc(var(--page-margin)_+_15px)]" {{ section.shopify_attributes }}>
     <spy-read-more data-spy-read-more>
       {% comment %} Clipped to the source's 80px until the toggle opens it {% endcomment %}
       <div
