@@ -3196,7 +3196,7 @@ product-recommendations .slideshow-control svg {
    right when switched on. */
 .spy-locator #stockist-widget .stockist-geolocation-button {
   flex: 0 0 auto;
-  width: 48px;
+  width: 44px;
   height: 53px;
   padding: 0;
   color: var(--color-spy-ink);
@@ -3207,8 +3207,15 @@ product-recommendations .slideshow-control svg {
 
 .spy-locator #stockist-widget .stockist-geolocation-button .stockist-icon,
 .spy-locator #stockist-widget .stockist-geolocation-button svg {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
+}
+
+/* With the 44px icon slot in front of it, 4px here puts the caret at 48 — where
+   the source's text starts. Without the button the input keeps its own 16px. */
+.spy-locator #stockist-widget .stockist-search-wrapper:has(.stockist-geolocation-button)
+  .stockist-search-field input {
+  padding-left: 4px;
 }
 
 /* The source has no submit button — Enter and the suggestion list do the work. */
@@ -3514,8 +3521,8 @@ product-recommendations .slideshow-control svg {
    element's own stroke attribute — so restate it here. */
 .spy-locator #stockist-widget .spy-locator__geo svg,
 .spy-locator__geo svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   fill: none;
   stroke: currentcolor;
 }

@@ -522,3 +522,21 @@ consequence of using the brand font, not a layout error.
 The **map** — still the Leaflet fallback with its trial notice, and still the single largest visual
 difference. Only the Mapbox key closes it. Filters and the geolocate button remain switched off in
 the account; the CSS for both is verified and waiting.
+
+### Left-panel sweep
+
+Inventoried every rendered element in the left 512px of both pages and diffed by y-position.
+
+Fixed:
+- Empty-state geolocate icon was 18px; the source's is **20.16px**.
+- Field geolocate slot was 48px wide with the input keeping its own 16px padding, so text began at
+  **64px** — the source starts it at **48**. Slot is now 44px (the source's box) with 4px of input
+  padding, landing the caret at 48. This was a regression from switching the button from an overlay
+  to a flex sibling.
+
+Found, deliberately not fixed:
+- **`.stockist-powered-by-link`** — a 20×34 pin at the bottom centre of the panel linking to
+  `stockist.co` ("Powered by Stockist Store Locator"). The source has nothing there. It renders
+  because the account is `whitelabel: false`; Stockist removes it on the **Premium** plan, which the
+  2,261-location count requires anyway. Not hidden with CSS — that would be circumventing a paid
+  feature and Stockist's terms.
