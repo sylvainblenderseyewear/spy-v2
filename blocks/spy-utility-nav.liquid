@@ -47,12 +47,18 @@
     {% endif %}
 
     {% if block.settings.show_store_locator and block.settings.store_locator_url != blank %}
+      {%- liquid
+        # Only leave the site (and need noopener) when the link really is off-site
+        assign locator_external = false
+        if block.settings.store_locator_url contains '://'
+          assign locator_external = true
+        endif
+      -%}
       <a
         href="{{ block.settings.store_locator_url }}"
         class="hidden min-[992px]:flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange transition-colors"
         aria-label="{{ block.settings.store_locator_label }}"
-        target="_blank"
-        rel="noopener"
+        {% if locator_external %}target="_blank" rel="noopener"{% endif %}
       >
         <span class="block w-[18px] h-[18px]">{{- 'spy-fa-location.svg' | inline_asset_content -}}</span>
       </a>
@@ -169,7 +175,8 @@
       "type": "text",
       "id": "store_locator_url",
       "label": "Store locator link",
-      "default": "https://stores.spyoptic.com",
+      "default": "/pages/store-locator",
+      "info": "Internal paths open in the same tab; a full https:// link opens in a new one.",
       "visible_if": "{{ block.settings.show_store_locator }}"
     },
     {

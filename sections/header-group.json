@@ -32,7 +32,7 @@
             "menu": "",
             "show_search": true,
             "show_store_locator": true,
-            "store_locator_url": "https://stores.spyoptic.com",
+            "store_locator_url": "/pages/store-locator",
             "store_locator_label": "Find a store",
             "show_account": true,
             "show_country": true,
