@@ -2999,12 +2999,18 @@ product-recommendations .slideshow-control svg {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: var(--spy-locator-min, 640px);
   background-color: #fff;
 }
 
+/* Exactly the viewport below the header, like the source — and no minimum here.
+   A floor taller than the window pushes the map past the fold and starts the
+   page scrolling, which the source never does. */
 .spy-locator[data-full-height='true'] {
   height: calc(100dvh - var(--spy-locator-offset, 0px));
+}
+
+/* The minimum only means anything when the locator is not filling the viewport. */
+.spy-locator:not([data-full-height='true']) {
   min-height: var(--spy-locator-min, 640px);
 }
 
@@ -3160,9 +3166,8 @@ product-recommendations .slideshow-control svg {
 }
 
 /* ── Search field ──────────────────────────────────────────────────────── */
-/* .stockist-search-fields-horizontal is the flex row, and the filter block is one
-   of its children — so left as-is the filters sit beside the search field. The
-   source stacks them: field, then filters on their own band below. */
+/* Stockist lays these out as a flex row; block keeps the field spanning the
+   full panel width. */
 .spy-locator #stockist-widget .stockist-search-form,
 .spy-locator #stockist-widget .stockist-search-fields-horizontal {
   display: block;
@@ -3221,67 +3226,6 @@ product-recommendations .slideshow-control svg {
 /* The source has no submit button — Enter and the suggestion list do the work. */
 .spy-locator #stockist-widget .stockist-search-submit {
   display: none;
-}
-
-/* ── Filter row ────────────────────────────────────────────────────────── */
-/* Stockist insets this by --stockist-form-spacing; the source runs it flush. */
-.spy-locator #stockist-widget .stockist-search-filters {
-  margin: 0;
-  padding: 16px;
-  border-bottom: 1px solid var(--color-spy-loc-field);
-}
-
-/* Explicit height — the chip otherwise picks up --stockist-input-height (53px),
-   which is the search field's size, not the source's 34px chip. */
-.spy-locator #stockist-widget .stockist-search-filter-button {
-  display: inline-flex;
-  height: 34px;
-  margin: 0;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
-  font-family: var(--font-spy);
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
-  color: #fff;
-  cursor: pointer;
-  background-color: var(--color-spy-ink);
-  border: 1px solid transparent;
-  border-radius: 6px;
-}
-
-/* The source's chip carries a chevron; Stockist's dropdown button ships text
-   only, which leaves it ~25px short. Drawn rather than imported so it inherits
-   the chip's colour. */
-.spy-locator #stockist-widget .stockist-search-filter-button::after {
-  width: 16px;
-  height: 16px;
-  content: '';
-  background-color: currentcolor;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  mask-repeat: no-repeat;
-  mask-size: contain;
-  transition: transform 0.2s ease;
-}
-
-.spy-locator #stockist-widget .stockist-search-filter-button[aria-expanded='true']::after {
-  transform: rotate(180deg);
-}
-
-.spy-locator #stockist-widget .stockist-search-filter-dropdown {
-  min-width: 240px;
-  padding: 12px;
-  background-color: #fff;
-  border: 1px solid var(--color-spy-loc-line);
-  border-radius: 6px;
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%);
-}
-
-.spy-locator #stockist-widget .stockist-search-filter {
-  font-family: var(--font-spy);
-  font-size: 14px;
-  color: var(--color-spy-text);
 }
 
 /* ── Result card ───────────────────────────────────────────────────────── */

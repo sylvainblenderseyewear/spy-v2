@@ -82,7 +82,6 @@
   // Read by widget.min.js at boot — must be set before the async script runs.
   window.__stockist_desktop_breakpoint = {{ bp | json }};
   window.__stockist_distance_units = {{ section.settings.units | json }};
-  window.__stockist_show_filter_dropdown = {{ section.settings.filter_dropdown | json }};
   window.__stockist_autocomplete_names_first = {{ section.settings.names_first | json }};
   {%- if section.settings.no_stockist_css -%}
     window.__stockist_no_css = true;
@@ -109,7 +108,6 @@
       initial_message: {{ section.settings.text_initial_message | json }},
       no_results: {{ section.settings.text_no_results | json }},
       geolocation_button: {{ section.settings.text_geolocate | json }},
-      filter_dropdown_button: {{ section.settings.text_filter_button | json }},
       directions_link: {{ section.settings.label_directions | json }}
     };
     var v = strings[key];
@@ -242,13 +240,6 @@
     },
     {
       "type": "checkbox",
-      "id": "filter_dropdown",
-      "label": "Show filters as a dropdown",
-      "default": true,
-      "info": "Matches the source's \"Spy Optic Products\" chip."
-    },
-    {
-      "type": "checkbox",
       "id": "names_first",
       "label": "Show store names in autocomplete",
       "default": true
@@ -303,7 +294,6 @@
       "default": true,
       "info": "Matches the source. Hides itself if the browser or widget can't geolocate."
     },
-    { "type": "text", "id": "text_filter_button", "label": "Filter button", "default": "Spy Optic Products" },
     { "type": "header", "content": "Mobile" },
     {
       "type": "checkbox",

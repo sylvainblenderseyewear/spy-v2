@@ -540,3 +540,37 @@ Found, deliberately not fixed:
   because the account is `whitelabel: false`; Stockist removes it on the **Premium** plan, which the
   2,261-location count requires anyway. Not hidden with CSS — that would be circumventing a paid
   feature and Stockist's terms.
+
+### Full-height at short viewports, and the centring question
+
+**Empty state is NOT vertically centred.** Measured on live at three window heights — the block sits
+at **offset 80** from the top of the results panel every time:
+
+| viewport | results panel | title offset | centred would be |
+|---|---|---|---|
+| 1440×900 | 716 tall | **80** | 216 |
+| 1440×1300 | 1116 tall | **80** | 416 |
+| 1440×620 | 436 tall | **80** | 76 |
+
+Its inner block carries `h-full … justify-center`, but the `ul.grid` ancestors are content-height so
+`h-full` never resolves — it reads as centred at a glance and is top-anchored in fact. Ours matches
+at 80.
+
+**Map height at minimum size — fixed.** `min-height: 640px` applied in full-height mode too, so a
+short window pushed the locator past the fold and started the page scrolling, something the source
+never does:
+
+| viewport | source map | ours before | ours after |
+|---|---|---|---|
+| 900 | 836 | 807 ✓ | 807 |
+| 620 | 556 | **640, ending 113px below the fold** | **527 ✓** |
+| 500 | 436 | **640, badly overflowing** | **407 ✓** |
+
+The source has no minimum at all — it is always `viewport − header`. The floor now applies only when
+`full_height` is off, where it is the setting's whole purpose. Mobile behaves too: the List/Map
+switcher stays pinned to the bottom edge down to 480px tall.
+
+**Filter combobox removed** at the client's direction — the `Spy Optic Products` chip styling, its
+chevron, the dropdown panel, the `filter_dropdown` setting and the `filter_dropdown_button`
+translation are all gone. §12's filter-row findings are retained as a record of what was measured,
+not as outstanding work.
