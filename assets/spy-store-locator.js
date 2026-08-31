@@ -77,6 +77,11 @@
    */
   function placeHeadings(root) {
     const panel = root.querySelector('.stockist-result-panel');
+    // With css_isolation on, the widget is in a closed shadow root and the panel
+    // is unreachable. Nothing can be placed, so nothing may be shown — Stockist
+    // draws its own empty state in there instead. Without this the title and
+    // button escape the panel and stretch the full page width.
+    root.dataset.placed = String(!!panel);
     if (!panel) return;
 
     const heading = root.querySelector('[data-spy-locator-results-heading]');
@@ -109,17 +114,18 @@
 
   function syncResultState(root) {
     const hasResults = !!root.querySelector('.stockist-result');
+    const placed = root.dataset.placed === 'true';
     root.dataset.hasResults = String(hasResults);
 
     const emptyTitle = root.querySelector('[data-spy-locator-empty-title]');
-    if (emptyTitle) emptyTitle.hidden = hasResults;
+    if (emptyTitle) emptyTitle.hidden = hasResults || !placed;
 
     // Only offer geolocate while the panel is empty, and only if it can work.
     const geo = root.querySelector('[data-spy-locator-geo]');
     if (geo) {
       const usable = typeof window.__stockist_trigger_geolocation === 'function'
         && 'geolocation' in navigator;
-      geo.hidden = hasResults || !usable;
+      geo.hidden = hasResults || !usable || !placed;
     }
   }
 

@@ -3028,7 +3028,10 @@ product-recommendations .slideshow-control svg {
   color: var(--color-spy-text);
 }
 
-.spy-locator:not([data-has-results='true']) .spy-locator__heading {
+.spy-locator:not([data-has-results='true']) .spy-locator__heading,
+.spy-locator:not([data-placed='true']) .spy-locator__heading,
+.spy-locator:not([data-placed='true']) .spy-locator__empty-title,
+.spy-locator:not([data-placed='true']) .spy-locator__geo {
   display: none;
 }
 
@@ -3441,10 +3444,12 @@ product-recommendations .slideshow-control svg {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  align-self: center;
   height: 44px;
   /* The source's box is 160.58 wide. DIN sets the same label ~5px narrower than
      its Roboto, so pin the floor and let a longer label still grow past it. */
   min-width: 160px;
+  max-width: 100%;
   /* 24 + the message's own 8px gap = the source's 32px */
   margin-top: 24px;
   padding: 10px;

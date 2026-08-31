@@ -574,3 +574,42 @@ switcher stays pinned to the bottom edge down to 480px tall.
 chevron, the dropdown panel, the `filter_dropdown` setting and the `filter_dropdown_button`
 translation are all gone. §12's filter-row findings are retained as a record of what was measured,
 not as outstanding work.
+
+---
+
+## 13. Production-state bug — injected elements escaped the panel
+
+The empty-state title and geolocate button are rendered by the section and moved into
+`.stockist-result-panel` by script. `syncResultState` un-hid them based only on whether results
+existed — never checking whether the move had succeeded.
+
+With `css_isolation: true` (the live account) the panel is inside a closed shadow root, so the move
+silently fails and both elements stayed as direct children of `.spy-locator` — a full-width flex
+column. Measured: title at `0,93 **1440**x24`, button at `0,141 **1440**x44`, the button stretched
+edge to edge. Stockist meanwhile drew its own empty state inside the shadow root, so the page showed
+two of everything.
+
+Fixed by recording whether the move landed (`data-placed`) and gating visibility on it, in both the
+script and CSS, plus `align-self: center` / `max-width: 100%` on the button so it can never stretch
+even if something else goes wrong.
+
+| | before | after |
+|---|---|---|
+| production (shadow DOM) | title + button at 1440px wide | both **hidden** — Stockist's own empty state shows |
+| `?stnoshadow` | correct | still correct: title `182.94,226`, button `176,338 160x44` |
+
+### Custom properties do not cross this shadow boundary either
+
+Custom properties normally inherit through a shadow root, which would have been a way to fix the
+panel width and height in production without the flag. Tested by setting
+`--stockist-side-panel-width: 512px !important` and `--stockist-desktop-height: 100% !important` on
+both `.spy-locator` and the host element: **no effect** — panel stayed 365px, height stayed 600px.
+Stockist writes those variables *inline on `#stockist-widget` inside the shadow root*
+(`f("--stockist-side-panel-width", …)`), and an inline declaration on the element beats an inherited
+value. There is no styling route into the widget until `css_isolation: false`.
+
+### Known cosmetic consequence in the current state
+With the skin inert, the widget keeps its account height of 600px inside our 807px full-viewport
+wrapper, leaving ~207px of white below it. That is a symptom of the blocker, not a defect — a
+one-line `height: auto` on `[data-placed='false']` would collapse it, at the cost of a brief layout
+jump once the flag is flipped. Left alone deliberately.
