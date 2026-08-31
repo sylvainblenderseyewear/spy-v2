@@ -75,6 +75,27 @@
    * whenever it re-renders. In shadow-DOM mode nothing is reachable and they stay
    * where the section rendered them.
    */
+  /**
+   * Hold our own references to the injected nodes. Stockist rebuilds the results
+   * panel on every query, which tears them out of the document — but a node kept
+   * in a variable survives removal, so the same elements can be put straight
+   * back. Re-querying the DOM would find nothing after the first rebuild.
+   */
+  const owned = new WeakMap();
+
+  function ours(root) {
+    let refs = owned.get(root);
+    if (!refs) {
+      refs = {
+        heading: root.querySelector('[data-spy-locator-results-heading]'),
+        title: root.querySelector('[data-spy-locator-empty-title]'),
+        geo: root.querySelector('[data-spy-locator-geo]'),
+      };
+      owned.set(root, refs);
+    }
+    return refs;
+  }
+
   function placeHeadings(root) {
     const panel = root.querySelector('.stockist-result-panel');
     // With css_isolation on, the widget is in a closed shadow root and the panel
@@ -84,19 +105,16 @@
     root.dataset.placed = String(!!panel);
     if (!panel) return;
 
-    const heading = root.querySelector('[data-spy-locator-results-heading]');
+    const { heading, title, geo } = ours(root);
     if (heading && heading.parentElement !== panel) {
       panel.insertBefore(heading, panel.firstChild);
     }
 
-    const emptyTitle = root.querySelector('[data-spy-locator-empty-title]');
     const message = root.querySelector('.stockist-result-message');
     const messageText = root.querySelector('.stockist-result-message-text');
-    if (emptyTitle && message && messageText && emptyTitle.parentElement !== message) {
-      message.insertBefore(emptyTitle, messageText);
+    if (title && message && messageText && title.parentElement !== message) {
+      message.insertBefore(title, messageText);
     }
-
-    const geo = root.querySelector('[data-spy-locator-geo]');
     if (geo && message && geo.parentElement !== message) message.appendChild(geo);
   }
 
@@ -115,17 +133,21 @@
   function syncResultState(root) {
     const hasResults = !!root.querySelector('.stockist-result');
     const placed = root.dataset.placed === 'true';
+    // Stockist labels the panel: .stockist-instructions before anything is
+    // searched, .stockist-no-results after a search came back empty. Only the
+    // first is the source's "Search for a location" state — pairing that title
+    // with "no dealers found" would contradict itself.
+    const initial = !!root.querySelector('.stockist-results.stockist-instructions');
     root.dataset.hasResults = String(hasResults);
 
-    const emptyTitle = root.querySelector('[data-spy-locator-empty-title]');
-    if (emptyTitle) emptyTitle.hidden = hasResults || !placed;
+    const { title, geo } = ours(root);
+    if (title) title.hidden = !placed || !initial;
 
     // Only offer geolocate while the panel is empty, and only if it can work.
-    const geo = root.querySelector('[data-spy-locator-geo]');
     if (geo) {
       const usable = typeof window.__stockist_trigger_geolocation === 'function'
         && 'geolocation' in navigator;
-      geo.hidden = hasResults || !usable || !placed;
+      geo.hidden = !placed || !initial || hasResults || !usable;
     }
   }
 
