@@ -1,0 +1,59 @@
+{%- comment -%}
+  One footer link. Lives inside spy-footer-menu so an editor can add, reorder,
+  hide or delete single items. Type comes from the parent band (--spy-fmenu-*).
+{%- endcomment -%}
+
+{%- liquid
+  assign s = block.settings
+  assign label = s.label
+
+  if label == blank
+    assign label = 'Link'
+  endif
+-%}
+
+{%- unless s.show == false -%}
+  <div
+    class="spy-fmenu-item text-[length:var(--spy-fmenu-link-size,12px)] leading-[var(--spy-fmenu-link-lh,20px)] max-[992px]:py-1"
+    {{ block.shopify_attributes }}
+  >
+    {%- if s.link != blank -%}
+      <a class="text-current no-underline" href="{{ s.link }}">{{ label }}</a>
+    {%- else -%}
+      <span>{{ label }}</span>
+    {%- endif -%}
+  </div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "SPY Footer Link",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Text",
+      "default": "Link"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show",
+      "label": "Show this link",
+      "info": "Turn off to hide it from the storefront without deleting it.",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "SPY Footer Link",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}

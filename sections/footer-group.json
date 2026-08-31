@@ -813,36 +813,272 @@
           "name": "Company",
           "settings": {
             "heading": "Company",
-            "menu": "footer-company"
+            "menu": "footer-company",
+            "show": true
           },
-          "blocks": {}
+          "blocks": {
+            "link_company_1": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "About Us",
+                "link": "/pages/about-us",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_company_2": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Blog",
+                "link": "/blogs/spy_blog",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_company_3": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Careers",
+                "link": "https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=f8d4b700-684e-4cbf-82e0-eb81ed208309",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_company_4": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Team",
+                "link": "/pages/changeagents",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_company_5": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Store Locator",
+                "link": "https://stores.spyoptic.com",
+                "show": true
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "link_company_1",
+            "link_company_2",
+            "link_company_3",
+            "link_company_4",
+            "link_company_5"
+          ]
         },
         "col_services": {
           "type": "spy-footer-menu",
           "name": "Services",
           "settings": {
             "heading": "Services",
-            "menu": "footer-services"
+            "menu": "footer-services",
+            "show": true
           },
-          "blocks": {}
+          "blocks": {
+            "link_services_1": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Contact us",
+                "link": "/pages/contact",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_services_2": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "My Account",
+                "link": "/account",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_services_3": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "My Orders",
+                "link": "/account",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_services_4": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "FAQ",
+                "link": "/pages/faq",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_services_5": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Warranty",
+                "link": "/pages/warranty",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_services_6": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Dealer Portal",
+                "link": "https://www.b2b-bollebrands.com/store/checkout.ssp?is=login&login=T",
+                "show": true
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "link_services_1",
+            "link_services_2",
+            "link_services_3",
+            "link_services_4",
+            "link_services_5",
+            "link_services_6"
+          ]
         },
         "col_policy": {
           "type": "spy-footer-menu",
           "name": "Policy",
           "settings": {
             "heading": "Policy",
-            "menu": "footer-policy"
+            "menu": "footer-policy",
+            "show": true
           },
-          "blocks": {}
+          "blocks": {
+            "link_policy_1": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Privacy Policy",
+                "link": "/pages/privacy-policy",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_policy_2": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Return Policy",
+                "link": "/pages/return-policy",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_policy_3": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "MAP Policy",
+                "link": "https://www.b2b-bollebrands.com/map-policy",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_policy_4": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Terms of Use",
+                "link": "/pages/terms-of-use",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_policy_5": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Retail Sales Agreement",
+                "link": "https://www.b2b-bollebrands.com/store/checkout.ssp?is=login&login=T",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_policy_6": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Accessibility Statement",
+                "link": "/pages/accessibility-statement",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_policy_7": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Our ESG program",
+                "link": "/pages/our-esg-program",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_policy_8": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Military & First Responders Discount",
+                "link": "https://offers.govx.com/verify/offer/e55f8827-d900-4c41-8af9-0e49db8db55c",
+                "show": true
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "link_policy_1",
+            "link_policy_2",
+            "link_policy_3",
+            "link_policy_4",
+            "link_policy_5",
+            "link_policy_6",
+            "link_policy_7",
+            "link_policy_8"
+          ]
         },
         "col_programs": {
           "type": "spy-footer-menu",
           "name": "Programs",
           "settings": {
             "heading": "Programs",
-            "menu": "footer-programs"
+            "menu": "footer-programs",
+            "show": true
           },
-          "blocks": {}
+          "blocks": {
+            "link_programs_1": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Military & First Responders Discount",
+                "link": "https://offers.govx.com/verify/offer/e55f8827-d900-4c41-8af9-0e49db8db55c",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_programs_2": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Affiliate Program",
+                "link": "https://www.avantlink.com/programs/16525/spy-optic-affiliate-program/",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "link_programs_3": {
+              "type": "spy-footer-link",
+              "settings": {
+                "label": "Rewards Program",
+                "link": "/pages/rewards-program",
+                "show": true
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "link_programs_1",
+            "link_programs_2",
+            "link_programs_3"
+          ]
         }
       },
       "block_order": [

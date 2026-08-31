@@ -1,14 +1,23 @@
 {%- comment -%}
   SPY Footer Menu — one footer link column.
-  Heading + Shopify menu. Collapses into an accordion below 769px, exactly
-  like the source footer; forced open from 769px up (CSS only, no JS).
+  Heading + link blocks (or a Shopify menu when the column has none).
+  Collapses into an accordion below 769px, exactly like the source footer;
+  forced open from 769px up (CSS only, no JS).
 {%- endcomment -%}
 
 {%- liquid
   assign menu = block.settings.menu
   assign heading = block.settings.heading | default: menu.title
+
+  # Link blocks win when the column has any; the menu is the fallback.
+  assign has_links = false
+  if block.blocks.size > 0
+    assign has_links = true
+  endif
 -%}
 
+{%- comment -%} Missing setting on older saved blocks means shown. {%- endcomment -%}
+{%- unless block.settings.show == false -%}
 <details
   class="spy-fmenu group w-full min-[769px]:[&:not([open])>.spy-fmenu-panel]:block min-[769px]:[&::details-content]:[content-visibility:visible]"
   {{ block.shopify_attributes }}
@@ -25,21 +34,26 @@
     </span>
   </summary>
 
-  {%- if menu != blank -%}
-    <div class="spy-fmenu-panel">
+  <div class="spy-fmenu-panel">
+    {%- if has_links == false and menu != blank -%}
       {%- for link in menu.links -%}
-        <div class="text-[length:var(--spy-fmenu-link-size,12px)] leading-[var(--spy-fmenu-link-lh,20px)] max-[992px]:py-1">
+        <div class="spy-fmenu-item text-[length:var(--spy-fmenu-link-size,12px)] leading-[var(--spy-fmenu-link-lh,20px)] max-[992px]:py-1">
           <a class="text-current no-underline" href="{{ link.url }}">{{ link.title }}</a>
         </div>
       {%- endfor -%}
-    </div>
-  {%- endif -%}
+    {%- endif -%}
+    {% content_for 'blocks' %}
+  </div>
 </details>
+{%- endunless -%}
 
 {% schema %}
 {
   "name": "SPY Footer Menu",
   "tag": null,
+  "blocks": [
+    { "type": "spy-footer-link" }
+  ],
   "settings": [
     {
       "type": "text",
@@ -48,9 +62,23 @@
       "info": "Falls back to the menu name."
     },
     {
+      "type": "checkbox",
+      "id": "show",
+      "label": "Show this column",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Links"
+    },
+    {
+      "type": "paragraph",
+      "content": "Add link blocks below to edit items right here. A column with no link blocks falls back to the Shopify menu."
+    },
+    {
       "type": "link_list",
       "id": "menu",
-      "label": "Menu"
+      "label": "Menu (fallback)"
     }
   ],
   "presets": [
