@@ -27,8 +27,30 @@
     assign extra = ' ' | append: block.settings.extra_class
   endif
 
-  # per_product needs an id; fall back to the page's product so a PDP needs no wiring
-  assign pid = block.settings.product.id | default: closest.product.id | default: product.id
+  # per_product and the star rating both need the page's product
+  assign yp = block.settings.product | default: closest.product | default: product
+  assign pid = yp.id
+
+  # Yotpo wants an absolute image URL; image_url gives a shop-relative one
+  assign yp_img = yp.featured_image | image_url: width: 600
+  assign yp_img_head = yp_img | slice: 0, 2
+  if yp_img_head == '//'
+    assign yp_img = 'https:' | append: yp_img
+  elsif yp_img != blank
+    assign yp_img = shop.url | append: yp_img
+  endif
+
+  # reviews were collected against the old store's ids, so allow a mapping
+  if block.settings.legacy_id_metafield != blank
+    assign mf = block.settings.legacy_id_metafield | split: '.'
+    assign legacy = yp.metafields[mf[0]][mf[1]].value
+    if legacy != blank
+      assign pid = legacy
+    endif
+  endif
+  if block.settings.legacy_id_preview != blank
+    assign pid = block.settings.legacy_id_preview
+  endif
 
   assign autoplay = '0'
   if block.settings.autoplay
@@ -58,6 +80,32 @@
         Add a Yotpo gallery ID to show this widget.
       </p>
     {%- endif -%}
+
+  {%- when 'yotpo_bottomline' -%}
+    {%- comment -%}
+      Stars + "N Reviews" beside the price. Source wraps the same div in .ratings,
+      which paints the star font orange and sizes the row; the label is DIN 13px.
+      Stays empty until Yotpo has reviews for the id we send.
+    {%- endcomment -%}
+    <div
+      class="
+        spy-rating-embed text-spy-orange-ui text-[0.6875rem]
+        [&_.yotpo-stars]:mr-px
+        [&_.text-m]:font-spy [&_.text-m]:text-[13px] [&_.text-m]:text-spy-review-label
+        [&_.text-m]:whitespace-nowrap [&_.text-m]:no-underline
+      "
+      {{ block.shopify_attributes }}
+    >
+      <div
+        class="yotpo bottomLine{{ extra }}"
+        data-product-id="{{ pid }}"
+        data-name="{{ yp.title | escape }}"
+        data-url="{{ shop.url }}{{ yp.url }}"
+        data-image-url="{{ yp_img }}"
+        data-description="{{ yp.description | strip_html | truncate: 300 | escape }}"
+        {% if block.settings.element_id != blank %}data-yotpo-element-id="{{ block.settings.element_id }}"{% endif %}
+      ></div>
+    </div>
 
   {%- when 'yotpo_reviews' -%}
     {%- comment -%} &nbsp; is in Yotpo's own snippet — the widget needs a non-empty node {%- endcomment -%}
@@ -98,7 +146,8 @@
       "options": [
         { "value": "custom", "label": "Custom code" },
         { "value": "yotpo_gallery", "label": "Yotpo photo gallery" },
-        { "value": "yotpo_reviews", "label": "Yotpo reviews carousel" }
+        { "value": "yotpo_reviews", "label": "Yotpo reviews carousel" },
+        { "value": "yotpo_bottomline", "label": "Yotpo star rating" }
       ],
       "default": "custom"
     },
@@ -121,6 +170,25 @@
       "label": "Yotpo element ID",
       "info": "Optional. Only needed when two Yotpo widgets share a page.",
       "visible_if": "{{ block.settings.embed != 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "Star rating",
+      "visible_if": "{{ block.settings.embed == 'yotpo_bottomline' }}"
+    },
+    {
+      "type": "text",
+      "id": "legacy_id_metafield",
+      "label": "Legacy review ID metafield",
+      "info": "Reviews are keyed to the old site's product IDs, not Shopify's. Point this at the metafield holding it, e.g. spec.legacy_id. Empty uses the Shopify product ID.",
+      "visible_if": "{{ block.settings.embed == 'yotpo_bottomline' }}"
+    },
+    {
+      "type": "text",
+      "id": "legacy_id_preview",
+      "label": "Preview with a fixed ID",
+      "info": "Overrides everything so the design can be checked before the migration fills the metafield. Clear it before launch.",
+      "visible_if": "{{ block.settings.embed == 'yotpo_bottomline' }}"
     },
     {
       "type": "header",

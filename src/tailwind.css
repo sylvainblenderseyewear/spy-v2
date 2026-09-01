@@ -26,6 +26,7 @@
   --color-spy-input-border: #cccccc; /* source select/input outline */
   --color-spy-price:   #565656; /* source card price — PLP tile */
   --color-spy-price-reco: #242424; /* source card price — PDP recommendation tile */
+  --color-spy-review-label: #191919; /* source .text-m — the "N Reviews" label by the stars */
 
   /* Spacing overrides */
   --spacing-page: 1.5rem;   /* default page gutter */
