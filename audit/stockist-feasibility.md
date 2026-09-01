@@ -696,3 +696,28 @@ because `placed` is false until the widget appears. Gated on the widget having a
 The light-DOM path never collapses, so there is no height jump once `css_isolation` is switched off —
 the rule simply stops applying. Full-viewport behaviour at 900/1300/620/500 and all three breakpoints
 unchanged.
+
+### In-field geolocate icon
+
+Built from the source's own SVG rather than approximated. It is a "GPS off" glyph — broken arcs, four
+ticks, plus `M4 4L20 20`. That slash is the source's **location-unavailable state**, not part of the
+design (that session had geolocation blocked), so ours renders the plain locate icon and shows the
+slash only when `navigator.geolocation` is absent.
+
+Stockist only draws its own in-field button when `geolocation.button` is `"inline"`, which the account
+has as `"none"`. This one stands in and hides itself the moment that setting changes, so enabling it
+later cannot produce two.
+
+| | source | ours |
+|---|---|---|
+| slot | `0,y` 44×53 | `0,93` **44×53** |
+| icon | x=12, 20×20 | x=12, **20×20** |
+| text inset | 48 | **48** |
+
+Absolutely positioned inside `.stockist-search-wrapper` exactly as the source does, so the input keeps
+its full width. Click calls `__stockist_trigger_geolocation()` — a working control, not decoration.
+
+**Observer scope was too narrow.** It watched only `.stockist-result-panel`, so when Stockist rebuilt
+the *search form* the icon was torn out and never restored — intermittently absent depending on when
+you looked. Now watches the search form as well, deliberately not the whole widget, because the map's
+tile churn would fire it constantly. Verified surviving a search and a map move.

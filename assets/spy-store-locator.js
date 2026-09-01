@@ -128,7 +128,7 @@
     root.dataset.placed = String(!!panel);
     if (!panel) return;
 
-    const { heading, title, geo } = ours(root);
+    const { heading, title, geo, fieldGeo } = ours(root);
     if (heading && heading.parentElement !== panel) {
       panel.insertBefore(heading, panel.firstChild);
     }
@@ -140,7 +140,6 @@
     }
     if (geo && message && geo.parentElement !== message) message.appendChild(geo);
 
-    const { fieldGeo } = ours(root);
     const wrapper = root.querySelector('.stockist-search-wrapper');
     if (fieldGeo && wrapper && fieldGeo.parentElement !== wrapper) {
       wrapper.insertBefore(fieldGeo, wrapper.firstChild);
@@ -192,15 +191,21 @@
     }
   }
 
-  /** Stockist rebuilds the list on every query, so re-place and re-check after each. */
-  function watchResults(root) {
-    const panel = root.querySelector('.stockist-result-panel');
-    if (!panel || panel.dataset.spyLocatorWatched) return;
-    panel.dataset.spyLocatorWatched = 'true';
-    new MutationObserver(() => {
-      placeHeadings(root);
-      syncResultState(root);
-    }).observe(panel, { childList: true, subtree: true });
+  /**
+   * Stockist rebuilds both the results panel and the search form as it works,
+   * which tears our nodes out of each. Watch them separately — not the whole
+   * widget, because the map's tile churn would fire this constantly.
+   */
+  function watchWidget(root) {
+    ['.stockist-result-panel', '.stockist-search-form'].forEach((sel) => {
+      const el = root.querySelector(sel);
+      if (!el || el.dataset.spyLocatorWatched) return;
+      el.dataset.spyLocatorWatched = 'true';
+      new MutationObserver(() => {
+        placeHeadings(root);
+        syncResultState(root);
+      }).observe(el, { childList: true, subtree: true });
+    });
   }
 
   function init(root) {
@@ -221,7 +226,7 @@
       placeHeadings(root);
       wireGeolocate(root);
       syncResultState(root);
-      watchResults(root);
+      watchWidget(root);
       size(root);
       syncSwitcher(root);
       // With css_isolation on we cannot size the widget, so it keeps its own
