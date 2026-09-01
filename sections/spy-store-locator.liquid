@@ -60,6 +60,28 @@
     </button>
   {%- endif -%}
 
+  {%- comment -%}
+    Geolocate control for inside the search field, matching the source's. Stockist
+    only renders its own when geolocation.button is "inline"; this stands in until
+    then and hides itself if that setting is switched on. The slash path is the
+    source's "location unavailable" state — shown only when the browser has no
+    geolocation at all.
+  {%- endcomment -%}
+  {%- if section.settings.show_field_geolocate -%}
+    <button
+      type="button"
+      class="spy-locator__field-geo"
+      data-spy-locator-field-geo
+      hidden
+      aria-label="{{ section.settings.text_geolocate }}"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M17.6569 17.657C16.2091 19.1047 14.2091 20.0001 12 20.0001M12 20.0001C7.58172 20.0001 4 16.4184 4 12.0001M12 20.0001V22M4 12.0001C4 9.79098 4.89543 7.79098 6.34315 6.34326M4 12.0001L2 12M9.42444 4.42363C10.2326 4.14897 11.0989 4 12 4M12 4C16.4183 4 20 7.58172 20 12M12 4L12 2M20 12C20 12.9012 19.851 13.7676 19.5762 14.576M20 12H22"/>
+        <path d="M4 4L20 20" data-spy-locator-geo-slash hidden />
+      </svg>
+    </button>
+  {%- endif -%}
+
   <stockist-store-locator data-stockist-widget-tag="{{ tag }}">
     <span class="spy-locator__loading">{{ 'general.loading' | t | default: 'Loading store locator…' }}</span>
   </stockist-store-locator>
@@ -293,6 +315,13 @@
       "label": "Geolocate button in the empty state",
       "default": true,
       "info": "Matches the source. Hides itself if the browser or widget can't geolocate."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_field_geolocate",
+      "label": "Geolocate icon in the search field",
+      "default": true,
+      "info": "Stands in until Stockist's own geolocation.button is set to \"inline\", then steps aside."
     },
     { "type": "header", "content": "Mobile" },
     {

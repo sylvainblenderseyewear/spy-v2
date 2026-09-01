@@ -112,6 +112,7 @@
         heading: root.querySelector('[data-spy-locator-results-heading]'),
         title: root.querySelector('[data-spy-locator-empty-title]'),
         geo: root.querySelector('[data-spy-locator-geo]'),
+        fieldGeo: root.querySelector('[data-spy-locator-field-geo]'),
       };
       owned.set(root, refs);
     }
@@ -138,17 +139,26 @@
       message.insertBefore(title, messageText);
     }
     if (geo && message && geo.parentElement !== message) message.appendChild(geo);
+
+    const { fieldGeo } = ours(root);
+    const wrapper = root.querySelector('.stockist-search-wrapper');
+    if (fieldGeo && wrapper && fieldGeo.parentElement !== wrapper) {
+      wrapper.insertBefore(fieldGeo, wrapper.firstChild);
+    }
   }
 
   /** Our empty-state geolocate button drives the widget's own trigger. */
   function wireGeolocate(root) {
-    const { geo } = ours(root);
-    if (!geo || geo.dataset.spyLocatorWired) return;
-    geo.dataset.spyLocatorWired = 'true';
-    geo.addEventListener('click', () => {
+    const trigger = () => {
       if (typeof window.__stockist_trigger_geolocation === 'function') {
         window.__stockist_trigger_geolocation();
       }
+    };
+    const { geo, fieldGeo } = ours(root);
+    [geo, fieldGeo].forEach((btn) => {
+      if (!btn || btn.dataset.spyLocatorWired) return;
+      btn.dataset.spyLocatorWired = 'true';
+      btn.addEventListener('click', trigger);
     });
   }
 
@@ -162,8 +172,17 @@
     const initial = !!root.querySelector('.stockist-results.stockist-instructions');
     root.dataset.hasResults = String(hasResults);
 
-    const { title, geo } = ours(root);
+    const { title, geo, fieldGeo } = ours(root);
     if (title) title.hidden = !placed || !initial;
+
+    // Stand aside if Stockist renders its own in-field button, or if we cannot
+    // reach the field at all. The slash is the source's "no geolocation" state.
+    if (fieldGeo) {
+      const stockistOwn = !!root.querySelector('.stockist-geolocation-button');
+      fieldGeo.hidden = !placed || stockistOwn;
+      const slash = fieldGeo.querySelector('[data-spy-locator-geo-slash]');
+      if (slash) slash.hidden = 'geolocation' in navigator;
+    }
 
     // Only offer geolocate while the panel is empty, and only if it can work.
     if (geo) {

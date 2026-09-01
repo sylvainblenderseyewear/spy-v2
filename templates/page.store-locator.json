@@ -36,7 +36,8 @@
         "leaflet_tiles": "",
         "leaflet_attribution": "",
         "no_stockist_css": false,
-        "custom_class": ""
+        "custom_class": "",
+        "show_field_geolocate": true
       }
     }
   },

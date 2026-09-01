@@ -3237,6 +3237,51 @@ product-recommendations .slideshow-control svg {
   display: none;
 }
 
+/* In-field geolocate icon. The source overlays a 44px slot on the left of the
+   field with a 20px icon at x=12, and insets the text to 48. Ours does the same
+   — absolutely positioned, so the input keeps its full width. */
+.spy-locator #stockist-widget .stockist-search-wrapper {
+  position: relative;
+}
+
+.spy-locator #stockist-widget .spy-locator__field-geo {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 53px;
+  padding: 0;
+  color: var(--color-spy-ink);
+  cursor: pointer;
+  background: none;
+  border: 0;
+}
+
+.spy-locator #stockist-widget .spy-locator__field-geo[hidden] {
+  display: none;
+}
+
+.spy-locator #stockist-widget .spy-locator__field-geo svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentcolor;
+}
+
+.spy-locator #stockist-widget .spy-locator__field-geo [hidden] {
+  display: none;
+}
+
+/* Clear the overlay — matches the source's 48px text inset. */
+.spy-locator #stockist-widget .stockist-search-wrapper:has(.spy-locator__field-geo:not([hidden]))
+  .stockist-search-field input {
+  padding-left: 48px;
+}
+
 /* ── Result card ───────────────────────────────────────────────────────── */
 .spy-locator #stockist-widget .stockist-result {
   margin: 0 0 16px;
