@@ -602,6 +602,56 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "spy_yotpo_gallery": {
+      "type": "section",
+      "blocks": {
+        "widget": {
+          "type": "custom-liquid",
+          "settings": {
+            "custom_liquid": "<div class=\"yotpo yotpo-pictures-widget\" data-gallery-id=\"600cb426ea00342fd9db2ca4\"></div>"
+          }
+        }
+      },
+      "block_order": [
+        "widget"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "section_width": "full-width",
+        "section_height": "fit",
+        "gap": 0,
+        "background_media": "none",
+        "padding-block-start": 15,
+        "padding-block-end": 15
+      }
+    },
+    "spy_yotpo_reviews": {
+      "type": "section",
+      "blocks": {
+        "widget": {
+          "type": "custom-liquid",
+          "settings": {
+            "custom_liquid": "<div class=\"mt-0 min-[992px]:mt-12\"><div class=\"yotpo yotpo-reviews-carousel yotpo-size-7\" data-background-color=\"transparent\" data-mode=\"top_rated\" data-type=\"site\" data-count=\"9\" data-show-bottomline=\"1\" data-autoplay-enabled=\"1\" data-autoplay-speed=\"3000\" data-show-navigation=\"1\" data-yotpo-element-id=\"1\"></div></div>"
+          }
+        }
+      },
+      "block_order": [
+        "widget"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "section_width": "full-width",
+        "section_height": "fit",
+        "gap": 0,
+        "background_media": "none",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
@@ -612,6 +662,8 @@
     "spy_new_arrivals_carousel",
     "spy_watermen_banner",
     "spy_watermen_carousel",
+    "spy_yotpo_gallery",
+    "spy_yotpo_reviews",
     "spy_half_banners",
     "spy_quick_view_modal"
   ]
