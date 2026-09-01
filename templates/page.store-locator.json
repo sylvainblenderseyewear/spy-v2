@@ -15,7 +15,7 @@
         "widget_tag": "map_w3rgrzyq",
         "full_height": true,
         "panel_width": 512,
-        "min_height": 1000,
+        "min_height": 640,
         "desktop_breakpoint": 1020,
         "units": "km",
         "names_first": true,
