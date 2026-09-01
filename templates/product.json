@@ -229,7 +229,7 @@
             "yotpo_product_reviews_star_rating_VbPMBB": {
               "type": "shopify://apps/yotpo-product-reviews/blocks/star-rating/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
               "settings": {
-                "product": "{{closest.product}}"
+                "product": "{{ closest.product }}"
               }
             },
             "spy_swatches_A1": {
@@ -441,6 +441,8 @@
                   "name": "Heading",
                   "settings": {
                     "text": "Complete your selection",
+                    "link": "",
+                    "open_in_new_tab": false,
                     "level": "h3",
                     "highlight": "",
                     "highlight_color": "#ee7624",
@@ -615,7 +617,7 @@
         "yotpo_product_reviews_reviews_JkTjg3": {
           "type": "shopify://apps/yotpo-product-reviews/blocks/reviews/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
           "settings": {
-            "product": "{{closest.product}}"
+            "product": "{{ closest.product }}"
           }
         }
       },
@@ -660,6 +662,8 @@
           "name": "Heading",
           "settings": {
             "text": "You Might Also Like",
+            "link": "",
+            "open_in_new_tab": false,
             "level": "h2",
             "highlight": "",
             "highlight_color": "#ee7624",
@@ -827,6 +831,9 @@
         "rows_gap": 24,
         "icons_style": "chevron",
         "icons_shape": "none",
+        "carousel_scroll": "card",
+        "carousel_autoplay": false,
+        "carousel_autoplay_speed": 3,
         "section_width": "page-width",
         "gap": 0,
         "background_color": "{{ settings.color_palette.background }}",
