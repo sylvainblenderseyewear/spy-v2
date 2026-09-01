@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "locator": {
@@ -6,7 +15,7 @@
         "widget_tag": "map_w3rgrzyq",
         "full_height": true,
         "panel_width": 512,
-        "min_height": 640,
+        "min_height": 1000,
         "desktop_breakpoint": 1020,
         "units": "km",
         "names_first": true,
@@ -15,15 +24,19 @@
         "label_call": "Call us",
         "label_more": "More info",
         "label_directions": "Directions",
+        "text_search_placeholder": "City, zipcode, name...",
+        "text_empty_title": "Search for a location",
+        "text_initial_message": "Enter search criteria or locate yourself to see nearby locations.",
+        "text_no_results": "No Spy Optic dealers found nearby. Try widening your search.",
+        "text_geolocate": "Geolocate myself",
+        "show_empty_geolocate": true,
         "show_switcher": true,
         "label_list": "List",
         "label_map": "Map",
-        "no_stockist_css": false,
-        "custom_class": "",
         "leaflet_tiles": "",
         "leaflet_attribution": "",
-        "text_empty_title": "Search for a location",
-        "show_empty_geolocate": true
+        "no_stockist_css": false,
+        "custom_class": ""
       }
     }
   },
