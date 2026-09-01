@@ -607,12 +607,11 @@
       "type": "section",
       "blocks": {
         "widget": {
-          "type": "spy-yotpo-widget",
+          "type": "spy-app-embed",
           "settings": {
-            "widget": "pictures_gallery",
-            "element_id": "2",
-            "size_class": "",
-            "gallery_id": "600cb426ea00342fd9db2ca4"
+            "embed": "yotpo_gallery",
+            "gallery_id": "600cb426ea00342fd9db2ca4",
+            "extra_class": "w-full"
           }
         }
       },
@@ -635,11 +634,9 @@
       "type": "section",
       "blocks": {
         "widget": {
-          "type": "spy-yotpo-widget",
+          "type": "spy-app-embed",
           "settings": {
-            "widget": "reviews_carousel",
-            "element_id": "1",
-            "size_class": "",
+            "embed": "yotpo_reviews",
             "source": "site",
             "mode": "top_rated",
             "count": 9,
@@ -647,7 +644,8 @@
             "show_bottomline": true,
             "show_navigation": true,
             "autoplay": true,
-            "autoplay_speed": 3000
+            "autoplay_speed": 3000,
+            "extra_class": "w-full"
           }
         }
       },

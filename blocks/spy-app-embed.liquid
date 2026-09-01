@@ -1,0 +1,227 @@
+{%- doc -%}
+  One block for any third-party widget embed.
+
+  Apps like Yotpo hand you a snippet to paste — a div with data attributes their
+  script reads on load. Pasting that per page means the markup is frozen in the
+  template and an editor cannot change an id. This block covers three cases with one
+  file:
+
+  - Custom code: paste any app's snippet as-is. Liquid inside it is evaluated, so a
+    per-product embed like data-product-id="{{ product.id }}" works.
+  - Yotpo photo gallery / reviews carousel: every id and option is a real setting,
+    so the same block serves the homepage, a PDP, or anywhere else.
+
+  Yotpo's own dialogs say to add their script first — that lives in
+  snippets/spy-yotpo-loader.liquid, rendered site-wide from the layout. Without it
+  these divs stay empty.
+
+  The markup is kept byte-identical to what the app's dialog gives: no extra classes
+  and no extra attributes unless a setting asks for them.
+{%- enddoc -%}
+
+{%- liquid
+  assign embed = block.settings.embed | default: 'custom'
+
+  assign extra = ''
+  if block.settings.extra_class != blank
+    assign extra = ' ' | append: block.settings.extra_class
+  endif
+
+  # per_product needs an id; fall back to the page's product so a PDP needs no wiring
+  assign pid = block.settings.product.id | default: closest.product.id | default: product.id
+
+  assign autoplay = '0'
+  if block.settings.autoplay
+    assign autoplay = '1'
+  endif
+  assign bottomline = '0'
+  if block.settings.show_bottomline
+    assign bottomline = '1'
+  endif
+  assign navigation = '0'
+  if block.settings.show_navigation
+    assign navigation = '1'
+  endif
+-%}
+
+{%- case embed -%}
+  {%- when 'yotpo_gallery' -%}
+    {%- if block.settings.gallery_id != blank -%}
+      <div
+        class="yotpo yotpo-pictures-widget{{ extra }}"
+        data-gallery-id="{{ block.settings.gallery_id }}"
+        {% if block.settings.element_id != blank %}data-yotpo-element-id="{{ block.settings.element_id }}"{% endif %}
+        {{ block.shopify_attributes }}
+      ></div>
+    {%- elsif request.design_mode -%}
+      <p class="m-0 text-[13px] text-[color:var(--color-spy-muted)]" {{ block.shopify_attributes }}>
+        Add a Yotpo gallery ID to show this widget.
+      </p>
+    {%- endif -%}
+
+  {%- when 'yotpo_reviews' -%}
+    {%- comment -%} &nbsp; is in Yotpo's own snippet — the widget needs a non-empty node {%- endcomment -%}
+    <div
+      class="yotpo yotpo-reviews-carousel{{ extra }}"
+      data-background-color="{{ block.settings.background_color }}"
+      data-mode="{{ block.settings.mode }}"
+      data-type="{{ block.settings.source }}"
+      data-count="{{ block.settings.count }}"
+      data-show-bottomline="{{ bottomline }}"
+      data-autoplay-enabled="{{ autoplay }}"
+      data-autoplay-speed="{{ block.settings.autoplay_speed }}"
+      data-show-navigation="{{ navigation }}"
+      {% if block.settings.source == 'per_product' and pid != blank %}data-product-id="{{ pid }}"{% endif %}
+      {% if block.settings.element_id != blank %}data-yotpo-element-id="{{ block.settings.element_id }}"{% endif %}
+      {{ block.shopify_attributes }}
+    >&nbsp;</div>
+
+  {%- else -%}
+    {%- if block.settings.code != blank -%}
+      <div class="spy-app-embed{{ extra }}" {{ block.shopify_attributes }}>{{ block.settings.code }}</div>
+    {%- elsif request.design_mode -%}
+      <p class="m-0 text-[13px] text-[color:var(--color-spy-muted)]" {{ block.shopify_attributes }}>
+        Paste the app's embed code to show this widget.
+      </p>
+    {%- endif -%}
+{%- endcase -%}
+
+{% schema %}
+{
+  "name": "App Embed",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "embed",
+      "label": "Embed",
+      "options": [
+        { "value": "custom", "label": "Custom code" },
+        { "value": "yotpo_gallery", "label": "Yotpo photo gallery" },
+        { "value": "yotpo_reviews", "label": "Yotpo reviews carousel" }
+      ],
+      "default": "custom"
+    },
+    {
+      "type": "liquid",
+      "id": "code",
+      "label": "Embed code",
+      "info": "Paste the snippet the app gives you. Liquid is evaluated, so {{ product.id }} works.",
+      "visible_if": "{{ block.settings.embed == 'custom' }}"
+    },
+    {
+      "type": "text",
+      "id": "extra_class",
+      "label": "Extra CSS class",
+      "info": "Optional. Some apps ask for a size class such as yotpo-size-7."
+    },
+    {
+      "type": "text",
+      "id": "element_id",
+      "label": "Yotpo element ID",
+      "info": "Optional. Only needed when two Yotpo widgets share a page.",
+      "visible_if": "{{ block.settings.embed != 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "Photo gallery",
+      "visible_if": "{{ block.settings.embed == 'yotpo_gallery' }}"
+    },
+    {
+      "type": "text",
+      "id": "gallery_id",
+      "label": "Gallery ID",
+      "info": "Yotpo admin > Visual UGC > the gallery's Get the code dialog.",
+      "visible_if": "{{ block.settings.embed == 'yotpo_gallery' }}"
+    },
+    {
+      "type": "header",
+      "content": "Reviews carousel",
+      "visible_if": "{{ block.settings.embed == 'yotpo_reviews' }}"
+    },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Reviews shown",
+      "options": [
+        { "value": "site", "label": "Whole store" },
+        { "value": "per_product", "label": "One product" }
+      ],
+      "default": "site",
+      "visible_if": "{{ block.settings.embed == 'yotpo_reviews' }}"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Only used for a one-product carousel. Leave empty on a product page to use that product."
+    },
+    {
+      "type": "select",
+      "id": "mode",
+      "label": "Order",
+      "options": [
+        { "value": "top_rated", "label": "Top rated" },
+        { "value": "most_recent", "label": "Most recent" }
+      ],
+      "default": "top_rated",
+      "visible_if": "{{ block.settings.embed == 'yotpo_reviews' }}"
+    },
+    {
+      "type": "range",
+      "id": "count",
+      "label": "Reviews",
+      "min": 3,
+      "max": 30,
+      "step": 1,
+      "default": 9,
+      "visible_if": "{{ block.settings.embed == 'yotpo_reviews' }}"
+    },
+    {
+      "type": "text",
+      "id": "background_color",
+      "label": "Background",
+      "default": "transparent",
+      "visible_if": "{{ block.settings.embed == 'yotpo_reviews' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottomline",
+      "label": "Show the star summary",
+      "default": true,
+      "visible_if": "{{ block.settings.embed == 'yotpo_reviews' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show arrows",
+      "default": true,
+      "visible_if": "{{ block.settings.embed == 'yotpo_reviews' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true,
+      "visible_if": "{{ block.settings.embed == 'yotpo_reviews' }}"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed",
+      "min": 1000,
+      "max": 8000,
+      "step": 500,
+      "unit": "ms",
+      "default": 3000,
+      "visible_if": "{{ block.settings.embed == 'yotpo_reviews' and block.settings.autoplay }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "App Embed",
+      "category": "SPY"
+    }
+  ]
+}
+{% endschema %}
