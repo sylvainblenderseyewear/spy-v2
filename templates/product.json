@@ -196,18 +196,19 @@
                       },
                       "blocks": {}
                     },
-                    "spy_rating_A1": {
-                      "type": "spy-rating",
-                      "name": "Rating",
+                    "yotpo_star_rating": {
+                      "type": "spy-app-embed",
+                      "name": "Star Rating",
                       "settings": {
-                        "empty_label": "Write a review"
-                      },
-                      "blocks": {}
+                        "embed": "yotpo_bottomline",
+                        "element_id": "2",
+                        "extra_class": ""
+                      }
                     }
                   },
                   "block_order": [
                     "price_tVjtKg",
-                    "spy_rating_A1"
+                    "yotpo_star_rating"
                   ]
                 },
                 "spy_stock_A1": {
@@ -225,12 +226,6 @@
                 "group_price_row",
                 "spy_stock_A1"
               ]
-            },
-            "yotpo_product_reviews_star_rating_VbPMBB": {
-              "type": "shopify://apps/yotpo-product-reviews/blocks/star-rating/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
-              "settings": {
-                "product": "{{ closest.product }}"
-              }
             },
             "spy_swatches_A1": {
               "type": "spy-swatches",
@@ -441,8 +436,6 @@
                   "name": "Heading",
                   "settings": {
                     "text": "Complete your selection",
-                    "link": "",
-                    "open_in_new_tab": false,
                     "level": "h3",
                     "highlight": "",
                     "highlight_color": "#ee7624",
@@ -560,17 +553,10 @@
               "block_order": [
                 "spy_heading_upsell"
               ]
-            },
-            "spy_yotpo_reviews_A1": {
-              "type": "spy-yotpo-reviews",
-              "name": "Yotpo Reviews",
-              "settings": {},
-              "blocks": {}
             }
           },
           "block_order": [
             "group_icgrde",
-            "yotpo_product_reviews_star_rating_VbPMBB",
             "spy_swatches_A1",
             "spy_frame_summary_A1",
             "spy_frame_fit_guide_A1",
@@ -581,8 +567,7 @@
             "spy_trust_badges_A1",
             "spy_description_A1",
             "spy_spec_table_A1",
-            "product_recommendations_upsell",
-            "spy_yotpo_reviews_A1"
+            "product_recommendations_upsell"
           ]
         }
       },
@@ -614,15 +599,25 @@
     "1787843154625a3635": {
       "type": "_blocks",
       "blocks": {
-        "yotpo_product_reviews_reviews_JkTjg3": {
-          "type": "shopify://apps/yotpo-product-reviews/blocks/reviews/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
-          "settings": {
-            "product": "{{ closest.product }}"
-          }
+        "spy_yotpo_reviews_A1": {
+          "type": "spy-yotpo-reviews",
+          "name": "Yotpo Reviews",
+          "settings": {},
+          "blocks": {
+            "yotpo_product_reviews_reviews_JkTjg3": {
+              "type": "shopify://apps/yotpo-product-reviews/blocks/reviews/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
+              "settings": {
+                "product": "{{closest.product}}"
+              }
+            }
+          },
+          "block_order": [
+            "yotpo_product_reviews_reviews_JkTjg3"
+          ]
         }
       },
       "block_order": [
-        "yotpo_product_reviews_reviews_JkTjg3"
+        "spy_yotpo_reviews_A1"
       ],
       "name": "Yotpo Reviews",
       "settings": {
@@ -662,8 +657,6 @@
           "name": "Heading",
           "settings": {
             "text": "You Might Also Like",
-            "link": "",
-            "open_in_new_tab": false,
             "level": "h2",
             "highlight": "",
             "highlight_color": "#ee7624",
@@ -831,9 +824,6 @@
         "rows_gap": 24,
         "icons_style": "chevron",
         "icons_shape": "none",
-        "carousel_scroll": "card",
-        "carousel_autoplay": false,
-        "carousel_autoplay_speed": 3,
         "section_width": "page-width",
         "gap": 0,
         "background_color": "{{ settings.color_palette.background }}",

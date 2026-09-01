@@ -1,7 +1,8 @@
 {%- doc -%}
-  Compact star rating shown by the title. Yotpo is not installed yet, so we
-  render the empty state (outline stars + "Write a review") like the source.
-  Swap the inner markup for the Yotpo bottom-line widget once the app is live.
+  Compact star rating for Quick View only — the PDP now shows the real Yotpo
+  bottom line through a spy-app-embed block. Quick View fetches its markup, so
+  Yotpo would need a refresh call after each fetch; until then this keeps the
+  source's empty state (outline stars + "Write a review").
 {%- enddoc -%}
 
 <div class="spy-rating flex items-center gap-2" {{ block.shopify_attributes }}>

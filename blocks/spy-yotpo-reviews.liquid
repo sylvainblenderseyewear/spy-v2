@@ -1,12 +1,26 @@
-{%- assign p = closest.product -%}
-<div id="spy-reviews" class="spy-yotpo-reviews" {{ block.shopify_attributes }}>
-  {% render 'yotpo-reviews', product: p %}
+{%- doc -%}
+  Anchor for the Yotpo reviews widget. The "Write a review" link jumps to
+  #spy-reviews, so the id must live in the theme — an app block cannot own it.
+  Drop the Yotpo "Reviews" app block inside this one.
+{%- enddoc -%}
+
+<div
+  id="spy-reviews"
+  class="spy-yotpo-reviews w-full [scroll-margin-top:calc(var(--header-height,100px)+24px)]"
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
 </div>
 
 {% schema %}
 {
   "name": "Yotpo Reviews",
   "tag": null,
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
   "settings": [],
   "presets": [
     {

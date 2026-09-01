@@ -133,32 +133,87 @@
                   },
                   "blocks": {}
                 },
-                "price_tVjtKg": {
-                  "type": "price",
+                "group_price_row": {
+                  "type": "group",
+                  "name": "Price Row",
                   "settings": {
-                    "show_sale_price_first": true,
-                    "show_installments": false,
-                    "show_tax_info": false,
-                    "type_preset": "paragraph",
-                    "width": "100%",
-                    "alignment": "left",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "text_color": "",
+                    "content_direction": "row",
+                    "vertical_on_mobile": false,
+                    "horizontal_alignment": "space-between",
+                    "vertical_alignment": "flex-start",
+                    "align_baseline": false,
+                    "horizontal_alignment_flex_direction_column": "flex-start",
+                    "vertical_alignment_flex_direction_column": "flex-start",
+                    "gap": 12,
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "custom_height": 100,
+                    "background_media": "none",
+                    "background_color": "",
+                    "video_position": "cover",
+                    "background_image_position": "cover",
+                    "toggle_overlay": false,
+                    "overlay_color": "#00000026",
+                    "overlay_style": "solid",
+                    "gradient_direction": "to top",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_color": "",
+                    "border_radius": 0,
+                    "link": "",
+                    "open_in_new_tab": false,
+                    "placeholder": "",
                     "padding-block-start": 4,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
                     "padding-inline-end": 0
                   },
-                  "blocks": {}
+                  "blocks": {
+                    "price_tVjtKg": {
+                      "type": "price",
+                      "settings": {
+                        "show_sale_price_first": true,
+                        "show_installments": false,
+                        "show_tax_info": false,
+                        "type_preset": "paragraph",
+                        "width": "fit-content",
+                        "alignment": "left",
+                        "font": "var(--font-body--family)",
+                        "font_size": "1rem",
+                        "line_height": "normal",
+                        "letter_spacing": "normal",
+                        "case": "none",
+                        "text_color": "",
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    },
+                    "yotpo_star_rating": {
+                      "type": "spy-app-embed",
+                      "name": "Star Rating",
+                      "settings": {
+                        "embed": "custom",
+                        "code": "<div class=\"yotpo bottomLine\" data-product-id=\"{{ product.id }}\" data-name=\"{{ product.title | escape }}\" data-url=\"{{ shop.url }}{{ product.url }}\" data-image-url=\"{{ product.featured_image | image_url: width: 600 | prepend: shop.url }}\" data-yotpo-element-id=\"2\"></div>",
+                        "extra_class": "text-spy-orange-ui text-[0.6875rem] [&_.yotpo-stars]:mr-px [&_.text-m]:font-spy [&_.text-m]:text-[13px] [&_.text-m]:text-spy-review-label [&_.text-m]:whitespace-nowrap [&_.text-m]:no-underline"
+                      }
+                    }
+                  },
+                  "block_order": [
+                    "price_tVjtKg",
+                    "yotpo_star_rating"
+                  ]
                 }
               },
               "block_order": [
                 "text_xrnftG",
-                "price_tVjtKg"
+                "group_price_row"
               ]
             },
             "divider_VJhene": {
@@ -305,11 +360,6 @@
                 "heading": "Technical Information"
               }
             },
-            "spy_yotpo_reviews_A1": {
-              "type": "spy-yotpo-reviews",
-              "name": "Yotpo Reviews",
-              "settings": {}
-            },
             "breadcrumbs_pdp": {
               "type": "spy-breadcrumbs",
               "settings": {}
@@ -324,8 +374,7 @@
             "buy_buttons_eYQEYi",
             "spy_trust_badges_A1",
             "text_aEtTtq",
-            "spy_spec_table_A1",
-            "spy_yotpo_reviews_A1"
+            "spy_spec_table_A1"
           ]
         }
       },
@@ -524,11 +573,65 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "yotpo_reviews_section": {
+      "type": "_blocks",
+      "blocks": {
+        "spy_yotpo_reviews_A1": {
+          "type": "spy-yotpo-reviews",
+          "name": "Yotpo Reviews",
+          "settings": {},
+          "blocks": {
+            "yotpo_reviews": {
+              "type": "shopify://apps/yotpo-product-reviews/blocks/reviews/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
+              "settings": {
+                "product": "{{closest.product}}"
+              }
+            }
+          },
+          "block_order": [
+            "yotpo_reviews"
+          ]
+        }
+      },
+      "block_order": [
+        "spy_yotpo_reviews_A1"
+      ],
+      "name": "Yotpo Reviews",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
     "main",
     "spy_feature_banner_A1",
+    "yotpo_reviews_section",
     "product_recommendations_qggXJq"
   ]
 }
