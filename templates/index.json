@@ -607,9 +607,12 @@
       "type": "section",
       "blocks": {
         "widget": {
-          "type": "custom-liquid",
+          "type": "spy-yotpo-widget",
           "settings": {
-            "custom_liquid": "<div class=\"yotpo yotpo-pictures-widget\" data-gallery-id=\"600cb426ea00342fd9db2ca4\"></div>"
+            "widget": "pictures_gallery",
+            "element_id": "2",
+            "size_class": "",
+            "gallery_id": "600cb426ea00342fd9db2ca4"
           }
         }
       },
@@ -632,9 +635,19 @@
       "type": "section",
       "blocks": {
         "widget": {
-          "type": "custom-liquid",
+          "type": "spy-yotpo-widget",
           "settings": {
-            "custom_liquid": "<div class=\"mt-0 min-[992px]:mt-12\"><div class=\"yotpo yotpo-reviews-carousel yotpo-size-7\" data-background-color=\"transparent\" data-mode=\"top_rated\" data-type=\"site\" data-count=\"9\" data-show-bottomline=\"1\" data-autoplay-enabled=\"1\" data-autoplay-speed=\"3000\" data-show-navigation=\"1\" data-yotpo-element-id=\"1\"></div></div>"
+            "widget": "reviews_carousel",
+            "element_id": "1",
+            "size_class": "",
+            "source": "site",
+            "mode": "top_rated",
+            "count": 9,
+            "background_color": "transparent",
+            "show_bottomline": true,
+            "show_navigation": true,
+            "autoplay": true,
+            "autoplay_speed": 3000
           }
         }
       },

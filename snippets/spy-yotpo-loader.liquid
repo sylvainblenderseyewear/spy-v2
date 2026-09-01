@@ -1,0 +1,24 @@
+{%- doc -%}
+  Loads the Yotpo widget script once per page.
+
+  Yotpo's own instructions are "paste this into your site code" — the app embed does
+  not inject it, which is why every Yotpo widget on the theme rendered empty. The
+  account key is a theme setting rather than a literal so a different store (or a
+  sandbox account) needs no code change.
+
+  Yotpo's snippet already sets async, so this never blocks rendering. Renders nothing
+  when the key is empty, which keeps the markup clean on stores without Yotpo.
+{%- enddoc -%}
+
+{%- if settings.yotpo_app_key != blank -%}
+  <script type="text/javascript">
+    (function e() {
+      var e = document.createElement('script');
+      (e.type = 'text/javascript'),
+        (e.async = true),
+        (e.src = '//staticw2.yotpo.com/{{ settings.yotpo_app_key }}/widget.js');
+      var t = document.getElementsByTagName('script')[0];
+      t.parentNode.insertBefore(e, t);
+    })();
+  </script>
+{%- endif -%}
