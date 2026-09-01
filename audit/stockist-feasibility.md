@@ -644,3 +644,37 @@ has **zero locations**, so any bounds search comes back empty and the message sw
 panning the map — and note **0 network requests**: with `preload: true` the widget reads its cached
 overview and answers locally. The live site shows its initial message only because its map had not
 been moved; with 2,261 dealers the same pan returns a list. This resolves on data import.
+
+### Max zoom-out clipped the world
+
+At its minimum zoom the map could not show the whole world. Measured at 1440×900:
+
+```
+container      928 x 807
+world extent  1536 x 1024      <- 217px taller than the container
+overflow      bottom 215px     <- southern latitudes unreachable
+```
+
+Stockist's tile layer sets `minZoom: 1` with `tileSize: 512, zoomOffset: -1`, i.e. an effective
+floor of zoom 2, where the Web Mercator world is 1024px tall. In a wide, short panel that always
+clips. The source does not: its world height equals its container height exactly, so Antarctica and
+the Arctic are both visible.
+
+`minZoom` cannot be reached through `__stockist_leaflet_tileconfig` unless a tile URL is also
+supplied, which reopens the tile-licensing problem. But the widget hands the map object out:
+
+```js
+window.__stockist_widget_mapcreated({ map })
+```
+
+Leaflet and Mapbox GL both expose `setMinZoom`, so the floor is now computed from the container —
+the world is 256px at zoom 0 and doubles per step, so `log2(height / 256)` is the zoom at which it
+exactly fills. Leaflet additionally snaps to whole zoom levels by default, which would round the fit
+away, so `zoomSnap` is zeroed first. Re-applied on resize.
+
+| | before | after |
+|---|---|---|
+| desktop 928×807 | world 1024 tall, 215px clipped | world **807** tall, clipped 0/0 |
+| mobile map view 390×661 | — | world **661** tall, clipped 0/1 |
+
+Works for whichever engine Stockist picks, so it holds once the Mapbox key is added.

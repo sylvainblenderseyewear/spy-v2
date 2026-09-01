@@ -39,6 +39,32 @@
     return window.innerWidth < breakpoint();
   }
 
+  /**
+   * Let the map zoom out until the whole world fits, as the source does.
+   *
+   * Stockist's minimum stops one step too high for a wide, short panel: the
+   * Web Mercator world is 1024px tall at that zoom inside an ~807px map, so the
+   * southern latitudes are cut off and cannot be reached. The world is 256px at
+   * zoom 0 and doubles each step, so log2(height / 256) is the zoom at which it
+   * exactly fills the container height.
+   *
+   * Leaflet and Mapbox GL both expose setMinZoom; Leaflet also snaps to whole
+   * zoom levels by default, which would round the fit away.
+   */
+  let mapRef = null;
+
+  function fitMinZoom() {
+    const map = mapRef;
+    if (!map || typeof map.setMinZoom !== 'function') return;
+    const el = typeof map.getContainer === 'function' ? map.getContainer() : null;
+    const h = el ? el.getBoundingClientRect().height : 0;
+    if (!h) return;
+    try {
+      if (map.options && 'zoomSnap' in map.options) map.options.zoomSnap = 0;
+      map.setMinZoom(Math.max(0, Math.log2(h / 256)));
+    } catch (e) { /* map not ready, next resize will retry */ }
+  }
+
   function setView(root, view) {
     root.dataset.view = view;
     root.querySelectorAll('[data-spy-locator-view]').forEach((btn) => {
@@ -179,6 +205,7 @@
       size(root);
       syncSwitcher(root);
     });
+    fitMinZoom();
   }
 
   let raf = 0;
@@ -199,6 +226,14 @@
   document.addEventListener('shopify:section:load', (e) => {
     if (e.target.querySelector('[data-spy-locator]')) refresh();
   });
+
+  // Widget hands us its map instance here — Leaflet or Mapbox, same call.
+  const prevMapCreated = window.__stockist_widget_mapcreated;
+  window.__stockist_widget_mapcreated = function (ctx) {
+    mapRef = ctx && ctx.map;
+    fitMinZoom();
+    if (typeof prevMapCreated === 'function') return prevMapCreated.apply(this, arguments);
+  };
 
   // Widget tells us when it has drawn — re-measure once it has real height.
   const prevLoaded = window.__stockist_widget_domloaded;
