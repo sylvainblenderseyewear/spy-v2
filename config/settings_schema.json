@@ -2241,7 +2241,7 @@
         "id": "yotpo_app_key",
         "label": "Yotpo app key",
         "info": "From the widget install dialog: the code between staticw2.yotpo.com/ and /widget.js. Loads the Yotpo script site-wide.",
-        "default": "HnS18COQvay5OIXkQ410pUSuF1W1Ity0HyXJiFlv"
+        "default": "QvaApxqlVlVEebmfd34wHH7scAuVMAkdvdejcqyr"
       }
     ]
   }
