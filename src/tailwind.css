@@ -3535,3 +3535,26 @@ product-recommendations .slideshow-control svg {
   color: #fff;
   background-color: var(--color-spy-ink);
 }
+
+/* ── Yotpo photo gallery title ───────────────────────────────────────────
+   Yotpo builds this span at runtime, so it can never take a utility class.
+   The gallery's own dashboard styling is 22px Lora in #56575f; the source
+   overrides it with the brand heading face — 35px, dropping to 30px on a
+   phone at Yotpo's own breakpoint.
+
+   Yotpo also injects its own style block late in the document with a
+   same-specificity selector (.yotpo-gallery-ID .yotpo-slider-title), and that id
+   changes per gallery so it cannot be targeted by name. Repeating the class
+   outranks it without resorting to !important. */
+.yotpo-pictures-widget .yotpo-slider-title.yotpo-slider-title {
+  font-family: var(--font-heading--family) !important;
+  font-weight: 700 !important;
+  font-size: 35px !important;
+  color: #191919 !important;
+}
+
+@media screen and (max-width: 620px) {
+  .yotpo-pictures-widget .yotpo-slider-title.yotpo-slider-title {
+    font-size: 30px !important;
+  }
+}
