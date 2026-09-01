@@ -678,3 +678,21 @@ away, so `zoomSnap` is zeroed first. Re-applied on resize.
 | mobile map view 390×661 | — | world **661** tall, clipped 0/1 |
 
 Works for whichever engine Stockist picks, so it holds once the Mapbox key is added.
+
+### The dead space above the footer — removed
+
+While shadow-isolated, our full-viewport shell was 807px tall but the widget kept its own account
+height of 600px inside it, leaving ~207px of white between the map and the footer.
+
+Collapsing the shell whenever `data-placed` is false would have worked but jumped on every load,
+because `placed` is false until the widget appears. Gated on the widget having actually drawn instead
+(`__stockist_widget_domloaded`), so only the genuinely-unreachable case collapses:
+
+| | wrapper | footer starts | gap |
+|---|---|---|---|
+| production (shadow) | 93..**693** (600) | 693 | **0** |
+| `?stnoshadow` | 93..900 (807) | 900 | 0 |
+
+The light-DOM path never collapses, so there is no height jump once `css_isolation` is switched off —
+the rule simply stops applying. Full-viewport behaviour at 900/1300/620/500 and all three breakpoints
+unchanged.

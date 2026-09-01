@@ -3009,6 +3009,12 @@ product-recommendations .slideshow-control svg {
   height: calc(100dvh - var(--spy-locator-offset, 0px));
 }
 
+/* Shadow-isolated: our sizing never reached the widget, so it kept its own
+   height. Fit the shell to it instead of leaving dead space above the footer. */
+.spy-locator[data-full-height='true'][data-collapsed='true'] {
+  height: auto;
+}
+
 /* The minimum only means anything when the locator is not filling the viewport. */
 .spy-locator:not([data-full-height='true']) {
   min-height: var(--spy-locator-min, 640px);

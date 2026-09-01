@@ -52,6 +52,7 @@
    * zoom levels by default, which would round the fit away.
    */
   let mapRef = null;
+  let widgetLoaded = false;
 
   function fitMinZoom() {
     const map = mapRef;
@@ -204,6 +205,11 @@
       watchResults(root);
       size(root);
       syncSwitcher(root);
+      // With css_isolation on we cannot size the widget, so it keeps its own
+      // account height inside our full-viewport shell and leaves dead space
+      // below. Shrink to it — but only after it has drawn, so the normal
+      // (reachable) case never sees a height jump.
+      root.dataset.collapsed = String(widgetLoaded && root.dataset.placed !== 'true');
     });
     fitMinZoom();
   }
@@ -238,6 +244,7 @@
   // Widget tells us when it has drawn — re-measure once it has real height.
   const prevLoaded = window.__stockist_widget_domloaded;
   window.__stockist_widget_domloaded = function (...args) {
+    widgetLoaded = true;
     refresh();
     if (typeof prevLoaded === 'function') return prevLoaded.apply(this, args);
   };
