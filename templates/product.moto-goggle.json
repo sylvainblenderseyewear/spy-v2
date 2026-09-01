@@ -199,9 +199,9 @@
                       "type": "spy-app-embed",
                       "name": "Star Rating",
                       "settings": {
-                        "embed": "custom",
-                        "code": "<div class=\"yotpo bottomLine\" data-product-id=\"{{ product.id }}\" data-name=\"{{ product.title | escape }}\" data-url=\"{{ shop.url }}{{ product.url }}\" data-image-url=\"{{ product.featured_image | image_url: width: 600 | prepend: shop.url }}\" data-yotpo-element-id=\"2\"></div>",
-                        "extra_class": "text-spy-orange-ui text-[0.6875rem] [&_.yotpo-stars]:mr-px [&_.text-m]:font-spy [&_.text-m]:text-[13px] [&_.text-m]:text-spy-review-label [&_.text-m]:whitespace-nowrap [&_.text-m]:no-underline"
+                        "embed": "yotpo_bottomline",
+                        "element_id": "2",
+                        "extra_class": ""
                       }
                     }
                   },
