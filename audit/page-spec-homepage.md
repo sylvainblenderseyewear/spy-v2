@@ -25,13 +25,17 @@
 
 ## Detailed Section Specs
 
-### Announcement Bar
-- **Height:** ⚠️ MEASURE (est. 40px)
-- **BG color:** dark (slate `#2c393e` or near-black)
-- **Text:** white, uppercase, small; fire emoji; linked text is underlined or colored
-- **Behavior:** static (not dismissible in observed state)
-- **Layer:** Layer 2 (section settings — text, link, bg color from scheme)
-- **Responsive:** single line collapses to smaller font on mobile
+### Announcement Bar — MEASURED, see `audit/page-spec-announcement-bar.md`
+- **Position:** the bottom band of the header, UNDER the nav (nav 50px + bar 40px = 90px)
+- **Height:** 40px desktop · 48px 481–768 · 56px ≤480
+- **BG color:** `#1d2a2b` · text `#ffffff`
+- **Text:** DIN 12px/600, uppercase, letter-spacing 0.3px; the fire emoji sits inside the
+  link's own text run; no underline until hover (hover = underline + opacity 0.9)
+- **Behavior:** dismissible — white FontAwesome "times" X (9×9px ink) right of the text;
+  rotates between messages every 5s with a 0.5s crossfade, no arrows
+- **Layer:** Layer 2 (section settings — text, link, colors, per-breakpoint height)
+- **Responsive:** font size is constant; only height, line-height, letter-spacing and the
+  inner padding change per breakpoint
 
 ### Navigation Header
 - **Height desktop:** ⚠️ MEASURE (est. 64–80px)

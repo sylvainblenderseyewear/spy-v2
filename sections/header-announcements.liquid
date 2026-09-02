@@ -1,4 +1,16 @@
+{%- comment -%}
+  Announcement bar — the source's `section.preheader`, the bottom band of the header.
 
+  Height comes from a min-height per breakpoint (40 / 48 / 56px), not padding, and the
+  message box plus the close button are centred TOGETHER as one row, so the X hugs the
+  text instead of sitting out at the page edge.
+
+  The `pl-12` is deliberate, not a stray margin: the source row is `col-12 ml-4`, so its
+  content box sits 24px right of the page centre and the message lands 6.3px right of
+  true centre. 48px of left padding puts our centre in the same place without the source's
+  overflow. Drop it only if we decide to stop matching that. See
+  audit/page-spec-announcement-bar.md.
+{%- endcomment -%}
 
 {% if section.blocks.size > 1 %}
   <script
@@ -12,16 +24,14 @@
 
 <div class="section-background color-custom-{{ section.id }}"></div>
 <aside
-  class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-custom-{{ section.id }} relative [border-block-end:var(--border-bottom-width)_solid_var(--color-border)]"
+  class="announcement-bar section section--full-width color-custom-{{ section.id }} relative [border-block-end:var(--border-bottom-width)_solid_var(--color-border)]"
   id="spy-ann-{{ section.id }}"
-  style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;{% if section.settings.divider_color != blank %} --color-border: {{ section.settings.divider_color }};{% endif %}"
+  style="--border-bottom-width: {{ section.settings.divider_width }}px;{% if section.settings.divider_color != blank %} --color-border: {{ section.settings.divider_color }};{% endif %} --spy-ann-h: {{ section.settings.height }}px; --spy-ann-h-tablet: {{ section.settings.height_tablet }}px; --spy-ann-h-mobile: {{ section.settings.height_mobile }}px;"
 >
   {% liquid
     assign autoplay = false
-    assign show_arrows = false
     if section.blocks.size > 1
       assign autoplay = true
-      assign show_arrows = true
     endif
   %}
 
@@ -29,31 +39,36 @@
     class="
       announcement-bar__slider
       [display:flex] items-center justify-center relative
-      gap-9 max-md:gap-5
-      max-[749px]:[grid-column:1/-1]
-      {% if show_arrows %}announcement-bar__slider--has-arrows{% endif %}
+      pl-12
+      [min-height:var(--spy-ann-h)]
+      max-[769px]:[min-height:var(--spy-ann-h-tablet)]
+      max-[481px]:[min-height:var(--spy-ann-h-mobile)]
     "
     {% if autoplay == true %}
       autoplay="{{ section.settings.speed }}" aria-live="polite"
     {% endif %}
   >
-    {% if show_arrows %}
-      {% render 'slideshow-arrows', icon_style: 'chevron' %}
-    {% endif %}
-
-    <div class="announcement-bar__slides [display:grid] [grid-template-areas:'stack'] w-auto max-w-full min-w-0">
+    <div
+      class="
+        announcement-bar__slides
+        [display:grid] [grid-template-areas:'stack'] items-center
+        w-auto max-w-full min-w-0 overflow-hidden
+        px-4 max-[769px]:px-3 max-[481px]:px-2
+      "
+    >
       {% content_for 'blocks' %}
     </div>
 
     {% if section.settings.enable_close %}
       <button
-        class="announcement-bar__close [display:inline-flex] shrink-0 items-center justify-center size-[12px] m-0 p-0 border-0 bg-transparent text-current leading-none opacity-90 transition-opacity duration-200 cursor-pointer hover:opacity-100"
+        class="announcement-bar__close [display:inline-flex] shrink-0 self-center items-center justify-center m-0 px-3 py-2 min-h-[34.8px] border border-transparent bg-transparent text-current leading-none cursor-pointer transition-opacity duration-200 hover:opacity-90"
         type="button"
         data-spy-ann-close
         aria-label="{{ 'actions.close' | t }}"
       >
-        <svg class="size-full" aria-hidden="true" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/>
+        {%- comment -%} FontAwesome 4 "times", cropped to its 1188-unit ink box so 9px is the glyph {%- endcomment -%}
+        <svg class="size-[9px] max-w-none" viewBox="302 366 1188 1188" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1490 1322q0 40-28 68l-136 136q-28 28-68 28t-68-28l-294-294-294 294q-28 28-68 28t-68-28l-136-136q-28-28-28-68t28-68l294-294-294-294q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 294 294-294q28-28 68-28t68 28l136 136q28 28 28 68t-28 68l-294 294 294 294q28 28 28 68z"/>
         </svg>
       </button>
     {% endif %}
@@ -111,22 +126,6 @@
       "content": "t:content.appearance"
     },
     {
-      "type": "select",
-      "id": "section_width",
-      "label": "t:settings.section_width",
-      "options": [
-        {
-          "value": "page-width",
-          "label": "t:options.page"
-        },
-        {
-          "value": "full-width",
-          "label": "t:options.full"
-        }
-      ],
-      "default": "page-width"
-    },
-    {
       "type": "color",
       "id": "background_color",
       "label": "t:settings.background_color",
@@ -163,27 +162,40 @@
     },
     {
       "type": "header",
-      "content": "t:content.padding"
+      "content": "Height"
     },
     {
       "type": "range",
-      "id": "padding-block-start",
-      "label": "t:settings.top",
-      "min": 0,
-      "max": 100,
+      "id": "height",
+      "label": "Desktop",
+      "info": "From 769px up.",
+      "min": 24,
+      "max": 96,
       "step": 1,
       "unit": "px",
-      "default": 15
+      "default": 40
     },
     {
       "type": "range",
-      "id": "padding-block-end",
-      "label": "t:settings.bottom",
-      "min": 0,
-      "max": 100,
+      "id": "height_tablet",
+      "label": "Tablet",
+      "info": "481–768px.",
+      "min": 24,
+      "max": 96,
       "step": 1,
       "unit": "px",
-      "default": 15
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Mobile",
+      "info": "480px and below.",
+      "min": 24,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 56
     }
   ],
   "presets": [

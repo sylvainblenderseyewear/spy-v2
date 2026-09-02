@@ -144,11 +144,13 @@
 
 ## 8. Component Tokens
 
-### Announcement Bar
-- Height: ⚠️ MEASURE (est. 40px)
-- Background: dark (slate `#2c393e` or black)
-- Text: white + orange emoji
-- Font: uppercase, small (11–13px), medium weight
+### Announcement Bar — MEASURED (2026-09-02)
+- Height: **40px** desktop · **48px** 481–768 · **56px** ≤480
+- Background: `#1d2a2b` · text `#ffffff`
+- Font: DIN, **12px / 600 / uppercase** at every breakpoint
+  (line-height 1.4 / 1.5 / 1.6, letter-spacing 0.3 / 0.2 / 0.2px)
+- Close X: white FontAwesome 4 "times", 9×9px ink
+- Full spec: `audit/page-spec-announcement-bar.md`
 
 ### Navigation Header
 - Height: ⚠️ MEASURE (est. 60–80px desktop, less on mobile)

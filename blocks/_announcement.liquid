@@ -1,4 +1,8 @@
-
+{%- comment -%}
+  One announcement message. The icon rides inside the link's own text run with a
+  plain space after it — the source has no separate icon element and no flex gap,
+  so a gap here would read as too much air around the emoji.
+{%- endcomment -%}
 
 {%- liquid
   assign block_settings = block.settings
@@ -6,6 +10,11 @@
   # Falls back to the sunglasses PLP so the bar ships with a working link
   assign href = block_settings.url | default: '/collections/sunglasses'
   assign block_index = section.blocks | find_index: 'id', block.id
+
+  assign message = block_settings.label
+  if block_settings.icon != blank
+    assign message = block_settings.icon | append: ' ' | append: block_settings.label
+  endif
 -%}
 
 {%- unless label == '' -%}
@@ -14,7 +23,7 @@
     class="
       announcement-bar__slide
       [grid-area:stack]
-      [display:flex] items-center justify-center
+      [display:flex] items-center justify-center text-center
       transition-[opacity,visibility] duration-500 ease-in-out
       aria-hidden:opacity-0 aria-hidden:invisible
     "
@@ -22,16 +31,18 @@
     aria-hidden="{% if block_index == 0 %}false{% else %}true{% endif %}"
   >
     <a
-      class="announcement-bar__link [display:inline-flex] items-center gap-2 no-underline text-current opacity-100 transition-opacity duration-200 hover:opacity-70"
+      class="
+        announcement-bar__link
+        no-underline text-current
+        text-[12px] font-semibold uppercase
+        leading-[1.4] tracking-[0.3px]
+        max-[769px]:leading-[1.5] max-[769px]:tracking-[0.2px]
+        max-[481px]:leading-[1.6]
+        transition-opacity duration-200
+        hover:underline hover:opacity-90
+      "
       href="{{ href }}"
-    >
-      {%- if block_settings.icon != blank -%}
-        <span class="text-[13px] leading-none" aria-hidden="true">{{ block_settings.icon }}</span>
-      {%- endif -%}
-      <span class="text-[13px] font-bold uppercase leading-none tracking-[0.06em] max-md:text-[11px]">
-        {{- block_settings.label -}}
-      </span>
-    </a>
+    >{{ message }}</a>
   </slideshow-slide>
 {%- endunless -%}
 
