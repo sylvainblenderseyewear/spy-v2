@@ -2863,16 +2863,16 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    parent — a second inset would shrink every slide by 2*56/columns. Source inset is the
    page padding minus its 15px bleed. */
 product-recommendations .resource-list__carousel slideshow-slides:not(.card-gallery *) {
-  padding-inline: 1px;
+  padding-inline: 11px;
 }
-@media (min-width: 769px) {
+@media (min-width: 545px) {
   product-recommendations .resource-list__carousel slideshow-slides:not(.card-gallery *) {
-    padding-inline: 17px;
+    padding-inline: 10.5px;
   }
 }
 @media (min-width: 1200px) {
   product-recommendations .resource-list__carousel slideshow-slides:not(.card-gallery *) {
-    padding-inline: 41px;
+    padding-inline: 51px;
   }
 }
 @media (min-width: 1800px) {
@@ -2923,6 +2923,30 @@ product-recommendations .slideshow-control {
 product-recommendations .slideshow-control svg {
   width: 1.25rem;
   height: 1.25rem;
+}
+
+/* Source shows three across from 769 to 1199 and two below, so the slide count is
+   not the desktop four all the way down. --column-count is what Horizon divides by. */
+@media (min-width: 545px) and (max-width: 1199px) {
+  product-recommendations .resource-list__carousel .resource-list__slide {
+    --column-count: 3 !important;
+    /* the peek is 48px here and would eat 16px off every tile */
+    --peek-next-slide-size: 0px;
+  }
+}
+
+/* Under a 750px container Horizon drops the column maths entirely and sizes the slide
+   `clamp(150px, 60cqw, ...)` — that 60cqw is why mobile showed one and a half tiles.
+   The source keeps three down to its 544 break, then two. */
+@container resource-list-carousel (min-width: 545px) and (max-width: 749px) {
+  product-recommendations .resource-list__carousel .resource-list__slide {
+    --mobile-card-size: 31cqw;
+  }
+}
+@container resource-list-carousel (max-width: 544px) {
+  product-recommendations .resource-list__carousel .resource-list__slide {
+    --mobile-card-size: 45cqw;
+  }
 }
 
 /* Exactly four across at desktop. Horizon's slide width is
