@@ -291,7 +291,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 /* Scope: the grouped PLP card and every stock Horizon card (search, homepage
    carousels, PDP recommendations) so all of them read the same. */
 @layer components {
-  :is(collection-component, .section-resource-list) .product-card {
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card {
     --spy-card-band-pad: 8px;      /* .color-swatches padding-top */
     --spy-card-labels-min: 48px;   /* .tile-labels-container min-height [3rem] */
     --spy-card-label-h: 20.16px;   /* .swatches-label line box */
@@ -306,7 +306,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    item's floor — a long name then pushes this box wider than its track, and since
    the gallery is `aspect-ratio: 1/1`, wider also means taller. Zeroing the floor
    keeps the box on its track and lets the title ellipsis do its job. */
-:is(collection-component, .section-resource-list) .product-card__content {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card__content {
   text-align: center;
   background-color: #fff;
   min-width: 0;
@@ -319,12 +319,12 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 /* Below 750px Horizon pads the card 8px and pulls the gallery back out by the same
    8px, so the photo spans the whole grid track. That is what the source does too —
    image edge-to-edge, text inset — so the pair is left alone. */
-:is(collection-component, .section-resource-list) .product-card .card-gallery {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .card-gallery {
   padding: 10% !important;
   aspect-ratio: 1 / 1;
 }
 
-:is(collection-component, .section-resource-list) .product-card .card-gallery img {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .card-gallery img {
   width: 100% !important;
   height: 100% !important;
   object-fit: contain !important;
@@ -334,18 +334,27 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* Fill the square box down the slideshow chain so wide photos sit vertically
    centred instead of top-anchored — object-fit then centres them. */
-:is(collection-component, .section-resource-list) .product-card .card-gallery slideshow-component,
-:is(collection-component, .section-resource-list) .product-card .card-gallery slideshow-slides,
-:is(collection-component, .section-resource-list) .product-card .card-gallery slideshow-slide,
-:is(collection-component, .section-resource-list) .product-card .card-gallery .product-media-container {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .card-gallery slideshow-component,
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .card-gallery slideshow-slides,
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .card-gallery slideshow-slide,
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .card-gallery .product-media-container {
   height: 100% !important;
+}
+
+/* One slide per view. Horizon leaves the slide flex-basis auto, so a product with
+   several gallery images lets them share the track: the photo shrank to 178px inside
+   a 260px box and the next frame peeked in at the card edge. */
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .card-gallery slideshow-slide,
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .card-gallery .product-media-container {
+  flex: 0 0 100% !important;
+  width: 100% !important;
 }
 
 /* Hover zone: image + Quick View + label band, like the source's .image-container.
    The text band sits outside it on purpose, so hovering the title or price leaves
    the labels alone. Positioned, because the card-wide link and the swatch row
    both anchor to it. */
-:is(collection-component, .section-resource-list) .product-card .spy-image-container {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-image-container {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -364,13 +373,13 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* Width only — the source sets `width: 2.5rem` and lets height follow the art, so a
    tall badge (pictohappyboost) draws 40x61 rather than being squashed into a square. */
-:is(collection-component, .section-resource-list) .product-card .spy-tech-badge img {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-tech-badge img {
   width: 40px;
   height: auto;
 }
 
 @media screen and (max-width: 543.98px) {
-  :is(collection-component, .section-resource-list) .product-card .spy-tech-badge {
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-tech-badge {
     transform: scale(0.7);
   }
 }
@@ -379,12 +388,12 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    Pulled up over the image bottom so it costs the card no height at rest:
    -43.2px [-2.7rem] top, 8px [0.5rem] bottom, 16px [mx-3] each side, which
    nets to -0.4px in the flow. Revealed on whole-card hover, 769px up only. */
-:is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-quick-view-btn {
   display: none;
 }
 
 @media screen and (min-width: 769px) {
-  :is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn {
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-quick-view-btn {
     display: block;
     position: relative;
     z-index: 2;
@@ -405,14 +414,14 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
   }
 
-  :is(collection-component, .section-resource-list) .product-card:hover .spy-quick-view-btn {
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card:hover .spy-quick-view-btn {
     opacity: 1;
     visibility: visible;
   }
 
   /* Source's .btn-outline-primary:hover — fills in. :active matches it, with no
      press displacement. */
-  :is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn:is(:hover, :active) {
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-quick-view-btn:is(:hover, :active) {
     background: var(--color-spy-orange);
     color: #fff;
   }
@@ -420,7 +429,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   /* Source ring: box-shadow 0 0 0 .2rem rgba(primary,.5) with the outline off.
      Deviation on purpose — the source never reveals this button on focus, so a
      keyboard user lands on an invisible control. WCAG 2.1 AA needs it visible. */
-  :is(collection-component, .section-resource-list) .product-card .spy-quick-view-btn:focus-visible {
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-quick-view-btn:focus-visible {
     outline: 0;
     box-shadow: 0 0 0 3.2px color-mix(in srgb, var(--color-spy-orange) 50%, transparent);
     opacity: 1;
@@ -436,7 +445,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    Bottom alignment is what keeps titles in line: with a badge the stack runs
    to 50.94px and overflows the 48px minimum, so a badged card sits 2.94px
    lower than its neighbour. The source does exactly this — don't "fix" it. */
-:is(collection-component, .section-resource-list) .product-card .spy-color-swatches {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-color-swatches {
   position: relative;
   display: flex;
   justify-content: center;
@@ -446,7 +455,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* No transition: the source's labels snap off (transition-duration 0s) while only the
    thumbnail row fades in over .3s. The swap reads as a cut, not a cross-fade. */
-:is(collection-component, .section-resource-list) .product-card .spy-tile-labels {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-tile-labels {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -458,20 +467,20 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* Badge slot collapses to nothing when the card earns no badge, so the label
    alone bottoms out against the 48px minimum. */
-:is(collection-component, .section-resource-list) .product-card .spy-product-badge {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-product-badge {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 0;
 }
 
-:is(collection-component, .section-resource-list) .product-card .spy-product-badge:empty {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-product-badge:empty {
   display: none;
 }
 
 /* Source .product-tile-label: 13px [.8125em] / 17.6px [1.1rem], bold, square,
    padding .2rem .8rem 0, and it never wraps. */
-:is(collection-component, .section-resource-list) .product-card .spy-badge-pill {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-badge-pill {
   padding: 3.2px 12.8px 0 !important;
   border-radius: 0 !important;
   font-size: 13px !important;
@@ -484,7 +493,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* Source .swatches-label: 14.4px [.9rem] / 20.16px, regular, #6c757d.
    Holds either the colourway count or its name — the source uses both. */
-:is(collection-component, .section-resource-list) .product-card :is(.spy-color-count, .spy-variant-name) {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card :is(.spy-color-count, .spy-variant-name) {
   display: block;
   min-height: var(--spy-card-label-h);
   color: var(--color-spy-label) !important;
@@ -497,7 +506,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    Absolute on top of the label stack, 8px down from the band's top edge, so
    it lands exactly where the labels start. 48px [3rem] squares on #f8f8f8,
    8px [.5rem] apart, with a 32px [2rem] arrow to the rest. */
-:is(collection-component, .section-resource-list) .product-card .spy-swatches {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-swatches {
   position: absolute;
   top: var(--spy-card-band-pad);
   left: 0;
@@ -512,7 +521,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   transition: opacity 0.3s ease;
 }
 
-:is(collection-component, .section-resource-list) .product-card .spy-swatches__item {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-swatches__item {
   flex: 0 0 auto;
   width: 48px;
   height: 48px;
@@ -527,13 +536,13 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   text-decoration: none;
 }
 
-:is(collection-component, .section-resource-list) .product-card .spy-swatches__item img {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-swatches__item img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-:is(collection-component, .section-resource-list) .product-card .spy-swatches__more {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-swatches__more {
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
@@ -541,7 +550,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   text-decoration: none;
 }
 
-:is(collection-component, .section-resource-list) .product-card .spy-swatches__more svg {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-swatches__more svg {
   width: 32px;
   height: 10px;
 }
@@ -549,7 +558,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 /* Source hides thumbs 3 and 4 below its md breakpoint (`d-none d-md-block`),
    so a narrow card shows two and the arrow. */
 @media screen and (max-width: 768.98px) {
-  :is(collection-component, .section-resource-list)
+  :is(collection-component, .section-resource-list, .block-resource-list)
     .product-card
     .spy-swatches__item:nth-of-type(n + 3) {
     display: none;
@@ -558,12 +567,12 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* The swap: hovering the image band fades the labels out and the thumbs in.
    Scoped to .spy-image-container, so the text band is not a trigger. */
-:is(collection-component, .section-resource-list) .product-card .spy-image-container:hover .spy-swatches {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-image-container:hover .spy-swatches {
   opacity: 1;
   visibility: visible;
 }
 
-:is(collection-component, .section-resource-list) .product-card .spy-image-container:hover .spy-tile-labels {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-image-container:hover .spy-tile-labels {
   opacity: 0;
   visibility: hidden;
 }
@@ -581,13 +590,13 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    The thumb row can't be absolute here (its nearest positioned ancestor is the
    card, not the band), so it is pulled back over the pair with a negative
    margin and zero height instead. Same pixels, different mechanism. */
-:is(collection-component, .section-resource-list) .product-card:not(:has(.spy-color-swatches)) {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card:not(:has(.spy-color-swatches)) {
   /* Reserved slot heights, kept here so the pull distances below stay readable */
   --spy-flat-badge-slot: 35.84px;
   --spy-flat-badge-slot-filled: 38.78px;
 }
 
-:is(collection-component, .section-resource-list)
+:is(collection-component, .section-resource-list, .block-resource-list)
   .product-card:not(:has(.spy-color-swatches))
   .spy-product-badge {
   display: flex;
@@ -599,13 +608,13 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* An empty slot still has to hold its height here — there is no band minimum
    behind it — so the :empty collapse used by the grouped card is undone. */
-:is(collection-component, .section-resource-list)
+:is(collection-component, .section-resource-list, .block-resource-list)
   .product-card:not(:has(.spy-color-swatches))
   .spy-product-badge:empty {
   display: flex;
 }
 
-:is(collection-component, .section-resource-list)
+:is(collection-component, .section-resource-list, .block-resource-list)
   .product-card:not(:has(.spy-color-swatches))
   .spy-product-badge:has(.spy-badge-pill) {
   min-height: var(--spy-flat-badge-slot-filled);
@@ -614,7 +623,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* `position: relative` + a negative `top`, not a negative margin: the margin
    would pull the title and price up with it, since the row is still in flow. */
-:is(collection-component, .section-resource-list)
+:is(collection-component, .section-resource-list, .block-resource-list)
   .product-card:not(:has(.spy-color-swatches))
   .spy-swatches {
   position: relative;
@@ -626,7 +635,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   top: calc(-1 * (var(--spy-flat-badge-slot) + 20.16px - 8px));
 }
 
-:is(collection-component, .section-resource-list)
+:is(collection-component, .section-resource-list, .block-resource-list)
   .product-card:not(:has(.spy-color-swatches)):has(.spy-badge-pill)
   .spy-swatches {
   top: calc(-1 * (var(--spy-flat-badge-slot-filled) + 20.16px - 8px));
@@ -636,14 +645,14 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    scope to, and Horizon's full-card `.product-card__link` overlay sits above
    the text anyway, so a region test could never fire. Hovering the title
    therefore also reveals the thumbs — the one behaviour this path can't match. */
-:is(collection-component, .section-resource-list)
+:is(collection-component, .section-resource-list, .block-resource-list)
   .product-card:not(:has(.spy-color-swatches)):hover
   .spy-swatches {
   opacity: 1;
   visibility: visible;
 }
 
-:is(collection-component, .section-resource-list)
+:is(collection-component, .section-resource-list, .block-resource-list)
   .product-card:not(:has(.spy-color-swatches)):hover
   :is(.spy-color-count, .spy-variant-name, .spy-product-badge) {
   opacity: 0;
@@ -654,10 +663,10 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    path has no band, so its parts carry the inset themselves — without it a long title
    ellipsises 16px too late and the label runs wider than the source's. !important
    because the shared title rule zeroes that block's padding. */
-:is(collection-component, .section-resource-list)
+:is(collection-component, .section-resource-list, .block-resource-list)
   .product-card:not(:has(.spy-color-swatches))
   :is(.spy-product-badge, .spy-color-count, .spy-variant-name, product-price),
-:is(collection-component, .section-resource-list)
+:is(collection-component, .section-resource-list, .block-resource-list)
   .product-card:not(:has(.spy-color-swatches))
   [ref="productTitleLink"]
   .text-block {
@@ -666,10 +675,10 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* Horizon already insets the whole card below 750px, same as the band path drops its own */
 @media screen and (max-width: 749.98px) {
-  :is(collection-component, .section-resource-list)
+  :is(collection-component, .section-resource-list, .block-resource-list)
     .product-card:not(:has(.spy-color-swatches))
     :is(.spy-product-badge, .spy-color-count, .spy-variant-name, product-price),
-  :is(collection-component, .section-resource-list)
+  :is(collection-component, .section-resource-list, .block-resource-list)
     .product-card:not(:has(.spy-color-swatches))
     [ref="productTitleLink"]
     .text-block {
@@ -679,21 +688,21 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* Title and price stand in for the text band: the 10px that would be its top
    padding goes on the title, and the bottom padding goes on the card. */
-:is(collection-component, .section-resource-list)
+:is(collection-component, .section-resource-list, .block-resource-list)
   .product-card:not(:has(.spy-color-swatches))
   [ref="productTitleLink"]
   .text-block {
   margin-top: 10px;
 }
 
-:is(collection-component, .section-resource-list)
+:is(collection-component, .section-resource-list, .block-resource-list)
   .product-card:not(:has(.spy-color-swatches))
   .product-card__content {
   padding-bottom: 32px; /* 24 + 8 ratings */
 }
 
 @media screen and (min-width: 769px) {
-  :is(collection-component, .section-resource-list)
+  :is(collection-component, .section-resource-list, .block-resource-list)
     .product-card:not(:has(.spy-color-swatches))
     .product-card__content {
     padding-bottom: 40px; /* 24 + 8 ratings + 8 compare */
@@ -709,7 +718,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 /* `width: 100%` + `min-width: 0` give the band a definite width to truncate against,
    the way the source's `.tile-body` does. Without them a long title sizes this box
    off its own max-content and drags the whole card with it. */
-:is(collection-component, .section-resource-list) .product-card .spy-tile-body {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-tile-body {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -719,7 +728,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 }
 
 @media screen and (min-width: 769px) {
-  :is(collection-component, .section-resource-list) .product-card .spy-tile-body {
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-tile-body {
     padding-bottom: 40px; /* 24 + 8 ratings + 8 compare */
   }
 }
@@ -727,15 +736,15 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 /* Horizon already insets the whole card 8px below 750px, which is the inset the
    source puts on the text band — so drop ours there rather than doubling it. */
 @media screen and (max-width: 749.98px) {
-  :is(collection-component, .section-resource-list) .product-card .spy-tile-body {
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-tile-body {
     padding-inline: 0;
   }
 }
 
 /* Title: heavy uppercase, one line, ellipsis. Source line-height comes from
    .pdp-link (1.2), not from the body's 1.4. */
-:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"],
-:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] p {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card [ref="productTitleLink"],
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card [ref="productTitleLink"] p {
   color: var(--color-spy-ink);
   font-size: 19.2px !important;
   font-weight: 900 !important;
@@ -749,7 +758,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* The block the ellipsis measures against: full width of the band, no min-content
    floor of its own, so the nowrap <p> inside truncates instead of stretching out. */
-:is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] .text-block {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card [ref="productTitleLink"] .text-block {
   margin-bottom: 8px;
   padding: 0 !important;
   width: 100%;
@@ -760,41 +769,41 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 /* Price: 15px / 21px, 600, #565656. The amount itself is bold (source .sales),
    and the compare-at is #ababab with 4px [.25rem] to its right. The source
    styles a percentage chip but hides it on the card, so none is printed. */
-:is(collection-component, .section-resource-list) .product-card :is(.price, .spy-price) {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card :is(.price, .spy-price) {
   color: #565656 !important;
   font-size: 15px !important;
   font-weight: 600 !important;
   line-height: 21px !important;
 }
 
-:is(collection-component, .section-resource-list) .product-card .spy-price__sales {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-price__sales {
   font-weight: 700;
 }
 
 /* Stock Horizon prints the amount in `.price` with no label around it, so that
    span is the source's `.sales` — bold. The compare-at stays at 600. */
-:is(collection-component, .section-resource-list) .product-card .price {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .price {
   font-weight: 700 !important;
 }
 
-:is(collection-component, .section-resource-list) .product-card .compare-at-price {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .compare-at-price {
   font-weight: 600 !important;
 }
 
-:is(collection-component, .section-resource-list) .product-card .spy-price__compare {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-price__compare {
   margin-right: 4px;
   color: #ababab;
   text-decoration: line-through;
 }
 
 /* Stock Horizon price parts, so search and carousel cards read the same */
-:is(collection-component, .section-resource-list) .product-card .compare-at-price {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .compare-at-price {
   margin-right: 4px;
   color: #ababab;
   text-decoration: line-through;
 }
 
-:is(collection-component, .section-resource-list) .product-card :is(.price .percentage, .price__badge-sale, .badge--sale) {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card :is(.price .percentage, .price__badge-sale, .badge--sale) {
   display: none !important;
 }
 
@@ -803,27 +812,27 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    991.98, then 1em. Line heights follow the body's 1.4 for the price and
    .pdp-link's 1.2 for the name. */
 @media screen and (min-width: 769px) and (max-width: 991.98px) {
-  :is(collection-component, .section-resource-list) .product-card :is(.price, .spy-price) {
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card :is(.price, .spy-price) {
     font-size: 17px !important;
     line-height: 23.8px !important;
   }
 }
 
 @media screen and (max-width: 768.98px) {
-  :is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"],
-  :is(collection-component, .section-resource-list) .product-card [ref="productTitleLink"] p {
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card [ref="productTitleLink"],
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card [ref="productTitleLink"] p {
     font-size: 16px !important;
     line-height: 19.2px !important;
   }
 
-  :is(collection-component, .section-resource-list) .product-card :is(.price, .spy-price) {
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card :is(.price, .spy-price) {
     font-size: 16px !important;
     line-height: 22.4px !important;
   }
 }
 
 /* Drop Horizon's quick-add bag and slideshow arrows — not on the SPY card */
-:is(collection-component, .section-resource-list)
+:is(collection-component, .section-resource-list, .block-resource-list)
   .product-card
   :is(quick-add-component, .quick-add, slideshow-arrows, .slideshow-control) {
   display: none !important;
@@ -831,19 +840,19 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* Stock Horizon swatch pickers get the same reveal as the SPY thumb row */
 @media screen and (min-width: 769px) {
-  :is(collection-component, .section-resource-list) .product-card swatches-variant-picker-component {
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card swatches-variant-picker-component {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s ease;
   }
 
-  :is(collection-component, .section-resource-list) .product-card:hover swatches-variant-picker-component {
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card:hover swatches-variant-picker-component {
     opacity: 1;
     visibility: visible;
   }
 }
 
-:is(collection-component, .section-resource-list) .product-card .swatch--variant-image {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .swatch--variant-image {
   width: 48px !important;
   height: 48px !important;
   border-radius: 0 !important;
@@ -853,7 +862,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   background-position: center;
 }
 
-:is(collection-component, .section-resource-list) .product-card .hidden-swatches__count::before {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .hidden-swatches__count::before {
   content: "\2192";
   font-size: 16px;
   line-height: 1;
@@ -2853,21 +2862,21 @@ header-component .menu-list__link[href*="/blogs/journal"] {
    and that pad is also the divisor for slide width. So retune IT rather than padding the
    parent — a second inset would shrink every slide by 2*56/columns. Source inset is the
    page padding minus its 15px bleed. */
-product-recommendations .resource-list__carousel slideshow-slides {
+product-recommendations .resource-list__carousel slideshow-slides:not(.card-gallery *) {
   padding-inline: 1px;
 }
 @media (min-width: 769px) {
-  product-recommendations .resource-list__carousel slideshow-slides {
+  product-recommendations .resource-list__carousel slideshow-slides:not(.card-gallery *) {
     padding-inline: 17px;
   }
 }
 @media (min-width: 1200px) {
-  product-recommendations .resource-list__carousel slideshow-slides {
+  product-recommendations .resource-list__carousel slideshow-slides:not(.card-gallery *) {
     padding-inline: 41px;
   }
 }
 @media (min-width: 1800px) {
-  product-recommendations .resource-list__carousel slideshow-slides {
+  product-recommendations .resource-list__carousel slideshow-slides:not(.card-gallery *) {
     padding-inline: 57px;
   }
 }
@@ -2882,12 +2891,19 @@ product-recommendations .product-card .text-block {
    visible text is 18/28 weight 500 in #242424 — measured on 8 cards, both rows.
    !important because the shared card rule carries it too, and the extra
    `.section-resource-list` outranks that rule's `:is()` prefix. */
-product-recommendations .section-resource-list .product-card :is(.price, .spy-price),
-product-recommendations .section-resource-list .product-card .price__regular {
+product-recommendations :is(.section-resource-list, .block-resource-list) .product-card :is(.price, .spy-price),
+product-recommendations :is(.section-resource-list, .block-resource-list) .product-card .price__regular {
   font-size: 1.125rem !important;
   line-height: 1.75rem !important;
   font-weight: 500 !important;
   color: var(--color-spy-price-reco) !important;
+}
+
+/* Same difference-blend trap as the PDP gallery pair: the blend lives on
+   slideshow-arrows, not the button, so the white disc came out black and the
+   orange chevron blue. */
+product-recommendations slideshow-arrows {
+  mix-blend-mode: normal !important;
 }
 
 /* Arrows: 35px white disc, orange glyph, same shadow as the gallery pair */

@@ -493,7 +493,13 @@
                     "padding-inline-end": 0
                   },
                   "blocks": {
-                    "product_card_gallery": {
+                    "spy_tech_badge_upsell": {
+                      "type": "spy-tech-badge",
+                      "name": "Tech Badge",
+                      "settings": {},
+                      "blocks": {}
+                    },
+                    "product_card_gallery_upsell": {
                       "type": "_product-card-gallery",
                       "name": "t:names.product_card_media",
                       "settings": {
@@ -510,11 +516,37 @@
                       },
                       "blocks": {}
                     },
-                    "product_title": {
+                    "spy_quick_view_btn_upsell": {
+                      "type": "spy-quick-view-btn",
+                      "name": "Quick View Button",
+                      "settings": {},
+                      "blocks": {}
+                    },
+                    "spy_product_badge_upsell": {
+                      "type": "spy-product-badge",
+                      "name": "Product Badge",
+                      "settings": {},
+                      "blocks": {}
+                    },
+                    "spy_color_count_upsell": {
+                      "type": "spy-color-count",
+                      "name": "Color Count",
+                      "settings": {},
+                      "blocks": {}
+                    },
+                    "spy_swatches_upsell": {
+                      "type": "spy-swatches",
+                      "name": "Color Preview",
+                      "settings": {
+                        "display": "card"
+                      },
+                      "blocks": {}
+                    },
+                    "product_title_upsell": {
                       "type": "product-title",
                       "name": "t:names.product_title",
                       "settings": {
-                        "title_source": "product",
+                        "title_source": "group",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "center",
@@ -536,17 +568,17 @@
                       },
                       "blocks": {}
                     },
-                    "price": {
+                    "price_upsell": {
                       "type": "price",
                       "settings": {
                         "show_sale_price_first": true,
                         "show_installments": false,
                         "show_tax_info": false,
-                        "type_preset": "h6",
+                        "type_preset": "custom",
                         "width": "100%",
                         "alignment": "center",
                         "font": "var(--font-body--family)",
-                        "font_size": "1rem",
+                        "font_size": "0.875rem",
                         "line_height": "normal",
                         "letter_spacing": "normal",
                         "case": "none",
@@ -560,9 +592,14 @@
                     }
                   },
                   "block_order": [
-                    "product_card_gallery",
-                    "product_title",
-                    "price"
+                    "spy_tech_badge_upsell",
+                    "product_card_gallery_upsell",
+                    "spy_quick_view_btn_upsell",
+                    "spy_product_badge_upsell",
+                    "spy_color_count_upsell",
+                    "spy_swatches_upsell",
+                    "product_title_upsell",
+                    "price_upsell"
                   ]
                 }
               },
