@@ -3549,7 +3549,9 @@ product-recommendations .slideshow-control svg {
    outranks it without resorting to !important. */
 .yotpo-pictures-widget .yotpo-slider-title.yotpo-slider-title {
   font-family: var(--font-heading--family) !important;
-  font-weight: 700 !important;
+  /* the heading family IS the bold face, so 700 would synthesise a second bold
+     and widen the word by 12px; the source keeps it at 400 */
+  font-weight: 400 !important;
   font-size: 35px !important;
   color: #191919 !important;
 }
