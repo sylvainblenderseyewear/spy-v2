@@ -173,22 +173,22 @@
     },
     {
       "type": "header",
-      "content": "Star rating",
-      "visible_if": "{{ block.settings.embed == 'yotpo_bottomline' }}"
+      "content": "Yotpo product ID",
+      "visible_if": "{{ block.settings.embed == 'yotpo_bottomline' or block.settings.embed == 'yotpo_reviews' }}"
     },
     {
       "type": "text",
       "id": "legacy_id_metafield",
-      "label": "Legacy review ID metafield",
-      "info": "Reviews are keyed to the old site's product IDs, not Shopify's. Point this at the metafield holding it, e.g. spec.legacy_id. Empty uses the Shopify product ID.",
-      "visible_if": "{{ block.settings.embed == 'yotpo_bottomline' }}"
+      "label": "Product ID metafield",
+      "info": "Yotpo keys reviews to its own product IDs, not Shopify's. Point this at the metafield that holds it: yotpo.product_id. Leave empty and the widget sends the Shopify ID, which matches nothing.",
+      "visible_if": "{{ block.settings.embed == 'yotpo_bottomline' or block.settings.embed == 'yotpo_reviews' }}"
     },
     {
       "type": "text",
       "id": "legacy_id_preview",
       "label": "Preview with a fixed ID",
-      "info": "Overrides everything so the design can be checked before the migration fills the metafield. Clear it before launch.",
-      "visible_if": "{{ block.settings.embed == 'yotpo_bottomline' }}"
+      "info": "Overrides everything so the design can be checked on a product that has no mapped ID yet. Clear it before launch.",
+      "visible_if": "{{ block.settings.embed == 'yotpo_bottomline' or block.settings.embed == 'yotpo_reviews' }}"
     },
     {
       "type": "header",

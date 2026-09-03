@@ -15,7 +15,8 @@
 | Buy Buttons | Horizon `buy-buttons` block | — |
 | Trust Badges | `blocks/spy-trust-badges.liquid` | Section settings (Layer 2): badge text 1–5, icon 1–5 |
 | Technical Information | `blocks/spy-spec-table.liquid` | All `spec.*` fields + `goggle.*` + `helmet.*` (conditionally) |
-| Yotpo Reviews | `blocks/spy-yotpo-reviews.liquid` | Yotpo app widget via `snippets/yotpo-reviews.liquid` |
+| Star Rating | `blocks/spy-app-embed.liquid` (`embed: yotpo_bottomline`) | `yotpo.product_id` via the block's `legacy_id_metafield` setting. Yotpo keys reviews to its own IDs, never the Shopify product ID — see `audit/yotpo-product-map.csv`. |
+| Yotpo Reviews | `blocks/spy-yotpo-reviews.liquid` | Yotpo app block child; script loaded by `snippets/spy-yotpo-loader.liquid`. The app block resolves the Shopify product itself, so it cannot use `yotpo.product_id` — swap it for a classic `yotpo-main-widget` embed to map it. |
 | Feature Banner | `sections/spy-feature-banner.liquid` | `pdp.feature_banner_desktop`, `pdp.feature_banner_mobile` |
 | Lifestyle Carousel | `sections/spy-lifestyle-carousel.liquid` | `pdp.feature_carousel` (list.file_reference) — no images means the section does not render |
 

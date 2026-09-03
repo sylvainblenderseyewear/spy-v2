@@ -1,0 +1,416 @@
+shopify_id,title,handle,type,model,tier,yotpo_key,key_source,yotpo_name,yotpo_group,reviews,score,other_keys
+10120602157296,Discord Black,spy-discord-black-sunglasses,Sunglasses,DISCORD,A-direct,673119038863,sku,Discord,DISCORD,686,4.67,
+10120602091760,Discord Black Matte,spy-discord-black-matte-sunglasses,Sunglasses,DISCORD,A-direct,673119374280,sku,Discord,DISCORD,686,4.67,
+10120600453360,Discord Matte Black,spy-discord-matte-black-sunglasses,Sunglasses,DISCORD,A-direct,1800000000003,sku,Discord,DISCORD,686,4.67,6700000000180
+10120602452208,Discord Matte Black Leopard,spy-discord-matte-black-leopard-sunglasses,Sunglasses,DISCORD,A-direct,673119152713,sku,Discord,DISCORD,686,4.67,
+10120602058992,Discord Orange Crypto,spy-discord-orange-crypto-sunglasses,Sunglasses,DISCORD,A-direct,1800000000048,sku,Discord,DISCORD,686,4.67,
+10120602419440,Discord SOSI Matte Black,spy-discord-sosi-matte-black-sunglasses,Sunglasses,DISCORD,A-direct,6800000000021,sku,Discord,DISCORD,686,4.67,6800000000022
+10120602321136,Discord Soft Matte Black,spy-discord-soft-matte-black-sunglasses,Sunglasses,DISCORD,A-direct,673119973863,sku,Discord,DISCORD,686,4.67,673119973864
+10120602353904,Discord Vintage Tortoise,spy-discord-vintage-tortoise-sunglasses,Sunglasses,DISCORD,A-direct,673119623863,sku,Discord,DISCORD,686,4.67,
+10120603664624,Cyrus Black,spy-cyrus-black-sunglasses,Sunglasses,CYRUS,A-direct,673180038863,sku,Cyrus,CYRUS,551,4.69,
+10120603894000,Cyrus Black Soft Matte,spy-cyrus-black-soft-matte-sunglasses,Sunglasses,CYRUS,A-direct,673180973864,sku,Cyrus,CYRUS,551,4.69,
+10120603369712,Cyrus Matte Black,spy-cyrus-matte-black-sunglasses,Sunglasses,CYRUS,A-direct,1800000000059,sku,Cyrus,CYRUS,551,4.69,1800000000060;6700000000181
+10120604254448,Cyrus Soft Camo Matte Tortoise,spy-cyrus-soft-camo-matte-tortoise-sunglasses,Sunglasses,CYRUS,A-direct,673180438863,sku,Cyrus,CYRUS,551,4.69,
+10120604516592,Cyrus Soft Matte Black,spy-cyrus-soft-matte-black-sunglasses,Sunglasses,CYRUS,A-direct,673180973821,sku,Cyrus,CYRUS,551,4.69,
+10120603566320,Cyrus Soft Matte Dark Gray,spy-cyrus-soft-matte-dark-gray-sunglasses,Sunglasses,CYRUS,A-direct,6700000000074,sku,Cyrus,CYRUS,551,4.69,
+10120603631856,Cyrus Whitewall,spy-cyrus-whitewall-sunglasses,Sunglasses,CYRUS,A-direct,673180209365,sku,Cyrus,CYRUS,551,4.69,
+10120599896304,Foundation Matte Black,spy-foundation-matte-black-sunglasses,Motocross Goggles,FOUNDATION,A-direct,323506374096,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120598913264,Foundation Matte Blue,spy-foundation-matte-blue-sunglasses,Motocross Goggles,FOUNDATION,A-direct,3200000000034,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120600027376,Foundation Matte Gold,spy-foundation-matte-gold-sunglasses,Motocross Goggles,FOUNDATION,A-direct,3200000000036,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120601796848,Foundation Matte Smoke,spy-foundation-matte-smoke-sunglasses,Motocross Goggles,FOUNDATION,A-direct,3200000000035,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120601927920,Foundation Matte USA,spy-foundation-matte-usa-sunglasses,Motocross Goggles,FOUNDATION,A-direct,3200000000033,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120599044336,Foundation Maze Blue,spy-foundation-maze-blue-sunglasses,Motocross Goggles,FOUNDATION,A-direct,323506980096,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120607531248,Foundation Plus Classic Orange,spy-foundation-plus-classic-orange-sunglasses,Motocross Goggles,FOUNDATION PLUS,A-direct,323506979856,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120607432944,Foundation Plus Matte Black,spy-foundation-plus-matte-black-sunglasses,Motocross Goggles,FOUNDATION PLUS,A-direct,3200000000031,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120607629552,Foundation Plus Matte Green,spy-foundation-plus-matte-green-sunglasses,Motocross Goggles,FOUNDATION PLUS,A-direct,3200000000032,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120607367408,Foundation Plus Matte White,spy-foundation-plus-matte-white-sunglasses,Motocross Goggles,FOUNDATION PLUS,A-direct,3200000000030,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120607236336,Foundation Plus Reverb Alabaster,spy-foundation-plus-reverb-alabaster-sunglasses,Motocross Goggles,FOUNDATION PLUS,A-direct,3200000000020,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120607400176,Foundation Plus Reverb Blue,spy-foundation-plus-reverb-blue-sunglasses,Motocross Goggles,FOUNDATION PLUS,A-direct,3200000000019,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120607138032,Foundation Plus Reverb Olive,spy-foundation-plus-reverb-olive-sunglasses,Motocross Goggles,FOUNDATION PLUS,A-direct,3200000000018,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120607334640,Foundation Plus Reverb Onyx,spy-foundation-plus-reverb-onyx-sunglasses,Motocross Goggles,FOUNDATION PLUS,A-direct,3200000000017,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120607301872,Foundation Plus SPY + Slayco,spy-foundation-plus-spy-slayco-sunglasses,Motocross Goggles,FOUNDATION PLUS,A-direct,3200000000029,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120607203568,Foundation Plus Slayco Purple Viper Black,spy-foundation-plus-slayco-purple-viper-black-sunglasses,Motocross Goggles,FOUNDATION PLUS,A-direct,1700000000002,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120599699696,Foundation Reverb Contrast,spy-foundation-reverb-contrast-sunglasses,Motocross Goggles,FOUNDATION,A-direct,3200000000021,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120597602544,Foundation Reverb Tan,spy-foundation-reverb-tan-sunglasses,Motocross Goggles,FOUNDATION,A-direct,3200000000022,sku,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120609595632,Helm Black,spy-helm-black-sunglasses,Sunglasses,HELM,A-direct,673015038863,sku,Helm,HELM,358,4.71,
+10120609562864,Helm Black Matte,spy-helm-black-matte-sunglasses,Sunglasses,HELM,A-direct,673015374861,sku,Helm,HELM,358,4.71,
+10120609628400,Helm Black Soft Matte,spy-helm-black-soft-matte-sunglasses,Sunglasses,HELM,A-direct,673015973863,sku,Helm,HELM,358,4.71,673015973864
+10120609956080,Helm Matte Black,spy-helm-matte-black-sunglasses,Sunglasses,HELM,A-direct,1800000000029,sku,Helm,HELM,358,4.71,
+10120610021616,Helm Soft Matte Dark Gray,spy-helm-soft-matte-dark-gray-sunglasses,Sunglasses,HELM,A-direct,6700000000070,sku,Helm,HELM,358,4.71,
+10120597176560,Logan Black,spy-logan-black-sunglasses,Sunglasses,LOGAN,A-direct,670939038863,sku,Logan,LOGAN,288,4.66,
+10120601174256,Logan Black Soft Matte,spy-logan-black-soft-matte-sunglasses,Sunglasses,LOGAN,A-direct,670939973863,sku,Logan,LOGAN,288,4.66,670939973864
+10120599470320,Logan Clear Smoke,spy-logan-clear-smoke-sunglasses,Sunglasses,LOGAN,A-direct,670939204352,sku,Logan,LOGAN,288,4.66,
+10120598094064,Logan Matte Black ANSI RX,spy-logan-matte-black-ansi-rx-sunglasses,Sunglasses,LOGAN,A-direct,670939243863,sku,Logan,LOGAN,288,4.66,
+10120605171952,Rebar ANSI Matte Black,spy-rebar-ansi-matte-black-sunglasses,Sunglasses,REBAR ANSI,A-direct,6700000000164,sku,Rebar,REBAR ANSI,250,4.4,6700000000165;6700000000169;6700000000191
+10120604975344,Rebar ANSI Matte Gunmetal,spy-rebar-ansi-matte-gunmetal-sunglasses,Sunglasses,REBAR ANSI,A-direct,6700000000167,sku,Rebar,REBAR ANSI,250,4.4,
+10120618049776,General Soft Matte Black,spy-general-soft-matte-black-sunglasses,Sunglasses,GENERAL,A-direct,673118973863,sku,General,GENERAL,238,4.63,673118973864
+10120604025072,Montana Black Soft Matte,spy-montana-black-soft-matte-sunglasses,Sunglasses,MONTANA,A-direct,673407973417,sku,Montana,MONTANA,215,4.61,673407973863;673407973864
+10120597504240,Rocky Matte Black,spy-rocky-matte-black-sunglasses,Sunglasses,ROCKY,A-direct,673248374864,sku,Rocky,ROCKY,214,4.66,
+10120600649968,Rocky Soft Matte Black,spy-rocky-soft-matte-black-sunglasses,Sunglasses,ROCKY,A-direct,673248973861,sku,Rocky,ROCKY,214,4.66,
+10120601207024,Flynn Black Matte,spy-flynn-black-matte-sunglasses,Sunglasses,FLYNN,A-direct,670323769863,sku,Flynn,FLYNN,192,4.82,
+10120599732464,Flynn Soft Matte Black,spy-flynn-soft-matte-black-sunglasses,Sunglasses,FLYNN,A-direct,6700000000076,sku,Flynn,FLYNN,192,4.82,670323973317
+10120610185456,Dirk SOSI Black,spy-dirk-sosi-black-sunglasses,Sunglasses,DIRK,A-direct,6800000000012,sku,Dirk,DIRK,177,4.62,
+10120610382064,Dirk Soft Matte Black,spy-dirk-soft-matte-black-sunglasses,Sunglasses,DIRK,A-direct,672052973863,sku,Dirk,DIRK,177,4.62,672052973864
+10120618180848,Czar Soft Matte Black,spy-czar-soft-matte-black-sunglasses,Sunglasses,CZAR,A-direct,673526973863,sku,Czar,CZAR,143,4.75,
+10120616083696,Bounty Black ANSI RX,spy-bounty-black-ansi-rx-sunglasses,Sunglasses,BOUNTY,A-direct,673017242863,sku,Bounty,BOUNTY,121,4.72,
+10120616313072,Bounty Matte Black ANSI RX,spy-bounty-matte-black-ansi-rx-sunglasses,Sunglasses,BOUNTY,A-direct,673017243094,sku,Bounty,BOUNTY,121,4.72,673017243863
+10120604582128,Flynn 5050 25th Anniv Black Gold Matte,spy-flynn-5050-25th-anniv-black-gold-matte-sunglasses,Sunglasses,FLYNN 5050,A-direct,6700000000047,sku,Flynn 50/50,FLYNN 5050,117,4.67,
+10120604877040,Flynn 5050 Black Soft Matte,spy-flynn-5050-black-soft-matte-sunglasses,Sunglasses,FLYNN 5050,A-direct,6700000000044,sku,Flynn 50/50,FLYNN 5050,117,4.67,
+10120604549360,Flynn 5050 Crystal Matte,spy-flynn-5050-crystal-matte-sunglasses,Sunglasses,FLYNN 5050,A-direct,6700000000045,sku,Flynn 50/50,FLYNN 5050,117,4.67,
+10120604811504,Flynn 5050 Matte Black,spy-flynn-5050-matte-black-sunglasses,Sunglasses,FLYNN 5050,A-direct,6700000000182,sku,Flynn 50/50,FLYNN 5050,117,4.67,
+10120604745968,Flynn 5050 Soft Matte Black,spy-flynn-5050-soft-matte-black-sunglasses,Sunglasses,FLYNN 5050,A-direct,6700000000077,sku,Flynn 50/50,FLYNN 5050,117,4.67,
+10120605139184,Flynn 5050 Teal,spy-flynn-5050-teal-sunglasses,Sunglasses,FLYNN 5050,A-direct,6700000000046,sku,Flynn 50/50,FLYNN 5050,117,4.67,
+10120606843120,Woot Race Black Gold,spy-woot-race-black-gold-sunglasses,Motocross Goggles,WOOT RACE,A-direct,3200000000014,sku,Woot Race Mx Goggle,WOOT RACE,108,4.8,
+10120607006960,Woot Race Checkers Red,spy-woot-race-checkers-red-sunglasses,Motocross Goggles,WOOT RACE,A-direct,3200000000012,sku,Woot Race Mx Goggle,WOOT RACE,108,4.8,
+10120606810352,Woot Race Checkers Teal,spy-woot-race-checkers-teal-sunglasses,Motocross Goggles,WOOT RACE,A-direct,3200000000011,sku,Woot Race Mx Goggle,WOOT RACE,108,4.8,
+10120598290672,Woot Race Matte Navy,spy-woot-race-matte-navy-sunglasses,Motocross Goggles,WOOT RACE,A-direct,3200000000039,sku,Woot Race Mx Goggle,WOOT RACE,108,4.8,
+10120598749424,Woot Race Matte Purple,spy-woot-race-matte-purple-sunglasses,Motocross Goggles,WOOT RACE,A-direct,3200000000037,sku,Woot Race Mx Goggle,WOOT RACE,108,4.8,
+10120599798000,Woot Race Matte Red,spy-woot-race-matte-red-sunglasses,Motocross Goggles,WOOT RACE,A-direct,3200000000038,sku,Woot Race Mx Goggle,WOOT RACE,108,4.8,
+10120598585584,Woot Race Reverb Blue,spy-woot-race-reverb-blue-sunglasses,Motocross Goggles,WOOT RACE,A-direct,3200000000026,sku,Woot Race Mx Goggle,WOOT RACE,108,4.8,
+10120599994608,Woot Race Reverb Contrast,spy-woot-race-reverb-contrast-sunglasses,Motocross Goggles,WOOT RACE,A-direct,3200000000023,sku,Woot Race Mx Goggle,WOOT RACE,108,4.8,
+10120597635312,Woot Race Reverb Olive,spy-woot-race-reverb-olive-sunglasses,Motocross Goggles,WOOT RACE,A-direct,3200000000025,sku,Woot Race Mx Goggle,WOOT RACE,108,4.8,
+10120598159600,Woot Race Reverb Onyx,spy-woot-race-reverb-onyx-sunglasses,Motocross Goggles,WOOT RACE,A-direct,3200000000024,sku,Woot Race Mx Goggle,WOOT RACE,108,4.8,
+10120607039728,Woot Race Slice Blue,spy-woot-race-slice-blue-sunglasses,Motocross Goggles,WOOT RACE,A-direct,323346007878,sku,Woot Race Mx Goggle,WOOT RACE,108,4.8,
+10120607170800,Woot Race Slice Red,spy-woot-race-slice-red-sunglasses,Motocross Goggles,WOOT RACE,A-direct,323346987856,sku,Woot Race Mx Goggle,WOOT RACE,108,4.8,
+10120608252144,Hielo Soft Matte Black,spy-hielo-soft-matte-black-sunglasses,Sunglasses,HIELO,A-direct,670375973863,sku,Hielo,HIELO,102,4.67,670375973864
+10120597700848,Fiona Black With Clear,spy-fiona-black-with-clear-sunglasses,Sunglasses,FIONA,A-direct,670299220357,sku,Fiona,FIONA,77,4.9,
+10120600060144,Fiona Femme Fatale,spy-fiona-femme-fatale-sunglasses,Sunglasses,FIONA,A-direct,670299033355,sku,Fiona,FIONA,77,4.9,
+10120601108720,Fiona Mint Chip Fade,spy-fiona-mint-chip-fade-sunglasses,Sunglasses,FIONA,A-direct,670299552355,sku,Fiona,FIONA,77,4.9,
+10120613200112,Foundation Tear Off 50 Pack Clear,spy-foundation-tear-off-50-pack-clear-sunglasses,Motocross Goggles,FOUNDATION TEAR OFF 50 PACK,A-direct,953506000021,sku,Foundation Mx Tear Offs,Foundation Tear Off 50 Pack,75,4.88,
+10120616509680,Sunglass Case Black,spy-sunglass-case-black-sunglasses,Accessories,SUNGLASS CASE,A-direct,973426620708,sku,Sunglass Case - Large,SUNGLASS CASE,74,4.74,
+10120616673520,Sunglass Case Small Black,spy-sunglass-case-small-black-sunglasses,Accessories,SUNGLASS CASE SMALL,A-direct,973426620707,sku,Sunglass Case - Small,SUNGLASS CASE,74,4.74,
+10120605303024,Discord Replacement Lens,spy-discord-replacement-lens-no-colour-reference-sunglasses,Accessories,DISCORD REPLACEMENT LENS,A-direct,983119000350,sku,Discord Replacement Lenses,DISCORD REPLACEMENT LENS,53,4.62,983119000473;983119000864
+10120606449904,Breakaway Black,spy-breakaway-black-sunglasses,Motocross Goggles,BREAKAWAY,A-direct,323291038100,sku,Breakaway Mx Goggle,BREAKAWAY,50,4.56,
+10120606220528,Breakaway Blue,spy-breakaway-blue-sunglasses,Motocross Goggles,BREAKAWAY,A-direct,323291259100,sku,Breakaway Mx Goggle,BREAKAWAY,50,4.56,
+10120606417136,Breakaway Orange,spy-breakaway-orange-sunglasses,Motocross Goggles,BREAKAWAY,A-direct,323291462100,sku,Breakaway Mx Goggle,BREAKAWAY,50,4.56,
+10120606318832,Breakaway Red,spy-breakaway-red-sunglasses,Motocross Goggles,BREAKAWAY,A-direct,323291512100,sku,Breakaway Mx Goggle,BREAKAWAY,50,4.56,
+10120606351600,Breakaway White,spy-breakaway-white-sunglasses,Motocross Goggles,BREAKAWAY,A-direct,323291632100,sku,Breakaway Mx Goggle,BREAKAWAY,50,4.56,
+10120613396720,Dirk Replacement Lens,spy-dirk-replacement-lens-no-colour-reference-sunglasses,Accessories,DIRK REPLACEMENT LENS,A-direct,982052000350,sku,Dirk Replacement Lenses,DIRK REPLACEMENT LENS,47,4.89,982052000473;982052000864
+10120600682736,Cyrus Replacement Lens,spy-cyrus-replacement-lens-no-colour-reference-sunglasses,Accessories,CYRUS REPLACEMENT LENS,A-direct,983180000350,sku,Cyrus Replacement Lenses,CYRUS REPLACEMENT LENS,40,4.5,983180000473;983180000864
+10120597930224,Sunglass Pouch Beyond Control,spy-sunglass-pouch-beyond-control-sunglasses,Accessories,SUNGLASS POUCH,A-direct,9700000000024,sku,Sunglass Pouch,SUNGLASS POUCH,39,4.74,
+10120597405936,Sunglass Pouch Crypto Gray,spy-sunglass-pouch-crypto-gray-sunglasses,Accessories,SUNGLASS POUCH,A-direct,9700000000016,sku,Sunglass Pouch,SUNGLASS POUCH,39,4.74,
+10120598782192,Sunglass Pouch Crypto Orange,spy-sunglass-pouch-crypto-orange-sunglasses,Accessories,SUNGLASS POUCH,A-direct,9700000000017,sku,Sunglass Pouch,SUNGLASS POUCH,39,4.74,
+10120598683888,Sunglass Pouch Pouch Aliens,spy-sunglass-pouch-pouch-aliens-sunglasses,Accessories,SUNGLASS POUCH,A-direct,9700000000022,sku,Sunglass Pouch,SUNGLASS POUCH,39,4.74,
+10120597340400,Sunglass Pouch SPY+ Repeat,spy-sunglass-pouch-spy-repeat-sunglasses,Accessories,SUNGLASS POUCH,A-direct,9700000000020,sku,Sunglass Pouch,SUNGLASS POUCH,39,4.74,
+10120601895152,Sunglass Pouch Taco Tuesday,spy-sunglass-pouch-taco-tuesday-sunglasses,Accessories,SUNGLASS POUCH,A-direct,9700000000021,sku,Sunglass Pouch,SUNGLASS POUCH,39,4.74,
+10120599863536,Sunglass Pouch Tie-Dye,spy-sunglass-pouch-tie-dye-sunglasses,Accessories,SUNGLASS POUCH,A-direct,9700000000023,sku,Sunglass Pouch,SUNGLASS POUCH,39,4.74,
+10120606974192,Woot Black,spy-woot-black-sunglasses,Motocross Goggles,WOOT,A-direct,323346038100,sku,Woot Mx Goggle,Woot Mx Goggle,28,4.54,
+10120607072496,Woot Black Sand,spy-woot-black-sand-sunglasses,Motocross Goggles,WOOT,A-direct,323346837211,sku,Woot Mx Goggle,Woot Mx Goggle,28,4.54,
+10120606908656,Woot Matte Black,spy-woot-matte-black-sunglasses,Motocross Goggles,WOOT,A-direct,3200000000041,sku,Woot Mx Goggle,Woot Mx Goggle,28,4.54,
+10120607105264,Woot Matte USA,spy-woot-matte-usa-sunglasses,Motocross Goggles,WOOT,A-direct,3200000000040,sku,Woot Mx Goggle,Woot Mx Goggle,28,4.54,
+10120606941424,Woot Reverb Tan,spy-woot-reverb-tan-sunglasses,Motocross Goggles,WOOT,A-direct,3200000000028,sku,Woot Mx Goggle,Woot Mx Goggle,28,4.54,
+10120610775280,Foundation Lens Blue,spy-foundation-lens-blue-sunglasses,Motocross Goggles,FOUNDATION LENS,A-direct,993506000729,sku,Foundation Mx Replacement Lens,Foundation Mx Replacement Lens,26,4.81,
+10120610545904,Foundation Lens Clear,spy-foundation-lens-clear-sunglasses,Motocross Goggles,FOUNDATION LENS,A-direct,993506000096,sku,Foundation Mx Replacement Lens,Foundation Mx Replacement Lens,26,4.81,
+10120611037424,Foundation Lens LL Rose Blue Mirror,spy-foundation-lens-ll-rose-blue-mirror-sunglasses,Motocross Goggles,FOUNDATION LENS,A-direct,993506000732,sku,Foundation Mx Replacement Lens,Foundation Mx Replacement Lens,26,4.81,
+10120610873584,Foundation Lens Orange,spy-foundation-lens-orange-sunglasses,Motocross Goggles,FOUNDATION LENS,A-direct,993506000730,sku,Foundation Mx Replacement Lens,Foundation Mx Replacement Lens,26,4.81,
+10120610906352,Foundation Lens Smoke,spy-foundation-lens-smoke-sunglasses,Motocross Goggles,FOUNDATION LENS,A-direct,993506000723,sku,Foundation Mx Replacement Lens,Foundation Mx Replacement Lens,26,4.81,
+10120611135728,Foundation Lens Smoke Dark Blue Mirror,spy-foundation-lens-smoke-dark-blue-mirror-sunglasses,Motocross Goggles,FOUNDATION LENS,A-direct,993506000726,sku,Foundation Mx Replacement Lens,Foundation Mx Replacement Lens,26,4.81,
+10120610709744,Foundation Lens Smoke Red Mirror,spy-foundation-lens-smoke-red-mirror-sunglasses,Motocross Goggles,FOUNDATION LENS,A-direct,993506000724,sku,Foundation Mx Replacement Lens,Foundation Mx Replacement Lens,26,4.81,
+10120610480368,Foundation Lens Smoke Silver Mirror,spy-foundation-lens-smoke-silver-mirror-sunglasses,Motocross Goggles,FOUNDATION LENS,A-direct,993506000597,sku,Foundation Mx Replacement Lens,Foundation Mx Replacement Lens,26,4.81,
+10120610644208,Foundation Lens Yellow,spy-foundation-lens-yellow-sunglasses,Motocross Goggles,FOUNDATION LENS,A-direct,993506000728,sku,Foundation Mx Replacement Lens,Foundation Mx Replacement Lens,26,4.81,
+10120611266800,Rocky Replacement Lens,spy-rocky-replacement-lens-no-colour-reference-sunglasses,Accessories,ROCKY REPLACEMENT LENS,A-direct,983248000473,sku,Rocky Replacement Lenses,ROCKY REPLACEMENT LENS,25,4.32,983248000861;983248000864
+10120618770672,Raider AF Matte Black,spy-raider-af-matte-black-sunglasses,Snow Goggles,RAIDER AF,A-direct,1900000000107,sku,Raider Snow Goggle,RAIDER,24,4.58,
+10120602616048,Mccoy Replacement Lens,spy-mccoy-replacement-lens-no-colour-reference-sunglasses,Accessories,MCCOY REPLACEMENT LENS,A-direct,9800000000002,sku,McCoy Replacement Lenses,MCCOY REPLACEMENT LENS,20,4.2,9800000000003
+10120618737904,Cyrus Gaming Matte Black,spy-cyrus-gaming-matte-black-sunglasses,Eyeglasses,CYRUS GAMING,A-direct,5700000000103,sku,Cyrus Happy Gaming,CYRUS GAMING,17,5.0,
+10120600977648,Replacement Lens Marauder,spy-replacement-lens-marauder-no-colour-reference-sunglasses,Snow Goggles,REPLACEMENT LENS MARAUDER,A-direct,1000000000035,sku,Marauder Replacement Lens,REPLACEMENT LENS MARAUDER,16,3.44,1000000000036
+10120610742512,Discord Gaming Matte Black,spy-discord-gaming-matte-black-sunglasses,Eyeglasses,DISCORD GAMING,A-direct,5700000000104,sku,Discord Happy Gaming,DISCORD GAMING,15,4.93,
+10120610316528,Discord Gaming Matte White,spy-discord-gaming-matte-white-sunglasses,Eyeglasses,DISCORD GAMING,A-direct,5700000000124,sku,Discord Happy Gaming,DISCORD GAMING,15,4.93,
+10120605499632,Cyrus Optical 58 Black,spy-cyrus-optical-58-black-sunglasses,Eyeglasses,CYRUS OPTICAL 58,A-direct,5700000000085,sku,Cyrus Optical,CYRUS OPTICAL 60,13,4.69,
+10120605040880,Cyrus Optical 58 Crystal,spy-cyrus-optical-58-crystal-sunglasses,Eyeglasses,CYRUS OPTICAL 58,A-direct,5700000000086,sku,Cyrus Optical,CYRUS OPTICAL 60,13,4.69,
+10120605073648,Cyrus Optical 58 Matte Black,spy-cyrus-optical-58-matte-black-sunglasses,Eyeglasses,CYRUS OPTICAL 58,A-direct,5700000000084,sku,Cyrus Optical,CYRUS OPTICAL 60,13,4.69,
+10120604844272,Cyrus Optical 58 Matte Gray,spy-cyrus-optical-58-matte-gray-sunglasses,Eyeglasses,CYRUS OPTICAL 58,A-direct,5700000000087,sku,Cyrus Optical,CYRUS OPTICAL 60,13,4.69,
+10120604451056,Cyrus Optical 60 Black,spy-cyrus-optical-60-black-sunglasses,Eyeglasses,CYRUS OPTICAL 60,A-direct,5700000000090,sku,Cyrus Optical,CYRUS OPTICAL 60,13,4.69,
+10120604188912,Cyrus Optical 60 Black Matte,spy-cyrus-optical-60-black-matte-sunglasses,Eyeglasses,CYRUS OPTICAL 60,A-direct,5700000000089,sku,Cyrus Optical,CYRUS OPTICAL 60,13,4.69,
+10120604385520,Cyrus Optical 60 Crystal,spy-cyrus-optical-60-crystal-sunglasses,Eyeglasses,CYRUS OPTICAL 60,A-direct,5700000000091,sku,Cyrus Optical,CYRUS OPTICAL 60,13,4.69,
+10120604319984,Cyrus Optical 60 Dark Tort Crystal,spy-cyrus-optical-60-dark-tort-crystal-sunglasses,Eyeglasses,CYRUS OPTICAL 60,A-direct,5700000000093,sku,Cyrus Optical,CYRUS OPTICAL 60,13,4.69,
+10120605008112,Cyrus Optical 60 Matte Gray,spy-cyrus-optical-60-matte-gray-sunglasses,Eyeglasses,CYRUS OPTICAL 60,A-direct,5700000000092,sku,Cyrus Optical,CYRUS OPTICAL 60,13,4.69,
+10120614838512,Weston 54 Black,spy-weston-54-black-sunglasses,Sunglasses,WESTON 54,A-direct,5700000000034,sku,Weston 54,WESTON 54,11,4.64,
+10120614871280,Weston 54 Black Matte,spy-weston-54-black-matte-sunglasses,Sunglasses,WESTON 54,A-direct,573260374000,sku,Weston 54,WESTON 54,11,4.64,
+10120614969584,Weston 54 Crystal,spy-weston-54-crystal-sunglasses,Sunglasses,WESTON 54,A-direct,573260222000,sku,Weston 54,WESTON 54,11,4.64,
+10120614904048,Weston 54 Matte Black Trans Sepia,spy-weston-54-matte-black-trans-sepia-sunglasses,Sunglasses,WESTON 54,A-direct,5700000000052,sku,Weston 54,WESTON 54,11,4.64,
+10120609399024,Weston 56 Black,spy-weston-56-black-sunglasses,Sunglasses,WESTON 56,A-direct,5700000000035,sku,Weston 56,WESTON 54,11,4.64,
+10120609366256,Weston 56 Black Matte,spy-weston-56-black-matte-sunglasses,Sunglasses,WESTON 56,A-direct,573486374000,sku,Weston 56,WESTON 54,11,4.64,
+10120609530096,Weston 56 Dark Tortoise,spy-weston-56-dark-tortoise-sunglasses,Sunglasses,WESTON 56,A-direct,573486075000,sku,Weston 56,WESTON 54,11,4.64,
+10120601305328,Vaughn 54 Black,spy-vaughn-54-black-sunglasses,Sunglasses,VAUGHN 54,A-direct,5700000000037,sku,Vaughn 54,VAUGHN 54,10,4.0,
+10120597438704,Vaughn 54 Matte Black,spy-vaughn-54-matte-black-sunglasses,Sunglasses,VAUGHN 54,A-direct,SRX00031,sku,Vaughn 54,VAUGHN 54,10,4.0,
+10120613429488,Vaughn 56 Black,spy-vaughn-56-black-sunglasses,Sunglasses,VAUGHN 56,A-direct,573488038000,sku,Vaughn 56,VAUGHN 54,10,4.0,
+10120613658864,Vaughn 56 Matte Black,spy-vaughn-56-matte-black-sunglasses,Sunglasses,VAUGHN 56,A-direct,573488374000,sku,Vaughn 56,VAUGHN 54,10,4.0,
+10120597373168,Braden 49 Black Matte,spy-braden-49-black-matte-sunglasses,Sunglasses,BRADEN 49,A-direct,SRX00043,sku,BRADEN,BRADEN,9,4.22,
+10120613626096,Helm Optical 54 Black,spy-helm-optical-54-black-sunglasses,Eyeglasses,HELM OPTICAL 54,A-direct,5700000000077,sku,Helm Optical,HELM OPTICAL 56,9,3.89,
+10120613495024,Helm Optical 54 Black Matte,spy-helm-optical-54-black-matte-sunglasses,Eyeglasses,HELM OPTICAL 54,A-direct,5700000000076,sku,Helm Optical,HELM OPTICAL 56,9,3.89,
+10120613593328,Helm Optical 54 Crystal,spy-helm-optical-54-crystal-sunglasses,Eyeglasses,HELM OPTICAL 54,A-direct,5700000000078,sku,Helm Optical,HELM OPTICAL 56,9,3.89,
+10120613855472,Helm Optical 54 Matte Gray,spy-helm-optical-54-matte-gray-sunglasses,Eyeglasses,HELM OPTICAL 54,A-direct,5700000000079,sku,Helm Optical,HELM OPTICAL 56,9,3.89,
+10120611430640,Helm Optical 56 Black,spy-helm-optical-56-black-sunglasses,Eyeglasses,HELM OPTICAL 56,A-direct,5700000000081,sku,Helm Optical,HELM OPTICAL 56,9,3.89,
+10120611594480,Helm Optical 56 Black Matte,spy-helm-optical-56-black-matte-sunglasses,Eyeglasses,HELM OPTICAL 56,A-direct,5700000000080,sku,Helm Optical,HELM OPTICAL 56,9,3.89,
+10120612086000,Helm Optical 56 Dark Tort Crystal,spy-helm-optical-56-dark-tort-crystal-sunglasses,Eyeglasses,HELM OPTICAL 56,A-direct,5700000000083,sku,Helm Optical,HELM OPTICAL 56,9,3.89,
+10120611397872,Helm Optical 56 Matte Gray,spy-helm-optical-56-matte-gray-sunglasses,Eyeglasses,HELM OPTICAL 56,A-direct,5700000000082,sku,Helm Optical,HELM OPTICAL 56,9,3.89,
+10120617656560,Prawnathan Enamel Pin,spy-prawnathan-enamel-pin-prawnathan-sunglasses,Gear,PRAWNATHAN ENAMEL PIN,A-direct,9700000000028,sku,Enamel Pin,Enamel Pin,9,4.11,
+10120616575216,Brody 58 Black Matte,spy-brody-58-black-matte-sunglasses,Sunglasses,BRODY 58,A-direct,573493374000,sku,Brody 58,BRODY 58,8,4.25,
+10120616476912,Brody 58 Blonde Tortoise Matte,spy-brody-58-blonde-tortoise-matte-sunglasses,Sunglasses,BRODY 58,A-direct,573493415000,sku,Brody 58,BRODY 58,8,4.25,
+10120616345840,Brody 58 Blue Brush Matte,spy-brody-58-blue-brush-matte-sunglasses,Sunglasses,BRODY 58,A-direct,573493429000,sku,Brody 58,BRODY 58,8,4.25,
+10120617885936,Cyrus Screen Matte Black,spy-cyrus-screen-matte-black-sunglasses,Eyeglasses,CYRUS SCREEN,A-direct,5700000000101,sku,Cyrus Happy Screen,CYRUS SCREEN,8,4.5,
+10120606515440,Montana Replacement Lens,spy-montana-replacement-lens-no-colour-reference-sunglasses,Accessories,MONTANA REPLACEMENT LENS,A-direct,9800000000004,sku,Montana Replacement Lenses,MONTANA REPLACEMENT LENS,8,5.0,9800000000005;9800000000006
+10120614052080,Replacement Lens Raider,spy-replacement-lens-raider-no-colour-reference-sunglasses,Snow Goggles,REPLACEMENT LENS RAIDER,A-direct,103074000238,sku,Raider Replacement Lens,Raider Replacement Lens,7,4.71,
+10120617459952,SPY+ Leather Patch Camper Hat Black,spy-spy-leather-patch-camper-hat-black-sunglasses,Gear,SPY+ LEATHER PATCH CAMPER HAT,A-direct,9200000000098,sku,SPY+ Leather Patch Camper Hat,SPY+ Leather Patch Camper Hat,7,4.57,
+10120617394416,Justice 57 Matte Black,spy-justice-57-matte-black-sunglasses,Sunglasses,JUSTICE 57,A-direct,5700000000043,sku,Justice 57,JUSTICE 57,6,4.17,
+10120618279152,Justice 59 Black,spy-justice-59-black-sunglasses,Sunglasses,JUSTICE 59,A-direct,5700000000033,sku,JUSTICE 59,JUSTICE 57,6,4.17,
+10120618213616,Justice 59 Matte Black Matte Black,spy-justice-59-matte-black-matte-black-sunglasses,Sunglasses,JUSTICE 59,A-direct,573472849000,sku,JUSTICE 59,JUSTICE 57,6,4.17,
+10120612708592,Discord Optical 56 Black,spy-discord-optical-56-black-sunglasses,Eyeglasses,DISCORD OPTICAL 56,A-direct,5700000000069,sku,Discord Optical,DISCORD OPTICAL 58,4,3.5,
+10120612249840,Discord Optical 56 Black Matte,spy-discord-optical-56-black-matte-sunglasses,Eyeglasses,DISCORD OPTICAL 56,A-direct,5700000000068,sku,Discord Optical,DISCORD OPTICAL 58,4,3.5,
+10120612380912,Discord Optical 56 Crystal,spy-discord-optical-56-crystal-sunglasses,Eyeglasses,DISCORD OPTICAL 56,A-direct,5700000000070,sku,Discord Optical,DISCORD OPTICAL 58,4,3.5,
+10120612348144,Discord Optical 56 Dark Tort Crystal,spy-discord-optical-56-dark-tort-crystal-sunglasses,Eyeglasses,DISCORD OPTICAL 56,A-direct,5700000000071,sku,Discord Optical,DISCORD OPTICAL 58,4,3.5,
+10120609923312,Discord Optical 58 Black,spy-discord-optical-58-black-sunglasses,Eyeglasses,DISCORD OPTICAL 58,A-direct,5700000000073,sku,Discord Optical,DISCORD OPTICAL 58,4,3.5,
+10120610054384,Discord Optical 58 Black Matte,spy-discord-optical-58-black-matte-sunglasses,Eyeglasses,DISCORD OPTICAL 58,A-direct,5700000000072,sku,Discord Optical,DISCORD OPTICAL 58,4,3.5,
+10120609792240,Discord Optical 58 Crystal,spy-discord-optical-58-crystal-sunglasses,Eyeglasses,DISCORD OPTICAL 58,A-direct,5700000000074,sku,Discord Optical,DISCORD OPTICAL 58,4,3.5,
+10120610152688,Discord Optical 58 Dark Tort Crystal,spy-discord-optical-58-dark-tort-crystal-sunglasses,Eyeglasses,DISCORD OPTICAL 58,A-direct,5700000000075,sku,Discord Optical,DISCORD OPTICAL 58,4,3.5,
+10120597668080,Drake 54 Black,spy-drake-54-black-sunglasses,Sunglasses,DRAKE 54,A-direct,SRX00083,sku,DRAKE,DRAKE,4,5.0,
+10120618672368,Happy Times Snapback Hat Gray,spy-happy-times-snapback-hat-gray-sunglasses,Gear,HAPPY TIMES SNAPBACK HAT,A-direct,9200000000093,sku,Happy Times Snapback,Happy Times Snapback,4,4.5,
+10120610939120,Hardwin 50 Crystal,spy-hardwin-50-crystal-sunglasses,Sunglasses,HARDWIN 50,A-direct,5700000000118,sku,HARDWIN,HARDWIN 52,4,5.0,
+10120611660016,Hardwin 50 Honey Tort,spy-hardwin-50-honey-tort-sunglasses,Sunglasses,HARDWIN 50,A-direct,5700000000117,sku,HARDWIN,HARDWIN 52,4,5.0,
+10120617361648,Hardwin 52 Honey Tort,spy-hardwin-52-honey-tort-sunglasses,Sunglasses,HARDWIN 52,A-direct,5700000000121,sku,HARDWIN,HARDWIN 52,4,5.0,
+10120615166192,Hotspot Gaming Matte Black,spy-hotspot-gaming-matte-black-sunglasses,Eyeglasses,HOTSPOT GAMING,A-direct,5700000000153,sku,Hot Spot Happy Gaming,HOTSPOT GAMING,4,5.0,
+10120618017008,Bewilder Screen Matte Gunmetal,spy-bewilder-screen-matte-gunmetal-sunglasses,Eyeglasses,BEWILDER SCREEN,A-direct,5700000000096,sku,Bewilder Happy Screen,BEWILDER SCREEN,3,5.0,
+10120617820400,Bewilder Screen Matte Translucent Rose,spy-bewilder-screen-matte-translucent-rose-sunglasses,Eyeglasses,BEWILDER SCREEN,A-direct,5700000000097,sku,Bewilder Happy Screen,BEWILDER SCREEN,3,5.0,
+10120612905200,Oslind 48 Black,spy-oslind-48-black-sunglasses,Sunglasses,OSLIND 48,A-direct,5700000000143,sku,OSLIND,OSLIND 50,3,5.0,
+10120613036272,Oslind 48 Java,spy-oslind-48-java-sunglasses,Sunglasses,OSLIND 48,A-direct,5700000000147,sku,OSLIND,OSLIND 50,3,5.0,
+10120613134576,Oslind 48 Matte Black,spy-oslind-48-matte-black-sunglasses,Sunglasses,OSLIND 48,A-direct,5700000000144,sku,OSLIND,OSLIND 50,3,5.0,
+10120613462256,Oslind 50 Black,spy-oslind-50-black-sunglasses,Sunglasses,OSLIND 50,A-direct,5700000000148,sku,OSLIND,OSLIND 50,3,5.0,
+10120613363952,Oslind 50 Matte Black,spy-oslind-50-matte-black-sunglasses,Sunglasses,OSLIND 50,A-direct,5700000000149,sku,OSLIND,OSLIND 50,3,5.0,
+10120606187760,Breakaway Clear,spy-breakaway-clear-sunglasses,Motocross Goggles,BREAKAWAY,A-direct,053291183001,sku,Breakaway Tear Offs,,2,5.0,103291000094
+10120612675824,Crossway Gaming Matte Black,spy-crossway-gaming-matte-black-sunglasses,Eyeglasses,CROSSWAY GAMING,A-direct,5700000000105,sku,Crossway Happy Gaming,Crossway Happy Gaming,2,5.0,
+10120617591024,Crossway Screen Matte Black,spy-crossway-screen-matte-black-sunglasses,Eyeglasses,CROSSWAY SCREEN,A-direct,5700000000094,sku,Crossway Happy Screen,Crossway Happy Screen,2,3.0,
+10120617754864,Crossway Screen Translucent Light Blue,spy-crossway-screen-translucent-light-blue-sunglasses,Eyeglasses,CROSSWAY SCREEN,A-direct,5700000000095,sku,Crossway Happy Screen,Crossway Happy Screen,2,3.0,
+10120600355056,Crusher JR Black Matte,spy-crusher-jr-black-matte-sunglasses,Snow Goggles,CRUSHER JR,A-direct,313523374185,sku,Crusher Jr Snow Goggle,CRUSHER JR,2,5.0,
+10120614215920,Kaden 50 Crystal,spy-kaden-50-crystal-sunglasses,Sunglasses,KADEN 50,A-direct,5700000000109,sku,KADEN,KADEN,2,5.0,
+10120613986544,Kaden 50 Honey Tort,spy-kaden-50-honey-tort-sunglasses,Sunglasses,KADEN 50,A-direct,5700000000110,sku,KADEN,KADEN,2,5.0,
+10120615952624,Kaden 52 Crystal,spy-kaden-52-crystal-sunglasses,Sunglasses,KADEN 52,A-direct,5700000000113,sku,KADEN,KADEN,2,5.0,
+10120615821552,Kaden 52 Honey Tort,spy-kaden-52-honey-tort-sunglasses,Sunglasses,KADEN 52,A-direct,5700000000114,sku,KADEN,KADEN,2,5.0,
+10120616444144,Hotspot Screen Matte Black,spy-hotspot-screen-matte-black-sunglasses,Eyeglasses,HOTSPOT SCREEN,A-direct,5700000000154,sku,Hot Spot Happy Screen,HOTSPOT SCREEN,1,4.0,
+10120618901744,Boundless Gaming Matte Black,spy-boundless-gaming-matte-black-sunglasses,Eyeglasses,BOUNDLESS GAMING,A-direct,5700000000106,sku,Boundless Happy Gaming,,0,0,
+10120616706288,Boundless Screen Black,spy-boundless-screen-black-sunglasses,Eyeglasses,BOUNDLESS SCREEN,A-direct,5700000000098,sku,Boundless Happy Screen,,0,0,
+10120616542448,Boundless Screen Matte Crystal,spy-boundless-screen-matte-crystal-sunglasses,Eyeglasses,BOUNDLESS SCREEN,A-direct,5700000000100,sku,Boundless Happy Screen,,0,0,
+10120616968432,Boundless Screen Peach Tort,spy-boundless-screen-peach-tort-sunglasses,Eyeglasses,BOUNDLESS SCREEN,A-direct,5700000000099,sku,Boundless Happy Screen,,0,0,
+10120615330032,Crossway Optical 56 Black,spy-crossway-optical-56-black-sunglasses,Eyeglasses,CROSSWAY OPTICAL 56,A-direct,5700000000125,sku,Crossway Optical,,0,0,
+10120615690480,Crossway Optical 56 Crystal,spy-crossway-optical-56-crystal-sunglasses,Eyeglasses,CROSSWAY OPTICAL 56,A-direct,5700000000127,sku,Crossway Optical,,0,0,
+10120615559408,Crossway Optical 56 Honey Tort,spy-crossway-optical-56-honey-tort-sunglasses,Eyeglasses,CROSSWAY OPTICAL 56,A-direct,5700000000128,sku,Crossway Optical,,0,0,
+10120615657712,Crossway Optical 56 Matte Black,spy-crossway-optical-56-matte-black-sunglasses,Eyeglasses,CROSSWAY OPTICAL 56,A-direct,5700000000126,sku,Crossway Optical,,0,0,
+10120600846576,Crossway Optical 58 Black,spy-crossway-optical-58-black-sunglasses,Eyeglasses,CROSSWAY OPTICAL 58,A-direct,5700000000129,sku,Crossway Optical,,0,0,
+10120600617200,Crossway Optical 58 Crystal,spy-crossway-optical-58-crystal-sunglasses,Eyeglasses,CROSSWAY OPTICAL 58,A-direct,5700000000131,sku,Crossway Optical,,0,0,
+10120601075952,Crossway Optical 58 Honey Tort,spy-crossway-optical-58-honey-tort-sunglasses,Eyeglasses,CROSSWAY OPTICAL 58,A-direct,5700000000132,sku,Crossway Optical,,0,0,
+10120598028528,Crossway Optical 58 Matte Black,spy-crossway-optical-58-matte-black-sunglasses,Eyeglasses,CROSSWAY OPTICAL 58,A-direct,5700000000130,sku,Crossway Optical,,0,0,
+10120615919856,Dax 57 Black Matte,spy-dax-57-black-matte-sunglasses,Sunglasses,DAX 57,A-direct,573496608000,sku,Dax,,0,0,
+10120615985392,Dax 57 Black Navy,spy-dax-57-black-navy-sunglasses,Sunglasses,DAX 57,A-direct,573496675000,sku,Dax,,0,0,
+10120615887088,Dax 57 Black Red,spy-dax-57-black-red-sunglasses,Sunglasses,DAX 57,A-direct,573496621000,sku,Dax,,0,0,
+10120617558256,Foundation CVS Replacement Lens Clear,spy-foundation-cvs-replacement-lens-clear-sunglasses,Motocross Goggles,FOUNDATION CVS REPLACEMENT LENS,A-direct,953506522094,sku,Foundation CVS Replacement Lens,,0,0,
+10120617328880,Foundation Nose Guard Black,spy-foundation-nose-guard-black-sunglasses,Motocross Goggles,FOUNDATION NOSE GUARD,A-direct,953506000837,sku,Foundation Nose Guard,,0,0,
+10120618475760,Hale 56 Matte Black,spy-hale-56-matte-black-sunglasses,Eyeglasses,HALE 56,A-direct,5700000000041,sku,Hale 56,,0,0,
+10120614510832,Hale 58 Black Clear Gunmetal,spy-hale-58-black-clear-gunmetal-sunglasses,Sunglasses,HALE 58,A-direct,5700000000010,sku,Hale,,0,0,
+10120614314224,Hale 58 Black Matte,spy-hale-58-black-matte-sunglasses,Sunglasses,HALE 58,A-direct,5700000000009,sku,Hale,,0,0,
+10120614379760,Hale 58 Black Tortoise Matte,spy-hale-58-black-tortoise-matte-sunglasses,Sunglasses,HALE 58,A-direct,5700000000011,sku,Hale,,0,0,
+10120607564016,Interconnection Tee Black,spy-interconnection-tee-black-sunglasses,Gear,INTERCONNECTION TEE,A-direct,9600000000352,sku,Interconnection Tee,,0,0,9600000000353;9600000000354;9600000000355
+10120611004656,Stellular Tee White,spy-stellular-tee-white-sunglasses,Gear,STELLULAR TEE,A-direct,9600000000346,sku,Stellular Tee,,0,0,9600000000347;9600000000348
+10120616149232,Warren 56 Black Marble Matte,spy-warren-56-black-marble-matte-sunglasses,Sunglasses,WARREN 56,A-direct,573494459000,sku,Warren,,0,0,
+10120616247536,Warren 56 Black Matte,spy-warren-56-black-matte-sunglasses,Sunglasses,WARREN 56,A-direct,573494407000,sku,Warren,,0,0,
+10120615854320,Warren 56 Dark Navy Matte,spy-warren-56-dark-navy-matte-sunglasses,Sunglasses,WARREN 56,A-direct,573494411000,sku,Warren,,0,0,
+10120600781040,Women's Good Fortune Hoodie Black,spy-women-s-good-fortune-hoodie-black-sunglasses,Gear,WOMEN'S GOOD FORTUNE HOODIE,A-direct,9600000000322,sku,Women's Good Fortune Hoodie,,0,0,9600000000324;9600000000325;9600000000323
+10120611332336,Cyrus 5050 Optical 58 Black Brushed Bronze,spy-cyrus-5050-optical-58-black-brushed-bronze-sunglasses,Eyeglasses,CYRUS 5050 OPTICAL 58,E-pid,120718,sfcc_pid,CYRUS,CYRUS,551,4.69,171236;41874
+10120611627248,Cyrus 5050 Optical 58 Crystal Smoke Matte Dark Gunmetal,spy-cyrus-5050-optical-58-crystal-smoke-matte-dark-gunmetal-sunglasses,Eyeglasses,CYRUS 5050 OPTICAL 58,E-pid,120718,sfcc_pid,CYRUS,CYRUS,551,4.69,171236;41874
+10120611168496,Cyrus 5050 Optical 58 Honey Tort Brushed Bronze,spy-cyrus-5050-optical-58-honey-tort-brushed-bronze-sunglasses,Eyeglasses,CYRUS 5050 OPTICAL 58,E-pid,120718,sfcc_pid,CYRUS,CYRUS,551,4.69,171236;41874
+10120611365104,Cyrus 5050 Optical 58 Matte Black Matte Dark Gunmetal,spy-cyrus-5050-optical-58-matte-black-matte-dark-gunmetal-sunglasses,Eyeglasses,CYRUS 5050 OPTICAL 58,E-pid,120718,sfcc_pid,CYRUS,CYRUS,551,4.69,171236;41874
+10120612479216,Cyrus 5050 Optical 60 Black Brushed Bronze,spy-cyrus-5050-optical-60-black-brushed-bronze-sunglasses,Eyeglasses,CYRUS 5050 OPTICAL 60,E-pid,120718,sfcc_pid,CYRUS,CYRUS,551,4.69,171236;41874
+10120613069040,Cyrus 5050 Optical 60 Crystal Smoke Matte Dark Gunmetal,spy-cyrus-5050-optical-60-crystal-smoke-matte-dark-gunmetal-sunglasses,Eyeglasses,CYRUS 5050 OPTICAL 60,E-pid,120718,sfcc_pid,CYRUS,CYRUS,551,4.69,171236;41874
+10120612970736,Cyrus 5050 Optical 60 Honey Tort Brushed Bronze,spy-cyrus-5050-optical-60-honey-tort-brushed-bronze-sunglasses,Eyeglasses,CYRUS 5050 OPTICAL 60,E-pid,120718,sfcc_pid,CYRUS,CYRUS,551,4.69,171236;41874
+10120612544752,Cyrus 5050 Optical 60 Matte Black Matte Dark Gunmetal,spy-cyrus-5050-optical-60-matte-black-matte-dark-gunmetal-sunglasses,Eyeglasses,CYRUS 5050 OPTICAL 60,E-pid,120718,sfcc_pid,CYRUS,CYRUS,551,4.69,171236;41874
+10120599666928,Marauder AF Black RF,spy-marauder-af-black-rf-sunglasses,Snow Goggles,MARAUDER AF,E-pid,36615,sfcc_pid,MARAUDER,MARAUDER,76,4.17,
+10120601469168,Marauder AF Everblack,spy-marauder-af-everblack-sunglasses,Snow Goggles,MARAUDER AF,E-pid,36615,sfcc_pid,MARAUDER,MARAUDER,76,4.17,
+10120618967280,Marauder Elite AF Matte White,spy-marauder-elite-af-matte-white-sunglasses,Snow Goggles,MARAUDER ELITE AF,E-pid,36615,sfcc_pid,MARAUDER,MARAUDER,76,4.17,
+10120600715504,Marauder Everblack,spy-marauder-everblack-sunglasses,Snow Goggles,MARAUDER,E-pid,36615,sfcc_pid,MARAUDER,MARAUDER,76,4.17,
+10120609038576,Marauder SE AF Creamsicle,spy-marauder-se-af-creamsicle-sunglasses,Snow Goggles,MARAUDER SE AF,E-pid,36615,sfcc_pid,MARAUDER,MARAUDER,76,4.17,
+10120609071344,Marauder SE AF Everwhite,spy-marauder-se-af-everwhite-sunglasses,Snow Goggles,MARAUDER SE AF,E-pid,36615,sfcc_pid,MARAUDER,MARAUDER,76,4.17,
+10120609104112,Marauder SE AF Lavender,spy-marauder-se-af-lavender-sunglasses,Snow Goggles,MARAUDER SE AF,E-pid,36615,sfcc_pid,MARAUDER,MARAUDER,76,4.17,
+10120613822704,Bewilder Optical 53 Honey Tort,spy-bewilder-optical-53-honey-tort-sunglasses,Eyeglasses,BEWILDER OPTICAL 53,E-pid,162948,sfcc_pid,BEWILDER,,52,4.69,99764
+10120613888240,Bewilder Optical 53 Translucent Sage Green,spy-bewilder-optical-53-translucent-sage-green-sunglasses,Eyeglasses,BEWILDER OPTICAL 53,E-pid,162948,sfcc_pid,BEWILDER,,52,4.69,99764
+10120615395568,Bewilder Optical 55 Translucent Sage Green,spy-bewilder-optical-55-translucent-sage-green-sunglasses,Eyeglasses,BEWILDER OPTICAL 55,E-pid,162948,sfcc_pid,BEWILDER,,52,4.69,99764
+10120615100656,Bewilder Optical 55 Translucent Salmon,spy-bewilder-optical-55-translucent-salmon-sunglasses,Eyeglasses,BEWILDER OPTICAL 55,E-pid,162948,sfcc_pid,BEWILDER,,52,4.69,99764
+10120608153840,Boundless Optical 53 Brushed Gray,spy-boundless-optical-53-brushed-gray-sunglasses,Eyeglasses,BOUNDLESS OPTICAL 53,E-pid,162949,sfcc_pid,BOUNDLESS,BOUNDLESS,52,4.73,162950;162958;99763
+10120608383216,Boundless Optical 53 Gloss Peach Pink Tort,spy-boundless-optical-53-gloss-peach-pink-tort-sunglasses,Eyeglasses,BOUNDLESS OPTICAL 53,E-pid,162949,sfcc_pid,BOUNDLESS,BOUNDLESS,52,4.73,162950;162958;99763
+10120608284912,Boundless Optical 53 Soft Translucent Blush,spy-boundless-optical-53-soft-translucent-blush-sunglasses,Eyeglasses,BOUNDLESS OPTICAL 53,E-pid,162949,sfcc_pid,BOUNDLESS,BOUNDLESS,52,4.73,162950;162958;99763
+10120618082544,Boundless Optical 55 Gloss Peach Pink Tort,spy-boundless-optical-55-gloss-peach-pink-tort-sunglasses,Eyeglasses,BOUNDLESS OPTICAL 55,E-pid,162949,sfcc_pid,BOUNDLESS,BOUNDLESS,52,4.73,162950;162958;99763
+10120599404784,Bowery Black,spy-bowery-black-sunglasses,Sunglasses,BOWERY,E-pid,267071,sfcc_pid,BOWERY,,45,4.87,143810;267070
+10120599601392,Bowery Gloss Black,spy-bowery-gloss-black-sunglasses,Sunglasses,BOWERY,E-pid,267071,sfcc_pid,BOWERY,,45,4.87,143810;267070
+10120599535856,Bowery Matte Black,spy-bowery-matte-black-sunglasses,Sunglasses,BOWERY,E-pid,267071,sfcc_pid,BOWERY,,45,4.87,143810;267070
+10120597569776,Cooper Black,spy-cooper-black-sunglasses,Sunglasses,COOPER,E-pid,193429,sfcc_pid,COOPER,,27,4.67,161613
+10120601993456,Cooper Matte Black,spy-cooper-matte-black-sunglasses,Sunglasses,COOPER,E-pid,193429,sfcc_pid,COOPER,,27,4.67,161613
+10120600551664,Cooper Soft Matte Black,spy-cooper-soft-matte-black-sunglasses,Sunglasses,COOPER,E-pid,193429,sfcc_pid,COOPER,,27,4.67,161613
+10120597111024,Cooper XL Matte Black,spy-cooper-xl-matte-black-sunglasses,Sunglasses,COOPER XL,E-pid,202950,sfcc_pid,COOPER XL,,25,4.48,143812
+10120608612592,Replacement Lens Marauder SE,spy-replacement-lens-marauder-se-no-colour-reference-sunglasses,Snow Goggles,REPLACEMENT LENS MARAUDER SE,E-pid,43902,sfcc_pid,REPLACEMENT LENS MARAUDER,REPLACEMENT LENS MARAUDER,16,3.44,
+10120608973040,Overhaul XL Matte Black,spy-overhaul-xl-matte-black-sunglasses,Sunglasses,OVERHAUL XL,E-pid,212608,sfcc_pid,OVERHAUL XL,,12,5.0,195135;212606;212609
+10120608809200,Overhaul XL Matte Gray,spy-overhaul-xl-matte-gray-sunglasses,Sunglasses,OVERHAUL XL,E-pid,212608,sfcc_pid,OVERHAUL XL,,12,5.0,195135;212606;212609
+10120609136880,Overhaul XL Matte Olive,spy-overhaul-xl-matte-olive-sunglasses,Sunglasses,OVERHAUL XL,E-pid,212608,sfcc_pid,OVERHAUL XL,,12,5.0,195135;212606;212609
+10120609235184,Overhaul XL Soft Matte Black,spy-overhaul-xl-soft-matte-black-sunglasses,Sunglasses,OVERHAUL XL,E-pid,212608,sfcc_pid,OVERHAUL XL,,12,5.0,195135;212606;212609
+10120610349296,Rebar SE ANSI Matte Black,spy-rebar-se-ansi-matte-black-sunglasses,Sunglasses,REBAR SE ANSI,E-pid,180796,sfcc_pid,REBAR SE ANSI,,12,4.75,180680;180797;212707
+10120610119920,Rebar SE ANSI Matte Olive,spy-rebar-se-ansi-matte-olive-sunglasses,Sunglasses,REBAR SE ANSI,E-pid,180796,sfcc_pid,REBAR SE ANSI,,12,4.75,180680;180797;212707
+10120610414832,Rebar SE ANSI Matte Sand,spy-rebar-se-ansi-matte-sand-sunglasses,Sunglasses,REBAR SE ANSI,E-pid,180796,sfcc_pid,REBAR SE ANSI,,12,4.75,180680;180797;212707
+10120610611440,Rebar SE ANSI Matte Translucent Gunmetal,spy-rebar-se-ansi-matte-translucent-gunmetal-sunglasses,Sunglasses,REBAR SE ANSI,E-pid,180796,sfcc_pid,REBAR SE ANSI,,12,4.75,180680;180797;212707
+10120609693936,Mainline ANSI ANSI RX Matte Gray,spy-mainline-ansi-ansi-rx-matte-gray-sunglasses,Sunglasses,MAINLINE ANSI,E-pid,257646,sfcc_pid,MAINLINE ANSI,,10,4.8,257546;257647;257648;257649;257650;257651
+10120609431792,Mainline ANSI ANSI RX Matte Sand,spy-mainline-ansi-ansi-rx-matte-sand-sunglasses,Sunglasses,MAINLINE ANSI,E-pid,257646,sfcc_pid,MAINLINE ANSI,,10,4.8,257546;257647;257648;257649;257650;257651
+10120609464560,Mainline ANSI Matte Black ANSI RX,spy-mainline-ansi-matte-black-ansi-rx-sunglasses,Sunglasses,MAINLINE ANSI,E-pid,257646,sfcc_pid,MAINLINE ANSI,,10,4.8,257546;257647;257648;257649;257650;257651
+10120597897456,Cyrus Switch Matte Black,spy-cyrus-switch-matte-black-sunglasses,Sunglasses,CYRUS SWITCH,E-pid,257652,sfcc_pid,CYRUS SWITCH,,8,4.62,257547;257653;257654;257655
+10120598061296,Cyrus Switch Translucent Gunmetal,spy-cyrus-switch-translucent-gunmetal-sunglasses,Sunglasses,CYRUS SWITCH,E-pid,257652,sfcc_pid,CYRUS SWITCH,,8,4.62,257547;257653;257654;257655
+10120601960688,Marauder Elite Eco Matte Black,spy-marauder-elite-eco-matte-black-sunglasses,Snow Goggles,MARAUDER ELITE ECO,E-pid,185519,sfcc_pid,MARAUDER ELITE ECO,,5,3.6,
+10120598716656,Marauder Elite Eco Matte White,spy-marauder-elite-eco-matte-white-sunglasses,Snow Goggles,MARAUDER ELITE ECO,E-pid,185519,sfcc_pid,MARAUDER ELITE ECO,,5,3.6,
+10120600813808,Monolith Speed Black,spy-monolith-speed-black-sunglasses,Sunglasses,MONOLITH SPEED,E-pid,152461,sfcc_pid,MONOLITH SPEED,,5,4.8,152776
+10120597864688,Monolith Speed Blue,spy-monolith-speed-blue-sunglasses,Sunglasses,MONOLITH SPEED,E-pid,152461,sfcc_pid,MONOLITH SPEED,,5,4.8,152776
+10120597471472,Monolith Speed Matte Black,spy-monolith-speed-matte-black-sunglasses,Sunglasses,MONOLITH SPEED,E-pid,152461,sfcc_pid,MONOLITH SPEED,,5,4.8,152776
+10120600125680,Monolith Speed Silver,spy-monolith-speed-silver-sunglasses,Sunglasses,MONOLITH SPEED,E-pid,152461,sfcc_pid,MONOLITH SPEED,,5,4.8,152776
+10120601403632,Monolith Speed White,spy-monolith-speed-white-sunglasses,Sunglasses,MONOLITH SPEED,E-pid,152461,sfcc_pid,MONOLITH SPEED,,5,4.8,152776
+10120605532400,Overhaul ANSI Matte Black,spy-overhaul-ansi-matte-black-sunglasses,Sunglasses,OVERHAUL,E-pid,249301,sfcc_pid,OVERHAUL,,5,5.0,249090;249300;249303;249304
+10120605663472,Overhaul ANSI Matte Gray,spy-overhaul-ansi-matte-gray-sunglasses,Sunglasses,OVERHAUL,E-pid,249301,sfcc_pid,OVERHAUL,,5,5.0,249090;249300;249303;249304
+10120605270256,Overhaul ANSI Matte Steel Blue,spy-overhaul-ansi-matte-steel-blue-sunglasses,Sunglasses,OVERHAUL,E-pid,249301,sfcc_pid,OVERHAUL,,5,5.0,249090;249300;249303;249304
+10120605630704,Overhaul ANSI Soft Matte Black,spy-overhaul-ansi-soft-matte-black-sunglasses,Sunglasses,OVERHAUL,E-pid,249301,sfcc_pid,OVERHAUL,,5,5.0,249090;249300;249303;249304
+10120605401328,Overhaul ANSI Translucent Matte Black,spy-overhaul-ansi-translucent-matte-black-sunglasses,Sunglasses,OVERHAUL,E-pid,249301,sfcc_pid,OVERHAUL,,5,5.0,249090;249300;249303;249304
+10120601567472,Region XL Matte Black,spy-region-xl-matte-black-sunglasses,Sunglasses,REGION XL,E-pid,212516,sfcc_pid,REGION XL,,5,4.4,212406;212511;212514
+10120599240944,Region XL Matte Sand,spy-region-xl-matte-sand-sunglasses,Sunglasses,REGION XL,E-pid,212516,sfcc_pid,REGION XL,,5,4.4,212406;212511;212514
+10120600289520,Region XL Matte Steel Blue,spy-region-xl-matte-steel-blue-sunglasses,Sunglasses,REGION XL,E-pid,212516,sfcc_pid,REGION XL,,5,4.4,212406;212511;212514
+10120601633008,Region XL Soft Matte Black,spy-region-xl-soft-matte-black-sunglasses,Sunglasses,REGION XL,E-pid,212516,sfcc_pid,REGION XL,,5,4.4,212406;212511;212514
+10120600486128,Region XL Translucent Matte Black,spy-region-xl-translucent-matte-black-sunglasses,Sunglasses,REGION XL,E-pid,212516,sfcc_pid,REGION XL,,5,4.4,212406;212511;212514
+10120605892848,Marauder SE Dusty Pink,spy-marauder-se-dusty-pink-sunglasses,Snow Goggles,MARAUDER SE,E-pid,145218,sfcc_pid,MARAUDER SE,,4,3.25,147339;147340;185492;185494;185495;225712
+10120605860080,Marauder SE Everblack,spy-marauder-se-everblack-sunglasses,Snow Goggles,MARAUDER SE,E-pid,145218,sfcc_pid,MARAUDER SE,,4,3.25,147339;147340;185492;185494;185495;225712
+10120605958384,Marauder SE Everwhite,spy-marauder-se-everwhite-sunglasses,Snow Goggles,MARAUDER SE,E-pid,145218,sfcc_pid,MARAUDER SE,,4,3.25,147339;147340;185492;185494;185495;225712
+10120607498480,Region ANSI Matte Black,spy-region-ansi-matte-black-sunglasses,Sunglasses,REGION,E-pid,249292,sfcc_pid,REGION,,4,4.25,249091;249290;249296
+10120607662320,Region ANSI Matte Gray,spy-region-ansi-matte-gray-sunglasses,Sunglasses,REGION,E-pid,249292,sfcc_pid,REGION,,4,4.25,249091;249290;249296
+10120607695088,Region ANSI Matte Olive,spy-region-ansi-matte-olive-sunglasses,Sunglasses,REGION,E-pid,249292,sfcc_pid,REGION,,4,4.25,249091;249290;249296
+10120607596784,Region ANSI Matte Sand,spy-region-ansi-matte-sand-sunglasses,Sunglasses,REGION,E-pid,249292,sfcc_pid,REGION,,4,4.25,249091;249290;249296
+10120607465712,Region ANSI Soft Matte Black,spy-region-ansi-soft-matte-black-sunglasses,Sunglasses,REGION,E-pid,249292,sfcc_pid,REGION,,4,4.25,249091;249290;249296
+10120611725552,Super Flynn Matte Black,spy-super-flynn-matte-black-sunglasses,Sunglasses,SUPER FLYNN,E-pid,212405,sfcc_pid,SUPER FLYNN,,2,5.0,
+10120612118768,Super Flynn Matte Olive Green,spy-super-flynn-matte-olive-green-sunglasses,Sunglasses,SUPER FLYNN,E-pid,212405,sfcc_pid,SUPER FLYNN,,2,5.0,
+10120611856624,Super Flynn Matte Purple,spy-super-flynn-matte-purple-sunglasses,Sunglasses,SUPER FLYNN,E-pid,212405,sfcc_pid,SUPER FLYNN,,2,5.0,
+10120612217072,Super Flynn Matte Sand,spy-super-flynn-matte-sand-sunglasses,Sunglasses,SUPER FLYNN,E-pid,212405,sfcc_pid,SUPER FLYNN,,2,5.0,
+10120611889392,Super Flynn Translucent Matte Black,spy-super-flynn-translucent-matte-black-sunglasses,Sunglasses,SUPER FLYNN,E-pid,212405,sfcc_pid,SUPER FLYNN,,2,5.0,
+10120618442992,Helm Tech Side Shields Unfinished Satin Black,spy-helm-tech-side-shields-unfinished-satin-black-sunglasses,Accessories,HELM TECH SIDE SHIELDS,E-pid,232322,sfcc_pid,HELM TECH SIDE SHIELDS,,1,5.0,
+10120606154992,Piper Black,spy-piper-black-sunglasses,Sunglasses,PIPER,E-pid,143809,sfcc_pid,PIPER,,1,5.0,163389;163390
+10120606384368,Piper Bronze Fade,spy-piper-bronze-fade-sunglasses,Sunglasses,PIPER,E-pid,143809,sfcc_pid,PIPER,,1,5.0,163389;163390
+10120606286064,Piper Matte Black,spy-piper-matte-black-sunglasses,Sunglasses,PIPER,E-pid,143809,sfcc_pid,PIPER,,1,5.0,163389;163390
+10120617165040,Replacement Lens Marauder Elite,spy-replacement-lens-marauder-elite-no-colour-reference-sunglasses,Snow Goggles,REPLACEMENT LENS MARAUDER ELITE,E-pid,159727,sfcc_pid,REPLACEMENT LENS MARAUDER ELITE,,1,5.0,
+10120611463408,Monolith Gaming Matte Black,spy-monolith-gaming-matte-black-sunglasses,Eyeglasses,MONOLITH GAMING,E-pid,105661,sfcc_pid,MONOLITH GAMING,,0,0,
+10120611528944,Neutron MIPS Grey,spy-neutron-mips-grey-sunglasses,Snow Helmets,NEUTRON MIPS,E-pid,234847,sfcc_pid,NEUTRON MIPS,,0,0,
+10120611823856,Neutron MIPS Matte Black,spy-neutron-mips-matte-black-sunglasses,Snow Helmets,NEUTRON MIPS,E-pid,234847,sfcc_pid,NEUTRON MIPS,,0,0,
+10120611496176,Neutron MIPS Tan,spy-neutron-mips-tan-sunglasses,Snow Helmets,NEUTRON MIPS,E-pid,234847,sfcc_pid,NEUTRON MIPS,,0,0,
+10120610676976,Renley 56 Crystal Smoke,spy-renley-56-crystal-smoke-sunglasses,Sunglasses,RENLEY 56,E-pid,192010,sfcc_pid,RENLEY 56,,0,0,
+10120601764080,Tarmac Brown Stripe Tort,spy-tarmac-brown-stripe-tort-sunglasses,Sunglasses,TARMAC,E-pid,266666,sfcc_pid,TARMAC,,0,0,
+10120599503088,Tarmac Soft Matte Black,spy-tarmac-soft-matte-black-sunglasses,Sunglasses,TARMAC,E-pid,266666,sfcc_pid,TARMAC,,0,0,
+10120616739056,Waypoint Everblack,spy-waypoint-everblack-sunglasses,Snow Goggles,WAYPOINT,E-pid,225603,sfcc_pid,WAYPOINT,,0,0,
+10120602583280,Discord Gloss Black,spy-discord-gloss-black-sunglasses,Sunglasses,DISCORD,C-group,1800000000003,sibling,Discord,DISCORD,686,4.67,
+10120602190064,Discord Matte Black Flag,spy-discord-matte-black-flag-sunglasses,Sunglasses,DISCORD,C-group,1800000000003,sibling,Discord,DISCORD,686,4.67,
+10120603828464,Cyrus Gloss Black,spy-cyrus-gloss-black-sunglasses,Sunglasses,CYRUS,C-group,1800000000059,sibling,Cyrus,CYRUS,551,4.69,
+10120603730160,Cyrus Honey Tort,spy-cyrus-honey-tort-sunglasses,Sunglasses,CYRUS,C-group,1800000000059,sibling,Cyrus,CYRUS,551,4.69,
+10120603861232,Cyrus Matte Black Flag,spy-cyrus-matte-black-flag-sunglasses,Sunglasses,CYRUS,C-group,1800000000059,sibling,Cyrus,CYRUS,551,4.69,
+10120603533552,Cyrus Matte Olive,spy-cyrus-matte-olive-sunglasses,Sunglasses,CYRUS,C-group,1800000000059,sibling,Cyrus,CYRUS,551,4.69,
+10120603468016,Cyrus Soft Matte Black Fade,spy-cyrus-soft-matte-black-fade-sunglasses,Sunglasses,CYRUS,C-group,1800000000059,sibling,Cyrus,CYRUS,551,4.69,
+10120603435248,Cyrus Soft Matte Olive Fade,spy-cyrus-soft-matte-olive-fade-sunglasses,Sunglasses,CYRUS,C-group,1800000000059,sibling,Cyrus,CYRUS,551,4.69,
+10120603599088,Cyrus Soft Matte Purple Fade,spy-cyrus-soft-matte-purple-fade-sunglasses,Sunglasses,CYRUS,C-group,1800000000059,sibling,Cyrus,CYRUS,551,4.69,
+10120603959536,Cyrus Translucent Gunmetal,spy-cyrus-translucent-gunmetal-sunglasses,Sunglasses,CYRUS,C-group,1800000000059,sibling,Cyrus,CYRUS,551,4.69,
+10120607269104,Foundation Plus Black,spy-foundation-plus-black-sunglasses,Motocross Goggles,FOUNDATION PLUS,C-group,3200000000018,sibling,Foundation Mx Goggle,FOUNDATION PLUS,460,4.92,
+10120601370864,Logan Matte Black Flag,spy-logan-matte-black-flag-sunglasses,Sunglasses,LOGAN,C-group,670939038863,sibling,Logan,LOGAN,288,4.66,
+10120601600240,Logan Matte Black Orange Flames,spy-logan-matte-black-orange-flames-sunglasses,Sunglasses,LOGAN,C-group,670939038863,sibling,Logan,LOGAN,288,4.66,
+10120605368560,Rebar ANSI Matte Army Green,spy-rebar-ansi-matte-army-green-sunglasses,Sunglasses,REBAR ANSI,C-group,6700000000167,sibling,Rebar,REBAR ANSI,250,4.4,
+10120605466864,Rebar ANSI Matte Translucent Gunmetal,spy-rebar-ansi-matte-translucent-gunmetal-sunglasses,Sunglasses,REBAR ANSI,C-group,6700000000167,sibling,Rebar,REBAR ANSI,250,4.4,
+10120605729008,Rebar ANSI Sand Matte,spy-rebar-ansi-sand-matte-sunglasses,Sunglasses,REBAR ANSI,C-group,6700000000167,sibling,Rebar,REBAR ANSI,250,4.4,
+10120604221680,Montana Black/Honey Tort,spy-montana-black-honey-tort-sunglasses,Sunglasses,MONTANA,C-group,673407973417,sibling,Montana,MONTANA,215,4.61,
+10120603992304,Montana Matte Gray/Translucent Black,spy-montana-matte-gray-translucent-black-sunglasses,Sunglasses,MONTANA,C-group,673407973417,sibling,Montana,MONTANA,215,4.61,
+10120604287216,Montana Matte Translucent Black,spy-montana-matte-translucent-black-sunglasses,Sunglasses,MONTANA,C-group,673407973417,sibling,Montana,MONTANA,215,4.61,
+10120604123376,Montana Soft Matte Black,spy-montana-soft-matte-black-sunglasses,Sunglasses,MONTANA,C-group,673407973417,sibling,Montana,MONTANA,215,4.61,
+10120600092912,Rocky Matte Army Green,spy-rocky-matte-army-green-sunglasses,Sunglasses,ROCKY,C-group,673248374864,sibling,Rocky,ROCKY,214,4.66,
+10120598946032,Rocky Matte Black Flag,spy-rocky-matte-black-flag-sunglasses,Sunglasses,ROCKY,C-group,673248374864,sibling,Rocky,ROCKY,214,4.66,
+10120601862384,Rocky Matte Translucent Gunmetal,spy-rocky-matte-translucent-gunmetal-sunglasses,Sunglasses,ROCKY,C-group,673248374864,sibling,Rocky,ROCKY,214,4.66,
+10120597962992,Rocky Sand Matte,spy-rocky-sand-matte-sunglasses,Sunglasses,ROCKY,C-group,673248374864,sibling,Rocky,ROCKY,214,4.66,
+10120601698544,Flynn Black/Honey Tort,spy-flynn-black-honey-tort-sunglasses,Sunglasses,FLYNN,C-group,6700000000076,sibling,Flynn,FLYNN,192,4.82,
+10120610578672,Dirk Matte Black,spy-dirk-matte-black-sunglasses,Sunglasses,DIRK,C-group,6800000000012,sibling,Dirk,DIRK,177,4.62,
+10120604778736,Flynn 5050 Matte Blue Matte White,spy-flynn-5050-matte-blue-matte-white-sunglasses,Sunglasses,FLYNN 5050,C-group,6700000000045,sibling,Flynn 50/50,FLYNN 5050,117,4.67,
+10120604942576,Flynn 5050 Matte Pink Matte Translucent White,spy-flynn-5050-matte-pink-matte-translucent-white-sunglasses,Sunglasses,FLYNN 5050,C-group,6700000000045,sibling,Flynn 50/50,FLYNN 5050,117,4.67,
+10120605204720,Flynn 5050 Matte Purple Matte Black,spy-flynn-5050-matte-purple-matte-black-sunglasses,Sunglasses,FLYNN 5050,C-group,6700000000045,sibling,Flynn 50/50,FLYNN 5050,117,4.67,
+10120597143792,Fiona Honey Tort Black,spy-fiona-honey-tort-black-sunglasses,Sunglasses,FIONA,C-group,670299220357,sibling,Fiona,FIONA,77,4.9,
+10120599765232,Sunglass Pouch Beer,spy-sunglass-pouch-beer-sunglasses,Accessories,SUNGLASS POUCH,C-group,9700000000020,sibling,Sunglass Pouch,SUNGLASS POUCH,39,4.74,
+10120598126832,Sunglass Pouch Bones,spy-sunglass-pouch-bones-sunglasses,Accessories,SUNGLASS POUCH,C-group,9700000000020,sibling,Sunglass Pouch,SUNGLASS POUCH,39,4.74,
+10120601534704,Sunglass Pouch Cali,spy-sunglass-pouch-cali-sunglasses,Accessories,SUNGLASS POUCH,C-group,9700000000020,sibling,Sunglass Pouch,SUNGLASS POUCH,39,4.74,
+10120597274864,Sunglass Pouch Colorado,spy-sunglass-pouch-colorado-sunglasses,Accessories,SUNGLASS POUCH,C-group,9700000000020,sibling,Sunglass Pouch,SUNGLASS POUCH,39,4.74,
+10120599109872,Sunglass Pouch Palms,spy-sunglass-pouch-palms-sunglasses,Accessories,SUNGLASS POUCH,C-group,9700000000020,sibling,Sunglass Pouch,SUNGLASS POUCH,39,4.74,
+10120599372016,Sunglass Pouch Party,spy-sunglass-pouch-party-sunglasses,Accessories,SUNGLASS POUCH,C-group,9700000000020,sibling,Sunglass Pouch,SUNGLASS POUCH,39,4.74,
+10120599273712,Sunglass Pouch Send Noods,spy-sunglass-pouch-send-noods-sunglasses,Accessories,SUNGLASS POUCH,C-group,9700000000020,sibling,Sunglass Pouch,SUNGLASS POUCH,39,4.74,
+10120605106416,Cyrus Optical 58 Gray Fade,spy-cyrus-optical-58-gray-fade-sunglasses,Eyeglasses,CYRUS OPTICAL 58,C-group,5700000000087,sibling,Cyrus Optical,CYRUS OPTICAL 60,13,4.69,
+10120604483824,Cyrus Optical 60 Gray Fade,spy-cyrus-optical-60-gray-fade-sunglasses,Eyeglasses,CYRUS OPTICAL 60,C-group,5700000000089,sibling,Cyrus Optical,CYRUS OPTICAL 60,13,4.69,
+10120614772976,Weston 54 Crystal Smoke,spy-weston-54-crystal-smoke-sunglasses,Sunglasses,WESTON 54,C-group,5700000000034,sibling,Weston 54,WESTON 54,11,4.64,
+10120615035120,Weston 54 Soft Black Matte,spy-weston-54-soft-black-matte-sunglasses,Sunglasses,WESTON 54,C-group,5700000000034,sibling,Weston 54,WESTON 54,11,4.64,
+10120615002352,Weston 54 Translucent Blue,spy-weston-54-translucent-blue-sunglasses,Sunglasses,WESTON 54,C-group,5700000000034,sibling,Weston 54,WESTON 54,11,4.64,
+10120614805744,Weston 54 Translucent Green,spy-weston-54-translucent-green-sunglasses,Sunglasses,WESTON 54,C-group,5700000000034,sibling,Weston 54,WESTON 54,11,4.64,
+10120609333488,Weston 56 Crystal Smoke,spy-weston-56-crystal-smoke-sunglasses,Sunglasses,WESTON 56,C-group,573486374000,sibling,Weston 56,WESTON 54,11,4.64,
+10120609267952,Weston 56 Translucent Blue,spy-weston-56-translucent-blue-sunglasses,Sunglasses,WESTON 56,C-group,573486374000,sibling,Weston 56,WESTON 54,11,4.64,
+10120609726704,Weston 56 Translucent Green,spy-weston-56-translucent-green-sunglasses,Sunglasses,WESTON 56,C-group,573486374000,sibling,Weston 56,WESTON 54,11,4.64,
+10120597733616,Vaughn 54 Crystal Smoke,spy-vaughn-54-crystal-smoke-sunglasses,Sunglasses,VAUGHN 54,C-group,SRX00031,sibling,Vaughn 54,VAUGHN 54,10,4.0,
+10120597307632,Vaughn 54 Matte Blue,spy-vaughn-54-matte-blue-sunglasses,Sunglasses,VAUGHN 54,C-group,SRX00031,sibling,Vaughn 54,VAUGHN 54,10,4.0,
+10120597831920,Vaughn 54 Translucent Brown,spy-vaughn-54-translucent-brown-sunglasses,Sunglasses,VAUGHN 54,C-group,SRX00031,sibling,Vaughn 54,VAUGHN 54,10,4.0,
+10120613527792,Vaughn 56 Crystal Smoke,spy-vaughn-56-crystal-smoke-sunglasses,Sunglasses,VAUGHN 56,C-group,573488038000,sibling,Vaughn 56,VAUGHN 54,10,4.0,
+10120613560560,Vaughn 56 Matte Blue,spy-vaughn-56-matte-blue-sunglasses,Sunglasses,VAUGHN 56,C-group,573488038000,sibling,Vaughn 56,VAUGHN 54,10,4.0,
+10120613331184,Vaughn 56 Translucent Brown,spy-vaughn-56-translucent-brown-sunglasses,Sunglasses,VAUGHN 56,C-group,573488038000,sibling,Vaughn 56,VAUGHN 54,10,4.0,
+10120612413680,Discord Optical 56 Gray Fade,spy-discord-optical-56-gray-fade-sunglasses,Eyeglasses,DISCORD OPTICAL 56,C-group,5700000000068,sibling,Discord Optical,DISCORD OPTICAL 58,4,3.5,
+10120609890544,Discord Optical 58 Gray Fade,spy-discord-optical-58-gray-fade-sunglasses,Eyeglasses,DISCORD OPTICAL 58,C-group,5700000000074,sibling,Discord Optical,DISCORD OPTICAL 58,4,3.5,
+10120598651120,Drake 54 Matte Black,spy-drake-54-matte-black-sunglasses,Sunglasses,DRAKE 54,C-group,SRX00083,sibling,DRAKE,DRAKE,4,5.0,
+10120610971888,Hardwin 50 Black,spy-hardwin-50-black-sunglasses,Sunglasses,HARDWIN 50,C-group,5700000000118,sibling,HARDWIN,HARDWIN 52,4,5.0,
+10120617296112,Hardwin 52 Black,spy-hardwin-52-black-sunglasses,Sunglasses,HARDWIN 52,C-group,5700000000121,sibling,HARDWIN,HARDWIN 52,4,5.0,
+10120615231728,Hotspot Gaming DEL Translucent Purple,spy-hotspot-gaming-del-translucent-purple-sunglasses,Eyeglasses,HOTSPOT GAMING,C-group,5700000000153,sibling,Hot Spot Happy Gaming,HOTSPOT GAMING,4,5.0,
+10120613921008,Kaden 50 Black,spy-kaden-50-black-sunglasses,Sunglasses,KADEN 50,C-group,5700000000110,sibling,KADEN,KADEN,2,5.0,
+10120613003504,Foundation Tear Off 10 Pack Clear,spy-foundation-tear-off-10-pack-clear-sunglasses,Motocross Goggles,FOUNDATION TEAR OFF 10 PACK,B-name-mismatch,953506000001,sku,Foundation Mx Tear Offs,Foundation Tear Off 50 Pack,75,4.88,
+10120613167344,Foundation Tear Off 10 Pack X 2 Clear,spy-foundation-tear-off-10-pack-x-2-clear-sunglasses,Motocross Goggles,FOUNDATION TEAR OFF 10 PACK X 2,B-name-mismatch,953506000228,sku,Foundation Mx Tear Offs,Foundation Tear Off 50 Pack,75,4.88,
+10120613101808,Foundation Tear Off 20 Pack Clear,spy-foundation-tear-off-20-pack-clear-sunglasses,Motocross Goggles,FOUNDATION TEAR OFF 20 PACK,B-name-mismatch,953506000005,sku,Foundation Mx Tear Offs,Foundation Tear Off 50 Pack,75,4.88,
+10120600256752,Helm Replacement Lens,spy-helm-replacement-lens-no-colour-reference-sunglasses,Accessories,HELM REPLACEMENT LENS,B-name-mismatch,983015000350,sku,Helm + Helm 2 Replacement Lenses,Helm + Helm 2 Replacement Lenses,24,4.62,983015000473;983015000864
+10120614117616,Discord Slayco Matte Black,spy-discord-slayco-matte-black-sunglasses,Sunglasses,DISCORD SLAYCO,B-name-mismatch,5700000000123,sku,Discord Happy Gaming,DISCORD GAMING,15,4.93,
+10120617984240,Foundation CVS Clear,spy-foundation-cvs-clear-sunglasses,Motocross Goggles,FOUNDATION CVS,B-name-mismatch,953506522000,sku,Foundation MX Clear View System,,3,5.0,953506000734
+10120618639600,Crusher Black Matte,spy-crusher-black-matte-sunglasses,Snow Goggles,,B-name-mismatch,313522374185,sku,Crusher Snow Goggle,Crusher Snow Goggle,1,4.0,
+10120617787632,Trenton 57 Brushed Gunmetal Matte Tort,spy-trenton-57-brushed-gunmetal-matte-tort-sunglasses,Sunglasses,TRENTON 57,B-name-mismatch,573487397000,sku,Trenton Large,,0,0,
+10120617853168,Trenton 57 Matte Black Matte Black,spy-trenton-57-matte-black-matte-black-sunglasses,Sunglasses,TRENTON 57,B-name-mismatch,573487849000,sku,Trenton Large,,0,0,
+10120616771824,Woot/Woot Race CVS System,spy-woot-woot-race-cvs-system-no-colour-reference-sunglasses,Motocross Goggles,WOOT/WOOT RACE CVS SYSTEM,B-name-mismatch,053346522000,sku,Woot Woot Race Clear View System,,0,0,
+10120608481520,Box Logo SS Tee Black,spy-box-logo-ss-tee-black-sunglasses,Gear,BOX LOGO SS TEE,D-unmatched,,,,,,,
+10120612446448,Canston 54 Matte Black,spy-canston-54-matte-black-sunglasses,Sunglasses,CANSTON 54,D-unmatched,,,,,,,
+10120612577520,Canston 54 Matte Silver,spy-canston-54-matte-silver-sunglasses,Sunglasses,CANSTON 54,D-unmatched,,,,,,,
+10120617230576,Canston 56 Matte Black,spy-canston-56-matte-black-sunglasses,Sunglasses,CANSTON 56,D-unmatched,,,,,,,
+10120617263344,Canston 56 Matte Silver,spy-canston-56-matte-silver-sunglasses,Sunglasses,CANSTON 56,D-unmatched,,,,,,,
+10120614478064,Crusher Elite AF BKL Matte Black,spy-crusher-elite-af-bkl-matte-black-sunglasses,Snow Goggles,CRUSHER ELITE AF BKL,D-unmatched,,,,,,,
+10120614248688,Crusher Elite AF BKL Matte White,spy-crusher-elite-af-bkl-matte-white-sunglasses,Snow Goggles,CRUSHER ELITE AF BKL,D-unmatched,,,,,,,
+10120602747120,Crusher Elite Eco Black,spy-crusher-elite-eco-black-sunglasses,Snow Goggles,CRUSHER ELITE ECO,D-unmatched,,,,,,,
+10120602714352,Crusher Elite Eco Matte Black,spy-crusher-elite-eco-matte-black-sunglasses,Snow Goggles,CRUSHER ELITE ECO,D-unmatched,,,,,,,
+10120602681584,Crusher Elite Eco Matte White,spy-crusher-elite-eco-matte-white-sunglasses,Snow Goggles,CRUSHER ELITE ECO,D-unmatched,,,,,,,
+10120602845424,Crusher Elite Eco White,spy-crusher-elite-eco-white-sunglasses,Snow Goggles,CRUSHER ELITE ECO,D-unmatched,,,,,,,
+10120601239792,Crusher Elite JR Eco Pink Party,spy-crusher-elite-jr-eco-pink-party-sunglasses,Snow Goggles,CRUSHER ELITE JR ECO,D-unmatched,,,,,,,
+10120599142640,Crusher Elite JR Eco Redline,spy-crusher-elite-jr-eco-redline-sunglasses,Snow Goggles,CRUSHER ELITE JR ECO,D-unmatched,,,,,,,
+10120608940272,Fierce Champion Flat Bill Hat Coal,spy-fierce-champion-flat-bill-hat-coal-sunglasses,Gear,FIERCE CHAMPION FLAT BILL HAT,D-unmatched,,,,,,,
+10120604680432,Hardwin Fusion 50 Black Brushed Bronze,spy-hardwin-fusion-50-black-brushed-bronze-sunglasses,Sunglasses,HARDWIN FUSION 50,D-unmatched,,,,,,,
+10120604156144,Hardwin Fusion 50 Crystal Smoke Matte Dark Gunmetal,spy-hardwin-fusion-50-crystal-smoke-matte-dark-gunmetal-sunglasses,Sunglasses,HARDWIN FUSION 50,D-unmatched,,,,,,,
+10120604418288,Hardwin Fusion 50 Honey Tort Brushed Bronze,spy-hardwin-fusion-50-honey-tort-brushed-bronze-sunglasses,Sunglasses,HARDWIN FUSION 50,D-unmatched,,,,,,,
+10120615461104,Hardwin Fusion 52 Honey Tort Brushed Bronze,spy-hardwin-fusion-52-honey-tort-brushed-bronze-sunglasses,Sunglasses,HARDWIN FUSION 52,D-unmatched,,,,,,,
+10120615493872,Hot Spot Optical 56 Crystal,spy-hot-spot-optical-56-crystal-sunglasses,Eyeglasses,HOT SPOT OPTICAL 56,D-unmatched,,,,,,,
+10120615756016,Hot Spot Optical 56 Translucent Brick,spy-hot-spot-optical-56-translucent-brick-sunglasses,Eyeglasses,HOT SPOT OPTICAL 56,D-unmatched,,,,,,,
+10120615723248,Hot Spot Optical 56 Translucent Honey,spy-hot-spot-optical-56-translucent-honey-sunglasses,Eyeglasses,HOT SPOT OPTICAL 56,D-unmatched,,,,,,,
+10120618868976,Hot Spot Optical 58 Translucent Honey,spy-hot-spot-optical-58-translucent-honey-sunglasses,Eyeglasses,HOT SPOT OPTICAL 58,D-unmatched,,,,,,,
+10120612643056,Kaden Fusion 50 Black Brushed Bronze,spy-kaden-fusion-50-black-brushed-bronze-sunglasses,Sunglasses,KADEN FUSION 50,D-unmatched,,,,,,,
+10120612610288,Kaden Fusion 50 Crystal Smoke Matte Dark Gunmetal,spy-kaden-fusion-50-crystal-smoke-matte-dark-gunmetal-sunglasses,Sunglasses,KADEN FUSION 50,D-unmatched,,,,,,,
+10120612872432,Kaden Fusion 50 Honey Tort Fade Brushed Bronze,spy-kaden-fusion-50-honey-tort-fade-brushed-bronze-sunglasses,Sunglasses,KADEN FUSION 50,D-unmatched,,,,,,,
+10120617918704,Kaden Fusion 52 Honey Tort Fade Brushed Bronze,spy-kaden-fusion-52-honey-tort-fade-brushed-bronze-sunglasses,Sunglasses,KADEN FUSION 52,D-unmatched,,,,,,,
+10120618803440,Positive Revolution Dad Hat Black,spy-positive-revolution-dad-hat-black-sunglasses,Gear,POSITIVE REVOLUTION DAD HAT,D-unmatched,,,,,,,
+10120618606832,Positive Revolution Dad Hat Khaki,spy-positive-revolution-dad-hat-khaki-sunglasses,Gear,POSITIVE REVOLUTION DAD HAT,D-unmatched,,,,,,,
+10120614936816,Renley 58 Crystal Smoke,spy-renley-58-crystal-smoke-sunglasses,Sunglasses,RENLEY 58,D-unmatched,,,,,,,
+10120615067888,Renley 58 Matte Black,spy-renley-58-matte-black-sunglasses,Sunglasses,RENLEY 58,D-unmatched,,,,,,,
+10120613265648,Replacement Lens Crusher Elite,spy-replacement-lens-crusher-elite-no-colour-reference-sunglasses,Snow Goggles,REPLACEMENT LENS CRUSHER ELITE,D-unmatched,,,,,,,
+10120613232880,Replacement Lens Megalith,spy-replacement-lens-megalith-no-colour-reference-sunglasses,Snow Goggles,REPLACEMENT LENS MEGALITH,D-unmatched,,,,,,,
+10120598388976,Replacement Lens Waypoint,spy-replacement-lens-waypoint-no-colour-reference-sunglasses,Snow Goggles,REPLACEMENT LENS WAYPOINT,D-unmatched,,,,,,,
+10120609202416,SPY B&B Surf Cap Black,spy-spy-b-b-surf-cap-black-sunglasses,Gear,SPY B&B SURF CAP,D-unmatched,,,,,,,
+10120617197808,SPY Diego Snapback Hat Friar Brown,spy-spy-diego-snapback-hat-friar-brown-sunglasses,Gear,SPY DIEGO SNAPBACK HAT,D-unmatched,,,,,,,
+10120617525488,SPY Diego Snapback Hat Gaslamp Navy,spy-spy-diego-snapback-hat-gaslamp-navy-sunglasses,Gear,SPY DIEGO SNAPBACK HAT,D-unmatched,,,,,,,
+10120615592176,SPY+ Staple Beanie Black,spy-spy-staple-beanie-black-sunglasses,Gear,SPY+ STAPLE BEANIE,D-unmatched,,,,,,,
+10120613953776,SS25 SPY Bear CA Republic SS Tee,spy-ss25-spy-bear-ca-republic-ss-tee-no-colour-reference-sunglasses,Gear,SS25 SPY BEAR CA REPUBLIC SS TEE,D-unmatched,,,,,,,
+10120612774128,SS25 SPY Palms SS Tee,spy-ss25-spy-palms-ss-tee-no-colour-reference-sunglasses,Gear,SS25 SPY PALMS SS TEE,D-unmatched,,,,,,,
+10120614740208,Vanguards Surf Cap Black,spy-vanguards-surf-cap-black-sunglasses,Gear,VANGUARDS SURF CAP,D-unmatched,,,,,,,
+10120614543600,Vanguards Surf Cap Coffee,spy-vanguards-surf-cap-coffee-sunglasses,Gear,VANGUARDS SURF CAP,D-unmatched,,,,,,,
+10120618148080,Woot Race Lens Clear,spy-woot-race-lens-clear-sunglasses,Motocross Goggles,WOOT RACE LENS,D-unmatched,,,,,,,
+10120617689328,Woot Race Lens LL Smoke Blue Mirror,spy-woot-race-lens-ll-smoke-blue-mirror-sunglasses,Motocross Goggles,WOOT RACE LENS,D-unmatched,,,,,,,
+10120615297264,Woot/Woot Race Clear Tear Off,spy-woot-woot-race-clear-tear-off-no-colour-reference-sunglasses,Motocross Goggles,WOOT/WOOT RACE CLEAR TEAR OFF,D-unmatched,,,,,,,
+10120618410224,Woot/Woot Race MX Lens,spy-woot-woot-race-mx-lens-no-colour-reference-sunglasses,Motocross Goggles,WOOT/WOOT RACE MX LENS,D-unmatched,,,,,,,

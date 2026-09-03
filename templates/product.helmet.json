@@ -200,6 +200,7 @@
                       "name": "Star Rating",
                       "settings": {
                         "embed": "yotpo_bottomline",
+                        "legacy_id_metafield": "yotpo.product_id",
                         "element_id": "2",
                         "extra_class": ""
                       }
