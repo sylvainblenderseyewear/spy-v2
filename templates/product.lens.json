@@ -591,25 +591,18 @@
     "yotpo_reviews_section": {
       "type": "_blocks",
       "blocks": {
-        "spy_yotpo_reviews_A1": {
-          "type": "spy-yotpo-reviews",
+        "yotpo_reviews_widget": {
+          "type": "spy-app-embed",
           "name": "Yotpo Reviews",
-          "settings": {},
-          "blocks": {
-            "yotpo_reviews": {
-              "type": "shopify://apps/yotpo-product-reviews/blocks/reviews/eb7dfd7d-db44-4334-bc49-c893b51b36cf",
-              "settings": {
-                "product": "{{closest.product}}"
-              }
-            }
-          },
-          "block_order": [
-            "yotpo_reviews"
-          ]
+          "settings": {
+            "embed": "custom",
+            "code": "<div id=\"spy-reviews\" class=\"w-full [scroll-margin-top:calc(var(--header-height,100px)+24px)]\"><div class=\"yotpo yotpo-main-widget\" data-product-id=\"{{ product.metafields.yotpo.product_id.value | default: product.id }}\" data-name=\"{{ product.title | escape }}\" data-url=\"{{ shop.url }}{{ product.url }}\" data-price=\"{{ product.selected_or_first_available_variant.price | money_without_currency }}\" data-currency=\"{{ cart.currency.iso_code }}\" data-image-url=\"{{ product.featured_image | image_url: width: 600 | prepend: shop.url }}\" data-description=\"{{ product.description | strip_html | truncate: 300 | escape }}\"></div></div>",
+            "extra_class": ""
+          }
         }
       },
       "block_order": [
-        "spy_yotpo_reviews_A1"
+        "yotpo_reviews_widget"
       ],
       "name": "Yotpo Reviews",
       "settings": {
