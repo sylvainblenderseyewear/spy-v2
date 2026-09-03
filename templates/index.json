@@ -619,7 +619,7 @@
           "type": "spy-app-embed",
           "settings": {
             "embed": "custom",
-            "code": "<div class=\"yotpo yotpo-reviews-carousel\"  data-background-color=\"transparent\"  data-mode=\"top_rated\"  data-type=\"per_product\"  data-count=\"9\"  data-show-bottomline=\"1\"  data-autoplay-enabled=\"1\"  data-autoplay-speed=\"3000\"  data-show-navigation=\"1\"  data-product-id=\"{{ product.id }}\">&nbsp;</div>",
+            "code": "<div\n\tclass=\"yotpo yotpo-pictures-widget\"\n\tdata-gallery-id=\"600cb426ea00342fd9db2ca4\">\n</div>",
             "extra_class": "w-full",
             "element_id": "",
             "legacy_id_metafield": "",
