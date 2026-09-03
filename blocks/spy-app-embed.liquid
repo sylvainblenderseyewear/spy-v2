@@ -11,9 +11,9 @@
   - Yotpo photo gallery / reviews carousel: every id and option is a real setting,
     so the same block serves the homepage, a PDP, or anywhere else.
 
-  Yotpo's own dialogs say to add their script first — that lives in
-  snippets/spy-yotpo-loader.liquid, rendered site-wide from the layout. Without it
-  these divs stay empty.
+  Yotpo's script comes from its app embed (theme editor > App embeds), not from
+  the theme. We used to load it by hand too, which ran widget.js twice and broke
+  the widgets. Without the app embed on, these divs stay empty.
 
   The markup is kept byte-identical to what the app's dialog gives: no extra classes
   and no extra attributes unless a setting asks for them.

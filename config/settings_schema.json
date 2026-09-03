@@ -2228,21 +2228,5 @@
         "default": "equal-width-buttons"
       }
     ]
-  },
-  {
-    "name": "Integrations",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Yotpo"
-      },
-      {
-        "type": "text",
-        "id": "yotpo_app_key",
-        "label": "Yotpo app key",
-        "info": "From the widget install dialog: the code between staticw2.yotpo.com/ and /widget.js. Loads the Yotpo script site-wide.",
-        "default": "QvaApxqlVlVEebmfd34wHH7scAuVMAkdvdejcqyr"
-      }
-    ]
   }
 ]
