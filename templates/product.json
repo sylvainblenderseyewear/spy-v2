@@ -845,8 +845,22 @@
           "settings": {
             "embed": "custom",
             "code": "<div id=\"spy-reviews\" class=\"w-full [scroll-margin-top:calc(var(--header-height,100px)+24px)]\"><div class=\"yotpo yotpo-main-widget\" data-product-id=\"{{ product.metafields.yotpo.product_id.value | default: product.id }}\" data-name=\"{{ product.title | escape }}\" data-url=\"{{ shop.url }}{{ product.url }}\" data-price=\"{{ product.selected_or_first_available_variant.price | money_without_currency }}\" data-currency=\"{{ cart.currency.iso_code }}\" data-image-url=\"{{ product.featured_image | image_url: width: 600 | prepend: shop.url }}\" data-description=\"{{ product.description | strip_html | truncate: 300 | escape }}\"></div></div>",
-            "extra_class": ""
-          }
+            "extra_class": "",
+            "element_id": "",
+            "legacy_id_metafield": "",
+            "legacy_id_preview": "",
+            "gallery_id": "",
+            "source": "site",
+            "product": "",
+            "mode": "top_rated",
+            "count": 9,
+            "background_color": "transparent",
+            "show_bottomline": true,
+            "show_navigation": true,
+            "autoplay": true,
+            "autoplay_speed": 3000
+          },
+          "blocks": {}
         }
       },
       "block_order": [
@@ -862,7 +876,7 @@
         "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
         "gap": 12,
-        "section_width": "page-width",
+        "section_width": "full-width",
         "section_height": "",
         "section_height_custom": 50,
         "background_media": "none",
