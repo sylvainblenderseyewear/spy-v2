@@ -584,7 +584,7 @@
           "settings": {
             "embed": "custom",
             "code": "<div id=\"spy-reviews\" class=\"w-full [scroll-margin-top:calc(var(--header-height,100px)+24px)]\"><div class=\"yotpo yotpo-main-widget\" data-product-id=\"{{ product.metafields.yotpo.product_id.value | default: product.id }}\" data-name=\"{{ product.title | escape }}\" data-url=\"{{ shop.url }}{{ product.url }}\" data-price=\"{{ product.selected_or_first_available_variant.price | money_without_currency }}\" data-currency=\"{{ cart.currency.iso_code }}\" data-image-url=\"{{ product.featured_image | image_url: width: 600 | prepend: shop.url }}\" data-description=\"{{ product.description | strip_html | truncate: 300 | escape }}\"></div></div>",
-            "extra_class": ""
+            "extra_class": "w-full"
           }
         }
       },
