@@ -619,7 +619,7 @@
           "type": "spy-app-embed",
           "settings": {
             "embed": "custom",
-            "code": "<div\n\tclass=\"yotpo yotpo-pictures-widget\"\n\tdata-gallery-id=\"600cb426ea00342fd9db2ca4\">\n</div>",
+            "code": "",
             "extra_class": "w-full",
             "element_id": "",
             "legacy_id_metafield": "",
