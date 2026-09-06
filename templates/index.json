@@ -618,7 +618,7 @@
         "widget": {
           "type": "spy-app-embed",
           "settings": {
-            "embed": "custom",
+            "embed": "yotpo_gallery",
             "code": "",
             "extra_class": "w-full",
             "element_id": "",
