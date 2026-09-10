@@ -76,6 +76,15 @@
   </div>
 </div>
 
+{%- comment -%} Banner impressions — no Shopify standard event covers these {%- endcomment -%}
+{%- if section.settings.image_desktop != blank -%}
+  {%- render 'spy-promotion-event',
+    id: section.id,
+    slot: 'change_agents_hero',
+    name: section.settings.image_alt
+  -%}
+{%- endif -%}
+
 {% schema %}
 {
   "name": "SPY Change Agents Hero",

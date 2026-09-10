@@ -1,0 +1,18 @@
+{%- doc -%}
+  Announces a promo banner to analytics (GA4 view_promotion / select_promotion).
+  Shopify publishes no standard event for banners, so the theme sends its own.
+
+  Drop it inside the banner's own element — the script watches its parent.
+
+  @param {string} id - stable id, usually section.id or block.id
+  @param {string} slot - where the banner sits, e.g. 'feature_banner'
+  @param {string} [name] - human name for reports; falls back to the slot
+{%- enddoc -%}
+
+<spy-promotion
+  hidden
+  data-promotion-id="{{ id | escape }}"
+  data-promotion-name="{{ name | default: slot | strip_newlines | strip | escape }}"
+  data-creative-slot="{{ slot | escape }}"
+></spy-promotion>
+<script src="{{ 'spy-promotion-event.js' | asset_url }}" defer></script>

@@ -119,11 +119,12 @@
               height:100% that comes with it, which would collapse inside a flex rail.
             {%- endcomment -%}
             <div class="resource-list__item h-auto">
+              {%- comment -%} Curated rail, not a category listing — keeps it out of PLP numbers {%- endcomment -%}
               {%- content_for 'block',
                 type: '_product-card',
                 id: 'static-product-card',
                 closest.product: product,
-                product_view_context: 'collection'
+                product_view_context: 'recommendation'
               -%}
             </div>
           </div>

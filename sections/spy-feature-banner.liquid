@@ -100,6 +100,15 @@
   </details>
 {%- endif -%}
 
+{%- comment -%} Banner impressions — no Shopify standard event covers these {%- endcomment -%}
+{%- if section.settings.image_desktop != blank -%}
+  {%- render 'spy-promotion-event',
+    id: section.id,
+    slot: 'feature_banner',
+    name: section.settings.heading
+  -%}
+{%- endif -%}
+
 {% schema %}
 {
   "name": "SPY Feature Banner",

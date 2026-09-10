@@ -336,6 +336,20 @@
   {%- endif -%}
 {%- endunless -%}
 
+{%- comment -%} Banner impressions — reuses the section's own skip check, so video banners count too {%- endcomment -%}
+{%- unless skip_section -%}
+  {%- comment -%} A video hero often has no heading, so fall back to its other labels {%- endcomment -%}
+  {%- liquid
+    assign promo_name = section.settings.heading | default: section.settings.eyebrow
+    assign promo_name = promo_name | default: section.settings.video_title
+  -%}
+  {%- render 'spy-promotion-event',
+    id: section.id,
+    slot: 'feature_link_banner',
+    name: promo_name
+  -%}
+{%- endunless -%}
+
 {% schema %}
 {
   "name": "Feature Link Banner",
