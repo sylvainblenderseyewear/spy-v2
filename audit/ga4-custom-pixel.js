@@ -110,11 +110,32 @@ function item(v, qty) {
   iframe URL — useless in reports. Every event carries the real storefront
   context, so push that onto gtag before each event.
 */
+/*
+  Checkout URLs carry a one-off token per order, so left alone every order
+  becomes its own page in reports. Collapse the token and drop Shopify's
+  internal params. Campaign params (utm_*, gclid, fbclid) must survive — GA4
+  reads attribution straight off page_location.
+*/
+const JUNK_PARAMS = ['_r', '_fd', '_ab', '_sm', 'preview_theme_id'];
+
+function cleanUrl(href) {
+  try {
+    const url = new URL(href);
+    // /checkouts/cn/<token>/en-us  ->  /checkouts/en-us
+    // /checkouts/cn/<token>/thank_you -> /checkouts/thank_you
+    url.pathname = url.pathname.replace(/\/checkouts\/[a-z]{2}\/[^/]+/i, '/checkouts');
+    JUNK_PARAMS.forEach((p) => url.searchParams.delete(p));
+    return url.toString();
+  } catch (e) {
+    return href; // never let a URL edge case break tracking
+  }
+}
+
 function setPage(event) {
   const doc = event && event.context && event.context.document;
   if (!doc || !doc.location) return;
   gtag('set', {
-    page_location: doc.location.href,
+    page_location: cleanUrl(doc.location.href),
     page_title: doc.title,
     page_referrer: doc.referrer,
   });
