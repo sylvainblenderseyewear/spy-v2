@@ -133,6 +133,83 @@ while blind to it.
 
 ---
 
+## Cost analysis — what runs a meter, and when
+
+Written for a simple rule: **nothing should be metering before the store earns.** Figures are
+approximate US-region list prices and worth re-checking; the shape of the answer is what matters.
+
+Current state: the GCP project billed **$0.00 for 1–14 Sep 2026**. Nothing is metering today.
+
+### Free, permanently — no decision needed
+
+| Task | Why free |
+|---|---|
+| GA4 itself | Standard GA4 is free. Only GA4 360 costs, and nothing here needs it |
+| Server container (GTM) | Tag Manager is free; only the hosting costs |
+| The pixel, theme code, all event tracking | Our own code |
+| BigQuery **daily** export | Export is free. Streaming export is not — we are not using it |
+| Google-managed SSL certificate | Free either way |
+| Purchase testing, dedupe, baseline export, production pixel install | Configuration only |
+| Meta CAPI and Google Ads through the container | Reuses the server already running |
+
+### Free now, small later
+
+| Task | Pre-launch | After launch |
+|---|---|---|
+| **BigQuery storage** | Effectively zero — no traffic | 10 GiB/month free, then ~$0.02/GiB. A store this size stays near the free tier for months |
+| **BigQuery queries** | Zero | 1 TiB/month free. Normal analysis never approaches it |
+| **Cloud Run requests** | Zero | 2M requests/month free, then ~$0.40/million. Likely free or a few dollars |
+
+**Conclusion: link BigQuery now.** It costs nothing pre-launch, removes a launch-week task, and the
+export cannot capture data retroactively once real traffic starts.
+
+### The only two real costs
+
+**1. Cloud Run minimum instances — ~$10–30/month, optional**
+
+Fixes the cold start (first request after idle fails). Pre-launch it protects nothing, because there
+is no traffic to lose. After launch a busy store keeps the container warm on its own, so the real
+exposure is a handful of events in the quietest overnight hours.
+
+- **Free alternative:** a Cloud Scheduler job pinging the server every 5 minutes prevents scale-to-zero.
+  ~8,600 requests/month, inside the free allowance. Less robust than a reserved instance, but free.
+- **Start the meter:** launch week, if at all.
+
+**2. Custom domain for the tagging server — free or ~$18–25/month, depending on the path**
+
+| Path | Cost | DNS record |
+|---|---|---|
+| **Cloud Run domain mapping** | **free** | CNAME → `ghs.googlehosted.com` |
+| External load balancer | ~$18–25/month standing, plus ~$0.01/GB | A → static IP |
+
+Try the mapping first — Cloud Run → service → Custom domains. If it is offered, this whole cost
+disappears. Google prefers the load balancer for high-scale production, but at this volume the
+mapping is very likely sufficient.
+
+If only the load balancer is available, the meter starts the moment the forwarding rule exists, so
+build it **close to launch, not now** — while still leaving 3–5 days for certificate issuance and
+DNS propagation, which cannot be rushed.
+
+### Recommended schedule
+
+| When | Do | Cost starts |
+|---|---|---|
+| **Now** | BigQuery API + export link | none |
+| **Now** | Try Cloud Run domain mapping. If it works, add the CNAME and finish the domain for free | none |
+| **Now** | Purchase testing, as soon as a test gateway exists | none |
+| **T-2 weeks** | If mapping was unavailable: build the load balancer, add DNS, wait for the certificate | ~$18–25/month |
+| **Launch week** | Cloud Scheduler ping, or minimum instances if you want the stronger option | none, or ~$10–30/month |
+| **At cutover** | Production pixel, retire SFCC tags, traffic filter, remove `debug_mode` | none |
+| **After launch** | Google channel, dedupe, Meta CAPI, Google Ads, reconciliation | none |
+
+### Worst case
+
+If the domain mapping is unavailable and you choose minimum instances, the standing cost is roughly
+**$30–55/month**, none of it starting before launch week. If the mapping works and you use the
+scheduler ping, the ongoing cost is close to **zero**.
+
+---
+
 ## Not this workstream — both still need owners
 
 **Product data.** On production the same Fiona Femme Fatale is buyable at **$150 and at $75** as two
