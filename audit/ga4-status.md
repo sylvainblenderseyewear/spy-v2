@@ -1,6 +1,6 @@
 # GA4 + server-side GTM — status and remaining work
 
-Last checked: **14 Sep 2026**. Update this file as items close.
+Last checked: **14 Sep 2026**. Section 1 complete. Update this file as items close.
 
 **Key IDs**
 
@@ -34,22 +34,24 @@ Last checked: **14 Sep 2026**. Update this file as items close.
 
 ---
 
-## 1. You, today — nothing blocking
+## 1. You, unblocked — all done (14 Sep)
 
-| Task | Where | Time |
-|---|---|---|
-| Data retention → 14 months | GA4 → Admin → Data retention | 1 min |
-| Enhanced Measurement → off | GA4 → Admin → Data streams → your stream | 1 min |
-| Ask which store the GitHub theme sync targets | message to Sylvain | 1 min |
+| Task | Status |
+|---|---|
+| Event data retention → 14 months | done |
+| User data retention → 14 months | already correct |
+| Enhanced Measurement → off | done — stream now measures page views only |
+| GitHub theme sync question | closed — known setup, changes are visible on production after a push |
 
-**Why Enhanced Measurement off:** gtag runs inside Shopify's pixel sandbox, so its automatic
-`scroll`, outbound-click and site-search events measure a hidden iframe, not the page. Noise at
-best, misleading at worst. Our pixel sends the real events explicitly.
+Enhanced Measurement had to go because gtag runs inside Shopify's pixel sandbox: its automatic
+`scroll`, outbound-click and site-search events were measuring a hidden iframe rather than the
+page. The pixel sends the real events explicitly.
 
-**Why the sync question:** on production, the published (MAIN) theme is named `spy-v2/main` — the
-GitHub-sync naming convention. If that integration is live, pushes to `main` land on the
-**production store's published theme**, which CLAUDE.md rule 5 forbids. Harmless today (no domain,
-0 orders); not harmless after cutover.
+**Nothing further is in your own control.** Everything below waits on someone else.
+
+Verified while checking: the GitHub sync does deploy to `spyoptic-com`'s published theme — all
+theme files confirmed byte-identical to the repo. Note that the theme's `updatedAt` does **not**
+change on sync writes, so it cannot be used to detect deployments.
 
 ---
 
