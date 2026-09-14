@@ -63,7 +63,7 @@ Project `gtm-k3rx42ch-yzrjm`. Needed for two things:
 
 - **BigQuery export.** Does not backfill. Every day it stays off is raw event data gone for good.
   Free at our volume, daily export only.
-- **Load balancer** for `ss.spyoptic.com`.
+- **Load balancer** for `sgtm.spyoptic.com`.
 
 Confirmed blocked: the GA4 BigQuery wizard shows no projects, and entering the ID by hand returns
 "BigQuery project not found" — Google's wording for *no access*. The project may also need the
@@ -99,7 +99,7 @@ there is no honest answer to "does the new site perform better".
 | 1 | Link BigQuery export, daily, US location | GCP access |
 | 2 | **Fix Cloud Run minimum instances** | GCP access |
 | 3 | Test order → verify `purchase` payload | payment method |
-| 4 | Load balancer + `ss.spyoptic.com` DNS | GCP + DNS window |
+| 4 | Load balancer + `sgtm.spyoptic.com` DNS | GCP + DNS window |
 | 5 | Swap `TAGGING_URL`, remove `debug_mode` | step 4 |
 | 6 | Install Google & YouTube channel | step 3 |
 | 7 | Decide the authoritative purchase source, dedupe on `transaction_id` | step 6 |

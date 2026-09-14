@@ -17,7 +17,7 @@
   (gtag.js) must be enabled, or the script below 404s.
 */
 
-// Cloud Run default URL — swap for https://ss.spyoptic.com once the load
+// Cloud Run default URL — swap for https://sgtm.spyoptic.com once the load
 // balancer and DNS are live. Until then cookies are NOT first-party.
 const TAGGING_URL = 'https://server-side-tagging-hzl3a6ofra-uc.a.run.app';
 const TAG_ID = 'G-1F4T2NDY34'; // GT-NS4QG8B8 is the same tag, either works
@@ -106,11 +106,6 @@ function item(v, qty) {
 }
 
 /*
-  gtag runs inside Shopify's pixel sandbox, so its own location is the sandbox
-  iframe URL — useless in reports. Every event carries the real storefront
-  context, so push that onto gtag before each event.
-*/
-/*
   Checkout URLs carry a one-off token per order, so left alone every order
   becomes its own page in reports. Collapse the token and drop Shopify's
   internal params. Campaign params (utm_*, gclid, fbclid) must survive — GA4
@@ -131,6 +126,11 @@ function cleanUrl(href) {
   }
 }
 
+/*
+  gtag runs inside Shopify's pixel sandbox, so its own location is the sandbox
+  iframe URL — useless in reports. Every event carries the real storefront
+  context, so push that onto gtag before each event.
+*/
 function setPage(event) {
   const doc = event && event.context && event.context.document;
   if (!doc || !doc.location) return;
