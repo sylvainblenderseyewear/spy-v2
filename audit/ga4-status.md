@@ -1,6 +1,6 @@
 # GA4 + server-side GTM — status and remaining work
 
-Last checked: **14 Sep 2026**. Section 1 complete. Update this file as items close.
+Last checked: **17 Sep 2026**. Section 1 complete; first-party domain live. Update this file as items close.
 
 **Key IDs**
 
@@ -18,6 +18,12 @@ Last checked: **14 Sep 2026**. Section 1 complete. Update this file as items clo
 ---
 
 ## Done and verified
+
+- **`sgtm.spyoptic.com` is live (17 Sep)** — Google-managed certificate issued, valid to 16 Dec,
+  auto-renewing. Endpoint returns 200 and sets the `FPID` cookie from our own domain, which is the
+  whole point of the server-side setup. Load balancer `sgtm-lb` → `sgtm-backend` → `sgtm-neg` →
+  Cloud Run `server-side-tagging`. Cloud CDN off, Cloud Armor removed.
+- Pixel now points at `https://sgtm.spyoptic.com`
 
 - GA4 property, Google tag, server container created and published
 - GA4 tag fires on an **All Events** trigger (was Page View only — would have dropped all ecommerce)
@@ -99,8 +105,8 @@ there is no honest answer to "does the new site perform better".
 | 1 | Link BigQuery export, daily, US location | GCP access |
 | 2 | **Fix Cloud Run minimum instances** | GCP access |
 | 3 | Test order → verify `purchase` payload | payment method |
-| 4 | Load balancer + `sgtm.spyoptic.com` DNS | GCP + DNS window |
-| 5 | Swap `TAGGING_URL`, remove `debug_mode` | step 4 |
+| ~~4~~ | ~~Load balancer + `sgtm.spyoptic.com` DNS~~ — **done 17 Sep** | — |
+| 5 | Remove `debug_mode` before launch (`TAGGING_URL` already swapped) | — |
 | 6 | Install Google & YouTube channel | step 3 |
 | 7 | Decide the authoritative purchase source, dedupe on `transaction_id` | step 6 |
 | 8 | Build the GA4-vs-Shopify-Admin reconciliation check | step 7 |

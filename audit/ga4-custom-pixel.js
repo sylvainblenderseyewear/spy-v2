@@ -17,9 +17,9 @@
   (gtag.js) must be enabled, or the script below 404s.
 */
 
-// Cloud Run default URL — swap for https://sgtm.spyoptic.com once the load
-// balancer and DNS are live. Until then cookies are NOT first-party.
-const TAGGING_URL = 'https://server-side-tagging-hzl3a6ofra-uc.a.run.app';
+// Our own subdomain, via a Google Cloud load balancer in front of Cloud Run.
+// Live since 17 Sep 2026 — this is what makes the visitor cookie first-party.
+const TAGGING_URL = 'https://sgtm.spyoptic.com';
 const TAG_ID = 'G-1F4T2NDY34'; // GT-NS4QG8B8 is the same tag, either works
 
 window.dataLayer = window.dataLayer || [];
