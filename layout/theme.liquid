@@ -126,9 +126,9 @@
         })();
       </script>
 
+      {% comment %} grow keeps the short 404 page's footer on the viewport bottom, like the source. {% endcomment %}
       <main
         id="MainContent"
-        {% comment %} grow keeps the short 404 page's footer on the viewport bottom, like the source. {% endcomment %}
         class="content-for-layout{% if request.page_type == '404' %} grow{% endif %}"
         role="main"
         data-page-transition-enabled="{{ settings.page_transition_enabled }}"
