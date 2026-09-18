@@ -1,6 +1,6 @@
 # GA4 + server-side GTM — status and remaining work
 
-Last checked: **17 Sep 2026**. Section 1 complete; first-party domain live. Update this file as items close.
+Last checked: **18 Sep 2026**. Section 1 complete; first-party domain live; purchase verified. Update this file as items close.
 
 **Key IDs**
 
@@ -18,6 +18,17 @@ Last checked: **17 Sep 2026**. Section 1 complete; first-party domain live. Upda
 ---
 
 ## Done and verified
+
+- **`purchase` verified end to end (18 Sep)** — test order on production via the Bogus Gateway,
+  through `sgtm.spyoptic.com`. GA4 received it as a key event. `transaction_id` = `7420259664179`
+  (Shopify order id, not the checkout token), `value` = 200 matching the order, and the items array
+  carried real name, brand, category, variant and quantity.
+  - **Still unverified: `shipping` and `tax`.** The test order had free shipping and no tax, so both
+    read `0` — accurate for that order, but the field mapping has never been exercised with a
+    non-zero value. One more order with paid shipping would close this.
+  - DebugView shows item `price` as `200000000` (200 × 10^6). Almost certainly micros encoding in
+    GA4's stored representation rather than a mapping fault, since `value` came through as plain
+    `200` — worth confirming against a `view_item` event or BigQuery before trusting item revenue.
 
 - **`sgtm.spyoptic.com` is live (17 Sep)** — Google-managed certificate issued, valid to 16 Dec,
   auto-renewing. Endpoint returns 200 and sets the `FPID` cookie from our own domain, which is the
