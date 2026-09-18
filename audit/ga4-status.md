@@ -19,16 +19,18 @@ Last checked: **18 Sep 2026**. Section 1 complete; first-party domain live; purc
 
 ## Done and verified
 
-- **`purchase` verified end to end (18 Sep)** — test order on production via the Bogus Gateway,
-  through `sgtm.spyoptic.com`. GA4 received it as a key event. `transaction_id` = `7420259664179`
-  (Shopify order id, not the checkout token), `value` = 200 matching the order, and the items array
-  carried real name, brand, category, variant and quantity.
-  - **Still unverified: `shipping` and `tax`.** The test order had free shipping and no tax, so both
-    read `0` — accurate for that order, but the field mapping has never been exercised with a
-    non-zero value. One more order with paid shipping would close this.
-  - DebugView shows item `price` as `200000000` (200 × 10^6). Almost certainly micros encoding in
-    GA4's stored representation rather than a mapping fault, since `value` came through as plain
-    `200` — worth confirming against a `view_item` event or BigQuery before trusting item revenue.
+- **`purchase` fully verified (18 Sep)** — five test orders on production via the Bogus Gateway,
+  all through `sgtm.spyoptic.com`. Every field mapping originally guessed from Shopify's docs is now
+  proven against real orders:
+  - `transaction_id` = Shopify order id, not the checkout token
+  - `value` matches the order total exactly (spy1005: 195)
+  - **`shipping` = 15** on the Express order — the last untested field, now confirmed
+  - `items[]` carries name, brand, category, variant, price and quantity
+  - Item `price` displays as micros in DebugView (`180000000` = $180). Confirmed by arithmetic:
+    spy1005 was $195 total, $15 express, so the item really was $180. Display convention, not a fault.
+  - **`tax` remains untested** — the store charges no tax, so every order returned `0`. It uses the
+    same code path as `shipping`, which is proven, so the risk is low. Re-check if tax is ever
+    configured before launch.
 
 - **`sgtm.spyoptic.com` is live (17 Sep)** — Google-managed certificate issued, valid to 16 Dec,
   auto-renewing. Endpoint returns 200 and sets the `FPID` cookie from our own domain, which is the
