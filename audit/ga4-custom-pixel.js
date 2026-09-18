@@ -83,8 +83,13 @@ gtag('js', new Date());
 gtag('config', TAG_ID, {
   server_container_url: TAGGING_URL, // every hit goes here, not to Google
   send_page_view: false, // Shopify page_viewed drives this instead
-  debug_mode: true, // REMOVE BEFORE LAUNCH — only here so GA4 DebugView shows events
 });
+
+/*
+  To debug later, add `debug_mode: true` above and re-save the pixel — that feeds
+  GA4 DebugView. Server-side inspection needs nothing: GTM's server container
+  Preview shows every request and tag regardless of this setting.
+*/
 
 /*
   item_id = variant ID, on purpose.
