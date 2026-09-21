@@ -5,16 +5,13 @@
   Kept here so the code is reviewable in git; the admin copy is the deployed one.
 
   How it works:
-  gtag.js is loaded FROM our own tagging server, so GA4 requests go there first
-  and the server container (GTM-K3RX42CH) forwards them to GA4. The server owns
-  the visitor cookie, which is the whole point of server-side tagging.
+  gtag.js is loaded from Google, but every hit goes to our own tagging server
+  (see `server_container_url` below). The server container GTM-K3RX42CH passes
+  them on to GA4 and owns the visitor cookie — the point of server-side tagging.
 
   Custom pixels already provide `analytics`, `browser`, `init` — no imports.
   Events arrive because Horizon dispatches Shopify standard events
   (see assets/view-event-elements.js and snippets/product-card.liquid).
-
-  Requires in the server container: the client that serves Google scripts
-  (gtag.js) must be enabled, or the script below 404s.
 */
 
 // Our own subdomain, via a Google Cloud load balancer in front of Cloud Run.
@@ -188,6 +185,16 @@ analytics.subscribe('product_added_to_cart', (event) => {
   });
 });
 
+analytics.subscribe('product_removed_from_cart', (event) => {
+  setPage(event);
+  const line = event.data.cartLine;
+  gtag('event', 'remove_from_cart', {
+    currency: line.cost.totalAmount.currencyCode,
+    value: Number(line.cost.totalAmount.amount),
+    items: [item(line.merchandise, line.quantity)],
+  });
+});
+
 analytics.subscribe('cart_viewed', (event) => {
   setPage(event);
   const cart = event.data.cart;
@@ -206,6 +213,40 @@ analytics.subscribe('checkout_started', (event) => {
     value: Number(c.totalPrice.amount),
     items: (c.lineItems || []).map((li) => item(li.variant, li.quantity)),
   });
+});
+
+/*
+  The next two fill GA4's built-in checkout funnel. Without them the report
+  jumps from begin_checkout straight to purchase, so a drop-off at shipping
+  looks the same as one at payment.
+
+  shipping_tier and payment_type are read defensively: Shopify does not promise
+  those fields on every checkout, and an `undefined` param is worse than none.
+*/
+analytics.subscribe('checkout_shipping_info_submitted', (event) => {
+  setPage(event);
+  const c = event.data.checkout;
+  const params = {
+    currency: c.currencyCode,
+    value: Number(c.totalPrice.amount),
+    items: (c.lineItems || []).map((li) => item(li.variant, li.quantity)),
+  };
+  const tier = c.shippingLine && c.shippingLine.title;
+  if (tier) params.shipping_tier = tier;
+  gtag('event', 'add_shipping_info', params);
+});
+
+analytics.subscribe('payment_info_submitted', (event) => {
+  setPage(event);
+  const c = event.data.checkout;
+  const params = {
+    currency: c.currencyCode,
+    value: Number(c.totalPrice.amount),
+    items: (c.lineItems || []).map((li) => item(li.variant, li.quantity)),
+  };
+  const tx = (c.transactions || [])[0];
+  if (tx && tx.gateway) params.payment_type = tx.gateway;
+  gtag('event', 'add_payment_info', params);
 });
 
 analytics.subscribe('checkout_completed', (event) => {
