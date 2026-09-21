@@ -196,6 +196,13 @@
                       },
                       "blocks": {}
                     },
+                    "expertvoice_ev_pdp_deal_block_gj7z3p": {
+                      "type": "shopify://apps/expertvoice/blocks/ev-pdp-deal-block/72220bb7-008d-4628-98a7-15da652b51dd",
+                      "settings": {
+                        "theme": "light",
+                        "currency_formatting": "symbol_only"
+                      }
+                    },
                     "yotpo_star_rating": {
                       "type": "spy-app-embed",
                       "name": "Star Rating",
@@ -222,6 +229,7 @@
                   },
                   "block_order": [
                     "price_tVjtKg",
+                    "expertvoice_ev_pdp_deal_block_gj7z3p",
                     "yotpo_star_rating"
                   ]
                 },
