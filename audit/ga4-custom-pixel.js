@@ -153,6 +153,7 @@ analytics.subscribe('page_viewed', (event) => {
 analytics.subscribe('collection_viewed', (event) => {
   setPage(event);
   const c = event.data.collection;
+  if (!c) return;
   gtag('event', 'view_item_list', {
     item_list_id: c.id,
     item_list_name: c.title,
@@ -163,6 +164,7 @@ analytics.subscribe('collection_viewed', (event) => {
 analytics.subscribe('product_viewed', (event) => {
   setPage(event);
   const v = event.data.productVariant;
+  if (!v || !v.price) return;
   gtag('event', 'view_item', {
     currency: v.price.currencyCode,
     value: Number(v.price.amount),
@@ -172,12 +174,15 @@ analytics.subscribe('product_viewed', (event) => {
 
 analytics.subscribe('search_submitted', (event) => {
   setPage(event);
-  gtag('event', 'search', { search_term: event.data.searchResult.query });
+  const r = event.data.searchResult;
+  if (!r) return;
+  gtag('event', 'search', { search_term: r.query });
 });
 
 analytics.subscribe('product_added_to_cart', (event) => {
   setPage(event);
   const line = event.data.cartLine;
+  if (!line || !line.cost) return;
   gtag('event', 'add_to_cart', {
     currency: line.cost.totalAmount.currencyCode,
     value: Number(line.cost.totalAmount.amount),
@@ -188,6 +193,7 @@ analytics.subscribe('product_added_to_cart', (event) => {
 analytics.subscribe('product_removed_from_cart', (event) => {
   setPage(event);
   const line = event.data.cartLine;
+  if (!line || !line.cost) return;
   gtag('event', 'remove_from_cart', {
     currency: line.cost.totalAmount.currencyCode,
     value: Number(line.cost.totalAmount.amount),
@@ -197,7 +203,10 @@ analytics.subscribe('product_removed_from_cart', (event) => {
 
 analytics.subscribe('cart_viewed', (event) => {
   setPage(event);
+  // An empty cart arrives as null and used to throw here, killing the handler.
+  // Nothing to report either way, so skip it.
   const cart = event.data.cart;
+  if (!cart || !cart.cost) return;
   gtag('event', 'view_cart', {
     currency: cart.cost.totalAmount.currencyCode,
     value: Number(cart.cost.totalAmount.amount),
@@ -208,6 +217,7 @@ analytics.subscribe('cart_viewed', (event) => {
 analytics.subscribe('checkout_started', (event) => {
   setPage(event);
   const c = event.data.checkout;
+  if (!c || !c.totalPrice) return;
   gtag('event', 'begin_checkout', {
     currency: c.currencyCode,
     value: Number(c.totalPrice.amount),
@@ -226,6 +236,7 @@ analytics.subscribe('checkout_started', (event) => {
 analytics.subscribe('checkout_shipping_info_submitted', (event) => {
   setPage(event);
   const c = event.data.checkout;
+  if (!c || !c.totalPrice) return;
   const params = {
     currency: c.currencyCode,
     value: Number(c.totalPrice.amount),
@@ -239,6 +250,7 @@ analytics.subscribe('checkout_shipping_info_submitted', (event) => {
 analytics.subscribe('payment_info_submitted', (event) => {
   setPage(event);
   const c = event.data.checkout;
+  if (!c || !c.totalPrice) return;
   const params = {
     currency: c.currencyCode,
     value: Number(c.totalPrice.amount),
@@ -252,6 +264,7 @@ analytics.subscribe('payment_info_submitted', (event) => {
 analytics.subscribe('checkout_completed', (event) => {
   setPage(event);
   const c = event.data.checkout;
+  if (!c || !c.totalPrice) return;
   gtag('event', 'purchase', {
     // Same ID everywhere, or the order is counted twice.
     transaction_id: (c.order && String(c.order.id)) || c.token,

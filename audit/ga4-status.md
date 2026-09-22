@@ -58,11 +58,36 @@ page_view → view_item_list → view_item → search
 - Theme: promotion tracking on 6 banner sections; carousel reports `recommendation` not `collection`
 - `debug_mode` removed from the pixel source (`b4dcb36`)
 
-**Not yet seen in the field (added 21 Sep, `86cb05f`):** `remove_from_cart`, `add_shipping_info`,
-`add_payment_info`. The events themselves are safe; what is unconfirmed is two optional parameters.
-`shipping_tier` reads `shippingLine.title` and `payment_type` reads `transactions[0].gateway`, and
-neither field name could be verified — the Shopify docs lookup failed. Both are read guarded, so a
-missing field is simply omitted. **Check for them on the next test order in Server Preview.**
+**All eleven verified in the field on production (22 Sep).** Every event has now been seen arriving,
+not just written. DevTools confirmed the hits leave for our own domain (filter `sgtm`, three
+`collect?v=2&tid=G-1F4T2NDY34` rows, all 200) and GA4 Realtime listed each event name.
+
+**Bug found and fixed while testing: the empty cart killed `view_cart`.** Shopify sends `data.cart`
+as `null` when the cart is empty; the handler dereferenced it straight away and threw, so the
+subscriber died silently. Ten handlers had the same unguarded shape. All now bail cleanly on a
+missing object (`86cb05f` plus the guard commit). Confirmed after the fix: an empty cart sends
+nothing and does not throw, a cart with an item sends `view_cart`.
+
+**`remove_from_cart` only fires from the cart page**, because the header bag opens a drawer and
+nothing on the site links to `/cart`. Expect `view_cart` to stay near zero in production — correct
+behaviour for a drawer store, but it looks exactly like a broken event to anyone who finds it later.
+
+Still unknown: whether **`shipping_tier`** and **`payment_type`** actually populated. `shipping_tier`
+reads `shippingLine.title` and `payment_type` reads `transactions[0].gateway`; neither field name
+could be verified, as the Shopify docs lookup failed. Both are read guarded, so a missing field is
+simply omitted and nothing breaks. Realtime does not show parameters, so answering this needs
+`debug_mode: true` and DebugView.
+
+### Two debugging traps, both cost an hour to learn
+
+**Tag Manager server Preview is blind on this store.** It claims sessions with a cookie on
+`sgtm.spyoptic.com`, but the pixel runs in a sandboxed iframe on `spyoptic-com.myshopify.com`, so
+that cookie is third-party and gets dropped. Preview sat completely empty while data flowed
+perfectly. Use **DevTools → Network, filter `sgtm`** and **GA4 Realtime** instead.
+
+**Pixel Helper reports "Did not load" on the first page after clicking Test.** The sandbox is still
+registering when the extension snapshots the page. Every later navigation reports Loaded correctly.
+Not a homepage fault — our pixel's top-level code is page-agnostic.
 
 ---
 
@@ -70,10 +95,23 @@ missing field is simply omitted. **Check for them on the next test order in Serv
 
 | | Task | Time | Why it matters |
 |---|---|---|---|
-| 1 | **Re-paste the pixel** into Settings → Customer events on both stores | 5 min | The three new events and the `debug_mode` removal are in git but not deployed. One paste covers both |
+| ~~1~~ | ~~Re-paste the pixel~~ — **done 21 Sep**, verified on production | — | — |
 | 2 | **Enable logging** on `sgtm-backend` | 5 min | Currently Disabled. If something breaks at launch you are blind |
-| 3 | **Fix the cold start** — Cloud Scheduler ping every 5 min (free), or min instances = 1 (~$10–30/mo) | 20 min | Reproduced twice: first request after idle returns 500. In production that silently drops events, worst exactly when traffic resumes |
+| ~~3~~ | ~~Fix the cold start~~ — **done 22 Sep**, min instances 0 → 1 | — | — |
 | 4 | **Enable 2SV**, save backup codes | 10 min | Hard deadline **20 Oct** — eight days after launch. Miss it and you lose GCP console access |
+| 5 | **Investigate the 4xx responses** on `server-side-tagging` | 20 min | Visible as spikes on the Request count chart. Something is being rejected; find out what before launch |
+
+**On the cold start (closed 22 Sep).** The Container instance count chart was a square wave flipping
+between 0 and 1 all day — the container scaled to zero between visits and the first request after
+each gap failed. That was the intermittent event loss seen during testing. Minimum instances is now
+1, so one container stays warm.
+
+Cost note: the service bills **Instance-based**, not request-based, so a pinned instance is roughly
+**$45–50/month**, not the $10–30 estimated earlier. Request-based would cost about $7 but throttles
+CPU between requests, which risks truncating the async sends GTM performs after responding — not a
+trade worth making before launch, and worse once Meta CAPI and Google Ads route through the same
+container. A Cloud Scheduler ping is not a cheaper alternative here: under instance-based billing,
+keeping the container alive costs the same however you do it.
 
 ---
 
