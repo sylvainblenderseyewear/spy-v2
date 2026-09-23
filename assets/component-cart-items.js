@@ -149,6 +149,22 @@ export class CartItemsComponent extends createViewEventElement(Component) {
   }
 
   /**
+   * Cart page quantity <select> (source-style picker).
+   * @param {Event} event - The change event.
+   */
+  onQuantitySelect(event) {
+    const select = event.target;
+    if (!(select instanceof HTMLSelectElement)) return;
+
+    const line = Number(select.dataset.cartLine);
+    const quantity = Number(select.value);
+    if (!line || Number.isNaN(quantity)) return;
+
+    // Same path the stepper takes, so shimmer and morphing stay identical
+    select.dispatchEvent(new QuantitySelectorUpdateEvent(quantity, line));
+  }
+
+  /**
    * Handles the line item removal.
    * @param {number} line - The line item index.
    */
@@ -177,7 +193,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
       const clone = document.importNode(template.content, true);
 
       startViewTransition(() => {
-        document.getElementById('cart-drawer-heading')?.remove();
+        // Drawer keeps its heading when the cart empties, so only the rows are swapped
         this.replaceChildren(clone);
       }, [this.isDrawer ? 'empty-cart-drawer' : 'empty-cart-page']);
 
@@ -310,11 +326,17 @@ export class CartItemsComponent extends createViewEventElement(Component) {
    */
   #handleCartError = (line, parsedResponseText) => {
     const quantitySelector = this.refs.quantitySelectors[line - 1];
-    const quantityInput = quantitySelector?.querySelector('input');
+    const quantityInput = quantitySelector?.querySelector('input, select');
 
     if (!quantityInput) throw new Error('Quantity input not found');
 
-    quantityInput.value = quantityInput.defaultValue;
+    if (quantityInput instanceof HTMLSelectElement) {
+      // Roll the picker back to the option the page rendered with
+      const initial = [...quantityInput.options].find((option) => option.defaultSelected);
+      if (initial) quantityInput.value = initial.value;
+    } else if (quantityInput instanceof HTMLInputElement) {
+      quantityInput.value = quantityInput.defaultValue;
+    }
 
     const cartItemError = this.refs[`cartItemError-${line}`];
     const cartItemErrorContainer = this.refs[`cartItemErrorContainer-${line}`];

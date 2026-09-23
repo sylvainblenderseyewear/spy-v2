@@ -13,6 +13,17 @@
 
 {% liquid
   assign block_settings = block.settings
+
+  # Page-only options; the drawer keeps its own theme settings
+  assign is_page = true
+  if context == 'drawer'
+    assign is_page = false
+  endif
+  assign qty_dropdown = false
+  if is_page and block_settings.quantity_style == 'dropdown'
+    assign qty_dropdown = true
+  endif
+  assign qty_max = block_settings.quantity_max | default: 10
 %}
 
 {%- if block_settings.input_style == 'custom' -%}
@@ -45,30 +56,39 @@
 
 <div
   {{ block.shopify_attributes }}
-  class="cart-items__wrapper{% if context == 'drawer' and cart.empty? or force_empty %} cart-items__wrapper--drawer-empty{% endif %}"
+  class="cart-items__wrapper{% if context == 'drawer' and cart.empty? or force_empty %} cart-items__wrapper--drawer-empty px-4{% endif %}"
   {% if context == 'drawer' and cart.empty? or force_empty %}
     data-cart-drawer-empty
   {% endif %}
   style="
     {%- if settings.product_title_case == 'uppercase' -%}--product-title-case: uppercase;{%- endif -%}
+    {%- if is_page -%}
+      {%- if block_settings.title_case == 'uppercase' -%}--spy-cart-title-case: uppercase;{%- endif -%}
+      {%- if block_settings.image_max_width -%}--spy-cart-thumb-max: {{ block_settings.image_max_width }}px;{%- endif -%}
+    {%- endif -%}
     {{- custom_style -}}
   "
 >
   {% if cart.empty? or force_empty %}
-    {%- if shop.customer_accounts_enabled and customer == null -%}
-      <p>
-        {{ 'actions.log_in_html' | t: link: routes.account_login_url }}
-      </p>
-    {%- endif -%}
+    {%- if context == 'drawer' -%}
+      {%- comment -%} Source shows one centred line and keeps the footer {%- endcomment -%}
+      <p class="cart-drawer__empty-text py-4 text-[13px] leading-[18.2px] text-spy-ink text-center">{{ 'content.cart_drawer_empty' | t }}</p>
+    {%- else -%}
+      {%- if shop.customer_accounts_enabled and customer == null -%}
+        <p>
+          {{ 'actions.log_in_html' | t: link: routes.account_login_url }}
+        </p>
+      {%- endif -%}
 
-    <a
-      class="button cart-items__empty-button"
-      href="{{ settings.empty_cart_button_link | default: routes.all_products_collection_url }}"
-    >
-      <span class="button-text">
-        {{ 'actions.continue_shopping' | t }}
-      </span>
-    </a>
+      <a
+        class="button cart-items__empty-button"
+        href="{{ settings.empty_cart_button_link | default: routes.all_products_collection_url }}"
+      >
+        <span class="button-text">
+          {{ 'actions.continue_shopping' | t }}
+        </span>
+      </a>
+    {%- endif -%}
   {%- else -%}
     <span
       class="visually-hidden"
@@ -143,13 +163,13 @@
               <tr
                 id="CartItem-{{ item.key }}"
                 role="row"
-                class="cart-items__table-row{% if item.parent_relationship.parent != null %} cart-items__nested-line{% endif %}{% if context == 'drawer' %}{% unless item.unit_price_measurement %} cart-items__table-row--full-width-variants{% endunless %}{% endif %}"
+                class="cart-items__table-row{% if item.parent_relationship.parent != null %} cart-items__nested-line{% endif %}{% if context == 'drawer' %}{% unless item.unit_price_measurement %} cart-items__table-row--full-width-variants{% endunless %} relative grid-cols-[calc(var(--cart-drawer-thumb,95px)+15px)_minmax(0,1fr)] grid-rows-[repeat(5,min-content)] [grid-template-areas:'media_details'_'media_variants'_'media_quantity'_'media_price'_'media_error'] items-start gap-x-0 gap-y-0 p-4 mb-[var(--cart-drawer-row-gap,0px)] last:mb-0 {% if settings.cart_drawer_dividers %}border-b border-b-spy-border last:border-b-0{% else %}border-b-0{% endif %}{% else %} [--spy-h:calc((100%_+_30px)_*_7_/_12_-_30px)] [--spy-c:calc((100%_+_30px)_/_3)] grid-cols-[100%] [grid-template-areas:none] items-start gap-0 m-0 p-2 min-[769px]:p-6 border border-spy-border not-first:border-t-0{% endif %}"
                 ref="cartItemRows[]"
                 data-parent-key="{{ item.parent_relationship.parent.key }}"
                 data-key="{{ item.key }}"
               >
                 <td
-                  class="cart-items__media"
+                  class="cart-items__media {% if context == 'drawer' %}[grid-area:media] w-[var(--cart-drawer-thumb,95px)]{% else %}row-1 col-1 self-start w-[33%] min-[992px]:w-[calc(var(--spy-h)_*_0.33)] pb-[7px]{% endif %}"
                   role="cell"
                   headers="productImage"
                 >
@@ -170,21 +190,27 @@
                     %}
                     <a
                       href="{{ item.url }}"
-                      class="cart-items__media-container"
+                      class="cart-items__media-container {% if context == 'drawer' %}w-[var(--cart-drawer-thumb,95px)] [--ratio:1]{% else %}w-full max-w-[var(--spy-cart-thumb-max,140px)]{% endif %}"
                       style="--ratio:{{ ratio }};"
                     >
                       {%- liquid
-                        echo item.image | image_url: width: 250 | image_tag: class: 'cart-items__media-image border-style', style: border_override
+                        assign media_class = 'cart-items__media-image border-style'
+                        if context == 'drawer'
+                          assign media_class = media_class | append: ' w-[var(--cart-drawer-thumb,95px)] h-[var(--cart-drawer-thumb,95px)] max-w-none object-contain'
+                        else
+                          assign media_class = media_class | append: ' object-contain'
+                        endif
+                        echo item.image | image_url: width: 250 | image_tag: class: media_class, style: border_override
                       -%}
                     </a>
                   {%- endif %}
                 </td>
                 <td
-                  class="cart-items__details cart-primary-typography"
+                  class="cart-items__details cart-primary-typography{% if is_page %} row-1 col-1 self-center min-w-0 ml-[calc(33%_+_15px)] w-[calc(67%_-_15px)] min-[769px]:max-[992px]:row-2 min-[769px]:max-[992px]:self-start min-[769px]:max-[992px]:ml-0 min-[769px]:max-[992px]:w-full min-[992px]:ml-[calc(var(--spy-h)_*_0.33_+_15px)] min-[992px]:w-[calc(var(--spy-h)_*_0.67_-_15px)] text-spy-ink [&>*+*]:mt-0{% endif %}"
                   role="cell"
                   headers="productInformation"
                 >
-                  <div class="cart-items__product-info">
+                  <div class="cart-items__product-info {% if context == 'drawer' %}[grid-area:details] min-w-0{% endif %}">
                     {%- liquid
                       assign cart_disclosure_unique_id = 'page-' | append: item.index
                       if context == 'drawer'
@@ -195,10 +221,10 @@
                       Page only — the source prints the running quantity and a stock line
                       under the variant list. The drawer keeps Horizon's tighter layout.
                     {%- endcomment -%}
-                    <div class="cart-items__title-row">
+                    <div class="cart-items__title-row {% if context == 'drawer' %}mb-[4.7px]{% else %}block mb-[5px]{% endif %}">
                       <a
                         href="{{ item.url }}"
-                        class="cart-items__title"
+                        class="cart-items__title {% if context == 'drawer' %}text-[15px] font-bold leading-[18px] text-spy-ink uppercase{% else %}inline-block max-w-full truncate text-[16px] font-bold leading-[22.4px] text-spy-ink [text-transform:var(--spy-cart-title-case,none)] transition-opacity duration-200 ease-[ease-out]{% endif %}"
                         {% if item.parent_relationship.parent != null %}
                           aria-label="{{ 'accessibility.nested_product' | t: product_title: item.product.title, parent_title: item.parent_relationship.parent.title | escape }}"
                         {% endif %}
@@ -231,7 +257,7 @@
                     {%- endif -%}
                   </div>
 
-                  <div class="cart-items__variants-wrapper">
+                  <div class="cart-items__variants-wrapper {% if context == 'drawer' %}[grid-area:variants] min-w-0 text-[13px] font-normal leading-[18.2px] text-spy-ink opacity-100{% else %}text-[13px] leading-[18.2px] text-spy-ink [&_*]:text-[13px]{% endif %}">
                     {%- if item.product.has_only_default_variant == false
                       or item.properties.size != 0
                       or item.selling_plan_allocation != null
@@ -239,16 +265,25 @@
                       {%- if item.product.has_only_default_variant == false and item.item_components.size == 0 -%}
                         <dl class="cart-items__variants">
                           {%- for option in item.options_with_values -%}
-                            <div class="cart-items__variant">
+                            <div class="cart-items__variant{% if is_page %} block{% endif %}">
                               {%- comment -%}
                                 Source prints the option name as a bold visible label
                                 ("Color: Dusty Pink-..."), not screen-reader-only text.
                               {%- endcomment -%}
-                              <dt class="{% if context == 'drawer' %}visually-hidden{% else %}spy-cart-item__variant-label{% endif %}">{{ option.name }}:</dt>
-                              <dd>
-                                {{- option.value -}}
-                                {%- if forloop.last != true %},&nbsp;{% endif -%}
-                              </dd>
+                              {%- if is_page -%}
+                                {%- comment -%} Source: one option per line, only the name is bold {%- endcomment -%}
+                                <dt class="font-semibold">
+                                  {{- option.name -}}
+                                  <span class="font-normal">:</span>
+                                </dt>
+                                <dd>{{ option.value }}</dd>
+                              {%- else -%}
+                                <dt class="visually-hidden">{{ option.name }}:</dt>
+                                <dd>
+                                  {{- option.value -}}
+                                  {%- if forloop.last != true %},&nbsp;{% endif -%}
+                                </dd>
+                              {%- endif -%}
                             </div>
                           {%- endfor -%}
                         </dl>
@@ -289,19 +324,25 @@
                       {%- endif -%}
 
                       {%- comment -%} Source prints "Quantity : N" as a static line beside the picker {%- endcomment -%}
-                      {%- unless context == 'drawer' -%}
-                        <p class="spy-cart-item__qty-line">
-                          <span class="spy-cart-item__qty-label">{{ 'content.quantity' | t }}</span>
-                          <span class="spy-cart-item__qty-value">: {{ item.quantity }}</span>
-                        </p>
-                        <p class="spy-cart-item__stock{% unless item.variant.available %} spy-cart-item__stock--sold-out{% endunless %}">
-                          {%- if item.variant.available -%}
-                            {{ 'content.cart_in_stock' | t }}
-                          {%- else -%}
-                            {{ 'content.sold_out' | t }}
-                          {%- endif -%}
-                        </p>
-                      {%- endunless -%}
+                      {%- if is_page -%}
+                        {%- if block_settings.show_quantity_line != false -%}
+                          <p class="m-0 leading-[22.4px]">
+                            <span class="font-semibold leading-[18.2px]">{{ 'content.quantity' | t }}</span>
+                            <span class="leading-[18.2px]">: {{ item.quantity }}</span>
+                          </p>
+                        {%- endif -%}
+                        {%- if block_settings.show_stock != false -%}
+                          <p class="flex items-center gap-1 my-1 {% if item.variant.available %}text-spy-cart-stock{% else %}text-spy-negative{% endif %}">
+                            {%- if item.variant.available -%}
+                              {%- comment -%} FA circle-check, same glyph the source prints before the word {%- endcomment -%}
+                              <svg class="size-[11px] max-w-none shrink-0" aria-hidden="true" focusable="false" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm113-303L241 337c-9 9-25 9-34 0l-64-64c-9-9-9-25 0-34s25-9 34 0l47 47 111-111c9-9 25-9 34 0s9 25 0 34z"/></svg>
+                              {{- 'content.cart_in_stock' | t -}}
+                            {%- else -%}
+                              {{ 'content.sold_out' | t }}
+                            {%- endif -%}
+                          </p>
+                        {%- endif -%}
+                      {%- endif -%}
 
                       {%- if item.line_level_discount_allocations.size > 0 -%}
                         <ul
@@ -316,13 +357,13 @@
                     {%- endif -%}
                   </div>
 
-                  <div class="cart-items__unit-price-wrapper">
+                  <div class="cart-items__unit-price-wrapper hidden">
                     <div>
                       {% if item.original_price != item.final_price %}
                         <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
                         <span>{{ item.final_price | money }}</span>
                         <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
-                        <s class="compare-at-price">
+                        <s class="compare-at-price{% if context == 'drawer' %} mr-1 text-spy-strike{% endif %}">
                           {% if item.variant.compare_at_price > item.original_price %}
                             {{ item.variant.compare_at_price | money }}
                           {% else %}
@@ -340,14 +381,14 @@
 
                         {% if item.variant.compare_at_price > item.original_price %}
                           <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
-                          <s class="compare-at-price">{{ item.variant.compare_at_price | money }}</s>
+                          <s class="compare-at-price{% if context == 'drawer' %} mr-1 text-spy-strike{% endif %}">{{ item.variant.compare_at_price | money }}</s>
                         {% endif %}
                       {% endif %}
                     </div>
                   </div>
                 </td>
                 <td
-                  class="cart-items__quantity"
+                  class="cart-items__quantity {% if context == 'drawer' %}contents{% else %}row-2 col-1 min-[769px]:max-[992px]:row-3 min-[992px]:row-1 self-stretch [display:flex] flex-col justify-between items-start min-[769px]:items-end gap-0 m-0 ml-[var(--spy-c)] w-[calc(var(--spy-c)_-_30px)] min-[992px]:ml-[calc((100%_+_30px)_*_7_/_12)] min-[992px]:w-[calc((100%_+_30px)_/_6_-_30px)]{% endif %}"
                   role="cell"
                   headers="quantity"
                 >
@@ -360,29 +401,73 @@
                     Aria-hidden: the picker and the remove button carry their own labels.
                   {%- endcomment -%}
                   {%- unless context == 'drawer' -%}
-                    <div class="spy-cart-item__control-labels" aria-hidden="true">
-                      <span class="spy-cart-item__control-label">{{ 'content.quantity' | t }}</span>
+                    <div class="leading-[22.4px]" aria-hidden="true">
+                      <span class="inline-block mb-2 text-[12px] leading-[16.8px] text-spy-strike uppercase">{{ 'content.quantity' | t }}</span>
                     </div>
                   {%- endunless -%}
 
-                  <div class="cart-items__quantity-controls">
+                  <div class="cart-items__quantity-controls {% if context == 'drawer' %}contents{% else %}w-full{% endif %}">
                     {% render 'volume-pricing-info',
                       variant: item.variant,
                       unique_id: item.index,
                       quantity: item.quantity
                     %}
 
-                    {% render 'quantity-selector',
-                      product: item.product,
-                      variant: item.variant,
-                      in_cart_quantity: item.quantity,
-                      line_index: item.index,
-                      class: 'cart-primary-typography',
-                      can_update_quantity: can_update_quantity
-                    %}
+                    {%- comment -%} Drawer mirrors the source: quantity is read-only there {%- endcomment -%}
+                    {%- if qty_dropdown -%}
+                      {%- comment -%}
+                        Source picker is a plain 1–10 select. It talks to cart-items-component
+                        through onQuantitySelect; the ref keeps error rollback working.
+                      {%- endcomment -%}
+                      {%- liquid
+                        assign select_max = qty_max
+                        if item.quantity > select_max
+                          assign select_max = item.quantity
+                        endif
+                        if item.variant.quantity_rule.max and item.variant.quantity_rule.max < select_max
+                          assign select_max = item.variant.quantity_rule.max
+                        endif
+                      -%}
+                      <div class="relative w-full" ref="quantitySelectors[]">
+                        <select
+                          class="block w-full h-9 m-0 pt-[6.4px] pb-[6.4px] pl-1 pr-2 border border-spy-border rounded-none bg-transparent shadow-none appearance-none text-[13px] leading-[18.2px] text-spy-ink text-center [text-align-last:center] cursor-default transition-[background-color,border-color,box-shadow] duration-150 ease-[ease-in-out] focus:border-black focus:outline-none"
+                          name="updates[]"
+                          data-cart-line="{{ item.index | plus: 1 }}"
+                          aria-label="{{ 'accessibility.quantity' | t }}"
+                          on:change="/onQuantitySelect"
+                          {% if can_update_quantity == false %}
+                            disabled
+                          {% endif %}
+                        >
+                          {%- for n in (1..select_max) -%}
+                            <option value="{{ n }}"{% if n == item.quantity %} selected{% endif %}>{{ n }}</option>
+                          {%- endfor -%}
+                        </select>
+                        {%- comment -%} Source draws a small grey caret at the right edge {%- endcomment -%}
+                        <svg class="absolute right-0 top-1/2 -translate-y-1/2 size-[13px] max-w-none pointer-events-none text-spy-gray" aria-hidden="true" focusable="false" viewBox="0 0 26 26"><path fill="currentColor" d="M4 9h18l-9 9z"/></svg>
+                      </div>
+                    {%- elsif context == 'drawer' and settings.cart_drawer_quantity_editable != true -%}
+                      <div class="cart-items__quantity-static [grid-area:quantity] justify-self-end [display:flex] gap-[2px] items-baseline text-[13px] leading-[18.2px] text-spy-ink whitespace-nowrap">
+                        <span class="cart-items__quantity-static-label font-semibold">
+                          {{- 'content.quantity' | t -}}
+                        </span>
+                        <span aria-hidden="true">:</span>
+                        <span class="cart-items__quantity-static-value font-normal">{{ item.quantity }}</span>
+                      </div>
+                    {%- else -%}
+                      {% render 'quantity-selector',
+                        product: item.product,
+                        variant: item.variant,
+                        in_cart_quantity: item.quantity,
+                        line_index: item.index,
+                        class: 'cart-primary-typography',
+                        can_update_quantity: can_update_quantity
+                      %}
+                    {%- endif -%}
 
+                    {%- capture remove_button -%}
                     <button
-                      class="button cart-items__remove"
+                      class="button cart-items__remove {% if is_page %}order-last min-[769px]:order-first w-auto h-auto min-w-0 min-h-0 p-0 mt-1 mb-[2px] mx-0 border-0 bg-transparent shadow-none text-[12px] font-normal leading-[16.8px] text-spy-strike uppercase transition-opacity duration-200 ease-[ease-out]{% endif %}{% if context == 'drawer' %}absolute top-2 right-4 w-auto h-auto min-w-0 min-h-0 p-0 border-0 bg-transparent text-spy-input-border [&_svg]:w-[14px] [&_svg]:h-[14px] [&_svg]:max-w-none{% endif %}"
                       type="button"
                       aria-label="{{ 'accessibility.remove_item' | t: title: item.title | escape }}"
                       on:click="/onLineItemRemove/{{ item.index | plus: 1 }}"
@@ -391,18 +476,21 @@
                         hidden
                       {% endif %}
                     >
-                      {%- comment -%} Page shows the word, the drawer keeps the bin icon {%- endcomment -%}
+                      {%- comment -%} Page shows the word, the drawer uses the source's times glyph {%- endcomment -%}
                       {%- if context == 'drawer' -%}
-                        {{- 'icon-delete.svg' | inline_asset_content -}}
+                        {{- 'icon-close.svg' | inline_asset_content -}}
                         <span class="visually-hidden">{{ 'accessibility.remove' | t }}</span>
                       {%- else -%}
-                        <span class="spy-cart-item__remove-text">{{ 'accessibility.remove' | t }}</span>
+                        <span>{{ 'accessibility.remove' | t }}</span>
                       {%- endif -%}
                     </button>
+                    {%- endcapture -%}
+                    {%- comment -%} Page: Remove lives with the line total, like the source {%- endcomment -%}
+                    {%- unless is_page -%}{{ remove_button }}{%- endunless -%}
                   </div>
                 </td>
                 <td
-                  class="cart-items__error hidden"
+                  class="cart-items__error hidden{% if is_page %} row-3 col-1 min-[769px]:max-[992px]:row-4{% endif %}"
                   role="cell"
                   ref="cartItemErrorContainer-{{ item.index | plus: 1 }}"
                   headers="quantity"
@@ -430,11 +518,12 @@
                   endif
                 -%}
                 <td
-                  class="cart-items__price cart-secondary-typography"
+                  class="cart-items__price cart-secondary-typography {% if context == 'drawer' %}[grid-area:price] justify-self-end min-w-0 mt-4 text-[16px] font-normal leading-[22.4px] text-spy-line-price text-right{% else %}row-2 col-1 min-[769px]:max-[992px]:row-3 min-[992px]:row-1 self-stretch [display:flex] flex-col justify-between items-end gap-0 min-w-0 m-0 ml-[calc(var(--spy-c)_*_2)] w-[calc(var(--spy-c)_-_30px)] min-[992px]:ml-[calc((100%_+_30px)_*_0.75)] min-[992px]:w-[calc((100%_+_30px)_/_4_-_30px)] text-[16px] font-semibold leading-[22.4px] text-spy-line-price text-right{% endif %}"
                   role="cell"
                   headers="productTotal"
                 >
-                  <text-component value="{{ price | strip_html }}">{{ price }}</text-component>
+                  {%- if is_page -%}{{ remove_button }}{%- endif -%}
+                  <text-component value="{{ price | strip_html }}"{% if is_page %} class="block leading-[22.4px]"{% endif %}>{{ price }}</text-component>
                   {%- if item.unit_price_measurement -%}
                     <div class="cart-items__price-unit cart-secondary-typography">
                       {% render 'unit-price', price: unit_price, measurement: item.unit_price_measurement %}

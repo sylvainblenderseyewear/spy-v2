@@ -18,54 +18,33 @@
   endif
 %}
 
+{%- liquid
+  # 'spy' = the source heading: fluid 21.6-24px, 600, ink
+  assign spy_type = false
+  if block_settings.type_preset == 'spy'
+    assign spy_type = true
+  endif
+-%}
+
 <div
   class="cart-title spacing-style text-{{ block_settings.alignment }}{% if block_settings.text_color != blank %} color-custom-{{ block.id }}{% endif %}"
   style="{% render 'spacing-style', settings: block_settings %}"
   {{ block.shopify_attributes }}
 >
-  <h1 class="{{ block_settings.type_preset | default: 'h2' }}">
+  <h1 class="m-0 {% if spy_type %}block text-[calc(1.275rem_+_0.3vw)] min-[1200px]:text-[24px] font-semibold leading-[1.2] tracking-normal normal-case text-spy-ink{% else %}inline-flex items-center gap-[var(--gap-sm)] {{ block_settings.type_preset | default: 'h2' }}{% endif %}">
     {%- if cart.empty? or force_empty -%}
       {{ 'content.your_cart_is_empty' | t }}
     {%- else -%}
       {{ block_settings.title }}
-      {%- if block_settings.show_count -%}{% render 'cart-bubble' %}{%- endif -%}
+      {%- if block_settings.show_count -%}
+        {%- comment -%} Source prints the count inline in brackets, no pill {%- endcomment -%}
+        <span class="{% if spy_type %}[&_.cart-bubble]:inline [&_.cart-bubble]:static [&_.cart-bubble]:size-auto [&_.cart-bubble]:min-w-0 [&_.cart-bubble]:aspect-auto [&_.cart-bubble]:p-0 [&_.cart-bubble]:bg-transparent [&_.cart-bubble]:text-inherit [&_.cart-bubble\_\_background]:hidden [&_.cart-bubble\_\_text]:static [&_.cart-bubble\_\_text]:inline [&_.cart-bubble\_\_text]:[font:inherit] [&_.cart-bubble\_\_text]:text-inherit [&_.cart-bubble\_\_text-count]:inline-flex [&_.cart-bubble\_\_text-count]:before:content-['('] [&_.cart-bubble\_\_text-count]:after:content-[')']{% else %}[&_.cart-bubble]:inline-flex [&_.cart-bubble]:items-center [&_.cart-bubble]:justify-center [&_.cart-bubble]:w-fit [&_.cart-bubble]:aspect-auto [&_.cart-bubble]:p-[var(--cart-padding)] [&_.cart-bubble[data-maintain-ratio]]:size-[min(1lh,26px)] [&_.cart-bubble\_\_background]:bg-[rgb(var(--color-foreground-rgb)/var(--opacity-10-25))] [&_.cart-bubble\_\_text]:text-[var(--color-foreground)] [&_.cart-bubble\_\_text]:text-[length:clamp(var(--font-size--3xs),0.75em,var(--font-size--xs))]{% endif %}">
+          {%- render 'cart-bubble' -%}
+        </span>
+      {%- endif -%}
     {%- endif -%}
   </h1>
 </div>
-
-{% stylesheet %}
-  .cart-title h1 {
-    margin-block-end: 0;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--gap-sm);
-  }
-
-  .cart-title .cart-bubble {
-    width: fit-content;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    aspect-ratio: auto;
-    padding: var(--cart-padding);
-  }
-
-  .cart-title .cart-bubble[data-maintain-ratio] {
-    width: min(1lh, 26px);
-    height: min(1lh, 26px);
-  }
-
-  .cart-title .cart-bubble .cart-bubble__background {
-    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-10-25));
-  }
-
-  .cart-title .cart-bubble__text {
-    color: var(--color-foreground);
-    font-family: var(--font-paragraph--family);
-    font-weight: var(--font-paragraph--weight);
-    font-size: clamp(var(--font-size--3xs), 0.75em, var(--font-size--xs));
-  }
-{% endstylesheet %}
 
 {% schema %}
 {
@@ -124,6 +103,10 @@
         {
           "value": "h6",
           "label": "t:options.h6"
+        },
+        {
+          "value": "spy",
+          "label": "SPY cart heading"
         }
       ],
       "default": "",

@@ -3,13 +3,23 @@
 
   @param {string} [accelerated_checkout_buttons_layout] - { 'vertical' } Forced layout of the additional checkout buttons, instead of relying on platform's layout.
   @param {string} [section_id] - The section ID for cart discount component.
+  @param {string} [context] - Render context — pass `'drawer'` to use the drawer's leaner summary.
+  @param {boolean} [show_subtotal] - Page only. Pass false to drop the Subtotal row (source has none).
+  @param {string} [shipping_label] - Page only. Optional shipping row label.
+  @param {string} [shipping_value] - Page only. Text on the right of the shipping row.
+  @param {string} [checkout_label] - Page only. Overrides the checkout button text.
+  @param {boolean} [shipping_estimate] - Page only. Show the source's "Shipping" select with live rates.
+  @param {string} [shipping_select_label] - Page only. Label above the select.
+  @param {string} [estimate_country] - Page only. Estimate address override (else customer, else store).
+  @param {string} [estimate_province] - Page only.
+  @param {string} [estimate_zip] - Page only.
 {%- enddoc -%}
 
 {% render 'text-component-shimmer-styles' %}
 
-<div class="cart-totals">
+<div class="cart-totals {% if context == 'drawer' %}gap-0 pt-0 mt-0{% else %}w-full gap-0 p-0 m-0 border-0{% endif %}">
   {% # We need to keep this node in place to allow morphing to work properly # %}
-  <div class="cart-totals__original-container cart-primary-typography">
+  <div class="cart-totals__original-container cart-primary-typography {% if context == 'drawer' %}[&:not(:has(*))]:hidden{% endif %}">
     {%- if cart.cart_level_discount_applications.size > 0 -%}
       <span class="cart-totals__item cart-totals__original">
         <span class="cart-totals__original-label">{{ 'content.cart_subtotal' | t }}</span>
@@ -226,14 +236,23 @@
     endif
   -%}
 
-  <div class="cart-totals__container{% if settings.show_installments %} cart-totals__container--has-installments{% endif %}">
+  <div class="cart-totals__container{% if settings.show_installments %} cart-totals__container--has-installments{% endif %}{% if context != 'drawer' %} gap-0{% endif %}">
     {%- comment -%}
       Source always shows a subtotal above the total. Horizon only prints one when a
       cart-level discount exists (`cart-totals__original` above), so this covers the
       plain case and hides itself when that one is already on screen.
     {%- endcomment -%}
-    {%- if cart.cart_level_discount_applications.size == 0 -%}
-      <span class="cart-totals__item spy-cart-totals__subtotal">
+    {%- liquid
+      assign show_subtotal_row = true
+      if context == 'drawer' and settings.cart_drawer_show_subtotal != true
+        assign show_subtotal_row = false
+      endif
+      if context != 'drawer' and show_subtotal == false
+        assign show_subtotal_row = false
+      endif
+    -%}
+    {%- if cart.cart_level_discount_applications.size == 0 and show_subtotal_row -%}
+      <span class="cart-totals__item spy-cart-totals__subtotal{% if context != 'drawer' %} [display:flex] justify-between items-baseline gap-4 m-0 mb-2 p-0 text-[16px] leading-[22.4px] text-spy-ink{% endif %}">
         <span class="cart-totals__original-label cart-primary-typography">
           {{- 'content.cart_subtotal' | t -}}
         </span>
@@ -243,15 +262,76 @@
       </span>
     {%- endif -%}
 
+    {%- comment -%}
+      Source has a shipping row here. Shopify only knows the rate at checkout,
+      so the page shows an editable label + note instead of a price.
+    {%- endcomment -%}
+    {%- if context != 'drawer' and shipping_estimate -%}
+      {%- liquid
+        # Estimate address: signed-in customer, then theme setting, then the store itself
+        assign est_country = shop.address.country
+        assign est_province = shop.address.province
+        assign est_zip = shop.address.zip
+        if estimate_country != blank
+          assign est_country = estimate_country
+          assign est_province = estimate_province
+          assign est_zip = estimate_zip
+        endif
+        if customer.default_address
+          assign est_country = customer.default_address.country
+          assign est_province = customer.default_address.province
+          assign est_zip = customer.default_address.zip
+        endif
+      -%}
+      <script src="{{ 'spy-cart-shipping.js' | asset_url }}" type="module"></script>
+      <spy-shipping-estimate
+        class="block"
+        data-country="{{ est_country | escape }}"
+        data-province="{{ est_province | escape }}"
+        data-zip="{{ est_zip | escape }}"
+        data-money-format="{{ shop.money_format | strip_html | escape }}"
+        data-currency="{{ cart.currency.iso_code }}"
+        data-total="{{ cart.total_price }}"
+      >
+        {%- comment -%} Source: 16px label, 36px select, 16px under the group {%- endcomment -%}
+        <div class="mb-4">
+          <label class="block m-0 text-[16px] leading-[22.4px] text-spy-ink" for="spy-shipping-method">
+            {{- shipping_select_label -}}
+          </label>
+          <div class="relative">
+            <select
+              id="spy-shipping-method"
+              class="block w-full h-9 m-0 pt-[6.4px] pb-[6.4px] pl-1 pr-2 border border-spy-border rounded-none bg-transparent shadow-none appearance-none text-[13px] leading-[18.2px] text-spy-ink cursor-default transition-[background-color,border-color,box-shadow] duration-150 ease-[ease-in-out] focus:border-black focus:outline-none"
+              data-shipping-select
+            >
+              <option>{{ shipping_value }}</option>
+            </select>
+            <svg class="absolute right-0 top-1/2 -translate-y-1/2 size-[13px] max-w-none pointer-events-none text-spy-gray" aria-hidden="true" focusable="false" viewBox="0 0 26 26"><path fill="currentColor" d="M4 9h18l-9 9z"/></svg>
+          </div>
+        </div>
+        {%- if shipping_label != blank -%}
+          <span class="cart-totals__item spy-cart-totals__shipping [display:flex] justify-between items-baseline gap-4 m-0 mb-2 p-0 text-[16px] leading-[22.4px] text-spy-ink">
+            <span>{{ shipping_label }}</span>
+            <span class="text-right" data-shipping-cost>{{ shipping_value }}</span>
+          </span>
+        {%- endif -%}
+      </spy-shipping-estimate>
+    {%- elsif context != 'drawer' and shipping_label != blank -%}
+      <span class="cart-totals__item spy-cart-totals__shipping [display:flex] justify-between items-baseline gap-4 m-0 mb-2 p-0 text-[16px] leading-[22.4px] text-spy-ink">
+        <span>{{ shipping_label }}</span>
+        <span class="text-right">{{ shipping_value }}</span>
+      </span>
+    {%- endif -%}
+
     <span
-      class="cart-totals__item cart-totals__total"
+      class="cart-totals__item cart-totals__total {% if context == 'drawer' %}my-4{% else %}[display:flex] justify-between items-baseline gap-4 m-0 mb-2 p-0 text-[16px] leading-[22.4px] text-spy-ink{% endif %}"
       role="status"
     >
-      <span class="cart-totals__total-label cart-primary-typography">{{ 'content.cart_estimated_total' | t }}</span>
+      <span class="cart-totals__total-label cart-primary-typography {% if context == 'drawer' %}text-[16px] font-semibold leading-[22.4px] text-spy-ink{% else %}text-[16px] font-bold leading-[22.4px]{% endif %}">{{ 'content.cart_estimated_total' | t }}</span>
       <text-component
         ref="cartTotal"
         value="{{ total_price | strip_html }}"
-        class="cart-totals__total-value cart-secondary-typography"
+        class="cart-totals__total-value cart-secondary-typography {% if context == 'drawer' %}text-[16px] font-semibold leading-[22.4px] text-spy-ink{% else %}text-[16px] font-normal leading-[22.4px] text-right{% endif %}"
         {% comment %} Used by payment_terms web component {% endcomment %}
         data-testid="cart-total-value"
         data-cart-subtotal
@@ -266,27 +346,57 @@
         {% endform %}
       </span>
     {% endif %}
-    <div class="cart-totals__item cart-totals__tax-note cart-primary-typography">
-      {% render 'tax-info', has_discounts_enabled: settings.show_add_discount_code %}
-    </div>
+    {%- if context != 'drawer' or settings.cart_drawer_show_tax_note -%}
+      <div class="cart-totals__item cart-totals__tax-note cart-primary-typography{% if context != 'drawer' %} hidden{% endif %}">
+        {% render 'tax-info', has_discounts_enabled: settings.show_add_discount_code %}
+      </div>
+    {%- endif -%}
   </div>
 </div>
 
-<div class="cart__ctas">
-  <button
-    type="submit"
-    id="checkout"
-    class="cart__checkout-button button"
-    name="checkout"
-    {% if cart == empty %}
-      disabled
-    {% endif %}
-    form="cart-form"
-  >
-    <span class="button-text">
-      {{ 'content.checkout' | t }}
-    </span>
-  </button>
+<div class="cart__ctas {% if context == 'drawer' %}gap-0{% else %}w-full mt-4{% endif %}">
+  {%- liquid
+    assign cta_to_cart = false
+    if context == 'drawer' and settings.cart_drawer_cta_target == 'cart'
+      assign cta_to_cart = true
+    endif
+  -%}
+  {%- if cta_to_cart -%}
+    {%- comment -%} Source sends shoppers to the cart page, not straight to checkout {%- endcomment -%}
+    <a
+      href="{{ routes.cart_url }}"
+      id="checkout"
+      class="cart__checkout-button button{% if cart == empty %} is-disabled{% endif %} [display:flex] items-center justify-center w-full min-h-[51px] p-4 rounded-none text-[12px] font-normal leading-[16.8px] tracking-normal uppercase no-underline border border-spy-orange-ui {% if settings.cart_drawer_cta_style == 'outline' %}bg-transparent text-spy-orange-ui{% else %}bg-spy-orange-ui text-white{% endif %} hover:bg-spy-cta-hover hover:border-spy-cta-hover hover:text-white [&.is-disabled]:pointer-events-none [&.is-disabled]:opacity-50 [&[disabled]]:pointer-events-none [&[disabled]]:opacity-50"
+      role="button"
+      {% if cart == empty %}
+        aria-disabled="true"
+        tabindex="-1"
+      {% endif %}
+    >
+      <span class="button-text">
+        {{ 'content.cart_drawer_cta' | t }}
+      </span>
+    </a>
+  {%- else -%}
+    <button
+      type="submit"
+      id="checkout"
+      class="cart__checkout-button button {% if context == 'drawer' %}[display:flex] items-center justify-center w-full min-h-[51px] p-4 rounded-none text-[12px] font-normal leading-[16.8px] tracking-normal uppercase no-underline border border-spy-orange-ui {% if settings.cart_drawer_cta_style == 'outline' %}bg-transparent text-spy-orange-ui{% else %}bg-spy-orange-ui text-white{% endif %} hover:bg-spy-cta-hover hover:border-spy-cta-hover hover:text-white [&.is-disabled]:pointer-events-none [&.is-disabled]:opacity-50 [&[disabled]]:pointer-events-none [&[disabled]]:opacity-50{% else %}[display:flex] items-center justify-center gap-0 w-full min-h-[54px] m-0 p-4 rounded-none shadow-none border border-spy-orange-ui bg-spy-orange-ui text-white text-[14px] font-normal leading-[19.6px] tracking-normal uppercase transition-colors duration-150 ease-[ease-in-out] hover:bg-spy-cta-hover hover:border-spy-cta-hover hover:text-white{% endif %}"
+      name="checkout"
+      {% if cart == empty %}
+        disabled
+      {% endif %}
+      form="cart-form"
+    >
+      <span class="button-text">
+        {%- if context != 'drawer' and checkout_label != blank -%}
+          {{ checkout_label }}
+        {%- else -%}
+          {{ 'content.checkout' | t }}
+        {%- endif -%}
+      </span>
+    </button>
+  {%- endif -%}
 
   {% if additional_checkout_buttons and settings.show_accelerated_checkout_buttons %}
     <div

@@ -8,151 +8,107 @@
   endif
 %}
 
-{% capture cart_page_more_blocks_content %}
-  <div class="cart-page__more-blocks">
-    {%- content_for 'blocks' -%}
-  </div>
-{% endcapture %}
+{%- liquid
+  # Utility sets shared by the live page and the empty-cart template
+  assign ladder_class = ''
+  if section.settings.section_width == 'container'
+    assign ladder_class = ' w-full mx-auto min-[544px]:max-w-[540px] min-[769px]:max-w-[720px] min-[992px]:max-w-[1140px] min-[1200px]:max-w-[1440px]'
+  endif
+-%}
+{%- capture cart_page_style -%}
+  {%- render 'spacing-style', settings: section.settings -%}
+  --spy-cart-cols: {{ section.settings.summary_columns | default: 5 }};
+  --spy-cart-gap: {{ section.settings.column_gap | default: 0 }}px;
+  --spy-cart-gutter: {{ section.settings.gutter | default: 0 }}px;
+{%- endcapture -%}
+
+{% capture more_blocks %}{%- content_for 'blocks' -%}{% endcapture %}
 
 {% capture cart_items_children %}
   <template id="empty-cart-template">
     <div class="section-background{% if custom_color %} color-custom-{{ section.id }}{% endif %}"></div>
     <div
-      class="section{% if custom_color %} color-custom-{{ section.id }}{% endif %} section--{{ section.settings.section_width }}"
+      class="section{% if custom_color %} color-custom-{{ section.id }}{% endif %} section--{{ section.settings.section_width }}{% if section.settings.section_width == 'container' %} [&>*]:col-span-full{% endif %}"
     >
       <div
-        class="cart-page spacing-style{% if cart.empty? %} cart-page--empty{% endif %}"
-        style="{% render 'spacing-style', settings: section.settings %}"
+        class="cart-page cart-page--empty spacing-style [display:flex] flex-col items-center justify-center px-[var(--spy-cart-gutter)]{{ ladder_class }}"
+        style="{{ cart_page_style }}"
       >
-        <div class="cart-page__title">
+        <div class="cart-page__title mt-[var(--margin-6xl)] text-center">
           {%- content_for 'block', id: 'cart-page-title', type: '_cart-title', force_empty: true %}
         </div>
-        <div class="cart-page__items">
+        <div class="cart-page__items mt-[var(--margin-lg)]">
           {%- content_for 'block', id: 'cart-page-items', type: '_cart-products', force_empty: true %}
         </div>
-        {{ cart_page_more_blocks_content }}
+        <div class="cart-page__more-blocks w-full mt-[var(--margin-6xl)]">{{ more_blocks }}</div>
       </div>
     </div>
   </template>
 
   <div class="section-background{% if custom_color %} color-custom-{{ section.id }}{% endif %}"></div>
   <div
-    class="section{% if custom_color %} color-custom-{{ section.id }}{% endif %} section--{{ section.settings.section_width }}"
+    class="section{% if custom_color %} color-custom-{{ section.id }}{% endif %} section--{{ section.settings.section_width }}{% if section.settings.section_width == 'container' %} [&>*]:col-span-full{% endif %}"
   >
+    {%- comment -%}
+      Source grid: Bootstrap row, items + summary split out of 12 columns,
+      side by side from 769px. Values come from the section settings.
+    {%- endcomment -%}
     <div
-      class="cart-page spacing-style{% if cart.empty? %} cart-page--empty{% endif %}"
-      style="{% render 'spacing-style', settings: section.settings %}"
+      class="cart-page spacing-style px-[var(--spy-cart-gutter)] text-spy-ink{% if cart.empty? %} cart-page--empty [display:flex] flex-col items-center justify-center{% else %} [display:grid] grid-cols-[100%] gap-0 min-[769px]:grid-cols-[calc((100%_+_var(--spy-cart-gap))_*_(12_-_var(--spy-cart-cols))_/_12_-_var(--spy-cart-gap))_calc((100%_+_var(--spy-cart-gap))_*_var(--spy-cart-cols)_/_12_-_var(--spy-cart-gap))] min-[769px]:gap-x-[var(--spy-cart-gap)] grid-rows-[auto]{% endif %}{{ ladder_class }}"
+      style="{{ cart_page_style }}"
     >
-      {%- comment -%} Source puts a back link above the heading {%- endcomment -%}
-      <a
-        class="spy-cart__continue"
-        href="{{ settings.empty_cart_button_link | default: routes.all_products_collection_url }}"
-      >
-        &lt; {{ 'actions.continue_shopping' | t }}
-      </a>
+      {%- if section.settings.show_continue_link != false -%}
+        {%- comment -%} Source puts a back link above the heading {%- endcomment -%}
+        {%- liquid
+          assign continue_label = section.settings.continue_label
+          if continue_label == blank
+            assign continue_label = 'actions.continue_shopping' | t
+          endif
+        -%}
+        <div class="spy-cart__continue-row row-1 col-span-full self-start mb-6 leading-[22.4px]">
+          <a
+            class="spy-cart__continue inline-block text-[13px] font-semibold leading-[18.2px] uppercase text-spy-text-2 no-underline transition-colors duration-200 ease-out hover:text-spy-link-hover"
+            href="{{ section.settings.continue_link | default: settings.empty_cart_button_link | default: routes.all_products_collection_url }}"
+          >
+            &lt; {{ continue_label }}
+          </a>
+        </div>
+      {%- endif -%}
 
-      <div class="cart-page__title">
+      <div class="cart-page__title{% if cart.empty? %} mt-[var(--margin-6xl)] text-center{% else %} row-2 col-span-full mb-2{% endif %}">
         {%- content_for 'block', id: 'cart-page-title', type: '_cart-title' %}
       </div>
 
-      <div class="cart-page__items">
+      <div class="cart-page__items min-w-0{% if cart.empty? %} mt-[var(--margin-lg)]{% else %} row-3 col-1 mt-0{% endif %}">
         {%- content_for 'block', id: 'cart-page-items', type: '_cart-products' %}
 
         {%- comment -%}
           Promo code — Shopify has no cart-page discount API, so this hands off to
           /discount/{code}, which applies it and redirects back here.
         {%- endcomment -%}
-        {%- unless cart.empty? -%}
-          {%- render 'spy-cart-promo' -%}
-        {%- endunless -%}
+        {%- if section.settings.show_promo != false -%}
+          {%- unless cart.empty? -%}
+            {%- render 'spy-cart-promo',
+              toggle_label: section.settings.promo_toggle_label,
+              label: section.settings.promo_label,
+              placeholder: section.settings.promo_placeholder,
+              button_label: section.settings.promo_button
+            -%}
+          {%- endunless -%}
+        {%- endif -%}
       </div>
 
       {%- unless cart.empty? -%}
-        <div class="cart-page__summary">
-          <h2 class="spy-cart__summary-heading">{{ 'content.cart_order_summary' | t }}</h2>
+        <div class="cart-page__summary row-4 col-1 min-[769px]:row-3 min-[769px]:col-2 block h-auto min-w-0 p-0 self-start min-[769px]:has-[.cart-summary--extend]:self-stretch">
           {%- content_for 'block', id: 'cart-page-summary', type: '_cart-summary' -%}
         </div>
       {%- endunless -%}
 
-      {{ cart_page_more_blocks_content }}
+      <div class="cart-page__more-blocks w-full{% if cart.empty? %} mt-[var(--margin-6xl)]{% else %} col-span-full{% endif %}">{{ more_blocks }}</div>
     </div>
   </div>
 {% endcapture %}
 {% render 'cart-items-component', children: cart_items_children, section_id: section.id %}
-
-{% stylesheet %}
-  .cart-page {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0 var(--padding-5xl);
-  }
-
-  .cart-page--empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .cart-page--empty .cart-page__title,
-  .cart-page--empty .cart-page__more-blocks {
-    margin-top: var(--margin-6xl);
-  }
-
-  .cart-page__more-blocks {
-    width: 100%;
-  }
-
-  .cart-page--empty .cart-title {
-    text-align: center;
-  }
-
-  .cart-page__main {
-    grid-column: 1;
-  }
-
-  .cart-page__summary {
-    padding-top: var(--padding-xl);
-  }
-
-  .cart-page__title + .cart-page__items {
-    margin-block-start: var(--margin-lg);
-  }
-
-  @media screen and (min-width: 750px) {
-    .cart-page {
-      grid-template-columns: 1fr min(50vw, var(--sidebar-width));
-      grid-template-rows: min-content min-content 1fr;
-    }
-
-    .cart-page__summary {
-      display: grid;
-      height: 100%;
-      grid-column: 2;
-      grid-row: 1 / -1;
-      align-self: stretch;
-      grid-template-rows: subgrid;
-      padding-top: 0;
-
-      /* needed to support blurred effect from hero section */
-      position: relative;
-    }
-
-    .section--page-width .cart-page:has(.cart-summary--extend) {
-      grid-column: 2 / 4;
-      grid-template-columns: 1fr minmax(
-          var(--sidebar-width),
-          calc((100vw - var(--page-width)) / 2 + var(--sidebar-width))
-        );
-    }
-  }
-
-  @media screen and (min-width: 1400px) {
-    .cart-page {
-      grid-template-columns: 1fr var(--sidebar-width);
-    }
-  }
-{% endstylesheet %}
 
 {% schema %}
 {
@@ -202,9 +158,107 @@
         {
           "value": "full-width",
           "label": "t:options.full"
+        },
+        {
+          "value": "container",
+          "label": "Container ladder (540 / 720 / 1140 / 1440)"
         }
       ],
       "default": "page-width"
+    },
+    {
+      "type": "range",
+      "id": "gutter",
+      "label": "Side gutter",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "summary_columns",
+      "label": "Summary width (columns of 12)",
+      "info": "Items and summary sit side by side from 769px.",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Continue shopping link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_continue_link",
+      "label": "Show link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "continue_label",
+      "label": "Label",
+      "info": "Leave blank to use the translation.",
+      "visible_if": "{{ section.settings.show_continue_link }}"
+    },
+    {
+      "type": "url",
+      "id": "continue_link",
+      "label": "Link",
+      "info": "Leave blank to use the empty-cart link from theme settings.",
+      "visible_if": "{{ section.settings.show_continue_link }}"
+    },
+    {
+      "type": "header",
+      "content": "Promo code"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_promo",
+      "label": "Show promo code box",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "promo_toggle_label",
+      "label": "Mobile toggle label",
+      "info": "Shown under 544px. Leave blank to use the translation.",
+      "visible_if": "{{ section.settings.show_promo }}"
+    },
+    {
+      "type": "text",
+      "id": "promo_label",
+      "label": "Label",
+      "info": "Leave blank to use the translation.",
+      "visible_if": "{{ section.settings.show_promo }}"
+    },
+    {
+      "type": "text",
+      "id": "promo_placeholder",
+      "label": "Placeholder",
+      "visible_if": "{{ section.settings.show_promo }}"
+    },
+    {
+      "type": "text",
+      "id": "promo_button",
+      "label": "Button label",
+      "visible_if": "{{ section.settings.show_promo }}"
     },
     {
       "type": "color",

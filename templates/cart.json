@@ -17,7 +17,7 @@
           "settings": {
             "title": "Your Cart",
             "show_count": true,
-            "type_preset": "h4",
+            "type_preset": "spy",
             "alignment": "left",
             "padding-block-start": 0,
             "padding-block-end": 0,
@@ -31,13 +31,19 @@
           "static": true,
           "settings": {
             "gap": 24,
-            "image_ratio": "portrait",
+            "image_ratio": "square",
             "dividers": true,
             "vendor": false,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "padding-inline-end": 0,
+            "quantity_style": "dropdown",
+            "quantity_max": 10,
+            "image_max_width": 140,
+            "title_case": "uppercase",
+            "show_quantity_line": true,
+            "show_stock": true
           },
           "blocks": {}
         },
@@ -46,20 +52,34 @@
           "static": true,
           "settings": {
             "extend_summary": false,
-            "background_color": "{{ settings.color_palette.color2 }}",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
-            "border_radius": 0
+            "border_radius": 0,
+            "heading": "Order Summary",
+            "show_subtotal": false,
+            "shipping_label": "Shipping cost",
+            "shipping_value": "Calculated at checkout",
+            "checkout_label": "Checkout",
+            "shipping_estimate": true,
+            "shipping_select_label": "Shipping",
+            "estimate_country": "United States",
+            "estimate_province": "California",
+            "estimate_zip": "92008"
           },
           "blocks": {}
         }
       },
       "settings": {
-        "section_width": "page-width",
+        "section_width": "container",
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 24,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "gutter": 15,
+        "summary_columns": 5,
+        "column_gap": 30,
+        "show_continue_link": true,
+        "show_promo": true
       }
     }
   },

@@ -3,44 +3,79 @@
 
   Shopify has no cart-page discount API, so this posts nowhere: the JS turns the
   typed code into a visit to `/discount/{code}?redirect=/cart`, which applies it and
-  comes straight back. A code already on the cart is listed below the field so it can
-  be cleared the same way Horizon's discount pill does.
+  comes straight back.
 
-  Sits under the line items, where the source puts it.
+  Sits under the line items, where the source puts it. Under 544px the source adds
+  a collapsible "Enter promo code (optional)" header, so the box is a <details>
+  whose summary only shows on phones.
+
+  @param {string} [toggle_label] - Mobile header text. Blank uses the translation.
+  @param {string} [label] - Field label. Blank uses the translation.
+  @param {string} [placeholder] - Field placeholder. Blank uses the translation.
+  @param {string} [button_label] - Button text. Blank uses the translation.
 
   @example
   {%- render 'spy-cart-promo' -%}
 {%- enddoc -%}
 
-<form
-  class="spy-cart-promo"
-  data-spy-cart-promo
-  action="{{ routes.cart_url }}"
-  method="get"
->
-  <label class="spy-cart-promo__label" for="spy-promo-code">
-    {{ 'content.cart_promo_prompt' | t }}
-  </label>
+{%- liquid
+  if toggle_label == blank
+    assign toggle_label = 'content.cart_promo_toggle' | t
+  endif
+  if label == blank
+    assign label = 'content.cart_promo_prompt' | t
+  endif
+  if placeholder == blank
+    assign placeholder = 'content.cart_promo_placeholder' | t
+  endif
+  if button_label == blank
+    assign button_label = 'actions.apply' | t
+  endif
+-%}
 
-  <div class="spy-cart-promo__row">
-    <input
-      class="spy-cart-promo__input"
-      id="spy-promo-code"
-      name="promo"
-      type="text"
-      autocomplete="off"
-      autocapitalize="characters"
-      spellcheck="false"
-      placeholder="{{ 'content.cart_promo_placeholder' | t }}"
-      aria-describedby="spy-promo-error"
-    >
-    <button class="spy-cart-promo__apply" type="submit">
-      {{ 'actions.apply' | t }}
-    </button>
-  </div>
+<details class="spy-cart-promo-wrap group mt-0 min-[544px]:mt-6" open>
+  <summary class="[display:flex] items-center justify-between gap-0 m-0 mb-6 p-0 pt-6 text-[16px] leading-[22.4px] text-spy-ink cursor-pointer list-none min-[544px]:hidden [&::-webkit-details-marker]:hidden">
+    {{ toggle_label }}
+    {%- comment -%} Source toggle: a 10px minus that grows a vertical bar when closed {%- endcomment -%}
+    <span class="relative size-[10px] mt-2 mr-2 shrink-0" aria-hidden="true">
+      <span class="absolute left-0 bottom-1 w-[10px] border-b-2 border-black"></span>
+      <span class="absolute left-0 bottom-1 w-[10px] border-b-2 border-black rotate-90 transition-transform duration-300 group-open:rotate-0"></span>
+    </span>
+  </summary>
 
-  {%- comment -%} Filled by the script when the field is empty; also the aria live region {%- endcomment -%}
-  <p class="spy-cart-promo__error" id="spy-promo-error" role="status" hidden></p>
-</form>
+  <form
+    class="spy-cart-promo mb-6 border border-spy-border p-4 min-[1200px]:grid min-[1200px]:grid-cols-2 min-[1200px]:gap-x-[30px]"
+    data-spy-cart-promo
+    action="{{ routes.cart_url }}"
+    method="get"
+  >
+    <label class="spy-cart-promo__label block mb-2 min-[1200px]:pt-2 text-[16px] font-normal leading-[22.4px] text-spy-ink" for="spy-promo-code">
+      {{- label -}}
+    </label>
+
+    <div class="spy-cart-promo__row [display:flex] gap-0">
+      <input
+        class="spy-cart-promo__input flex-1 min-w-0 h-9 mr-4 py-2 px-1 border border-spy-border rounded-none bg-transparent shadow-none text-[13px] leading-[18.2px] text-spy-ink placeholder:text-spy-strike focus:border-black focus:outline-none"
+        id="spy-promo-code"
+        name="promo"
+        type="text"
+        autocomplete="off"
+        autocapitalize="characters"
+        spellcheck="false"
+        placeholder="{{ placeholder | escape }}"
+        aria-describedby="spy-promo-error"
+      >
+      <button
+        class="spy-cart-promo__apply shrink-0 h-9 min-h-0 py-2 px-3 border border-spy-cta-ground rounded-none bg-spy-cta-ground text-black text-[12px] font-normal leading-[16.8px] uppercase cursor-pointer transition-colors duration-150 ease-[ease-in-out] hover:bg-spy-cta-hover hover:border-spy-cta-hover hover:text-white min-[1200px]:h-[38.4px]"
+        type="submit"
+      >
+        {{- button_label -}}
+      </button>
+    </div>
+
+    {%- comment -%} Filled by the script when the field is empty; also the aria live region {%- endcomment -%}
+    <p class="spy-cart-promo__error m-0 mt-1 text-[13px] leading-[18.2px] text-spy-gray min-[1200px]:col-start-2" id="spy-promo-error" role="status" hidden></p>
+  </form>
+</details>
 
 <script src="{{ 'spy-cart-promo.js' | asset_url }}" defer></script>
