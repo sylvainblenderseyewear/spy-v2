@@ -24,35 +24,45 @@
 
   {% capture empty_cart_drawer_content %}
     <div
-      class="cart-drawer__content"
+      class="cart-drawer__content h-auto flex-auto min-h-0 items-stretch justify-start"
       aria-label="{{ 'accessibility.cart' | t }}"
     >
-      <h2
-        class="theme-drawer__title h4"
-        id="cart-drawer-heading"
-      >
-        {{ 'content.your_cart_is_empty' | t }}
-      </h2>
-
-      <div class="cart-drawer__items">
+      <div class="cart-drawer__items flex-auto px-0">
         {% render 'cart-products', force_empty: true, context: 'drawer' %}
       </div>
-    </div>
-    {% endcapture %}
 
+      <div class="cart-drawer__summary gap-0 items-stretch pt-0 px-4 pb-4 [mask-image:none]">
+        {% render 'cart-summary', section_id: 'cart-drawer-section', context: 'drawer' %}
+      </div>
+    </div>
+  {% endcapture %}
+
+  {% comment %} Overlay drawers close on an outside click; pushed ones stay put {% endcomment %}
   <theme-drawer
     id="cart-drawer"
     data-skip-node-update
+    {% unless settings.cart_drawer_push_page %}light-dismiss{% endunless %}
   >
     <dialog
       ref="panel"
-      class="theme-drawer__dialog color-custom-drawer"
+      class="theme-drawer__dialog color-custom-drawer cart-drawer__panel border-l-0 z-[51] [--animation-speed:426ms] [--animation-timing-fade-in:cubic-bezier(0.5,0.25,0,1)]"
       aria-labelledby="cart-drawer-heading"
       cart-summary-sticky="true"
+      {% if settings.cart_drawer_push_page %}data-push-page{% endif %}
+      {% if settings.cart_drawer_lock_scroll %}data-lock-scroll{% endif %}
+      {% if settings.cart_drawer_dividers %}data-dividers{% endif %}
+      style="
+        --theme-drawer-width: {{ settings.cart_drawer_width }}px;
+        --cart-drawer-thumb: {{ settings.cart_drawer_thumbnail_size }}px;
+        --cart-drawer-row-gap: {{ settings.cart_drawer_row_gap }}px;
+      "
     >
       <cart-drawer-component
         {% if settings.auto_open_cart_drawer and template.name != 'cart' %}
           auto-open
+          {% if settings.cart_drawer_close_after_add %}
+            close-after-add="{{ settings.cart_drawer_close_after_add_delay }}"
+          {% endif %}
         {% endif %}
       >
         <template id="empty-cart-template">
@@ -63,63 +73,40 @@
           class="cart-drawer__inner{% if cart.empty? %} cart-drawer--empty{% endif %}"
           data-hydration-key="cart-drawer-inner"
         >
-          {%- if cart.empty? -%}
-            <div class="theme-drawer__header">
-              <button
-                on:click="#cart-drawer/close"
-                class="theme-drawer__close-button cart-drawer__close-button--empty"
-                type="button"
-                aria-label="{{ 'actions.close' | t }}"
-              >
-                <span class="svg-wrapper">
-                  {{- 'icon-close.svg' | inline_asset_content -}}
-                </span>
-              </button>
-            </div>
-          {%- else -%}
-            {% capture cart_badge_html %}
-              <span
-                class="theme-drawer__badge{% if cart.item_count == 0 %} visually-hidden{% endif %}"
-                aria-hidden="true"
-                {% if cart.item_count <= 99 %}
-                  data-maintain-ratio
-                {% endif %}
-              >
-                {{- cart.item_count -}}
-              </span>
-              {% if cart.item_count > 0 %}
-                <span class="visually-hidden">
-                  {{ 'accessibility.cart_count' | t }}: {{ cart.item_count }}
-                </span>
-              {% endif %}
-            {% endcapture %}
-            {% assign cart_drawer_title = 'content.cart_title' | t %}
-            {% render 'theme-drawer-header',
-              title: cart_drawer_title,
-              drawer_id: 'cart-drawer',
-              heading_id: 'cart-drawer-heading',
-              title_append: cart_badge_html
-            %}
-          {%- endif -%}
+          {%- comment -%} Header stays put when the cart empties, like the source {%- endcomment -%}
+          {% capture cart_drawer_count %}
+            <span class="cart-drawer__count" aria-hidden="true">({{ cart.item_count }})</span>
+            <span class="visually-hidden">
+              {{ 'accessibility.cart_count' | t }}: {{ cart.item_count }}
+            </span>
+          {% endcapture %}
+          {% assign cart_drawer_title = 'content.cart_drawer_title' | t %}
+          {% render 'theme-drawer-header',
+            title: cart_drawer_title,
+            drawer_id: 'cart-drawer',
+            heading_id: 'cart-drawer-heading',
+            title_append: cart_drawer_count,
+            icon: 'spy-fa-bag.svg',
+            class: 'min-h-[41px] items-center gap-0 p-0 pl-4 border-b border-b-spy-border',
+            title_class: '[display:flex] items-center gap-2 m-0 font-spy text-[13px] font-semibold leading-[18.2px] tracking-normal text-spy-ink normal-case',
+            icon_class: '[display:flex] items-center [&>svg]:w-4 [&>svg]:h-[14px] [&>svg]:max-w-none',
+            close_class: 'w-[46px] h-10 min-w-0 min-h-0 px-4 py-2 border-0 rounded-none bg-transparent shadow-none text-spy-ink [&_svg]:w-[13px] [&_svg]:h-[13px] [&_svg]:max-w-none'
+          %}
 
           {% capture cart_items_children %}
-            {%- if cart.empty? -%}
-              {{ empty_cart_drawer_content }}
-            {%- else -%}
-              <scroll-hint
-                class="cart-drawer__content"
-                aria-label="{{ 'accessibility.cart' | t }}"
-                style="--header-height: 60px;"
-              >
-                <scroll-hint class="cart-drawer__items">
-                  {% render 'cart-products', context: 'drawer' %}
-                </scroll-hint>
-
-                <div class="cart-drawer__summary">
-                  {% render 'cart-summary', section_id: 'cart-drawer-section' %}
-                </div>
+            <scroll-hint
+              class="cart-drawer__content h-auto flex-auto min-h-0 items-stretch justify-start"
+              aria-label="{{ 'accessibility.cart' | t }}"
+              style="--header-height: 41px;"
+            >
+              <scroll-hint class="cart-drawer__items flex-auto px-0">
+                {% render 'cart-products', context: 'drawer' %}
               </scroll-hint>
-            {%- endif -%}
+
+              <div class="cart-drawer__summary gap-0 items-stretch pt-0 px-4 pb-4 [mask-image:none]">
+                {% render 'cart-summary', section_id: 'cart-drawer-section', context: 'drawer' %}
+              </div>
+            </scroll-hint>
           {% endcapture %}
           {% render 'cart-items-component',
             children: cart_items_children,

@@ -133,3 +133,135 @@ are shared with the cart page, which is already signed off at 1:1.
 - Quantity read-only; remove still works over AJAX
 - **Cart page unaffected** — regression-check it at all three breakpoints
 - No console errors · `npm run build:css` run · pushed to Staging v2
+
+---
+
+## 10. Pixel diff after the rebuild (2026-09-23, 1440)
+
+Element-by-element, source vs ours. `rx` is measured from the panel's left edge, so the
+persistent 1px offset is just the source panel's own left border.
+
+| Element | Source | Ours | Δ |
+|---|---|---|---|
+| panel | 320 x 900 | 320 x 900 | 0 |
+| header | rx1 y0 319x41, rule 1px `#e6e6e6` | rx0 y0 320x41, same rule | 1 |
+| bag icon | rx17 y13 16x14 | rx16 y13 16x14 | 1 |
+| title type | 13 / 18.2 / 600 `#1d2a2b` | 13 / 18.2 / 600 `#1d2a2b` | **0** |
+| count | inline `(N)` | inline `(N)` | **0** |
+| close | rx274 y0 46x40 | rx274 y0 46x40 | **0** |
+| image | rx17 y57 95x95 | rx16 y57 95x95 | 1 |
+| details column | rx127 w177 | rx126 w178 | 1 |
+| name type | 15 / 18 / 700 `#1d2a2b` | 15 / 18 / 700 `#1d2a2b` | **0** |
+| variant type | 13 / 18.2 / 400 | 13 / 18.2 / 400 | **0** |
+| quantity | `Quantity : N` right, 13/600 + 13/400 | same | **0** |
+| remove | rx290 y49 `#cccccc` | rx290 y49 `#cccccc` | **0** |
+| line price | right, 16 / 22.4 `#222222` | right, 16 / 22.4 `#222222` | **0** |
+| footer | rx1 y778 319x122 | rx0 y777 320x123 | ~1 |
+| total row | y795, 16 / 22.4 / 600 | y794, 16 / 22.4 / 600 | 1 |
+| CTA | rx17 y833 287x51, 12/16.8, `#f27e37` | rx16 y832 288x52, same | 1 |
+
+### Four defects this pass found and fixed
+
+1. **Missing 15px gutter.** `margin-right` on a grid item whose track is exactly
+   `--cart-drawer-thumb` has nowhere to go, so the text column started at 111 instead of 126.
+   The gutter now lives inside the track: `calc(var(--cart-drawer-thumb) + 15px)`.
+2. **Remove button inflated the first row by 22px.** Its 44px touch target was the tallest thing
+   in the `details` grid row. It is now `position: absolute` at `top 8 / right 16`, which also
+   matches the source's y=49 exactly.
+3. **Footer 23px too tall.** Horizon's `.cart-totals` carries `padding-top: 20px` + 2px margin,
+   and the kept-for-morphing `.cart-totals__original-container` reserved height while empty.
+   Both neutralised in drawer scope.
+4. **Currency code.** `$130.00 USD` -> `$130.00`; the existing
+   `currency_code_enabled_cart_items` / `_cart_total` settings are now `false`.
+
+### Remaining differences — none are theme bugs
+
+- **Cents.** Source prints `$200`, we print `$130.00`. This is the **shop's currency format**
+  (Admin -> Settings -> Currency formatting), which is site-wide, not per component. The cart
+  page has the same gap against its own source. Needs a decision before anyone "fixes" it in CSS.
+- **Product title carries the colourway.** Ours reads `CYRUS MATTE BLACK`, the source reads
+  `CYRUS SWITCH` with the colour on the attribute line. Each colourway is its own Shopify product
+  in staging; the source has one model plus a colour attribute. This is the combined-listing
+  migration, not the template.
+- **Focus ring on the close button.** Horizon moves focus into the drawer on open, so the close
+  button shows a 2px ring. The source does not move focus at all. **Keeping ours** — WCAG 2.1 AA
+  is a project requirement and the ring is transparent once focus leaves.
+- **Row height** 149.7 vs 198 — content-driven: our variant line wraps to 2 lines, the source's
+  colour name to 3.
+
+### Also verified this pass
+
+- **Empty state** now matches: header stays (`Your Cart (0)`), centred
+  "Your Shopping Cart is Empty", footer stays with Estimated Total and a disabled `GO TO CART`,
+  and Horizon's "Continue shopping" button is gone.
+- **Cart page**: unchanged — promo form 74px, no Horizon discount block, subtotal + total,
+  stepper intact, `Check out` button intact.
+
+---
+
+## 11. Outside-click dismissal (2026-09-23)
+
+**Reported:** the source drawer closes when you click elsewhere on the page; ours did not.
+**Confirmed at 1440 only** — 768 and 390 already closed.
+
+**Cause.** `assets/theme-drawer.js` picks its mode from `#modalQuery`:
+
+- below `MODAL_BREAKPOINT` → `panel.showModal()`: top layer, native backdrop, and
+  `#onBackdropClick` fires on an outside click because the backdrop is part of the dialog.
+- desktop → `panel.show()`: **non-modal, no backdrop**, and the handler is documented as "inert".
+
+Stock Horizon gets away with that because `.page-wrapper--drawer-open` pushes the page aside — the
+desktop drawer is a persistent sidebar, nothing to dismiss. **Removing the page push for source
+parity turned it into an overlay that could not be dismissed.** Escape and the X still worked,
+which is why it survived the earlier pass.
+
+**Fix.** `#onDocumentPointerDown` in `theme-drawer.js`, gated on a `light-dismiss` attribute:
+closes an open non-modal drawer when the pointer goes down outside the panel, skipping the control
+carrying `aria-controls="<drawer id>"` (otherwise the trigger closes and reopens in one click) and
+any open nested dialog. `cart-drawer.liquid` emits `light-dismiss` only when
+`cart_drawer_push_page` is false, so a pushed sidebar keeps Horizon's behaviour.
+
+**Verified**
+
+| Width | Mode | Outside click | Escape | X | Trigger toggle |
+|---|---|---|---|---|---|
+| 1440 | non-modal | **closes** (was stuck open) | closes | closes | closes |
+| 768 | modal | closes (native backdrop) | closes | closes | closes |
+| 390 | modal | closes (native backdrop) | closes | closes | closes |
+
+**Blast radius:** only two `<theme-drawer>` elements exist — `chat-drawer` (no `light-dismiss`,
+unchanged) and `cart-drawer`. The mobile nav is a separate `spy-mobile-nav` component, untouched.
+
+**Testing note:** the homepage hero is a full-bleed `<iframe>`. `page.mouse.click` over it never
+reaches the parent document, so a naive outside-click test reads "still open" even when the code is
+correct. Choose the click point with `document.elementFromPoint` and reject `IFRAME` first.
+
+---
+
+## 12. Styling converted to Tailwind utilities (2026-09-23)
+
+The first build put ~371 lines of hand-written CSS in `src/tailwind.css` under `#cart-drawer`,
+which breaks CLAUDE.md rule 9 (utilities only, no vanilla CSS). That block is **deleted**; every
+rule now lives as a utility class on the element it styles, guarded by `context == 'drawer'` in the
+snippets shared with the cart page.
+
+Two things made it a clean swap:
+
+- Tailwind utilities are `!important` inside their layer, so they beat Horizon's `{% stylesheet %}`
+  rules **without** the `#cart-drawer` ID that the CSS version needed for specificity.
+- `theme-drawer-header.liquid` took four optional class params (`class`, `title_class`,
+  `icon_class`, `close_class`) instead of drawer-specific rules, so it stays generic.
+
+Two rules had no element of ours to hang off and became arbitrary variants instead of CSS:
+
+- `.page-wrapper--drawer-open { margin-right: 0 }` → `[&.page-wrapper--drawer-open]:mr-0`,
+  emitted on `.page-wrapper` in `layout/theme.liquid` only when the drawer is set to overlay.
+- `.cart-totals__original-container:not(:has(*)) { display: none }` →
+  `[&:not(:has(*))]:hidden` on that container.
+
+**Verified as a no-op:** every value in the §10 table re-measured byte-identical after the
+conversion, outside-click dismissal still passes at 1440 / 390, and the cart page shows no drawer
+classes (checked for `--cart-drawer-thumb` and `.cart-items__quantity-static`).
+
+Horizon's own stock `{% stylesheet %}` blocks in these snippets are left alone — rewriting them is
+a separate job from styling the drawer.

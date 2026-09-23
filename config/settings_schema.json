@@ -66,6 +66,17 @@
           "background": "#ffffff",
           "foreground": "#000000"
         }
+      },
+      {
+        "type": "header",
+        "content": "SPY orange"
+      },
+      {
+        "type": "color",
+        "id": "spy_orange_accessible",
+        "label": "Orange for text and buttons",
+        "default": "#b85314",
+        "info": "Used for orange text, links and button fills. Keep it at 4.5:1 or more against white (WCAG AA). The bright brand orange stays on borders and accents."
       }
     ]
   },
@@ -1730,6 +1741,127 @@
         "step": 1,
         "unit": "px",
         "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Cart drawer"
+      },
+      {
+        "type": "range",
+        "id": "cart_drawer_width",
+        "label": "Drawer width",
+        "min": 280,
+        "max": 520,
+        "step": 10,
+        "unit": "px",
+        "default": 320,
+        "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_push_page",
+        "label": "Push the page aside when open",
+        "default": false,
+        "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_lock_scroll",
+        "label": "Lock page scrolling when open",
+        "default": false,
+        "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_close_after_add",
+        "label": "Close again shortly after add to cart",
+        "info": "Matches the old site. Leave off to keep the drawer open.",
+        "default": false,
+        "visible_if": "{{ settings.cart_type == 'drawer' and settings.auto_open_cart_drawer }}"
+      },
+      {
+        "type": "range",
+        "id": "cart_drawer_close_after_add_delay",
+        "label": "Close delay",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "unit": "s",
+        "default": 3,
+        "visible_if": "{{ settings.cart_drawer_close_after_add }}"
+      },
+      {
+        "type": "range",
+        "id": "cart_drawer_thumbnail_size",
+        "label": "Product image size",
+        "min": 60,
+        "max": 140,
+        "step": 1,
+        "unit": "px",
+        "default": 95,
+        "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },
+      {
+        "type": "range",
+        "id": "cart_drawer_row_gap",
+        "label": "Space between items",
+        "min": 0,
+        "max": 32,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_dividers",
+        "label": "Line between items",
+        "default": false,
+        "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_quantity_editable",
+        "label": "Let shoppers change quantity here",
+        "info": "Off shows a read-only quantity line, like the old site.",
+        "default": false,
+        "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_show_subtotal",
+        "label": "Show subtotal row",
+        "default": false,
+        "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_show_tax_note",
+        "label": "Show tax and shipping note",
+        "default": false,
+        "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },
+      {
+        "type": "select",
+        "id": "cart_drawer_cta_target",
+        "label": "Button goes to",
+        "options": [
+          { "value": "cart", "label": "Cart page" },
+          { "value": "checkout", "label": "Checkout" }
+        ],
+        "default": "cart",
+        "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },
+      {
+        "type": "select",
+        "id": "cart_drawer_cta_style",
+        "label": "Button style",
+        "options": [
+          { "value": "solid", "label": "Solid" },
+          { "value": "outline", "label": "Outline" }
+        ],
+        "default": "solid",
+        "visible_if": "{{ settings.cart_type == 'drawer' }}"
       }
     ]
   },

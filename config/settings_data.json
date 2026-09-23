@@ -52,7 +52,7 @@
     "card_hover_effect": "none",
     "badge_position": "top-left",
     "badge_corner_radius": 0,
-    "badge_sale_background_color": "#f57f29",
+    "badge_sale_background_color": "#b85314",
     "badge_sale_text_color": "#ffffff",
     "badge_sold_out_background_color": "#2c393e",
     "badge_sold_out_text_color": "#ffffff",
@@ -77,8 +77,13 @@
     "button_text_case_secondary": "uppercase",
     "cart_type": "drawer",
     "cart_price_font": "secondary",
+    "currency_code_enabled_cart_items": false,
+    "currency_code_enabled_cart_total": false,
     "show_cart_note": false,
-    "show_add_discount_code": true,
+    "show_add_discount_code": false,
+    "show_installments": false,
+    "show_accelerated_checkout_buttons": false,
+    "auto_open_cart_drawer": true,
     "drawer_background_color": "{{ settings.color_palette.background }}",
     "drawer_text_color": "{{ settings.color_palette.foreground }}",
     "drawer_border_color": "{{ settings.color_palette.color2 }}",
@@ -149,7 +154,7 @@
       "foreground": "#2c393e",
       "color1": "#6a6c77",
       "color2": "#e5e5e5",
-      "color3": "#f27e37"
+      "color3": "#b85314"
     }
   },
   "presets": {

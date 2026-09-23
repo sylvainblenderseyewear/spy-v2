@@ -26,7 +26,10 @@
 
     {%- render 'meta-tags' -%}
     {%- render 'stylesheets' -%}
-    {%- render 'fonts' -%}
+    {%- comment -%} DIN overrides the theme fonts everywhere but Rewards, so skip unused preloads {%- endcomment -%}
+    {%- if template == 'page.rewards-program' -%}
+      {%- render 'fonts' -%}
+    {%- endif -%}
     {%- render 'scripts' -%}
     {%- render 'theme-styles-variables' -%}
     {%- render 'color-palette' -%}
@@ -44,7 +47,8 @@
 
     {% render 'chat-drawer' %}
 
-    <div class="page-wrapper">
+    {% comment %} An overlay cart drawer must not shove the page sideways {% endcomment %}
+    <div class="page-wrapper{% if settings.cart_type == 'drawer' %} {% unless settings.cart_drawer_push_page %}[&.page-wrapper--drawer-open]:mr-0{% endunless %}{% if settings.cart_drawer_lock_scroll %} [&.page-wrapper--drawer-open]:overflow-hidden{% endif %}{% endif %}">
       {% comment %} Sticky lives here: #header-group is the tallest-parent box, so the bar can pin. Driven by the header section's Sticky setting. {% endcomment %}
       <div
         id="header-group"
@@ -135,6 +139,10 @@
         data-product-transition="{{ settings.transition_to_main_product }}"
         data-template="{{ template }}"
       >
+        {%- comment -%} Many pages style their title as a bold paragraph, so give screen readers a real H1 {%- endcomment -%}
+        {%- unless request.page_type == 'index' or content_for_layout contains '<h1' -%}
+          <h1 class="visually-hidden">{{ page_title }}</h1>
+        {%- endunless -%}
         {{ content_for_layout }}
       </main>
 

@@ -84,6 +84,7 @@ export class ThemeDrawer extends Component {
 
     document.addEventListener('keydown', this.#onKeyDown);
     panel.addEventListener('click', this.#onBackdropClick);
+    document.addEventListener('pointerdown', this.#onDocumentPointerDown);
   }
 
   disconnectedCallback() {
@@ -110,6 +111,34 @@ export class ThemeDrawer extends Component {
 
       this.close();
     }
+  };
+
+  /**
+   * Closes an overlay drawer when the user points at the page behind it.
+   *
+   * Sidebar mode uses `show()`, so the dialog has no backdrop and
+   * `#onBackdropClick` never fires — a drawer that overlays the page instead of
+   * pushing it would otherwise be stuck open. Opt in with `light-dismiss`;
+   * drawers that push the page keep Horizon's persistent behaviour.
+   *
+   * @param {PointerEvent} event - The pointer event.
+   */
+  #onDocumentPointerDown = (event) => {
+    if (!this.hasAttribute('light-dismiss')) return;
+    // Modal mode already light-dismisses through the native backdrop.
+    if (this.#modalQuery.matches) return;
+    if (!this.isOpen) return;
+
+    const { panel } = this.refs;
+    if (event.composedPath().includes(panel)) return;
+
+    // The control that toggles this drawer would just reopen it.
+    const target = event.target;
+    if (target instanceof Element && target.closest(`[aria-controls="${this.id}"]`)) return;
+
+    if (this.#hasOpenNestedDialog()) return;
+
+    this.close();
   };
 
   /**
@@ -166,6 +195,7 @@ export class ThemeDrawer extends Component {
     // even if they were already registered.
     document.addEventListener('keydown', this.#onKeyDown);
     panel.addEventListener('click', this.#onBackdropClick);
+    document.addEventListener('pointerdown', this.#onDocumentPointerDown);
   };
 
   /**
@@ -232,6 +262,7 @@ export class ThemeDrawer extends Component {
 
     document.addEventListener('keydown', this.#onKeyDown);
     panel.addEventListener('click', this.#onBackdropClick);
+    document.addEventListener('pointerdown', this.#onDocumentPointerDown);
   }
 
   /**
@@ -270,6 +301,7 @@ export class ThemeDrawer extends Component {
     const { panel } = this.refs;
 
     document.removeEventListener('keydown', this.#onKeyDown);
+    document.removeEventListener('pointerdown', this.#onDocumentPointerDown);
     panel.removeEventListener('click', this.#onBackdropClick);
   }
 

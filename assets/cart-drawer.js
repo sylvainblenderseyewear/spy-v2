@@ -18,6 +18,9 @@ class CartDrawerComponent extends Component {
   /** @type {number} */
   #summaryThreshold = 0.5;
 
+  /** @type {ReturnType<typeof setTimeout> | undefined} */
+  #autoCloseTimer;
+
   /** @type {import('@theme/theme-drawer').ThemeDrawer | null} */
   get #themeDrawer() {
     return /** @type {import('@theme/theme-drawer').ThemeDrawer | null} */ (this.closest('theme-drawer'));
@@ -45,6 +48,7 @@ class CartDrawerComponent extends Component {
     super.disconnectedCallback();
     document.removeEventListener(StandardEvents.cartLinesUpdate, this.#handleCartLinesUpdate);
     this.#themeDrawer?.removeEventListener(DrawerOpenEvent.eventName, this.#handleDrawerOpen);
+    clearTimeout(this.#autoCloseTimer);
   }
 
   /**
@@ -93,6 +97,7 @@ class CartDrawerComponent extends Component {
         const openAndSettle = () => {
           if (!this.#themeDrawer?.isOpen) this.#themeDrawer?.open();
           settle();
+          this.#scheduleAutoClose();
         };
 
         if (sourceModal?.open) {
@@ -105,6 +110,33 @@ class CartDrawerComponent extends Component {
         if (error?.name !== 'AbortError') console.warn('[cart-drawer] Event promise rejected:', error);
       });
   };
+
+  /**
+   * Optional: shut the drawer again a moment after an add, the way the old site did.
+   * Off unless `close-after-add` is set. Any pointer or key input cancels it.
+   */
+  #scheduleAutoClose() {
+    const seconds = Number(this.getAttribute('close-after-add'));
+    if (!seconds || Number.isNaN(seconds)) return;
+
+    clearTimeout(this.#autoCloseTimer);
+
+    const cancel = () => {
+      clearTimeout(this.#autoCloseTimer);
+      this.#autoCloseTimer = undefined;
+    };
+    const events = ['pointerdown', 'pointermove', 'keydown', 'focusin'];
+    const stop = () => {
+      cancel();
+      events.forEach((name) => this.removeEventListener(name, stop));
+    };
+    events.forEach((name) => this.addEventListener(name, stop, { once: true }));
+
+    this.#autoCloseTimer = setTimeout(() => {
+      events.forEach((name) => this.removeEventListener(name, stop));
+      if (this.#themeDrawer?.isOpen) this.#themeDrawer.close();
+    }, seconds * 1000);
+  }
 
   #isCartEmpty() {
     return Boolean(this.querySelector('.cart-drawer--empty'));
