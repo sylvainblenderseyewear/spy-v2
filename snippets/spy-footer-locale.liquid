@@ -40,8 +40,13 @@
         <select
           id="FooterLocaleCountry"
           name="country_code"
-          onchange="this.form.submit()"
-          class="cursor-pointer appearance-none border-0 bg-transparent pr-3 text-[12px] font-normal uppercase leading-[16.8px] text-current focus:outline-none"
+          data-initial="{{ localization.country.iso_code }}"
+          {% comment %} WCAG 3.2.2: arrowing through options must not reload the page {% endcomment %}
+          onmousedown="delete this.dataset.kb"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();this.form.submit()}else if(event.key!=='Tab'){this.dataset.kb='1'}"
+          onchange="if(!this.dataset.kb)this.form.submit()"
+          onblur="if(this.dataset.kb&&this.value!==this.dataset.initial)this.form.submit()"
+          class="cursor-pointer appearance-none border-0 bg-transparent pr-3 text-[12px] font-normal uppercase leading-[16.8px] text-current"
         >
           {%- for country in localization.available_countries -%}
             <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
@@ -64,8 +69,12 @@
         <select
           id="FooterLocaleLanguage"
           name="language_code"
-          onchange="this.form.submit()"
-          class="cursor-pointer appearance-none border-0 bg-transparent pr-4 text-[12px] font-normal uppercase leading-[16.8px] text-current focus:outline-none"
+          data-initial="{{ localization.language.iso_code }}"
+          onmousedown="delete this.dataset.kb"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();this.form.submit()}else if(event.key!=='Tab'){this.dataset.kb='1'}"
+          onchange="if(!this.dataset.kb)this.form.submit()"
+          onblur="if(this.dataset.kb&&this.value!==this.dataset.initial)this.form.submit()"
+          class="cursor-pointer appearance-none border-0 bg-transparent pr-4 text-[12px] font-normal uppercase leading-[16.8px] text-current"
         >
           {%- for language in localization.available_languages -%}
             <option value="{{ language.iso_code }}" lang="{{ language.iso_code }}"{% if language.iso_code == localization.language.iso_code %} selected{% endif %}>

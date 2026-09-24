@@ -42,9 +42,12 @@
   data-testid="group-block"
 >
   {%- if settings.link != blank -%}
+    {%- comment -%} Overlay link has no text, so name it from the group's own copy {%- endcomment -%}
+    {%- assign link_label = children | strip_html | strip_newlines | strip | truncatewords: 14, '' -%}
     <a
       href="{{ settings.link }}"
       class="group-block__link"
+      {% if link_label != blank %}aria-label="{{ link_label | escape }}"{% endif %}
       {% if settings.open_in_new_tab %}
         target="_blank" rel="noopener"
       {% endif %}

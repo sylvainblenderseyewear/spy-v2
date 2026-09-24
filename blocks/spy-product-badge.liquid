@@ -7,7 +7,7 @@
 {%- comment -%} Slot always renders so the card keeps its shape when a product has no badge {%- endcomment -%}
 <div class="spy-product-badge" {{ block.shopify_attributes }}>
   {%- if badge_text != blank -%}
-    <span class="spy-badge-pill border border-spy-orange text-spy-orange text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 leading-none">{{ badge_text }}</span>
+    <span class="spy-badge-pill border border-spy-orange text-spy-orange-ui text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 leading-none">{{ badge_text }}</span>
   {%- endif -%}
 </div>
 

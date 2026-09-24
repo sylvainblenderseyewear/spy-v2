@@ -338,7 +338,7 @@
       {% comment %} Source pairs a solid orange FILTER button with the sort select, 50/50 {% endcomment %}
       <div class="facets-toggle__wrapper ms-0 flex-1">
         <button
-          class="flex h-9 w-full cursor-pointer items-center justify-center gap-2 rounded-none border-0 bg-spy-orange text-[11px] font-bold uppercase leading-none tracking-[0.08em] text-white"
+          class="flex h-9 w-full cursor-pointer items-center justify-center gap-2 rounded-none border-0 bg-spy-orange-ui text-[11px] font-bold uppercase leading-none tracking-[0.08em] text-white"
           on:click="#filters-drawer/open"
           type="button"
           aria-haspopup="dialog"
@@ -514,7 +514,7 @@
             {% endcomment %}
             <div class="mt-5 flex gap-0 border-0 border-t border-solid border-spy-border px-4 pt-5">
               <button
-                class="h-11 flex-1 cursor-pointer rounded-none border-0 bg-spy-orange text-[12px] font-bold uppercase tracking-[0.08em] text-white"
+                class="h-11 flex-1 cursor-pointer rounded-none border-0 bg-spy-orange-ui text-[12px] font-bold uppercase tracking-[0.08em] text-white"
                 type="button"
                 on:click="#filters-drawer/close"
               >
@@ -527,7 +527,7 @@
               >
                 <button
                   type="button"
-                  class="h-11 w-full cursor-pointer rounded-none border border-solid border-spy-input-border bg-white text-[12px] font-bold uppercase tracking-[0.08em] text-spy-orange"
+                  class="h-11 w-full cursor-pointer rounded-none border border-solid border-spy-input-border bg-white text-[12px] font-bold uppercase tracking-[0.08em] text-spy-orange-ui"
                   ref="clearButton"
                   on:click="/removeFilter?form={{ form_component }}"
                   on:keydown="/removeFilter?form={{ form_component }}"

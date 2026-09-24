@@ -168,11 +168,12 @@
         </div>
       {% endif %}
     {%- else -%}
-      <div class="resource-list resource-list--grid">
+      <div class="resource-list resource-list--grid" role="status">
+        <span class="visually-hidden">{{ 'accessibility.loading_product_recommendations' | t }}</span>
         {% for i in (1..block_settings.max_products) %}
           <div
             class="resource-list__item product-recommendations__skeleton-item"
-            aria-label="{{ 'accessibility.loading_product_recommendations' | t }}"
+            aria-hidden="true"
           ></div>
         {% endfor %}
       </div>

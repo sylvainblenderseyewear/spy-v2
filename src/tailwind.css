@@ -7,7 +7,7 @@
 @theme {
   /* Brand colors */
   --color-spy-orange:  #f57f29; /* brand/nav orange — live .nav-link is #f57d31 */
-  --color-spy-orange-ui: #f27e37; /* source interactive orange: links, arrows, ATC */
+  --color-spy-orange-ui: #b85314; /* text/button orange, AA on white; theme setting "Orange for text and buttons" overrides it (source was #f27e37, 2.69:1) */
   --color-spy-slate:   #2c393e;
   --color-spy-ink:     #1d2a2b; /* header/nav text on the live site */
   --color-spy-gray:    #6a6c77;
@@ -15,19 +15,19 @@
   --color-spy-sale:    #e53935;
   --color-spy-text:    #242424; /* source content-primary */
   --color-spy-text-2:  #393939; /* source content-secondary */
-  --color-spy-muted:   #a6a6a6; /* source content-muted */
+  --color-spy-muted:   #6a6c77; /* AA grey 5.2:1 (source content-muted was #a6a6a6, 2.43:1) */
   --color-spy-label:   #6c757d; /* source swatches-label — colourway name on the card */
   --color-spy-surface: #f9f9f9; /* source surface-primary — tiles, scale track */
   --color-spy-tile:    #f8f8f8; /* source light-grey ground — swatches, cart summary, blog thumbs */
   --color-spy-dark:    #333e47; /* source $charcoal — blog card date, title and body */
-  --color-spy-positive: #4bb151; /* source sentiment-positive — In Stock (PDP) */
+  --color-spy-positive: #2e7d32; /* AA green 5.1:1 for In Stock (source #4bb151, 2.72:1) */
   --color-spy-negative: #d7403a; /* source sentiment-negative — Sold Out */
-  --color-spy-cart-stock: #88c290; /* source's In Stock green on the cart page — measured separately from the PDP token above */
+  --color-spy-cart-stock: #2e7d32; /* cart In Stock green, AA 5.1:1 (source #88c290 was 2.07:1) */
   --color-spy-input-border: #cccccc; /* source select/input outline */
   --color-spy-price:   #565656; /* source card price — PLP tile */
   --color-spy-price-reco: #242424; /* source card price — PDP recommendation tile */
   --color-spy-review-label: #191919; /* source .text-m — the "N Reviews" label by the stars */
-  --color-spy-strike:  #ababab; /* source struck-through compare-at price */
+  --color-spy-strike:  #767676; /* struck-through compare-at price, AA 4.5:1 (source #ababab was 2.30:1) */
   --color-spy-line-price: #222222; /* source cart line total */
   --color-spy-cta-hover: #272727; /* source primary button hover ground */
   --color-spy-link-hover: #cf570d; /* source text-link hover, e.g. cart "< Continue shopping" */
@@ -135,12 +135,12 @@
 
 header-component .menu-list__link[href="/collections/sale"],
 header-component .menu-list__link[href*="/collections/sale"] {
-  color: var(--spy-orange, #f57f29) !important;
+  color: var(--color-spy-orange-ui) !important;
 }
 
 header-component[transparent] .menu-list__link[href="/collections/sale"],
 header-component[transparent] .menu-list__link[href*="/collections/sale"] {
-  color: var(--spy-orange, #f57f29) !important;
+  color: var(--color-spy-orange-ui) !important;
 }
 
 header-component .menu-list__link[href="/blogs/journal"],
@@ -407,7 +407,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     border: 1px solid var(--color-spy-orange);
     border-radius: 0;
     background: #fff;
-    color: var(--color-spy-orange);
+    color: var(--color-spy-orange-ui);
     font-size: 12px;
     font-weight: 400;
     line-height: 16.8px;
@@ -427,7 +427,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   /* Source's .btn-outline-primary:hover — fills in. :active matches it, with no
      press displacement. */
   :is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-quick-view-btn:is(:hover, :active) {
-    background: var(--color-spy-orange);
+    background: var(--color-spy-orange-ui);
     color: #fff;
   }
 
@@ -797,14 +797,14 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 :is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-price__compare {
   margin-right: 4px;
-  color: #ababab;
+  color: var(--color-spy-strike);
   text-decoration: line-through;
 }
 
 /* Stock Horizon price parts, so search and carousel cards read the same */
 :is(collection-component, .section-resource-list, .block-resource-list) .product-card .compare-at-price {
   margin-right: 4px;
-  color: #ababab;
+  color: var(--color-spy-strike);
   text-decoration: line-through;
 }
 
@@ -2199,7 +2199,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   border: 0;
   border-radius: 50%;
   background: #fff;
-  color: var(--color-spy-orange);
+  color: var(--color-spy-orange-ui);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-spy-orange) 60%, transparent);
 }
 
@@ -2930,7 +2930,7 @@ product-recommendations .slideshow-control svg {
 }
 
 .spy-loc-card__btn--solid:hover {
-  background-color: var(--color-spy-orange);
+  background-color: var(--color-spy-orange-ui);
 }
 
 /* ── Mobile: the widget stacks itself; we only add the List / Map swap ──── */

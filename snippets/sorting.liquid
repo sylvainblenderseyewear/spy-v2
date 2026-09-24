@@ -18,7 +18,7 @@
     assign is_desktop_bar = true
   endif
 
-  # Mobile bar sits beside the FILTER button as a bare native select, no label
+  # Mobile bar sits beside the FILTER button as a bare native select, label only for screen readers
   assign is_mobile_bar = false
   if sort_position == 'mobile'
     assign is_mobile_bar = true
@@ -87,7 +87,7 @@
   >
     <label
       for="sort-select-{{ section_id }}"
-      class="facets__label{% if is_mobile_bar %} hidden{% endif %}"
+      class="facets__label{% if is_mobile_bar %} visually-hidden{% endif %}"
     >
       {{- 'actions.sort' | t -}}
     </label>
@@ -437,7 +437,8 @@
     }
   }
 
-  .facets-toggle .sorting-filter__container .facets__label {
+  /* Keep the screen-reader-only label in the accessibility tree */
+  .facets-toggle .sorting-filter__container .facets__label:not(.visually-hidden) {
     @media screen and (max-width: 749px) {
       display: none;
     }

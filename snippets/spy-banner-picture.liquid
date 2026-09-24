@@ -14,6 +14,7 @@
   @param {string} [sizes] - sizes attribute, defaults to 100vw
   @param {string} [class] - classes for the <img>
   @param {string} [loading] - lazy (default) or eager
+  @param {string} [fetchpriority] - pass 'high' for an above-the-fold banner
 
   @example
   {%- render 'spy-banner-picture', desktop: img_d, mobile: img_m, alt: 'Region XL' -%}
@@ -38,6 +39,8 @@
           {{ desktop | image_url: width: 2000 }} 2000w
         "
         sizes="{{ img_sizes }}"
+        width="{{ desktop.width }}"
+        height="{{ desktop.height }}"
       >
     {%- endif -%}
     {%- if small != blank -%}
@@ -50,13 +53,19 @@
           {{ small | image_url: width: 1000 }} 1000w
         "
         sizes="{{ img_sizes }}"
+        width="{{ small.width }}"
+        height="{{ small.height }}"
       >
     {%- endif -%}
     {%- assign fallback = desktop | default: small -%}
+    {%- comment -%} width/height per source let the browser hold the right box for each crop (no layout shift) {%- endcomment -%}
     <img
       src="{{ fallback | image_url: width: 1500 }}"
       alt="{{ alt }}"
+      width="{{ fallback.width }}"
+      height="{{ fallback.height }}"
       loading="{{ img_loading }}"
+      {% if fetchpriority != blank %}fetchpriority="{{ fetchpriority }}"{% endif %}
       decoding="async"
       class="{{ img_class }}"
     >

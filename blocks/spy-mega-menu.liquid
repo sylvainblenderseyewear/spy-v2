@@ -20,7 +20,7 @@
       <li class="group flex items-stretch">
         <a
           href="{{ link.url }}"
-          class="inline-flex items-center h-full px-3 lg:px-4 border-b-2 border-transparent group-hover:border-black text-[14px] font-bold uppercase tracking-[0.5px] no-underline whitespace-nowrap transition-colors duration-200 {% if is_highlight %}text-spy-orange{% else %}text-spy-ink{% endif %}"
+          class="inline-flex items-center h-full px-3 lg:px-4 border-b-2 border-transparent group-hover:border-black text-[14px] font-bold uppercase tracking-[0.5px] no-underline whitespace-nowrap transition-colors duration-200 {% if is_highlight %}text-spy-orange-ui{% else %}text-spy-ink{% endif %}"
           style="font-family: var(--font-heading--family);"
           {% if link.current %}
             aria-current="page"
@@ -39,12 +39,12 @@
                 <div class="col-span-4 xl:col-span-3 [display:grid] grid-cols-3 gap-x-6 lg:gap-x-10 gap-y-16 content-start pt-4">
                   {% for child in link.links %}
                     <div>
-                      <a href="{{ child.url }}" class="inline-block pb-2 text-[14px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline hover:text-spy-orange" style="font-family: var(--font-heading--family);">{{ child.title }}</a>
+                      <a href="{{ child.url }}" class="inline-block pb-2 text-[14px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline hover:text-spy-orange-ui" style="font-family: var(--font-heading--family);">{{ child.title }}</a>
                       {% if child.links != blank %}
                         <ul class="flex flex-col gap-0 list-none m-0 p-0">
                           {% for grandchild in child.links %}
                             <li>
-                              <a href="{{ grandchild.url }}" class="inline-block py-[1px] text-[14px] leading-[22.4px] tracking-[0.5px] text-spy-ink no-underline hover:text-spy-orange">{{ grandchild.title }}</a>
+                              <a href="{{ grandchild.url }}" class="inline-block py-[1px] text-[14px] leading-[22.4px] tracking-[0.5px] text-spy-ink no-underline hover:text-spy-orange-ui">{{ grandchild.title }}</a>
                             </li>
                           {% endfor %}
                         </ul>
@@ -75,7 +75,15 @@
     <span class="block w-5 h-5">{{- 'spy-fa-bars.svg' | inline_asset_content -}}</span>
   </button>
 
-  <div id="spy-mobile-nav" class="spy-nav min-[992px]:hidden fixed inset-0 z-[60] invisible pointer-events-none [html.spy-nav-open_&]:visible" aria-hidden="true">
+  {%- comment -%} inert while closed: the root screen sets visibility:visible, so its links stay tabbable otherwise {%- endcomment -%}
+  <div
+    id="spy-mobile-nav"
+    class="spy-nav min-[992px]:hidden fixed inset-0 z-[60] invisible pointer-events-none [html.spy-nav-open_&]:visible"
+    role="dialog"
+    aria-modal="true"
+    aria-label="{{ 'accessibility.menu' | t }}"
+    inert
+  >
     <div class="spy-nav__overlay absolute top-[var(--spy-nav-top,50px)] left-0 right-0 bottom-0 bg-black/40 opacity-0 transition-opacity duration-[350ms] ease-spy-nav touch-none overscroll-contain pointer-events-auto [html.spy-nav-open_&]:opacity-100 motion-reduce:transition-none" data-nav-close></div>
 
     <div class="spy-nav__panel absolute left-0 top-0 bottom-0 w-[var(--spy-nav-width)] bg-white overflow-hidden -translate-x-full transition-[translate] duration-[350ms] ease-spy-nav pointer-events-auto [html.spy-nav-open_&]:translate-x-0 motion-reduce:transition-none">
@@ -96,14 +104,14 @@
                   <button
                     type="button"
                     data-nav-forward="scr-{{ forloop.index }}"
-                    class="button-unstyled flex items-center justify-between w-full px-5 py-[16px] text-left cursor-pointer text-[13px] font-bold uppercase tracking-[0.5px] {% if is_highlight %}text-spy-orange{% else %}text-spy-ink{% endif %}"
+                    class="button-unstyled flex items-center justify-between w-full px-5 py-[16px] text-left cursor-pointer text-[13px] font-bold uppercase tracking-[0.5px] {% if is_highlight %}text-spy-orange-ui{% else %}text-spy-ink{% endif %}"
                     style="font-family: var(--font-heading--family);"
                   >
                     {{ link.title }}
                     <span class="spy-caret-right -rotate-90 block w-2.5 h-2.5">{{- 'spy-fa-angle.svg' | inline_asset_content -}}</span>
                   </button>
                 {% else %}
-                  <a href="{{ link.url }}" class="block px-5 py-[16px] text-[13px] font-bold uppercase tracking-[0.5px] no-underline {% if is_highlight %}text-spy-orange{% else %}text-spy-ink{% endif %}" style="font-family: var(--font-heading--family);">{{- link.title -}}</a>
+                  <a href="{{ link.url }}" class="block px-5 py-[16px] text-[13px] font-bold uppercase tracking-[0.5px] no-underline {% if is_highlight %}text-spy-orange-ui{% else %}text-spy-ink{% endif %}" style="font-family: var(--font-heading--family);">{{- link.title -}}</a>
                 {% endif %}
               </li>
             {% endfor %}
@@ -120,6 +128,7 @@
               <a href="{{ block.settings.store_locator_url }}" target="_blank" rel="noopener" class="flex items-center gap-2.5 px-5 py-3 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">
                 <span class="block w-[14px] h-[14px]">{{- 'spy-fa-location.svg' | inline_asset_content -}}</span>
                 {{ block.settings.store_locator_label }}
+                <span class="sr-only">{{ 'accessibility.new_window' | t }}</span>
               </a>
             {% endif %}
             {% if localization.available_countries.size > 1 %}
@@ -189,6 +198,31 @@
   </div>
 
   <script>
+    /* Desktop panels open on hover/focus in CSS; this adds Esc to close and aria-expanded */
+    document.querySelectorAll('.spy-mega-menu > ul > li').forEach((li) => {
+      const link = li.querySelector(':scope > a');
+      const panel = li.querySelector(':scope > div');
+      if (!link || !panel) return;
+      const setOpen = (v) => link.setAttribute('aria-expanded', String(v));
+      const release = () => panel.style.removeProperty('visibility');
+      setOpen(false);
+      li.addEventListener('mouseenter', () => { release(); setOpen(true); });
+      li.addEventListener('mouseleave', () => { release(); setOpen(li.contains(document.activeElement)); });
+      li.addEventListener('focusin', () => setOpen(panel.style.visibility !== 'hidden'));
+      li.addEventListener('focusout', (e) => {
+        if (li.contains(e.relatedTarget)) return;
+        release();
+        setOpen(li.matches(':hover'));
+      });
+      li.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        /* Utilities are !important, so the override has to be too */
+        panel.style.setProperty('visibility', 'hidden', 'important');
+        setOpen(false);
+        link.focus();
+      });
+    });
+
     (() => {
       const nav = document.getElementById('spy-mobile-nav');
       const toggle = document.querySelector('.spy-nav-toggle');
@@ -198,10 +232,22 @@
       const root = document.documentElement;
       const screens = nav.querySelectorAll('[data-screen]');
 
-      const resetScreens = () =>
+      const rootScreen = nav.querySelector('[data-screen="root"]');
+
+      const resetScreens = () => {
         screens.forEach((s) => {
           if (!s.classList.contains('is-root')) s.classList.remove('is-active');
         });
+        if (rootScreen) rootScreen.inert = false;
+      };
+
+      /* Keyboard: only the visible screen (plus the toggle, to close) is reachable */
+      const activeScreen = () => [...nav.querySelectorAll('[data-screen].is-active')].pop() || rootScreen;
+      const focusables = (el) =>
+        [...el.querySelectorAll('a[href], button:not([disabled]), summary')].filter(
+          (n) => !n.closest('[inert]') && getComputedStyle(n).visibility !== 'hidden' && n.getClientRects().length
+        );
+      const focusFirst = (el) => focusables(el)[0]?.focus({ preventScroll: true });
 
 
         const setNavTop = () => {
@@ -214,12 +260,15 @@
         setNavTop();
         root.classList.add('spy-nav-open');
         toggle.setAttribute('aria-expanded', 'true');
-        nav.setAttribute('aria-hidden', 'false');
+        nav.inert = false;
+        focusFirst(rootScreen);
       };
       const close = () => {
+        const hadFocus = nav.contains(document.activeElement);
         root.classList.remove('spy-nav-open');
         toggle.setAttribute('aria-expanded', 'false');
-        nav.setAttribute('aria-hidden', 'true');
+        nav.inert = true;
+        if (hadFocus) toggle.focus({ preventScroll: true });
         setTimeout(resetScreens, 300);
       };
 
@@ -234,19 +283,38 @@
           if (target) {
             target.classList.add('is-active');
             target.scrollTop = 0;
+            /* Root stays painted under the sub-screen, so take it out of the tab order */
+            if (rootScreen) rootScreen.inert = true;
+            target.querySelector('[data-nav-back]')?.focus({ preventScroll: true });
           }
           return;
         }
         const back = e.target.closest('[data-nav-back]');
         if (back) {
-          back.closest('[data-screen]').classList.remove('is-active');
+          const screen = back.closest('[data-screen]');
+          screen.classList.remove('is-active');
+          if (rootScreen) rootScreen.inert = false;
+          nav.querySelector('[data-nav-forward="' + screen.dataset.screen + '"]')?.focus({ preventScroll: true });
           return;
         }
         if (e.target.closest('[data-nav-close]')) close();
       });
 
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && root.classList.contains('spy-nav-open')) close();
+        if (!root.classList.contains('spy-nav-open')) return;
+        if (e.key === 'Escape') {
+          close();
+          return;
+        }
+        if (e.key !== 'Tab') return;
+        /* Loop Tab between the toggle and the visible screen. The toggle lives in the
+           header, not next to the menu in the DOM, so every step is moved by hand. */
+        const list = [toggle, ...focusables(activeScreen())];
+        const i = list.indexOf(document.activeElement);
+        const n = list.length;
+        e.preventDefault();
+        if (i === -1) list[e.shiftKey ? n - 1 : 0].focus();
+        else list[(i + (e.shiftKey ? n - 1 : 1)) % n].focus();
       });
 
       /* Animate the sub-category accordions. Native <details> can't tween its

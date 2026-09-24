@@ -109,7 +109,7 @@
         href="{{ block.settings.link }}"
         class="text-inherit no-underline hover:no-underline hover:opacity-100"
         {% if block.settings.open_in_new_tab %}target="_blank" rel="noopener"{% endif %}
-      >{{ body }}</a>
+      >{{ body }}{% if block.settings.open_in_new_tab %}<span class="sr-only"> {{ 'accessibility.new_window' | t }}</span>{% endif %}</a>
     {%- else -%}
       {{ body }}
     {%- endif -%}

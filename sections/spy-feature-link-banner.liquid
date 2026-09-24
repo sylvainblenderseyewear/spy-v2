@@ -50,6 +50,14 @@
     assign wrap_link = true
   endif
 
+  # Top-of-page banners are the LCP image, so never lazy-load them
+  assign flb_loading = 'lazy'
+  assign flb_priority = ''
+  if section.index <= 2
+    assign flb_loading = 'eager'
+    assign flb_priority = 'high'
+  endif
+
   comment
     Where the copy block sits is one setting; how the lines are set inside it is
     another. The source pushes this block to the right of the container but keeps
@@ -201,7 +209,9 @@
               desktop: poster,
               mobile: poster_mobile,
               alt: banner_alt,
-              class: 'absolute inset-0 w-full h-full object-cover'
+              class: 'absolute inset-0 w-full h-full object-cover',
+              loading: flb_loading,
+              fetchpriority: flb_priority
             -%}
           {%- endif -%}
         </div>
@@ -212,7 +222,7 @@
       One <picture> with media-scoped sources, like the source. Two <img> tags toggled
       by classes render the same but download both crops.
     {%- endcomment -%}
-    {%- render 'spy-banner-picture', desktop: desktop_img, mobile: mobile_img, alt: banner_alt -%}
+    {%- render 'spy-banner-picture', desktop: desktop_img, mobile: mobile_img, alt: banner_alt, loading: flb_loading, fetchpriority: flb_priority -%}
     {%- endif -%}
 
     {%- if section.settings.eyebrow != blank
@@ -242,7 +252,7 @@
             "
           >
           {%- if section.settings.eyebrow != blank -%}
-            <span class="text-spy-orange text-[11px] font-bold uppercase tracking-widest leading-none">
+            <span class="text-spy-orange-ui text-[11px] font-bold uppercase tracking-widest leading-none">
               {{ section.settings.eyebrow }}
             </span>
           {%- endif -%}
@@ -285,6 +295,21 @@
     {%- if wrap_link -%}
       </a>
     {%- endif -%}
+
+    {%- if is_video -%}
+      {%- comment -%} WCAG 2.2.2: a looping video needs a way to stop it. Sits outside the link on purpose. {%- endcomment -%}
+      <button
+        type="button"
+        class="absolute bottom-4 right-4 z-10 flex items-center justify-center w-10 h-10 p-0 rounded-full border-0 bg-spy-ink opacity-75 text-white cursor-pointer"
+        aria-label="{{ 'accessibility.pause_video' | t }}"
+        data-label-pause="{{ 'accessibility.pause_video' | t }}"
+        data-label-play="{{ 'accessibility.play_video' | t }}"
+        data-spy-video-toggle
+      >
+        <span data-icon="pause">{{- 'icon-pause.svg' | inline_asset_content -}}</span>
+        <span data-icon="play" hidden>{{- 'icon-play.svg' | inline_asset_content -}}</span>
+      </button>
+    {%- endif -%}
   </div>
 
   {%- if is_video -%}
@@ -303,7 +328,12 @@
                 this.box = this.firstElementChild;
                 if (!this.box) return;
                 this.mq = window.matchMedia('(min-width: ' + (this.dataset.swap || 992) + 'px)');
+                // Reduced motion: start on the poster, the viewer presses play
+                this.paused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                this.toggle = this.closest('.spy-feature-link-banner')?.querySelector('[data-spy-video-toggle]');
+                this.toggle?.addEventListener('click', () => this.setPaused(!this.paused));
                 this.render();
+                this.syncToggle();
                 this.mq.addEventListener('change', () => this.render());
               };
               // A second player upgrades before its children are parsed
@@ -319,7 +349,7 @@
               this._src = src;
               this.box.querySelector('iframe')?.remove();
               const f = document.createElement('iframe');
-              f.src = src;
+              f.src = this.paused ? src.replace('autoplay=1', 'autoplay=0') : src;
               f.title = this.dataset.title || 'Background video';
               f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share');
               f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
@@ -328,6 +358,27 @@
               f.setAttribute('aria-hidden', 'true');
               f.className = 'absolute inset-0 w-full h-full border-0';
               this.box.appendChild(f);
+            }
+
+            setPaused(paused) {
+              this.paused = paused;
+              const f = this.box?.querySelector('iframe');
+              if (f?.contentWindow) {
+                // Vimeo and YouTube each take their own postMessage command
+                const msg = f.src.includes('youtube')
+                  ? { event: 'command', func: paused ? 'pauseVideo' : 'playVideo', args: [] }
+                  : { method: paused ? 'pause' : 'play' };
+                f.contentWindow.postMessage(JSON.stringify(msg), '*');
+              }
+              this.syncToggle();
+            }
+
+            syncToggle() {
+              const t = this.toggle;
+              if (!t) return;
+              t.setAttribute('aria-label', this.paused ? t.dataset.labelPlay : t.dataset.labelPause);
+              t.querySelector('[data-icon="pause"]').hidden = this.paused;
+              t.querySelector('[data-icon="play"]').hidden = !this.paused;
             }
           }
         );

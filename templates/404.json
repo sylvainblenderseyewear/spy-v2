@@ -22,7 +22,7 @@
         "line_height": 120,
         "button_label": "Continue Shopping",
         "button_link": "",
-        "button_background": "#f27e37",
+        "button_background": "{{ settings.color_palette.color3 }}",
         "button_text_color": "#ffffff",
         "button_background_hover": "#272727",
         "button_text_color_hover": "#ffffff",

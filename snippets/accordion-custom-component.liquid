@@ -13,6 +13,7 @@
   @param {boolean} [disable_animation_on_desktop] - Disables animation on desktop (for horizontal filters)
   @param {boolean} [close_with_escape] - Enables closing with escape key
   @param {string} [data_filter_param_name] - Filter param name for facet identification
+  @param {string} [role] - ARIA role, e.g. listitem when it sits straight inside a list
 
   @example
   {% capture accordion_content %}
@@ -30,6 +31,9 @@
 <accordion-custom
   {% if class %}
     class="{{ class }}"
+  {% endif %}
+  {% if role %}
+    role="{{ role }}"
   {% endif %}
   {% if open %}
     open

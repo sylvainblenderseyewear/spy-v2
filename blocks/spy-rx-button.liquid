@@ -8,11 +8,12 @@
 {%- if rx_ok or block.settings.always_show -%}
 <a
   href="{{ block.settings.rx_url | default: 'https://www.sportrx.com' }}"
-  class="flex items-center justify-center w-full py-3 mt-8 border border-spy-orange text-spy-orange uppercase font-bold text-[0.8125rem] tracking-[0.06em] no-underline hover:bg-spy-orange hover:text-white transition-colors"
+  class="flex items-center justify-center w-full py-3 mt-8 border border-spy-orange text-spy-orange-ui uppercase font-bold text-[0.8125rem] tracking-[0.06em] no-underline hover:bg-spy-orange-ui hover:text-white transition-colors"
   {% if block.settings.open_new_tab %}target="_blank" rel="noopener"{% endif %}
   {{ block.shopify_attributes }}
 >
   {{ block.settings.label | default: 'Buy in Prescription' }}
+  {%- if block.settings.open_new_tab %}<span class="sr-only"> {{ 'accessibility.new_window' | t }}</span>{% endif %}
 </a>
 {%- endif -%}
 

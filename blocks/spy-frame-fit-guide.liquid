@@ -110,7 +110,7 @@
     heading font so a font swap in settings carries through. Line-height is the
     widget's inherited 1.5 — the labels never set their own.
   endcomment
-  assign label_cls = 'font-semibold uppercase text-[10px] leading-[1.5] tracking-[2.5px] text-spy-orange m-0 mb-2.5'
+  assign label_cls = 'font-semibold uppercase text-[10px] leading-[1.5] tracking-[2.5px] text-spy-orange-ui m-0 mb-2.5'
 -%}
 
 <div class="spy-frame-fit-guide" {{ block.shopify_attributes }}>
@@ -119,7 +119,7 @@
     type="button"
     {%- comment -%} flex, not inline-flex: inline-level here adds a line box under
     the row. The source's link is a full-width flex row too. {%- endcomment -%}
-    class="flex w-full items-center justify-start gap-2 mt-3 bg-transparent border-none p-0 cursor-pointer text-left text-[0.875rem] font-medium leading-5 tracking-[0.01em] text-[color:var(--color-spy-text)] hover:text-spy-orange"
+    class="flex w-full items-center justify-start gap-2 mt-3 bg-transparent border-none p-0 cursor-pointer text-left text-[0.875rem] font-medium leading-5 tracking-[0.01em] text-[color:var(--color-spy-text)] hover:text-spy-orange-ui"
     aria-haspopup="dialog"
     aria-expanded="false"
     aria-controls="{{ drawer_id }}"
@@ -174,7 +174,7 @@
         <button
           type="button"
           class="cursor-pointer border-none bg-transparent p-4 text-[calc(1.3rem_+_0.6vw)] font-extralight leading-none text-black opacity-50 [text-shadow:0_1px_0_#fff] hover:opacity-75"
-          aria-label="{{ 'accessibility.close' | t | default: 'Close' }}"
+          aria-label="{{ 'actions.close' | t }}"
           data-spy-fit-guide-close
         >
           <span aria-hidden="true">&times;</span>
@@ -193,7 +193,7 @@
         No top padding — the close bar above already supplies it. {%- endcomment -%}
         <div class="border-b border-[#ebebeb] px-5 pb-[18px]">
           <div class="mb-4 h-[3px] bg-spy-orange"></div>
-          <p class="m-0 mb-[5px] text-[10px] font-normal uppercase leading-[1.5] tracking-[3px] text-spy-orange" style="font-family: var(--font-heading--family);">{{ block.settings.eyebrow }}</p>
+          <p class="m-0 mb-[5px] text-[10px] font-normal uppercase leading-[1.5] tracking-[3px] text-spy-orange-ui" style="font-family: var(--font-heading--family);">{{ block.settings.eyebrow }}</p>
           {%- comment -%} Title breaks where the editor breaks it — source splits "Frame Fit / Guide" {%- endcomment -%}
           <h2 class="m-0 mb-1.5 text-[26px] font-bold uppercase leading-none tracking-[2px] text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ block.settings.title | escape | newline_to_br }}</h2>
           <p class="m-0 text-[12px] font-light leading-[1.5] text-[#999]">{{ block.settings.subtitle }}</p>
@@ -363,7 +363,7 @@
                                 assign diff = 0 | minus: diff
                               endif
                               if i == active_i
-                                assign pill = pill | append: 'border-spy-orange bg-spy-orange text-white'
+                                assign pill = pill | append: 'border-spy-orange-ui bg-spy-orange-ui text-white'
                               elsif diff == 1
                                 assign pill = pill | append: 'border-[#bbb] bg-white text-[#888]'
                               else
@@ -494,7 +494,7 @@
           {%- if block.settings.tip_text != blank -%}
             {%- comment -%} Source tip: cream panel with an orange rule down the left {%- endcomment -%}
             <div class="mt-4 rounded-r-[4px] border-l-[3px] border-spy-orange bg-[#fff8f3] px-3 py-2.5">
-              <div class="mb-[3px] text-[10px] font-bold uppercase tracking-[2px] text-spy-orange" style="font-family: var(--font-heading--family);">{{ block.settings.tip_label }}</div>
+              <div class="mb-[3px] text-[10px] font-bold uppercase tracking-[2px] text-spy-orange-ui" style="font-family: var(--font-heading--family);">{{ block.settings.tip_label }}</div>
               <p class="mt-0 mb-4 text-[11px] font-light leading-[1.5] text-[#666]">{{ block.settings.tip_text }}</p>
             </div>
           {%- endif -%}
@@ -503,7 +503,7 @@
         {%- if block.settings.footer_note != blank -%}
           <div class="border-t border-[#ebebeb] bg-white px-5 py-3.5">
             {%- comment -%} div, not p: richtext brings its own p and nesting breaks it {%- endcomment -%}
-            <div class="text-[10px] leading-[1.6] text-[#bbb] [&_a]:text-spy-orange [&_a]:no-underline [&_p]:mb-4 [&_p]:mt-0 hover:[&_a]:underline">{{ block.settings.footer_note }}</div>
+            <div class="text-[10px] leading-[1.6] text-[#bbb] [&_a]:text-spy-orange-ui [&_a]:underline [&_p]:mb-4 [&_p]:mt-0">{{ block.settings.footer_note }}</div>
           </div>
         {%- endif -%}
       </div>
@@ -542,10 +542,19 @@
     // there on every open — an earlier visit's switch should not stick.
     const landingTab = (tabs.find((t) => t.getAttribute('aria-selected') === 'true') || tabs[0])?.dataset.spyTab;
 
+    // Modal is on <body>, so an inert page keeps Tab inside it; other overlays may still be open
+    const syncPageInert = () => {
+      const on = !!document.querySelector('[data-spy-drawer][data-open], [data-spy-qv-root][data-open], #spy-compare-modal[data-open], [data-spy-fit-guide-modal][data-open]');
+      document.querySelectorAll('.page-wrapper, .skip-to-content-link').forEach((el) => { el.inert = on; });
+    };
+    modal.inert = true;
+
     const open = () => {
       if (landingTab) showTab(landingTab);
       modal.setAttribute('aria-hidden', 'false');
       modal.dataset.open = '';
+      modal.inert = false;
+      syncPageInert();
       trigger.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
       modal.querySelector('[data-spy-fit-guide-close]')?.focus();
@@ -553,6 +562,8 @@
     const close = () => {
       modal.setAttribute('aria-hidden', 'true');
       delete modal.dataset.open;
+      modal.inert = true;
+      syncPageInert();
       trigger.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
       trigger.focus();

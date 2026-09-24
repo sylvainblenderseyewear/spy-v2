@@ -40,5 +40,5 @@
   {%- capture params -%}autoplay=1&muted=1&loop=1&controls=0&playsinline=1{%- if hash != blank -%}&h={{ hash }}{%- endif -%}{%- endcapture -%}
   {{- 'https://player.vimeo.com/video/' | append: video_url.id | append: '?' | append: params -}}
 {%- elsif video_url.type == 'youtube' -%}
-  {{- 'https://www.youtube.com/embed/' | append: video_url.id | append: '?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&playlist=' | append: video_url.id -}}
+  {{- 'https://www.youtube.com/embed/' | append: video_url.id | append: '?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&enablejsapi=1&playlist=' | append: video_url.id -}}
 {%- endif -%}

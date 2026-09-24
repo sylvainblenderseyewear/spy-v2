@@ -139,7 +139,7 @@
       {%- unless is_pdp -%}
         <li>
           <a
-            class="text-spy-muted no-underline transition-colors duration-150 hover:text-spy-orange"
+            class="text-spy-muted no-underline transition-colors duration-150 hover:text-spy-orange-ui"
             href="{{ routes.root_url }}"
           >
             {{- 'breadcrumbs.home' | t -}}
@@ -156,7 +156,7 @@
             <span aria-current="page">{{ title }}</span>
           {%- else -%}
             <a
-              class="text-spy-muted no-underline transition-colors duration-150 hover:text-spy-orange"
+              class="text-spy-muted no-underline transition-colors duration-150 hover:text-spy-orange-ui"
               href="{{ links[forloop.index0] }}"
             >
               {{- title -}}

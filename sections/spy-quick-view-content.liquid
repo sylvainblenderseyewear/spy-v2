@@ -82,12 +82,12 @@
                 absolute top-1/2 z-[2] -translate-y-1/2 [display:flex] h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[18px] border-none bg-white p-0 text-[color:var(--color-spy-orange-ui)] opacity-75 shadow-[0_0_9px_0_rgba(119,119,119,0.1)] transition-[opacity,box-shadow] duration-300 hover:opacity-100 hover:shadow-[0_0_9px_0_rgba(119,119,119,0.4)] disabled:opacity-40
               {%- endcapture -%}
 
-              <button type="button" class="{{ arrow_class }} left-0" aria-label="{{ 'accessibility.previous' | t | default: 'Previous' }}" data-spy-qv-prev>
+              <button type="button" class="{{ arrow_class }} left-0" aria-label="{{ 'accessibility.slideshow_previous' | t }}" data-spy-qv-prev>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
                   <path d="M12.5 4L6.5 10l6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
-              <button type="button" class="{{ arrow_class }} right-0" aria-label="{{ 'accessibility.next' | t | default: 'Next' }}" data-spy-qv-next>
+              <button type="button" class="{{ arrow_class }} right-0" aria-label="{{ 'accessibility.slideshow_next' | t }}" data-spy-qv-next>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
                   <path d="M7.5 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>

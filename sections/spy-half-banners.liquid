@@ -45,7 +45,11 @@
         {%- assign desktop_img = block.settings.image_desktop -%}
         {%- assign mobile_img = block.settings.image_mobile | default: block.settings.image_desktop -%}
         {%- if desktop_img == blank and mobile_img == blank -%}{%- continue -%}{%- endif -%}
-        {%- assign banner_alt = block.settings.heading | default: block.settings.cta_label | strip_newlines | escape -%}
+        {%- comment -%} Alt describes the art; falling back to the CTA made links read "LEARN MORE LEARN MORE" {%- endcomment -%}
+        {%- assign banner_alt = block.settings.image_alt | default: desktop_img.alt | strip_newlines | escape -%}
+        {%- assign banner_label = block.settings.heading | default: block.settings.cta_label | default: banner_alt | strip_newlines | escape -%}
+        {%- assign banner_tag = 'div' -%}
+        {%- if block.settings.link != blank -%}{%- assign banner_tag = 'a' -%}{%- endif -%}
 
         {%- comment -%} Each half banner reports on its own {%- endcomment -%}
         {%- assign promo_name = block.settings.heading | default: block.settings.cta_label -%}
@@ -59,10 +63,10 @@
             slot: 'half_banner',
             name: promo_name
           -%}
-          <a
-            href="{{ block.settings.link | default: '#' }}"
+          <{{ banner_tag }}
+            {% if banner_tag == 'a' %}href="{{ block.settings.link }}"{% endif %}
             class="spy-half-banners__banner group relative block w-full overflow-hidden no-underline"
-            {% if block.settings.cta_label == blank and block.settings.heading == blank %}aria-label="{{ banner_alt }}"{% endif %}
+            {% if banner_tag == 'a' and block.settings.cta_label == blank and block.settings.heading == blank %}aria-label="{{ banner_label }}"{% endif %}
           >
             {%- comment -%} One <picture> so only the needed crop is fetched {%- endcomment -%}
             {%- render 'spy-banner-picture',
@@ -95,7 +99,7 @@
                 </div>
               </div>
             {%- endif -%}
-          </a>
+          </{{ banner_tag }}>
         </div>
       {%- endfor -%}
     </div>
@@ -159,6 +163,7 @@
       "settings": [
         { "type": "image_picker", "id": "image_desktop", "label": "Desktop image (992px and up)" },
         { "type": "image_picker", "id": "image_mobile", "label": "Mobile image", "info": "Falls back to the desktop image." },
+        { "type": "text", "id": "image_alt", "label": "Image description (alt text)", "info": "Describe the headline baked into the artwork. Leave empty to use the image's own alt text." },
         { "type": "textarea", "id": "heading", "label": "Heading", "info": "Leave empty when the artwork already carries the headline." },
         { "type": "range", "id": "heading_size", "label": "Heading size (992px and up)", "min": 16, "max": 96, "step": 1, "unit": "px", "default": 48 },
         { "type": "range", "id": "heading_size_mobile", "label": "Heading size (below 992px)", "min": 14, "max": 64, "step": 1, "unit": "px", "default": 26 },

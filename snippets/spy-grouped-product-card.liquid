@@ -215,7 +215,7 @@
           {%- capture badge_text -%}{%- render 'spy-product-badge-text', product: product -%}{%- endcapture -%}
           <div class="spy-product-badge">
             {%- if badge_text != blank -%}
-              <span class="spy-badge-pill border border-spy-orange text-spy-orange">{{ badge_text | strip }}</span>
+              <span class="spy-badge-pill border border-spy-orange text-spy-orange-ui">{{ badge_text | strip }}</span>
             {%- endif -%}
           </div>
 

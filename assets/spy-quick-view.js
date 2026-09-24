@@ -123,9 +123,16 @@
       });
   };
 
+  // Quick View sits on <body>, so an inert page keeps Tab inside it (a drawer may still be open on top)
+  const syncPageInert = () => {
+    const on = !!document.querySelector('[data-spy-drawer][data-open], [data-spy-qv-root][data-open], #spy-compare-modal[data-open], [data-spy-fit-guide-modal][data-open]');
+    document.querySelectorAll('.page-wrapper, .skip-to-content-link').forEach((el) => { el.inert = on; });
+  };
+
   const open = (handle, trigger) => {
     lastTrigger = trigger || null;
     root.dataset.open = '';
+    syncPageInert();
     layer?.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     load(handle);
@@ -135,6 +142,7 @@
   const close = () => {
     if (!('open' in root.dataset)) return;
     delete root.dataset.open;
+    syncPageInert();
     layer?.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     lastTrigger?.focus();

@@ -19,7 +19,7 @@
     {%- comment -%} Source: white button, orange hairline + orange uppercase label {%- endcomment -%}
     <button
       type="button"
-      class="spy-notify-me__toggle w-full py-3 border border-spy-orange text-spy-orange uppercase font-bold text-[0.8125rem] tracking-[0.06em] bg-transparent cursor-pointer hover:bg-spy-orange hover:text-white transition-colors aria-expanded:hidden"
+      class="spy-notify-me__toggle w-full py-3 border border-spy-orange text-spy-orange-ui uppercase font-bold text-[0.8125rem] tracking-[0.06em] bg-transparent cursor-pointer hover:bg-spy-orange-ui hover:text-white transition-colors aria-expanded:hidden"
       data-spy-notify-toggle
       aria-expanded="false"
       aria-controls="{{ panel_id }}"
@@ -36,12 +36,12 @@
           {%- assign notify_open = true -%}
         {%- endif -%}
         {%- if form.posted_successfully? -%}
-          <p class="m-0 text-[14px] leading-5 text-[color:var(--color-spy-positive)]">
+          <p class="m-0 text-[14px] leading-5 text-[color:var(--color-spy-positive)]" role="status">
             {{ block.settings.success_text | default: "Thanks — we'll email you when this is back in stock." }}
           </p>
         {%- else -%}
           {%- if form.errors -%}
-            <p class="m-0 text-[14px] leading-5 text-[color:var(--color-spy-negative)]">
+            <p id="{{ form_id }}-error" class="m-0 text-[14px] leading-5 text-[color:var(--color-spy-negative)]" role="alert">
               {{ form.errors | default_errors }}
             </p>
           {%- endif -%}
@@ -66,6 +66,7 @@
             name="contact[email]"
             required
             autocomplete="email"
+            {% if form.errors %}aria-invalid="true" aria-describedby="{{ form_id }}-error"{% endif %}
             class="w-full max-w-[420px] h-10 px-3 border border-[color:var(--color-spy-border)] bg-white text-[14px] text-[color:var(--color-spy-text)] focus:outline-none focus:border-spy-orange"
           >
 
@@ -82,7 +83,7 @@
 
           <button
             type="submit"
-            class="w-full max-w-[420px] py-3 bg-spy-orange text-white uppercase font-bold text-[0.8125rem] tracking-[0.06em] border-0 cursor-pointer hover:opacity-90 transition-opacity"
+            class="w-full max-w-[420px] py-3 bg-spy-orange-ui text-white uppercase font-bold text-[0.8125rem] tracking-[0.06em] border-0 cursor-pointer hover:opacity-90 transition-opacity"
           >
             {{ block.settings.send_label | default: 'Send' }}
           </button>

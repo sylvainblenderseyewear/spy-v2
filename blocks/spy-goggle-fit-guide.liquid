@@ -42,25 +42,25 @@
   <div class="flex flex-wrap gap-2 pt-1">
     {%- if fit_a != blank -%}
       <div class="flex flex-col items-center min-w-[52px] px-2.5 py-1.5 border border-spy-border gap-0.5">
-        <span class="text-[10px] font-bold uppercase tracking-[0.08em] text-spy-orange">A</span>
+        <span class="text-[10px] font-bold uppercase tracking-[0.08em] text-spy-orange-ui">A</span>
         <span class="text-[13px] font-semibold text-spy-slate">{{ fit_a }}&thinsp;mm</span>
       </div>
     {%- endif -%}
     {%- if fit_b != blank -%}
       <div class="flex flex-col items-center min-w-[52px] px-2.5 py-1.5 border border-spy-border gap-0.5">
-        <span class="text-[10px] font-bold uppercase tracking-[0.08em] text-spy-orange">B</span>
+        <span class="text-[10px] font-bold uppercase tracking-[0.08em] text-spy-orange-ui">B</span>
         <span class="text-[13px] font-semibold text-spy-slate">{{ fit_b }}&thinsp;mm</span>
       </div>
     {%- endif -%}
     {%- if fit_c != blank -%}
       <div class="flex flex-col items-center min-w-[52px] px-2.5 py-1.5 border border-spy-border gap-0.5">
-        <span class="text-[10px] font-bold uppercase tracking-[0.08em] text-spy-orange">C</span>
+        <span class="text-[10px] font-bold uppercase tracking-[0.08em] text-spy-orange-ui">C</span>
         <span class="text-[13px] font-semibold text-spy-slate">{{ fit_c }}&thinsp;mm</span>
       </div>
     {%- endif -%}
     {%- if fit_d != blank -%}
       <div class="flex flex-col items-center min-w-[52px] px-2.5 py-1.5 border border-spy-border gap-0.5">
-        <span class="text-[10px] font-bold uppercase tracking-[0.08em] text-spy-orange">D</span>
+        <span class="text-[10px] font-bold uppercase tracking-[0.08em] text-spy-orange-ui">D</span>
         <span class="text-[13px] font-semibold text-spy-slate">{{ fit_d }}&thinsp;mm</span>
       </div>
     {%- endif -%}
@@ -68,7 +68,7 @@
   {%- endif -%}
 
   {%- if block.settings.guide_link != blank -%}
-  <a href="{{ block.settings.guide_link }}" class="inline-block mt-1 text-[11px] font-bold uppercase tracking-[0.06em] text-spy-slate underline decoration-current underline-offset-[3px] hover:text-spy-orange transition-colors">
+  <a href="{{ block.settings.guide_link }}" class="inline-block mt-1 text-[11px] font-bold uppercase tracking-[0.06em] text-spy-slate underline decoration-current underline-offset-[3px] hover:text-spy-orange-ui transition-colors">
     {{- block.settings.guide_link_label | default: 'View Fit Guide' -}}
   </a>
   {%- endif -%}

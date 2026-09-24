@@ -24,6 +24,7 @@
   @param {string} [arrows_position] - The position of the arrows, defaults to 'bottom'
   @param {string} [attributes] - Additional attributes to add to the slideshow component
   @param {boolean} [header] - The title of the slideshow
+  @param {string} [scroller_label] - when set, the scroller joins the tab order with this label so arrow keys can scroll it (WCAG 2.1.1)
 
   @example
   {% render 'slideshow', slides: slides, slide_count: collection.products.size, ref: 'mobileSlideshow' %}
@@ -111,8 +112,13 @@
     {% if slideshow_arrows %}
       {{ slideshow_arrows }}
     {% endif %}
+    {%- comment -%} Card galleries stay out of the tab order; the PDP gallery opts in via scroller_label {%- endcomment -%}
     <slideshow-slides
-      tabindex="-1"
+      {% if scroller_label != blank %}
+        tabindex="0" role="region" aria-label="{{ scroller_label | escape }}"
+      {% else %}
+        tabindex="-1"
+      {% endif %}
       ref="scroller"
       {% if slideshow_gutters %}
         gutters="{{ slideshow_gutters }}"

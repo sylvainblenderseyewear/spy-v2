@@ -443,6 +443,8 @@
       {% endcapture %}
     {% endif %}
 
+    {%- comment -%} Focusable so keyboard users can arrow through the photos {%- endcomment -%}
+    {%- assign gallery_label = 'accessibility.slideshow' | t -%}
     {% render 'slideshow',
       ref: 'slideshow',
       class: slideshow_class,
@@ -450,7 +452,8 @@
       slide_count: sorted_media.size,
       slideshow_arrows: slideshow_arrows,
       arrows_position: icons_position,
-      controls: controls
+      controls: controls,
+      scroller_label: gallery_label
     %}
 
     {% if media_presentation == 'grid' %}

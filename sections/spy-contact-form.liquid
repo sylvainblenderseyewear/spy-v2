@@ -111,16 +111,19 @@
       {%- if form.errors and form_matches -%}
         <div
           class="mb-5 border border-solid border-[#c0392b] bg-[#fdeceb] px-4 py-3 text-[14px] text-[#c0392b]"
+          role="alert"
           tabindex="-1"
           autofocus
         >
-          {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+          {%- comment -%} List every failed field, not only the email {%- endcomment -%}
+          {{ form.errors | default_errors }}
         </div>
       {%- endif -%}
 
       {%- if form.posted_successfully? and form_matches -%}
         <div
           class="mb-5 border border-solid border-[#2e7d32] bg-[#edf7ed] px-4 py-3 text-[14px] text-[#2e7d32]"
+          role="status"
           tabindex="-1"
           autofocus
         >

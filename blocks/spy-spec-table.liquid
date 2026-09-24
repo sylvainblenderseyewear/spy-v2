@@ -74,70 +74,70 @@
 
       {%- comment -%}── Identification ─────────────────────────────{%- endcomment -%}
       {%- if ref_val != blank -%}
-        <tr><th>Reference</th><td>{{ ref_val }}</td></tr>
+        <tr><th scope="row">Reference</th><td>{{ ref_val }}</td></tr>
       {%- endif -%}
 
       {%- comment -%}── Frame ──────────────────────────────────────{%- endcomment -%}
       {%- if s.fit.value != blank -%}
-        <tr><th>Fit</th><td>{{ s.fit.value }}</td></tr>
+        <tr><th scope="row">Fit</th><td>{{ s.fit.value }}</td></tr>
       {%- endif -%}
       {%- if s.dimensions.value != blank -%}
-        <tr><th>Dimensions</th><td>{{ s.dimensions.value }}</td></tr>
+        <tr><th scope="row">Dimensions</th><td>{{ s.dimensions.value }}</td></tr>
       {%- endif -%}
       {%- if s.weight_g.value != blank -%}
-        <tr><th>Weight</th><td>{{ s.weight_g.value }}&thinsp;g</td></tr>
+        <tr><th scope="row">Weight</th><td>{{ s.weight_g.value }}&thinsp;g</td></tr>
       {%- endif -%}
       {%- if s.frame_material.value != blank -%}
-        <tr><th>Frame Material</th><td>{{ s.frame_material.value }}</td></tr>
+        <tr><th scope="row">Frame Material</th><td>{{ s.frame_material.value }}</td></tr>
       {%- endif -%}
       {%- if s.frame_color.value != blank -%}
-        <tr><th>Frame Color</th><td>{{ s.frame_color.value }}</td></tr>
+        <tr><th scope="row">Frame Color</th><td>{{ s.frame_color.value }}</td></tr>
       {%- endif -%}
 
       {%- comment -%}── Lens ───────────────────────────────────────{%- endcomment -%}
       {%- if lens_name_val != blank -%}
-        <tr><th>Lens Name</th><td>{{ lens_name_val }}</td></tr>
+        <tr><th scope="row">Lens Name</th><td>{{ lens_name_val }}</td></tr>
       {%- endif -%}
       {%- if s.lens_material.value != blank -%}
-        <tr><th>Lens Material</th><td>{{ s.lens_material.value }}</td></tr>
+        <tr><th scope="row">Lens Material</th><td>{{ s.lens_material.value }}</td></tr>
       {%- endif -%}
       {%- if s.lens_shape.value != blank -%}
-        <tr><th>Lens Shape</th><td>{{ s.lens_shape.value }}</td></tr>
+        <tr><th scope="row">Lens Shape</th><td>{{ s.lens_shape.value }}</td></tr>
       {%- endif -%}
       {%- if lens_cat_val != blank -%}
-        <tr><th>Lens Category</th><td>{{ lens_cat_val }}</td></tr>
+        <tr><th scope="row">Lens Category</th><td>{{ lens_cat_val }}</td></tr>
       {%- endif -%}
       {%- if vlt_val != blank -%}
-        <tr><th>VLT</th><td>{{ vlt_val }}%</td></tr>
+        <tr><th scope="row">VLT</th><td>{{ vlt_val }}%</td></tr>
       {%- endif -%}
       {%- if base_tint_val != blank -%}
-        <tr><th>Base Tint</th><td>{{ base_tint_val }}</td></tr>
+        <tr><th scope="row">Base Tint</th><td>{{ base_tint_val }}</td></tr>
       {%- endif -%}
       {%- if s.mirror_tint.value != blank -%}
-        <tr><th>Mirror Tint</th><td>{{ s.mirror_tint.value }}</td></tr>
+        <tr><th scope="row">Mirror Tint</th><td>{{ s.mirror_tint.value }}</td></tr>
       {%- endif -%}
       {%- if s.polarized.value != nil -%}
         <tr>
-          <th>Polarized</th>
+          <th scope="row">Polarized</th>
           <td>{%- if s.polarized.value -%}Yes{%- else -%}No{%- endif -%}</td>
         </tr>
       {%- endif -%}
       {%- if s.photochromic.value -%}
-        <tr><th>Photochromic</th><td>Yes</td></tr>
+        <tr><th scope="row">Photochromic</th><td>Yes</td></tr>
       {%- endif -%}
       {%- if s.high_contrast.value -%}
-        <tr><th>High Contrast</th><td>Yes</td></tr>
+        <tr><th scope="row">High Contrast</th><td>Yes</td></tr>
       {%- endif -%}
       {%- if s.lens_coating.value != blank -%}
-        <tr><th>Lens Coating</th><td>{{ s.lens_coating.value }}</td></tr>
+        <tr><th scope="row">Lens Coating</th><td>{{ s.lens_coating.value }}</td></tr>
       {%- endif -%}
 
       {%- comment -%}── Accessories & Certs ────────────────────────{%- endcomment -%}
       {%- if s.included_accessories.value != blank -%}
-        <tr><th>Includes</th><td>{{ s.included_accessories.value | join: ', ' }}</td></tr>
+        <tr><th scope="row">Includes</th><td>{{ s.included_accessories.value | join: ', ' }}</td></tr>
       {%- endif -%}
       {%- if s.certifications.value != blank -%}
-        <tr><th>Certifications</th><td>{{ s.certifications.value | join: ', ' }}</td></tr>
+        <tr><th scope="row">Certifications</th><td>{{ s.certifications.value | join: ', ' }}</td></tr>
       {%- endif -%}
 
       {%- comment -%}── Technologies ───────────────────────────────{%- endcomment -%}
@@ -156,39 +156,39 @@
         {%- assign tech_names = tech_text -%}
       {%- endif -%}
       {%- if tech_names != blank -%}
-        <tr><th>Technologies</th><td>{{ tech_names }}</td></tr>
+        <tr><th scope="row">Technologies</th><td>{{ tech_names }}</td></tr>
       {%- endif -%}
 
       {%- comment -%}── Goggle-specific ────────────────────────────{%- endcomment -%}
       {%- if show_goggle -%}
         {%- if g.base.value != blank -%}
-          <tr><th>Base / Fit</th><td>{{ g.base.value }}</td></tr>
+          <tr><th scope="row">Base / Fit</th><td>{{ g.base.value }}</td></tr>
         {%- endif -%}
         {%- if g.fit_system.value != blank -%}
-          <tr><th>Fit System</th><td>{{ g.fit_system.value }}</td></tr>
+          <tr><th scope="row">Fit System</th><td>{{ g.fit_system.value }}</td></tr>
         {%- endif -%}
         {%- if g.ventilation.value != blank -%}
-          <tr><th>Ventilation</th><td>{{ g.ventilation.value }}</td></tr>
+          <tr><th scope="row">Ventilation</th><td>{{ g.ventilation.value }}</td></tr>
         {%- endif -%}
         {%- if g.removable_padding.value -%}
-          <tr><th>Removable Padding</th><td>Yes</td></tr>
+          <tr><th scope="row">Removable Padding</th><td>Yes</td></tr>
         {%- endif -%}
         {%- if g.otg.value -%}
-          <tr><th>OTG Compatible</th><td><span class="inline-block text-[10px] font-bold uppercase tracking-[0.05em] px-1.5 py-0.5 bg-spy-orange text-white mr-1">OTG</span></td></tr>
+          <tr><th scope="row">OTG Compatible</th><td><span class="inline-block text-[10px] font-bold uppercase tracking-[0.05em] px-1.5 py-0.5 bg-spy-orange-ui text-white mr-1">OTG</span></td></tr>
         {%- endif -%}
         {%- if g.interchangeable_lens.value -%}
-          <tr><th>Interchangeable Lens</th><td>Yes</td></tr>
+          <tr><th scope="row">Interchangeable Lens</th><td>Yes</td></tr>
         {%- endif -%}
         {%- if g.extra_lens_included.value -%}
-          <tr><th>Extra Lens Included</th><td>Yes</td></tr>
+          <tr><th scope="row">Extra Lens Included</th><td>Yes</td></tr>
           {%- if g.extra_lens_name.value != blank -%}
-            <tr><th>Extra Lens</th><td>{{ g.extra_lens_name.value }}</td></tr>
+            <tr><th scope="row">Extra Lens</th><td>{{ g.extra_lens_name.value }}</td></tr>
           {%- endif -%}
           {%- if g.extra_lens_vlt_percent.value != blank -%}
-            <tr><th>Extra Lens VLT</th><td>{{ g.extra_lens_vlt_percent.value }}%</td></tr>
+            <tr><th scope="row">Extra Lens VLT</th><td>{{ g.extra_lens_vlt_percent.value }}%</td></tr>
           {%- endif -%}
           {%- if g.extra_lens_category.value != blank -%}
-            <tr><th>Extra Lens Category</th><td>{{ g.extra_lens_category.value }}</td></tr>
+            <tr><th scope="row">Extra Lens Category</th><td>{{ g.extra_lens_category.value }}</td></tr>
           {%- endif -%}
         {%- endif -%}
       {%- endif -%}
@@ -196,16 +196,16 @@
       {%- comment -%}── Helmet-specific ────────────────────────────{%- endcomment -%}
       {%- if show_helmet -%}
         {%- if h.fit_system.value != blank -%}
-          <tr><th>Fit System</th><td>{{ h.fit_system.value }}</td></tr>
+          <tr><th scope="row">Fit System</th><td>{{ h.fit_system.value }}</td></tr>
         {%- endif -%}
         {%- if h.sizes.value != blank -%}
-          <tr><th>Sizes</th><td>{{ h.sizes.value | join: ', ' }}</td></tr>
+          <tr><th scope="row">Sizes</th><td>{{ h.sizes.value | join: ', ' }}</td></tr>
         {%- endif -%}
         {%- if h.mips.value -%}
-          <tr><th>MIPS</th><td><span class="inline-block text-[10px] font-bold uppercase tracking-[0.05em] px-1.5 py-0.5 bg-spy-orange text-white mr-1">MIPS</span></td></tr>
+          <tr><th scope="row">MIPS</th><td><span class="inline-block text-[10px] font-bold uppercase tracking-[0.05em] px-1.5 py-0.5 bg-spy-orange-ui text-white mr-1">MIPS</span></td></tr>
         {%- endif -%}
         {%- if h.certifications.value != blank -%}
-          <tr><th>Certifications</th><td>{{ h.certifications.value | join: ', ' }}</td></tr>
+          <tr><th scope="row">Certifications</th><td>{{ h.certifications.value | join: ', ' }}</td></tr>
         {%- endif -%}
       {%- endif -%}
 

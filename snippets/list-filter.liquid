@@ -497,7 +497,10 @@
   </details>
 {% endcapture %}
 {% comment %} Source panel ships every facet collapsed — no open_by_default here {% endcomment %}
+{%- comment -%} The horizontal bar puts these straight inside a <ul>, so they must read as list items {%- endcomment -%}
+{%- if is_horizontal -%}{%- assign filter_role = 'listitem' -%}{%- else -%}{%- assign filter_role = nil -%}{%- endif -%}
 {% render 'accordion-custom-component',
+  role: filter_role,
   children: accordion_children,
   class: 'facets__item',
   open: false,

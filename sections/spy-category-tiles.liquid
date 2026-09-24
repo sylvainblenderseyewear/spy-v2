@@ -77,7 +77,11 @@
         {%- assign label = block.settings.label -%}
         {%- assign link = block.settings.link -%}
         {%- if img == blank and label == blank -%}{%- continue -%}{%- endif -%}
-        {%- assign tile_alt = label | escape -%}
+        {%- comment -%} The label is already read out, so the art is decorative when there is one {%- endcomment -%}
+        {%- if label != blank -%}{%- assign tile_alt = '' -%}{%- else -%}{%- assign tile_alt = img.alt | escape -%}{%- endif -%}
+        {%- comment -%} First tiles sit in the first screen under the hero, so don't lazy-load them {%- endcomment -%}
+        {%- assign tile_loading = 'lazy' -%}
+        {%- if section.index <= 3 and forloop.index <= 4 -%}{%- assign tile_loading = 'eager' -%}{%- endif -%}
 
         {%- comment -%}
           A tile with no link is a plain div, not <a href="#">. A dead anchor is
@@ -98,7 +102,7 @@
                 img
                 | image_url: width: 1200
                 | image_tag:
-                  loading: 'lazy',
+                  loading: tile_loading,
                   alt: tile_alt,
                   sizes: sizes,
                   widths: '300, 450, 600, 800, 1000, 1200',

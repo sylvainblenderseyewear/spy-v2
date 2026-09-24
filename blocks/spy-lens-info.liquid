@@ -132,7 +132,7 @@
   <div class="flex items-center justify-between gap-3 h-6 mb-3">
     <span class="text-[16px] leading-6 font-medium text-[color:var(--color-spy-ink)]">Lens information</span>
     {%- liquid
-      assign read_more_cls = 'text-[14px] leading-5 font-medium tracking-[0.01em] underline decoration-current underline-offset-2 text-[color:var(--color-spy-text)] hover:text-spy-orange'
+      assign read_more_cls = 'text-[14px] leading-5 font-medium tracking-[0.01em] underline decoration-current underline-offset-2 text-[color:var(--color-spy-text)] hover:text-spy-orange-ui'
     -%}
     {%- if use_drawer -%}
       <button
@@ -277,7 +277,7 @@
     {%- comment -%} Source fades the content up 6px as the panel opens, and antialiases it {%- endcomment -%}
     <div class="antialiased group-data-[open]:animate-spy-fade-up">
     <div class="px-6 pt-6">
-      <p class="mb-3.5 text-[10px] font-bold uppercase leading-none tracking-[0.3em] text-spy-orange">{{ block.settings.drawer_eyebrow }}</p>
+      <p class="mb-3.5 text-[10px] font-bold uppercase leading-none tracking-[0.3em] text-spy-orange-ui">{{ block.settings.drawer_eyebrow }}</p>
       {%- if drawer_logo != blank -%}
         <img
           src="{{ drawer_logo | image_url: width: 400 }}"
@@ -305,7 +305,7 @@
         [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-[5px] [&_li]:before:h-2 [&_li]:before:w-2 [&_li]:before:rounded-full [&_li]:before:bg-spy-orange [&_li]:before:content-['']
         [&_strong]:mb-[3px] [&_strong]:block [&_strong]:text-[13px] [&_strong]:font-bold [&_strong]:text-[#111] [&_strong]:max-[768px]:text-[14px]
         [&_p]:m-0 [&_p:not(:last-child)]:mb-4
-        [&_a]:text-spy-orange [&_a]:underline [&_a]:decoration-current">
+        [&_a]:text-spy-orange-ui [&_a]:underline [&_a]:decoration-current">
         {{ drawer_benefits }}
       </div>
     {%- endif -%}

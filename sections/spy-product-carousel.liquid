@@ -163,6 +163,7 @@
     {%- endcomment -%}
     <div
       data-dots
+      data-dot-label="{{ 'accessibility.slide_status' | t: index: '[i]', length: '[n]' | escape }}"
       class="{{ dot_classes }} absolute inset-x-0 bottom-4 items-center justify-center gap-2"
       role="group"
       aria-label="Choose a product"
@@ -320,10 +321,13 @@
         buildDots() {
           if (!this.dots) return;
           this.dots.replaceChildren();
+          // "Slide 2 of 5" reads better than a bare "2"
+          const label = this.dots.dataset.dotLabel || 'Slide [i] of [n]';
+          const total = this.slides.length;
           this.slides.forEach((_, i) => {
             const b = document.createElement('button');
             b.type = 'button';
-            b.setAttribute('aria-label', String(i + 1));
+            b.setAttribute('aria-label', label.replace('[i]', i + 1).replace('[n]', total));
             b.className = 'h-[10px] w-[10px] rounded-full bg-spy-ink border-0 p-0';
             b.addEventListener('click', () => this.scrollToIndex(i));
             this.dots.appendChild(b);

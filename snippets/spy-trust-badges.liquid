@@ -87,10 +87,11 @@
           {{- badge_text -}}
           {%- if link_text != blank -%}
             {%- if link_url != blank -%}
-              <a class="ml-1 text-spy-orange no-underline hover:underline" href="{{ link_url }}">{{ link_text }}</a>
+              {%- comment -%} Underlined: the AA orange is too close to the body text to mark a link by colour alone (1.4.1) {%- endcomment -%}
+              <a class="ml-1 text-spy-orange-ui underline decoration-current underline-offset-2" href="{{ link_url }}">{{ link_text }}</a>
             {%- else -%}
               {%- comment -%} no page picked yet — keep the look, drop the dead link {%- endcomment -%}
-              <span class="ml-1 text-spy-orange">{{ link_text }}</span>
+              <span class="ml-1 text-spy-orange-ui">{{ link_text }}</span>
             {%- endif -%}
           {%- endif -%}
           {%- comment -%} fixed size — the theme stretches bare images {%- endcomment -%}

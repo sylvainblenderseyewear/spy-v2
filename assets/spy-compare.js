@@ -83,18 +83,34 @@
   }
 
   // ── Compare Modal ──────────────────────────────────────────────────
+  // Modal moves to <body> so an inert page keeps Tab inside it
+  function syncPageInert() {
+    const on = !!document.querySelector('[data-spy-drawer][data-open], [data-spy-qv-root][data-open], #spy-compare-modal[data-open], [data-spy-fit-guide-modal][data-open]');
+    document.querySelectorAll('.page-wrapper, .skip-to-content-link').forEach((el) => { el.inert = on; });
+  }
+
+  let modalOpener = null;
+
   async function openModal() {
+    if (modal.parentElement !== document.body) document.body.appendChild(modal);
+    modalOpener = document.activeElement;
     modal.classList.remove('hidden');
+    modal.dataset.open = '';
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    syncPageInert();
     await buildModal();
     modalClose.focus();
   }
 
   function closeModal() {
     modal.classList.add('hidden');
+    delete modal.dataset.open;
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    syncPageInert();
+    modalOpener?.focus?.();
+    modalOpener = null;
   }
 
   async function buildModal() {
@@ -107,10 +123,10 @@
     const products = await Promise.all(fetches);
 
     const rows = [
-      { label: 'Product',     render: p => `<a href="${p.url}" class="font-bold text-spy-slate text-sm hover:text-spy-orange">${p.title}</a>` },
+      { label: 'Product',     render: p => `<a href="${p.url}" class="font-bold text-spy-slate text-sm hover:text-spy-orange-ui">${p.title}</a>` },
       { label: 'Price',       render: p => `<span class="font-semibold text-sm">$${(p.price / 100).toFixed(2).replace(/\.00$/, '')}</span>` },
       { label: 'Variants',    render: p => `<span class="text-sm">${p.variants.length} option${p.variants.length !== 1 ? 's' : ''}</span>` },
-      { label: '',            render: p => `<a href="${p.url}" class="inline-block bg-spy-orange text-white text-xs font-bold uppercase tracking-widest px-4 py-2 hover:opacity-90">View Product</a>` },
+      { label: '',            render: p => `<a href="${p.url}" class="inline-block bg-spy-orange-ui text-white text-xs font-bold uppercase tracking-widest px-4 py-2 hover:opacity-90">View Product</a>` },
     ];
 
     modalBody.innerHTML = `
