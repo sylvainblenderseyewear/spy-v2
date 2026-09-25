@@ -275,3 +275,32 @@ analytics.subscribe('checkout_completed', (event) => {
     items: (c.lineItems || []).map((li) => item(li.variant, li.quantity)),
   });
 });
+
+/* ---------- promo banners ---------- */
+
+/*
+  Shopify has no standard event for a banner, so the theme sends its own from
+  <spy-promotion> (assets/spy-promotion-event.js), on six banner sections.
+
+  Custom events carry their payload in `customData`, not `data` — reading the
+  wrong one gives an empty object and no error.
+*/
+function promotion(event) {
+  const d = (event && event.customData) || {};
+  return {
+    promotion_id: d.promotion_id || '',
+    promotion_name: d.promotion_name || '',
+    creative_slot: d.creative_slot || '',
+    location_id: d.location_id || '',
+  };
+}
+
+analytics.subscribe('custom_view_promotion', (event) => {
+  setPage(event);
+  gtag('event', 'view_promotion', promotion(event));
+});
+
+analytics.subscribe('custom_select_promotion', (event) => {
+  setPage(event);
+  gtag('event', 'select_promotion', promotion(event));
+});
