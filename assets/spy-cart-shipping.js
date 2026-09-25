@@ -32,6 +32,25 @@ function saveChoice(/** @type {string} */ name) {
   }
 }
 
+/** @returns {Array<any> | null} */
+function readCache(/** @type {string} */ key) {
+  try {
+    const hit = JSON.parse(sessionStorage.getItem(key) || 'null');
+    // Rates rarely change; half an hour keeps a browsing session snappy
+    return hit && Date.now() - hit.at < 30 * 60 * 1000 ? hit.rates : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCache(/** @type {string} */ key, /** @type {Array<any>} */ rates) {
+  try {
+    sessionStorage.setItem(key, JSON.stringify({ at: Date.now(), rates }));
+  } catch {
+    // storage full or blocked: just skip the cache
+  }
+}
+
 class SpyShippingEstimate extends HTMLElement {
   #painting = false;
   /** @type {MutationObserver | null} */
@@ -112,16 +131,35 @@ class SpyShippingEstimate extends HTMLElement {
       params.set('shipping_address[province]', this.dataset.province || '');
       params.set('shipping_address[zip]', this.dataset.zip || '');
       const query = params.toString();
+      const cacheKey = `spy-cart-rates:${query}:${this.dataset.total}`;
 
-      // A failed prepare (proxy hiccup) can still leave cached rates, so poll anyway
+      // Same address + same cart total = same rates; paint from the session cache first
+      const cached = readCache(cacheKey);
+      if (cached) {
+        sharedRates = cached;
+        return;
+      }
+
+      // One-shot endpoint answers in ~1s; the prepare + poll pair can take 10s+
+      const quick = await fetch(`${root}cart/shipping_rates.json?${query}`).catch(() => null);
+      if (quick?.ok) {
+        const rates = (await quick.json().catch(() => null))?.shipping_rates;
+        if (Array.isArray(rates)) {
+          sharedRates = rates;
+          writeCache(cacheKey, rates);
+          return;
+        }
+      }
+      if (quick?.status === 422) return;
+
+      // Fallback: async calculation. A failed prepare can still leave rates to poll
       await fetch(`${root}cart/prepare_shipping_rates.json?${query}`, { method: 'POST' }).catch(() => {});
-
-      // Rates are calculated async; poll briefly
       for (let attempt = 0; attempt < 12; attempt++) {
         const response = await fetch(`${root}cart/async_shipping_rates.json?${query}`);
         const text = await response.text();
         if (response.ok && text && text !== 'null') {
           sharedRates = JSON.parse(text).shipping_rates || [];
+          writeCache(cacheKey, sharedRates);
           return;
         }
         if (response.status === 422) return;
