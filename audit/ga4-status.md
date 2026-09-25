@@ -78,6 +78,16 @@ could be verified, as the Shopify docs lookup failed. Both are read guarded, so 
 simply omitted and nothing breaks. Realtime does not show parameters, so answering this needs
 `debug_mode: true` and DebugView.
 
+**Promotion events wired 25 Sep — not yet verified.** The theme had been publishing
+`custom_view_promotion` and `custom_select_promotion` from six banner sections since the promotion
+work, and the pixel subscribed to neither, so it was dead code producing no data. The pixel now maps
+them to GA4 `view_promotion` / `select_promotion`. Thirteen events wired, eleven proven in the field.
+
+One assumption to confirm on the next paste: custom events carry their payload in
+**`event.customData`**, not `event.data`. If that is wrong the events still fire but with empty
+parameters rather than throwing. Check Realtime for `view_promotion` after scrolling a homepage
+banner, and confirm `promotion_name` is populated rather than blank.
+
 ### Two debugging traps, both cost an hour to learn
 
 **Tag Manager server Preview is blind on this store.** It claims sessions with a cookie on
@@ -89,17 +99,93 @@ perfectly. Use **DevTools → Network, filter `sgtm`** and **GA4 Realtime** inst
 registering when the extension snapshots the page. Every later navigation reports Loaded correctly.
 Not a homepage fault — our pixel's top-level code is page-agnostic.
 
+### Consent — verified end to end (25 Sep)
+
+Pandectes GDPR (installed by Sylvain) is the CMP. Banner set to **Auto pilot — Worldwide**, shown to
+every region including the US, where Shopify says one is not required.
+
+The whole chain is proven through the real shopper path:
+
+| Step | Evidence |
+|---|---|
+| Shopper declines on the banner | Pandectes dashboard logs it |
+| Pandectes → Shopify Customer Privacy API | `currentVisitorConsent()` flips `'no'` ⇄ `'yes'` |
+| Shopify → pixel | pixel reads the state at load |
+| Declined → nothing sent | **0 of 397 requests** matched `sgtm` on a full page load |
+
+Declining sends **nothing at all** — not even the anonymous pings standard Consent Mode would still
+send. Shopify withholds the pixel entirely. That is stricter than required and the right outcome.
+
+**Gotcha that cost an hour: consent chosen on the `/password` page is not written to Shopify.**
+Pandectes logs the click but `currentVisitorConsent()` stays empty, which looks exactly like a broken
+integration. Pre-launch only — there is no password gate once the store is live. **Always test
+consent from a real storefront page.**
+
+**`sale_of_data` is the one field Pandectes does not set** — it stayed empty while the other three
+changed. That is the US "do not sell my data" signal, which Shopify already handles through its own
+opt-out page in California and 14 other states. Our pixel treats an unset value as permissive, which
+matches the US opt-out model.
+
+Diagnostics worth keeping — run in the DevTools console on a storefront page, context `top`:
+
+```js
+window.Shopify.customerPrivacy.currentVisitorConsent()          // what Shopify holds
+window.Shopify.customerPrivacy.setTrackingConsent(              // force a state to test with
+  {analytics: false, marketing: false, preferences: false, sale_of_data: false},
+  () => location.reload()
+)
+```
+
+Then read `gcs` in the Payload tab of any `collect` request: `G111` = granted, `G100` = denied.
+**Untick "Keep log" first** — stale rows from before a consent change will show the old value and
+send you chasing a bug that is not there.
+
 ---
 
 ## 1. Yours — nothing blocking these
 
 | | Task | Time | Why it matters |
 |---|---|---|---|
-| ~~1~~ | ~~Re-paste the pixel~~ — **done 21 Sep**, verified on production | — | — |
-| 2 | **Enable logging** on `sgtm-backend` | 5 min | Currently Disabled. If something breaks at launch you are blind |
+| ~~1~~ | ~~Re-paste the pixel~~ — **done 21 Sep**, all 11 events verified | — | — |
+| ~~2~~ | ~~Enable logging on `sgtm-backend`~~ — **done 22 Sep**, sample rate 1. Cloud CDN got switched on during the edit and was switched back off | — | — |
 | ~~3~~ | ~~Fix the cold start~~ — **done 22 Sep**, min instances 0 → 1 | — | — |
-| 4 | **Enable 2SV**, save backup codes | 10 min | Hard deadline **20 Oct** — eight days after launch. Miss it and you lose GCP console access |
-| 5 | **Investigate the 4xx responses** on `server-side-tagging` | 20 min | Visible as spikes on the Request count chart. Something is being rejected; find out what before launch |
+| ~~4~~ | ~~Investigate the 4xx~~ — **done 22 Sep**, see below | — | — |
+| ~~5~~ | ~~Link BigQuery~~ — **done 23 Sep**, daily event + user export, United States | — | — |
+| ~~6~~ | ~~Unwanted referrals~~ — **done 23 Sep**: `paypal.com`, `shop.app`, `shopify.com`, `stripe.com`. Add `spyoptic.com` at cutover | — | — |
+| 7 | **Internal traffic rule** — define it with the team's IPs, leave the filter on **Testing** | 15 min | Needs the team's IPs, so ask now. Switch to Active at cutover, not before — permanent and not retroactive |
+| 8 | **"Purchases below 1" custom insight**, emailed daily | 5 min | The only thing that will tell you the pixel died after launch. Otherwise you find out when someone questions the revenue |
+| 9 | **Enable 2SV**, save backup codes | 10 min | Hard deadline **20 Oct** — eight days after launch. Miss it and you lose GCP console access |
+| 10 | **Separate staging from production GA4** — must happen before cutover | 30 min | See below |
+
+**Staging is polluting the production property (found 23 Sep).** Both `spyoptic-com` and
+`spydevsylv` run the same pixel with the same `G-1F4T2NDY34`, so every test on staging lands in the
+same reports as real customers. Surfaced by GA4's own cross-domain suggestions, which offered both
+store domains.
+
+Harmless today — none of the data is real. **Not harmless after launch**: staging tests would inflate
+sessions, add phantom add-to-carts, and a test order there would post fake revenue.
+
+Fix: create a second GA4 property for staging and change `TAG_ID` in the staging store's pixel only.
+Keeps the ability to verify tracking changes before they reach production, which is how this week's
+work was done. The alternative — removing the pixel from staging — is simpler but gives up that
+safety net.
+
+**Tag diagnostics — decided 23 Sep, do not revisit.** GA4 flags *"Unsupported tag implementation
+detected on Shopify"* and offers to migrate the tag into the Google & YouTube app. **Do not accept.**
+That app sends to Google directly and cannot target a server container, so migrating would discard
+`sgtm.spyoptic.com`, the first-party `FPID` cookie and the whole server-side design. "Unsupported"
+means "not Google's recommended path", not "broken" — ours is verified working on real orders.
+
+Related: when the Google & YouTube app is eventually installed for Merchant Center, **its GA4
+measurement must be disabled**, or it becomes a second source of purchase events and double-counts
+revenue.
+
+The *"some pages are not tagged"* warning is a false positive: Google's crawler looks for gtag in the
+page source, and ours runs inside Shopify's sandboxed pixel iframe where the crawler cannot see it.
+
+**On the 4xx (closed 22 Sep).** 3,230 in a week, all of it internet background noise hitting the load
+balancer's raw IP: `/.git/config`, `/remote/login`, `PROPFIND /`, favicon requests. Any public IP
+collects this. **No `/g/collect` among them** — not one real event is being rejected.
 
 **On the cold start (closed 22 Sep).** The Container instance count chart was a square wave flipping
 between 0 and 1 all day — the container scaled to zero between visits and the first request after
@@ -117,20 +203,20 @@ keeping the container alive costs the same however you do it.
 
 ## 2. Waiting on other people
 
-### 2a. BigQuery export — escalated 21 Sep
+### ~~2a. BigQuery export~~ — done 23 Sep
 
-You can now see project `gtm-k3rx42ch-yzrjm`, but the GA4 link needs two permissions your role does
-not grant: `serviceusage.services.enable` and `resourcemanager.projects.setIamPolicy`. The second is
-needed because GA4 adds its own service account to the project IAM policy in order to write.
+Linked to `gtm-k3rx42ch-yzrjm`, location United States, **daily** export of both event data and user
+data. Streaming deliberately not enabled: Google states it is best-effort with no completeness
+guarantee, which is the wrong trade for revenue reconciliation, and Realtime already covers anything
+genuinely time-sensitive. It can be added later without losing anything.
 
-Either Sylvain does the link himself (five minutes, nothing granted), or he adds **Service Usage
-Admin** + **Project IAM Admin**, or **Owner**. Settings when it happens: United States, **Daily
-only** — streaming export costs money.
+Dataset `analytics_553360689` appears in the Cloud console after the first overnight run. Worth
+confirming a table lands — the link existing is not proof that data flows.
 
-Free at our volume, but **the export never backfills**, so every day it is off after launch is raw
-event data gone for good.
+Blocked for two days on `serviceusage.services.enable` and `resourcemanager.projects.setIamPolicy`,
+resolved once Sylvain granted access.
 
-### 2b. Baseline export from the old GA4 — the most time-critical item here
+### 2b. Baseline export from the old GA4 — now the most time-critical item here
 
 `G-GS5WZT8YYD` and `G-PJEFBYCC2M` are live on the current SFCC site. Twelve months of sessions,
 conversion rate, revenue and channel mix need exporting **before access changes hands at cutover**.
