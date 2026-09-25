@@ -57,6 +57,17 @@
   endif
 -%}
 
+{%- comment -%} An empty collection falls back to placeholder cards: fine in the editor, never for shoppers {%- endcomment -%}
+{%- liquid
+  assign hide_carousel = false
+  if coll == blank or coll.products.size == 0
+    unless request.design_mode
+      assign hide_carousel = true
+    endunless
+  endif
+-%}
+{%- unless hide_carousel -%}
+
 {%- comment -%}
   The source scrolls a whole page of cards on the wider steps — 3 at a time in the
   721–1140 band, 2 at a time in 541–720 — and only single-steps at the extremes.
@@ -382,6 +393,7 @@
     );
   }
 </script>
+{%- endunless -%}
 
 {% schema %}
 {

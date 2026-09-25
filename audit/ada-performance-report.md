@@ -129,6 +129,38 @@ What production shows:
 | Shopify platform (web pixels, checkout, trekkie) | ~250 KB | ~100–500 ms | Can't be removed |
 | GA4 gtag (`G-1F4T2NDY34`) | 156 KB | sandboxed | Our own custom pixel, expected |
 
+### Production with the ADA fixes pushed + accessiBe and Pandectes enabled (25 Sep)
+
+**Accessibility (axe, 11 pages × 2 widths): 10 of 20 page views fully clean.**
+- **Yotpo widget (production only):** almost every remaining failure comes from it: an invalid list around "Write a review" (`aria-required-parent`), invalid ARIA, an unnamed textbox, and low contrast on "Powered by" and the "REVIEWS" tab. That's Yotpo's markup, so it's fixed in Yotpo's widget settings/CSS or by their support.
+- **Pandectes and accessiBe add no axe failures.**
+- **Theme issue:** the homepage Watermen carousel showed 6 **placeholder cards to shoppers**, because production's `fishing-sunglasses` collection has 0 products. Fixed in `sections/spy-product-carousel.liquid`: placeholders now render only in the theme editor, and the section hides itself on the live store until the collection has products.
+
+Keyboard checks on production:
+- **Pandectes:** the banner is a labelled `role="dialog"` ("We respect your privacy"). **It takes focus when the page loads**, so Tab reaches Accept, and Enter closes it. Minor: it doesn't keep focus inside (no `aria-modal`, and the background stays tabbable), so tabbing back to it from the top of the page takes 153 presses.
+- **accessiBe:** its controls are named for screen readers ("Open accessiBe: accessibility options, statement and help", plus a screen-reader guide link). It adds 2 Tab stops before our skip link. It sits in a closed shadow DOM, so axe can't audit its own UI.
+- **Mobile menu:** it still keeps focus inside with both apps on.
+
+**Speed (Lighthouse medians, mobile / desktop):**
+
+| Page | Mobile before → with apps | TBT before → with apps | Desktop before → with apps |
+|---|---|---|---|
+| Home | 77 → 50 | 246 → 578 ms | 90 → 88 |
+| Collection | 74 → 50 | 269 → 1,500 ms | 90 → 85 |
+| PDP sunglass | 75 → 56 | 399 → 1,223 ms | 95 → 84 |
+| PDP snow goggle | 73 → 46 | 290 → 1,363 ms | 90 → 83 |
+| Cart | 79 → 51 | 297 → 480 ms (LCP 4.1 → 9.2 s) | 94 → 92 |
+
+What drove the drop:
+- **accessiBe** consistently costs about 235KB and about 200–320ms of script on every page.
+- **Pandectes** is light (about 56KB), but its banner renders late; its "Fast load" setting is off.
+- **Confounds:** Rebuy shipped a new script version between the two runs, and run-to-run variance on this network is high. So the ~25-point mobile drop is partly the apps and partly noise, but the accessiBe cost is real.
+
+Recommendations:
+1. Turn on Pandectes **Fast load** (App embeds → Pandectes).
+2. Keep accessiBe only if the PM/legal require it. It doesn't make the site compliant (the code fixes do), and it's now the second-largest script after Yotpo.
+3. Remove the duplicate Yotpo ScriptTag (P9).
+
 **P9 (new, High): Yotpo is installed twice.**
 - **Copy 1:** `widget.js?lang=en` is injected by the Yotpo **app embed** (Theme settings → App embeds).
 - **Copy 2:** `widget.js?shop=spyoptic-com.myshopify.com` comes from Shopify's `asyncLoad` list, meaning a **legacy ScriptTag** the Yotpo app registered on the store.
