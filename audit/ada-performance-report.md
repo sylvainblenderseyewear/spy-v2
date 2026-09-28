@@ -156,6 +156,11 @@ What drove the drop:
 - **Pandectes** is light (about 56KB), but its banner renders late; its "Fast load" setting is off.
 - **Confounds:** Rebuy shipped a new script version between the two runs, and run-to-run variance on this network is high. So the ~25-point mobile drop is partly the apps and partly noise, but the accessiBe cost is real.
 
+**Decisions (28 Sep):**
+- **accessiBe:** keep.
+- **Duplicate Yotpo loader:** ask Yotpo support to remove their legacy ScriptTag and keep the app embed. The draft message is below.
+- **`fishing-sunglasses` products on production:** owned by the store owner.
+
 Recommendations:
 1. Turn on Pandectes **Fast load** (App embeds → Pandectes).
 2. Keep accessiBe only if the PM/legal require it. It doesn't make the site compliant (the code fixes do), and it's now the second-largest script after Yotpo.
