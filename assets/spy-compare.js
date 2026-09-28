@@ -86,7 +86,7 @@
   // Modal moves to <body> so an inert page keeps Tab inside it
   function syncPageInert() {
     const on = !!document.querySelector('[data-spy-drawer][data-open], [data-spy-qv-root][data-open], #spy-compare-modal[data-open], [data-spy-fit-guide-modal][data-open]');
-    document.querySelectorAll('.page-wrapper, .skip-to-content-link').forEach((el) => { el.inert = on; });
+    document.querySelectorAll('.page-wrapper, .skip-to-content-link, access-widget-ui, pandectes-cmp').forEach((el) => { el.inert = on; });
   }
 
   let modalOpener = null;

@@ -34,8 +34,8 @@
   // Quick View can stack with a drawer, so check every overlay, not just this one.
   const syncPageInert = () => {
     const on = !!document.querySelector('[data-spy-drawer][data-open], [data-spy-qv-root][data-open], #spy-compare-modal[data-open], [data-spy-fit-guide-modal][data-open]');
-    // The skip link sits outside .page-wrapper, so it needs its own inert
-    document.querySelectorAll('.page-wrapper, .skip-to-content-link').forEach((el) => { el.inert = on; });
+    // The skip link and app widgets (accessiBe, Pandectes) sit outside .page-wrapper, so they need their own inert
+    document.querySelectorAll('.page-wrapper, .skip-to-content-link, access-widget-ui, pandectes-cmp').forEach((el) => { el.inert = on; });
   };
 
   const openDrawer = (drawer, trigger) => {
