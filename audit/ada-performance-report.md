@@ -204,6 +204,15 @@ Desktop is 82–90 after the fix.
 - **Skip link order:** accessiBe puts its own "Skip to Content" and menu button before ours, which is expected with accessiBe.
 - **Test method:** check keyboard flows with real Tab presses. Jumping focus with scripts (`page.focus()`) sets off accessiBe's "Press Alt+1" helper and gives false failures.
 
+### Extra checks and fixes (28 Sep, pushed through `a53108d`)
+
+| Check | Result |
+|---|---|
+| **Reflow 1.4.10 (320px)** and **resize 1.4.4 (200% zoom)** on home, collection, PDP, cart and policy | **Pass.** No sideways scroll on any page, including with the WCAG 1.4.12 text-spacing override applied. At 320px the floating Pandectes consent button partly covers the "In Stock" line; scrolling clears it, and it isn't a 2.1 AA fail. |
+| **Screen-reader walk-through of the buy flow** (Chrome accessibility tree) | **Pass.** PDP controls all named; Add to Cart announces "Added" and "Total items in cart: 1"; the cart drawer is a named dialog, focus moves into it, Tab stays inside (0 escapes at 1440 and 390), and Esc returns focus to Add to Cart. |
+| **Yotpo widget** | **Fixed** by `assets/spy-yotpo-a11y.js`, loaded by `spy-app-embed` wherever Yotpo renders. It removes the stray `role="tab"` (no tablist), `aria-level` on non-headings, `role="heading"` with no level, and an empty `role="textbox"`. A CSS override makes Yotpo's blue text AA (`--color-spy-review-link: #1a64c7`, 5.7:1; theirs was 3.72:1). **All 6 PDP page views now pass axe.** Reviews still render, the stars show, and "Write a review" still opens its form. |
+| **Accessibility statement** (page body in admin) | Needs an edit in admin. Fix the "WC3" typo, and **remove or confirm** the "daily scans / monthly professional audits" claims, which were probably carried over from the old site. Add a review date and known limitations. A draft was given to the store owner on 28 Sep. |
+
 ### After Pandectes Fast load (28 Sep, commit `2db0d70`, pushed)
 
 **Verified:**
