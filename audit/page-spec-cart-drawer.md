@@ -265,3 +265,82 @@ classes (checked for `--cart-drawer-thumb` and `.cart-items__quantity-static`).
 
 Horizon's own stock `{% stylesheet %}` blocks in these snippets are left alone — rewriting them is
 a separate job from styling the drawer.
+
+---
+
+## 13. Iframe clicks did not dismiss the drawer (2026-09-28)
+
+**Reported:** clicking the homepage hero video left the open drawer stuck.
+
+**Cause.** The homepage hero is a full-bleed Vimeo `<iframe>` (1430x596 at 1440). A click inside a
+frame never reaches the parent document, so the `#onDocumentPointerDown` handler from §11 could not
+see it. Escape and the X still worked, so the drawer looked half-broken rather than dead.
+
+I had already seen this during §11 testing and wrote it off as a **testing artefact** — "the click
+never reaches the document, so the test reads OPEN". That was wrong: the same fact means real
+users could not dismiss the drawer over the video, which covers most of the homepage above the
+fold.
+
+**Fix.** `theme-drawer.js` also listens for `window` `blur`. On blur it waits one frame (the
+`activeElement` is not updated when `blur` fires) and closes if `document.activeElement` is an
+`<iframe>` that is not inside the panel. Same `light-dismiss` gate, so only overlay drawers do it.
+
+**Verified**
+
+| Case | Result |
+|---|---|
+| Click the hero video | **closes** (was stuck open) |
+| Synthetic `window` blur, focus not on a frame | stays open |
+| Switch to another tab and back | stays open |
+| Outside click / Escape / X / trigger toggle, 1440 + 390 | all still close |
+
+Tab-switching is safe because opening the drawer focuses the close button, so `activeElement` is
+never an iframe at that moment.
+
+---
+
+## 14. Full audit pass (2026-09-28) — what is and is not perfect
+
+Everything below was exercised live, not reasoned about.
+
+### Now verified for the first time
+
+| Check | Result |
+|---|---|
+| **All 11 settings actually drive the drawer** (CLAUDE.md 0.3 acceptance) | pass — width 320→420, thumbnail 95→70, quantity static→stepper, CTA cart→checkout, subtotal on, row gap 24px, dividers 1px, `last:` suppresses both on the final row, outline CTA, push, lock-scroll, close-after-add. Zero code edits. |
+| **Overflowing list** (5 items) | list scrolls (839 > 736, `overflow-y:auto`), footer pinned 777→900 — same architecture as the source |
+| **Auto-open on a real add-to-cart** | fires |
+| **Auto-close timer** | closes ~2s after the drawer opens |
+| **Iframe dismissal** | see §13 |
+
+### Bug found and fixed in this pass
+
+**The page-push used the wrong width.** With `cart_drawer_push_page` on, the page shifted **480px**
+while the drawer was **320px**, leaving a 160px gap. `.page-wrapper--drawer-open` reads
+`var(--theme-drawer-width, var(--sidebar-width))`, and the drawer is a *sibling* of `.page-wrapper`,
+so the inline var on the `<dialog>` never reached it — it fell back to `--sidebar-width` (480px).
+The var now lives on `<body>`, which both the panel and the page-wrapper inherit. Verified: push is
+320px, page 1120.
+
+Latent until now only because the shipped config has push **off** for source parity.
+
+Note this could not be a utility class: `[--theme-drawer-width:{{ settings.x }}px]` is assembled in
+Liquid, and Tailwind cannot see Liquid-built class names, so it must be an inline CSS var.
+
+### Still not perfect — deliberate or blocked
+
+| Gap | Why it stands |
+|---|---|
+| Prices show cents (`$130.00` vs source `$200`) | shop-wide currency format, Admin setting, needs the user's call |
+| Product title carries the colourway (`CYRUS MATTE BLACK` vs `CYRUS SWITCH`) | each colourway is its own product; combined-listing migration |
+| CTA is `#b85314`, not the source `#f27e37` | ADA session's token; source orange is 2.69:1 on white and fails AA |
+| Escape closes ours, the source ignores it | keeping it — WCAG 2.1 AA |
+| Focus ring on the close button | keeping it — the source moves no focus at all |
+| `approaching-discounts`, `minicart-error`, `minicart-recommendations` slots | all three are empty in every source state captured, so there is no design to build to |
+
+### Untested, honestly
+
+- **Sale / compare-at strike-through.** The markup and `text-spy-strike` are wired, but no staging
+  product carries a compare-at price, so that path has never actually rendered.
+- **768 outside-click** is covered by the native modal backdrop and passed earlier, but the audit
+  script could not find a non-iframe click point at that width, so it is not re-confirmed here.
