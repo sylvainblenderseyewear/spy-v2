@@ -85,6 +85,7 @@ export class ThemeDrawer extends Component {
     document.addEventListener('keydown', this.#onKeyDown);
     panel.addEventListener('click', this.#onBackdropClick);
     document.addEventListener('pointerdown', this.#onDocumentPointerDown);
+    window.addEventListener('blur', this.#onWindowBlur);
   }
 
   disconnectedCallback() {
@@ -142,6 +143,32 @@ export class ThemeDrawer extends Component {
   };
 
   /**
+   * Closes an overlay drawer when the pointer goes down inside an <iframe>.
+   *
+   * A click inside a frame never reaches this document, so
+   * `#onDocumentPointerDown` cannot see it — the window simply blurs and focus
+   * moves to the frame. Video heroes cover most of the page, so without this the
+   * drawer looks stuck.
+   */
+  #onWindowBlur = () => {
+    if (!this.hasAttribute('light-dismiss')) return;
+    if (this.#modalQuery.matches) return;
+    if (!this.isOpen) return;
+
+    // activeElement only updates after blur has fired.
+    requestAnimationFrame(() => {
+      const active = document.activeElement;
+      if (!this.isOpen) return;
+      if (!(active instanceof HTMLIFrameElement)) return;
+      // A frame inside the drawer is not an outside click.
+      if (this.refs.panel.contains(active)) return;
+      if (this.#hasOpenNestedDialog()) return;
+
+      this.close();
+    });
+  };
+
+  /**
    * @returns {boolean} Whether the drawer panel contains an open dialog other than itself.
    */
   #hasOpenNestedDialog() {
@@ -196,6 +223,7 @@ export class ThemeDrawer extends Component {
     document.addEventListener('keydown', this.#onKeyDown);
     panel.addEventListener('click', this.#onBackdropClick);
     document.addEventListener('pointerdown', this.#onDocumentPointerDown);
+    window.addEventListener('blur', this.#onWindowBlur);
   };
 
   /**
@@ -263,6 +291,7 @@ export class ThemeDrawer extends Component {
     document.addEventListener('keydown', this.#onKeyDown);
     panel.addEventListener('click', this.#onBackdropClick);
     document.addEventListener('pointerdown', this.#onDocumentPointerDown);
+    window.addEventListener('blur', this.#onWindowBlur);
   }
 
   /**
@@ -302,6 +331,7 @@ export class ThemeDrawer extends Component {
 
     document.removeEventListener('keydown', this.#onKeyDown);
     document.removeEventListener('pointerdown', this.#onDocumentPointerDown);
+    window.removeEventListener('blur', this.#onWindowBlur);
     panel.removeEventListener('click', this.#onBackdropClick);
   }
 
