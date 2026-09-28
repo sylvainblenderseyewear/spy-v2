@@ -27,6 +27,7 @@
   --color-spy-price:   #565656; /* source card price — PLP tile */
   --color-spy-price-reco: #242424; /* source card price — PDP recommendation tile */
   --color-spy-review-label: #191919; /* source .text-m — the "N Reviews" label by the stars */
+  --color-spy-review-link: #1a64c7; /* Yotpo widget blue made AA (5.7:1); Yotpo's own #2f84ed is 3.72:1 */
   --color-spy-strike:  #767676; /* struck-through compare-at price, AA 4.5:1 (source #ababab was 2.30:1) */
   --color-spy-line-price: #222222; /* source cart line total */
   --color-spy-cta-hover: #272727; /* source primary button hover ground */
@@ -2508,6 +2509,13 @@ product-recommendations .slideshow-control svg {
   --normal-content-width: 800px;
 }
 
+
+/* ── Yotpo reviews widget: its blue text fails contrast (1.4.3) ─────────── */
+.yotpo .yotpo-logo-title,
+.yotpo .yotpo-nav-wrapper span,
+.yotpo .yotpo-user-name {
+  color: var(--color-spy-review-link) !important;
+}
 
 /* ── Store locator (Stockist widget) ──────────────────────────────────────
    Shape mirrors stores.spyoptic.com: a fixed results panel beside a full-bleed
