@@ -37,11 +37,11 @@
     </div>
   {% endcapture %}
 
-  {% comment %} Overlay drawers close on an outside click; pushed ones stay put {% endcomment %}
+  {% comment %} Overlay drawers close on an outside click and never survive a page load; pushed ones stay put {% endcomment %}
   <theme-drawer
     id="cart-drawer"
     data-skip-node-update
-    {% unless settings.cart_drawer_push_page %}light-dismiss{% endunless %}
+    {% unless settings.cart_drawer_push_page %}light-dismiss no-persist{% endunless %}
   >
     <dialog
       ref="panel"

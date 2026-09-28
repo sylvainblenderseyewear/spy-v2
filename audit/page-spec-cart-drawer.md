@@ -344,3 +344,29 @@ Liquid, and Tailwind cannot see Liquid-built class names, so it must be an inlin
   product carries a compare-at price, so that path has never actually rendered.
 - **768 outside-click** is covered by the native modal backdrop and passed earlier, but the audit
   script could not find a non-iframe click point at that width, so it is not re-confirmed here.
+
+---
+
+## 15. Drawer stayed open after navigating to a PDP (2026-09-28)
+
+**Reported:** clicking a product inside the drawer loads that PDP with the drawer still covering it.
+
+**Cause.** `snippets/theme-drawer.liquid` deliberately persists open drawers:
+`persistDrawerState()` writes the open drawer ids to `sessionStorage['theme-drawer-open']` on every
+open/close, and a restore script reopens them on the next page. Confirmed live — the key held
+`cart-drawer` before the click and still held it on the PDP.
+
+That is sensible for stock Horizon, where the desktop drawer is a **pushed-aside sidebar** that
+should feel continuous while you browse. It is wrong for an overlay that mirrors the SFCC minicart,
+where every navigation is a full page load and the minicart is simply gone.
+
+**Fix.** The persistence query is already `theme-drawer[open]:not([no-persist])`, so the attribute
+existed — the cart drawer just never set it. `cart-drawer.liquid` now emits `light-dismiss
+no-persist` together, both gated on `cart_drawer_push_page` being off. A merchant who switches the
+drawer to push/sidebar mode gets Horizon's persistent behaviour back, which is the right pairing.
+The store self-cleans: with the cart drawer excluded, `openDrawers` is empty and
+`persistDrawerState` removes the key.
+
+**Verified:** `sessionStorage` null before and after, drawer **closed** on the PDP, correct product
+loaded. Re-checked afterwards with no regressions: outside-click and trigger toggle at 1440/390,
+iframe dismissal, auto-open on a real add-to-cart, and the 5-item overflow scroll.
