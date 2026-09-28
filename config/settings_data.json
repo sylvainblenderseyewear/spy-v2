@@ -140,7 +140,7 @@
         "type": "shopify://apps/pandectes-gdpr/blocks/banner/58c0baa2-6cc1-480c-9ea6-38d6d559556a",
         "disabled": false,
         "settings": {
-          "fast_load": false
+          "fast_load": true
         }
       },
       "17824471530847535147": {
