@@ -87,10 +87,14 @@ once Ads is live, not before.
 
 ## Operational risk
 
-**Nothing watches the tagging server.** Load balancer logging is on, but there is no alert policy. If
-`sgtm.spyoptic.com` starts returning 5xx overnight, tracking stops silently and nobody learns until
-someone opens GA4 days later. A Cloud Monitoring uptime check plus one alert policy is about fifteen
-minutes and closes the largest silent-failure path in the design.
+**~~Nothing watches the tagging server.~~ Closed 25 Sep.** Uptime check `sgtm-tagging-server` polls
+`https://sgtm.spyoptic.com/healthz` every 5 minutes from four continents, alerting
+`goran@blenderseyewear.com` after 5 minutes of failure. Only 2xx is acceptable, so the cold-start
+500s that used to slip through would now page. First test responded 200 in 148 ms.
+
+**Handover item:** the alert goes to one personal address. If Goran's involvement ends after launch,
+it has to move to a shared address or to whoever inherits the tagging — an alert nobody reads is
+worse than no alert, because it looks monitored.
 
 **Single region.** Everything is `us-central1`. A regional outage stops all tracking. Acceptable at
 this scale, but it should be a known acceptance rather than a surprise.
@@ -115,7 +119,7 @@ GA4 item report. It still has no owner.
 
 | | Why it is where it is |
 |---|---|
-| 1 | **Uptime alert on the tagging server** — fifteen minutes, removes the only failure mode nobody would notice |
+| ~~1~~ | ~~Uptime alert on the tagging server~~ — **done 25 Sep** |
 | 2 | **Decide `item_id`** — costs nothing today, unrecoverable after launch |
 | 3 | **Agree the revenue definition** — prevents day-one panic over a mismatch that is not a fault |
 | 4 | **Plan the refund event** — needs an owner, not code, before the first month closes |
