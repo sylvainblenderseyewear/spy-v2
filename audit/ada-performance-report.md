@@ -166,7 +166,30 @@ Recommendations:
 2. Keep accessiBe only if the PM/legal require it. It doesn't make the site compliant (the code fixes do), and it's now the second-largest script after Yotpo.
 3. Remove the duplicate Yotpo ScriptTag (P9).
 
-**P9 (new, High): Yotpo is installed twice.**
+### After the Yotpo single-loader fix (28 Sep, commit `bf7f72b`, pushed)
+
+**Verified on production:**
+- **One loader:** `widget.js` loads once (the `?shop=` ScriptTag copy).
+- **Reviews still work:** the PDP reviews widget and star rating render, and Yotpo's own events report "reviews loaded" and "star_rating shown".
+- **No page errors.**
+- **Homepage Yotpo carousel:** blank, the same as before this change (see `64a88c9`).
+
+| Page (mobile) | Score: base / +apps / after fix | TBT ms: base / +apps / after fix | LCP s: base / +apps / after fix |
+|---|---|---|---|
+| Home | 77 / 50 / 57 | 246 / 578 / 766 | 3.8 / 5.0 / 3.8 |
+| Collection | 74 / 50 / 49 | 269 / 1,500 / 618 | 4.4 / 4.4 / 5.5 |
+| PDP sunglass | 75 / 56 / 48 | 399 / 1,223 / 716 | 3.9 / 3.3 / 5.4 |
+| PDP snow goggle | 73 / 46 / 50 | 290 / 1,363 / 714 | 4.2 / 4.0 / 4.3 |
+| Cart | 79 / 51 / 57 | 297 / 480 / 513 | 4.1 / 9.2 / 15.8 |
+
+Desktop is 82–90 after the fix.
+
+**Reading:**
+- **Blocking time roughly halved** on the collection page and PDPs (about 1.2–1.5s → about 0.6–0.7s). That's the clearest effect of loading Yotpo once. PDP script time is now Yotpo ~170ms, accessiBe ~200ms, Rebuy ~260ms.
+- **Scores and LCP are too noisy to read one run as a win or a loss.** This network varies a lot between runs. The cart's 15.8s LCP is an outlier, most likely the late Pandectes banner becoming the LCP element (Fast load is off).
+- **Next lever:** turn on Pandectes Fast load. Then accessiBe (~200ms of script per page, kept by decision) and Rebuy (~260ms on the PDP) are the remaining app costs.
+
+**P9 (new, High): Yotpo is installed twice.** *(Resolved theme-side 28 Sep by switching off the app embed; the support request to Yotpo is optional.)*
 - **Copy 1:** `widget.js?lang=en` is injected by the Yotpo **app embed** (Theme settings → App embeds).
 - **Copy 2:** `widget.js?shop=spyoptic-com.myshopify.com` comes from Shopify's `asyncLoad` list, meaning a **legacy ScriptTag** the Yotpo app registered on the store.
 - **Not the theme:** the theme loads neither copy (manual loader removed in `d669f06`).
