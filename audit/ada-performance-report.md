@@ -189,6 +189,27 @@ Desktop is 82–90 after the fix.
 - **Scores and LCP are too noisy to read one run as a win or a loss.** This network varies a lot between runs. The cart's 15.8s LCP is an outlier, most likely the late Pandectes banner becoming the LCP element (Fast load is off).
 - **Next lever:** turn on Pandectes Fast load. Then accessiBe (~200ms of script per page, kept by decision) and Rebuy (~260ms on the PDP) are the remaining app costs.
 
+### After Pandectes Fast load (28 Sep, commit `2db0d70`, pushed)
+
+**Verified:**
+- **Script loading:** the Pandectes core script now ships in the page HTML (`async`, `fetchpriority='high'`) instead of being injected later.
+- **Keyboard unchanged:** focus lands in the dialog on load, Tab moves inside it, and Enter works.
+
+The Lighthouse run stopped after 14 of 30 runs (Chrome closed on this low-memory machine). Partial medians:
+
+| Page | Mobile score: now (Yotpo-fix run) | Mobile LCP: now (Yotpo-fix run) |
+|---|---|---|
+| Home | 55 (57) | 3.5 s (3.8) |
+| Collection | 48 (49) | 4.3 s (5.5) |
+| PDP sunglass | 63 (48), 2 runs | 3.9 s (5.4) |
+| Desktop home / collection | 87 / 92 (85 / 88) | 1.7 / 1.2 s |
+
+**Reading:**
+- **LCP improved on every page measured.** The late-banner spikes are mostly gone.
+- **Scores sit within noise.** The same page scored 73, 55 and 52 minutes apart, so lab tests from this connection can't separate changes of a few points.
+
+**Next step for speed: switch to real-user (field) data.** Shopify admin → Online Store → Themes → **Web performance** reports real visitors' Core Web Vitals. PageSpeed Insights/CrUX will also have data once the password is removed at launch. Remaining known app costs on mobile: Rebuy ~260ms on the PDP, accessiBe ~200ms (kept by decision), Yotpo ~170ms.
+
 **P9 (new, High): Yotpo is installed twice.** *(Resolved theme-side 28 Sep by switching off the app embed; the support request to Yotpo is optional.)*
 - **Copy 1:** `widget.js?lang=en` is injected by the Yotpo **app embed** (Theme settings → App embeds).
 - **Copy 2:** `widget.js?shop=spyoptic-com.myshopify.com` comes from Shopify's `asyncLoad` list, meaning a **legacy ScriptTag** the Yotpo app registered on the store.
