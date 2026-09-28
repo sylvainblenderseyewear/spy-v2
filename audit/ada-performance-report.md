@@ -204,6 +204,16 @@ Desktop is 82–90 after the fix.
 - **Skip link order:** accessiBe puts its own "Skip to Content" and menu button before ours, which is expected with accessiBe.
 - **Test method:** check keyboard flows with real Tab presses. Jumping focus with scripts (`page.focus()`) sets off accessiBe's "Press Alt+1" helper and gives false failures.
 
+### Content fixes on production (29 Sep)
+
+Backups of both page bodies were taken before any write.
+- **Return policy page:** removed the 5 inline `style="color: #f27e37;"` attributes (USPS, UPS, FedEx, Contact, phone links) through the Admin API `pageUpdate`. Everything else is byte-identical. The links now use the theme's link style. **Axe: clean at both widths.**
+- **Accessibility statement:**
+  - The old text was copied word-for-word from the live SFCC site, whose statement contains the "WC3" typo, the "automated maintenance scans every 24-hours" claim (the wording of the accessiBe widget, which the live site also runs), and an unverified "professional compliance audits monthly" claim.
+  - The replacement fixes W3C and describes the testing actually done. It presents the toolbar as optional, not as compliance, and lists third-party known limitations and the full contacts. It's dated 29 Sep 2026, and the monthly-audit claim is left out until someone confirms it.
+  - **Axe: clean.**
+- **Watermen carousel:** production has **no `fishing-sunglasses` collection** (the dev store does). Both stores have the automated `watermen` collection (40 products, built from REGION/REGION XL/OVERHAUL/DIRK/ROCKY… tags), so `templates/index.json` now points the carousel at `watermen` (commit `c7c212f`). On production it shows real products (0 placeholder cards), and the homepage passes axe at both widths.
+
 ### Extra checks and fixes (28 Sep, pushed through `a53108d`)
 
 | Check | Result |
