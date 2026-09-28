@@ -189,6 +189,21 @@ Desktop is 82–90 after the fix.
 - **Scores and LCP are too noisy to read one run as a win or a loss.** This network varies a lot between runs. The cart's 15.8s LCP is an outlier, most likely the late Pandectes banner becoming the LCP element (Fast load is off).
 - **Next lever:** turn on Pandectes Fast load. Then accessiBe (~200ms of script per page, kept by decision) and Rebuy (~260ms on the PDP) are the remaining app costs.
 
+### Final production check (28 Sep, everything pushed through `abf2c82`)
+
+**Axe (11 pages × 2 widths):** 11 of 20 page views fully clean, and **no failures from the theme's own code**. What remains:
+- **Yotpo's review widget markup (PDPs):** invalid list and ARIA, an unnamed `role="textbox"`, and a low-contrast "Powered by". This is Yotpo's code.
+- **Return policy page body (admin content):** 5 inline `color: #f27e37` links.
+- **Search:** product-card galleries aren't keyboard-scrollable, by design.
+- **Fixed:** the Watermen placeholder flag is gone now that the empty-collection fix is live, and every page has exactly one H1.
+
+**Keyboard, tested by pressing Tab the way a real user does:**
+- **Mobile menu:** Tab ×3 reaches "Menu", Enter opens it with focus on the first item, 30 Tabs give 0 escapes, and Esc closes it and returns focus to the toggle.
+- **Fit guide and Quick View:** 0 escapes in 25 Tabs. They leaked into the accessiBe and Pandectes widgets before `abf2c82`, which now makes those app hosts inert while a dialog is open.
+- **Mega-menu:** Esc hides the panel and resets `aria-expanded`, but accessiBe's own menu handling then moves focus to the next top item instead of back to the one you were on. The panel is still dismissible (1.4.13 met); I've left accessiBe's behaviour alone.
+- **Skip link order:** accessiBe puts its own "Skip to Content" and menu button before ours, which is expected with accessiBe.
+- **Test method:** check keyboard flows with real Tab presses. Jumping focus with scripts (`page.focus()`) sets off accessiBe's "Press Alt+1" helper and gives false failures.
+
 ### After Pandectes Fast load (28 Sep, commit `2db0d70`, pushed)
 
 **Verified:**
