@@ -114,7 +114,8 @@
       class="yotpo yotpo-reviews-carousel{{ extra }}"
       data-background-color="{{ block.settings.background_color }}"
       data-mode="{{ block.settings.mode }}"
-      data-type="{{ block.settings.source }}"
+      {% comment %} hand-picked ignores the source; sending one blanks the widget {% endcomment %}
+      {% unless block.settings.mode == 'manual' %}data-type="{{ block.settings.source }}"{% endunless %}
       data-count="{{ block.settings.count }}"
       data-show-bottomline="{{ bottomline }}"
       data-autoplay-enabled="{{ autoplay }}"
@@ -217,6 +218,7 @@
       "type": "select",
       "id": "source",
       "label": "Reviews shown",
+      "info": "Ignored when the order is hand-picked.",
       "options": [
         { "value": "site", "label": "Whole store" },
         { "value": "per_product", "label": "One product" }
@@ -236,7 +238,8 @@
       "label": "Order",
       "options": [
         { "value": "top_rated", "label": "Top rated" },
-        { "value": "most_recent", "label": "Most recent" }
+        { "value": "most_recent", "label": "Most recent" },
+        { "value": "manual", "label": "Hand-picked in Yotpo" }
       ],
       "default": "top_rated",
       "visible_if": "{{ block.settings.embed == 'yotpo_reviews' }}"
