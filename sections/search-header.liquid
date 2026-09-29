@@ -9,28 +9,187 @@
 <div
   class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
-<div class="section section--page-width{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}">
+
+{%- liquid
+  # The Articles tab fetches this same section searched over content only
+  assign is_content_fetch = false
+  if search.performed
+    unless search.types contains 'product'
+      assign is_content_fetch = true
+    endunless
+  endif
+-%}
+
+{%- if is_content_fetch -%}
+  {%- comment -%} Only read by the Articles tab script, never shown as a page {%- endcomment -%}
   <div
-    class="spacing-style search-page__header"
-    style="
-      --horizontal-alignment: {{ section.settings.alignment }};
-      {% render 'spacing-style', settings: section.settings %}
-    "
+    data-spy-search-content
+    data-count="{{ search.results_count }}"
   >
-    {% assign heading_text = 'content.search' | t %}
-
-    {% if search.performed %}
-      {% assign heading_text = 'content.search_results' | t %}
-    {% endif %}
-
-    {% capture heading_text %}
-      <h3>{{ heading_text }}</h3>
-    {% endcapture %}
-
-    {% content_for 'block', id: 'heading', type: '_heading', text: heading_text %}
-    {% content_for 'block', id: 'search', type: '_search-input' %}
+    {%- paginate search.results by 50 -%}
+      {%- for item in search.results -%}
+        <div class="mb-6">
+          <h4 class="m-0 font-spy text-[20px] leading-6 font-normal normal-case tracking-normal">
+            <a
+              href="{{ item.url }}"
+              class="text-spy-orange-ui no-underline hover:text-spy-orange-ui hover:no-underline"
+            >
+              {{- item.title -}}
+            </a>
+          </h4>
+        </div>
+      {%- endfor -%}
+    {%- endpaginate -%}
   </div>
-</div>
+{%- elsif search.performed -%}
+  {%- if search.types.size > 1 -%}
+    {%- comment -%} Old links search everything; the results page is product-only so filters work {%- endcomment -%}
+    <script>
+      (() => {
+        const url = new URL(location.href);
+        url.searchParams.set('type', 'product');
+        if (!url.searchParams.has('options[prefix]')) url.searchParams.set('options[prefix]', 'last');
+        location.replace(url);
+      })();
+    </script>
+  {%- endif -%}
+
+  {%- assign terms = search.terms | escape -%}
+  {%- capture content_url -%}{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=article,page&options%5Bprefix%5D=last&section_id={{ section.id }}{%- endcapture -%}
+
+  <div class="section section--page-width{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}">
+    <div
+      class="pt-6 font-spy text-spy-ink"
+      data-spy-search-tabs
+      data-content-url="{{ content_url | strip }}"
+    >
+      <p class="m-0 text-center text-[18px] leading-[25.2px] font-normal">
+        {%- if search.results_count > 0 -%}
+          {{ section.settings.results_label }}
+        {%- else -%}
+          {{ section.settings.no_results_label }}
+        {%- endif %}
+        <span class="font-semibold">"{{ terms }}"</span>
+      </p>
+
+      {% comment %} Active tab: orange text + 2px inset underline, like the source {% endcomment %}
+      <div
+        class="mt-[9px] px-12 max-[750px]:px-0 border-b border-spy-border [display:flex] justify-center"
+        role="tablist"
+        aria-label="{{ 'content.search_results_label' | t }}"
+      >
+        <button
+          type="button"
+          role="tab"
+          id="spy-search-tab-products"
+          aria-selected="true"
+          aria-controls="spy-search-panel-products"
+          class="button-unstyled px-4 py-2 font-spy text-[16px] leading-[22.4px] font-normal text-spy-ink aria-selected:text-spy-orange-ui aria-selected:shadow-[inset_0_-2px_0_var(--color-spy-orange-ui)]"
+          data-spy-search-tab="products"
+        >
+          {{ section.settings.products_label }} ({{ search.results_count }})
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="spy-search-tab-content"
+          aria-selected="false"
+          aria-controls="spy-search-panel-content"
+          tabindex="-1"
+          class="button-unstyled px-4 py-2 font-spy text-[16px] leading-[22.4px] font-normal text-spy-ink aria-selected:text-spy-orange-ui aria-selected:shadow-[inset_0_-2px_0_var(--color-spy-orange-ui)]"
+          data-spy-search-tab="content"
+        >
+          {{ section.settings.articles_label }} (<span data-spy-search-content-count>0</span>)
+        </button>
+      </div>
+
+      <div
+        id="spy-search-panel-content"
+        role="tabpanel"
+        aria-labelledby="spy-search-tab-content"
+        class="mx-4 min-[768px]:mx-12 mt-12 [display:flex] justify-center"
+        hidden
+      >
+        <div
+          class="w-full min-[768px]:w-10/12 min-[992px]:w-1/2 px-[15px]"
+          data-spy-search-content-list
+        ></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Products / Articles tabs. Articles are fetched once, like the source's Search-Content call
+    (() => {
+      const root = document.querySelector('[data-spy-search-tabs]');
+      if (!root) return;
+      const tabs = [...root.querySelectorAll('[data-spy-search-tab]')];
+      const panel = root.querySelector('#spy-search-panel-content');
+      const list = root.querySelector('[data-spy-search-content-list]');
+      const count = root.querySelector('[data-spy-search-content-count]');
+      const productSection = () => document.querySelector('[data-spy-search-products]')?.closest('.shopify-section');
+
+      fetch(root.dataset.contentUrl)
+        .then((response) => response.text())
+        .then((html) => {
+          const source = new DOMParser().parseFromString(html, 'text/html').querySelector('[data-spy-search-content]');
+          if (!source) return;
+          count.textContent = source.dataset.count || '0';
+          list.replaceChildren(...source.children);
+        })
+        .catch(() => {});
+
+      const select = (tab, focus) => {
+        const showContent = tab.dataset.spySearchTab === 'content';
+        tabs.forEach((item) => {
+          const active = item === tab;
+          item.setAttribute('aria-selected', String(active));
+          item.tabIndex = active ? 0 : -1;
+        });
+        panel.hidden = !showContent;
+        const products = productSection();
+        if (products) products.hidden = showContent;
+        if (focus) tab.focus();
+      };
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => select(tab, false));
+        tab.addEventListener('keydown', (event) => {
+          if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+          event.preventDefault();
+          const step = event.key === 'ArrowRight' ? 1 : -1;
+          select(tabs[(index + step + tabs.length) % tabs.length], true);
+        });
+      });
+
+      // Grid section renders after this one, so wire it as the Products panel once it exists
+      document.addEventListener('DOMContentLoaded', () => {
+        const products = productSection();
+        if (!products) return;
+        products.id = 'spy-search-panel-products';
+        products.setAttribute('role', 'tabpanel');
+        products.setAttribute('aria-labelledby', 'spy-search-tab-products');
+      });
+    })();
+  </script>
+{%- else -%}
+  <div class="section section--page-width{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}">
+    <div
+      class="spacing-style search-page__header"
+      style="
+        --horizontal-alignment: {{ section.settings.alignment }};
+        {% render 'spacing-style', settings: section.settings %}
+      "
+    >
+      {% capture heading_text %}
+        <h3>{{ 'content.search' | t }}</h3>
+      {% endcapture %}
+
+      {% content_for 'block', id: 'heading', type: '_heading', text: heading_text %}
+      {% content_for 'block', id: 'search', type: '_search-input' %}
+    </div>
+  </div>
+{%- endif -%}
 
 {% schema %}
 {
@@ -61,6 +220,34 @@
       "id": "background_color",
       "label": "t:settings.background_color",
       "placeholder": "t:settings.default"
+    },
+    {
+      "type": "header",
+      "content": "Results"
+    },
+    {
+      "type": "text",
+      "id": "results_label",
+      "label": "Results line",
+      "default": "Results for"
+    },
+    {
+      "type": "text",
+      "id": "no_results_label",
+      "label": "No results line",
+      "default": "We are sorry, but no results were found for:"
+    },
+    {
+      "type": "text",
+      "id": "products_label",
+      "label": "Products tab",
+      "default": "Products"
+    },
+    {
+      "type": "text",
+      "id": "articles_label",
+      "label": "Articles tab",
+      "default": "Articles"
     },
     {
       "type": "header",

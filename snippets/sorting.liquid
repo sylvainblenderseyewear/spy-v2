@@ -48,7 +48,8 @@
     for option in results.sort_options
       assign option_label = ''
       case option.value
-        when 'best-selling'
+        # Search has no best-selling; relevance is its "Most Popular", as on the source
+        when 'best-selling', 'relevance'
           assign option_label = 'actions.sort_most_popular' | t
         when 'price-ascending'
           assign option_label = 'actions.sort_price_low_to_high' | t

@@ -1,9 +1,8 @@
 import { Component } from '@theme/component';
-import { debounce, onAnimationEnd, prefersReducedMotion } from '@theme/utilities';
+import { debounce, prefersReducedMotion } from '@theme/utilities';
 import { sectionRenderer } from '@theme/section-renderer';
 import { morph } from '@theme/morph';
-import { RecentlyViewed } from '@theme/recently-viewed-products';
-import { DialogCloseEvent, DialogOpenEvent, DialogComponent } from '@theme/dialog';
+import { DialogCloseEvent, DialogComponent } from '@theme/dialog';
 import { SearchUpdateEvent } from '@shopify/events';
 
 /**
@@ -29,8 +28,6 @@ class PredictiveSearchComponent extends Component {
    */
   #activeFetch = null;
 
-  #emptyStateLoaded = false;
-
   /**
    * Get the dialog component.
    * @returns {DialogComponent | null} The dialog component.
@@ -52,15 +49,8 @@ class PredictiveSearchComponent extends Component {
     if (dialog) {
       document.addEventListener('keydown', this.#handleKeyboardShortcut, { signal });
       dialog.addEventListener(DialogCloseEvent.eventName, this.#handleDialogClose, { signal });
-      dialog.addEventListener(DialogOpenEvent.eventName, this.#handleDialogOpen, { signal, once: true });
 
       this.addEventListener('click', this.#handleModalClick, { signal });
-    }
-
-    if (RecentlyViewed.getProducts().length > 0) {
-      requestIdleCallback(() => {
-        this.#loadEmptyState();
-      });
     }
   }
 
@@ -105,18 +95,6 @@ class PredictiveSearchComponent extends Component {
     this.#resetSearch();
   };
 
-  #handleDialogOpen = () => {
-    if (!this.#emptyStateLoaded && RecentlyViewed.getProducts().length > 0) {
-      this.#loadEmptyState();
-    }
-  };
-
-  #loadEmptyState() {
-    if (this.#emptyStateLoaded) return;
-    this.#emptyStateLoaded = true;
-    this.resetSearch(false);
-  }
-
   get #allResultsItems() {
     const containers = Array.from(
       this.querySelectorAll(
@@ -145,7 +123,7 @@ class PredictiveSearchComponent extends Component {
   #isKeyboardNavigation = false;
 
   get #currentIndex() {
-    return this.#allResultsItems?.findIndex((item) => item.getAttribute('aria-selected') === 'true') ?? -1;
+    return this.#allResultsItems?.findIndex((item) => item.dataset.selected === 'true') ?? -1;
   }
 
   set #currentIndex(index) {
@@ -159,13 +137,13 @@ class PredictiveSearchComponent extends Component {
 
     for (const [itemIndex, item] of this.#allResultsItems.entries()) {
       if (itemIndex === index) {
-        item.setAttribute('aria-selected', 'true');
+        item.dataset.selected = 'true';
         if (this.#isKeyboardNavigation) {
           item.classList.add('keyboard-focus');
         }
         activeItem = item;
       } else {
-        item.removeAttribute('aria-selected');
+        delete item.dataset.selected;
       }
     }
 
@@ -201,17 +179,7 @@ class PredictiveSearchComponent extends Component {
         this.#currentIndex = currentIndex < totalItems - 1 ? currentIndex + 1 : 0;
         break;
 
-      case 'Tab':
-        if (event.shiftKey) {
-          this.#isKeyboardNavigation = true;
-          event.preventDefault();
-          this.#currentIndex = currentIndex > 0 ? currentIndex - 1 : totalItems - 1;
-        } else {
-          this.#isKeyboardNavigation = true;
-          event.preventDefault();
-          this.#currentIndex = currentIndex < totalItems - 1 ? currentIndex + 1 : 0;
-        }
-        break;
+      // SPY: Tab is left alone so it walks the real links and reaches the close button
 
       case 'ArrowUp':
         this.#isKeyboardNavigation = true;
@@ -233,38 +201,14 @@ class PredictiveSearchComponent extends Component {
         } else {
           const searchUrl = new URL(Theme.routes.search_url, location.origin);
           searchUrl.searchParams.set('q', this.refs.searchInput.value);
+          searchUrl.searchParams.set('type', 'product');
+          searchUrl.searchParams.set('options[prefix]', 'last');
           window.location.href = searchUrl.toString();
         }
         break;
       }
     }
   };
-
-  /**
-   * Clears the recently viewed products.
-   * @param {Event} event - The event.
-   */
-  clearRecentlyViewedProducts(event) {
-    event.stopPropagation();
-
-    RecentlyViewed.clearProducts();
-
-    const { recentlyViewedItems, recentlyViewedTitle, recentlyViewedWrapper } = this.refs;
-
-    const allRecentlyViewedElements = [...(recentlyViewedItems || []), ...(recentlyViewedTitle || [])];
-
-    if (allRecentlyViewedElements.length === 0) {
-      return;
-    }
-
-    if (recentlyViewedWrapper) {
-      recentlyViewedWrapper.classList.add('removing');
-
-      onAnimationEnd(recentlyViewedWrapper, () => {
-        recentlyViewedWrapper.remove();
-      });
-    }
-  }
 
   /**
    * Reset the search state.
@@ -282,10 +226,11 @@ class PredictiveSearchComponent extends Component {
    * Reset the current selection index and close results if the search term is empty.
    */
   search = debounce((event) => {
-    // If the input is not a text input (like using the Escape key), don't search
-    if (!event.inputType) return;
-
     const searchTerm = this.refs.searchInput.value.trim();
+
+    // Keys like Escape fire input with no type; only react if the field got emptied (native ✕)
+    if (!event.inputType && searchTerm.length) return;
+
     this.#currentIndex = -1;
 
     if (!searchTerm.length) {
@@ -294,8 +239,15 @@ class PredictiveSearchComponent extends Component {
     }
 
     this.#showResetButton();
+
+    // SPY: suggest from 3 characters, like the source
+    if (searchTerm.length < 3) {
+      this.#clearResults();
+      return;
+    }
+
     this.#getSearchResults(searchTerm);
-  }, 200);
+  }, 300);
 
   /**
    * Resets scroll positions for search results containers
@@ -361,23 +313,6 @@ class PredictiveSearchComponent extends Component {
       });
   }
 
-  /**
-   * Fetch the markup for the recently viewed products.
-   * @returns {Promise<string | null>} The markup for the recently viewed products.
-   */
-  async #getRecentlyViewedProductsMarkup() {
-    if (!this.dataset.sectionId) return null;
-
-    const viewedProducts = RecentlyViewed.getProducts();
-    if (viewedProducts.length === 0) return null;
-
-    const url = new URL(Theme.routes.search_url, location.origin);
-    url.searchParams.set('q', viewedProducts.map(/** @param {string} id */ (id) => `id:${id}`).join(' OR '));
-    url.searchParams.set('resources[type]', 'product');
-
-    return sectionRenderer.getSectionHTML(this.dataset.sectionId, false, url);
-  }
-
   #hideResetButton() {
     const { resetButton } = this.refs;
 
@@ -399,53 +334,21 @@ class PredictiveSearchComponent extends Component {
     return abortController;
   }
 
-  #resetSearch = async () => {
-    const { predictiveSearchResults, searchInput } = this.refs;
-    const emptySectionId = 'predictive-search-empty';
-
-    this.#currentIndex = -1;
-    searchInput.value = '';
+  #resetSearch = () => {
+    this.refs.searchInput.value = '';
     this.#hideResetButton();
-
-    const abortController = this.#createAbortController();
-    const url = new URL(window.location.href);
-    url.searchParams.delete('page');
-
-    const emptySectionMarkup = await sectionRenderer.getSectionHTML(emptySectionId, false, url);
-    const parsedEmptySectionMarkup = new DOMParser()
-      .parseFromString(emptySectionMarkup, 'text/html')
-      .querySelector('.predictive-search-empty-section');
-
-    if (!parsedEmptySectionMarkup) throw new Error('No empty section markup found');
-
-    /** This needs to be awaited and not .then so the DOM is already morphed
-     * when #closeResults is called and therefore the height is animated */
-    const viewedProducts = RecentlyViewed.getProducts();
-
-    if (viewedProducts.length > 0) {
-      const recentlyViewedMarkup = await this.#getRecentlyViewedProductsMarkup();
-      if (!recentlyViewedMarkup) return;
-
-      const parsedRecentlyViewedMarkup = new DOMParser().parseFromString(recentlyViewedMarkup, 'text/html');
-      const recentlyViewedProductsHtml = parsedRecentlyViewedMarkup.getElementById('predictive-search-products');
-      if (!recentlyViewedProductsHtml) return;
-
-      for (const child of recentlyViewedProductsHtml.children) {
-        if (child instanceof HTMLElement) {
-          child.setAttribute('ref', 'recentlyViewedWrapper');
-        }
-      }
-
-      const collectionElement = parsedEmptySectionMarkup.querySelector('#predictive-search-products');
-      if (!collectionElement) return;
-      collectionElement.prepend(...recentlyViewedProductsHtml.children);
-    }
-
-    if (abortController.signal.aborted) return;
-
-    morph(predictiveSearchResults, parsedEmptySectionMarkup);
-    this.#resetScrollPositions();
+    this.#clearResults();
   };
+
+  /**
+   * Empties the suggestions panel and drops any fetch still running.
+   * SPY: the source shows nothing until you type, so there is no empty state to load.
+   */
+  #clearResults() {
+    this.#currentIndex = -1;
+    this.#createAbortController();
+    this.refs.predictiveSearchResults.replaceChildren();
+  }
 }
 
 if (!customElements.get('predictive-search-component')) {

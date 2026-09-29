@@ -287,6 +287,18 @@
       "other": "{{ count }} products"
     },
     "search_results_resource_queries": "Search suggestions",
+    // SPY slide-down search bar and its suggestions panel
+    "spy_search": {
+      "placeholder": "Search...",
+      "submit": "Search",
+      "close": "Close search",
+      "see_all": "See All Results",
+      "categories": "Categories",
+      "content": "Content",
+      "products": "Products",
+      "starting_from": "Starting from",
+      "no_results": "No products found for {{ terms }}"
+    },
     "total_items": "Total items",
     "variant": "Variant",
     "variant_total": "Variant total",

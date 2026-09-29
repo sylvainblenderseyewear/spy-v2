@@ -68,6 +68,13 @@ class FacetsFormComponent extends Component {
     const searchQuery = this.#getSearchQuery();
     if (searchQuery) newParameters.set(SEARCH_QUERY, searchQuery);
 
+    // SPY: search stays product-only (filters need it) and keeps prefix matching
+    const current = new URL(window.location.href).searchParams;
+    for (const key of ['type', 'options[prefix]']) {
+      const value = current.get(key);
+      if (value && !newParameters.has(key)) newParameters.set(key, value);
+    }
+
     return newParameters;
   }
 

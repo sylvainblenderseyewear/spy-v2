@@ -323,9 +323,10 @@
     </div>
   </div>
 
+  {% comment %} mb-6: source leaves 24px between the mobile FILTER/SORT bar and the grid {% endcomment %}
   <div
     class="
-      facets-toggle col-[var(--full-width)] h-auto items-center gap-2
+      facets-toggle col-[var(--full-width)] h-auto items-center gap-2 max-[749px]:mb-6
       {%- if block_settings.enable_filtering == false %} facets-toggle--no-filters{% endif %}
       {%- if block_settings.filter_style == 'horizontal' and has_custom_color %} color-custom-{{ block.id }}{% endif %}
     "

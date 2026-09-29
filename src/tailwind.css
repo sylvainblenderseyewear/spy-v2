@@ -66,6 +66,23 @@
   /* Drawer content rises as the panel opens — source's spy-hl-fadein */
   --animate-spy-fade-up: spy-fade-up 0.3s ease both;
 
+  /* Search bar slides out from under the header (source: .5s, same curve).
+     The clip moves against the slide, so nothing shows above the header edge. */
+  --animate-spy-search-in: spy-search-in 0.5s cubic-bezier(0.5, 0.25, 0, 1) both;
+  --animate-spy-search-out: spy-search-in 0.5s cubic-bezier(0.5, 0.25, 0, 1) reverse both;
+
+  @keyframes spy-search-in {
+    from {
+      transform: translateY(-100%);
+      clip-path: inset(100% 0 -24px 0);
+    }
+
+    to {
+      transform: translateY(0);
+      clip-path: inset(0 0 -24px 0);
+    }
+  }
+
   @keyframes spy-fade-up {
     from {
       opacity: 0;

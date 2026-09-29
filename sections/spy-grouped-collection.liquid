@@ -36,13 +36,26 @@
   if section.settings.background_color != blank
     render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
   endif
+
+  # Same grid runs the search page, fed by product results instead of a collection
+  assign is_search = false
+  if template.name == 'search'
+    assign is_search = true
+  endif
 %}
 
 <div
   class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
 {% # theme-check-disable-next-line UnknownFilter %}
-<collection-component view-event-payload="{{ collection | standard_event_data: 'view' | escape }}">
+<collection-component
+  {% unless is_search %}
+    view-event-payload="{{ collection | standard_event_data: 'view' | escape }}"
+  {% endunless %}
+  {% if is_search %}
+    data-spy-search-products
+  {% endif %}
+>
   <results-list
     class="section product-grid-container{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
     style="--padding-block-start: {{ section.settings.padding-block-start }}px; --padding-block-end: {{ section.settings.padding-block-end }}px;"
@@ -53,24 +66,49 @@
   >
     {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
 
+    {% comment %} Tailwind's own .grid forces a grid on mobile; Horizon wants a column there {% endcomment %}
     <div
-      class="collection-wrapper grid gap-style{% if section.settings.product_grid_width == 'full-width' %} collection-wrapper--grid-full-width{% endif %}"
+      class="collection-wrapper grid gap-style max-[749px]:[display:flex] max-[749px]:flex-col{% if section.settings.product_grid_width == 'full-width' %} collection-wrapper--grid-full-width{% endif %}"
     >
-      {% content_for 'block',
-        type: 'filters',
-        id: 'filters',
-        results: collection,
-        results_size: collection.products_count
-      %}
-
       {% comment %}
         50 is the most products Liquid will hand us per page, and every extra one is
         another colourway the grouping can fold in — so always ask for all 50.
+        The page is copied into a plain array (`where: 'id'`) so the grouping below
+        reads the same list for a collection and for search.
       {% endcomment %}
-      {% paginate collection.products by 50 %}
+      {%- if is_search -%}
+        {%- paginate search.results by 50 -%}
+          {%- assign page_products = search.results | where: 'object_type', 'product' -%}
+          {%- assign pager = paginate -%}
+        {%- endpaginate -%}
+        {%- assign results_size = search.results_count -%}
+
+        {%- comment -%} No hits: show a few models from a picked collection, like the source's "...Or check those" {%- endcomment -%}
+        {%- assign is_fallback = false -%}
+        {%- if search.results_count == 0 -%}
+          {%- assign fallback_collection = section.settings.fallback_collection | default: settings.empty_state_collection | default: collections.all -%}
+          {%- assign page_products = fallback_collection.products | where: 'id' -%}
+          {%- assign is_fallback = true -%}
+        {%- endif -%}
+      {%- else -%}
+        {%- paginate collection.products by 50 -%}
+          {%- assign page_products = collection.products | where: 'id' -%}
+          {%- assign pager = paginate -%}
+        {%- endpaginate -%}
+        {%- assign results_size = collection.products_count -%}
+      {%- endif -%}
+
+      {%- if is_fallback -%}
+        {%- comment -%} Nothing to filter; the fallback grid sits below {%- endcomment -%}
+      {%- elsif is_search -%}
+        {% content_for 'block', type: 'filters', id: 'filters', results: search, results_size: results_size %}
+      {%- else -%}
+        {% content_for 'block', type: 'filters', id: 'filters', results: collection, results_size: results_size %}
+      {%- endif -%}
+
         {% capture children %}
           {%- capture groups -%}
-            {%- render 'spy-product-groups', products: collection.products -%}
+            {%- render 'spy-product-groups', products: page_products -%}
           {%- endcapture -%}
 
           {%- liquid
@@ -83,7 +121,7 @@
             # exact and costs nothing. Past that, only the model collection can keep
             # a model off a second page.
             assign model_mode = false
-            if paginate.pages > 1
+            if pager.pages > 1
               assign model_mode = true
             endif
 
@@ -91,7 +129,7 @@
             # can front the model with something a shopper can actually buy
             assign in_stock_keys = sep
             unless model_mode
-              for product in collection.products
+              for product in page_products
                 unless product.available
                   continue
                 endunless
@@ -113,6 +151,10 @@
 
             assign rendered_keys = sep
             assign card_index = 0
+            assign product_view_context = 'collection'
+            if is_search
+              assign product_view_context = 'search'
+            endif
           -%}
 
           {%- comment -%} Same auto-fill maths the stock gallery uses — worked out once, not per card {%- endcomment -%}
@@ -127,7 +169,7 @@
           {%- endcapture -%}
           {%- assign image_sizes = image_sizes | strip -%}
 
-          {%- for product in collection.products -%}
+          {%- for product in page_products -%}
             {%- liquid
               capture group_name
                 render 'spy-group-name', product: product
@@ -168,6 +210,10 @@
               {%- continue -%}
             {%- endunless -%}
 
+            {%- if is_fallback and card_index >= section.settings.fallback_count -%}
+              {%- break -%}
+            {%- endif -%}
+
             {%- liquid
               assign rendered_keys = rendered_keys | append: group_key | append: sep
 
@@ -188,7 +234,7 @@
             <li
               id="{{ section.id }}-{{ product.id }}"
               class="product-grid__item product-grid__item--{{ card_index }}"
-              data-page="{{ paginate.current_page }}"
+              data-page="{{ pager.current_page }}"
               data-product-id="{{ product.id }}"
               data-group-key="{{ group_key }}"
               ref="cards[]"
@@ -200,7 +246,7 @@
                 group_name: group_name,
                 group_count: group_count,
                 image_sizes: image_sizes,
-                product_view_context: 'collection'
+                product_view_context: product_view_context
               %}
             </li>
 
@@ -208,15 +254,35 @@
           {%- endfor -%}
         {% endcapture %}
 
-        {% render 'product-grid',
-          section: section,
-          children: children,
-          products: collection.products,
-          paginate: paginate,
-          enable_infinite_scroll: false,
-          show_category_links: true
-        %}
-      {% endpaginate %}
+        {%- liquid
+          assign show_category_links = true
+          if is_search
+            assign show_category_links = false
+          endif
+        -%}
+        {%- if is_fallback -%}
+          {% comment %} Source centres its 3 fallback cards in 328px slots (1440) {% endcomment %}
+          {% render 'product-grid',
+            section: section,
+            children: children,
+            products: page_products,
+            paginate: pager,
+            enable_infinite_scroll: false,
+            show_category_links: false,
+            title: section.settings.fallback_heading,
+            title_class: 'm-0 mb-12 pt-12 text-center font-spy text-[48px] leading-[57.6px] font-normal normal-case tracking-normal text-spy-ink max-[750px]:text-[32px] max-[750px]:leading-[38.4px]',
+            grid_class: 'min-[992px]:max-w-[984px] min-[992px]:mx-auto min-[992px]:w-full'
+          %}
+        {%- else -%}
+          {% render 'product-grid',
+            section: section,
+            children: children,
+            products: page_products,
+            paginate: pager,
+            enable_infinite_scroll: false,
+            show_category_links: show_category_links
+          %}
+        {%- endif -%}
     </div>
   </results-list>
 </collection-component>
@@ -225,7 +291,7 @@
 {
   "name": "Grouped collection",
   "enabled_on": {
-    "templates": ["collection"]
+    "templates": ["collection", "search"]
   },
   "settings": [
     {
@@ -289,6 +355,31 @@
       "id": "more_results_label",
       "label": "\"More results\" button label",
       "default": "More results"
+    },
+    {
+      "type": "header",
+      "content": "Search with no results"
+    },
+    {
+      "type": "text",
+      "id": "fallback_heading",
+      "label": "Heading",
+      "default": "...Or check those"
+    },
+    {
+      "type": "collection",
+      "id": "fallback_collection",
+      "label": "Collection",
+      "info": "Models shown when a search finds nothing. Falls back to the empty state collection in theme settings."
+    },
+    {
+      "type": "range",
+      "id": "fallback_count",
+      "label": "Models shown",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 3
     },
     {
       "type": "link_list",

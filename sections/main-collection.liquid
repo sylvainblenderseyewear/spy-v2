@@ -44,8 +44,9 @@
   >
     {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
 
+    {% comment %} Tailwind's own .grid forces a grid on mobile; Horizon wants a column there {% endcomment %}
     <div
-      class="collection-wrapper grid gap-style{% if section.settings.product_grid_width == 'full-width' %} collection-wrapper--grid-full-width{% endif %}"
+      class="collection-wrapper grid gap-style max-[749px]:[display:flex] max-[749px]:flex-col{% if section.settings.product_grid_width == 'full-width' %} collection-wrapper--grid-full-width{% endif %}"
     >
       {% comment %}
         The breadcrumb is its own section above this one (a Breadcrumbs block in a

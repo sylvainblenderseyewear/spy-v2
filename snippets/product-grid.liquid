@@ -8,6 +8,8 @@
   @param {string} children - List or grid of product cards
   @param {boolean} [enable_infinite_scroll] - Whether to enable infinite scroll (default: true)
   @param {boolean} [show_category_links] - Render the category cross-links under the button
+  @param {string} [title_class] - Classes for the title, replacing the stock title style
+  @param {string} [grid_class] - Extra classes on the card list
 {%- enddoc -%}
 
 {%- liquid
@@ -129,7 +131,7 @@
       {% endif %}
 
       {% if title %}
-        <h4 class="main-collection-grid__title">{{ title }}</h4>
+        <h4 class="{{ title_class | default: 'main-collection-grid__title' }}">{{ title }}</h4>
       {% endif %}
 
       {% liquid
@@ -148,7 +150,7 @@
       %}
       <ul
         {% if trim_partial_row %}data-trim-partial-row{% endif %}
-        class="product-grid product-grid--{{ section.id }} product-grid--{{ section.settings.layout_type }} {% if section.settings.mobile_product_card_size == 'large' %} product-grid-mobile--large{% endif %} max-[749px]:mx-0 max-[749px]:w-full"
+        class="product-grid product-grid--{{ section.id }} product-grid--{{ section.settings.layout_type }} {% if section.settings.mobile_product_card_size == 'large' %} product-grid-mobile--large{% endif %} max-[749px]:mx-0 max-[749px]:w-full{% if grid_class != blank %} {{ grid_class }}{% endif %}"
         data-testid="product-grid"
         product-grid-view="default"
         ref="grid"

@@ -1,152 +1,191 @@
+{% comment %}
+  Suggestions panel for the SPY search bar, laid out like the source:
+  See All Results · Categories · Content · Products (4, two columns from 992px).
+  Items keep ref="resultsItems[]" so Horizon's arrow-key nav still works (data-selected marks the pick).
+{% endcomment %}
 
+{%- if predictive_search.performed -%}
+  {%- liquid
+    assign terms = predictive_search.terms
+    assign products = predictive_search.resources.products
+    assign collections = predictive_search.resources.collections
+    assign pages = predictive_search.resources.pages
+    assign articles = predictive_search.resources.articles
+    assign content_count = pages.size | plus: articles.size
+    assign search_results_count = products.size | plus: collections.size | plus: content_count
+    assign encoded_terms = terms | url_encode
+    assign see_all_url = routes.search_url | append: '?q=' | append: encoded_terms | append: '&type=product&options%5Bprefix%5D=last'
+  -%}
 
-{% render 'predictive-search-styles' %}
+  {% comment %} Link colour flips to orange below 992px, as on the source {% endcomment %}
+  {%- assign link_class = 'text-spy-ink no-underline hover:text-spy-ink hover:no-underline max-[992px]:text-spy-orange-ui max-[992px]:hover:text-spy-orange-ui' -%}
+  {%- assign item_class = 'data-[selected=true]:outline-2 data-[selected=true]:outline-solid data-[selected=true]:outline-spy-ink data-[selected=true]:-outline-offset-2' -%}
+  {%- assign header_class = 'mb-2 text-[14px] leading-[19.6px] font-bold uppercase text-spy-muted' -%}
 
-{%- if predictive_search.performed or search.performed -%}
   <div
     id="predictive-search-results"
-    class="predictive-search-dropdown"
-    role="listbox"
+    class="font-spy text-[16px] leading-[22.4px] font-normal text-spy-ink bg-white border border-spy-border shadow-[0_5px_9px_0_rgba(119,119,119,0.2)] px-[15px] overflow-y-auto overscroll-contain max-h-[calc(100dvh-var(--spy-search-top,0px)-45px)] max-[992px]:h-[calc(100dvh-var(--spy-search-top,0px)-45px)] max-[992px]:pb-24"
+    role="region"
     aria-label="{{ 'content.search_results_label' | t }}"
-    data-transition-container
-    style="--color-shadow: rgb(var(--color-foreground-rgb) / var(--opacity-10-25));"
   >
-    <div
-      class="predictive-search-results__inner"
-      data-search-results
-    >
-      {% if predictive_search.performed %}
-        {% assign search_results_count = predictive_search.resources.products.size
-          | plus: predictive_search.resources.pages.size
-          | plus: predictive_search.resources.articles.size
-          | plus: predictive_search.resources.collections.size
-        %}
-      {% else %}
-        {% assign search_results_count = search.results_count %}
-      {% endif %}
-
+    <div data-search-results>
       <div
-        class="visually-hidden"
+        class="sr-only"
         role="status"
       >
-        {%- if predictive_search.performed and search_results_count > 0 -%}
-          {{ 'accessibility.search_results_count' | t: count: search_results_count, query: predictive_search.terms }}
-        {%- elsif predictive_search.performed and predictive_search.resources.queries.size > 0 -%}
-          {{- 'accessibility.search_suggestions_available' | t: query: predictive_search.terms -}}
-        {%- elsif predictive_search.performed -%}
-          {{ 'accessibility.search_results_no_results' | t: query: predictive_search.terms }}
+        {%- if search_results_count > 0 -%}
+          {{ 'accessibility.search_results_count' | t: count: search_results_count, query: terms }}
+        {%- else -%}
+          {{ 'accessibility.search_results_no_results' | t: query: terms }}
         {%- endif -%}
       </div>
 
-      {% if predictive_search.performed %}
-        {% if predictive_search.resources.queries.size > 0 %}
-          <ul
-            class="predictive-search-results__list predictive-search-results__wrapper predictive-search-results__wrapper-queries list-unstyled"
+      {%- if search_results_count > 0 -%}
+        {% comment %} Line runs edge to edge, so the row escapes the panel padding {% endcomment %}
+        <div class="[display:flex] justify-end -mx-[15px] py-2 px-[23px] border-b border-spy-border">
+          <a
+            href="{{ see_all_url }}"
+            class="{{ link_class }}"
           >
-            {%- for resource in predictive_search.resources.queries -%}
-              <li
-                class="predictive-search-results__card--query"
-                ref="resultsItems[]"
-                on:keydown="/onSearchKeyDown"
-              >
-                <a
-                  class="pills__pill predictive-search-results__pill"
-                  href="{{ resource.url }}"
-                  aria-label="{{ resource.text }}"
+            {{- 'content.spy_search.see_all' | t -}}
+          </a>
+        </div>
+
+        {%- if collections.size > 0 or content_count > 0 -%}
+          <div class="pt-2 min-[992px]:px-12">
+            {%- if collections.size > 0 -%}
+              <p class="{{ header_class }}">{{ 'content.spy_search.categories' | t }}</p>
+              <ul class="predictive-search-results__list list-none m-0 p-0">
+                {%- for collection in collections limit: 4 -%}
+                  <li
+                    class="w-fit mb-4 {{ item_class }}"
+                    ref="resultsItems[]"
+                  >
+                    <a
+                      href="{{ collection.url }}"
+                      class="{{ link_class }}"
+                    >
+                      {{- collection.title -}}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
+            {%- if content_count > 0 -%}
+              <p class="{{ header_class }}">{{ 'content.spy_search.content' | t }}</p>
+              <ul class="predictive-search-results__list list-none m-0 p-0">
+                {%- for page in pages limit: 4 -%}
+                  <li
+                    class="w-fit {{ item_class }}"
+                    ref="resultsItems[]"
+                  >
+                    <a
+                      href="{{ page.url }}"
+                      class="{{ link_class }}"
+                    >
+                      {{- page.title -}}
+                    </a>
+                  </li>
+                {%- endfor -%}
+                {%- assign articles_limit = 4 | minus: pages.size | at_least: 0 -%}
+                {%- for article in articles limit: articles_limit -%}
+                  <li
+                    class="w-fit {{ item_class }}"
+                    ref="resultsItems[]"
+                  >
+                    <a
+                      href="{{ article.url }}"
+                      class="{{ link_class }}"
+                    >
+                      {{- article.title -}}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if products.size > 0 -%}
+          <div class="my-2 min-[992px]:px-4">
+            <p class="{{ header_class }}">{{ 'content.spy_search.products' | t }}</p>
+            <ul class="predictive-search-results__list list-none m-0 p-0 [display:flex] flex-wrap">
+              {%- for product in products limit: 4 -%}
+                {%- liquid
+                  assign low = product.price_min
+                  assign compare = product.compare_at_price_max
+                  assign percent = 0
+                  if compare > low
+                    assign percent = compare | minus: low | times: 100.0 | divided_by: compare | round
+                  endif
+                -%}
+                <li
+                  class="[display:flex] w-full min-[992px]:w-1/2 px-2 mb-4 {{ item_class }}"
+                  ref="resultsItems[]"
                 >
-                  <span>
-                    {{ resource.styled_text }}
-                  </span>
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-        {% endif %}
+                  <a
+                    href="{{ product.url }}"
+                    class="shrink-0 pr-2"
+                    tabindex="-1"
+                    aria-hidden="true"
+                  >
+                    {%- if product.featured_image -%}
+                      {{
+                        product.featured_image
+                        | image_url: width: 180
+                        | image_tag: class: 'block size-[90px] max-w-none object-contain', width: 90, height: 90, alt: '', loading: 'lazy'
+                      }}
+                    {%- else -%}
+                      <span class="block size-[90px] bg-spy-tile"></span>
+                    {%- endif -%}
+                  </a>
+                  <div class="min-w-0">
+                    <a
+                      href="{{ product.url }}"
+                      class="inline-block max-w-[150px] truncate align-top uppercase text-spy-ink no-underline hover:text-spy-ink hover:no-underline"
+                    >
+                      {{- product.title -}}
+                    </a>
+                    <div class="[display:flex] flex-wrap items-center font-bold text-spy-line-price">
+                      <span>
+                        {%- if product.price_varies -%}
+                          {{ 'content.spy_search.starting_from' | t }}&nbsp;
+                        {%- endif -%}
+                        {{- low | money_without_trailing_zeros -}}
+                      </span>
+                      {%- if percent > 0 -%}
+                        <del class="ml-1 mr-1 font-normal text-spy-strike">
+                          <span class="sr-only">{{ 'content.price_regular' | t }}&nbsp;</span>
+                          {{- compare | money_without_trailing_zeros -}}
+                        </del>
+                        <span class="px-[10px] font-normal text-white bg-spy-orange-ui">{{ percent }}%</span>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- else -%}
+        <p class="m-0 p-3 text-center">{{ 'content.spy_search.no_results' | t: terms: terms }}</p>
+      {%- endif -%}
 
-        {%- if search_results_count > 0 -%}
-          {% if predictive_search.resources.products.size > 0 %}
-            {%- liquid
-              assign title = 'content.search_results_resource_products' | t
-              assign products = predictive_search.resources.products
-              render 'predictive-search-products-list', title: title, products: products
-            -%}
-          {% endif %}
-
-          {% if predictive_search.resources.collections.size > 0 %}
-            {% assign resource_title = 'content.search_results_resource_collections' | t %}
-
-            {% render 'predictive-search-resource-carousel',
-              title: resource_title,
-              resource_type: 'collection',
-              resources: predictive_search.resources.collections
-            %}
-          {% endif %}
-
-          {% if predictive_search.resources.pages.size > 0 %}
-            {% assign resource_title = 'content.search_results_resource_pages' | t %}
-
-            {% render 'predictive-search-resource-carousel',
-              title: resource_title,
-              resource_type: 'page',
-              resources: predictive_search.resources.pages
-            %}
-          {% endif %}
-
-          {% if predictive_search.resources.articles.size > 0 %}
-            {% assign resource_title = 'content.search_results_resource_articles' | t %}
-
-            {% render 'predictive-search-resource-carousel',
-              title: resource_title,
-              resource_type: 'article',
-              resources: predictive_search.resources.articles
-            %}
-          {% endif %}
-        {%- elsif predictive_search.resources.queries.size == 0 -%}
-          <p class="predictive-search-results__no-results">
-            {{ 'content.search_results_no_results' | t: terms: predictive_search.terms }}
-          </p>
-        {% endif %}
-      {% else %}
+      {%- if search_results_count == 1 -%}
         {%- liquid
-          assign title = 'content.recently_viewed_products' | t
-          assign products = search.results
-
-          comment
-            Searching for recently viewed products by id doesn't preserve the order of the products.
-            To work around this, we get the product ids into an array then use that to reorder them.
-          endcomment
-          if search.terms contains 'id:'
-            assign new_products_ids = search.terms | replace: 'id:', '' | split: ' OR '
+          if products.size == 1
+            assign single_result_url = products.first.url
+          elsif collections.size == 1
+            assign single_result_url = collections.first.url
+          elsif pages.size == 1
+            assign single_result_url = pages.first.url
+          else
+            assign single_result_url = articles.first.url
           endif
-          render 'predictive-search-products-list', title: title, products: products, order_ids: new_products_ids, limit: 4
         -%}
-      {% endif %}
-
-      {% if predictive_search.performed %}
-        {%- if search_results_count > 0 -%}
-          {% assign total_results = predictive_search.resources.products.size
-            | plus: predictive_search.resources.collections.size
-            | plus: predictive_search.resources.pages.size
-            | plus: predictive_search.resources.articles.size
-          %}
-          {% assign single_result_url = null %}
-          {% if total_results == 1 %}
-            {% if predictive_search.resources.products.size == 1 %}
-              {% assign single_result_url = predictive_search.resources.products.first.url %}
-            {% elsif predictive_search.resources.collections.size == 1 %}
-              {% assign single_result_url = predictive_search.resources.collections.first.url %}
-            {% elsif predictive_search.resources.pages.size == 1 %}
-              {% assign single_result_url = predictive_search.resources.pages.first.url %}
-            {% elsif predictive_search.resources.articles.size == 1 %}
-              {% assign single_result_url = predictive_search.resources.articles.first.url %}
-            {% endif %}
-          {% endif %}
-
-          {% if single_result_url %}
-            <div data-single-result-url="{{ single_result_url }}"></div>
-          {% endif %}
-        {% endif %}
-      {% endif %}
+        <div data-single-result-url="{{ single_result_url }}"></div>
+      {%- endif -%}
     </div>
   </div>
 {%- endif -%}
