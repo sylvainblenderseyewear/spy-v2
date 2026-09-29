@@ -230,6 +230,21 @@ SPY's Pandectes settings, read from the page (`pandectesRulesSettings` / `pandec
 4. Point **"Learn more"** at an existing page (`/policies/privacy-policy` or `/pages/privacy-policy`), or publish a cookie-policy page.
 5. Optional, to match Blenders' look: set `showDescriptions` off (collapsed), rename "Deny all" to "Reject all", and add the backdrop.
 
+**Auto blocker comparison (29 Sep):** both stores have the blocker **active**. Blenders ticks Hotjar, Bing Ads, Pinterest, Snapchat, TikTok and Twitter; SPY ticks none. Those six are Blenders' own services, and **none of them load on SPY**, so copying those ticks changes nothing today (harmless future-proofing only).
+
+What SPY actually loads from third parties on production (from the Lighthouse network logs):
+
+| Service | Hosts | Recommended handling |
+|---|---|---|
+| Yotpo | `staticw2.yotpo.com` widget, **`p.yotpo.com` pixel** | Custom rule: block `p.yotpo.com` (Performance). Keep the widget. |
+| Rebuy | `cdn.rebuyengine.com`, `rebuyengine.com`, `geo.rebuyengine.com` | Custom rule under **Functionality** (not Targeting), or "Complete your selection" vanishes before consent. |
+| GA4 | `googletagmanager.com`, `sgtm.spyoptic.com` | Not a blocker job. It's the sandboxed custom pixel, which follows Shopify Customer Privacy (default-denied Consent Mode in `audit/ga4-custom-pixel.js`). |
+| Vimeo | `player.vimeo.com` (home hero) | **Fixed in the theme** (`bdef1ba`): embeds use Vimeo `dnt=1` and `youtube-nocookie.com`, so there are no tracking cookies and no need to block the hero. Verified live. |
+| Google Fonts | `fonts.googleapis.com` (Source Sans 3) | Loaded by the **ExpertVoice** app embed (`expertvoice.css` `@import`), on every page. Visitor IPs go to Google, which EU courts have treated as a GDPR issue. Ask ExpertVoice to self-host it, or limit the embed. |
+| accessiBe, Pandectes | `acsbapp.com`, `a.pandect.es` | Must always load. |
+
+Note: while the policy is Auto pilot (loose), the blocker has nothing to hold back, because consent starts as granted. It only takes effect after the switch to Strict.
+
 After the change, re-run `consent.mjs`: before any click there should be no GA4/Rebuy/Yotpo tracking requests for strict-region visitors.
 
 ### Content fixes on production (29 Sep)
