@@ -36,9 +36,10 @@
   Vimeo's `background=1`. Background mode looks the same but also blocks all
   interaction, so the parameter set is matched to the source's instead.
 {%- endcomment -%}
+{%- comment -%} dnt=1 / youtube-nocookie: no tracking cookies, so the hero can play before cookie consent {%- endcomment -%}
 {%- if video_url.type == 'vimeo' -%}
-  {%- capture params -%}autoplay=1&muted=1&loop=1&controls=0&playsinline=1{%- if hash != blank -%}&h={{ hash }}{%- endif -%}{%- endcapture -%}
+  {%- capture params -%}autoplay=1&muted=1&loop=1&controls=0&playsinline=1&dnt=1{%- if hash != blank -%}&h={{ hash }}{%- endif -%}{%- endcapture -%}
   {{- 'https://player.vimeo.com/video/' | append: video_url.id | append: '?' | append: params -}}
 {%- elsif video_url.type == 'youtube' -%}
-  {{- 'https://www.youtube.com/embed/' | append: video_url.id | append: '?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&enablejsapi=1&playlist=' | append: video_url.id -}}
+  {{- 'https://www.youtube-nocookie.com/embed/' | append: video_url.id | append: '?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&enablejsapi=1&playlist=' | append: video_url.id -}}
 {%- endif -%}

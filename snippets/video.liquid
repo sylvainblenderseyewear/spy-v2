@@ -46,7 +46,8 @@
 {% if video_from_url %}
   {% liquid
     if video_type == 'youtube'
-      assign video_src = 'https://www.youtube.com/embed/VIDEO_ID?' | replace: 'VIDEO_ID', video
+      # nocookie domain: no tracking cookies before cookie consent
+      assign video_src = 'https://www.youtube-nocookie.com/embed/VIDEO_ID?' | replace: 'VIDEO_ID', video
 
       if video_autoplay == false and video_preview_image != blank
         assign video_src = video_src | append: '&autoplay=1'
@@ -69,7 +70,8 @@
       endif
       assign class = 'js-youtube'
     else
-      assign video_src = 'https://player.vimeo.com/video/VIDEO_ID?' | replace: 'VIDEO_ID', video
+      # dnt=1: Vimeo sets no tracking cookies before cookie consent
+      assign video_src = 'https://player.vimeo.com/video/VIDEO_ID?dnt=1&' | replace: 'VIDEO_ID', video
 
       # Unlisted videos refuse to play without it
       if video_hash != blank
