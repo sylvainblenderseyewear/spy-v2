@@ -269,7 +269,8 @@ After the change, re-run `consent.mjs`: before any click there should be no GA4/
 
 Backups of both page bodies were taken before any write.
 - **Return policy page:** removed the 5 inline `style="color: #f27e37;"` attributes (USPS, UPS, FedEx, Contact, phone links) through the Admin API `pageUpdate`. Everything else is byte-identical. The links now use the theme's link style. **Axe: clean at both widths.**
-- **Accessibility statement:**
+- **Accessibility statement — REVERTED 29 Sep at the store owner's request.** The live page is back to the original text, byte-identical to the backup (it still has "WC3" and the daily-scan / monthly-audit claims). The rewrite described below is no longer live.
+- *(Superseded)* **Accessibility statement:**
   - The old text was copied word-for-word from the live SFCC site, whose statement contains the "WC3" typo, the "automated maintenance scans every 24-hours" claim (the wording of the accessiBe widget, which the live site also runs), and an unverified "professional compliance audits monthly" claim.
   - The replacement fixes W3C and describes the testing actually done. It presents the toolbar as optional, not as compliance, and lists third-party known limitations and the full contacts. It's dated 29 Sep 2026, and the monthly-audit claim is left out until someone confirms it.
   - **Axe: clean.**
