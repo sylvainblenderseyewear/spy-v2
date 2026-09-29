@@ -322,3 +322,32 @@ Nothing below works until step 1. Steps 1–3 are Yotpo/theme-editor actions; st
 - **1:1 or working?** A manual carousel prints a product name on every card; the source band does not.
   Pixel parity needs site reviews, which is a Yotpo migration, not a theme change.
 - **Who maintains the curated review list** once it is set.
+
+## Verified 2026-09-29
+
+**App embed.** Yotpo Product Reviews is now **ON** in the live `spy-v2/main` theme on
+`spyoptic-com.myshopify.com` (read from the pulled `config/settings_data.json`). A second Yotpo app,
+Loyalty & Rewards, is also installed and on. The dev store `spydevsylv` has **no app embeds at all**, so
+Yotpo is not installed there and nothing Yotpo can be tested or verified on that store.
+
+**Curated carousel list.** The hand-picked pool on S2 now returns **9 distinct reviews** (was 3, all
+Discord), spread across models — Overhaul XL, Holden, Rebar ANSI, Rocky and others. Queried directly:
+`POST staticw2.yotpo.com/batch/app_key/<S2>/domain_key/yotpononproductrelatedwidget/widget/carousels`
+with `params.manual = true`. So the Yotpo side of Option A0 is done.
+
+**Block change verified.** `blocks/spy-app-embed.liquid` gained a third Order option, "Hand-picked in
+Yotpo", which suppresses `data-type` (sending `site` there forces the empty pool and blanks the widget).
+Rendered offline against the committed template in four configurations — top_rated, most_recent, manual,
+manual+per_product — all correct, no glued attributes. Theme check reports zero findings for the file.
+A trimming `{%- comment -%}` inside the tag would have glued two attributes together; see
+[[liquid-trim-comment-breaks-tags]].
+
+**Fidelity confirmed, not resolved.** A hand-picked card's real DOM is
+`.product-link-container > .y-carousel-product-image + .product-name.carousel-review-product-text`, then
+stars, date, title, body, author. So every card carries a **product image and product name**. The source
+band has neither. Option A0 therefore produces a working band, not a 1:1 one; only site reviews give the
+source layout.
+
+**Not verified.** Whether the production theme now carries the corrected gallery id and the hand-picked
+order. Three `shopify theme pull` attempts failed on `accounts.shopify.com/oauth/token` socket hang-ups
+and expired device codes. The CLI has been unreliable all session; `theme dev` never came up.
