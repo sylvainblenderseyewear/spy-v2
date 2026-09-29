@@ -20,7 +20,22 @@ const TAGGING_URL = 'https://sgtm.spyoptic.com';
 const TAG_ID = 'G-1F4T2NDY34'; // GT-NS4QG8B8 is the same tag, either works
 
 window.dataLayer = window.dataLayer || [];
+
+// Events and page context are held back until the shopper consents, then sent
+// after the consent update so they count as granted. Declining drops them.
+let consentReady = false;
+let consentDeclined = false;
+const pending = [];
+
 function gtag() {
+  const cmd = arguments[0];
+  if (cmd === 'event' || cmd === 'set') {
+    if (consentDeclined) return;
+    if (!consentReady) {
+      pending.push(arguments);
+      return;
+    }
+  }
   dataLayer.push(arguments);
 }
 
@@ -33,9 +48,32 @@ gtag('consent', 'default', {
   wait_for_update: 500,
 });
 
+/*
+  Opt-in everywhere, like Blenders: GA4 waits for an explicit choice.
+  Before the shopper clicks, Shopify fills the gap with its regional default,
+  which is "allowed" outside the EU/UK — so that value alone would track US
+  visitors before they choose. Only two things count as a real choice:
+  - `visitorConsentCollected` fires (the shopper clicked on this page), or
+  - a choice saved on an earlier page. Pandectes keeps it in `_pandectes_gdpr`
+    (base64 JSON; `status` is "" until the shopper picks, then e.g. "allow").
+    Shopify's own `_tracking_consent` is checked too, in case it is ever written.
+*/
+let hasChosen = false;
+let gtagLoaded = false;
+
+// gtag.js is only fetched once there is consent to act on
+function loadGtag() {
+  if (gtagLoaded) return;
+  gtagLoaded = true;
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = 'https://www.googletagmanager.com/gtag/js?id=' + TAG_ID;
+  document.head.appendChild(script);
+}
+
 // Shopify holds the consent state; mirror it into gtag.
 function applyConsent(c) {
-  if (!c) return;
+  if (!c || !hasChosen) return;
 
   // US states give shoppers a "do not sell my data" opt-out, and Shopify
   // reports it here. Ad signals have to respect it, not just marketing consent.
@@ -47,9 +85,38 @@ function applyConsent(c) {
     ad_user_data: adsAllowed ? 'granted' : 'denied',
     ad_personalization: adsAllowed ? 'granted' : 'denied',
   });
+
+  if (c.analyticsProcessingAllowed) {
+    // Replay what happened before the click, now that it counts as granted
+    consentReady = true;
+    consentDeclined = false;
+    pending.splice(0).forEach((args) => dataLayer.push(args));
+    loadGtag();
+  } else {
+    consentDeclined = true;
+    pending.length = 0;
+  }
 }
 
-applyConsent(init.customerPrivacy);
+// Pandectes writes status "" on the first visit and a value once the shopper picks
+function pandectesChose(raw) {
+  if (!raw) return false;
+  try {
+    return !!JSON.parse(atob(decodeURIComponent(raw))).status;
+  } catch (e) {
+    return false; // unreadable: treat as no choice
+  }
+}
+
+// A choice made on an earlier page
+Promise.all([
+  browser.cookie.get('_pandectes_gdpr').catch(() => ''),
+  browser.cookie.get('_tracking_consent').catch(() => ''),
+]).then(([pandectes, shopify]) => {
+  if (!pandectesChose(pandectes) && !shopify) return; // no choice yet, stay silent
+  hasChosen = true;
+  applyConsent(init.customerPrivacy);
+});
 
 // The sandbox exposes this as `api.customerPrivacy` or bare `customerPrivacy`
 // depending on version — a hard reference to the wrong one kills the whole file.
@@ -61,7 +128,11 @@ const privacy =
       : null;
 
 if (privacy) {
-  privacy.subscribe('visitorConsentCollected', (e) => applyConsent(e.customerPrivacy));
+  // The shopper just clicked Accept/Decline/Save on the banner
+  privacy.subscribe('visitorConsentCollected', (e) => {
+    hasChosen = true;
+    applyConsent(e.customerPrivacy);
+  });
 }
 
 /*
@@ -71,11 +142,7 @@ if (privacy) {
   To serve the library from our domain too, use the "Serve Google scripts from
   your tagging server" setup in GTM, then point this src at TAGGING_URL.
 */
-const script = document.createElement('script');
-script.async = true;
-script.src = 'https://www.googletagmanager.com/gtag/js?id=' + TAG_ID;
-document.head.appendChild(script);
-
+// Commands queue in dataLayer until loadGtag() runs; nothing leaves the browser before then.
 gtag('js', new Date());
 gtag('config', TAG_ID, {
   server_container_url: TAGGING_URL, // every hit goes here, not to Google
