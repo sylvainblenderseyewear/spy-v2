@@ -285,3 +285,40 @@ returns HTTP 200 with `result: " "` for an empty widget, which is indistinguisha
 so every conclusion here was reproduced in a real browser instead. One HTML file per hypothesis, served
 locally, driven through Playwright, reading `innerHTML.length`, box geometry and computed styles per
 widget. Full method in the `yotpo-widget-test-harness` memory.
+
+---
+
+## Runbook — order of operations
+
+Nothing below works until step 1. Steps 1–3 are Yotpo/theme-editor actions; step 4 is code.
+
+1. **Enable the Yotpo app embed.** Theme editor → App embeds → Yotpo Product Reviews is currently
+   **disabled** in `config/settings_data.json`. While it is off, no Yotpo widget on any page can render,
+   regardless of every other setting. Verify by loading a page and confirming one `staticw2.yotpo.com/<key>/widget.js`
+   request, and that the key is `HnS18CO…` (S2).
+2. **Gallery band.** `templates/index.json` now carries `600cb426ea00342fd9db2ca4`. Commit and deploy, or
+   set the same value in the Gallery ID field of whichever store's theme shows the blank band.
+3. **Reviews band, Yotpo side.** On-Site Widgets → Reviews Carousel → **Review logic = Manual**,
+   **Show = Product Reviews** (anything but Site Reviews), then curate the featured reviews — the list
+   holds three Discord reviews today. Number of Reviews 9, autoplay 3000ms, count and arrows on.
+4. **Reviews band, theme side.** The block's `mode` select offers only `top_rated` / `most_recent`, so
+   `manual` needs either one extra option on that select or the block's Custom code mode:
+
+   ```html
+   <div class="yotpo yotpo-reviews-carousel"
+        data-background-color="transparent" data-mode="manual" data-count="9"
+        data-show-bottomline="1" data-autoplay-enabled="1" data-autoplay-speed="3000"
+        data-show-navigation="1">&nbsp;</div>
+   ```
+
+   No `data-type` attribute, and no product id.
+5. **Verify** at 1440 / 768 / 390 against the measured table above: 3 / 2 / 1 reviews per view, and no
+   console errors.
+
+## Open decisions
+
+- **Which store/theme is the launch target?** This repo syncs to `spy-v2/main`; the Yotpo symptoms come
+  from a store whose theme this repo may not control.
+- **1:1 or working?** A manual carousel prints a product name on every card; the source band does not.
+  Pixel parity needs site reviews, which is a Yotpo migration, not a theme change.
+- **Who maintains the curated review list** once it is set.
