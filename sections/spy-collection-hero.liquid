@@ -20,6 +20,8 @@
   Metafield keys: `hero_image`, `hero_image_tablet`, `hero_image_mobile`
   (file_reference). `hero_image` and `hero_image_mobile` are defined and populated;
   `hero_image_tablet` is not defined yet, so tablet still falls back to desktop.
+
+  With no image at all, a plain band keeps the H1 at the top (can be turned off).
 {%- endcomment -%}
 
 {%- liquid
@@ -59,10 +61,19 @@
   assign heading = section.settings.heading | default: collection.title
 -%}
 
-{%- if img_desktop != blank -%}
+{%- liquid
+  # No artwork yet: keep the band and the H1, centred on a plain panel
+  assign has_image = true
+  if img_desktop == blank
+    assign has_image = false
+  endif
+-%}
+
+{%- if has_image or section.settings.show_fallback -%}
   <div
     class="spy-collection-hero relative w-full overflow-hidden leading-[0]"
     style="
+      --hero-fallback-bg: {{ section.settings.fallback_bg }};
       --hero-ratio-mobile: {{ section.settings.ratio_mobile }};
       --hero-height-tablet: {{ section.settings.height_tablet }}px;
       --hero-height-desktop: {{ section.settings.height_desktop }}px;
@@ -78,6 +89,16 @@
     "
     {{ section.shopify_attributes }}
   >
+    {%- unless has_image -%}
+      <div
+        class="
+          block w-full bg-[var(--hero-fallback-bg)]
+          aspect-[var(--hero-ratio-mobile)]
+          min-[750px]:aspect-auto min-[750px]:h-[var(--hero-height-tablet)]
+          min-[1100px]:h-[var(--hero-height-desktop)]
+        "
+      ></div>
+    {%- else -%}
     <picture>
       <source
         media="(min-width: 1100px)"
@@ -106,13 +127,14 @@
         "
       >
     </picture>
+    {%- endunless -%}
 
     {%- if section.settings.show_heading and heading != blank -%}
       {%- comment -%}
         The title centres inside a zone measured from the left edge, so its position
         tracks the artwork's dark panel per breakpoint instead of the whole banner.
       {%- endcomment -%}
-      <div class="pointer-events-none absolute inset-0 flex items-center">
+      <div class="pointer-events-none absolute inset-0 flex items-center{% unless has_image %} justify-center [&>h1]:!w-full{% endunless %}">
         <h1
           class="
             m-0 w-[var(--hero-panel-mobile)] text-center uppercase leading-tight
@@ -172,6 +194,19 @@
       "type": "image_picker",
       "id": "image_mobile",
       "label": "Image — mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_fallback",
+      "label": "Show a plain band when there is no image",
+      "info": "Keeps the collection name at the top of collections that have no hero artwork yet.",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "fallback_bg",
+      "label": "Plain band colour",
+      "default": "#000000"
     },
     {
       "type": "header",
