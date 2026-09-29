@@ -1,7 +1,7 @@
 // Starts `shopify theme dev` and retries when startup fails.
 // Our link to Shopify drops some requests ("socket hang up",
 // "The operation was aborted."), so a plain retry usually works.
-const { spawn, execSync } = require('node:child_process');
+const { spawn, spawnSync, execSync } = require('node:child_process');
 
 const STORE = 'spydevsylv.myshopify.com';
 const PORT = 9292;
@@ -45,5 +45,16 @@ function run(attempt) {
 process.on('SIGINT', () => { stopping = true; });
 process.on('SIGTERM', () => { stopping = true; child?.kill(); });
 
+// Log in once before the retry loop. If login happens inside `theme dev`,
+// each retry asks for a new code and the one you approved goes stale.
+function ensureLogin() {
+  const res = spawnSync(`shopify theme list --store=${STORE} --role=live`, { stdio: 'inherit', shell: true });
+  if (res.status !== 0) {
+    console.log('\n[dev-start] Shopify login failed. Run `npm start` again and approve the new code.\n');
+    process.exit(res.status ?? 1);
+  }
+}
+
+ensureLogin();
 freePort();
 run(1);
