@@ -204,6 +204,34 @@ Desktop is 82–90 after the fix.
 - **Skip link order:** accessiBe puts its own "Skip to Content" and menu button before ours, which is expected with accessiBe.
 - **Test method:** check keyboard flows with real Tab presses. Jumping focus with scripts (`page.focus()`) sets off accessiBe's "Press Alt+1" helper and gives false failures.
 
+### Cookie consent (Pandectes) — tracking before consent (29 Sep)
+
+Compared with the Blenders store, SPY's banner starts with the optional categories **on**, while Blenders starts with them **off**, for the same visitor. The `?country=` URL parameter only switches the Shopify market; Pandectes decides from the visitor's IP.
+
+**Measured on production:** a first visit from Serbia (Shopify region `RS00`), with no click on the banner:
+- **Before any choice:** 4 GA4 hits (direct and through the server-side tag), 8 Rebuy requests, 1 Yotpo tracking pixel, and Shopify analytics all fire.
+- **Shopify's privacy API:** reports analytics, marketing and sale-of-data all **allowed** before any click.
+
+SPY's Pandectes settings, read from the page (`pandectesRulesSettings` / `pandectesBannerSettings`):
+
+| Setting | Value | Effect |
+|---|---|---|
+| `store.useGeolocation` | **false** | No per-country rules; everyone starts "consented". The strict list (EU/EEA, UK, CH, BR, Canadian provinces) is never applied, and RS isn't on it anyway. |
+| `blocker.enabled` | **false** | No scripts are held back until consent. |
+| `google.enabled` (Consent Mode) | **false** | GA4 / sGTM never get a consent signal. |
+| `consent.shopify` | true | The choice is passed to Shopify, but the default is "allowed". |
+| `dialogs.preferences.features.showDescriptions` | true | Categories open by default (Blenders shows them collapsed). |
+| Banner "Learn more" link | `/pages/cookie-policy` | **Returns 404 on production.** |
+
+**To fix in Shopify admin → Apps → Pandectes GDPR** (app settings, not the theme):
+1. Turn on **geolocation**, or apply the **strict/opt-in** policy to all visitors to match Blenders. Add any extra countries legal wants (e.g. RS).
+2. Turn on the **blocker** (auto-block until consent) so Rebuy, Yotpo and other scripts wait.
+3. Turn on **Google Consent Mode** so GA4 and the server-side tag honour the choice.
+4. Point **"Learn more"** at an existing page (`/policies/privacy-policy` or `/pages/privacy-policy`), or publish a cookie-policy page.
+5. Optional, to match Blenders' look: set `showDescriptions` off (collapsed), rename "Deny all" to "Reject all", and add the backdrop.
+
+After the change, re-run `consent.mjs`: before any click there should be no GA4/Rebuy/Yotpo tracking requests for strict-region visitors.
+
 ### Content fixes on production (29 Sep)
 
 Backups of both page bodies were taken before any write.
