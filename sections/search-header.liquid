@@ -129,8 +129,15 @@
       const count = root.querySelector('[data-spy-search-content-count]');
       const productSection = () => document.querySelector('[data-spy-search-products]')?.closest('.shopify-section');
 
-      fetch(root.dataset.contentUrl)
-        .then((response) => response.text())
+      // One retry: a dropped request would otherwise leave the tab at (0)
+      const getContent = () =>
+        fetch(root.dataset.contentUrl).then((response) => {
+          if (!response.ok) throw new Error(`${response.status}`);
+          return response.text();
+        });
+
+      getContent()
+        .catch(getContent)
         .then((html) => {
           const source = new DOMParser().parseFromString(html, 'text/html').querySelector('[data-spy-search-content]');
           if (!source) return;

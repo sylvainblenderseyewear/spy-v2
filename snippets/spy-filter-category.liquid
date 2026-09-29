@@ -6,9 +6,36 @@
   @param {string} label - Group heading
   @param {string} sectionId - The section ID, for a unique details id
   @param {string} [suffix] - Extra id suffix so the panel and drawer don't clash
+  @param {array} [hits] - Search results: keep only categories holding one of these products
 {%- enddoc -%}
 
-{% if menu != blank and menu.links.size > 0 %}
+{%- liquid
+  # On search, a category shows only when one of the hits sits in its collection
+  if hits != nil
+    # Menu items are plain URLs, so match on the collection handle
+    assign hit_handles = ','
+    for product in hits
+      for product_collection in product.collections
+        assign hit_handles = hit_handles | append: product_collection.handle | append: ','
+      endfor
+    endfor
+
+    assign kept_titles = '~|~'
+    for link in menu.links
+      assign link_path = link.url | split: '?' | first
+      unless link_path contains '/collections/'
+        continue
+      endunless
+      assign link_handle = link_path | split: '/collections/' | last | remove: '/'
+      assign probe = ',' | append: link_handle | append: ','
+      if hit_handles contains probe
+        assign kept_titles = kept_titles | append: link.title | append: '~|~'
+      endif
+    endfor
+  endif
+-%}
+
+{% if menu != blank and menu.links.size > 0 and kept_titles != '~|~' %}
   <details
     id="Facet-Details-{{ sectionId }}-spy-category-{{ suffix | default: 'panel' }}"
     class="facets__panel group mb-6"
@@ -33,6 +60,13 @@
     <ul class="m-0 list-none p-0">
       {% for link in menu.links %}
         {% liquid
+          if hits != nil
+            assign link_probe = '~|~' | append: link.title | append: '~|~'
+            unless kept_titles contains link_probe
+              continue
+            endunless
+          endif
+
           assign is_current = false
           if link.active or link.child_active
             assign is_current = true

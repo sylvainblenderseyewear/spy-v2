@@ -55,6 +55,12 @@
     endcase
   endfor
 
+  # Search: Category lists only the categories holding a hit, as on the source
+  assign category_hits = nil
+  if results.terms != blank
+    assign category_hits = results.results | where: 'object_type', 'product'
+  endif
+
   if results.url
     assign results_url = results.url
   else
@@ -217,7 +223,8 @@
                     menu: block_settings.category_links_menu,
                     label: block_settings.category_links_label,
                     sectionId: section.id,
-                    suffix: 'panel'
+                    suffix: 'panel',
+                    hits: category_hits
                   %}
                 {% endif %}
 
@@ -473,7 +480,8 @@
                     menu: block_settings.category_links_menu,
                     label: block_settings.category_links_label,
                     sectionId: section.id,
-                    suffix: 'drawer'
+                    suffix: 'drawer',
+                    hits: category_hits
                   %}
                 {% endif %}
 
