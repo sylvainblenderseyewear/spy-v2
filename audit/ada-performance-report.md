@@ -204,6 +204,24 @@ Desktop is 82–90 after the fix.
 - **Skip link order:** accessiBe puts its own "Skip to Content" and menu button before ours, which is expected with accessiBe.
 - **Test method:** check keyboard flows with real Tab presses. Jumping focus with scripts (`page.focus()`) sets off accessiBe's "Press Alt+1" helper and gives false failures.
 
+### Cookie consent — current state (29 Sep, re-read live from production after the admin changes)
+
+| Item | Live value | Status |
+|---|---|---|
+| Consent policy | `cookiesBlockedByDefault = 7`: Functionality, Performance and Targeting all blocked until consent, i.e. **Strict for every visitor** (`useGeolocation = false`, `hybridStrict = false`) | ✅ Set |
+| Auto blocker | Active; Targeting blacklist = `yotpo.com` | ✅ Yotpo blocked before consent (no pixel, no `yotpo_pixel` / `_sp_*` cookies) |
+| **Rebuy rule** | Functionality blacklist empty | ❌ **Missing.** `_rsession` / `_ruid` and 8 Rebuy requests still fire before consent. Add: Script, `rebuyengine.com`, Functionality |
+| "Learn more" link | `/pages/privacy-policy` (200) | ✅ Fixed (was a 404 `/pages/cookie-policy`) |
+| Shopify Customer Privacy / GPC | Active / active | ✅ |
+| Google Consent Mode (Pandectes) | `isActive = false` | Optional. GA4 is the sandboxed pixel with its own default-denied Consent Mode. Only needed if a Google tag is added straight to the page. |
+| GA4 before a click | 4 hits + 4 via sGTM from a **Serbian** IP | ⚠️ See below |
+
+**Why GA4 still fires before a click, and the open decision it depends on.** Pandectes has no choice recorded yet (`status: null`), so Shopify's Customer Privacy API falls back to **Shopify's regional default**: "denied" only where Shopify itself requires consent (EU/EEA, UK, CH), and "allowed" elsewhere (US, Serbia…). Our pixel follows that API (`audit/ga4-custom-pixel.js`), so a US or Serbian visitor is tracked before clicking, while an EU visitor almost certainly isn't (not testable from this IP). This ties into **Open decision #6** in `launch-roadmap.md` (Legal, due 6 Oct): the live SFCC site runs **opt-out for the US** through Axeptio.
+- **If Legal keeps US opt-out:** switch Pandectes to **Strict/Loose** (strict EU/EEA/UK, loose US), so the banner matches what actually happens. Right now the US banner shows toggles off while GA4 runs.
+- **If Legal wants opt-in everywhere (Blenders' model):** keep Strict, and change the pixel to fire only after an explicit Pandectes consent, not Shopify's regional default. That's a code change in `ga4-custom-pixel.js`, and the Shopify admin customer-privacy regions should be reviewed too.
+
+**Vendors that run on the live site today** (Axeptio list) but aren't on SPY Shopify yet: Google Ads, Meta pixel (`1533321731910531`), Klaviyo (`X9Hdku`), Microsoft Advertising (UET) + Clarity, and the affiliates Pepperjam / Avantlink / Impact, plus Hookit and aHrefs. Each one needs a blocker rule, and where offered a Pandectes integration (Facebook Pixel, Microsoft Consent Mode, Klaviyo), **at the moment it's installed**.
+
 ### Cookie consent (Pandectes) — tracking before consent (29 Sep)
 
 Compared with the Blenders store, SPY's banner starts with the optional categories **on**, while Blenders starts with them **off**, for the same visitor. The `?country=` URL parameter only switches the Shopify market; Pandectes decides from the visitor's IP.
