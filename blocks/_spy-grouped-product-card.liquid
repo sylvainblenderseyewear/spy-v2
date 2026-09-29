@@ -40,6 +40,17 @@
       "content": "Shows one card per model. The model name and colourway count come from the products' `collection: xxx` tag."
     },
     {
+      "type": "select",
+      "id": "card_per",
+      "label": "One card per",
+      "options": [
+        { "value": "model", "label": "Model (colour count, all thumbnails)" },
+        { "value": "colourway", "label": "Colourway (colour name, own thumbnail)" }
+      ],
+      "default": "model",
+      "info": "Colourway matches the homepage rails: model name as the title, the colour under the image."
+    },
+    {
       "type": "text",
       "id": "label_colors_one",
       "label": "Label — one colourway",

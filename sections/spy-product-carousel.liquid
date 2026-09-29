@@ -131,12 +131,37 @@
             {%- endcomment -%}
             <div class="resource-list__item h-auto">
               {%- comment -%} Curated rail, not a category listing — keeps it out of PLP numbers {%- endcomment -%}
-              {%- content_for 'block',
-                type: '_product-card',
-                id: 'static-product-card',
-                closest.product: product,
-                product_view_context: 'recommendation'
-              -%}
+              {%- if section.settings.use_grouped_card -%}
+                {%- comment -%} Same card as the PLP, so hover, Quick View and badges behave the same {%- endcomment -%}
+                {%- capture group_name -%}{%- render 'spy-group-name', product: product -%}{%- endcapture -%}
+                {%- assign group_name = group_name | strip -%}
+                {%- capture model_facts -%}
+                  {%- render 'spy-model-collection-facts', product: product, group_name: group_name -%}
+                {%- endcapture -%}
+                {%- liquid
+                  assign model_facts = model_facts | strip | split: '~^~'
+                  assign group_count = model_facts[0] | plus: 0
+                  if group_count < 1
+                    assign group_count = 1
+                  endif
+                -%}
+                {%- content_for 'block',
+                  type: '_spy-grouped-product-card',
+                  id: 'grouped-product-card',
+                  closest.product: product,
+                  group_name: group_name,
+                  group_count: group_count,
+                  image_sizes: '(min-width: 1141px) 20vw, (min-width: 721px) 33vw, (min-width: 541px) 50vw, 100vw',
+                  product_view_context: 'recommendation'
+                -%}
+              {%- else -%}
+                {%- content_for 'block',
+                  type: '_product-card',
+                  id: 'static-product-card',
+                  closest.product: product,
+                  product_view_context: 'recommendation'
+                -%}
+              {%- endif -%}
             </div>
           </div>
         {%- endfor -%}
@@ -407,6 +432,13 @@
       "type": "collection",
       "id": "collection",
       "label": "Collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_grouped_card",
+      "label": "Use the PLP card",
+      "info": "Renders the grouped PLP card (set it to one card per colourway for the homepage look) instead of the block-built card.",
+      "default": false
     },
     {
       "type": "range",

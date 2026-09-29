@@ -75,8 +75,8 @@
         "type": "color",
         "id": "spy_orange_accessible",
         "label": "Orange for text and buttons",
-        "default": "#b85314",
-        "info": "Used for orange text, links and button fills. Keep it at 4.5:1 or more against white (WCAG AA). The bright brand orange stays on borders and accents."
+        "default": "#c85001",
+        "info": "Used for orange text, links and button fills. Keep it at 4.5:1 or more against white (WCAG AA); #c85001 is the closest pass to the brand orange. The bright brand orange stays on borders and accents."
       }
     ]
   },

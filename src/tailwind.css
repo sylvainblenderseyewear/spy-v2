@@ -7,7 +7,7 @@
 @theme {
   /* Brand colors */
   --color-spy-orange:  #f57f29; /* brand/nav orange — live .nav-link is #f57d31 */
-  --color-spy-orange-ui: #b85314; /* text/button orange, AA on white; theme setting "Orange for text and buttons" overrides it (source was #f27e37, 2.69:1) */
+  --color-spy-orange-ui: #c85001; /* text/button orange, closest AA to brand (4.56:1); theme setting "Orange for text and buttons" overrides it (source was #f27e37, 2.69:1) */
   --color-spy-slate:   #2c393e;
   --color-spy-ink:     #1d2a2b; /* header/nav text on the live site */
   --color-spy-gray:    #6a6c77;
@@ -15,19 +15,19 @@
   --color-spy-sale:    #e53935;
   --color-spy-text:    #242424; /* source content-primary */
   --color-spy-text-2:  #393939; /* source content-secondary */
-  --color-spy-muted:   #6a6c77; /* AA grey 5.2:1 (source content-muted was #a6a6a6, 2.43:1) */
+  --color-spy-muted:   #767676; /* lightest AA grey 4.54:1 (source content-muted was #a6a6a6, 2.43:1) */
   --color-spy-label:   #6c757d; /* source swatches-label — colourway name on the card */
   --color-spy-surface: #f9f9f9; /* source surface-primary — tiles, scale track */
   --color-spy-tile:    #f8f8f8; /* source light-grey ground — swatches, cart summary, blog thumbs */
   --color-spy-dark:    #333e47; /* source $charcoal — blog card date, title and body */
-  --color-spy-positive: #2e7d32; /* AA green 5.1:1 for In Stock (source #4bb151, 2.72:1) */
+  --color-spy-positive: #3b861e; /* closest AA green 4.55:1 for In Stock (source #4bb151, 2.72:1) */
   --color-spy-negative: #d7403a; /* source sentiment-negative — Sold Out */
-  --color-spy-cart-stock: #2e7d32; /* cart In Stock green, AA 5.1:1 (source #88c290 was 2.07:1) */
+  --color-spy-cart-stock: #3b861e; /* cart In Stock green, AA 4.55:1 (source #88c290 was 2.07:1) */
   --color-spy-input-border: #cccccc; /* source select/input outline */
   --color-spy-price:   #565656; /* source card price — PLP tile */
   --color-spy-price-reco: #242424; /* source card price — PDP recommendation tile */
   --color-spy-review-label: #191919; /* source .text-m — the "N Reviews" label by the stars */
-  --color-spy-review-link: #1a64c7; /* Yotpo widget blue made AA (5.7:1); Yotpo's own #2f84ed is 3.72:1 */
+  --color-spy-review-link: #2673e0; /* Yotpo widget blue made AA (4.55:1); Yotpo's own #2f84ed is 3.72:1 */
   --color-spy-strike:  #767676; /* struck-through compare-at price, AA 4.5:1 (source #ababab was 2.30:1) */
   --color-spy-line-price: #222222; /* source cart line total */
   --color-spy-cta-hover: #272727; /* source primary button hover ground */
@@ -2377,9 +2377,10 @@ product-recommendations .resource-list__carousel slideshow-slides:not(.card-gall
     padding-inline: 10.5px;
   }
 }
+/* Source slides carry a 16px right pad, so its row is lopsided: 41px in, 57px out */
 @media (min-width: 1200px) {
   product-recommendations .resource-list__carousel slideshow-slides:not(.card-gallery *) {
-    padding-inline: 51px;
+    padding-inline: 41px 57px;
   }
 }
 @media (min-width: 1800px) {

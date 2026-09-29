@@ -391,6 +391,31 @@
             "product_title_3WpyTJ",
             "price_YFxQDQ"
           ]
+        },
+        "grouped-product-card": {
+          "type": "_spy-grouped-product-card",
+          "static": true,
+          "settings": {
+            "card_per": "colourway",
+            "label_colors_one": "1 color available",
+            "label_colors_many": "[count] colors available",
+            "show_swatches": true,
+            "swatch_count": 4,
+            "show_price": true,
+            "label_price_from": "Starting from",
+            "product_card_gap": 0,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "settings": {
@@ -415,7 +440,8 @@
         "dots_mobile": true,
         "arrow_size": 35,
         "margin_top": 0,
-        "margin_bottom": 0
+        "margin_bottom": 0,
+        "use_grouped_card": true
       }
     },
     "spy_watermen_banner": {
@@ -584,6 +610,31 @@
             "product_title_3WpyTJ",
             "price_YFxQDQ"
           ]
+        },
+        "grouped-product-card": {
+          "type": "_spy-grouped-product-card",
+          "static": true,
+          "settings": {
+            "card_per": "colourway",
+            "label_colors_one": "1 color available",
+            "label_colors_many": "[count] colors available",
+            "show_swatches": true,
+            "swatch_count": 4,
+            "show_price": true,
+            "label_price_from": "Starting from",
+            "product_card_gap": 0,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "settings": {
@@ -608,7 +659,8 @@
         "dots_mobile": true,
         "arrow_size": 35,
         "margin_top": 0,
-        "margin_bottom": 0
+        "margin_bottom": 0,
+        "use_grouped_card": true
       }
     },
     "spy_yotpo_gallery": {

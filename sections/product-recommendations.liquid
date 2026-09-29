@@ -33,7 +33,7 @@
 <product-recommendations
   id="product-recommendations-{{ section.id }}"
   class="product-recommendations"
-  data-url="{{ routes.product_recommendations_url }}?limit={{ section.settings.max_products }}"
+  data-url="{{ routes.product_recommendations_url }}?limit={% if section.settings.group_by_model_tag %}10{% else %}{{ section.settings.max_products }}{% endif %}"
   data-section-id="{{ section.id }}"
   data-product-id="{{ section.settings.product.id | default: product.id }}"
   data-intent="{{ section.settings.recommendation_type }}"
@@ -93,19 +93,85 @@
         endif
       %}
       {% capture list_items %}
-        {% for product in products limit: section.settings.max_products %}
-          <div class="resource-list__item">
-            {% content_for 'block',
-              type: '_product-card',
-              id: 'static-product-card',
-              closest.product: product,
-              product_view_context: 'recommendation'
+        {% if section.settings.group_by_model_tag and section.settings.product != blank %}
+          {% liquid
+            # One card per model, like the grouped PLP. The page's own model is skipped.
+            assign group_sep = '~|~'
+            capture own_group
+              render 'spy-group-name', product: section.settings.product
+            endcapture
+            assign own_group = own_group | strip | handleize
+            assign group_seen = group_sep
+            if own_group != blank
+              assign group_seen = group_seen | append: own_group | append: group_sep
+            endif
+            assign group_card_count = 0
+          %}
+          {% for product in products %}
+            {% liquid
+              if group_card_count >= section.settings.max_products
+                break
+              endif
+              if product.id == section.settings.product.id
+                continue
+              endif
+
+              capture group_name
+                render 'spy-group-name', product: product
+              endcapture
+              assign group_name = group_name | strip
+              if group_name == blank
+                assign group_key = 'ungrouped-' | append: product.id
+              else
+                assign group_key = group_name | handleize
+              endif
+              assign group_probe = group_sep | append: group_key | append: group_sep
+              if group_seen contains group_probe
+                continue
+              endif
+              assign group_seen = group_seen | append: group_key | append: group_sep
+
+              # Real colourway total comes from the model's own collection
+              capture model_facts
+                render 'spy-model-collection-facts', product: product, group_name: group_name
+              endcapture
+              assign model_facts = model_facts | strip | split: '~^~'
+              assign group_count = model_facts[0] | plus: 0
+              if group_count < 1
+                assign group_count = 1
+              endif
             %}
-          </div>
-          {% unless forloop.last %}
-            <!--@list/split-->
-          {% endunless %}
-        {% endfor %}
+            {% if group_card_count > 0 %}
+              <!--@list/split-->
+            {% endif %}
+            {% assign group_card_count = group_card_count | plus: 1 %}
+            <div class="resource-list__item">
+              {% content_for 'block',
+                type: '_spy-grouped-product-card',
+                id: 'grouped-product-card',
+                closest.product: product,
+                group_name: group_name,
+                group_count: group_count,
+                image_sizes: '(min-width: 1200px) 25vw, (min-width: 545px) 33vw, 50vw',
+                product_view_context: 'recommendation'
+              %}
+            </div>
+          {% endfor %}
+        {% else %}
+          {% for product in products limit: section.settings.max_products %}
+            <div class="resource-list__item">
+              {% content_for 'block',
+                type: '_product-card',
+                id: 'static-product-card',
+                closest.product: product,
+                product_view_context: 'recommendation'
+              %}
+            </div>
+            {% unless forloop.last %}
+              <!--@list/split-->
+            {% endunless %}
+          {% endfor %}
+        {% endif %}
       {% endcapture %}
 
       {% liquid
@@ -113,7 +179,8 @@
         assign slide_content = list_items | strip
         assign slides = slide_content | split: '<!--@list/split-->'
 
-        if products != blank and products.size > 0
+        # Grouping can leave no cards, e.g. when every pick is the page's own model
+        if slide_content != blank
           assign has_recommendations = 'true'
         else
           assign has_recommendations = 'false'
@@ -143,7 +210,7 @@
             {% render 'resource-list-carousel',
               ref: 'resourceListCarousel',
               slides: slides,
-              slide_count: recommendations.products.size,
+              slide_count: slides.size,
               settings: section.settings
             %}
         {% endcase %}
@@ -167,7 +234,7 @@
           {% render 'resource-list-carousel',
             ref: 'resourceListCarouselMobile',
             slides: slides,
-            slide_count: recommendations.products.size,
+            slide_count: slides.size,
             settings: section.settings
           %}
         </div>
@@ -252,6 +319,13 @@
     {
       "type": "paragraph",
       "content": "t:content.complementary_products"
+    },
+    {
+      "type": "checkbox",
+      "id": "group_by_model_tag",
+      "label": "Group colourways into one card",
+      "info": "Uses the grouped PLP card: one card per model, matched on each product's collection:: tag. The page's own model is left out.",
+      "default": false
     },
     {
       "type": "header",

@@ -19,6 +19,8 @@
   @param {number} group_count - how many colourways the group holds
   @param {object} [group_collection] - the model's collection, when the caller already holds it
   @param {object} [block] - calling block, for appearance + label settings
+    (`card_per: 'colourway'` = one card per colourway, like the source homepage rail:
+    colour name as the label, one thumbnail, this colourway's own badges and price)
   @param {string} [image_sizes] - sizes attribute for the card image
   @param {string} [product_view_context] - context passed to the view event
 
@@ -50,7 +52,17 @@
     assign count = 1
   endif
 
-  if count == 1
+  assign per_colourway = false
+  if block_settings.card_per == 'colourway'
+    assign per_colourway = true
+  endif
+
+  if per_colourway
+    capture count_label
+      render 'spy-colourway-name', product: product
+    endcapture
+    assign count_label = count_label | strip
+  elsif count == 1
     assign count_label = block_settings.label_colors_one | default: '1 color available'
   else
     assign count_label = block_settings.label_colors_many | default: '[count] colors available'
@@ -66,7 +78,10 @@
 
   # A card built from a collection is handed its model; the rest match on the group name
   assign model_collection = group_collection
-  if model_collection == blank and show_swatches and group_name != blank
+  if per_colourway
+    # This card is one colourway, so nothing reads the rest of the model
+    assign model_collection = nil
+  elsif model_collection == blank and show_swatches and group_name != blank
     assign group_key = group_name | handleize
     assign group_title = group_name | downcase | strip
     for col in product.collections
@@ -226,7 +241,25 @@
           Colourway thumbnails, revealed on hover in place of the label row (source behaviour:
           the labels fade out, this row fades in — same slot, so nothing below moves).
         {%- endcomment -%}
-        {%- if show_swatches and model_collection != blank -%}
+        {%- if show_swatches and per_colourway and media != blank -%}
+          {%- comment -%} Source homepage tile: the one thumbnail is the colourway itself {%- endcomment -%}
+          <div class="spy-swatches" data-spy-swatches>
+            <a
+              href="{{ target }}"
+              class="spy-swatches__item"
+              data-full="{{ media | image_url: width: 640 }}"
+              aria-label="{{ title | escape }} — {{ count_label | escape }}"
+            >
+              <img
+                src="{{ media | image_url: width: 240 }}"
+                alt="{{ count_label | default: product.title | escape }}"
+                width="42"
+                height="26"
+                loading="lazy"
+              >
+            </a>
+          </div>
+        {%- elsif show_swatches and model_collection != blank -%}
           {%- assign tech_store = '' -%}
           <div class="spy-swatches" data-spy-swatches>
             {%- for colourway in model_collection.products limit: swatch_count -%}

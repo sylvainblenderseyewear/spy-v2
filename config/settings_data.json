@@ -47,12 +47,13 @@
     "page_background_color": "{{ settings.color_palette.background }}",
     "page_width": "wide",
     "spy_nav_gap": 28,
+    "spy_orange_accessible": "#f27e37",
     "page_transition_enabled": false,
     "transition_to_main_product": false,
     "card_hover_effect": "none",
     "badge_position": "top-left",
     "badge_corner_radius": 0,
-    "badge_sale_background_color": "#b85314",
+    "badge_sale_background_color": "#c85001",
     "badge_sale_text_color": "#ffffff",
     "badge_sold_out_background_color": "#2c393e",
     "badge_sold_out_text_color": "#ffffff",
@@ -166,7 +167,7 @@
       "foreground": "#2c393e",
       "color1": "#6a6c77",
       "color2": "#e5e5e5",
-      "color3": "#b85314"
+      "color3": "#f27e37"
     }
   },
   "presets": {

@@ -563,6 +563,30 @@
             "product_title_M7MJkb",
             "price_gLWgA6"
           ]
+        },
+        "grouped-product-card": {
+          "type": "_spy-grouped-product-card",
+          "static": true,
+          "settings": {
+            "label_colors_one": "1 color available",
+            "label_colors_many": "[count] colors available",
+            "show_swatches": true,
+            "swatch_count": 4,
+            "show_price": true,
+            "label_price_from": "Starting from",
+            "product_card_gap": 0,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         }
       },
       "block_order": [
@@ -585,7 +609,8 @@
         "gap": 28,
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 48,
-        "padding-block-end": 48
+        "padding-block-end": 48,
+        "group_by_model_tag": true
       }
     },
     "yotpo_reviews_section": {
