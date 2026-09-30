@@ -635,6 +635,10 @@
       ],
       "name": "SPY Value Props",
       "settings": {
+        "content_columns": 10,
+        "columns": 4,
+        "columns_mobile": 2,
+        "icon_height": 72,
         "background_color": "#f2f2f2",
         "show_border": true,
         "border_color": "#1d2a2b",
@@ -712,9 +716,24 @@
       "name": "SPY Email Signup",
       "settings": {
         "background_color": "#272727",
+        "content_columns": 10,
+        "heading_line_height": 32,
         "form_width": 450,
         "form_height": 200,
         "gap": 10,
+        "field_height": 54,
+        "field_gap": 16,
+        "input_radius": 4,
+        "input_text_size": 20,
+        "input_background": "#ffffff",
+        "input_border_color": "#949596",
+        "input_text_color": "#000000",
+        "placeholder_color": "#757575",
+        "button_width": 70,
+        "button_radius": 6,
+        "button_text_size": 13,
+        "button_background": "#ffffff",
+        "button_text_color": "#111111",
         "padding_top": 16,
         "padding_bottom": 16
       }
@@ -764,6 +783,7 @@
           "blocks": {
             "locale": {
               "type": "custom-liquid",
+              "disabled": true,
               "settings": {
                 "custom_liquid": "{% render 'spy-footer-locale' %}"
               },
@@ -813,8 +833,8 @@
           "name": "Company",
           "settings": {
             "heading": "Company",
-            "menu": "footer-company",
-            "show": true
+            "show": true,
+            "menu": "footer-company"
           },
           "blocks": {
             "link_company_1": {
@@ -876,8 +896,8 @@
           "name": "Services",
           "settings": {
             "heading": "Services",
-            "menu": "footer-services",
-            "show": true
+            "show": true,
+            "menu": "footer-services"
           },
           "blocks": {
             "link_services_1": {
@@ -927,6 +947,7 @@
             },
             "link_services_6": {
               "type": "spy-footer-link",
+              "disabled": true,
               "settings": {
                 "label": "Dealer Portal",
                 "link": "https://www.b2b-bollebrands.com/store/checkout.ssp?is=login&login=T",
@@ -949,8 +970,8 @@
           "name": "Policy",
           "settings": {
             "heading": "Policy",
-            "menu": "footer-policy",
-            "show": true
+            "show": true,
+            "menu": "footer-policy"
           },
           "blocks": {
             "link_policy_1": {
@@ -1042,8 +1063,8 @@
           "name": "Programs",
           "settings": {
             "heading": "Programs",
-            "menu": "footer-programs",
-            "show": true
+            "show": true,
+            "menu": "footer-programs"
           },
           "blocks": {
             "link_programs_1": {
@@ -1094,12 +1115,22 @@
         "background_image": "shopify://shop_images/footer-background.webp",
         "overlay": false,
         "overlay_color": "rgba(0,0,0,0)",
+        "content_columns": 10,
+        "brand_columns": 2,
+        "brand_gap": 54,
+        "stack_gap": 16,
+        "logo_height": 70,
+        "social_height": 50.4,
+        "social_gap": 13.7,
+        "heading_size": 16,
+        "heading_line_height": 22.4,
+        "heading_weight": "600",
+        "heading_case": "uppercase",
+        "link_size": 12,
+        "link_line_height": 20,
         "padding_top": 16,
         "padding_bottom": 16,
-        "padding_bottom_desktop": 36,
-        "social_height": 50.39,
-        "social_gap": 13.67,
-        "heading_line_height": 22.4
+        "padding_bottom_desktop": 36
       }
     },
     "spy_footer_utilities": {
@@ -1386,6 +1417,13 @@
         "text_color": "#1d2a2b",
         "show_top_border": false,
         "top_border_color": "#1d2a2b",
+        "gutter": 15,
+        "max_width_sm": 540,
+        "max_width_md": 720,
+        "max_width_lg": 1140,
+        "max_width_xl": 1440,
+        "link_gap": 8,
+        "payment_slot": 45,
         "row_line_color": "#1d2a2b",
         "row_padding": 16
       }

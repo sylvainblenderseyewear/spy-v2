@@ -171,6 +171,7 @@
         "ratio_h": 10,
         "ratio_w_mobile": 2,
         "ratio_h_mobile": 3,
+        "image_desktop": "shopify://shop_images/26-SPY-Digital-Homepage-Banner-Week38-SuperFlynn-Desktop-1920x800.jpg",
         "eyebrow": "",
         "heading": "BIG ON ATTITUDE. LOW ON PRICE.",
         "cta_label": "SUPER FLYNN NOW $99",
@@ -182,7 +183,7 @@
         "heading_size_mobile": 26,
         "content_align": "right",
         "content_valign": "bottom",
-        "text_align": "center",
+        "text_align": "left",
         "content_align_mobile": "center",
         "content_valign_mobile": "bottom",
         "text_align_mobile": "center",
@@ -822,6 +823,7 @@
     },
     "spy_quick_view_modal": {
       "type": "spy-quick-view",
+      "disabled": true,
       "settings": {
         "full_details_label": "View Full Details",
         "dialog_label": "Quick view"
