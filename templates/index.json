@@ -264,6 +264,31 @@
     "spy_new_arrivals_carousel": {
       "type": "spy-product-carousel",
       "blocks": {
+        "grouped-product-card": {
+          "type": "_spy-grouped-product-card",
+          "static": true,
+          "settings": {
+            "card_per": "colourway",
+            "label_colors_one": "1 color available",
+            "label_colors_many": "[count] colors available",
+            "show_swatches": true,
+            "swatch_count": 4,
+            "show_price": true,
+            "label_price_from": "Starting from",
+            "product_card_gap": 0,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
         "static-product-card": {
           "type": "_product-card",
           "name": "t:names.product_card",
@@ -391,35 +416,11 @@
             "product_title_3WpyTJ",
             "price_YFxQDQ"
           ]
-        },
-        "grouped-product-card": {
-          "type": "_spy-grouped-product-card",
-          "static": true,
-          "settings": {
-            "card_per": "colourway",
-            "label_colors_one": "1 color available",
-            "label_colors_many": "[count] colors available",
-            "show_swatches": true,
-            "swatch_count": 4,
-            "show_price": true,
-            "label_price_from": "Starting from",
-            "product_card_gap": 0,
-            "background_color": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
         }
       },
       "settings": {
         "collection": "sunglasses",
+        "use_grouped_card": true,
         "max_products": 5,
         "count_desktop": 5,
         "count_tablet": 3,
@@ -440,8 +441,7 @@
         "dots_mobile": true,
         "arrow_size": 35,
         "margin_top": 0,
-        "margin_bottom": 0,
-        "use_grouped_card": true
+        "margin_bottom": 0
       }
     },
     "spy_watermen_banner": {
@@ -455,18 +455,18 @@
         "ratio_h": 10,
         "ratio_w_mobile": 2,
         "ratio_h_mobile": 3,
-        "image_desktop": "shopify://shop_images/watermen_collection.webp",
+        "image_desktop": "shopify://shop_images/26-SPY-Digital-Homepage-Banner-Week38-AxellMX-Desktop-1920x600.jpg",
         "eyebrow": "",
-        "heading": "WATERMEN COLLECTION",
-        "cta_label": "SHOP NOW",
-        "link": "shopify://collections/fishing-sunglasses",
+        "heading": "$50 F%CKING DOLLARS. 'NUFF SAID.",
+        "cta_label": "SHOP MX GOGGLES",
+        "link": "shopify://collections/moto-goggles",
         "link_scope": "banner",
         "cta_style": "solid",
-        "heading_size": 48,
+        "heading_size": 24,
         "heading_fluid": false,
         "heading_size_mobile": 26,
         "content_align": "left",
-        "content_valign": "center",
+        "content_valign": "bottom",
         "text_align": "left",
         "content_align_mobile": "center",
         "content_valign_mobile": "bottom",
@@ -483,6 +483,31 @@
     "spy_watermen_carousel": {
       "type": "spy-product-carousel",
       "blocks": {
+        "grouped-product-card": {
+          "type": "_spy-grouped-product-card",
+          "static": true,
+          "settings": {
+            "card_per": "colourway",
+            "label_colors_one": "1 color available",
+            "label_colors_many": "[count] colors available",
+            "show_swatches": true,
+            "swatch_count": 4,
+            "show_price": true,
+            "label_price_from": "Starting from",
+            "product_card_gap": 0,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
         "static-product-card": {
           "type": "_product-card",
           "name": "t:names.product_card",
@@ -610,35 +635,11 @@
             "product_title_3WpyTJ",
             "price_YFxQDQ"
           ]
-        },
-        "grouped-product-card": {
-          "type": "_spy-grouped-product-card",
-          "static": true,
-          "settings": {
-            "card_per": "colourway",
-            "label_colors_one": "1 color available",
-            "label_colors_many": "[count] colors available",
-            "show_swatches": true,
-            "swatch_count": 4,
-            "show_price": true,
-            "label_price_from": "Starting from",
-            "product_card_gap": 0,
-            "background_color": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
         }
       },
       "settings": {
         "collection": "watermen",
+        "use_grouped_card": true,
         "max_products": 5,
         "count_desktop": 5,
         "count_tablet": 3,
@@ -659,8 +660,7 @@
         "dots_mobile": true,
         "arrow_size": 35,
         "margin_top": 0,
-        "margin_bottom": 0,
-        "use_grouped_card": true
+        "margin_bottom": 0
       }
     },
     "spy_yotpo_gallery": {
