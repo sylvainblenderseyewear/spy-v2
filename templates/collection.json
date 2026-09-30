@@ -12,6 +12,9 @@
     "spy_collection_hero_A1": {
       "type": "spy-collection-hero",
       "settings": {
+        "image_desktop": "shopify://shop_images/25-SPY-Digital-GiftGuide-PLP-Banner-Moto-Desktop-1920x400px.jpg",
+        "show_fallback": true,
+        "fallback_bg": "#000000",
         "height_desktop": 240,
         "height_tablet": 120,
         "ratio_mobile": 2,
@@ -44,6 +47,8 @@
           "type": "spy-collection-intro",
           "name": "Collection intro",
           "settings": {
+            "collapsed_width_desktop": 50,
+            "collapsed_width_mobile": 100,
             "char_limit": 130,
             "label_more": "Read more",
             "label_less": "Read less"
@@ -82,7 +87,8 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 8,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "custom_class": ""
       }
     },
     "main": {
@@ -99,6 +105,10 @@
             "show_swatch_label": false,
             "show_filter_label": true,
             "enable_sorting": true,
+            "show_category_links": true,
+            "category_links_label": "Category",
+            "category_links_menu": "main-menu",
+            "hidden_filters": "Availability",
             "background_color": "",
             "text_color": "",
             "padding-block-start": 0,
@@ -106,10 +116,6 @@
             "padding-inline-start": 0,
             "padding-inline-end": 0,
             "facets_margin_bottom": 24,
-            "show_category_links": true,
-            "category_links_label": "Category",
-            "category_links_menu": "main-menu",
-            "hidden_filters": "Availability",
             "facets_margin_right": 32
           },
           "blocks": {}
@@ -261,11 +267,18 @@
     },
     "spy_collection_seo_A1": {
       "type": "spy-collection-seo",
-      "settings": {}
+      "settings": {
+        "collapsed_height": 80,
+        "label_more": "Read more",
+        "label_less": "Read less"
+      }
     },
     "spy_quick_view_modal_A1": {
       "type": "spy-quick-view",
-      "settings": {}
+      "settings": {
+        "full_details_label": "View Full Details",
+        "dialog_label": "Quick view"
+      }
     }
   },
   "order": [
