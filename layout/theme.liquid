@@ -6,6 +6,12 @@
   lang="{{ request.locale.iso_code }}"
 >
   <head>
+    {%- comment -%}
+      Cookie blocker first, like Blenders. The app embed adds it async, so the Yotpo
+      embeds ran before it and tracked before consent. Pandectes keeps this file synced.
+    {%- endcomment -%}
+    <script src="{{ 'pandectes-rules.js' | file_url }}"></script>
+
     {%- if settings.favicon != blank -%}
       <link
         rel="icon"
@@ -169,5 +175,16 @@
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
+
+    <script>
+      // "Privacy Preferences" links (#reopenBanner) reopen the cookie banner.
+      // Pandectes handles them itself only with its custom trigger on, so fall back to its widget button.
+      document.addEventListener('click', (event) => {
+        const link = event.target.closest?.('a[href*="#reopenBanner" i]');
+        if (!link || event.defaultPrevented) return;
+        event.preventDefault();
+        document.querySelector('pandectes-cmp')?.shadowRoot?.querySelector('button.widget')?.click();
+      });
+    </script>
   </body>
 </html>

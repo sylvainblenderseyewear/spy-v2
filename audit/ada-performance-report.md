@@ -204,6 +204,47 @@ Desktop is 82–90 after the fix.
 - **Skip link order:** accessiBe puts its own "Skip to Content" and menu button before ours, which is expected with accessiBe.
 - **Test method:** check keyboard flows with real Tab presses. Jumping focus with scripts (`page.focus()`) sets off accessiBe's "Press Alt+1" helper and gives false failures.
 
+### Re-check on production (1 Oct 2026): ADA + GDPR
+
+**ADA (axe WCAG 2.1 AA, 12 pages × 1440/390 = 24 page views):**
+- **Only `color-contrast` fails, and every failing node is the orange `#f27e37`** (white on orange, or orange on white, both 2.68:1). This is the owner's A1 reversal of 30 Sep, so it's accepted, not a code bug. It covers the Sale nav link, the FILTER and Compare buttons, MORE RESULTS, pagination, category chips, the 404 and Return-policy buttons, "See conditions", the active search tab, and Yotpo's "REVIEWS" tab and reviewer names (Yotpo takes the theme orange). Changing `spy_orange_accessible` back to `#b85314` clears all of them with no code edit.
+- Every other rule passes on every page, including the new search results page, the homepage PLP cards, the fallback collection hero, the accessibility statement and the privacy policy. Every page has exactly one H1.
+- **Keyboard (after a consent choice, 5 pages × 2 widths):**
+  - The skip link is reached first, and the page scrolls to the focused element.
+  - The only stops without a focus ring are third-party: the accessiBe trigger and Yotpo's links.
+  - The mobile sort select's ring is drawn on its wrapper, checked with a screenshot.
+- **Pandectes banner (new v4 build):** a real modal `<dialog>` ("We respect your privacy") that takes focus on load, so the old "153 Tab presses" issue is gone. Minor: its ✕ is labelled **"Ok"**; rename it to "Close" in Pandectes → Texts.
+- Console: only third-party errors (ExpertVoice "Could not determine deal ID" on PDPs, and sandboxed web-pixel `sessionStorage` messages).
+
+**ADA with every app running (1 Oct, after Accept, dev-theme preview `189229302067` on production):** the dev store lacks Yotpo, Rebuy, Pandectes, accessiBe and ExpertVoice. The first production scan above also ran before consent, so Yotpo and Rebuy were blocked. This pass accepted cookies first and scrolled each page so the lazy app widgets rendered.
+- **New theme bug, fixed (`assets/slideshow.js`):** in the PDP "Others also like" rail, off-screen slides were `aria-hidden="true"` but kept focusable card links (axe `aria-hidden-focus`, 5 nodes at 1440; stock Horizon). Earlier scans never loaded that lazy section.
+  - Hidden slides now take their links out of the Tab order (`tabindex="-1"`, original value restored when the slide scrolls in). Card galleries nested in a hidden rail slide stay out too.
+  - `inert` was rejected: it would block clicks and drags on half-visible peek cards.
+  - **Verified on production:** `aria-hidden-focus` passes on the PDP and home at both widths, Next brings new cards into the Tab order, peek cards stay clickable, and there are no page errors.
+- **Everything else:** only the accepted `#f27e37` contrast remains. `frame-title` on `#PBarNextFrame` is Shopify's theme-preview bar, which exists only under `?preview_theme_id` and never for shoppers.
+
+**GDPR: regression found and fixed in the theme (not yet pushed):**
+
+| Check | Live today | With the fix (simulated on production HTML) |
+|---|---|---|
+| Before any click: tracking cookies | `yotpo_pixel`, `_sp_id`, `_sp_ses`, `pixel@yotpo.com` | **none** |
+| Before any click: Yotpo pixel / reviews calls | 7 pixel hits, 9 widget calls | **0 / 0** (Yotpo inline loaders show `type=…blocked`) |
+| Before any click: GA4 / Rebuy | 0 / 0 | 0 / 0 |
+| After Accept | GA4, Yotpo, Rebuy run | GA4 (+ landing replay), Yotpo reviews render, Rebuy runs; 20 GA4 hits over the next 10 page views |
+| After Decline | `_pandectes_gdpr` status `deny`, Shopify consent all "no" | same |
+| Footer "Privacy Preferences" | `href="#"`, does nothing | opens "Manage consent preferences" |
+
+- **Cause:** the Pandectes app embed adds `pandectes-rules-latest.js` dynamically, so it runs async. The **Yotpo Loyalty & Rewards** loader and the **Yotpo Product Reviews** inline injector (both app embeds, parser-inserted) ran before it. On 29 Sep the reviews script still came through the late `asyncLoad` ScriptTag, so the check passed then.
+- **Fix 1 (`layout/theme.liquid`):** `<script src="{{ 'pandectes-rules.js' | file_url }}">` is the first tag in `<head>`, exactly like Blenders. The file already exists in Shopify Files, and Pandectes keeps it synced (its timestamp matches the live settings). The app block then skips its own copy (`if (!window.pandectesRulesSettings)`).
+- **Fix 2 (`footer-group.json`, `footer-404-group.json`, `layout/theme.liquid`):** the link is now `#reopenBanner`, Pandectes' own reopen trigger. Pandectes only binds that with its "custom trigger" widget setting on, and its JS API (`window.Pandectes.openDialog`) is Enterprise-only (SPY is Premium). So a small delegated click handler clicks Pandectes' "Change your consent" widget button as a fallback.
+
+**GDPR items outside the theme (Legal / PM):**
+1. **Privacy policy content:** it mentions cookies and Google Analytics, but has no GDPR section: legal basis, data-subject rights (access, erasure, objection), how to withdraw consent, retention, international transfers, and the processors (Yotpo, Rebuy, Pandectes). Legal must write it.
+2. **Footer email signup:** there's no consent or privacy line next to "LET'S GO". For EU visitors, marketing consent should be informed. Suggest a one-line notice with a Privacy Policy link (it differs from the source, so it needs sign-off).
+3. **Google Fonts (`fonts.googleapis.com`)** still loads before consent through the ExpertVoice app embed. Ask ExpertVoice to self-host it, or limit the embed.
+4. **Still before consent but low risk:** 1 request downloads the Yotpo Loyalty loader file (it's blocked from running and sets no cookies), and Shopify's own analytics requests (consent-aware, no `_shopify_y`/`_shopify_s` cookies).
+5. **US privacy:** banner `saleOfData` is off and `/pages/data-sharing-opt-out` exists (200) but isn't linked. No ad pixels run today. Before Meta/Google Ads/affiliates are added, Legal should decide on a "Your Privacy Choices" link. GPC is honoured (`gpc.enabled = true`).
+
 ### Cookie consent — current state (29 Sep, re-read live from production after the admin changes)
 
 | Item | Live value | Status |

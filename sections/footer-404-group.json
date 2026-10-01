@@ -267,7 +267,7 @@
             "legal": {
               "type": "text",
               "settings": {
-                "text": "<p><a href=\"/pages/terms-of-use\">Terms & Conditions</a>   <a href=\"/pages/privacy-policy\">Privacy Policy</a>   <a href=\"#\">Privacy Preferences</a>   <a href=\"/pages/legal-notices\">Legal Notices</a></p>",
+                "text": "<p><a href=\"/pages/terms-of-use\">Terms & Conditions</a>   <a href=\"/pages/privacy-policy\">Privacy Policy</a>   <a href=\"#reopenBanner\">Privacy Preferences</a>   <a href=\"/pages/legal-notices\">Legal Notices</a></p>",
                 "width": "fit-content",
                 "max_width": "none",
                 "alignment": "left",

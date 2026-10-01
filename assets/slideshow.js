@@ -15,6 +15,33 @@ import { SlideshowSelectEvent } from '@theme/events';
 // The threshold for determining visibility of slides.
 const SLIDE_VISIBLITY_THRESHOLD = 0.7;
 
+const FOCUSABLE = 'a[href], button, input, select, textarea, [tabindex]';
+
+/**
+ * aria-hidden slides must not keep focusable links (WCAG 4.1.2). Not `inert`: that would
+ * block clicks and drags on half-visible peek cards.
+ * @param {Element} slide
+ * @param {boolean} hidden
+ */
+function setSlideHidden(slide, hidden) {
+  slide.setAttribute('aria-hidden', `${hidden}`);
+  for (const el of slide.querySelectorAll(FOCUSABLE)) {
+    if (!(el instanceof HTMLElement)) continue;
+    if (hidden) {
+      if (el.dataset.slideTabindex !== undefined) continue;
+      el.dataset.slideTabindex = el.getAttribute('tabindex') ?? '';
+      el.setAttribute('tabindex', '-1');
+    } else if (el.dataset.slideTabindex !== undefined) {
+      // Card galleries nest inside rail slides; keep links of a still-hidden outer slide out
+      if (el.closest('slideshow-slide[aria-hidden="true"]')) continue;
+      const original = el.dataset.slideTabindex;
+      if (original) el.setAttribute('tabindex', original);
+      else el.removeAttribute('tabindex');
+      delete el.dataset.slideTabindex;
+    }
+  }
+}
+
 /**
  * Shared viewport observer manager for lazy scroll enablement.
  *
@@ -196,7 +223,7 @@ export class Slideshow extends Component {
     for (const slide of this.refs.slides) {
       if (slide.hasAttribute('reveal')) {
         slide.removeAttribute('reveal');
-        slide.setAttribute('aria-hidden', 'true');
+        setSlideHidden(slide, true);
       }
     }
 
@@ -212,7 +239,7 @@ export class Slideshow extends Component {
         // Force the slide to be revealed if it is hidden
         if (requestedSlide.hasAttribute('hidden')) {
           requestedSlide.setAttribute('reveal', '');
-          requestedSlide.setAttribute('aria-hidden', 'false');
+          setSlideHidden(requestedSlide, false);
         }
 
         return this.slides.indexOf(requestedSlide);
@@ -292,7 +319,7 @@ export class Slideshow extends Component {
 
     const previousIndex = this.current;
 
-    slide.setAttribute('aria-hidden', 'false');
+    setSlideHidden(slide, false);
 
     if (this.#scroll) {
       this.#scroll.to(slide, { instant });
@@ -588,7 +615,7 @@ export class Slideshow extends Component {
     }
 
     if (this.refs.slides?.[0]) {
-      this.refs.slides[0].setAttribute('aria-hidden', 'false');
+      setSlideHidden(this.refs.slides[0], false);
     }
   }
 
@@ -991,7 +1018,7 @@ export class Slideshow extends Component {
       // Update aria-hidden based on visibility
       slides.forEach((slide) => {
         const isVisible = visibleSlides.includes(slide);
-        slide.setAttribute('aria-hidden', `${!isVisible}`);
+        setSlideHidden(slide, !isVisible);
       });
     });
 
