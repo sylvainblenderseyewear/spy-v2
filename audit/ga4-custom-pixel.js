@@ -27,12 +27,16 @@ let consentReady = false;
 let consentDeclined = false;
 const pending = [];
 
+// Someone can browse all day without touching the banner, so cap the queue.
+// Keep the earliest entries: the first page_view carries utm/gclid.
+const PENDING_MAX = 50;
+
 function gtag() {
   const cmd = arguments[0];
   if (cmd === 'event' || cmd === 'set') {
     if (consentDeclined) return;
     if (!consentReady) {
-      pending.push(arguments);
+      if (pending.length < PENDING_MAX) pending.push(arguments);
       return;
     }
   }
@@ -151,8 +155,12 @@ gtag('config', TAG_ID, {
 
 /*
   To debug later, add `debug_mode: true` above and re-save the pixel — that feeds
-  GA4 DebugView. Server-side inspection needs nothing: GTM's server container
-  Preview shows every request and tag regardless of this setting.
+  GA4 DebugView.
+
+  Don't reach for GTM's server Preview. It claims a session with a cookie on
+  sgtm.spyoptic.com, which is third-party to this sandbox, so it stays empty
+  while data flows fine (proved 22 Sep, cost an hour). Use DevTools Network
+  filtered to `sgtm`, and GA4 Realtime.
 */
 
 /*
