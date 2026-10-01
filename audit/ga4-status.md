@@ -1,9 +1,12 @@
 # GA4 + server-side GTM — status and remaining work
 
-Last checked: **21 Sep 2026**. **Launch is 12 Oct — three weeks out.**
+Last checked: **1 Oct 2026**. **Launch is 12 Oct — 11 days out.**
 
-The tracking is built, live and verified end to end through our own domain. What remains is other
-people's permissions, a short list of launch-day actions, and one thing only you can do today.
+The tracking is built and verified end to end through our own domain. **The consent layer was
+rewritten to opt-in on 29 Sep and has not been tested or confirmed deployed** — see the Consent
+section below, which is the only part of this document describing unproven work.
+
+Everything else that remains is other people's permissions or launch-day actions.
 
 **Key IDs**
 
@@ -99,12 +102,59 @@ perfectly. Use **DevTools → Network, filter `sgtm`** and **GA4 Realtime** inst
 registering when the extension snapshots the page. Every later navigation reports Loaded correctly.
 Not a homepage fault — our pixel's top-level code is page-agnostic.
 
-### Consent — verified end to end (25 Sep)
+### Consent — rewritten to opt-in on 29 Sep, NOT yet verified
 
-Pandectes GDPR (installed by Sylvain) is the CMP. Banner set to **Auto pilot — Worldwide**, shown to
-every region including the US, where Shopify says one is not required.
+> **Read `audit/ada-performance-report.md` §"Cookie consent" for the current live state.** The
+> consent findings from 29 Sep onwards were recorded there, not here.
 
-The whole chain is proven through the real shopper path:
+**The model changed.** Until 29 Sep the pixel simply mirrored Shopify's Customer Privacy API. That
+API returns a *computed* answer — "may we process analytics for this visitor" — which is **allowed**
+outside the EU/EEA/UK/CH when no choice has been recorded. So a US or Serbian visitor was tracked
+before clicking anything, while the banner showed its toggles off. Documented live on 29 Sep.
+
+`57416cc` makes the pixel **opt-in everywhere**, matching Blenders:
+
+- `event` and `set` commands queue in `pending[]` instead of reaching `dataLayer`
+- **`gtag.js` is not loaded at all** until consent is granted
+- Consent applies only once `hasChosen` is true — either `visitorConsentCollected` fired on this
+  page, or a prior choice exists in the `_pandectes_gdpr` cookie (base64 JSON, `status` empty until
+  the shopper picks) or Shopify's `_tracking_consent`
+- Granted → the queue replays in order, so nothing before the click is lost
+- Declined → the queue is dropped and later events are blocked
+
+`js`, `config` and `consent` commands still pass straight through and sit in `dataLayer` until the
+library arrives, which is the documented gtag pattern.
+
+**Four paths still need testing, and none has been:**
+
+| Path | Expected |
+|---|---|
+| First visit, no click | Zero requests to `sgtm`, forever |
+| Accept | Queue replays, hits arrive with `gcs=G111` |
+| Decline | Zero requests, queue dropped |
+| Returning visitor with a saved choice | Cookie parsed, consent applied without a second click |
+
+The fourth is the one most likely to fail quietly. It parses a cookie Pandectes owns with
+`atob(decodeURIComponent(raw))` — if that format ever changes, the catch returns `false`, `hasChosen`
+stays false, and **nobody is ever tracked** with no error anywhere.
+
+**Also unconfirmed: whether this version is deployed.** The commit is code-only. Check the admin copy
+contains `_pandectes_gdpr`; if it does not, production is still running the 25 Sep opt-out behaviour.
+
+**This pre-empts an open decision.** `launch-roadmap.md` Open Decision #6 — whether Legal accepts
+carrying the live site's US opt-out model to Shopify — is due 6 Oct and Not Started. Opt-in is the
+safe default and fixes a real problem, but if Legal keeps US opt-out this needs reverting or making
+region-aware, days before launch.
+
+**Still open on the Pandectes side:** the Functionality blacklist is empty, so Rebuy (`_rsession`,
+`_ruid`, eight requests) fires before consent. Rule needed: Script, `rebuyengine.com`, Functionality.
+
+---
+
+#### Superseded, kept for the method (25 Sep)
+
+The chain below was verified under the old opt-out model. The evidence is still sound; what it proved
+is no longer how the pixel behaves.
 
 | Step | Evidence |
 |---|---|
@@ -112,9 +162,6 @@ The whole chain is proven through the real shopper path:
 | Pandectes → Shopify Customer Privacy API | `currentVisitorConsent()` flips `'no'` ⇄ `'yes'` |
 | Shopify → pixel | pixel reads the state at load |
 | Declined → nothing sent | **0 of 397 requests** matched `sgtm` on a full page load |
-
-Declining sends **nothing at all** — not even the anonymous pings standard Consent Mode would still
-send. Shopify withholds the pixel entirely. That is stricter than required and the right outcome.
 
 **Gotcha that cost an hour: consent chosen on the `/password` page is not written to Shopify.**
 Pandectes logs the click but `currentVisitorConsent()` stays empty, which looks exactly like a broken
