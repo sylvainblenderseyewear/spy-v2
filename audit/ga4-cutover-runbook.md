@@ -15,9 +15,8 @@ throughout. The cutover action is to **confirm**, not install.
 
 | | Why it cannot wait for the day |
 |---|---|
-| **Consent four-path test passing** (`node scripts/consent.mjs`) | The opt-in rewrite is deployed but unproven. A failure found on launch day is either untracked traffic or a tracking blackout |
+| **Count GA4 hits after Decline** (`node scripts/consent.mjs`) | Verified live 2 Oct: no click → 0 hits, Accept → replay works, choice persists over 10 page views. Decline was confirmed at the *consent state* level but the hit count was never recorded. Last unmeasured path |
 | **Decision #6 answered** — opt-in or US opt-out | The code already chose opt-in. Reversing it on the day is a code change plus a re-paste |
-| **Rebuy blocker rule** in Pandectes (Script, `rebuyengine.com`, Functionality) | Rebuy fires before consent today. It is a consent defect, not a tracking one, and it is someone else's console |
 | **Team IP addresses collected** | The internal traffic filter is a launch-day switch, and chasing IPs on the day is how it gets skipped |
 | **Baseline export** from `G-GS5WZT8YYD` / `G-PJEFBYCC2M` | Access usually moves with the old site. After that there is no comparison, ever, at any price |
 | **Pixel re-pasted** if `PENDING_MAX` is absent from the admin copy | Two committed fixes are not deployed |

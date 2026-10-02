@@ -102,7 +102,28 @@ perfectly. Use **DevTools → Network, filter `sgtm`** and **GA4 Realtime** inst
 registering when the extension snapshots the page. Every later navigation reports Loaded correctly.
 Not a homepage fault — our pixel's top-level code is page-agnostic.
 
-### Consent — rewritten to opt-in on 29 Sep, NOT yet verified
+### Consent — rewritten to opt-in 29 Sep, verified live 2 Oct
+
+**Verified on production** during the GDPR audit (table in `ada-performance-report.md`):
+
+| Path | Result |
+|---|---|
+| Before any click | **0 GA4 hits**, 0 Rebuy, no tracking cookies |
+| Accept | GA4 runs **and the landing replay fires**; 20 hits over the next 10 page views |
+| Decline | `_pandectes_gdpr` status `deny`, Shopify consent all `"no"` |
+| Returning / later pages | Covered by the 10-page-view run — each page re-reads the saved choice |
+
+That closes the cookie-parse worry: `pandectesChose()` is reading `_pandectes_gdpr` correctly across
+page loads, which was the failure mode that would have silently stopped all tracking.
+
+**One datapoint still missing:** nobody recorded GA4 hit *count* after Decline. The consent state is
+proven correct and `consentDeclined` short-circuits `gtag()`, so the risk is low — but it is the one
+path where "we reasoned it" rather than "we counted it". `node scripts/consent.mjs` covers it.
+
+**Rebuy before consent — closed.** The 29 Sep finding (`_rsession`, `_ruid`, 8 requests) no longer
+reproduces; the audit shows 0 both before and after the theme fix.
+
+#### Superseded: the state before 2 Oct
 
 > **Read `audit/ada-performance-report.md` §"Cookie consent" for the current live state.** The
 > consent findings from 29 Sep onwards were recorded there, not here.
