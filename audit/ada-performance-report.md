@@ -223,7 +223,7 @@ Desktop is 82–90 after the fix.
   - **Verified on production:** `aria-hidden-focus` passes on the PDP and home at both widths, Next brings new cards into the Tab order, peek cards stay clickable, and there are no page errors.
 - **Everything else:** only the accepted `#f27e37` contrast remains. `frame-title` on `#PBarNextFrame` is Shopify's theme-preview bar, which exists only under `?preview_theme_id` and never for shoppers.
 
-**GDPR: regression found and fixed in the theme (not yet pushed):**
+**GDPR: regression found and fixed in the theme (pushed 2 Oct in `b25ff15`, verified live on theme `188282798387`):**
 
 | Check | Live today | With the fix (simulated on production HTML) |
 |---|---|---|
