@@ -238,13 +238,23 @@ Eleven things that were assumed rather than measured, checked one by one a week 
 | 7 | BigQuery still delivering | ✅ 9 daily tables, newest yesterday, no gaps |
 | 8 | Data stream URL | ❌ still `https://www.spyoptic.com/us/` — the dead SFCC path |
 | 9 | Staging separated | ❌ no staging property; `spydevsylv` still writes to `G-1F4T2NDY34` |
-| 2, 3 | `shipping_tier`, `payment_type` | ⬜ needs a test order |
+| 2 | `shipping_tier` | ❌ **never sent.** `c.shippingLine.title` does not exist — `shippingLine` carries `price` only, which is why `shipping: 15` works on purchase. The guard stopped an `undefined` being sent, so the event is correct but can't say Standard vs Express |
+| 3 | `payment_type` | 🚫 **untestable.** `payment_info_submitted` only fires when payment details are submitted, and production has **no payment provider configured** |
 | 10 | `tax` | ⬜ not testable — store charges none |
 | 11 | `item_id` vs the Google feed format | ⬜ **unverified assumption**, see below |
 
 **5b is the one that looked done and wasn't.** A Data filter set to exclude `traffic_type = internal`
 with no rule to set that parameter will switch to Active on launch day and silently exclude nothing,
 while the checklist reads "internal traffic: done".
+
+**Found while testing, not analytics but worse than anything on this list:**
+
+1. **Production cannot take payments.** Checkout reaches the payment step and shows *"This store can't
+   accept payments right now"* with Pay now disabled. The Bogus Gateway was removed and nothing
+   replaced it. Seven days to launch.
+2. **accessiBe is not running.** The console reports `acsb: This website is not registered or its
+   license is expired.` The accessibility widget loads and refuses to work, so whatever ADA coverage
+   it was assumed to provide, it is not providing.
 
 **On 11 — stated twice as fact, never checked.** The claim is that Shopify's Google channel publishes
 feed IDs as `shopify_US_<productId>_<variantId>`, which is why our variant-ID `item_id` would not
