@@ -116,9 +116,23 @@ Not a homepage fault — our pixel's top-level code is page-agnostic.
 That closes the cookie-parse worry: `pandectesChose()` is reading `_pandectes_gdpr` correctly across
 page loads, which was the failure mode that would have silently stopped all tracking.
 
-**One datapoint still missing:** nobody recorded GA4 hit *count* after Decline. The consent state is
-proven correct and `consentDeclined` short-circuits `gtag()`, so the risk is low — but it is the one
-path where "we reasoned it" rather than "we counted it". `node scripts/consent.mjs` covers it.
+**Decline counted and controlled (5 Oct).** The last unmeasured path, now measured on production:
+
+```
+before any choice          0 / 56  requests to sgtm
+after Decline + 3 pages    0 / 346 requests
+after granting consent     2 × collect, status 200, 0.4 + 0.6 kB
+```
+
+The control matters as much as the zero: without it, a blocked request and a withheld one look
+identical. Requests appearing with 200s straight after consent proves the gate was doing the
+blocking, not an extension or a network fault.
+
+**Two false alarms worth knowing about, both environmental:**
+- An ad blocker in the test profile would have produced a zero that means nothing. Always run the
+  grant-consent control in the same window.
+- A proxy produced `(failed) net::ERR_SOCKET_NOT_CONNECTED` on both hits with a 47-second page load.
+  `sgtm` was healthy throughout. Test on a direct connection.
 
 **Rebuy before consent — closed.** The 29 Sep finding (`_rsession`, `_ruid`, 8 requests) no longer
 reproduces; the audit shows 0 both before and after the theme fix.
