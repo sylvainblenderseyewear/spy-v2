@@ -224,6 +224,35 @@ send you chasing a bug that is not there.
 
 ---
 
+## Verification run — 5 Oct
+
+Eleven things that were assumed rather than measured, checked one by one a week before launch.
+
+| | Checked | Result |
+|---|---|---|
+| 1 | GA4 hits after Decline | ✅ 0 before consent, 0 after declining + 3 pages, 2×200 after granting. Controlled |
+| 4 | Promotion parameters | ✅ all four populated — `promotion_id` carries real section IDs |
+| 5 | Internal traffic **filter** | ✅ exists, state Testing |
+| 5b | Internal traffic **rule** | ❌ **"No rules yet"** — the filter excludes nothing. Blocked on team IPs |
+| 6 | Uptime alert delivery | ✅ fired and recovered, both emails received within seconds |
+| 7 | BigQuery still delivering | ✅ 9 daily tables, newest yesterday, no gaps |
+| 8 | Data stream URL | ❌ still `https://www.spyoptic.com/us/` — the dead SFCC path |
+| 9 | Staging separated | ❌ no staging property; `spydevsylv` still writes to `G-1F4T2NDY34` |
+| 2, 3 | `shipping_tier`, `payment_type` | ⬜ needs a test order |
+| 10 | `tax` | ⬜ not testable — store charges none |
+| 11 | `item_id` vs the Google feed format | ⬜ **unverified assumption**, see below |
+
+**5b is the one that looked done and wasn't.** A Data filter set to exclude `traffic_type = internal`
+with no rule to set that parameter will switch to Active on launch day and silently exclude nothing,
+while the checklist reads "internal traffic: done".
+
+**On 11 — stated twice as fact, never checked.** The claim is that Shopify's Google channel publishes
+feed IDs as `shopify_US_<productId>_<variantId>`, which is why our variant-ID `item_id` would not
+join. That is from memory. Before anyone acts on the `item_id` decision, read an actual row in the
+Merchant Center feed. If the format is different, the argument changes with it.
+
+---
+
 ## 1. Yours — nothing blocking these
 
 | | Task | Time | Why it matters |
