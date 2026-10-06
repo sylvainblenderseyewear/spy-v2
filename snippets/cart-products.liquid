@@ -111,10 +111,8 @@
           class="cart-items__table"
           role="table"
         >
-          <caption
-            class="visually-hidden"
-            role="caption"
-          >
+          {% comment %} Native caption only: an explicit role="caption" fails axe aria-required-children {% endcomment %}
+          <caption class="visually-hidden">
             {{ 'content.cart_total' | t }}
             <span>{{ cart.total_price | money_with_currency }}</span>
           </caption>
