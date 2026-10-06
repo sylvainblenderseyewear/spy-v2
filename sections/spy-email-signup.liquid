@@ -56,6 +56,16 @@
       "
     >
       {% content_for 'blocks' %}
+
+      {%- comment -%} GDPR: tells EU visitors what they sign up for. Off until Legal/PM approve. {%- endcomment -%}
+      {%- if s.show_consent and s.consent_text != blank -%}
+        <div
+          class="spy-signup__consent m-0 w-full px-[6px] text-center leading-[1.4] [&_p]:m-0 [&_a]:text-inherit [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:no-underline"
+          style="font-size: {{ s.consent_text_size }}px;"
+        >
+          {{ s.consent_text }}
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </div>
@@ -245,6 +255,35 @@
       "id": "button_text_color",
       "label": "Button text",
       "default": "#111111"
+    },
+    {
+      "type": "header",
+      "content": "Consent notice"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_consent",
+      "label": "Show consent notice under the form",
+      "info": "GDPR: tells visitors they agree to marketing emails and links the privacy policy.",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "consent_text",
+      "label": "Notice text",
+      "default": "<p>By signing up, you agree to receive marketing emails from SPY and accept our <a href=\"/pages/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a>. You can unsubscribe at any time.</p>",
+      "visible_if": "{{ section.settings.show_consent }}"
+    },
+    {
+      "type": "range",
+      "id": "consent_text_size",
+      "label": "Notice text size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 12,
+      "visible_if": "{{ section.settings.show_consent }}"
     },
     {
       "type": "header",
