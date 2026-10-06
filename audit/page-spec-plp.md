@@ -16,7 +16,7 @@
 | 3 | Collection Hero | H1 headline ("Ski and Snowboard Goggles"), hero image. Background image with text overlay or text below image (⚠️ MEASURE exact layout). | CUSTOM collection-hero block | Yes | Yes — separate images |
 | 4 | Intro Copy | Expandable "read more/less" text block — `collection.intro_copy` rich text metafield | CUSTOM expandable-text block | Yes | — |
 | 5 | Filter + Sort Bar | Sticky filter bar on desktop. Facets: Category, Color, Price Range, Lens Tech (Cat 1/2/3). Sort: Most Popular / Price ↑ / ↓. | CUSTOM filter-bar (Shopify Search & Discovery integration) | Yes | Drawer on mobile |
-| 6 | Product Grid | Multi-column grid of product cards | CUSTOM product-grid | Yes | 4-col desktop, 2-col tablet+mobile |
+| 6 | Product Grid | Multi-column grid of product cards | CUSTOM product-grid | Yes | 1 col to 768, 2 from 769, 3 from 992, 4 from 1459.2px; 24 per page + "More results" (+24) |
 | 7 | Bottom SEO Content | Expandable content blocks: "WHAT ARE POLARIZED SKI GOGGLES?", "WHAT ARE OTG SKI GOGGLES?" — `collection.seo_content` rich text | CUSTOM seo-content block | Yes | — |
 | 8 | Category Cross-Links | Related category links (Snow Goggles ↔ Moto Goggles) | CUSTOM category-links block | Yes | — |
 | 9 | Trust Row | Shipping, Returns, Warranty, Contact | Custom trust-badge-row | Yes | — |
@@ -93,7 +93,7 @@
 | Element | Desktop 1440 | Tablet 768 | Mobile 390 |
 |---|---|---|---|
 | Filter bar | Horizontal, sticky sidebar or top-bar | Horizontal compressed | "Filter" button → slide-up drawer |
-| Product grid | 4 columns | 2–3 columns | 2 columns |
+| Product grid | 3 columns (4 from 1459.2px) | 1 column (2 from 769px) | 1 column |
 | Hero image | Desktop image | ⚠️ tablet image or desktop | Mobile image |
 | Intro copy | Show ~3 lines → read more | Same | Same |
 | Compare bar | Bottom fixed bar | Bottom fixed bar | Bottom fixed bar |
