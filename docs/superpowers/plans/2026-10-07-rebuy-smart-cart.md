@@ -17,7 +17,7 @@
 
 Copied verbatim from `CLAUDE.md` and the design spec. Every task's requirements implicitly include these.
 
-- **Styling is Tailwind utilities only.** Never hand-write vanilla CSS, never add a Liquid `{% stylesheet %}` block. Run `npm run build:css` after any style change.
+- **Styling goes through the Tailwind pipeline.** Prefer utility classes on the markup. Where a rule must target markup we do not own (`.page-wrapper`, Rebuy's injected nodes), write it in `src/tailwind.css` — that file already carries 165 such rules and is the project's convention. **Never** add a Liquid `{% stylesheet %}` block, and never add a separate `.css` asset. Run `npm run build:css` after any style change.
 - **No hard-coded colour, font, or copy string.** Brand tokens are Layer 1 theme settings. Colours come from `--color-spy-orange` and friends, never a hex in markup.
 - **Never edit the published theme.** `spy-v2/main` is MAIN on production. All work goes to a development/unpublished theme.
 - **Do not push to git.** Commit only; the user pushes.
