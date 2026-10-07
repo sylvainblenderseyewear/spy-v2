@@ -668,6 +668,20 @@ price:    text-right text-[16px] leading-[22.4px] text-[#222222]
 
 `max-w-none` on the image is required — `base.css` sets `svg,img{max-width:100%}`, which collapses a fixed-size image inside a shrink-to-fit box.
 
+- [ ] **Step 2a: Extend the harness to gate this task**
+
+`scripts/cart-measure.mjs` does not yet measure quantity or remove, so this task would otherwise have no
+automated gate on its hardest requirement. Add to `EXPECT`, from `audit/page-spec-cart-drawer.md` §10:
+
+```js
+  quantity:  { fontSize: '13px', lineHeight: '18.2px' },
+  remove:    { color: 'rgb(204, 204, 204)' },
+```
+
+and the matching selectors in the `page.evaluate` block. **The quantity node must be static text** — if a
+`button` is found inside it, that is a failure, not a pass. Assert the absence explicitly rather than
+measuring only the text.
+
 - [ ] **Step 2: Remove the steppers**
 
 Delete the increase and decrease control nodes from the template. Keep remove. Render the quantity as two spans: the label `Quantity :` at weight 600, the value at weight 400.
@@ -726,6 +740,19 @@ cta:     [display:flex] items-center justify-center h-[51px] w-full rounded-none
 Delete the discount accordion, the subtotal row and the tax note from the template. The cart *page* keeps its own — this is drawer context only.
 
 The CTA copy is a theme setting, not a literal. Pass it in through the Liquid wrapper outside the raw block as a CSS custom property or a data attribute; never hard-code the string inside the template.
+
+- [ ] **Step 1a: Extend the harness to gate this task**
+
+Add to `EXPECT` in `scripts/cart-measure.mjs`, from `audit/page-spec-cart-drawer.md` §10:
+
+```js
+  footer:   { h: 123 },
+  totalRow: { fontSize: '16px', lineHeight: '22.4px', fontWeight: '600' },
+```
+
+plus the matching selectors. Also assert the **absence** of the three modules the drawer must not have:
+a discount accordion, a separate subtotal row, and the tax note. Their presence is a spec failure the
+current table would not catch.
 
 - [ ] **Step 2: Handle the empty state**
 
