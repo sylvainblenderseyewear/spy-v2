@@ -83,7 +83,9 @@ await page.locator('button[name="add"], add-to-cart-component button').first().c
 await page.waitForTimeout(4000);
 
 const root = page.locator(ROOT).first();
-if (!(await root.isVisible().catch(() => false))) {
+// Give the drawer time to open on a slow dev server
+const opened = await root.waitFor({ state: 'visible', timeout: 15000 }).then(() => true, () => false);
+if (!opened) {
   console.error(`FAIL: ${ENGINE} cart did not open (root ${ROOT} not visible)`);
   await browser.close();
   process.exit(1);
