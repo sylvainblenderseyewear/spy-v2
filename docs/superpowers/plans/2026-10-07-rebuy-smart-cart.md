@@ -34,11 +34,20 @@ Copied verbatim from `CLAUDE.md` and the design spec. Every task's requirements 
 
 These block Task 0 and must be cleared by the user before implementation starts. None is a code change.
 
-| # | Blocker | Who | How |
+| # | Blocker | Who | Status |
 |---|---|---|---|
-| **P1** | Shopify CLI token expired — `shopify theme dev` cannot run, so local edits cannot reach the store | User | `! shopify auth login` |
-| **P2** | No `.env` in the working copy; the store is password-protected, so every playwright script needs `SPY_PASSWORD` | User | create `.env` with `SPY_PASSWORD=…` (already gitignored at `.gitignore:4`) |
-| **P3** | Smart Cart must be switched on in the Rebuy admin, on Legacy, or nothing renders | User | Rebuy admin → Smart Cart → enable |
+| **P1** | Shopify CLI auth | — | **Clear.** `shopify theme list` works; current dev theme is `Development (0c9338-DESKTOP-7CMO9JE)`. |
+| **P2** | Storefront password for playwright | — | **Sidestepped.** Run `shopify theme dev` and point the scripts at `http://127.0.0.1:9292`, which bypasses the password gate. `.env` + `SPY_PASSWORD` is only needed to measure the *published* store directly. |
+| **P3** | Smart Cart switched on in the Rebuy admin, on Legacy | User | **Unverified.** Task 0 reports `rebuy.present: false` and stops if it is not enabled — so run Task 0 to find out rather than guessing. |
+
+**Preview base URL.** Every script below takes `SPY_BASE`, defaulting to the local preview:
+
+```bash
+shopify theme dev --store spyoptic-com.myshopify.com   # leave running in another terminal
+export SPY_BASE=http://127.0.0.1:9292
+```
+
+Set `SPY_BASE=https://spyoptic-com.myshopify.com` plus `SPY_PASSWORD` only when measuring the live store.
 
 ---
 
@@ -117,7 +126,7 @@ try {
   }
 } catch {}
 
-const STORE = process.env.SPY_STORE || 'https://spyoptic-com.myshopify.com';
+const STORE = process.env.SPY_BASE || 'http://127.0.0.1:9292';
 const PASSWORD = process.env.SPY_PASSWORD || '';
 const PREVIEW = process.env.PREVIEW_THEME_ID ? `?preview_theme_id=${process.env.PREVIEW_THEME_ID}` : '';
 
@@ -266,7 +275,7 @@ try {
 const arg = (k, d) => (process.argv.find((a) => a.startsWith(`--${k}=`)) || `--${k}=${d}`).split('=')[1];
 const ENGINE = arg('engine', 'theme');
 const WIDTH = Number(arg('width', 1440));
-const STORE = process.env.SPY_STORE || 'https://spyoptic-com.myshopify.com';
+const STORE = process.env.SPY_BASE || 'http://127.0.0.1:9292';
 const PASSWORD = process.env.SPY_PASSWORD || '';
 const PREVIEW = process.env.PREVIEW_THEME_ID ? `?preview_theme_id=${process.env.PREVIEW_THEME_ID}` : '';
 
