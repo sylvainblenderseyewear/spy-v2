@@ -225,3 +225,48 @@ than predicted.
 
 Global Settings has **no "disable cart page" toggle** in this build — only "Override Cart Page Checkout
 Button" and "Product Form Submission Behavior". The signed-off cart page cannot be redirected away.
+
+---
+
+## Custom template applied — 8 Oct 2026
+
+**Read-only quantity is DONE.** Verified on the saved config at `/admin/smartcart/preview/37798/`:
+the line item renders **`Quantity : 6`** as static text and the `- 6 +` stepper is gone.
+
+Template name in Rebuy: **`SPY cart items - read-only quantity`** (Cart Items -> Advanced -> Enable
+Custom Template). Rebuy keeps a **Previous Templates** history, so this is revertible.
+
+What was changed, against Rebuy's 605-line default:
+
+```html
+<!-- Quantity is read-only here, like the old site -->
+<div class="rebuy-cart__flyout-item-quantity spy-qty-static">
+  <span class="spy-qty-label">Quantity :</span>
+  <span class="spy-qty-value">{{ item.quantity }}</span>
+</div>
+```
+
+This replaced lines 105-200 of the default (96 lines -> 5). The original class
+`rebuy-cart__flyout-item-quantity` is kept so Rebuy's own CSS hooks still resolve; `spy-qty-static`,
+`spy-qty-label` and `spy-qty-value` are ours to style to the spec (13 / 18.2, label 600, value 400,
+right-aligned).
+
+**Gotcha for whoever edits this next:** the default template contains **more than one** quantity
+rendering. Removing the block at 105-200 leaves a second stepper (`increaseItem` / `decreaseItem`,
+comment "Buttons/Default Mode") further down, which belongs to the **nested / bundle** item path and
+does not render for a plain line item. Leave it unless nested items get enabled.
+
+### Current saved state of the cart
+
+Header `YOUR CART` + close only - line item with image, title, variant, **static quantity**, price and
+remove - cross-sell rail (Widget 314347) - `Subtotal (6 items)` - single **`GO TO CART`** button.
+
+### Still outstanding in the Rebuy admin
+
+- Cart Title: inline `(N)` count and heading level **h2**
+- Empty-cart copy -> `Your Shopping Cart is Empty`, and delete the "Shop Now" link (the field is a
+  rich-text editor, so the link is removable content)
+- Cart Subtotal -> single `Estimated Total` row (currently `Subtotal (6 items)`)
+
+All geometry, type and colour remain theme-side CSS scoped to `#rebuy-cart`, per
+`audit/rebuy-smartcart-solution.md`.
