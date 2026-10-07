@@ -18,26 +18,51 @@ try {
 const arg = (k, d) => (process.argv.find((a) => a.startsWith(`--${k}=`)) || `--${k}=${d}`).split('=')[1];
 const ENGINE = arg('engine', 'theme');
 const WIDTH = Number(arg('width', 1440));
+// Reject typos so a bad flag can't fall through to the wrong path
+if (!['theme', 'rebuy'].includes(ENGINE)) {
+  console.error(`FAIL: unknown --engine="${ENGINE}" (use theme or rebuy)`);
+  process.exit(1);
+}
+if (![1440, 768, 390].includes(WIDTH)) {
+  console.error(`FAIL: unsupported --width="${arg('width', 1440)}" (use 1440, 768 or 390)`);
+  process.exit(1);
+}
 const STORE = process.env.SPY_BASE || 'http://127.0.0.1:9292';
 const PASSWORD = process.env.SPY_PASSWORD || '';
 const PREVIEW = process.env.PREVIEW_THEME_ID ? `?preview_theme_id=${process.env.PREVIEW_THEME_ID}` : '';
 
-// Panel root per engine. The rebuy root is untested until Smart Cart is enabled.
-const ROOT = ENGINE === 'rebuy' ? '#rebuy-cart' : 'dialog.cart-drawer__panel';
-
-// Selectors per element, theme first and rebuy second (rebuy ones are first guesses).
-const SEL = {
-  header: '.theme-drawer__header, .rebuy-cart__header',
-  title: '.theme-drawer__title, .rebuy-cart__title',
-  image: '.cart-items__media-image, .rebuy-cart__flyout-item-image img',
-  name: '.cart-items__title, .rebuy-cart__flyout-item-title',
-  variant: '.cart-items__variants-wrapper, .rebuy-cart__flyout-item-variant',
-  linePrice: '.cart-items__price, .rebuy-cart__flyout-item-price',
-  cta: '.cart__checkout-button, .rebuy-cart__checkout-button',
+// One selector set per engine, so a run never matches the other engine's DOM.
+// The rebuy ones are guesses until Smart Cart is enabled.
+const ENGINES = {
+  theme: {
+    root: 'dialog.cart-drawer__panel',
+    sel: {
+      header: '.theme-drawer__header',
+      title: '.theme-drawer__title',
+      image: '.cart-items__media-image',
+      name: '.cart-items__title',
+      variant: '.cart-items__variants-wrapper',
+      linePrice: '.cart-items__price',
+      cta: '.cart__checkout-button',
+    },
+  },
+  rebuy: {
+    root: '#rebuy-cart',
+    sel: {
+      header: '.rebuy-cart__header',
+      title: '.rebuy-cart__title',
+      image: '.rebuy-cart__flyout-item-image img',
+      name: '.rebuy-cart__flyout-item-title',
+      variant: '.rebuy-cart__flyout-item-variant',
+      linePrice: '.rebuy-cart__flyout-item-price',
+      cta: '.rebuy-cart__checkout-button',
+    },
+  },
 };
+const { root: ROOT, sel: SEL } = ENGINES[ENGINE];
 
 // From audit/page-spec-cart-drawer.md §10, measured at 1440.
-// Numbers allow 1px (the source panel's own left border). Strings must match exactly.
+// Numbers allow 1px on the raw (unrounded) size. Strings must match exactly.
 const EXPECT = {
   panel:     { w: 320, h: null },
   header:    { h: 41 },
@@ -65,7 +90,13 @@ await page.waitForTimeout(4000);
 // Consent: grant for rebuy, decline for theme (declining proves the fallback is real).
 const wanted = ENGINE === 'rebuy' ? /accept|allow all|agree/i : /decline|reject|only necessary/i;
 const btn = page.getByRole('button', { name: wanted }).first();
-if (await btn.isVisible().catch(() => false)) await btn.click();
+const sawBanner = await btn.waitFor({ state: 'visible', timeout: 15000 }).then(() => true, () => false);
+if (sawBanner) await btn.click();
+else if (ENGINE === 'rebuy') {
+  console.error('FAIL: consent banner never appeared, so consent was not granted and Rebuy cannot boot');
+  await browser.close();
+  process.exit(1);
+}
 await page.waitForTimeout(2000);
 // Rebuy only boots fully on the next load after consent
 if (ENGINE === 'rebuy') {
@@ -93,18 +124,19 @@ if (!opened) {
 
 const measured = await page.evaluate(([sel, map]) => {
   const pick = (el) => {
-    if (!el) return null;
+    // No layout box = hidden, so it counts as missing
+    if (!el || el.getClientRects().length === 0) return null;
     const r = el.getBoundingClientRect();
     const c = getComputedStyle(el);
     return {
-      w: Math.round(r.width), h: Math.round(r.height),
+      w: r.width, h: r.height,
       fontSize: c.fontSize, lineHeight: c.lineHeight, fontWeight: c.fontWeight,
       color: c.color, backgroundColor: c.backgroundColor,
     };
   };
   const root = document.querySelector(sel);
   const out = { panel: pick(root) };
-  for (const [k, s] of Object.entries(map)) out[k] = pick(root.querySelector(s));
+  for (const [k, s] of Object.entries(map)) out[k] = root ? pick(root.querySelector(s)) : null;
   return out;
 }, [ROOT, SEL]);
 
@@ -119,10 +151,22 @@ for (const [key, want] of Object.entries(EXPECT)) {
     const ok = Boolean(got) && (numeric ? Math.abs(actual - expected) <= 1 : actual === expected);
     if (!ok) failed++;
     rows.push({
-      element: `${key}.${prop}`, expected, actual: actual ?? '(missing)',
-      delta: numeric && got ? actual - expected : '', ok: ok ? 'ok' : 'DRIFT',
+      element: `${key}.${prop}`, expected,
+      actual: typeof actual === 'number' ? Number(actual.toFixed(2)) : (actual ?? '(missing)'),
+      delta: numeric && got ? Number((actual - expected).toFixed(2)) : '', ok: ok ? 'ok' : 'DRIFT',
     });
   }
+}
+
+// Responsive rule: panel is 320 at every width and never full-bleed
+{
+  const pw = measured.panel?.w;
+  const ok = typeof pw === 'number' && pw < WIDTH;
+  if (!ok) failed++;
+  rows.push({
+    element: 'panel.w < viewport', expected: `< ${WIDTH}`,
+    actual: typeof pw === 'number' ? Number(pw.toFixed(2)) : '(missing)', delta: '', ok: ok ? 'ok' : 'DRIFT',
+  });
 }
 console.table(rows);
 console.log(`${ENGINE} @ ${WIDTH}: ${failed} drift(s)`);
