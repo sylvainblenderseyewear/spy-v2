@@ -1,0 +1,150 @@
+# Rebuy Smart Cart — settings to apply
+
+Date: 2026-10-07
+Store: `spyoptic-com.myshopify.com`, Rebuy shop id **50277**
+Target: `audit/page-spec-cart-drawer.md` §10 (the measured source mini-cart)
+Settings list sourced from Rebuy's own Smart Cart Settings doc, read 7 Oct 2026.
+
+**The settings below describe the v2 editor** (components, layouts, Cart Items Settings). If the admin
+shows a plain settings page instead, you are on Legacy — tell the dev, because that changes the build.
+
+---
+
+## 0. Do this in Preview, not live
+
+`spy-v2/main` is the **published** theme. Publishing a Smart Cart makes it take over the cart for every
+visitor immediately, and the coordinator that arbitrates between Rebuy and our own drawer is not built yet.
+
+- Configure the cart, **Save**, and use **Preview Cart** — it renders an unpublished cart on the storefront
+  for you only.
+- Do **not** toggle "Publish/Enable" until the dev has run the spike and built the coordinator.
+- Only one Smart Cart can be active at a time. Enabling a new one auto-disables the current one.
+
+Name the cart something traceable, e.g. **`SPY mini-cart (1:1 source)`**.
+
+---
+
+## 1. Layout
+
+| Setting | Value | Why |
+|---|---|---|
+| Layout | **Single column** | The source panel is **320px**. Double column exists to put cross-sells in a side column and cannot work at that width. |
+
+---
+
+## 2. Turn OFF — the source mini-cart has none of these
+
+Each one adds a module the measured source does not have, and every one of them breaks the 1:1 target.
+
+| Setting | Value | Why |
+|---|---|---|
+| Announcement Bar | **Off** | Not in the source drawer. |
+| Tiered Progress Bar | **Off** | The source has an `.approaching-discounts-ctr` slot but it was **empty in every state captured** (§7). Do not invent one. |
+| Buy More Save More | **Off** | Not in the source. |
+| Switch to Subscription | **Off** | SPY sells no subscriptions. |
+| Share Cart | **Off** | Not in the source. |
+| Login | **Off** | Not in the source; it also force-aligns the title bar. |
+| Notes | **Off** | Not in the source. |
+| Terms & Conditions | **Off** | Not in the source. |
+| Payment Installments | **Off** | The source drawer has no installments CTA. |
+| Shop Pay / accelerated checkout | **Off** | Source has an express-pay slot that renders nothing (§5). Rebuy also lists accelerated buttons as **deprecated**. |
+| Discount code field | **Off** | The source footer has **no discount accordion** (§5). The cart *page* keeps its own promo form. |
+
+---
+
+## 3. Cart Items Settings
+
+| Setting | Value | Why |
+|---|---|---|
+| **Enable Quantity Input** | **OFF** | The spec requires a **read-only** `Quantity : N`, not a stepper (§4). This is the single most important setting on the page. |
+| Nested Cart Items | Off (default) | No bundles in scope. |
+| Product Metafields | Off for now | Useful later for a custom template; not needed to match the spec. |
+
+### Check what "off" actually renders
+
+When Enable Quantity Input is off, confirm in Preview whether the line still **shows the quantity as text**
+or hides it entirely. The spec needs the text `Quantity : 1`, right-aligned.
+
+- Shows text → done, this requirement is solved by configuration.
+- Hides it → tell the dev. It then has to come back through a component custom template, and it is the
+  riskiest item in the build.
+
+### Empty cart language
+
+Source (§6) shows exactly: **"Your Shopping Cart is Empty"**, with the header and footer still present and
+a **disabled** CTA. Rebuy defaults to "Your cart is empty! / Add your favorite items to your cart. / Shop Now".
+
+- Set the text to **`Your Shopping Cart is Empty`**
+- Clear the secondary line if it can be left blank
+- The **"Shop Now" link must go** — the source has no such link. If it cannot be removed here, flag it:
+  hiding a focusable link with CSS leaves it in the accessibility tree and fails our WCAG 2.1 AA requirement.
+
+---
+
+## 4. Buttons — read this one carefully
+
+The source mini-cart has **one** button: a solid orange bar reading **`GO TO CART`** that links to the
+cart page. It does **not** go to checkout (§5, §10).
+
+| Setting | Value |
+|---|---|
+| Checkout Button | **Off** |
+| **View Cart Button** | **On**, label **`GO TO CART`** |
+| Continue Shopping Button | **Off** |
+
+> **This contradicts Rebuy's own advice**, which is to send shoppers straight to checkout to remove a step.
+> We are matching the source site, which routes to the cart page. It is a deliberate 1:1 decision, not an
+> oversight — but it is a **commercial call worth confirming**, because routing to checkout instead would
+> very likely convert better. If the business wants checkout, say so and the spec gets amended; do not
+> change it silently.
+
+---
+
+## 5. Cart page — do NOT follow Rebuy's recommendation
+
+| Setting | Value | Why |
+|---|---|---|
+| **Use Cart Page** | **ENABLED** | Rebuy recommends **disabling** it, which redirects `/cart` to the homepage. SPY has a **pixel-perfect, signed-off cart page**, and the mini-cart's only CTA points at it. Disabling this would break both. |
+| Override Cart Page Checkout Button | Off | Only needed when discount codes are entered in Smart Cart, and that field is off. |
+| Product Form Submission Behavior | **Stay on current page** | Auto-open handles showing the cart; redirecting would fight it. |
+
+---
+
+## 6. Auto-open behaviour
+
+The source opens the drawer about **1.5s after add-to-cart, then closes it again** (§2).
+
+Set auto-open on add-to-cart **on**, with auto-close to match. Our theme drawer already implements this
+via its `auto-open` and `close-after-add` attributes, so **exactly one** engine must do it — the dev's
+coordinator enforces that, but the Rebuy side must be configured to match, not to differ.
+
+---
+
+## 7. Theme Selectors
+
+Rebuy syncs the theme's cart bubble and subtotal through CSS selectors. Its defaults (`.cart-count`,
+`.cart-subtotal`) do **not** exist in this theme. Set:
+
+| Field | Value |
+|---|---|
+| Cart count | `.cart-bubble__text-count` |
+| Cart subtotal | `.cart__subtotal-container` |
+
+---
+
+## 8. Accessibility
+
+Set **Accessibility Heading Level** for the cart title to **h2**. The project requires exactly one `h1`
+per page and WCAG 2.1 AA; a cart title rendering as `h1` would break both.
+
+---
+
+## 9. What to report back to the dev
+
+1. **Legacy or v2** — plain settings page, or a component-based editor?
+2. **What Enable Quantity Input = off renders** — static quantity text, or nothing?
+3. **Whether the empty-cart "Shop Now" link can be removed** entirely.
+4. Leave the cart **saved but unpublished**, and send the Preview link.
+
+Then the dev re-runs `node scripts/rebuy-spike.mjs` to dump the real default template and build the
+binding map, and Task 0 closes.
