@@ -148,3 +148,80 @@ per page and WCAG 2.1 AA; a cart title rendering as `h1` would break both.
 
 Then the dev re-runs `node scripts/rebuy-spike.mjs` to dump the real default template and build the
 binding map, and Task 0 closes.
+
+---
+
+## Applied state — 8 Oct 2026
+
+Cart **`SPY mini-cart (1:1 source)`**, id **37798**, on **Smart Cart v2**. Saved and **UNPUBLISHED**
+(the "Publish Smart Cart" / Live toggle was never touched). Cross-sell rail is **Widget 314347**.
+
+### Done
+
+| Setting | Value | Verified |
+|---|---|---|
+| Layout | Single column | preview |
+| Cart Share | hidden | share icon gone from the top bar |
+| Login Button | hidden | Login button gone |
+| Checkout Button | off | blue "Checkout →" gone |
+| View Cart Button | **on**, label `GO TO CART` | single CTA in the footer |
+| Continue Shopping | off | — |
+| Shop Pay | off | purple button gone |
+| Terms & Conditions · Pre-Purchase Pop-Up · Installments | off | — |
+| Switch to Subscription · Use Product Metafields · Buy More Save More · Nested Cart Items | off | — |
+| Theme selector — Item Count | `.cart-bubble__text-count` (was `.cart-count`) | — |
+| Theme selector — Cart Subtotal | `.cart__subtotal-container` (was `.cart-subtotal`) | — |
+
+### Still to do
+
+- Cart Title: inline `(N)` count, heading level **h2**
+- Empty-cart copy → `Your Shopping Cart is Empty`, and remove the "Shop Now" link
+- Cart Subtotal → single `Estimated Total` row (currently `Subtotal (6 items)`)
+- Read-only quantity — **needs a custom template, see below**
+
+### RESOLVED: `Enable Quantity Input = off` does NOT remove the stepper
+
+Turned off, saved and confirmed; the `− 6 +` stepper still renders in both the editor preview **and**
+the standalone preview at `/admin/smartcart/preview/37798/`. The setting governs **min/max limits and
+input type** (buttons vs dropdown), exactly as Rebuy's docs describe — not whether the control exists.
+
+**So the spec's read-only `Quantity : N` can only come from a custom template.**
+
+### RESOLVED: v2 DOES have custom templates — per component, in the admin
+
+**Cart Items → ADVANCED → Enable Custom Template → Edit Code** opens a **Monaco editor holding Rebuy's
+real default template: 605 lines, 25,883 chars.** Confirmed first lines:
+
+```html
+<div data-rebuy-component="cart-items" data-rebuy-component-id="cart_items">
+  <ul v-if="hasItems()" data-smartcart-items tabindex="0" role="list">
+    <li class="rebuy-cart__flyout-item"
+        v-for="(item, index) in items()"
+        v-if="!isHiddenItem(item)"
+        :key="getLineItemKey(item, index)"
+        v-bind:class="[ 'product-' + item.handle, itemProductTagsClasses(item), itemPropertyClasses(item) ]">
+```
+
+**Binding map** (read off the live template):
+
+- Items: `hasItems()` · `items()` · `isHiddenItem(item)` · `getLineItemKey(item, index)` · `item.handle`
+- Links: `isItemClickable(item)` · `itemLinkLabel(item)` · `itemURL(item)`
+- Classes: `itemProductTagsClasses(item)` · `itemPropertyClasses(item)`
+- Quantity: `isQuantityEnabled` · `getQuantityInputType` · `getEffectiveQuantityLimits` · `getQuantityLabel`
+  · `getQuantityError` · `setItemQuantity` · `increaseItem` · `decreaseItem`
+- Discounts/props: `hasLineItemDiscount` · `hasItemProperties`
+- Quantity CSS hooks: `.rebuy-cart__flyout-item-quantity{,-widget,-widget-button,-widget-input,-widget-label,
+  -dropdown,-dropdown-content,-dropdown-label,-dropdown-value,-dropdown-error,-error}`
+
+**Global Settings also carries:** a whole-cart Custom Template, **Custom CSS**, and **event callbacks**
+(Init / Ready / Show / Hide / LineItemIncrease / LineItemDecrease / LineItemRemoved) — the callbacks are
+useful for the theme-side coordinator.
+
+**Consequence for the build:** the read-only quantity, the `(N)` title format and the empty-cart link
+removal all land in **admin-hosted templates, outside git**. That is the v2 cost, now confirmed rather
+than predicted.
+
+### Not a risk after all
+
+Global Settings has **no "disable cart page" toggle** in this build — only "Override Cart Page Checkout
+Button" and "Product Form Submission Behavior". The signed-off cart page cannot be redirected away.
