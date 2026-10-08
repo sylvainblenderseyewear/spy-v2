@@ -325,3 +325,26 @@ drawer."* Combined with the blocker rule above, this makes the coordinator (`spy
 carrying two carts.
 
 Check script: `scripts/rebuy-preview-check.mjs`.
+
+### Consent CAN be granted locally — the banner is a shadow-DOM custom element
+
+Earlier conclusion corrected. The Pandectes banner **does** render on the dev theme; it is a
+`<pandectes-cmp>` custom element and the buttons live in its **shadow root**, so `[id*="pandectes"]`
+never matched it. It also intercepts pointer events, which is what made an ordinary bag click time out.
+
+Accepting works the same way `layout/theme.liquid` already reaches the reopen button:
+
+```js
+document.querySelector('pandectes-cmp')?.shadowRoot
+  ?.querySelectorAll('button')  // -> close | Learn more | Accept | Decline | Preferences
+```
+
+With consent granted, **Rebuy loads locally** (`_status: "initialized"`, requests > 0). So the consent
+half of the preview problem is solved and no `.env` cookie capture is needed.
+
+**Still blocked:** Smart Cart itself does not activate — `Rebuy.smart_cart` is null, `Rebuy.SmartCart` is
+undefined and there is no `#rebuy-cart` node. The cart is unpublished and the guessed
+`?preview_smart_cart=<id>` parameter does not switch it on. **Next step: capture the exact URL Rebuy's
+own PREVIEW button generates** — that is the one remaining unknown before the CSS work can start.
+
+Reusable check: `scripts/rebuy-preview-check.mjs` (grants consent, then reports what Rebuy exposes).

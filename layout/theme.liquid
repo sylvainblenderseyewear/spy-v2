@@ -170,6 +170,9 @@
     {% render 'cart-drawer', render_wrapper: true %}
     {% render 'theme-drawer' %}
 
+    {% comment %} Decides whether Rebuy or the theme drawer answers the bag {% endcomment %}
+    <script src="{{ 'spy-cart-handoff.js' | asset_url }}" type="module"></script>
+
     {% render 'search-modal' %}
 
     {% if settings.quick_add or settings.mobile_quick_add %}

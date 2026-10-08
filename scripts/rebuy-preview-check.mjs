@@ -1,33 +1,57 @@
+/*
+  Is Rebuy Smart Cart reachable on the local dev theme?
+
+  Pandectes blocks rebuyengine.com until the shopper consents, and its banner is a
+  <pandectes-cmp> custom element — the Accept button lives in its shadow root, which
+  is why a normal selector never finds it. This grants consent the same way
+  layout/theme.liquid reaches the reopen button, then reports what Rebuy exposes.
+
+  Run:  shopify theme dev --store spyoptic-com.myshopify.com --port 9293
+        node scripts/rebuy-preview-check.mjs
+        SPY_BASE=... CART_ID=... to override
+*/
 import { chromium } from 'playwright-core';
 
 const BASE = process.env.SPY_BASE || 'http://127.0.0.1:9293';
 const CART_ID = process.env.CART_ID || '37798';
-const browser = await chromium.launch({ channel: 'chrome', headless: true });
-const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+const URL = `${BASE}/?preview_smart_cart=${CART_ID}`;
 
-const url = `${BASE}/?preview_smart_cart=${CART_ID}`;
-await page.goto(url, { waitUntil: 'domcontentloaded' });
-await page.waitForTimeout(3500);
+const browser = await chromium.launch({ channel: 'chrome', headless: process.env.HEADED !== '1' });
+const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+const page = await context.newPage();
 
-// consent: Rebuy will not boot until accepted
-for (const name of [/^accept/i, /allow all/i, /^agree/i, /accept all/i]) {
-  const b = page.getByRole('button', { name }).first();
-  if (await b.isVisible().catch(() => false)) { await b.click().catch(()=>{}); break; }
-}
-await page.waitForTimeout(2500);
-await page.goto(url, { waitUntil: 'domcontentloaded' });  // Rebuy fully boots next load
-await page.waitForTimeout(5000);
+await page.goto(URL, { waitUntil: 'domcontentloaded' });
+await page.waitForTimeout(6000);
 
-const r = await page.evaluate(() => ({
-  rebuyPresent: typeof window.Rebuy !== 'undefined',
+// Accept cookies, or Rebuy never loads at all
+const accepted = await page.evaluate(() => {
+  const root = document.querySelector('pandectes-cmp')?.shadowRoot;
+  const button = root && [...root.querySelectorAll('button')].find((b) => /accept/i.test(b.innerText || ''));
+  if (!button) return false;
+  button.click();
+  return true;
+});
+await page.waitForTimeout(3000);
+
+// Rebuy only boots fully on the next load after consent
+await page.goto(URL, { waitUntil: 'domcontentloaded' });
+await page.waitForTimeout(8000);
+
+const result = await page.evaluate(() => ({
+  rebuyRequests: performance.getEntriesByType('resource').filter((e) => /rebuy/i.test(e.name)).length,
   status: window.Rebuy?._status ?? null,
-  smartCartFlag: window.Rebuy?.smart_cart ?? null,
-  smartCartObj: typeof window.Rebuy?.SmartCart,
-  rebuyCartNode: !!document.querySelector('#rebuy-cart'),
-  themeDrawerNode: !!document.querySelector('theme-drawer#cart-drawer'),
-  previewBar: !!document.querySelector('[class*="rebuy-preview"], [id*="rebuy-preview"]'),
-  rebuyScripts: performance.getEntriesByType('resource')
-      .filter(e => /rebuy/i.test(e.name)).length,
+  smartCartEnabled: window.Rebuy?.smart_cart ?? null,
+  smartCart: typeof window.Rebuy?.SmartCart,
+  rebuyCartNode: Boolean(document.querySelector('#rebuy-cart')),
+  themeDrawerNode: Boolean(document.querySelector('theme-drawer#cart-drawer')),
+  engine: document.documentElement.getAttribute('data-cart-engine'),
 }));
-console.log(JSON.stringify(r, null, 1));
+
+console.log('consent accepted:', accepted);
+console.log(JSON.stringify(result, null, 1));
+
+const usable = result.smartCart === 'object' && result.rebuyCartNode;
+console.log(usable ? 'Smart Cart IS reachable locally' : 'Smart Cart NOT reachable locally');
+
 await browser.close();
+process.exit(usable ? 0 : 1);
