@@ -238,7 +238,7 @@ Eleven things that were assumed rather than measured, checked one by one a week 
 | 8 | Data stream URL | ❌ still `https://www.spyoptic.com/us/` — the dead SFCC path |
 | 9 | Staging separated | ❌ no staging property; `spydevsylv` still writes to `G-1F4T2NDY34` |
 | 2 | `shipping_tier` | ❌ **never sent.** `c.shippingLine.title` does not exist — `shippingLine` carries `price` only, which is why `shipping: 15` works on purchase. The guard stopped an `undefined` being sent, so the event is correct but can't say Standard vs Express |
-| 3 | `payment_type` | 🚫 **untestable.** `payment_info_submitted` only fires when payment details are submitted, and production has **no payment provider configured** |
+| 3 | `payment_type` | 🚫 **untestable on 5 Oct** — `payment_info_submitted` only fires when payment details are submitted, and no payment provider was available. **[8 Oct] Possibly reopenable:** production carries 6 native `web` orders from 17–18 Sep, all `test: true`, so Shopify Payments **test mode** has worked on this store. If it can be re-enabled, `payment_type` and `purchase` both become testable before launch instead of on cutover day |
 | 10 | `tax` | ⬜ not testable — store charges none |
 | 11 | `item_id` vs the Google feed format | ⬜ **unverified assumption**, see below |
 
