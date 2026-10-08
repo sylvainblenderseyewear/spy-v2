@@ -433,3 +433,21 @@ as the existing `.grid` / `.flex` collision with `base.css`.
 - **Bag icon** in the header is not yet added (decorative `::before` with an inline SVG).
 - Row is 305 wide with a 163px details column vs the spec's 319 / 177 — the 14px difference is the
   scrollbar. Decide whether the source uses an overlay scrollbar before chasing it.
+
+## Brand colours applied — 8 Oct
+
+Rebuy ships its own blue (`#2491c4`) on every button. Replaced with SPY tokens, verified computed on the
+storefront preview:
+
+| Element | Result |
+|---|---|
+| `GO TO CART` | `rgb(242,126,55)` = `--color-spy-orange-ui`, blue border removed |
+| Rail `Add` / `Options` | white ground, `rgb(44,57,62)` = `--color-spy-slate` border and text |
+| Rail titles / prices | `--color-spy-ink` / `--color-spy-price-reco` |
+| Links | `--color-spy-ink` |
+
+The rail buttons are **outlined slate, not solid orange** — the source has no rail, so this is our call:
+three stacked solid-orange buttons would compete with the single primary CTA. Hover inverts to solid slate.
+
+**Subtotal label resolved.** `Estimated Total` now renders on the storefront. The earlier mismatch was
+propagation delay after all, not a Rebuy fault — no action needed.

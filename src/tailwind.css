@@ -3335,3 +3335,51 @@ product-recommendations .slideshow-control svg {
   line-height: 16px !important;
   white-space: nowrap !important;
 }
+
+/* ── Rebuy Smart Cart: brand colours ──────────────────────────────────────
+   Rebuy ships its own blue (#2491c4) on every button. Swap it for SPY's
+   palette: orange for the primary action, slate outline for the rail. */
+
+/* Primary CTA — solid orange bar, no leftover blue outline */
+#rebuy-cart .rebuy-cart__view-cart-button {
+  border: 0 !important;
+  background: var(--color-spy-orange-ui) !important;
+  color: #fff !important;
+}
+
+#rebuy-cart .rebuy-cart__view-cart-button:hover,
+#rebuy-cart .rebuy-cart__view-cart-button:focus-visible {
+  background: var(--color-spy-cta-hover) !important;
+  color: #fff !important;
+}
+
+/* Rail actions are secondary — outlined slate keeps the orange CTA dominant
+   across three stacked rows. The source has no rail, so this is our call. */
+#rebuy-cart .rebuy-product-actions .rebuy-button {
+  background: #fff !important;
+  border: 1px solid var(--color-spy-slate) !important;
+  color: var(--color-spy-slate) !important;
+  border-radius: 0 !important;
+}
+
+#rebuy-cart .rebuy-product-actions .rebuy-button:hover,
+#rebuy-cart .rebuy-product-actions .rebuy-button:focus-visible {
+  background: var(--color-spy-slate) !important;
+  color: #fff !important;
+}
+
+/* Prices and headings in the rail follow the brand, not Rebuy's blue */
+#rebuy-cart .rebuy-widget-content .primary-title,
+#rebuy-cart .rebuy-product-title {
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-cart .rebuy-product-price,
+#rebuy-cart .rebuy-money {
+  color: var(--color-spy-price-reco) !important;
+}
+
+/* Any remaining Rebuy blue link */
+#rebuy-cart a:not(.rebuy-button) {
+  color: var(--color-spy-ink) !important;
+}
