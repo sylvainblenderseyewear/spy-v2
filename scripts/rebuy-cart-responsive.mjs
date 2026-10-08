@@ -47,11 +47,15 @@ for (const width of WIDTHS) {
   const context = await browser.newContext({ viewport: { width, height: 900 } });
   const page = await context.newPage();
 
-  // Storefront password gate
+  // Storefront password gate. The field is hidden behind an "Enter using
+  // password" toggle, so clicking that first is what makes fill() work.
   await page.goto(`${STORE}/password`, { waitUntil: 'domcontentloaded', timeout: 60000 });
-  await page.fill('input[name="password"]', PASSWORD).catch(() => {});
-  await page.press('input[name="password"]', 'Enter').catch(() => {});
+  await page.getByText(/enter using password/i).first().click({ timeout: 10000 }).catch(() => {});
+  await page.waitForTimeout(800);
+  await page.fill('#Password', PASSWORD, { timeout: 15000 }).catch((e) => console.error('password fill:', e.message.slice(0, 60)));
+  await page.press('#Password', 'Enter').catch(() => {});
   await page.waitForLoadState('domcontentloaded');
+  await page.waitForTimeout(1500);
 
   await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
   await page.waitForTimeout(5000);

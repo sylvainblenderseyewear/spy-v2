@@ -56,6 +56,39 @@ if (!claim()) {
 }
 
 /**
+ * Keep the bag badge hidden on an empty cart.
+ *
+ * Rebuy writes the live count into `.cart-bubble__text-count` (its Theme
+ * Selector setting), but it does not know about the theme's own hidden classes,
+ * so an emptied cart leaves a "0" badge sitting on the icon.
+ */
+function syncCartBubble() {
+  const count = document.querySelector('.cart-bubble__text-count');
+  if (!count) return;
+
+  const empty = !count.textContent.trim() || count.textContent.trim() === '0';
+  count.classList.toggle('hidden', empty);
+  count.closest('.cart-bubble')?.classList.toggle('visually-hidden', empty);
+}
+
+syncCartBubble();
+
+const bubble = document.querySelector('.cart-bubble__text-count');
+if (bubble) {
+  // Rebuy rewrites the number in place, so watch the text, not the element.
+  new MutationObserver(syncCartBubble).observe(bubble, {
+    characterData: true,
+    childList: true,
+    subtree: true,
+  });
+}
+
+// The count also changes on Rebuy's own cart events
+for (const name of ['rebuy:cart.change', 'rebuy:smartcart.hide', 'rebuy:cart.ready']) {
+  document.addEventListener(name, syncCartBubble);
+}
+
+/**
  * One engine answers the bag. Capture phase so we land before Horizon's own
  * `on:click="#cart-drawer/toggle"` handler.
  *
