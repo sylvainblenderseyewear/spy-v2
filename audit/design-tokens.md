@@ -233,3 +233,43 @@ These must all be wired to `config/settings_schema.json` before any code is revi
 - [ ] Footer: bg color scheme assignment
 
 **Acceptance test:** change `#f57f29` → any other color in ONE theme setting → orange disappears everywhere on the site with zero code edits.
+
+---
+
+## Source palette, read from spyoptic.com's own CSS variables — 8 Oct 2026
+
+Measured live on `https://www.spyoptic.com/us/sunglasses/cyrus-switch-257654.html` by reading the
+`:root` custom properties, so these are the source's declared values rather than sampled pixels.
+56 colour variables in total; the ones that matter:
+
+| Source variable | Value | Our token |
+|---|---|---|
+| `--custom-color-primary` / `--primary` | `#F27E37` | `--color-spy-orange-ui` (theme setting) |
+| `--custom-color-secondary` | `#1D2A2B` | `--color-spy-ink` |
+| `--custom-color-gray-900` | `#1D2A2B` | `--color-spy-ink` |
+| `--custom-body-text-color` | `#1D2A2B` | `--color-spy-ink` |
+| `--custom-color-content-primary` | `#242424` | `--color-spy-text` |
+| `--custom-color-content-secondary` | `#393939` | `--color-spy-text-2` |
+| `--custom-color-content-tertiary` | `#6C757D` | `--color-spy-label` |
+| `--custom-color-content-muted` | `#a6a6a6` | `--color-spy-muted` (we use #767676 for AA) |
+| `--custom-color-border-neutral` | `#E6E6E6` | `--color-spy-border` |
+| `--custom-color-surface-primary` | `#f9f9f9` | `--color-spy-surface` |
+| `--custom-color-gray-100` | `#f8f8f8` | `--color-spy-tile` |
+| `--custom-color-gray-500` | `#ababab` | (strike price; we use #767676 for AA) |
+| `--custom-color-gray-600` | `#6c757d` | `--color-spy-label` |
+| `--orange` (secondary tint) | `#f4995c` | — not currently mapped |
+| `--custom-color-danger` | `#DF372B` | `--color-spy-negative` (#d7403a) |
+| `--custom-color-red` | `#df5b5b` | — |
+
+**Note:** `#2c393e` — the "slate" CLAUDE.md lists as a brand colour — **does not appear anywhere in the
+live site's palette.** The source's secondary is `#1D2A2B`. Prefer `--color-spy-ink` over
+`--color-spy-slate` when matching the source.
+
+### Buttons, measured from the rendered page
+
+| Class | Background | Border | Text | Radius | Size | Transform |
+|---|---|---|---|---|---|---|
+| `.btn-primary` / `.add-to-cart` | `#F27E37` | `#F27E37` | `#fff` | `0` | 14px | uppercase |
+| `.btn-outline-primary` (secondary) | `#fff` | `1px #F27E37` | `#F27E37` | `0` | 12px | uppercase |
+
+The source has **no outlined-slate button**. Secondary actions are **outlined orange**.
