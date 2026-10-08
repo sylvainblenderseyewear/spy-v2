@@ -515,3 +515,30 @@ node scripts/rebuy-cart-responsive.mjs
 ```
 
 Without it the script exits 2 with a clear message rather than pretending to pass.
+
+## Responsive verification PASSED at all three widths — 8 Oct
+
+`node scripts/rebuy-cart-responsive.mjs` against the production storefront with the dev theme applied:
+
+| Width | Panel | Result |
+|---|---|---|
+| 1440 | 320 | ok |
+| 768 | 320 | ok |
+| 390 | 320 | ok |
+
+Each width asserts: panel 320 (±1), **never full-bleed**, no body scroll lock, no page push, engine
+`rebuy`. At 390 the panel stays 320 against a 390 viewport — that is the specific regression the spec
+calls out, since the old theme drawer went full-bleed at mobile and the source never does.
+
+### Two traps in getting this to run
+
+1. **The storefront password field is 0x0** behind an "Enter using password" toggle, and **the Pandectes
+   banner intercepts pointer events**, so neither `fill()` nor a real click on the toggle ever lands.
+   The script sets the value and calls `form.submit()` directly instead. (The same overlay is what made
+   an ordinary bag click time out earlier.)
+2. **Rebuy loses a cold first load.** The first width in a run reported "SMART CART DID NOT RENDER" while
+   768 and 390 passed; an isolated rerun of 1440 passed. The script now **retries once** before failing —
+   a harness that reports a red which a rerun turns green is as corrosive as one that reports a false
+   green.
+
+`WIDTHS=1440 node scripts/rebuy-cart-responsive.mjs` retests a single breakpoint instead of all three.

@@ -31,7 +31,7 @@ const STORE = process.env.SPY_STORE || 'https://spyoptic-com.myshopify.com';
 const PASSWORD = process.env.SPY_PASSWORD || '';
 const THEME_ID = process.env.THEME_ID || '189382623539';
 const CART_ID = process.env.CART_ID || '37798';
-const WIDTHS = [1440, 768, 390];
+const WIDTHS = (process.env.WIDTHS || '1440,768,390').split(',').map(Number);
 
 if (!PASSWORD) {
   console.error('SPY_PASSWORD is not set. Add it to .env — the storefront is password protected.');
@@ -47,15 +47,20 @@ for (const width of WIDTHS) {
   const context = await browser.newContext({ viewport: { width, height: 900 } });
   const page = await context.newPage();
 
-  // Storefront password gate. The field is hidden behind an "Enter using
-  // password" toggle, so clicking that first is what makes fill() work.
+  // Storefront password gate. The field sits collapsed (0x0) behind an "Enter
+  // using password" toggle, and the consent banner intercepts pointer events,
+  // so a real click never lands. Submit the form directly instead.
   await page.goto(`${STORE}/password`, { waitUntil: 'domcontentloaded', timeout: 60000 });
-  await page.getByText(/enter using password/i).first().click({ timeout: 10000 }).catch(() => {});
-  await page.waitForTimeout(800);
-  await page.fill('#Password', PASSWORD, { timeout: 15000 }).catch((e) => console.error('password fill:', e.message.slice(0, 60)));
-  await page.press('#Password', 'Enter').catch(() => {});
+  await page.waitForTimeout(2000);
+  await page.evaluate((pw) => {
+    const input = document.querySelector('#Password');
+    if (!input) return;
+    input.value = pw;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    (document.querySelector('#login_form') || input.closest('form'))?.submit();
+  }, PASSWORD);
   await page.waitForLoadState('domcontentloaded');
-  await page.waitForTimeout(1500);
+  await page.waitForTimeout(2000);
 
   await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
   await page.waitForTimeout(5000);
@@ -72,7 +77,7 @@ for (const width of WIDTHS) {
   await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
   await page.waitForTimeout(8000);
 
-  const measured = await page.evaluate(() => {
+  const measure = () => page.evaluate(() => {
     const root = document.querySelector('#rebuy-cart');
     if (!root) return null;
     const panel = root.querySelector('.rebuy-cart__flyout');
@@ -88,8 +93,18 @@ for (const width of WIDTHS) {
     };
   });
 
+  let measured = await measure();
+
+  // Rebuy can lose a cold first load. Give it one more pass before failing,
+  // or the harness reports a red that a rerun turns green.
   if (!measured) {
-    rows.push({ width, result: 'SMART CART DID NOT RENDER' });
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
+    await page.waitForTimeout(9000);
+    measured = await measure();
+  }
+
+  if (!measured) {
+    rows.push({ width, result: 'SMART CART DID NOT RENDER (two attempts)' });
     failures++;
     await context.close();
     continue;
