@@ -451,3 +451,38 @@ three stacked solid-orange buttons would compete with the single primary CTA. Ho
 
 **Subtotal label resolved.** `Estimated Total` now renders on the storefront. The earlier mismatch was
 propagation delay after all, not a Rebuy fault — no action needed.
+
+## Overlay behaviour fixed and verified — 8 Oct
+
+Rebuy locks **`body`** when the cart opens, not `.page-wrapper`, so the first override missed it. The
+source never locks scroll and never pushes the page. Both now cleared, verified computed on the preview:
+
+```
+bodyOverflow: visible · bodyPosition: static
+pageWrapperOverflow: visible · pageWrapperMarginRight: 0px
+scrollableNow: true   <- the page scrolls behind the cart, like the source
+```
+
+Also resolved: with the wrapper padding removed the row is now **320 wide with a 95px + 178px grid**,
+against the spec's 95 + 15 + 177. The earlier 14px shortfall was the double padding, not the scrollbar.
+
+## BLOCKED: responsive verification at 768 / 390
+
+CLAUDE.md requires 1440 / 768 / 390. **Only 1440 has been verified.** Three routes, all currently closed:
+
+| Route | Result |
+|---|---|
+| Chrome extension `resize_window` | reports success but the window stays 1920 — it is maximised and silently refuses |
+| Playwright against production | `spyoptic-com.myshopify.com` redirects to `/password`; no `SPY_PASSWORD` available |
+| Playwright against `theme dev` | Rebuy will not load locally even with consent granted — `rebuyRequests: 0`, inconsistent run to run |
+
+**To unblock, either:**
+1. **Un-maximise the Chrome window** so `resize_window` can take effect — then I verify through the
+   extension in minutes; or
+2. **Put `SPY_PASSWORD` in `.env`** — then Playwright drives the production preview at any width and the
+   whole check is scriptable and repeatable.
+
+Option 2 is better long term: it makes the responsive check part of `scripts/`, not a manual session.
+
+**Reasoned but NOT verified:** the panel is `width: 320px !important` with no media query, so it cannot
+go full-bleed at 390. That is an argument, not a measurement, and does not satisfy the definition of done.

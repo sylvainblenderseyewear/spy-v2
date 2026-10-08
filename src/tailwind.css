@@ -3137,10 +3137,16 @@ product-recommendations .slideshow-control svg {
   background: transparent !important;
 }
 
-/* An overlay cart must not shove the page or lock scrolling */
+/* An overlay cart must not shove the page or lock scrolling. Rebuy locks the
+   BODY, not .page-wrapper, so both need clearing — the source never locks. */
 :root[data-cart-engine='rebuy'] .page-wrapper {
   margin-right: 0 !important;
   overflow: visible !important;
+}
+
+:root[data-cart-engine='rebuy'] body {
+  overflow: visible !important;
+  position: static !important;
 }
 
 /* Header: 41px tall with a hairline rule */
