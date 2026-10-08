@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "intro": {
       "type": "section",
@@ -161,12 +162,26 @@
     },
     "frames": {
       "type": "collection-list",
-      "blocks": {},
       "name": "Watermen — frames carousel",
       "settings": {
+        "content_source": "products",
+        "collection_list": [
+          "fishing-sunglasses"
+        ],
+        "max_products": 10,
+        "label_colors_one": "1 color available",
+        "label_colors_many": "[count] colors available",
+        "show_swatches": true,
+        "swatch_count": 4,
+        "show_price": true,
+        "label_price_from": "Starting from",
+        "product_card_gap": 0,
+        "happy_boost_icon": "",
+        "mips_icon": "",
+        "bonus_lens_icon": "",
+        "deadbolt_icon": "",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
-        "max_products": 10,
         "columns": 5,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
@@ -174,37 +189,14 @@
         "rows_gap": 24,
         "icons_style": "arrow",
         "icons_shape": "circle",
+        "carousel_scroll": "card",
+        "carousel_autoplay": true,
+        "carousel_autoplay_speed": 3,
         "section_width": "page-width",
-        "horizontal_alignment": "center",
         "gap": 16,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "content_source": "products",
-        "label_colors_one": "1 color available",
-        "label_colors_many": "[count] colors available",
-        "happy_boost_icon": "",
-        "mips_icon": "",
-        "bonus_lens_icon": "",
-        "deadbolt_icon": "",
-        "show_swatches": true,
-        "swatch_count": 4,
-        "show_price": true,
-        "label_price_from": "Starting from",
-        "product_card_gap": 0,
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-inline-start": 0,
-        "padding-inline-end": 0,
-        "collection_list": [
-          "watermen"
-        ],
-        "carousel_scroll": "card",
-        "carousel_autoplay": true,
-        "carousel_autoplay_speed": 3
+        "padding-block-end": 0
       }
     },
     "frames_cta": {
@@ -317,6 +309,7 @@
                 "highlight": "",
                 "highlight_color": "#ee7624",
                 "size": 28,
+                "fluid": true,
                 "size_mobile": 28,
                 "weight": "600",
                 "line_height": 120,
@@ -329,8 +322,7 @@
                 "margin_top": 28,
                 "margin_bottom": 14,
                 "margin_top_mobile": 28,
-                "margin_bottom_mobile": 14,
-                "fluid": true
+                "margin_bottom_mobile": 14
               },
               "blocks": {}
             },
@@ -1163,6 +1155,7 @@
                 "highlight": "",
                 "highlight_color": "#ee7624",
                 "size": 28,
+                "fluid": true,
                 "size_mobile": 28,
                 "weight": "600",
                 "line_height": 120,
@@ -1175,8 +1168,7 @@
                 "margin_top": 28,
                 "margin_bottom": 14,
                 "margin_top_mobile": 28,
-                "margin_bottom_mobile": 14,
-                "fluid": true
+                "margin_bottom_mobile": 14
               },
               "blocks": {}
             },
@@ -1535,12 +1527,27 @@
     },
     "ice_blue": {
       "type": "collection-list",
-      "blocks": {},
       "name": "Watermen — ice blue mirror",
       "settings": {
+        "content_source": "products",
+        "collection_list": [
+          "watermen-ice-blue"
+        ],
+        "heading": "HAPPY BOOST ICE BLUE MIRROR",
+        "max_products": 14,
+        "label_colors_one": "1 color available",
+        "label_colors_many": "[count] colors available",
+        "show_swatches": true,
+        "swatch_count": 4,
+        "show_price": true,
+        "label_price_from": "Starting from",
+        "product_card_gap": 0,
+        "happy_boost_icon": "",
+        "mips_icon": "",
+        "bonus_lens_icon": "",
+        "deadbolt_icon": "",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
-        "max_products": 14,
         "columns": 5,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
@@ -1548,48 +1555,39 @@
         "rows_gap": 24,
         "icons_style": "arrow",
         "icons_shape": "circle",
+        "carousel_scroll": "card",
+        "carousel_autoplay": true,
+        "carousel_autoplay_speed": 3,
         "section_width": "page-width",
-        "horizontal_alignment": "center",
         "gap": 48,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "content_source": "products",
-        "label_colors_one": "1 color available",
-        "label_colors_many": "[count] colors available",
-        "happy_boost_icon": "",
-        "mips_icon": "",
-        "bonus_lens_icon": "",
-        "deadbolt_icon": "",
-        "show_swatches": true,
-        "swatch_count": 4,
-        "show_price": true,
-        "label_price_from": "Starting from",
-        "product_card_gap": 0,
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-inline-start": 0,
-        "padding-inline-end": 0,
-        "heading": "HAPPY BOOST ICE BLUE MIRROR",
-        "collection_list": [
-          "watermen-ice-blue"
-        ],
-        "carousel_scroll": "card",
-        "carousel_autoplay": true,
-        "carousel_autoplay_speed": 3
+        "padding-block-end": 0
       }
     },
     "black_mirror": {
       "type": "collection-list",
-      "blocks": {},
       "name": "Watermen — black mirror",
       "settings": {
+        "content_source": "products",
+        "collection_list": [
+          "watermen-black-mirror"
+        ],
+        "heading": "HAPPY BOOST BLACK MIRROR",
+        "max_products": 10,
+        "label_colors_one": "1 color available",
+        "label_colors_many": "[count] colors available",
+        "show_swatches": true,
+        "swatch_count": 4,
+        "show_price": true,
+        "label_price_from": "Starting from",
+        "product_card_gap": 0,
+        "happy_boost_icon": "",
+        "mips_icon": "",
+        "bonus_lens_icon": "",
+        "deadbolt_icon": "",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
-        "max_products": 10,
         "columns": 5,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
@@ -1597,48 +1595,39 @@
         "rows_gap": 24,
         "icons_style": "arrow",
         "icons_shape": "circle",
+        "carousel_scroll": "card",
+        "carousel_autoplay": true,
+        "carousel_autoplay_speed": 3,
         "section_width": "page-width",
-        "horizontal_alignment": "center",
         "gap": 48,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "content_source": "products",
-        "label_colors_one": "1 color available",
-        "label_colors_many": "[count] colors available",
-        "happy_boost_icon": "",
-        "mips_icon": "",
-        "bonus_lens_icon": "",
-        "deadbolt_icon": "",
-        "show_swatches": true,
-        "swatch_count": 4,
-        "show_price": true,
-        "label_price_from": "Starting from",
-        "product_card_gap": 0,
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-inline-start": 0,
-        "padding-inline-end": 0,
-        "heading": "HAPPY BOOST BLACK MIRROR",
-        "collection_list": [
-          "watermen-black-mirror"
-        ],
-        "carousel_scroll": "card",
-        "carousel_autoplay": true,
-        "carousel_autoplay_speed": 3
+        "padding-block-end": 0
       }
     },
     "bronze": {
       "type": "collection-list",
-      "blocks": {},
       "name": "Watermen — bronze",
       "settings": {
+        "content_source": "products",
+        "collection_list": [
+          "watermen-bronze"
+        ],
+        "heading": "HAPPY BOOST BRONZE",
+        "max_products": 1,
+        "label_colors_one": "1 color available",
+        "label_colors_many": "[count] colors available",
+        "show_swatches": true,
+        "swatch_count": 4,
+        "show_price": true,
+        "label_price_from": "Starting from",
+        "product_card_gap": 0,
+        "happy_boost_icon": "",
+        "mips_icon": "",
+        "bonus_lens_icon": "",
+        "deadbolt_icon": "",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
-        "max_products": 1,
         "columns": 5,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
@@ -1646,38 +1635,14 @@
         "rows_gap": 24,
         "icons_style": "arrow",
         "icons_shape": "circle",
+        "carousel_scroll": "card",
+        "carousel_autoplay": true,
+        "carousel_autoplay_speed": 3,
         "section_width": "page-width",
-        "horizontal_alignment": "center",
         "gap": 48,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "content_source": "products",
-        "label_colors_one": "1 color available",
-        "label_colors_many": "[count] colors available",
-        "happy_boost_icon": "",
-        "mips_icon": "",
-        "bonus_lens_icon": "",
-        "deadbolt_icon": "",
-        "show_swatches": true,
-        "swatch_count": 4,
-        "show_price": true,
-        "label_price_from": "Starting from",
-        "product_card_gap": 0,
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-inline-start": 0,
-        "padding-inline-end": 0,
-        "heading": "HAPPY BOOST BRONZE",
-        "collection_list": [
-          "watermen-bronze"
-        ],
-        "carousel_scroll": "card",
-        "carousel_autoplay": true,
-        "carousel_autoplay_speed": 3
+        "padding-block-end": 0
       }
     },
     "lens_benefits_header": {
@@ -1731,6 +1696,7 @@
                 "highlight": "",
                 "highlight_color": "#ee7624",
                 "size": 28,
+                "fluid": true,
                 "size_mobile": 28,
                 "weight": "600",
                 "line_height": 120,
@@ -1743,8 +1709,7 @@
                 "margin_top": 28,
                 "margin_bottom": 14,
                 "margin_top_mobile": 28,
-                "margin_bottom_mobile": 14,
-                "fluid": true
+                "margin_bottom_mobile": 14
               },
               "blocks": {}
             },
@@ -1859,9 +1824,9 @@
           "static": true,
           "settings": {
             "background_color": "#f8f9fa",
+            "show_dots": true,
             "height": "fit",
-            "position": "center",
-            "show_dots": true
+            "position": "center"
           },
           "blocks": {
             "slide1": {
@@ -2542,6 +2507,7 @@
         "link": "",
         "cta_style": "solid",
         "heading_size": 28,
+        "heading_fluid": true,
         "heading_size_mobile": 28,
         "content_align": "right",
         "content_valign": "center",
@@ -2551,8 +2517,7 @@
         "text_align_mobile": "center",
         "show_overlay": false,
         "content_width": "page",
-        "content_max_width": 1440,
-        "heading_fluid": true
+        "content_max_width": 1440
       }
     }
   },

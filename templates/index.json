@@ -639,7 +639,7 @@
         }
       },
       "settings": {
-        "collection": "watermen",
+        "collection": "fishing-sunglasses",
         "use_grouped_card": true,
         "max_products": 5,
         "count_desktop": 5,
