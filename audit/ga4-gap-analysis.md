@@ -1,6 +1,6 @@
 # GA4 — gaps and open decisions
 
-Written 25 Sep 2026, three weeks before the 12 Oct launch. The tracking works; this is the list of
+Written 25 Sep 2026, before launch moved from 12 Oct to **1 Nov**. The tracking works; this is the list of
 what it does not yet capture and what has to be decided before those choices get expensive.
 
 Status of the build itself is in `audit/ga4-status.md`. This file is only the gaps.
@@ -29,7 +29,7 @@ the honest position if anyone asks what the money buys.
 
 ---
 
-## Decisions needed before 12 Oct
+## Decisions needed before 1 Nov
 
 ### 1. `item_id` — variant ID, or Google feed ID?
 

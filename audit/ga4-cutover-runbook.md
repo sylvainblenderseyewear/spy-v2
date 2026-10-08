@@ -1,6 +1,6 @@
 # GA4 + sGTM — cutover runbook
 
-For **12 Oct 2026**. Ordered, with a verification for every step, because launch day is not when to
+For **1 Nov 2026** (moved from 12 Oct on 6 Oct). Ordered, with a verification for every step, because launch day is not when to
 work out what "done" looks like.
 
 Status of the build is in `ga4-status.md`; the gaps are in `ga4-gap-analysis.md`.
@@ -11,7 +11,7 @@ throughout. The cutover action is to **confirm**, not install.
 
 ---
 
-## Before the day — must be closed by 10 Oct
+## Before the day — must be closed by 30 Oct
 
 | | Why it cannot wait for the day |
 |---|---|

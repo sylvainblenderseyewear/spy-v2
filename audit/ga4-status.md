@@ -1,10 +1,9 @@
 # GA4 + server-side GTM — status and remaining work
 
-Last checked: **1 Oct 2026**. **Launch is 12 Oct — 11 days out.**
+Last checked: **8 Oct 2026**. **Launch is 1 Nov — 24 days out** (moved from 12 Oct on 6 Oct).
 
-The tracking is built and verified end to end through our own domain. **The consent layer was
-rewritten to opt-in on 29 Sep and has not been tested or confirmed deployed** — see the Consent
-section below, which is the only part of this document describing unproven work.
+The tracking is built and verified end to end through our own domain, consent included: the opt-in
+rewrite of 29 Sep was audited on 2 Oct and measured again on 5 Oct — see **Verification run — 5 Oct**.
 
 Everything else that remains is other people's permissions or launch-day actions.
 
@@ -357,7 +356,7 @@ in this document.
 
 ---
 
-## 3. At cutover — 12 Oct
+## 3. At cutover — 1 Nov
 
 - Confirm the pixel is connected on `spyoptic-com` and `debug_mode` is gone from the deployed copy
 - Retire the SFCC tracking (`GTM-WWB4P3K`) — needs coordinating so it happens the same hour, not
@@ -415,4 +414,4 @@ duplicate variants, and four replacement lenses are priced at **$0.00**. Roughly
 three affiliate networks (Pepperjam, Avantlink, Impact Radius), Meta, Klaviyo, Microsoft
 Advertising, Clarity, Yotpo, accessiBe and Snowplow. Detail in `audit/analytics-live-site.md`.
 If the affiliate tags stop firing at cutover, commissions break silently and nobody notices for
-weeks. Somebody needs to own that list before 12 Oct.
+weeks. Somebody needs to own that list before 1 Nov.
