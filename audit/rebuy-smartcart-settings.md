@@ -270,3 +270,58 @@ remove - cross-sell rail (Widget 314347) - `Subtotal (6 items)` - single **`GO T
 
 All geometry, type and colour remain theme-side CSS scoped to `#rebuy-cart`, per
 `audit/rebuy-smartcart-solution.md`.
+
+---
+
+## Preview Mode does NOT work through `shopify theme dev` — 8 Oct
+
+**Question:** can we render Smart Cart on a local dev-theme page, so the theme CSS can be written
+against it without publishing? **Answer: no, not as things stand.**
+
+Measured on `shopify theme dev` (port 9293 — 9292 held a stale session serving a Shopify error page):
+
+| Check | Result |
+|---|---|
+| Storefront renders | yes, full SPY+ Optic page |
+| `rebuy` in served HTML | yes — **but only inside Pandectes' blocker config** |
+| Rebuy network requests | **0** |
+| `Rebuy.SmartCart` | `undefined` |
+| Theme cart drawer | present |
+| Consent banner | **never renders locally** |
+
+### Why
+
+Pandectes now carries the blocker rule the GA4 audit asked for:
+
+```json
+"blocker":{"enabled":true,"scripts":{"1":["rebuyengine.com"],"4":["yotpo.com"]}}
+```
+
+`rebuyengine.com` is blacklisted under category **1 = Functionality**. That is correct and wanted — but
+on the local dev theme Pandectes loads the **blocker** and never renders the **banner**
+(`PandectesCore` exposes only `PandectesWebComponent`; `PandectesRules` only `initialize`, so there is no
+programmatic accept). With no banner there is no way to consent, so Rebuy never loads and Smart Cart can
+never render locally.
+
+Four plausible `_pandectes_gdpr` cookie shapes were tried (the cookie is base64 JSON with a `status`
+field, per `audit/ga4-custom-pixel.js`). None unblocked Rebuy, so the exact shape is still unknown.
+
+### Ways forward
+
+1. **Capture a real consent cookie** (recommended, cheapest). Accept the banner once on the production
+   storefront in a normal browser, copy the `_pandectes_gdpr` value, and keep it in `.env`. The check
+   script can then seed it and local dev works permanently.
+2. **Test on the real storefront** with both parameters —
+   `?preview_theme_id=<dev theme id>&preview_smart_cart=37798` — where the banner does render. Needs the
+   storefront password (`SPY_PASSWORD`).
+3. Whitelisting Rebuy in Pandectes would work but **undoes a correct privacy fix** — not recommended.
+
+### Third confirmation of the consent architecture
+
+Rebuy's own docs state: *"Rebuy Smart Cart cannot automatically remove, hide or otherwise override your
+theme's native cart drawer. Both can and will exist until you take steps to suppress your native cart
+drawer."* Combined with the blocker rule above, this makes the coordinator (`spy-cart-handoff.js`)
+**required, not optional**, and it must land before any CSS work — otherwise we would be styling a page
+carrying two carts.
+
+Check script: `scripts/rebuy-preview-check.mjs`.
