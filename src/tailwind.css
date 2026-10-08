@@ -3266,3 +3266,72 @@ product-recommendations .slideshow-control svg {
   line-height: 16.8px !important;
   text-transform: uppercase !important;
 }
+
+/* Header bar: 41px with the source's hairline rule. Rebuy leaves this wrapper
+   unclassed, so reach it through the title it contains. */
+#rebuy-cart div:has(> .rebuy-cart__title) {
+  min-height: 41px !important;
+  padding: 8px 16px !important;
+  border-bottom: 1px solid #e6e6e6 !important;
+  align-items: center !important;
+}
+
+/* Rebuy hides the Checkout button with an inline style when the setting is off,
+   but it also puts a literal `block` class on it — and our Tailwind `.block`
+   utility is !important inside a layer, which beats an inline style. For
+   !important, layer order reverses, so `components` wins over `utilities`.
+   Same trap as .grid / .flex colliding with base.css. */
+@layer components {
+  #rebuy-cart .rebuy-cart__checkout-button[style*='display: none'] {
+    display: none !important;
+  }
+}
+
+/* Rebuy ships a visually-hidden "Cart subtotal" label that doubles the row */
+#rebuy-cart .rebuy-cart__flyout-subtotal {
+  align-items: baseline !important;
+}
+
+/* Cross-sell rail (Widget 314347). Rebuy's card is a 3-column flex row and at
+   320 the Add button starves the title, so it wraps one word per line.
+   Spec treatment: compact rows — 56px thumb, title/price, small action. */
+#rebuy-cart .rebuy-product-block {
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+#rebuy-cart .rebuy-product-media {
+  flex: 0 0 56px !important;
+  width: 56px !important;
+  max-width: 56px !important;
+}
+
+#rebuy-cart .rebuy-product-media img {
+  width: 56px !important;
+  height: 56px !important;
+  object-fit: contain !important;
+}
+
+#rebuy-cart .rebuy-product-info {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+#rebuy-cart .rebuy-product-title {
+  font-size: 13px !important;
+  line-height: 18.2px !important;
+}
+
+/* The action button must not take a third of the row */
+#rebuy-cart .rebuy-product-actions {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  max-width: 84px !important;
+}
+
+#rebuy-cart .rebuy-product-actions .rebuy-button {
+  padding: 6px 10px !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  white-space: nowrap !important;
+}

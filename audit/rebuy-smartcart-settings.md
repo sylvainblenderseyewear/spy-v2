@@ -390,3 +390,46 @@ The storefront preview renders **both** `Checkout →` **and** `GO TO CART`, whi
 shows only `GO TO CART` and the Checkout Button toggle is confirmed **off** and saved. Most likely a
 config propagation delay on Rebuy's side rather than a theme problem. Re-check before writing footer CSS;
 if it persists, it is one for Rebuy support.
+
+---
+
+## Gotcha: our Tailwind utilities override Rebuy's inline styles — 8 Oct
+
+The Checkout button stayed visible on the storefront even though the admin toggle was off and saved.
+It was **our bug, not Rebuy's**:
+
+```
+inlineStyle: "display: none;"                       <- Rebuy correctly hid it
+class: "rebuy-button rebuy-cart__checkout-button block"
+computedDisplay: "block"                            <- our Tailwind .block won
+```
+
+`src/tailwind.css` starts with `@import "tailwindcss" important`, so **every** utility is `!important`
+inside a Tailwind layer. Rebuy puts a literal `block` class on that button, and for `!important`
+declarations **layer order reverses** — a layered `!important` beats an inline style, and also beats an
+unlayered `!important` rule of ours. So the first fix (an unlayered `#rebuy-cart ... { display: none
+!important }`) did nothing.
+
+Fix: put the override in an **earlier** layer, which wins for `!important`:
+
+```css
+@layer components {
+  #rebuy-cart .rebuy-cart__checkout-button[style*='display: none'] { display: none !important; }
+}
+```
+
+**Watch for this across the whole Rebuy surface.** Rebuy uses Tailwind-style class names (`block`, and
+likely `flex`, `grid`, `hidden`) on its own elements. Anywhere Rebuy sets an inline style or its own CSS
+and our utility shares the class name, **ours wins and silently breaks Rebuy's behaviour**. Same family
+as the existing `.grid` / `.flex` collision with `base.css`.
+
+## Still outstanding
+
+- **Subtotal label is stale on the storefront.** Admin and admin-preview show `Estimated Total`; the
+  storefront still renders `Subtotal (1 item)`. Rebuy-side config propagation, not the theme — re-check
+  before chasing it.
+- **`(N)` count in the cart title.** `{{item_count}}` works in the subtotal label but renders literally in
+  the Cart Title field, so the count needs a title-component custom template.
+- **Bag icon** in the header is not yet added (decorative `::before` with an inline SVG).
+- Row is 305 wide with a 163px details column vs the spec's 319 / 177 — the 14px difference is the
+  scrollbar. Decide whether the source uses an overlay scrollbar before chasing it.
