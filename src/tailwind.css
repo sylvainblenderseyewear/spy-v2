@@ -3392,3 +3392,18 @@ product-recommendations .slideshow-control svg {
 #rebuy-cart a:not(.rebuy-button) {
   color: var(--color-spy-ink) !important;
 }
+
+/* Header bag icon. Rebuy's markup is fixed, so draw it as a decorative
+   ::before on the title and mask the theme's own FA bag asset — same folder
+   on the CDN, so the relative url resolves. Source: 16x14 at rx17 / y13. */
+#rebuy-cart .rebuy-cart__title::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 14px;
+  margin-right: 9px;
+  vertical-align: -2px;
+  background-color: currentColor;
+  -webkit-mask: url('spy-fa-bag.svg') no-repeat center / contain;
+  mask: url('spy-fa-bag.svg') no-repeat center / contain;
+}

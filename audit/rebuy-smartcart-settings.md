@@ -486,3 +486,32 @@ Option 2 is better long term: it makes the responsive check part of `scripts/`, 
 
 **Reasoned but NOT verified:** the panel is `width: 320px !important` with no media query, so it cannot
 go full-bleed at 390. That is an argument, not a measurement, and does not satisfy the definition of done.
+
+## Header bag icon done — 8 Oct
+
+Rebuy's header markup is fixed, so the icon is a decorative `::before` on `.rebuy-cart__title` that masks
+the theme's existing `assets/spy-fa-bag.svg`. A relative `url('spy-fa-bag.svg')` resolves correctly —
+Shopify serves both files from the same `/assets/` path on the CDN. Verified computed:
+
+```
+iconW: 16px · iconH: 14px        (spec 16x14)
+headerH: 41 · border: 1px solid rgb(230,230,230)
+mask: url("https://spyoptic-com.myshopify.com/cdn/shop/t/4/assets/...")
+```
+
+Header is now spec-complete apart from the `(N)` count, which needs a title-component template.
+
+## Responsive check is scripted and waiting on one line
+
+`scripts/rebuy-cart-responsive.mjs` drives the production preview at **1440 / 768 / 390**, handles the
+storefront password and the shadow-root consent, and asserts per width: panel 320, never full-bleed, no
+body lock, no page push, engine `rebuy`. Exits non-zero on drift.
+
+It needs the storefront password, which is **not** in the repo:
+
+```
+echo "SPY_PASSWORD=yourpassword" >> .env    # .env is gitignored (.gitignore:4)
+node scripts/rebuy-cart-responsive.mjs
+```
+
+Without it the script exits 2 with a clear message rather than pretending to pass.
