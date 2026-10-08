@@ -14,13 +14,13 @@ import { chromium } from 'playwright-core';
 
 const BASE = process.env.SPY_BASE || 'http://127.0.0.1:9293';
 const CART_ID = process.env.CART_ID || '37798';
-const URL = `${BASE}/?preview_smart_cart=${CART_ID}`;
+const URL = `${BASE}/?preview_smart_cart=${CART_ID}&viewcart=true&cart_version=2`;
 
 const browser = await chromium.launch({ channel: 'chrome', headless: process.env.HEADED !== '1' });
 const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
 const page = await context.newPage();
 
-await page.goto(URL, { waitUntil: 'domcontentloaded' });
+await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 90000 });
 await page.waitForTimeout(6000);
 
 // Accept cookies, or Rebuy never loads at all
@@ -34,7 +34,7 @@ const accepted = await page.evaluate(() => {
 await page.waitForTimeout(3000);
 
 // Rebuy only boots fully on the next load after consent
-await page.goto(URL, { waitUntil: 'domcontentloaded' });
+await page.goto(URL, { waitUntil: 'domcontentloaded', timeout: 90000 });
 await page.waitForTimeout(8000);
 
 const result = await page.evaluate(() => ({

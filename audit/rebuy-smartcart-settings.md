@@ -348,3 +348,45 @@ undefined and there is no `#rebuy-cart` node. The cart is unpublished and the gu
 own PREVIEW button generates** — that is the one remaining unknown before the CSS work can start.
 
 Reusable check: `scripts/rebuy-preview-check.mjs` (grants consent, then reports what Rebuy exposes).
+
+---
+
+## SOLVED: Preview Mode works on the dev theme — 8 Oct
+
+The missing piece was **`cart_version=2`**. The guessed `?preview_smart_cart=<id>` alone does nothing.
+The URL Rebuy's own PREVIEW button generates is:
+
+```
+https://spyoptic-com.myshopify.com/?preview_smart_cart=37798&viewcart=true&cart_version=2
+```
+
+Add `preview_theme_id=<dev theme id>` to run it against the development theme. Shopify consumes that
+parameter and stores it in a cookie, so it disappears from the URL after the first load — that is normal.
+
+### Verified end to end, on the dev theme
+
+```
+rebuyReq: 23 · smartCart: "object" · rebuyCartNode: true
+handoffLoaded: true · engine: "rebuy" · themeDrawer: true
+qtyText: "Quantity : 1" · qtyButtons: 0 · panelW: 500
+```
+
+- **The coordinator works in the real world.** `spy-cart-handoff.js` detected Smart Cart and switched
+  `data-cart-engine` from `theme` to `rebuy`, with the theme drawer still present as the fallback.
+- **The custom template works on the storefront**: `Quantity : 1` as text, **zero** quantity buttons.
+- **Panel is 500px; the spec wants 320px.** That, and the type/spacing/colour work, is the CSS pass.
+
+This unblocks all remaining styling work. Local `shopify theme dev` is **not** needed for it — preview
+runs against the real storefront with the dev theme applied.
+
+### Note: consent is required first
+
+Rebuy will not load until the Pandectes banner is accepted. In an automated browser, the banner is a
+`<pandectes-cmp>` custom element and Accept lives in its **shadow root** (see the section above).
+
+### Open discrepancy to watch
+
+The storefront preview renders **both** `Checkout →` **and** `GO TO CART`, while the Rebuy admin preview
+shows only `GO TO CART` and the Checkout Button toggle is confirmed **off** and saved. Most likely a
+config propagation delay on Rebuy's side rather than a theme problem. Re-check before writing footer CSS;
+if it persists, it is one for Rebuy support.
