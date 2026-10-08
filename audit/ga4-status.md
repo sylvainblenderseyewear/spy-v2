@@ -275,7 +275,7 @@ Merchant Center feed. If the format is different, the argument changes with it.
 | ~~6~~ | ~~Unwanted referrals~~ — **done 23 Sep**: `paypal.com`, `shop.app`, `shopify.com`, `stripe.com`. Add `spyoptic.com` at cutover | — | — |
 | 7 | **Internal traffic rule** — define it with the team's IPs, leave the filter on **Testing** | 15 min | Needs the team's IPs, so ask now. Switch to Active at cutover, not before — permanent and not retroactive |
 | 8 | **"Purchases below 1" custom insight**, emailed daily | 5 min | The only thing that will tell you the pixel died after launch. Otherwise you find out when someone questions the revenue |
-| 9 | **Enable 2SV**, save backup codes | 10 min | Hard deadline **20 Oct** — eight days after launch. Miss it and you lose GCP console access |
+| ~~9~~ | ~~Enable 2SV~~ — **done**, on since 16 Sep, backup codes regenerated 28 Sep | — | — |
 | 10 | **Separate staging from production GA4** — must happen before cutover | 30 min | See below |
 
 **Staging is polluting the production property (found 23 Sep).** Both `spyoptic-com` and
