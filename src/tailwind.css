@@ -3116,3 +3116,153 @@ product-recommendations .slideshow-control svg {
     font-size: 30px !important;
   }
 }
+
+/* ── Rebuy Smart Cart ──────────────────────────────────────────────────────
+   Rebuy owns the mini-cart markup on Smart Cart v2, so the only lever we have
+   is CSS. Its stylesheets load after ours (idx 14-16 vs 1), hence !important.
+   Target: audit/page-spec-cart-drawer.md §10 — the measured spyoptic.com cart.
+   Scoped to #rebuy-cart so the theme drawer fallback is untouched. */
+
+/* Panel: 320 at every width, overlay only, square corners */
+#rebuy-cart .rebuy-cart__flyout {
+  width: 320px !important;
+  max-width: 320px !important;
+  border-radius: 0 !important;
+  border-left: 0 !important;
+  transition: transform 426ms cubic-bezier(0.5, 0.25, 0, 1) !important;
+}
+
+/* Source never dims the page behind the cart */
+#rebuy-cart .rebuy-cart__background {
+  background: transparent !important;
+}
+
+/* An overlay cart must not shove the page or lock scrolling */
+:root[data-cart-engine='rebuy'] .page-wrapper {
+  margin-right: 0 !important;
+  overflow: visible !important;
+}
+
+/* Header: 41px tall with a hairline rule */
+#rebuy-cart .rebuy-cart__title {
+  font-size: 13px !important;
+  line-height: 18.2px !important;
+  font-weight: 600 !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-cart .rebuy-cart__flyout-close {
+  width: 46px !important;
+  height: 40px !important;
+}
+
+/* The items wrapper pads 16px and so does each row, which halves the details
+   column. Only the row should inset. */
+#rebuy-cart div:has(> ul[data-smartcart-items]) {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Line items sit flush against each other, 16px inset.
+   Rebuy ships flex-wrap with a 10px gap, which wraps the image onto its own row
+   once the panel is 320. An explicit grid keeps image and details side by side. */
+#rebuy-cart .rebuy-cart__flyout-item {
+  display: grid !important;
+  grid-template-columns: 95px minmax(0, 1fr) !important;
+  column-gap: 15px !important;
+  row-gap: 0 !important;
+  align-items: start !important;
+  padding: 16px !important;
+  border-bottom: 0 !important;
+  position: relative !important;
+}
+
+/* Rebuy stacks the details in a ROW, so at 320 the title collapses to one word
+   per line. The source stacks them: name, colour, quantity, price. */
+#rebuy-cart .rebuy-cart__flyout-item-info {
+  display: flex !important;
+  flex-direction: column !important;
+  flex-wrap: nowrap !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+#rebuy-cart .rebuy-cart__flyout-item-media {
+  width: 95px !important;
+  height: 95px !important;
+  max-width: none !important;
+}
+
+#rebuy-cart .rebuy-cart__flyout-item-media img {
+  width: 95px !important;
+  height: 95px !important;
+  max-width: none !important;
+  object-fit: contain !important;
+}
+
+#rebuy-cart .rebuy-cart__flyout-item-product-title {
+  font-size: 15px !important;
+  line-height: 18px !important;
+  font-weight: 700 !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-cart .rebuy-cart__flyout-item-variant-title {
+  font-size: 13px !important;
+  line-height: 18.2px !important;
+  font-weight: 400 !important;
+}
+
+/* Read-only quantity — the markup comes from our Rebuy custom template.
+   Rebuy makes this a flex container, which stacks our label and value; block
+   keeps the two spans inline as "Quantity : 1". */
+#rebuy-cart .rebuy-cart__flyout-item-quantity {
+  display: block !important;
+  width: 100% !important;
+  font-size: 13px !important;
+  line-height: 18.2px !important;
+  text-align: right !important;
+}
+
+#rebuy-cart .spy-qty-label {
+  font-weight: 600 !important;
+}
+
+#rebuy-cart .spy-qty-value {
+  font-weight: 400 !important;
+}
+
+#rebuy-cart .rebuy-cart__flyout-item-price {
+  font-size: 16px !important;
+  line-height: 22.4px !important;
+  color: #222 !important;
+  text-align: right !important;
+}
+
+/* Remove sits in the corner so it cannot stretch the row */
+#rebuy-cart .rebuy-cart__flyout-item-remove {
+  position: absolute !important;
+  top: 8px !important;
+  right: 16px !important;
+  color: #ccc !important;
+}
+
+/* Footer: one total row, one solid orange bar */
+#rebuy-cart .rebuy-cart__flyout-subtotal-label,
+#rebuy-cart .rebuy-cart__flyout-subtotal-amount {
+  font-size: 16px !important;
+  line-height: 22.4px !important;
+  font-weight: 600 !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-cart .rebuy-cart__view-cart-button {
+  height: 51px !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background: var(--color-spy-orange-ui) !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  line-height: 16.8px !important;
+  text-transform: uppercase !important;
+}
