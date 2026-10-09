@@ -29,6 +29,22 @@ export default class PaginatedList extends Component {
    */
   pages = new Map();
 
+  /**
+   * Furthest page fetched so far. Dedupe can empty a page completely, so the
+   * grid alone can't say how far we've got.
+   * @type {number}
+   */
+  #maxPageLoaded = 0;
+
+  /**
+   * @returns {number} The last page we have loaded, fetched or still on screen.
+   */
+  #lastLoadedPage() {
+    const cards = this.refs.grid?.querySelectorAll(':scope > [ref="cards[]"]') ?? [];
+    const fromDom = Math.max(0, ...Array.from(cards, (card) => Number(card.getAttribute('data-page')) || 0));
+    return Math.max(this.#maxPageLoaded, fromDom);
+  }
+
   /** @type {IntersectionObserver | undefined} */
   infinityScrollObserver;
 
@@ -202,6 +218,7 @@ export default class PaginatedList extends Component {
 
     grid.append(...nextPageItemElements);
     this.#dedupeGroups();
+    this.#maxPageLoaded = Math.max(this.#maxPageLoaded, nextPage.page);
 
     // Cards without a gallery ref (grouped PLP) never build the helper
     this.#aspectRatioHelper?.processNewElements();
@@ -386,10 +403,11 @@ export default class PaginatedList extends Component {
     await this.renderNextPage();
     button.removeAttribute('aria-busy');
 
-    // refs can still be pre-append at this point, so count off the grid itself
     const { grid } = this.refs;
-    const cards = grid?.querySelectorAll(':scope > [ref="cards[]"]');
-    const shown = Number(cards?.[cards.length - 1]?.getAttribute('data-page') ?? 0);
+    // Dedupe can empty a page, leaving the last card on an earlier page than the
+    // one just fetched. Count from the furthest page fetched, or the button never
+    // reaches the end and keeps asking for a page that adds nothing.
+    const shown = this.#lastLoadedPage();
     const lastPage = Number(grid?.dataset.lastPage ?? 0);
 
     if (shown >= lastPage) {
@@ -421,7 +439,9 @@ export default class PaginatedList extends Component {
     if (!targetCard) return;
 
     const currentCardPage = Number(targetCard.dataset.page);
-    const page = isPrevious ? currentCardPage - 1 : currentCardPage + 1;
+    // A deduped page leaves the last card on an earlier page than the one we
+    // fetched, so stepping forward from the DOM would ask for it again forever.
+    const page = isPrevious ? currentCardPage - 1 : this.#lastLoadedPage() + 1;
 
     const url = new URL(window.location.href);
     url.searchParams.set('page', page.toString());
