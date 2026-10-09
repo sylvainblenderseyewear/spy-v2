@@ -301,7 +301,7 @@ Gate A already failed once. It was set for 25 Sep, catalog ownership was not ans
 ## 10. Open questions
 
 1. ~~**Catalog** — who owns the load, when does it land?~~ **Answered 24 Sep by delivery.** [re-measured 8 Oct] Replacement question: **who ran the load, and will they run a second pass** for the missing spec keys and — critically — for the **collections**, which did not come with it? *(T0-4 is now the governing item, not the data)*
-2. **Yotpo** — S1 with re-applied legacy ID mapping, or S2 with 3.1K of 13.3K reviews?
+2. **Yotpo** — S1 with re-applied legacy ID mapping, or S2 with 3.1K of 13.3K reviews? **[9 Oct]** S2's review requests were found going to real customers of the migrated SFCC orders (~7.6K in 30 days). They were branded `staging-web-spyoptic.demandware.net` with the placeholder logo. Requests and the 21-day reminder are **paused** until launch. Before turning them back on, fix the sender name, store link and logo.
 3. **Publication** — are the 327 unpublished products intentional, or an incomplete import?
 4. **SKU scheme** — does UPC or SPY reference survive the dedupe? The other becomes an identifier on the same variant, not a second variant.
 5. **Sale collections** — is there a Sale season at launch? Seven nav links currently point at nothing.
@@ -310,6 +310,7 @@ Gate A already failed once. It was set for 25 Sep, catalog ownership was not ans
 8. **Redirect source** — is there an SFCC URL export, or do we crawl to build the map?
 9. **Sunday cutover** — 1 Nov 2026 is a Sunday. Who staffs the war room, Ops and 3PL on a weekend, and does Shopify/3PL support cover it? *(new with the rebase)*
 10. **BFCM collision** — launch is now 4 weeks before Cyber Monday, inside the board's P6 Hypercare & BFCM window. Does the mid-November tagging freeze still hold, and do Flexport (Nov 10) and B2B (Nov 20) move? *(new with the rebase)*
+11. **US opt-out link (Legal)** — Shopify's automated "Your Privacy Choices" page is on for 15 US states. Its link sits in Shopify's default Footer menu, which the SPY footer doesn't render, so no page links to it. Should it go in the footer legal line, with the official icon? *(new 9 Oct)*
 
 ---
 

@@ -157,7 +157,7 @@ What drove the drop:
 - **Confounds:** Rebuy shipped a new script version between the two runs, and run-to-run variance on this network is high. So the ~25-point mobile drop is partly the apps and partly noise, but the accessiBe cost is real.
 
 **Decisions (28 Sep):**
-- **accessiBe:** keep.
+- **accessiBe:** keep. **[9 Oct]** The trial had expired, so the widget was not running ("license is expired"; `config.json` returns 404). The owner is buying the licence. Afterwards, re-check the widget, its two Tab stops and the inert-page list.
 - **Duplicate Yotpo loader:** ask Yotpo support to remove their legacy ScriptTag and keep the app embed. The draft message is below.
 - **`fishing-sunglasses` products on production:** owned by the store owner.
 
@@ -237,6 +237,13 @@ Desktop is 82–90 after the fix.
 - **Cause:** the Pandectes app embed adds `pandectes-rules-latest.js` dynamically, so it runs async. The **Yotpo Loyalty & Rewards** loader and the **Yotpo Product Reviews** inline injector (both app embeds, parser-inserted) ran before it. On 29 Sep the reviews script still came through the late `asyncLoad` ScriptTag, so the check passed then.
 - **Fix 1 (`layout/theme.liquid`):** `<script src="{{ 'pandectes-rules.js' | file_url }}">` is the first tag in `<head>`, exactly like Blenders. The file already exists in Shopify Files, and Pandectes keeps it synced (its timestamp matches the live settings). The app block then skips its own copy (`if (!window.pandectesRulesSettings)`).
 - **Fix 2 (`footer-group.json`, `footer-404-group.json`, `layout/theme.liquid`):** the link is now `#reopenBanner`, Pandectes' own reopen trigger. Pandectes only binds that with its "custom trigger" widget setting on, and its JS API (`window.Pandectes.openDialog`) is Enterprise-only (SPY is Premium). So a small delegated click handler clicks Pandectes' "Change your consent" widget button as a fallback.
+- **Fix 3 (9 Oct, `layout/password.liquid`):** the pre-launch password page had no early blocker.
+  - Live, 3 of 3 fresh visits set `yotpo_pixel`, `_sp_id`, `_sp_ses` and `pixel` before consent.
+  - The same first-in-head line is now on the test theme `189229302067`, where 3 of 3 visits set none.
+- **Pandectes admin (9 Oct), verified live:**
+  - The ✕ is now announced as "Close" (was "Ok").
+  - Esc closes the banner and records no consent (implied consent stays off).
+  - "Learn more" points to `/pages/privacy-policy` instead of the `myshopify.com` URL.
 
 **GDPR items outside the theme (Legal / PM):**
 1. **Privacy policy content:** it mentions cookies and Google Analytics, but has no GDPR section: legal basis, data-subject rights (access, erasure, objection), how to withdraw consent, retention, international transfers, and the processors (Yotpo, Rebuy, Pandectes). Legal must write it.
@@ -347,7 +354,7 @@ The Lighthouse run stopped after 14 of 30 runs (Chrome closed on this low-memory
 
 **Next step for speed: switch to real-user (field) data.** Shopify admin → Online Store → Themes → **Web performance** reports real visitors' Core Web Vitals. PageSpeed Insights/CrUX will also have data once the password is removed at launch. Remaining known app costs on mobile: Rebuy ~260ms on the PDP, accessiBe ~200ms (kept by decision), Yotpo ~170ms.
 
-**P9 (new, High): Yotpo is installed twice.** *(Resolved theme-side 28 Sep by switching off the app embed; the support request to Yotpo is optional.)*
+**P9 (new, High): Yotpo is installed twice.** *(Resolved theme-side 28 Sep by switching off the app embed; the support request to Yotpo is optional.)* **[9 Oct] It came back:** the embed was switched on again on 29 Sep (`ae3de59`). It is now switched off again in `config/settings_data.json`. On the test theme `189229302067`, widget.js loads once instead of twice. Stars, reviews and the homepage gallery render the same as on live, and nothing loads before consent.
 - **Copy 1:** `widget.js?lang=en` is injected by the Yotpo **app embed** (Theme settings → App embeds).
 - **Copy 2:** `widget.js?shop=spyoptic-com.myshopify.com` comes from Shopify's `asyncLoad` list, meaning a **legacy ScriptTag** the Yotpo app registered on the store.
 - **Not the theme:** the theme loads neither copy (manual loader removed in `d669f06`).
