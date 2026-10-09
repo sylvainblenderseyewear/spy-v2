@@ -542,3 +542,44 @@ calls out, since the old theme drawer went full-bleed at mobile and the source n
    green.
 
 `WIDTHS=1440 node scripts/rebuy-cart-responsive.mjs` retests a single breakpoint instead of all three.
+
+## Title count done — 9 Oct
+
+`Your Cart (N)` now renders, via a **Cart Title custom template** (Fixed Top Bar → Cart Title →
+Advanced Settings → Custom Template → Edit Code). Rebuy's default was a single element:
+
+```html
+<component :is="getCartTitleHeadingTag()" ... v-html="getCartTitle()"></component>
+```
+
+Replaced with the same element plus a count span:
+
+```html
+<span v-html="getCartTitle()"></span>
+<span class="spy-cart-title-count">{{ (typeof cart !== "undefined" && cart && cart.item_count != null)
+  ? " (" + cart.item_count + ")" : "" }}</span>
+```
+
+Verified on the storefront preview:
+
+| Cart | Title |
+|---|---|
+| 1 line, qty 2 | `YOUR CART (2)` |
+| 1 line, qty 3 | `YOUR CART (3)` |
+| empty | `YOUR CART (0)` |
+
+**It is `cart.item_count`, i.e. total quantity — not the line count.** Seeding one line at qty 2 and
+again at qty 3 is what proved that; a line-count binding would have shown `(1)` both times. This matches
+the bag badge, which also counts units.
+
+**The `!= null` test matters.** A truthiness test renders a bare `YOUR CART` on an empty cart, but
+spec §6 keeps `Your Cart (0)` with the header and footer still present. That bug is invisible in any
+test that has items in the cart.
+
+**Heading level needed no work** — Rebuy already defaults the title to **H2**, which is what the spec and
+the one-H1-per-page rule require. Confirmed rendered as `H2`.
+
+### Where this lives
+
+In the **Rebuy admin, not git** — the second component template after `SPY cart items - read-only
+quantity`. Rebuy keeps a Previous Templates history on each, so both are revertible there.
