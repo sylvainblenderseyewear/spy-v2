@@ -201,6 +201,7 @@ export default class PaginatedList extends Component {
     }
 
     grid.append(...nextPageItemElements);
+    this.#dedupeGroups();
 
     // Cards without a gallery ref (grouped PLP) never build the helper
     this.#aspectRatioHelper?.processNewElements();
@@ -243,11 +244,13 @@ export default class PaginatedList extends Component {
 
     // Prepend the new elements
     grid.prepend(...previousPageItemElements);
+    this.#dedupeGroups();
 
     this.#aspectRatioHelper?.processNewElements();
 
-    // Calculate and adjust scroll position to maintain the same view
-    if (firstElement) {
+    // Calculate and adjust scroll position to maintain the same view.
+    // The anchor may be a duplicate the dedupe just removed, so check it is still in the page.
+    if (firstElement?.isConnected) {
       const newHeight = firstElement.getBoundingClientRect().top + getScrollTop();
       const heightDiff = newHeight - oldHeight;
       scrollTo({
@@ -263,6 +266,30 @@ export default class PaginatedList extends Component {
     requestIdleCallback(() => {
       this.#fetchPage('previous');
     });
+  }
+
+  /**
+   * Keeps one card per model once pages sit in the same grid.
+   *
+   * Liquid never sees more than its own 50 products, so a model whose colourways
+   * span two pages gets rendered on both. Each page is in the merchant's order on
+   * its own, so the first copy is the right one and the rest go.
+   *
+   * Opt-in via `dedupe-groups`, since only the grouped PLP folds colourways.
+   */
+  #dedupeGroups() {
+    if (!this.hasAttribute('dedupe-groups')) return;
+
+    const { grid } = this.refs;
+    if (!grid) return;
+
+    const seen = new Set();
+    for (const card of Array.from(grid.children)) {
+      const key = card.getAttribute('data-group-key');
+      if (!key) continue;
+      if (seen.has(key)) card.remove();
+      else seen.add(key);
+    }
   }
 
   /**
@@ -314,12 +341,13 @@ export default class PaginatedList extends Component {
     const anchorTopBefore = anchor ? anchor.getBoundingClientRect().top + scrollTopBefore : 0;
 
     grid.prepend(...earlierCards);
+    this.#dedupeGroups();
 
     this.#aspectRatioHelper?.processNewElements();
 
     // Only hold the shopper's place if they already had one — a freshly typed
     // `?page=3` stays at the top, so the list reads from the first product.
-    if (scrollTopBefore > 0 && anchor) {
+    if (scrollTopBefore > 0 && anchor?.isConnected) {
       const anchorTopAfter = anchor.getBoundingClientRect().top + getScrollTop();
       scrollTo({ top: scrollTopBefore + (anchorTopAfter - anchorTopBefore), behavior: 'instant' });
     }

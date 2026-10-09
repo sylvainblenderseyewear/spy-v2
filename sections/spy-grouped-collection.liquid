@@ -63,6 +63,8 @@
     infinite-scroll="false"
     {% comment %} ?page=N restores pages 1..N, so a "More results" URL survives a reload {% endcomment %}
     backfill-pages
+    {% comment %} A model whose colourways span two pages renders twice; the stitcher drops the later copy {% endcomment %}
+    dedupe-groups
   >
     {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
 
@@ -117,37 +119,33 @@
             assign group_keys = groups[0] | split: sep
             assign group_counts = groups[1] | split: sep
 
-            # One page holds every product there is to group, so first-seen-wins is
-            # exact and costs nothing. Past that, only the model collection can keep
-            # a model off a second page.
-            assign model_mode = false
-            if pager.pages > 1
-              assign model_mode = true
-            endif
-
-            # Keys of groups holding at least one in-stock colourway, so PAGE mode
-            # can front the model with something a shopper can actually buy
+            # First-seen-wins, on every page. The merchant's order decides which
+            # colourway fronts a model, so dragging any Discord to the top puts
+            # Discord on top. A model with colourways on two pages renders on both;
+            # `dedupe-groups` drops the later copy once the pages are stitched.
+            # Picking the representative from the model collection instead got the
+            # order wrong: that collection is sorted best-selling, not by hand.
+            # Keys of groups holding at least one in-stock colourway, so a model is
+            # fronted with something a shopper can actually buy
             assign in_stock_keys = sep
-            unless model_mode
-              for product in page_products
-                unless product.available
-                  continue
-                endunless
-                capture group_name
-                  render 'spy-group-name', product: product
-                endcapture
-                assign group_name = group_name | strip
-                if group_name == ''
-                  assign group_key = 'ungrouped-' | append: product.id
-                else
-                  assign group_key = group_name | handleize
-                endif
-                assign probe = sep | append: group_key | append: sep
-                unless in_stock_keys contains probe
-                  assign in_stock_keys = in_stock_keys | append: group_key | append: sep
-                endunless
-              endfor
-            endunless
+            for product in page_products
+              unless product.available
+                continue
+              endunless
+              capture group_name
+                render 'spy-group-name', product: product
+              endcapture
+              assign group_name = group_name | strip
+              if group_name == ''
+                assign group_key = 'ungrouped-' | append: product.id
+              else
+                assign group_key = group_name | handleize
+              endif
+              assign probe = sep | append: group_key | append: sep
+              unless in_stock_keys contains probe
+                assign in_stock_keys = in_stock_keys | append: group_key | append: sep
+              endunless
+            endfor
 
             assign rendered_keys = sep
             assign card_index = 0
@@ -184,25 +182,17 @@
               assign probe = sep | append: group_key | append: sep
 
               capture model_facts
-                render 'spy-model-collection-facts', product: product, group_name: group_name, want_first: model_mode
+                render 'spy-model-collection-facts', product: product, group_name: group_name
               endcapture
               assign model_facts = model_facts | strip | split: '~^~'
               assign model_total = model_facts[0] | plus: 0
-              # plus: 0 so the captured string compares as a number; ids are never 0
-              assign model_first_id = model_facts[1] | plus: 0
 
               # Does this colourway get to stand for the model?
               assign is_representative = true
-              if model_mode and model_first_id > 0
-                unless model_first_id == product.id
-                  assign is_representative = false
-                endunless
-              else
-                if rendered_keys contains probe
-                  assign is_representative = false
-                elsif product.available == false and in_stock_keys contains probe
-                  assign is_representative = false
-                endif
+              if rendered_keys contains probe
+                assign is_representative = false
+              elsif product.available == false and in_stock_keys contains probe
+                assign is_representative = false
               endif
             -%}
 
