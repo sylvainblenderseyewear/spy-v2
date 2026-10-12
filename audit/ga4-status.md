@@ -1,6 +1,6 @@
 # GA4 + server-side GTM — status and remaining work
 
-Last checked: **8 Oct 2026**. **Launch is 1 Nov — 24 days out** (moved from 12 Oct on 6 Oct).
+Last checked: **12 Oct 2026** (see **Verification run — 12 Oct**). **Launch is 1 Nov — 24 days out** (moved from 12 Oct on 6 Oct).
 
 The tracking is built and verified end to end through our own domain, consent included: the opt-in
 rewrite of 29 Sep was audited on 2 Oct and measured again on 5 Oct — see **Verification run — 5 Oct**.
@@ -222,6 +222,33 @@ Then read `gcs` in the Payload tab of any `collect` request: `G111` = granted, `
 send you chasing a bug that is not there.
 
 ---
+
+## Verification run — 12 Oct (live store, Shopify admin, GA4, Tag Manager)
+
+**End to end: working.**
+- **Code:** the deployed pixel (read from its sandbox frame) matches `audit/ga4-custom-pixel.js` line for line.
+- **Accept:** all hits went to `sgtm.spyoptic.com`, status 200, with `gcs=G111` and `gcd=13r3r3r3r5l1` (consent mode v2, all four signals updated to granted).
+- **Before a click:** 0 hits.
+- **Decline:** the pixel never loads; 0 gtag.js and 0 hits.
+- **Arrived in GA4:** confirmed in Realtime, and all 15 event types appear under Admin → Events in the last 28 days.
+- **Testing trap:** GA4's bot filter drops `HeadlessChrome` traffic (200 at sgtm, nothing in Realtime). Automated checks must send a normal Chrome user agent.
+
+| | Checked | Result |
+|---|---|---|
+| 1 | Analytics-only consent (Performance on, Targeting off) | ❌ **0 hits.** Shopify holds `analytics: yes, marketing: no`, yet the pixel never loads. The pixel's Permission requires **Marketing + Analytics** and Data sale is "qualifies as data sale". Fix: Permission → Analytics only, since the code already denies ad signals |
+| 2 | `add_shipping_info` | ⚠️ Fires on checkout **load**, because one-page checkout pre-selects free Standard shipping. It fires **again** on every method change (seen: load + Express). Value stays 220 without the $15 Express. Funnel step ≈ `begin_checkout` |
+| 3 | `shipping_tier` | ❌ Still never sent. Shopify docs: `shippingLine` is `ShippingRate {price}` only; the name is `checkout.delivery.selectedDeliveryOptions[].title` |
+| 4 | `payment_type` / `purchase` | 🚫 **Production still can't take payments** ("This store can't accept payments right now", Pay now disabled; `supportedDigitalWallets: []`). Your account has no access to Settings → Payments |
+| 5 | `view_item_list` | ⚠️ Has 20 items with prices but no `currency` |
+| 6 | Promotion names | ⚠️ `promotion_name` holds CTA text ("LEARN MORE", "SHOP HAPPY BOOST") or the section type ("feature_link_banner") |
+| 7 | Staging | ❌ The `spydevsylv` pixel (connected) uses `TAG_ID = 'G-1F4T2NDY34'` and the same tagging server |
+| 8 | Time zones | ❌ GA4 reports in **Los Angeles**, Shopify is **America/New_York**. Daily revenue won't reconcile |
+| 9 | Stream URL / internal traffic | ❌ Still `https://www.spyoptic.com/us/`. Google tag internal traffic: **"No rules yet"**; filter Internal Traffic = Testing. No Developer-traffic filter |
+| 10 | Custom insight "purchases below 1" | ❌ None exist. The panel asks for edit/collaborate rights, so confirm the account's current role (change history shows edits by you on 14 and 23 Sep) |
+| 11 | Google tag "user-provided data" | ⚠️ ON with auto-detect of email, phone and address. GA4's own user-provided data collection is OFF, as is Google signals |
+| 12 | User Data Collection Acknowledgement | ⚠️ Not accepted. It's needed before audiences can be shared with Google Ads |
+| 13 | Server container `GTM-K3RX42CH` | ✅ v3 live = latest, 0 pending changes. 1 GA4 tag (G-1F4T2NDY34, All Events, all params), 1 GA4 (Web) client on defaults |
+| 14 | Other settings | ✅ Retention 14 months · enhanced measurement off · key event `purchase` · BigQuery linked · referral exclusions (paypal, shop.app, shopify, stripe) · session timeout 30 min · no event modifications · sgtm `/healthy` 200, certificate valid to 16 Dec |
 
 ## Verification run — 5 Oct
 
