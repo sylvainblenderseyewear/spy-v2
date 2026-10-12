@@ -4,8 +4,11 @@
   A  Rebuy BLOCKED  -> the theme drawer must still work. This is the whole point
                        of the consent fallback, so it is tested by actually
                        blocking rebuyengine.com, not by reasoning about it.
-  B  Rebuy ALLOWED  -> Smart Cart takes over; Escape must NOT close it, an
-                       outside click must, and the console must stay clean.
+  B  Rebuy ALLOWED  -> Smart Cart takes over, Escape and an outside click both
+                       close it, and the console must stay clean.
+
+  Smart Cart is published (12 Oct), so no preview_smart_cart parameter. The
+  full live check, decline included, is scripts/production-cart-check.mjs.
 
   Run:  node scripts/rebuy-cart-behaviour.mjs        (needs SPY_PASSWORD in .env)
         HEADED=1 to watch
@@ -23,14 +26,13 @@ try {
 const STORE = process.env.SPY_STORE || 'https://spyoptic-com.myshopify.com';
 const PASSWORD = process.env.SPY_PASSWORD || '';
 const THEME_ID = process.env.THEME_ID || '189382623539';
-const CART_ID = process.env.CART_ID || '37798';
 
 if (!PASSWORD) {
   console.error('SPY_PASSWORD is not set. Add it to .env.');
   process.exit(2);
 }
 
-const url = `${STORE}/?preview_theme_id=${THEME_ID}&preview_smart_cart=${CART_ID}&cart_version=2`;
+const url = `${STORE}/?preview_theme_id=${THEME_ID}`;
 const browser = await chromium.launch({ channel: 'chrome', headless: process.env.HEADED !== '1' });
 const results = [];
 let failures = 0;
@@ -149,21 +151,23 @@ async function seedCart(page) {
   const engine = await page.evaluate(() => document.documentElement.getAttribute('data-cart-engine'));
   check('B engine switches to "rebuy"', engine === 'rebuy', `got ${engine}`);
 
-  const visible = () => page.evaluate(() => {
-    const el = document.querySelector('#rebuy-cart');
-    return !!el && getComputedStyle(el).display !== 'none' && el.getBoundingClientRect().width > 0;
-  });
+  // #rebuy-cart stays display:block when closed; only is-visible toggles
+  const visible = () => page.evaluate(() => Boolean(document.querySelector('#rebuy-cart.is-visible')));
   check('B Smart Cart is open', await visible());
 
-  // The source cart ignores Escape
+  // Esc closes the published cart, like our theme drawer (kept for WCAG)
   await page.keyboard.press('Escape');
   await page.waitForTimeout(1500);
-  check('B Escape does NOT close it', await visible());
+  check('B Escape closes it', !(await visible()));
 
-  // NOT TESTED: outside-click-to-close. Rebuy's preview mode holds the cart
-  // open — it is already open on load without viewcart=true, and even a direct
-  // Rebuy.SmartCart.hide() does not close it. So the preview cannot tell us
-  // whether outside click works. Verify once Smart Cart is published.
+  // Outside click closes it, like the source
+  await page.locator('[data-testid="cart-drawer-trigger"]:visible').first().click({ timeout: 15000 });
+  await page.waitForTimeout(2500);
+  check('B bag reopens it', await visible());
+  check('B theme drawer stays shut', !(await page.evaluate(() => !!document.querySelector('theme-drawer#cart-drawer[open]'))));
+  await page.mouse.click(400, 450);
+  await page.waitForTimeout(1500);
+  check('B outside click closes it', !(await visible()));
 
   check('B no errors from our code', errors.length === 0, errors.slice(0, 2).join(' | '));
   console.log(`B third-party console errors (not asserted): ${context.__thirdParty.length}`);

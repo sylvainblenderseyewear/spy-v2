@@ -11,7 +11,9 @@
 
   Run:
       node scripts/rebuy-cart-responsive.mjs
-      HEADED=1 to watch · THEME_ID=... CART_ID=... to override
+      HEADED=1 to watch · THEME_ID=... to override
+
+  Smart Cart is published (12 Oct), so no preview_smart_cart parameter.
 
   Exits non-zero if any width drifts.
 */
@@ -30,7 +32,6 @@ try {
 const STORE = process.env.SPY_STORE || 'https://spyoptic-com.myshopify.com';
 const PASSWORD = process.env.SPY_PASSWORD || '';
 const THEME_ID = process.env.THEME_ID || '189382623539';
-const CART_ID = process.env.CART_ID || '37798';
 const WIDTHS = (process.env.WIDTHS || '1440,768,390').split(',').map(Number);
 
 if (!PASSWORD) {
@@ -38,7 +39,7 @@ if (!PASSWORD) {
   process.exit(2);
 }
 
-const url = `${STORE}/?preview_theme_id=${THEME_ID}&preview_smart_cart=${CART_ID}&viewcart=true&cart_version=2`;
+const url = `${STORE}/?preview_theme_id=${THEME_ID}&viewcart=true`;
 const browser = await chromium.launch({ channel: 'chrome', headless: process.env.HEADED !== '1' });
 let failures = 0;
 const rows = [];
@@ -82,12 +83,12 @@ for (const width of WIDTHS) {
     if (!root) return null;
     const panel = root.querySelector('.rebuy-cart__flyout');
     if (!panel) return null;
-    const body = getComputedStyle(document.body);
     const wrapper = document.querySelector('.page-wrapper');
     return {
       panel: Math.round(panel.getBoundingClientRect().width),
+      // the closed panel is still 320 wide, just off-screen
+      open: root.classList.contains('is-visible'),
       viewport: window.innerWidth,
-      bodyOverflow: body.overflow,
       wrapperMargin: wrapper ? getComputedStyle(wrapper).marginRight : '0px',
       engine: document.documentElement.getAttribute('data-cart-engine'),
     };
@@ -110,11 +111,22 @@ for (const width of WIDTHS) {
     continue;
   }
 
+  // No lock = a real wheel behind the open cart moves the page. A computed
+  // overflow check passed on 8 Oct while every desktop page was frozen.
+  const outside = Math.round(Math.min(width * 0.3, (width - 320) / 2));
+  await page.mouse.move(outside, 700);
+  await page.mouse.wheel(0, 600);
+  await page.waitForTimeout(1200);
+  const scrolled = await page.evaluate(
+    () => (document.querySelector('.page-wrapper')?.scrollTop || 0) + window.scrollY > 0
+  );
+
   // Spec: 320 at every width, never full-bleed, overlay only — no push, no lock
   const checks = {
+    'cart open': measured.open,
     'panel 320': Math.abs(measured.panel - 320) <= 1,
     'not full-bleed': measured.panel < measured.viewport,
-    'no body lock': measured.bodyOverflow !== 'hidden',
+    'page scrolls behind it': scrolled,
     'no page push': measured.wrapperMargin === '0px',
     'engine rebuy': measured.engine === 'rebuy',
   };

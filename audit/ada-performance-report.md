@@ -252,6 +252,25 @@ Desktop is 82–90 after the fix.
 4. **Still before consent but low risk:** 1 request downloads the Yotpo Loyalty loader file (it's blocked from running and sets no cookies), and Shopify's own analytics requests (consent-aware, no `_shopify_y`/`_shopify_s` cookies).
 5. **US privacy:** banner `saleOfData` is off and `/pages/data-sharing-opt-out` exists (200) but isn't linked. No ad pixels run today. Before Meta/Google Ads/affiliates are added, Legal should decide on a "Your Privacy Choices" link. GPC is honoured (`gpc.enabled = true`).
 
+### Re-check 12 Oct: Rebuy Smart Cart (preview) and the accessiBe licence
+
+**Smart Cart.** First run on the Rebuy preview at 1440, after Accept, with one item in the cart.
+- **Pass:**
+  - `role="dialog"` and `aria-modal="true"`, labelled by `rebuy-cart-title`.
+  - Focus moves to "Close Cart" on open.
+  - Tab stays inside the cart: 25 presses cycled through the cart's own 12 stops.
+  - Every control has a name ("Remove …", "Select … Options", "GO TO CART").
+- **Fail, 1.4.3 contrast:** 4 recommendation buttons use orange text on white at 2.68:1. Our Smart Cart CSS takes this colour from `--color-spy-orange-ui`, so the PM's accessible orange fixes it with no code change.
+
+**Published the same day** (cart 37798 is live). The preview held the cart open, so these could only be tested now. `scripts/production-cart-check.mjs`, 1440 / 768 / 390:
+- **Pass:** Enter on the bag opens it and focus moves in; the X closes it and **focus returns to the bag**; outside click closes it.
+- **Esc closes it.** The preview hid this; the published cart closes on Esc. That matches our theme drawer, which also closes on Esc on purpose (WCAG, see `page-spec-cart-drawer.md`), so it stays.
+- **Fixed on the way:** the bag opened both carts at once, and focus could be left behind the cart after a handover. See `audit/rebuy-smartcart-settings.md`, "Published — 12 Oct".
+
+**accessiBe.** The Shopify store's config returns 404, but SPY already has an active licence for **spyoptic.com** (the old site's config, updated 11 Aug). After the 1 Nov domain switch the store will most likely pick up that licence, so a second plan through the Shopify app is probably not needed. Two things to arrange with accessiBe:
+- Confirm the licence will carry over.
+- Have them clear or redo the site-specific fixes in that config, which target the old SFCC markup (e.g. its search box).
+
 ### Cookie consent — current state (29 Sep, re-read live from production after the admin changes)
 
 | Item | Live value | Status |

@@ -583,3 +583,61 @@ the one-H1-per-page rule require. Confirmed rendered as `H2`.
 
 In the **Rebuy admin, not git** — the second component template after `SPY cart items - read-only
 quantity`. Rebuy keeps a Previous Templates history on each, so both are revertible there.
+
+---
+
+## Published — 12 Oct
+
+Goran asked for it, so cart **37798** was switched **Live** in the editor (top bar → Live → "Yes, enable
+Cart"). Rebuy confirms with "will replace your online store's current shopping cart"; Save stays greyed,
+the switch saves on its own. To roll back: same switch, off.
+
+### What the published cart showed that the preview never could
+
+The preview holds the cart open, so the bag, close and add paths had never run for real. On the live
+theme, after Accept, they exposed four bugs on our side, not Rebuy's:
+
+| Bug | Cause | Fix |
+|---|---|---|
+| **Every desktop page frozen** (wheel scrolled 0px) | `:root[data-cart-engine='rebuy'] .page-wrapper { overflow: visible }`. From 990px Horizon locks `html` and scrolls `.page-wrapper` instead, so this killed the only scroller for anyone who accepted cookies. The 8 Oct "scrollableNow: true" was a computed-style check, not a real scroll | Removed. The only override left is `body.rebuy-cart-visible { overflow: visible }`, which undoes Rebuy's one lock (`.rebuy-cart-visible{overflow:hidden !important}` in its `global.css`) |
+| **Bag opened both carts** | Horizon's `on:click` delegate listens on `document` in the **capture** phase and registers first, so our `stopPropagation()` on `document` ran too late | Intercept on `window` capture, which runs before anything on `document` |
+| **Handover missed on slow devices** | We listened for `rebuy:ready` (Rebuy fires `rebuy.ready`) and `rebuy:cart.ready` (fires *before* `SmartCart` exists). Only the 500ms poll worked, and it gave up at 20s | Listen for `rebuy:smartcart.ready`; poll is a 60s backup |
+| **Two carts after an early add** | Rebuy boots **6–15s after load** (measured, both themes). An add in that window opens the drawer; if Rebuy finishes booting mid-add it opens too | After the handover, the drawer's `open()` routes to Smart Cart, and Smart Cart opening closes a drawer that is still up, then takes focus back |
+
+Also: from 990px Rebuy's fixed backdrop sits outside `.page-wrapper`, so a wheel over it went nowhere.
+The source never locks, so `spy-cart-handoff.js` passes those wheel events on to `.page-wrapper`.
+
+**Panel geometry, also wrong since 8 Oct** (the old checks measured width, never position):
+
+| | Before | Source / now |
+|---|---|---|
+| 1440 | `x1110 y10 320x880`, Rebuy's `margin: 10px` kept, page header showing through the gap | `x1120 y0 320x900` |
+| 390 | `x0`, **left** side: Rebuy turns the panel into a full-width bottom sheet under 480px and our 320 pinned it left | `x70 y0 320x900` |
+| Slide | none: we set `transition: transform` but Rebuy moves it with `right` / `top` | `translateX(100%)` → `none`, 0.426s source easing |
+| Header rule | 242 wide, stopped short of the close button | full row, `320x41`, `1px #e6e6e6` |
+
+Closed, Rebuy sets `aria-hidden="true"` on the panel and Tab can't reach it, so the off-screen panel is
+safe for keyboard users.
+
+**Rebuy's real event names** (logged live, in order): `rebuy.beforeLoaded` · `rebuy:tracker.ready` ·
+`rebuy:cart.init` · `rebuy:cart.change` · `rebuy:cart.ready` · `rebuy.loaded` · `rebuy:smartcart.init` ·
+`rebuy:smartcart.ready` · `rebuy.ready` · then `rebuy:smartcart.show` / `rebuy:smartcart.hide`.
+
+### Verified
+
+`scripts/production-cart-check.mjs` rewritten for the published state: a real **Decline** (0 Rebuy
+requests, theme drawer works) and a real **Accept** (one cart, scroll, outside click, keyboard, focus,
+PDP add, handover). Run against the dev theme with the fixes, `THEME_ID=189382623539`:
+
+| Width | Result |
+|---|---|
+| 1440 | 33/33 |
+| 768 | 33/33 |
+| 390 | 33/33 (after the panel fix) |
+
+Panel geometry measured on its own at all three widths (open, mid-slide, closed): matches the spec.
+
+**Esc closes the published cart** (the preview hid that). Same as our theme drawer, kept for WCAG.
+
+Too many headless runs in a row make the storefront answer **429 "Just a moment…"** to automated
+Chrome (not to a normal browser). It clears on its own; space the runs out.

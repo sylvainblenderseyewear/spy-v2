@@ -3123,13 +3123,25 @@ product-recommendations .slideshow-control svg {
    Target: audit/page-spec-cart-drawer.md §10 — the measured spyoptic.com cart.
    Scoped to #rebuy-cart so the theme drawer fallback is untouched. */
 
-/* Panel: 320 at every width, overlay only, square corners */
+/* Panel: 320, flush right and full height at every width, like the source.
+   Rebuy floats it 10px off the edges, and under 480px turns it into a
+   full-width bottom sheet, which our 320 then pinned to the LEFT. So pin it
+   ourselves and slide it with the source's transform instead of Rebuy's right/top. */
 #rebuy-cart .rebuy-cart__flyout {
+  inset: 0 0 0 auto !important;
+  margin: 0 !important;
   width: 320px !important;
   max-width: 320px !important;
+  height: auto !important;
+  max-height: none !important;
   border-radius: 0 !important;
   border-left: 0 !important;
+  transform: translateX(100%) !important;
   transition: transform 426ms cubic-bezier(0.5, 0.25, 0, 1) !important;
+}
+
+#rebuy-cart.is-visible .rebuy-cart__flyout {
+  transform: none !important;
 }
 
 /* Source never dims the page behind the cart */
@@ -3137,16 +3149,12 @@ product-recommendations .slideshow-control svg {
   background: transparent !important;
 }
 
-/* An overlay cart must not shove the page or lock scrolling. Rebuy locks the
-   BODY, not .page-wrapper, so both need clearing — the source never locks. */
-:root[data-cart-engine='rebuy'] .page-wrapper {
-  margin-right: 0 !important;
+/* The source never locks scroll. Rebuy locks body with
+   `.rebuy-cart-visible { overflow: hidden }` while open, so undo only that.
+   Never touch .page-wrapper: from 990px it IS the page scroller, and making
+   it overflow: visible froze every desktop page. */
+:root[data-cart-engine='rebuy'] body.rebuy-cart-visible {
   overflow: visible !important;
-}
-
-:root[data-cart-engine='rebuy'] body {
-  overflow: visible !important;
-  position: static !important;
 }
 
 /* Header: 41px tall with a hairline rule */
@@ -3273,12 +3281,16 @@ product-recommendations .slideshow-control svg {
   text-transform: uppercase !important;
 }
 
-/* Header bar: 41px with the source's hairline rule. Rebuy leaves this wrapper
-   unclassed, so reach it through the title it contains. */
-#rebuy-cart div:has(> .rebuy-cart__title) {
-  min-height: 41px !important;
-  padding: 8px 16px !important;
+/* Header bar: 41px with the source's hairline rule. Rebuy leaves these
+   wrappers unclassed, so reach them through the title. The rule goes on the
+   full-width row, so it runs under the close button too (spec: 319x41). */
+#rebuy-cart div:has(> div > .rebuy-cart__title) {
   border-bottom: 1px solid #e6e6e6 !important;
+}
+
+#rebuy-cart div:has(> .rebuy-cart__title) {
+  min-height: 40px !important;
+  padding: 8px 16px !important;
   align-items: center !important;
 }
 
