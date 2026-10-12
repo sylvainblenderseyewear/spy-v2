@@ -229,11 +229,16 @@ analytics.subscribe('collection_viewed', (event) => {
   setPage(event);
   const c = event.data.collection;
   if (!c) return;
-  gtag('event', 'view_item_list', {
+  const variants = (c.productVariants || []).slice(0, 20);
+  const params = {
     item_list_id: c.id,
     item_list_name: c.title,
-    items: (c.productVariants || []).slice(0, 20).map((v) => item(v, 1)),
-  });
+    items: variants.map((v) => item(v, 1)),
+  };
+  // GA4 wants a currency whenever items carry a price
+  const currency = (variants[0] && variants[0].price && variants[0].price.currencyCode) || shopCurrency();
+  if (currency) params.currency = currency;
+  gtag('event', 'view_item_list', params);
 });
 
 analytics.subscribe('product_viewed', (event) => {
@@ -300,24 +305,74 @@ analytics.subscribe('checkout_started', (event) => {
   });
 });
 
+function shopCurrency() {
+  const shop = init && init.data && init.data.shop;
+  return (shop && shop.paymentSettings && shop.paymentSettings.currencyCode) || '';
+}
+
+/*
+  The shipping method name sits on the delivery option. `shippingLine` only
+  has a price, which is why shipping_tier never arrived before.
+*/
+function shippingTier(c) {
+  const option = ((c.delivery && c.delivery.selectedDeliveryOptions) || [])[0];
+  return (option && option.title) || '';
+}
+
+// Codes the buyer typed in, not automatic discounts
+function couponCodes(c) {
+  return (c.discountApplications || [])
+    .filter((d) => d.type === 'DISCOUNT_CODE' && d.title)
+    .map((d) => d.title)
+    .join(',');
+}
+
+/*
+  Remember which checkout steps were already counted. The checkout page can
+  reload (back from PayPal, a refresh), so keep it for the tab session too.
+  If storage is blocked, the in-memory guard still covers this page.
+*/
+const counted = new Set();
+
+async function firstTime(step, token) {
+  const key = 'spy_ga4_' + step + '_' + (token || 'checkout');
+  if (counted.has(key)) return false;
+  counted.add(key);
+  try {
+    if (await browser.sessionStorage.getItem(key)) return false;
+    await browser.sessionStorage.setItem(key, '1');
+  } catch (e) {
+    // storage not available
+  }
+  return true;
+}
+
 /*
   The next two fill GA4's built-in checkout funnel. Without them the report
   jumps from begin_checkout straight to purchase, so a drop-off at shipping
   looks the same as one at payment.
 
-  shipping_tier and payment_type are read defensively: Shopify does not promise
-  those fields on every checkout, and an `undefined` param is worse than none.
+  Optional params are only added when Shopify sends them: an `undefined`
+  param is worse than none.
 */
-analytics.subscribe('checkout_shipping_info_submitted', (event) => {
+
+/*
+  One-page checkout picks the free Standard rate as it loads, and Shopify
+  sends this event again on every change after that. Count the step once per
+  checkout, or the funnel shows more shipping steps than checkouts. The method
+  the buyer ends up with goes on the purchase.
+*/
+analytics.subscribe('checkout_shipping_info_submitted', async (event) => {
   setPage(event);
   const c = event.data.checkout;
   if (!c || !c.totalPrice) return;
+  if (!(await firstTime('shipping', c.token))) return;
   const params = {
     currency: c.currencyCode,
     value: Number(c.totalPrice.amount),
     items: (c.lineItems || []).map((li) => item(li.variant, li.quantity)),
   };
-  const tier = c.shippingLine && c.shippingLine.title;
+  const tier = shippingTier(c);
   if (tier) params.shipping_tier = tier;
   gtag('event', 'add_shipping_info', params);
 });
@@ -340,7 +395,7 @@ analytics.subscribe('checkout_completed', (event) => {
   setPage(event);
   const c = event.data.checkout;
   if (!c || !c.totalPrice) return;
-  gtag('event', 'purchase', {
+  const params = {
     // Same ID everywhere, or the order is counted twice.
     transaction_id: (c.order && String(c.order.id)) || c.token,
     currency: c.currencyCode,
@@ -348,7 +403,13 @@ analytics.subscribe('checkout_completed', (event) => {
     tax: Number(c.totalTax && c.totalTax.amount) || 0,
     shipping: Number(c.shippingLine && c.shippingLine.price.amount) || 0,
     items: (c.lineItems || []).map((li) => item(li.variant, li.quantity)),
-  });
+  };
+  // The method actually paid for, which add_shipping_info can't know yet
+  const tier = shippingTier(c);
+  if (tier) params.shipping_tier = tier;
+  const coupon = couponCodes(c);
+  if (coupon) params.coupon = coupon;
+  gtag('event', 'purchase', params);
 });
 
 /* ---------- promo banners ---------- */
