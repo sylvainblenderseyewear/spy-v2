@@ -223,6 +223,28 @@ send you chasing a bug that is not there.
 
 ---
 
+## Follow-up — 13 Oct (checked as goran@ in the browser)
+
+Every row of the 12 Oct run below was re-checked and holds. Four things are new.
+
+| | Finding | Evidence |
+|---|---|---|
+| 1 | **`purchase` was already proven on production.** 6 purchases, **$1,490.00**, from `spyoptic-com.myshopify.com` on 17, 18 and 21 Sep: the test-mode orders `spy1001`–`spy1006`. It happened before BigQuery existed, so nobody saw it. The $1,490 stays in the property for good: report from launch day | GA4 Events report, 14–21 Sep, secondary dimension Hostname |
+| 2 | **GA4 role unclear.** You made edits on 14 Sep (retention) and 23 Sep (BigQuery link). Today Custom insights says *"contact your admin for edit or collaborate rights"*, but the create-filter panel opens with no warning. Not an Administrator either way. **Ask Sylvain to confirm Editor before launch** | Property change history; Custom insights; Data filters |
+| 3 | **Staging runs an older pixel** (`178749680`): 11 events (no promotions), the older consent logic without the Pandectes cookie, no queue cap, and it still sends to `G-1F4T2NDY34`. GA4 now offers a **"Web hostname traffic"** data filter that could block it from the GA4 side | spydevsylv admin; GA4 create-filter panel |
+| 4 | **BigQuery weekend gaps are fine.** GA4 has 0 events on 10–11 Oct, so no table was written | GA4 Events report, 10–12 Oct |
+
+**Pixel fix, written and tested — staged in admin, not saved yet.**
+
+- `add_shipping_info` once per checkout (in-memory plus `browser.sessionStorage`), with `shipping_tier` from `checkout.delivery.selectedDeliveryOptions[].title`
+- `purchase` gets `shipping_tier` (the method actually paid for) and `coupon` (`discountApplications` of type `DISCOUNT_CODE`)
+- `view_item_list` gets `currency`, falling back to the shop currency
+- `scripts/ga4-pixel-test.mjs` covers this: 14/14 pass, and the old pixel fails exactly the 7 new checks
+
+In Shopify admin the new code and **Permission: Analytics only** (Marketing unticked, Data sale untouched) are entered and verified identical to git, but **Save was blocked by Claude Code's production-deploy guard**. Goran saves it by hand. Then re-test: analytics-only consent loads the pixel; one `add_shipping_info` per checkout with `shipping_tier` in Realtime.
+
+Not done, needs a decision: banner names (#6 below) are theme content, not pixel code. Either give every banner a heading or add a "Promotion name" setting.
+
 ## Verification run — 12 Oct (live store, Shopify admin, GA4, Tag Manager)
 
 **End to end: working.**
