@@ -2528,10 +2528,17 @@ product-recommendations .slideshow-control svg {
 }
 
 
-/* ── Yotpo reviews widget: its blue text fails contrast (1.4.3) ─────────── */
-.yotpo .yotpo-logo-title,
-.yotpo .yotpo-nav-wrapper span,
-.yotpo .yotpo-user-name {
+/* ── Yotpo reviews widget: its colours fail contrast (1.4.3) ──────────────
+   Yotpo's admin colour comes as #F27E37 !important on long selectors, so a
+   plain rule loses. :not(#\#) adds an id's weight. Its orange text follows our
+   text orange, so the one theme setting fixes it too; its blue gets an AA blue. */
+.yotpo .yotpo-nav-tab.yotpo-active span:not(#\#),
+.yotpo .yotpo-user-name:not(#\#) {
+  color: var(--color-spy-orange-ui) !important;
+}
+
+.yotpo .yotpo-logo-title:not(#\#),
+.yotpo .yotpo-grouping-reference a:not(#\#) {
   color: var(--color-spy-review-link) !important;
 }
 

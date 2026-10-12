@@ -188,6 +188,50 @@
         event.preventDefault();
         document.querySelector('pandectes-cmp')?.shadowRoot?.querySelector('button.widget')?.click();
       });
+
+      // "Reject all" stops the trackers but leaves their cookies behind, so remove them here.
+      // Also runs on each page load, in case a tracker wrote again before the page changed.
+      (() => {
+        const COOKIES = {
+          analytics: [/^_ga(_|$)/], // GA4
+          marketing: [/^_sp_(id|ses)\./, /^yotpo_pixel$/], // Yotpo (its Snowplow)
+          preferences: [/^_r(uid|session)$/], // Rebuy
+        };
+        const STORAGE = { preferences: ['_renriched', '_ruid', '_rsession'] }; // Rebuy
+
+        // A cookie only goes away with its own domain, so try this host and each parent
+        const expire = (name) => {
+          const parts = location.hostname.split('.');
+          document.cookie = `${name}=; Max-Age=0; path=/`;
+          for (let i = 0; i < parts.length - 1; i++) {
+            document.cookie = `${name}=; Max-Age=0; path=/; domain=.${parts.slice(i).join('.')}`;
+          }
+        };
+
+        const clear = (purposes) => {
+          const names = document.cookie.split(';').map((c) => c.split('=')[0].trim());
+          for (const purpose of purposes) {
+            names.filter((name) => COOKIES[purpose].some((re) => re.test(name))).forEach(expire);
+            for (const key of STORAGE[purpose] || []) {
+              try {
+                localStorage.removeItem(key);
+              } catch {}
+            }
+          }
+        };
+
+        // A choice made on this page
+        document.addEventListener('visitorConsentCollected', ({ detail }) => {
+          clear(Object.keys(COOKIES).filter((purpose) => detail?.[`${purpose}Allowed`] === false));
+        });
+
+        // A choice saved earlier. Only a clear "no" counts; "" means the visitor wasn't asked yet.
+        window.Shopify?.loadFeatures?.([{ name: 'consent-tracking-api', version: '0.1' }], (error) => {
+          if (error) return;
+          const consent = window.Shopify.customerPrivacy?.currentVisitorConsent?.() || {};
+          clear(Object.keys(COOKIES).filter((purpose) => consent[purpose] === 'no'));
+        });
+      })();
     </script>
   </body>
 </html>

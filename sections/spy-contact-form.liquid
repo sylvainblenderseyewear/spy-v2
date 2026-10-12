@@ -84,6 +84,7 @@
     --cf-input-color: {{ s.input_color }};
     --cf-input-border: {{ s.input_border_color }};
     --cf-focus-border: {{ s.focus_border_color }};
+    --cf-note-color: {{ s.note_color }};
     --cf-input-size: {{ s.input_size }}px;
     --cf-input-height: {{ s.input_height }}px;
     --cf-radius: {{ s.corner_radius }}px;
@@ -393,7 +394,7 @@
               accept="{{ s.attachment_accept }}"
             >
             {%- if s.attachment_note != blank -%}
-              <div class="mt-1.5 text-right text-[11px] text-[#8a8a8a]">{{ s.attachment_note }}</div>
+              <div class="mt-1.5 text-right text-[11px] text-[color:var(--cf-note-color)]">{{ s.attachment_note }}</div>
             {%- endif -%}
           </div>
         {%- endif -%}
@@ -749,13 +750,21 @@
       "type": "color",
       "id": "input_border_color",
       "label": "Border",
-      "default": "#cccccc"
+      "info": "Keep it 3:1 on the background, so the field can be seen.",
+      "default": "#8a8a8a"
     },
     {
       "type": "color",
       "id": "focus_border_color",
       "label": "Border on focus",
       "default": "#2c393e"
+    },
+    {
+      "type": "color",
+      "id": "note_color",
+      "label": "Help text",
+      "info": "Small text under a field. Keep it 4.5:1 on the background.",
+      "default": "#6a6c77"
     },
     {
       "type": "range",

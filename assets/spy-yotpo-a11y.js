@@ -17,6 +17,12 @@
     document.querySelectorAll('.yotpo [role="textbox"]:not([contenteditable]):not([aria-label])').forEach((el) => {
       if (!el.textContent.trim()) el.removeAttribute('role');
     });
+    // The review pager is page links in a nav, not a menu. A menu may only hold
+    // menu items, and its arrows are buttons (1.3.1)
+    document.querySelectorAll('.yotpo-pager[role="menu"]').forEach((el) => {
+      el.removeAttribute('role');
+      el.querySelectorAll('[role="menuitem"]').forEach((link) => link.removeAttribute('role'));
+    });
   };
 
   // Batch Yotpo's DOM bursts into one pass per frame; attribute edits don't retrigger childList
