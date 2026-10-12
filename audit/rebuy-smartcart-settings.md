@@ -616,8 +616,29 @@ The source never locks, so `spy-cart-handoff.js` passes those wheel events on to
 | Slide | none: we set `transition: transform` but Rebuy moves it with `right` / `top` | `translateX(100%)` → `none`, 0.426s source easing |
 | Header rule | 242 wide, stopped short of the close button | full row, `320x41`, `1px #e6e6e6` |
 
-Closed, Rebuy sets `aria-hidden="true"` on the panel and Tab can't reach it, so the off-screen panel is
-safe for keyboard users.
+**Correction (same evening):** closed, Rebuy sets `aria-hidden="true"` on `#rebuy-cart` but only parks the
+panel off-screen (its own CSS: `inset: 0 -100% 0 auto`, nothing hides it), so its controls stay in the Tab
+order. On live, Tab after the last page link lands on "Close Cart" at x1698, plus the recommendation links
+and buttons once they have rendered (7 stops), and axe flags `aria-hidden-focus` on every page. The first
+check here said "Tab can't reach it" because it only pressed Tab 6 times from the bag.
+
+**Fixed in `src/tailwind.css`, verified on the dev theme:** the closed panel is `visibility: hidden`,
+switched on by `visibility 0s linear 426ms` so the slide-out still plays with its content. That alone
+left 6 of 10 controls focusable: Rebuy's `global.css` has `.rebuy-widget .splide.is-initialized
+{ visibility: visible }`, which beats the inherited `hidden`. So the cart's carousel gets the same rule
+while closed.
+
+| | Live (before) | Dev theme (after) |
+|---|---|---|
+| Controls in the closed cart that take `.focus()` | Close Cart + recommendations | **0 of 10** (1440 and 390) |
+| Tab after the last page link | "Close Cart", off-screen at x1698 | skips the cart |
+| axe `aria-hidden-focus` | 1 (`#rebuy-cart`) | **0** |
+| Open | | panel and carousel visible, focus on Close |
+| 200ms into the close | | still visible, x1437 at 1440 |
+| Closed | | hidden, focus back on the bag |
+
+Same dev theme: `production-cart-check.mjs` 33/33 at 1440 (final CSS) and 390 (panel rule only),
+`rebuy-cart-behaviour.mjs` 12/12, `rebuy-cart-responsive.mjs` all three widths match the spec.
 
 **Rebuy's real event names** (logged live, in order): `rebuy.beforeLoaded` · `rebuy:tracker.ready` ·
 `rebuy:cart.init` · `rebuy:cart.change` · `rebuy:cart.ready` · `rebuy.loaded` · `rebuy:smartcart.init` ·
@@ -641,3 +662,48 @@ Panel geometry measured on its own at all three widths (open, mid-slide, closed)
 
 Too many headless runs in a row make the storefront answer **429 "Just a moment…"** to automated
 Chrome (not to a normal browser). It clears on its own; space the runs out.
+
+### Checked in a real browser — 12 Oct, evening
+
+Goran's Chrome on the live theme, 1920×889, after a real **Accept** on the banner (set back to Decline
+afterwards, cart left empty as found):
+
+| Check | Result |
+|---|---|
+| Accept mid-page | handover without a reload, about 6s later |
+| Bag click | Smart Cart only, `x1600 y0 320x889`, header row `320x41` + `1px #e6e6e6`, focus on Close |
+| Real wheel, cart open then closed | `.page-wrapper` 0 → 500 → 800 |
+| Outside click · Esc · × | each closes it, focus back on the bag |
+| Keyboard | Enter opens it, 12 Tabs stay inside |
+| PDP add | Smart Cart only, `YOUR CART (1)` + line + subtotal, theme drawer shut |
+| Remove inside the cart | empty state, badge hidden; focus drops to `body`, the next Tab is back inside |
+| Console | no errors |
+
+**Add-to-cart is slow to show.** Rebuy only opens Smart Cart once it has refetched and enriched the
+cart: click → `rebuy:cart.add` +1.5s → `rebuy:cart.change` +3.0s → `smartcart.show` +3.1s. The source
+shows its mini-cart about 1.5s after the add. Until then the shopper only sees the button's tick. It
+always opened; a check at 3s just reads it as "didn't open", and a click in the meantime lands on the
+backdrop when it arrives. `production-cart-check.mjs` now waits for it and prints the time.
+
+How Rebuy opens after an add (read in `SmartCartV2.js`): with **Product form redirect = disabled** it
+never touches the product form. It watches `/cart/add` on the network, refetches, and
+`handleCartChangeEvent` calls `show()` on **any** cart change, even `/cart/clear.js`. `show()` does
+nothing while the cart is visible, and while Smart Cart is still `initializing` it queues the open and
+replays it at ready, so an early bag click is late, not lost. Rebuy has no auto-close; ours is off too
+(`cart_drawer_close_after_add`), so both engines stay open after an add.
+
+Live theme, headless, after the deploy:
+
+| Width | Result |
+|---|---|
+| 1440 | 33/33, PDP add opened after 2.3s |
+| 768 | 33/33 |
+| 390 | 33/33 |
+
+`rebuy-cart-behaviour.mjs` and `rebuy-cart-responsive.mjs` had never run since the publish. The first
+crashed: after the password submit, `waitForLoadState` returns at once (the password page is already
+loaded), so the next `goto` collided with the login redirect. All three scripts now wait for the URL to
+leave `/password`. Behaviour then passed 12/12.
+
+The homepage hero is a broken frame in that Chrome too, but not because of consent: this network's DNS
+sends `player.vimeo.com` to `10.10.7.111`. Check the video from another network.

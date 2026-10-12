@@ -74,7 +74,9 @@ async function open(blockRebuy) {
     input.dispatchEvent(new Event('input', { bubbles: true }));
     (document.querySelector('#login_form') || input.closest('form'))?.submit();
   }, PASSWORD);
-  await page.waitForLoadState('domcontentloaded');
+  // The password page is already loaded, so waitForLoadState returns at once and
+  // the next goto can collide with the login redirect. Wait for the URL instead.
+  await page.waitForURL((u) => !u.pathname.startsWith('/password'), { timeout: 60000 }).catch(() => {});
   await page.waitForTimeout(1500);
 
   await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });

@@ -3144,11 +3144,25 @@ product-recommendations .slideshow-control svg {
   border-radius: 0 !important;
   border-left: 0 !important;
   transform: translateX(100%) !important;
-  transition: transform 426ms cubic-bezier(0.5, 0.25, 0, 1) !important;
+  /* Off-screen alone left its buttons in the Tab order on every page, and
+     Rebuy never hides them. Hide the panel once the slide-out has played. */
+  visibility: hidden !important;
+  transition:
+    transform 426ms cubic-bezier(0.5, 0.25, 0, 1),
+    visibility 0s linear 426ms !important;
 }
 
 #rebuy-cart.is-visible .rebuy-cart__flyout {
   transform: none !important;
+  visibility: visible !important;
+  transition: transform 426ms cubic-bezier(0.5, 0.25, 0, 1) !important;
+}
+
+/* Rebuy's global.css forces its carousels back to visible
+   (.rebuy-widget .splide.is-initialized), so the recommendations need the same */
+#rebuy-cart:not(.is-visible) .rebuy-cart__flyout .splide {
+  visibility: hidden !important;
+  transition: visibility 0s linear 426ms !important;
 }
 
 /* Source never dims the page behind the cart */

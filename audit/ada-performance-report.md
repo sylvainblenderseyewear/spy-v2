@@ -266,6 +266,8 @@ Desktop is 82–90 after the fix.
 - **Pass:** Enter on the bag opens it and focus moves in; the X closes it and **focus returns to the bag**; outside click closes it.
 - **Esc closes it.** The preview hid this; the published cart closes on Esc. That matches our theme drawer, which also closes on Esc on purpose (WCAG, see `page-spec-cart-drawer.md`), so it stays.
 - **Fixed on the way:** the bag opened both carts at once, and focus could be left behind the cart after a handover. See `audit/rebuy-smartcart-settings.md`, "Published — 12 Oct".
+- **Real Chrome, same evening (1920, real keys and mouse):** the same paths pass. Twelve Tabs stay inside the open cart. One Rebuy detail: removing a line drops focus to `body` while the cart stays open. The next Tab goes back inside the cart (Rebuy's trap) and its live region announces the change, so it's minor, and it's Rebuy's code, not ours.
+- **Fail, 2.4.3 / 4.1.2, fixed 13 Oct (verified on the dev theme before the push):** the closed cart is `aria-hidden` but only parked off-screen, so its controls stayed in the Tab order on every page (axe `aria-hidden-focus` on `#rebuy-cart`). The earlier "pass" only tabbed 6 times from the bag. Now the closed panel and its carousel are `visibility: hidden` after the slide-out: 0 of 10 controls focusable, axe 0 at 1440. See `audit/rebuy-smartcart-settings.md`, "Correction".
 
 **accessiBe.** The Shopify store's config returns 404, but SPY already has an active licence for **spyoptic.com** (the old site's config, updated 11 Aug). After the 1 Nov domain switch the store will most likely pick up that licence, so a second plan through the Shopify app is probably not needed. Two things to arrange with accessiBe:
 - Confirm the licence will carry over.

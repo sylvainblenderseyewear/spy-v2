@@ -64,7 +64,9 @@ async function session() {
     input.value = pw;
     (document.querySelector('#login_form') || input.closest('form'))?.submit();
   }, PASSWORD);
-  await page.waitForLoadState('domcontentloaded');
+  // The password page is already loaded, so waitForLoadState returns at once and
+  // the next goto can collide with the login redirect. Wait for the URL instead.
+  await page.waitForURL((u) => !u.pathname.startsWith('/password'), { timeout: 60000 }).catch(() => {});
   await page.waitForTimeout(1500);
   return { context, page, ourErrors, rebuy };
 }
@@ -215,10 +217,14 @@ async function pageScrolls(page, x) {
   // Add to cart on a PDP, once Rebuy owns the cart: Smart Cart, never the drawer
   await go(page, `/products/${handle}`, 0);
   await page.waitForFunction(() => document.documentElement.dataset.cartEngine === 'rebuy', null, { timeout: 60000 });
+  // Rebuy refetches the cart before it opens, about 2-3s after the click
+  const addedAt = Date.now();
   await page.locator(ATC).first().click({ timeout: 15000 });
-  await page.waitForTimeout(4000);
+  await page.waitForFunction(() => document.querySelector('#rebuy-cart.is-visible'), null, { timeout: 10000 }).catch(() => {});
+  const openedIn = ((Date.now() - addedAt) / 1000).toFixed(1);
+  await page.waitForTimeout(800);
   s = await state(page);
-  check('A PDP add opens Smart Cart', s.rebuyOpen, s.title);
+  check('A PDP add opens Smart Cart', s.rebuyOpen, `${s.title} after ${openedIn}s`);
   check('A PDP add leaves the drawer shut', !s.drawerOpen);
   check('A count follows the add', /\(2\)/.test(s.title) && s.badge === '2', `${s.title} / ${s.badge}`);
 
