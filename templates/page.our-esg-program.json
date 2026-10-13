@@ -145,7 +145,7 @@
                     "text": "SECURING A BRIGHTER FUTURE",
                     "level": "h2",
                     "highlight": "",
-                    "highlight_color": "#ee7624",
+                    "highlight_color": "{{ settings.color_palette.color3 }}",
                     "size": 32,
                     "size_mobile": 32,
                     "weight": "700",
@@ -169,7 +169,7 @@
                   "settings": {
                     "text": "<p>We at SPY+ are conscious of our responsabilities with regards to helping the environment and society through our work practice. Today, we seek to not only stop being part of the problem, but also to become part of the solution for society and for our planet.</p><p>ESG has become a major strategic issue for SPY+.</p>",
                     "highlight": "",
-                    "highlight_color": "#ee7624",
+                    "highlight_color": "{{ settings.color_palette.color3 }}",
                     "size": 16,
                     "size_mobile": 16,
                     "weight": "400",

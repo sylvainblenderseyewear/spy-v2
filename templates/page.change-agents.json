@@ -47,7 +47,7 @@
           "type": "_spy-agents-title",
           "settings": {
             "heading": "Meet the Change Agents",
-            "heading_color": "#ee7624",
+            "heading_color": "{{ settings.color_palette.color3 }}",
             "font_size": 26,
             "font_size_mobile": 20,
             "padding_bottom": 20,
@@ -64,7 +64,7 @@
             "row_gap": 6,
             "image_ratio": "1/1",
             "card_background": "#000000",
-            "label_color": "#ee7624",
+            "label_color": "{{ settings.color_palette.color3 }}",
             "label_background": "#000000",
             "label_size": 15,
             "label_size_mobile": 15,

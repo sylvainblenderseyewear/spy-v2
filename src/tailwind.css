@@ -7,7 +7,7 @@
 @theme {
   /* Brand colors */
   --color-spy-orange:  #f57f29; /* brand/nav orange — live .nav-link is #f57d31 */
-  --color-spy-orange-ui: #c85001; /* text/button orange, closest AA to brand (4.56:1); theme setting "Orange for text and buttons" overrides it (source was #f27e37, 2.69:1) */
+  --color-spy-orange-ui: #f27e37; /* text/button orange. Palette color3 in theme settings overrides it. 2.69:1 on white, kept by brand choice; #c05621 passes AA */
   --color-spy-slate:   #2c393e;
   --color-spy-ink:     #1d2a2b; /* header/nav text on the live site */
   --color-spy-gray:    #6a6c77;
@@ -422,7 +422,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     z-index: 2;
     margin: -43.2px 16px 8px;
     padding: 8px 12px;
-    border: 1px solid var(--color-spy-orange);
+    border: 1px solid var(--color-spy-orange-ui);
     border-radius: 0;
     background: #fff;
     color: var(--color-spy-orange-ui);
@@ -454,7 +454,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
      keyboard user lands on an invisible control. WCAG 2.1 AA needs it visible. */
   :is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-quick-view-btn:focus-visible {
     outline: 0;
-    box-shadow: 0 0 0 3.2px color-mix(in srgb, var(--color-spy-orange) 50%, transparent);
+    box-shadow: 0 0 0 3.2px color-mix(in srgb, var(--color-spy-orange-ui) 50%, transparent);
     opacity: 1;
     visibility: visible;
   }
@@ -2218,7 +2218,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   border-radius: 50%;
   background: #fff;
   color: var(--color-spy-orange-ui);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-spy-orange) 60%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-spy-orange-ui) 60%, transparent);
 }
 
 /* The overhang must not open a horizontal scrollbar. */
@@ -2542,6 +2542,35 @@ product-recommendations .slideshow-control svg {
   color: var(--color-spy-review-link) !important;
 }
 
+/* ── Old-site content: its own orange follows the one setting ─────────────
+   Pages and posts moved from the old site set an orange themselves, in style
+   blocks and inline styles, so the theme setting never reached them. Only
+   !important beats an inline style. Drop a rule once its content is cleaned. */
+
+/* Posts set `.blog-content a` in their own style block. One more element in the
+   selector wins that, and still loses to a post's button classes. */
+html .blog-content a {
+  color: var(--color-spy-orange-ui);
+}
+
+:is(.rte, .page-content) :is(a, span)[style*='color:#f27e37' i],
+:is(.rte, .page-content) :is(a, span)[style*='color: #f27e37' i],
+:is(.rte, .page-content) :is(a, span)[style*='color:#f57d31' i],
+:is(.rte, .page-content) :is(a, span)[style*='color: #f57d31' i] {
+  color: var(--color-spy-orange-ui) !important;
+}
+
+/* The Warranty and FAQ bodies keep their orange in a --spy-orange variable */
+.spy-warranty,
+:root:has(.spy-faq-hero) {
+  --spy-orange: var(--color-spy-orange-ui) !important;
+}
+
+/* FAQ link hover had its own fixed orange; shade the setting instead */
+.spy-faq-answer-inner a:hover {
+  color: color-mix(in srgb, var(--color-spy-orange-ui) 82%, #000) !important;
+}
+
 /* ── Store locator (Stockist widget) ──────────────────────────────────────
    Shape mirrors stores.spyoptic.com: a fixed results panel beside a full-bleed
    map, both filling the viewport under the header. Palette is SPY's, not the
@@ -2641,7 +2670,7 @@ product-recommendations .slideshow-control svg {
   --stockist-side-panel-width: var(--spy-locator-panel, 512px) !important;
   --stockist-inset-margin: 0px !important;
   --stockist-desktop-height: 100% !important;
-  --stockist-feature-color: var(--color-spy-orange) !important;
+  --stockist-feature-color: var(--color-spy-orange-ui) !important;
   --stockist-feature-contrast-color: #fff !important;
   --stockist-text-color: var(--color-spy-text) !important;
   --stockist-geolocation-color: var(--color-spy-ink) !important;

@@ -28,6 +28,14 @@
 {%- liquid
   assign s = section.settings
   assign form_id = section.id | prepend: 'SpyContact-'
+
+  # No hover colour set: shift the fill like every other button, so one orange setting moves both
+  assign button_hover = s.button_background_hover
+  if button_hover == blank
+    capture button_hover
+      render 'util-palette-hover-shift', color: s.button_background
+    endcapture
+  endif
 -%}
 
 {%- capture label_class -%}
@@ -412,7 +420,7 @@
             "
             style="
               --cf-btn-bg: {{ s.button_background }};
-              --cf-btn-bg-hover: {{ s.button_background_hover }};
+              --cf-btn-bg-hover: {{ button_hover | strip }};
               --cf-btn-color: {{ s.button_text_color }};
               --cf-btn-height: {{ s.button_height }}px;
               --cf-btn-size: {{ s.button_size }}px;
@@ -728,7 +736,7 @@
       "type": "color",
       "id": "required_color",
       "label": "Required asterisk",
-      "default": "#f57f29"
+      "default": "{{ settings.color_palette.color3 }}"
     },
     {
       "type": "header",
@@ -794,13 +802,13 @@
       "type": "color",
       "id": "button_background",
       "label": "Background",
-      "default": "#f57f29"
+      "default": "{{ settings.color_palette.color3 }}"
     },
     {
       "type": "color",
       "id": "button_background_hover",
       "label": "Background on hover",
-      "default": "#dd6c18"
+      "info": "Leave empty for a darker shade of the background."
     },
     {
       "type": "color",

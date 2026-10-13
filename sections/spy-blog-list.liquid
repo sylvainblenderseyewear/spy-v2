@@ -35,7 +35,7 @@
         <input
           id="spy-blog-search-{{ section.id }}"
           {%- comment -%} rounded-none: Horizon's base.css rounds inputs 4px, the source is square {%- endcomment -%}
-          class="block w-[172px] rounded-none border border-spy-ink bg-white py-2 pl-8 pr-1 text-[13px] leading-[18.2px] text-spy-ink placeholder:text-spy-label focus:outline-none focus-visible:ring-2 focus-visible:ring-spy-orange"
+          class="block w-[172px] rounded-none border border-spy-ink bg-white py-2 pl-8 pr-1 text-[13px] leading-[18.2px] text-spy-ink placeholder:text-spy-label focus:outline-none focus-visible:ring-2 focus-visible:ring-spy-orange-ui"
           type="search"
           name="q"
           value=""
@@ -141,7 +141,7 @@
         {%- if paginate.pages <= 1 -%}
           {%- comment -%} Source prints a single active "1" even with one page {%- endcomment -%}
           <span
-            class="border border-spy-orange bg-spy-orange px-3 py-2 text-[12px] uppercase leading-[16.8px] text-spy-ink"
+            class="border border-spy-orange-ui bg-spy-orange-ui px-3 py-2 text-[12px] uppercase leading-[16.8px] text-spy-ink"
             aria-current="page"
           >
             1
@@ -150,14 +150,14 @@
           {%- for part in paginate.parts -%}
             {%- if part.is_link -%}
               <a
-                class="border border-spy-orange bg-white px-3 py-2 text-[12px] uppercase leading-[16.8px] text-spy-orange-ui transition-colors hover:bg-spy-orange-ui hover:text-white"
+                class="border border-spy-orange-ui bg-white px-3 py-2 text-[12px] uppercase leading-[16.8px] text-spy-orange-ui transition-colors hover:bg-spy-orange-ui hover:text-white"
                 href="{{ part.url }}"
               >
                 {{- part.title -}}
               </a>
             {%- elsif part.title == paginate.current_page -%}
               <span
-                class="border border-spy-orange bg-spy-orange px-3 py-2 text-[12px] uppercase leading-[16.8px] text-spy-ink"
+                class="border border-spy-orange-ui bg-spy-orange-ui px-3 py-2 text-[12px] uppercase leading-[16.8px] text-spy-ink"
                 aria-current="page"
               >
                 {{- part.title -}}

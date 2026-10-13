@@ -52,7 +52,7 @@
             "panel_border_color": "#e0e0e0",
             "row_text_color": "#242424",
             "row_hover_background": "#f7f7f7",
-            "row_hover_text_color": "#f57f29",
+            "row_hover_text_color": "{{ settings.color_palette.color3 }}",
             "active_background": "#000000",
             "active_text_color": "#ffffff"
           }

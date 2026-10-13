@@ -48,6 +48,14 @@
       assign lone_m = true
     endif
   endif
+
+  # No hover colour set: shift the fill like every other button, so one orange setting moves both
+  assign cta_hover = block.settings.cta_background_hover
+  if cta_hover == blank
+    capture cta_hover
+      render 'util-palette-hover-shift', color: block.settings.cta_background
+    endcapture
+  endif
 -%}
 
 <div
@@ -115,7 +123,7 @@
     --rw-text-size-d: {{ block.settings.text_size }}px;
     --rw-text-size-m: {{ block.settings.text_size_mobile }}px;
     --rw-cta-bg: {{ block.settings.cta_background }};
-    --rw-cta-bg-hover: {{ block.settings.cta_background_hover }};
+    --rw-cta-bg-hover: {{ cta_hover | strip }};
     --rw-cta-color: {{ block.settings.cta_color }};
     --rw-cta-size-d: {{ block.settings.cta_size }}px;
     --rw-cta-size-m: {{ block.settings.cta_size_mobile }}px;
@@ -432,13 +440,13 @@
       "type": "color",
       "id": "cta_background",
       "label": "Button background",
-      "default": "#e57e26"
+      "default": "{{ settings.color_palette.color3 }}"
     },
     {
       "type": "color",
       "id": "cta_background_hover",
       "label": "Button background on hover",
-      "default": "#cf6f1d"
+      "info": "Leave empty for a darker shade of the background."
     },
     {
       "type": "color",

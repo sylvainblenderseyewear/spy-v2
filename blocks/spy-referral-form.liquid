@@ -26,6 +26,14 @@
     else
       assign fields_class = stack | append: ' [align-items:center]'
   endcase
+
+  # No hover colour set: shift the accent like every other button, so one orange setting moves both
+  assign accent_hover = block.settings.accent_color_hover
+  if accent_hover == blank
+    capture accent_hover
+      render 'util-palette-hover-shift', color: block.settings.accent_color
+    endcapture
+  endif
 -%}
 
 <div
@@ -42,7 +50,7 @@
     --rf-gap-m: {{ block.settings.gap_mobile }}px;
     --rf-font: {{ block.settings.font }};
     --rf-accent: {{ block.settings.accent_color }};
-    --rf-accent-hover: {{ block.settings.accent_color_hover }};
+    --rf-accent-hover: {{ accent_hover | strip }};
     --rf-border: {{ block.settings.border_color }};
     --rf-text: {{ block.settings.text_color }};
     --rf-placeholder: {{ block.settings.placeholder_color }};
@@ -197,13 +205,13 @@
       "id": "accent_color",
       "label": "Accent",
       "info": "Button fill, plus the label and border on hover or focus.",
-      "default": "#e57e26"
+      "default": "{{ settings.color_palette.color3 }}"
     },
     {
       "type": "color",
       "id": "accent_color_hover",
       "label": "Accent on hover",
-      "default": "#cf6f1d"
+      "info": "Leave empty for a darker shade of the accent."
     },
     {
       "type": "color",

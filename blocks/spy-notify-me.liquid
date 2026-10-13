@@ -19,7 +19,7 @@
     {%- comment -%} Source: white button, orange hairline + orange uppercase label {%- endcomment -%}
     <button
       type="button"
-      class="spy-notify-me__toggle w-full py-3 border border-spy-orange text-spy-orange-ui uppercase font-bold text-[0.8125rem] tracking-[0.06em] bg-transparent cursor-pointer hover:bg-spy-orange-ui hover:text-white transition-colors aria-expanded:hidden"
+      class="spy-notify-me__toggle w-full py-3 border border-spy-orange-ui text-spy-orange-ui uppercase font-bold text-[0.8125rem] tracking-[0.06em] bg-transparent cursor-pointer hover:bg-spy-orange-ui hover:text-white transition-colors aria-expanded:hidden"
       data-spy-notify-toggle
       aria-expanded="false"
       aria-controls="{{ panel_id }}"
@@ -67,7 +67,7 @@
             required
             autocomplete="email"
             {% if form.errors %}aria-invalid="true" aria-describedby="{{ form_id }}-error"{% endif %}
-            class="w-full max-w-[420px] h-10 px-3 border border-[color:var(--color-spy-border)] bg-white text-[14px] text-[color:var(--color-spy-text)] focus:outline-none focus:border-spy-orange"
+            class="w-full max-w-[420px] h-10 px-3 border border-[color:var(--color-spy-border)] bg-white text-[14px] text-[color:var(--color-spy-text)] focus:outline-none focus:border-spy-orange-ui"
           >
 
           <label class="flex items-start gap-2 cursor-pointer text-[14px] leading-5 text-[color:var(--color-spy-text)]">
@@ -76,7 +76,7 @@
               name="contact[consent]"
               value="yes"
               required
-              class="mt-[3px] h-4 w-4 shrink-0 cursor-pointer accent-spy-orange"
+              class="mt-[3px] h-4 w-4 shrink-0 cursor-pointer accent-spy-orange-ui"
             >
             <span>{{ block.settings.consent_text | default: 'I agree to receive a notification by email.' }}<span class="text-[color:var(--color-spy-negative)]">*</span></span>
           </label>

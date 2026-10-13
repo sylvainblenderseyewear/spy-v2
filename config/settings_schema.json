@@ -64,7 +64,10 @@
         "id": "color_palette",
         "default": {
           "background": "#ffffff",
-          "foreground": "#000000"
+          "foreground": "#000000",
+          "color1": "#6a6c77",
+          "color2": "#e5e5e5",
+          "color3": "#f27e37"
         }
       },
       {
@@ -72,11 +75,8 @@
         "content": "SPY orange"
       },
       {
-        "type": "color",
-        "id": "spy_orange_accessible",
-        "label": "Orange for text and buttons",
-        "default": "#c85001",
-        "info": "Used for orange text, links and button fills. Keep it at 4.5:1 or more against white (WCAG AA); #c85001 is the closest pass to the brand orange. The bright brand orange stays on borders and accents."
+        "type": "paragraph",
+        "content": "Orange text, links and button fills all use the orange in the palette above (color3). Change it there and the whole site follows. It is the brand orange #f27e37, which is 2.7:1 on white. If WCAG AA is needed, #c05621 is the closest orange that passes (4.6:1)."
       }
     ]
   },

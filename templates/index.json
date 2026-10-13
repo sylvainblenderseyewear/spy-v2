@@ -207,7 +207,7 @@
             "open_in_new_tab": false,
             "level": "p",
             "highlight": "",
-            "highlight_color": "#ee7624",
+            "highlight_color": "{{ settings.color_palette.color3 }}",
             "size": 35,
             "fluid": false,
             "size_mobile": 35,

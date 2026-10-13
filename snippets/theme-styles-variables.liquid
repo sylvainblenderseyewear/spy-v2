@@ -384,8 +384,8 @@
     /* SPY nav gap (theme-editor controlled) */
     --spy-nav-gap: {{ settings.spy_nav_gap | default: 36 }}px;
 
-    /* SPY text/button orange (theme-editor controlled); must pass AA on white */
-    --color-spy-orange-ui: {{ settings.spy_orange_accessible | default: '#c85001' }};
+    /* SPY text/button orange: palette color3, the one orange setting */
+    --color-spy-orange-ui: {{ settings.color_palette.color3 | default: '#f27e37' }};
 
     /* Opacity */
     --opacity-5: 0.05;
