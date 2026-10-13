@@ -234,14 +234,22 @@ Every row of the 12 Oct run below was re-checked and holds. Four things are new.
 | 3 | **Staging runs an older pixel** (`178749680`): 11 events (no promotions), the older consent logic without the Pandectes cookie, no queue cap, and it still sends to `G-1F4T2NDY34`. GA4 now offers a **"Web hostname traffic"** data filter that could block it from the GA4 side | spydevsylv admin; GA4 create-filter panel |
 | 4 | **BigQuery weekend gaps are fine.** GA4 has 0 events on 10–11 Oct, so no table was written | GA4 Events report, 10–12 Oct |
 
-**Pixel fix, written and tested — staged in admin, not saved yet.**
+**Pixel fix — saved in admin and verified live on 13 Oct.**
 
 - `add_shipping_info` once per checkout (in-memory plus `browser.sessionStorage`), with `shipping_tier` from `checkout.delivery.selectedDeliveryOptions[].title`
 - `purchase` gets `shipping_tier` (the method actually paid for) and `coupon` (`discountApplications` of type `DISCOUNT_CODE`)
 - `view_item_list` gets `currency`, falling back to the shop currency
 - `scripts/ga4-pixel-test.mjs` covers this: 14/14 pass, and the old pixel fails exactly the 7 new checks
 
-In Shopify admin the new code and **Permission: Analytics only** (Marketing unticked, Data sale untouched) are entered and verified identical to git, but **Save was blocked by Claude Code's production-deploy guard**. Goran saves it by hand. Then re-test: analytics-only consent loads the pixel; one `add_shipping_info` per checkout with `shipping_tier` in Realtime.
+Goran saved it by hand on 13 Oct: new code pasted from `audit/ga4-custom-pixel.js`, **Permission: Analytics only** (Marketing unticked, Data sale untouched). Claude Code's production-deploy guard blocks that click, so it stays a manual step.
+
+- **Confirmed from the store's public page:** the pixel is now `scriptVersion` 8 with `privacyPurposes: ["ANALYTICS","SALE_OF_DATA"]`. Before: version 7 with `MARKETING` too.
+- **New code is live, shown by behaviour.** The saved code was not read byte for byte (the pixel's sandbox URL sits behind the store password), but `shipping_tier` and the once-per-checkout count below only exist in the new code.
+- **Analytics-only consent now works.** Goran's test on 13 Oct, Pandectes with Performance only: 51 events of 9 types in Realtime (`page_view` 30, `view_item` 7, `view_promotion` 3, `search` 2, `view_cart` 2, `view_item_list` 2, `add_to_cart` 1, plus `first_visit` and `session_start`). The same setup gave 0 hits on 12 Oct.
+- **Shipping step counted once, with the method.** Goran's second test on 13 Oct, a fresh session: the shipping method was changed twice, and Realtime shows `begin_checkout` 1 and `add_shipping_info` 1, with `shipping_tier` among its parameters (12 events, 9 types). No `add_payment_info`, as expected: no payment was entered.
+- **Product lists carry a currency.** Same test: `view_item_list` shows `currency` = `USD`.
+- **Not tested, needs a real order:** `coupon` and `shipping_tier` on `purchase`. Blocked until the store can take payments.
+- **Still open for Legal:** Data sale is on, so do-not-sell and GPC visitors still get no GA4.
 
 Not done, needs a decision: banner names (#6 below) are theme content, not pixel code. Either give every banner a heading or add a "Promotion name" setting.
 
