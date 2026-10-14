@@ -1,18 +1,17 @@
 {%- comment -%}
-  Only for RX-eligible frames. spec.available_rx controls visibility AND, when it
-  holds a URL, supplies the link for that product.
-  Link priority: product metafield URL → block "RX partner URL" setting → SportRx default.
-  The `always_show` setting is the escape hatch if the metafield is wrong for a given line.
+  Only for RX-eligible frames.
+  - Visibility: shown if spec.available_rx is true, spec.rx_url has a value, or `always_show` is on.
+  - Link priority: product's spec.rx_url → block "Fallback RX partner URL" → SportRx default.
 {%- endcomment -%}
-{%- assign rx_value = closest.product.metafields.spec.available_rx.value -%}
-{%- assign rx_str = rx_value | append: '' -%}
+{%- assign rx_ok = closest.product.metafields.spec.available_rx.value -%}
+{%- assign rx_product_url = closest.product.metafields.spec.rx_url.value | append: '' | strip -%}
 
 {%- assign rx_href = block.settings.rx_url | default: 'https://www.sportrx.com' -%}
-{%- if rx_str contains 'http' -%}
-  {%- assign rx_href = rx_str -%}
+{%- if rx_product_url != blank -%}
+  {%- assign rx_href = rx_product_url -%}
 {%- endif -%}
 
-{%- if rx_value or block.settings.always_show -%}
+{%- if rx_ok or rx_product_url != blank or block.settings.always_show -%}
 <a
   href="{{ rx_href }}"
   class="flex items-center justify-center w-full py-3 mt-8 border border-spy-orange-ui text-spy-orange-ui uppercase font-bold text-[0.8125rem] tracking-[0.06em] no-underline hover:bg-spy-orange-ui hover:text-white transition-colors"
@@ -30,9 +29,9 @@
   "tag": null,
   "settings": [
     { "type": "text", "id": "label", "label": "Label", "default": "Buy in Prescription" },
-    { "type": "url", "id": "rx_url", "label": "Fallback RX partner URL", "info": "Used when the product's spec.available_rx metafield doesn't contain a URL." },
+    { "type": "url", "id": "rx_url", "label": "Fallback RX partner URL", "info": "Used when the product's spec.rx_url metafield is empty." },
     { "type": "checkbox", "id": "open_new_tab", "label": "Open in new tab", "default": true },
-    { "type": "checkbox", "id": "always_show", "label": "Show even if spec.available_rx is empty or false", "default": false }
+    { "type": "checkbox", "id": "always_show", "label": "Show even if spec.available_rx is false and spec.rx_url is empty", "default": false }
   ],
   "presets": [{ "name": "RX Button", "category": "SPY" }]
 }
