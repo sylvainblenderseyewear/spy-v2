@@ -93,6 +93,9 @@
       "block_order": [
         "yotpo_loyalty_rewards_rewards_module_app_block_iMTQcj"
       ],
+      "custom_css": [
+        "div#shopify-block-AMmltTHFidllSZkpja__yotpo_loyalty_rewards_rewards_module_app_block_iMTQcj {max-width: 100%; width: 100%;}"
+      ],
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
