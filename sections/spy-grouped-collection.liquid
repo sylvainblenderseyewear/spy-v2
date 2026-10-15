@@ -54,6 +54,8 @@
   {% endunless %}
   {% if is_search %}
     data-spy-search-products
+    {% comment %} Rebuy draws the results instead (search-header decides) {% endcomment %}
+    class="[html[data-search-engine=rebuy]_&]:hidden"
   {% endif %}
 >
   <results-list

@@ -4523,3 +4523,791 @@ html .blog-content a {
 #rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-media a:focus-visible {
   outline-offset: calc(var(--focus-outline-width) * -2) !important;
 }
+
+/* ── Rebuy Smart Search: search box ────────────────────────────────────────
+   Rebuy draws the box (its "Quick View") and mounts it inside the header.
+   The PM asked for the Blenders layout, so this mirrors their box with our
+   fonts and colours. Rebuy's stylesheets load after ours, hence !important.
+   Reference: audit/search-rebuy-research.md §2.3.
+   Scoped to Rebuy's own id so the theme search bar fallback is untouched. */
+
+/* Our header is 50px, shorter than the 58px field, so let the bar grow */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__container {
+  height: auto !important;
+  min-height: 100% !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__input-container {
+  height: auto !important;
+  padding: 12px 20px !important;
+}
+
+/* Field: hairline ink outline, 8px corners, up to 1300 wide */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__search-input {
+  align-items: center !important;
+  gap: 24px !important;
+  width: 100% !important;
+  max-width: 1300px !important;
+  border: 1px solid var(--color-spy-ink) !important;
+  border-radius: 8px !important;
+  padding: 16px 24px !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__search-input i {
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__search-input input {
+  color: var(--color-spy-ink) !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__search-input input::placeholder {
+  color: var(--color-spy-gray) !important;
+  opacity: 1 !important;
+}
+
+/* Close: Rebuy's glyph is 13px wide, too small to tap */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__close {
+  flex: none !important;
+  width: 44px !important;
+  height: 44px !important;
+  margin-left: 4px !important;
+  color: var(--color-spy-ink) !important;
+}
+
+/* Results panel: flat, full width, content capped like the field */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__overlay {
+  box-shadow: none !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__overlay--wide .rebuy-quick-view__overlay-body {
+  max-width: 1300px !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__container {
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__body-right,
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__results {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 32px !important;
+}
+
+/* Group headings: "Most Searched", "Matching Products" */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__title {
+  font-family: var(--font-heading--family) !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__no-results p {
+  color: var(--color-spy-ink) !important;
+}
+
+/* Collection and page links as chips */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__collection-list,
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__content-list {
+  row-gap: 10px !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__collection,
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__content {
+  border-radius: 8px !important;
+  background-color: var(--color-spy-tile) !important;
+  padding: 14px 16px !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-quick-view-dropdown-search button.see-more {
+  color: var(--color-spy-gray) !important;
+}
+
+/* Product tile: square grey tile, model and colourway top-left, price bottom-right */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__product {
+  position: relative !important;
+  min-width: 0 !important;
+  border-radius: 10px !important;
+  background-color: var(--color-spy-tile) !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__product img.rebuy-quick-view_image {
+  object-fit: contain !important;
+  mix-blend-mode: darken !important;
+}
+
+/* The text sits on the tile, so anchor it to the tile, not to its own box */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__product .rebuy-product-info {
+  position: static !important;
+}
+
+/* The name arrives as "MODEL\nColourway" (assets/spy-rebuy-search.js):
+   keep the break, no wrapping, one ellipsis per line, bold model on line one */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__product .rebuy-product-title {
+  position: absolute !important;
+  top: 20px !important;
+  right: 20px !important;
+  left: 20px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-align: left !important;
+  text-overflow: ellipsis !important;
+  white-space: pre-line !important;
+  text-wrap-mode: nowrap !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  color: var(--color-spy-gray) !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__product .rebuy-product-title::first-line {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-spy-ink);
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__product .price {
+  position: absolute !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  flex-direction: row-reverse !important;
+  gap: 8px !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-money {
+  font-weight: 700 !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-money.sale {
+  margin: 0 !important;
+  color: var(--color-spy-sale) !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-money.compare-at {
+  font-weight: 400 !important;
+  color: var(--color-spy-strike) !important;
+}
+
+@media (max-width: 480px) {
+  #rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__grid-gap-default {
+    gap: 12px !important;
+  }
+
+  #rebuy-quick-view-dropdown-search .rebuy-quick-view__product img.rebuy-quick-view_image {
+    padding: 10% !important;
+  }
+
+  /* 20px insets leave no room for the text on a 160px tile */
+  #rebuy-quick-view-dropdown-search .rebuy-quick-view__product .rebuy-product-title {
+    top: 12px !important;
+    right: 12px !important;
+    left: 12px !important;
+  }
+
+  #rebuy-quick-view-dropdown-search .rebuy-quick-view__product .price {
+    right: 12px !important;
+    bottom: 12px !important;
+  }
+}
+
+/* Dim the page behind the open box. Rebuy puts this class on the header while
+   the box is open; a click on the dimmed page lands here, and Rebuy closes. */
+.spy-header-section.rebuy-position-relative::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2147483634; /* one below Rebuy's box */
+  background-color: color-mix(in srgb, var(--color-spy-ink) 90%, transparent);
+}
+
+/* ── Rebuy Smart Search: results page ──────────────────────────────────────
+   Rebuy draws /search into #rebuy-search-result-container (search-header).
+   Mirrors the Blenders results page in our fonts and colours: input, "You
+   searched for" + sort, 220px filter sidebar, three grey tiles a row.
+   Reference: audit/search-rebuy/blenders-results-*, research §2.4. */
+
+#rebuy-search-result-container :is(button, input, h2, h3, h4) {
+  font-family: inherit !important;
+}
+
+/* Rebuy caps its root at 1200px with 20/50px sides and a 20px margin; the container owns all three */
+#rebuy-search-result-container #rebuy-smart-search-results-sidebar,
+#rebuy-search-result-container #rebuy-smart-search-results-sidebar-flyout-filter {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Input and context line, with a hairline under them */
+#rebuy-search-result-container .rebuy-smart-search-results-page__header-section {
+  margin-bottom: 24px !important;
+  border-bottom: 1px solid var(--color-spy-border) !important;
+  padding: 24px 0 16px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__input {
+  width: 100% !important;
+  height: auto !important;
+  border: 1px solid var(--color-spy-input-border) !important;
+  border-radius: 5px !important;
+  background-color: var(--color-background) !important;
+  padding: 12px 16px !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__input:focus {
+  border-color: var(--color-spy-ink) !important;
+  outline: 1px solid var(--color-spy-ink) !important;
+  outline-offset: 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__context-section {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  margin-top: 16px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__context-left {
+  flex: 1 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__context-right {
+  display: flex !important;
+  flex-shrink: 0 !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  margin-left: auto !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__result-title {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 24px !important;
+  font-weight: 400 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  color: var(--color-spy-gray) !important;
+}
+
+/* Sort: outlined box, menu drops below its right edge */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-container {
+  position: relative !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-trigger {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  border: 1px solid var(--color-spy-border) !important;
+  border-radius: 8px !important;
+  background-color: var(--color-background) !important;
+  padding: 10px 16px !important;
+  font-size: 13px !important;
+  line-height: 20.8px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  color: var(--color-spy-ink) !important;
+  cursor: pointer;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-trigger:hover {
+  border-color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-trigger i {
+  font-size: 10px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu {
+  top: calc(100% + 6px) !important;
+  right: 0 !important;
+  z-index: 10 !important;
+  min-width: 220px !important;
+  margin: 0 !important;
+  border: 1px solid var(--color-spy-border) !important;
+  border-radius: 8px !important;
+  background-color: var(--color-background) !important;
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--color-spy-ink) 8%, transparent) !important;
+  padding: 8px 0 !important;
+  list-style: none !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 5px 20px !important;
+  font-size: 14px !important;
+  line-height: 22.4px !important;
+  color: var(--color-spy-text-2) !important;
+  cursor: pointer;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item:hover,
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item--active {
+  background-color: var(--color-spy-tile) !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item--active {
+  font-weight: 700 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item--active::before {
+  content: '✓';
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Filters sidebar + products */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__main-section {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 40px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-section {
+  position: sticky !important;
+  top: 20px !important;
+  flex: 0 0 220px !important;
+  padding: 0 30px 0 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-section-title {
+  margin: 0 0 16px !important;
+  border-bottom: 2px solid var(--color-spy-ink) !important;
+  padding: 0 0 12px !important;
+  font-size: 18px !important;
+  line-height: 19.8px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-container,
+#rebuy-search-result-container .rebuy-smart-search-results-page__filter-option {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-list-header {
+  border-top: 0 !important;
+  padding: 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-list-toggle {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--color-spy-border) !important;
+  background: none !important;
+  padding: 12px 0 !important;
+  color: var(--color-spy-ink) !important;
+  cursor: pointer;
+}
+
+/* DIN ships 400 and 700 only, so 700 where Blenders uses 600 */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-list-title {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  color: var(--color-spy-text-2) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-list-body {
+  padding: 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__filter-option-list {
+  padding: 4px 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__filter-option-checkbox-label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 13px !important;
+  color: var(--color-spy-text-2) !important;
+  cursor: pointer;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__filter-label {
+  font-size: 12px !important;
+  color: var(--color-spy-muted) !important;
+}
+
+#rebuy-search-result-container .rebuy-checkbox {
+  border-color: var(--color-spy-border) !important;
+  background-color: var(--color-background) !important;
+}
+
+#rebuy-search-result-container .rebuy-checkbox:focus-visible {
+  outline: 2px solid var(--color-spy-ink) !important;
+  outline-offset: 2px !important;
+}
+
+#rebuy-search-result-container .rebuy-checkbox:checked {
+  border-color: var(--color-spy-ink) !important;
+  background-color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__filter-price {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 4px 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__filter-price-block {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__filter-price-input {
+  width: 70px !important;
+  border: 1px solid var(--color-spy-input-border) !important;
+  border-radius: 3px !important;
+  padding: 6px 8px !important;
+  font-size: 13px !important;
+  color: var(--color-spy-ink) !important;
+}
+
+/* Ticked filters as pills, with a Reset link */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filters {
+  margin-bottom: 16px !important;
+  border-bottom: 1px solid var(--color-spy-border) !important;
+  padding-bottom: 12px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filters-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 10px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filters-reset {
+  border: 0 !important;
+  background: none !important;
+  padding: 0 !important;
+  font-size: 13px !important;
+  text-decoration: underline !important;
+  color: var(--color-spy-gray) !important;
+  cursor: pointer;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filters-reset:hover,
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filter-tag-remove:hover {
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filters-body {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filter-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  border: 1px solid var(--color-spy-input-border) !important;
+  border-radius: 30px !important;
+  background-color: var(--color-spy-cta-ground) !important;
+  padding: 6px 12px !important;
+  font-size: 13px !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filter-tag-remove {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 0 !important;
+  background: none !important;
+  padding: 0 !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  color: var(--color-spy-gray) !important;
+  cursor: pointer;
+}
+
+/* Products */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__result-section {
+  flex: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__result-section-title {
+  margin: 0 0 20px !important;
+  font-size: 20px !important;
+  line-height: 22px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__container.gap-default {
+  gap: 12px !important;
+}
+
+/* No hits: Rebuy prints a bare <p> under PRODUCTS */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__result-section p:not([class]) {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 22.4px !important;
+  color: var(--color-spy-ink) !important;
+}
+
+/* Tile: the details lie over the square grey image box */
+#rebuy-search-result-container .rebuy-smart-search-results-page__product {
+  position: relative !important;
+  min-width: 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product-media {
+  overflow: hidden !important;
+  border-radius: 10px !important;
+  background-color: var(--color-spy-tile) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product-image {
+  object-fit: contain !important;
+  mix-blend-mode: darken !important;
+  padding: 10% !important;
+  transition: transform 0.3s ease !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product-media:hover .rebuy-smart-search-results-page__product-image {
+  transform: scale(1.05) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product-detail {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 2 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Only the name and the price take clicks; the rest of the tile is the image link */
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-info {
+  position: static !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-title,
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-price {
+  pointer-events: auto !important;
+}
+
+/* Same two-line name as the search box: "MODEL\nColourway" */
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-title {
+  position: absolute !important;
+  top: 20px !important;
+  right: 20px !important;
+  left: 20px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-align: left !important;
+  text-decoration: none !important;
+  text-overflow: ellipsis !important;
+  white-space: pre-line !important;
+  text-wrap-mode: nowrap !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  font-weight: 400 !important;
+  text-transform: none !important;
+  color: var(--color-spy-gray) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-title::first-line {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-spy-ink);
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-review {
+  display: none !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-price {
+  position: absolute !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 22px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-price > div {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  gap: 8px !important;
+}
+
+#rebuy-search-result-container .rebuy-money {
+  font-weight: 700 !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-money.sale {
+  color: var(--color-spy-sale) !important;
+}
+
+#rebuy-search-result-container .rebuy-money.compare-at {
+  font-weight: 400 !important;
+  color: var(--color-spy-strike) !important;
+}
+
+/* Rebuy's spinners in our ink instead of its blue */
+#rebuy-search-result-container .rebuy-smart-search-results-page__loader,
+#rebuy-search-result-container .rebuy-smart-search-results-page__continuous-scroll-loader {
+  border-color: var(--color-spy-border) !important;
+  border-top-color: var(--color-spy-ink) !important;
+}
+
+/* Mobile "Filter and sort" panel */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-mobile-facets {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  border: 0 !important;
+  background: none !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  line-height: 25px !important;
+  white-space: nowrap !important;
+  color: var(--color-spy-ink) !important;
+  cursor: pointer;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-mobile-facets-label {
+  margin: 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__flyout-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  border-bottom: 1px solid var(--color-spy-border) !important;
+  padding: 16px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__flyout-header-title {
+  margin: 0 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  color: var(--color-spy-ink) !important;
+}
+
+/* Rebuy's ✕ is 30px and drops its focus ring; Rebuy still centres it absolutely */
+#rebuy-search-result-container .rebuy-smart-search-results-page__flyout-close {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  right: 4px !important;
+  width: 44px !important;
+  height: 44px !important;
+  font-size: 20px !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__flyout-close:focus-visible {
+  outline: 2px solid var(--color-spy-ink) !important;
+  outline-offset: -4px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__background.is-visible {
+  background-color: color-mix(in srgb, var(--color-spy-ink) 70%, transparent) !important;
+}
+
+@media (max-width: 1024px) {
+  #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__main-section {
+    gap: 24px !important;
+  }
+
+  #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-section {
+    flex-basis: 180px !important;
+  }
+}
+
+/* Blenders folds the sidebar at 768 inclusive; Rebuy alone would wait for 767 */
+@media (max-width: 768px) {
+  #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__main-section {
+    flex-direction: column !important;
+  }
+
+  #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-section {
+    display: none !important;
+  }
+
+  #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-trigger--mobile {
+    display: block !important;
+  }
+
+  #rebuy-search-result-container .rebuy-smart-search-results-page__container.col-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__result-section-title {
+    margin-bottom: 14px !important;
+    font-size: 16px !important;
+    line-height: 17.6px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  #rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-title {
+    top: 12px !important;
+    right: 12px !important;
+    left: 12px !important;
+  }
+
+  #rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-price {
+    right: 12px !important;
+    bottom: 12px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #rebuy-search-result-container .rebuy-smart-search-results-page__product-image {
+    transition: none !important;
+  }
+
+  #rebuy-search-result-container .rebuy-smart-search-results-page__product-media:hover .rebuy-smart-search-results-page__product-image {
+    transform: none !important;
+  }
+}

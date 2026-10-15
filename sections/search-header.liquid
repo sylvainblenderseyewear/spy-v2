@@ -42,10 +42,21 @@
     {%- endpaginate -%}
   </div>
 {%- elsif search.performed -%}
+  <script>
+    // Rebuy draws the results when its search ran for this shopper lately (assets/spy-rebuy-search.js)
+    (() => {
+      try {
+        const seen = Number(localStorage.getItem('spy-rebuy-search'));
+        if (seen && Date.now() - seen < 7 * 864e5) document.documentElement.dataset.searchEngine = 'rebuy';
+      } catch {}
+    })();
+  </script>
+
   {%- if search.types.size > 1 -%}
-    {%- comment -%} Old links search everything; the results page is product-only so filters work {%- endcomment -%}
+    {%- comment -%} Old links search everything; the theme results are product-only so filters work. Rebuy only reads q {%- endcomment -%}
     <script>
       (() => {
+        if (document.documentElement.dataset.searchEngine === 'rebuy') return;
         const url = new URL(location.href);
         url.searchParams.set('type', 'product');
         if (!url.searchParams.has('options[prefix]')) url.searchParams.set('options[prefix]', 'last');
@@ -57,7 +68,7 @@
   {%- assign terms = search.terms | escape -%}
   {%- capture content_url -%}{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=article,page&options%5Bprefix%5D=last&section_id={{ section.id }}{%- endcapture -%}
 
-  <div class="section section--page-width{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}">
+  <div class="section section--page-width{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %} [html[data-search-engine=rebuy]_&]:hidden">
     <div
       class="pt-6 font-spy text-spy-ink"
       data-spy-search-tabs
@@ -115,6 +126,23 @@
           data-spy-search-content-list
         ></div>
       </div>
+    </div>
+  </div>
+
+  {%- comment -%}
+    Rebuy's results page mounts here (its "Embedded Element"), only while Rebuy is the engine.
+    Width and padding mirror Blenders; the spinner goes once Rebuy's own markup is in.
+  {%- endcomment -%}
+  <div
+    id="rebuy-search-result-container"
+    class="group hidden [html[data-search-engine=rebuy]_&]:block mx-auto max-w-[1440px] pt-5 px-5 pb-[60px] max-[769px]:px-4 max-[769px]:pb-10 font-spy text-spy-ink"
+  >
+    <div
+      class="pt-10 [display:flex] justify-center group-has-[[id^=rebuy-smart-search-results]]:hidden"
+      role="status"
+    >
+      <span class="block size-10 rounded-full border-2 border-spy-border border-t-spy-ink animate-spin motion-reduce:animate-none"></span>
+      <span class="visually-hidden">{{ 'accessibility.loading_search_results' | t }}</span>
     </div>
   </div>
 

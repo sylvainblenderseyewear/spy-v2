@@ -175,6 +175,20 @@
     {% render 'spy-rebuy-widget-templates' %}
 
     {% render 'search-modal' %}
+    {% comment %} Rebuy Smart Search: model names on tiles, and which engine draws /search {% endcomment %}
+    {%- assign spy_model_seen = false -%}
+    <script type="application/json" id="spy-search-models">
+      [
+        {%- for tag in collections.all.all_tags -%}
+          {%- if tag contains 'collection::' -%}
+            {%- if spy_model_seen %},{% endif -%}
+            {{- tag | split: '::' | last | strip | json -}}
+            {%- assign spy_model_seen = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    </script>
+    <script src="{{ 'spy-rebuy-search.js' | asset_url }}" type="module"></script>
 
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
