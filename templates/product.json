@@ -141,10 +141,6 @@
                     "currency_formatting": "symbol_only"
                   }
                 },
-                "yotpo_loyalty_rewards_product_points_module_app_block_7NEcqY": {
-                  "type": "shopify://apps/yotpo-loyalty-rewards/blocks/product-points-module-app-block/2f9660df-5018-4e02-9868-ee1fb88d6ccd",
-                  "settings": {}
-                },
                 "group_price_row": {
                   "type": "group",
                   "name": "Price Row",
@@ -229,11 +225,16 @@
                         "autoplay_speed": 3000
                       },
                       "blocks": {}
+                    },
+                    "yotpo_loyalty_rewards_product_points_module_app_block_pbhpX7": {
+                      "type": "shopify://apps/yotpo-loyalty-rewards/blocks/product-points-module-app-block/2f9660df-5018-4e02-9868-ee1fb88d6ccd",
+                      "settings": {}
                     }
                   },
                   "block_order": [
                     "price_tVjtKg",
-                    "yotpo_star_rating"
+                    "yotpo_star_rating",
+                    "yotpo_loyalty_rewards_product_points_module_app_block_pbhpX7"
                   ]
                 },
                 "spy_stock_A1": {
@@ -249,7 +250,6 @@
               "block_order": [
                 "text_xrnftG",
                 "expertvoice_ev_pdp_deal_block_NjTk3n",
-                "yotpo_loyalty_rewards_product_points_module_app_block_7NEcqY",
                 "group_price_row",
                 "spy_stock_A1"
               ]
