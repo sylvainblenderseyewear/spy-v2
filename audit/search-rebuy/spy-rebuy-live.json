@@ -1,0 +1,539 @@
+{
+  "loads": [
+    "200 /?preview_smart_search=1",
+    "200 /search?q=cyrus"
+  ],
+  "steps": [
+    {
+      "name": "models",
+      "count": 136,
+      "sample": [
+        "BEWILDER OPTICAL 53",
+        "BEWILDER OPTICAL 55",
+        "BEWILDER SCREEN",
+        "BOUNDLESS GAMING",
+        "BOUNDLESS OPTICAL 53",
+        "BOUNDLESS OPTICAL 55"
+      ]
+    },
+    {
+      "name": "consent",
+      "accepted": "Accept"
+    },
+    {
+      "name": "quickview boot",
+      "ready": true,
+      "secs": 16,
+      "events": [
+        [
+          "resultsPage.init",
+          23466
+        ],
+        [
+          "quickview.init",
+          23467
+        ],
+        [
+          "quickview.ready",
+          24329
+        ]
+      ],
+      "mountedIn": "header.shopify-section.shopify-section-group-header-group.spy-header-section",
+      "buttons": [
+        {
+          "onclick": null,
+          "visible": true
+        }
+      ],
+      "flag": "1792095431976",
+      "preview": true
+    },
+    {
+      "name": "box empty 1440",
+      "open": true,
+      "themeModalOpen": false,
+      "focus": "searchInput",
+      "titles": [
+        "Most Searched",
+        "Popular Products"
+      ],
+      "chips": [
+        "Sunglasses",
+        "Snow Goggles",
+        "Moto Goggles",
+        "Eyeglasses",
+        "New Arrivals"
+      ],
+      "cards": 4,
+      "firstName": "CYRUS\nSoft Matte Olive Fade",
+      "nameLines": [
+        [
+          90,
+          305,
+          42,
+          17
+        ],
+        [
+          90,
+          325,
+          109,
+          14
+        ]
+      ],
+      "firstCard": [
+        70,
+        284,
+        310,
+        310
+      ],
+      "field": [
+        46,
+        12,
+        1300,
+        58
+      ],
+      "docW": 1440
+    },
+    {
+      "name": "box results 1440",
+      "open": true,
+      "themeModalOpen": false,
+      "focus": "searchInput",
+      "titles": [
+        "Matching Collections",
+        "Matching Products"
+      ],
+      "chips": [
+        "Murdered out collection",
+        "Cyrus",
+        "Watermen — Happy Boost Black Mirror",
+        "Watermen — Happy Boost Ice Blue Mirror"
+      ],
+      "cards": 12,
+      "firstName": "CYRUS\nBlack",
+      "nameLines": [
+        [
+          90,
+          295,
+          42,
+          17
+        ],
+        [
+          90,
+          315,
+          29,
+          14
+        ]
+      ],
+      "firstCard": [
+        70,
+        274,
+        310,
+        310
+      ],
+      "field": [
+        46,
+        12,
+        1300,
+        58
+      ],
+      "docW": 1440
+    },
+    {
+      "name": "box results 768",
+      "open": true,
+      "themeModalOpen": false,
+      "focus": "searchInput",
+      "titles": [
+        "Matching Collections",
+        "Matching Products"
+      ],
+      "chips": [
+        "Murdered out collection",
+        "Cyrus",
+        "Watermen — Happy Boost Black Mirror",
+        "Watermen — Happy Boost Ice Blue Mirror"
+      ],
+      "cards": 12,
+      "firstName": "CYRUS\nBlack",
+      "nameLines": [
+        [
+          40,
+          347,
+          42,
+          17
+        ],
+        [
+          40,
+          367,
+          29,
+          14
+        ]
+      ],
+      "firstCard": [
+        20,
+        326,
+        167,
+        167
+      ],
+      "field": [
+        20,
+        12,
+        680,
+        58
+      ],
+      "docW": 768
+    },
+    {
+      "name": "box results 390",
+      "open": true,
+      "themeModalOpen": false,
+      "focus": "searchInput",
+      "titles": [
+        "Matching Collections",
+        "Matching Products"
+      ],
+      "chips": [
+        "Murdered out collection",
+        "Cyrus",
+        "Watermen — Happy Boost Black Mirror",
+        "Watermen — Happy Boost Ice Blue Mirror"
+      ],
+      "cards": 12,
+      "firstName": "CYRUS\nBlack",
+      "nameLines": [
+        [
+          32,
+          417,
+          42,
+          17
+        ],
+        [
+          32,
+          437,
+          29,
+          14
+        ]
+      ],
+      "firstCard": [
+        20,
+        404,
+        169,
+        169
+      ],
+      "field": [
+        20,
+        12,
+        302,
+        58
+      ],
+      "docW": 390
+    },
+    {
+      "name": "results 1440",
+      "url": "/search?q=cyrus",
+      "title": "Search: 42 results for \"cyrus\" - SPY+ Optic",
+      "nav": {
+        "dcl": 9506,
+        "load": 15492
+      },
+      "engine": "rebuy",
+      "events": [
+        [
+          "resultsPage.init",
+          19175
+        ],
+        [
+          "quickview.init",
+          19179
+        ],
+        [
+          "resultsPage.productsChange",
+          20213
+        ],
+        [
+          "resultsPage.ready",
+          20313
+        ],
+        [
+          "quickview.ready",
+          21567
+        ]
+      ],
+      "themeHeader": "hidden",
+      "themeResults": "hidden",
+      "container": "shown",
+      "spinner": "hidden",
+      "cards": 15,
+      "firstName": "CYRUS\nBlack",
+      "nameLines": [
+        [
+          300,
+          347,
+          42,
+          17
+        ],
+        [
+          300,
+          367,
+          29,
+          14
+        ]
+      ],
+      "input": [
+        20,
+        134,
+        1400,
+        50
+      ],
+      "resultTitle": "You searched for: \"cyrus\"",
+      "filters": [
+        "Price",
+        "Category",
+        "Collection",
+        "Color",
+        "Size"
+      ],
+      "sort": "Sort By: Relevance",
+      "grid": [
+        [
+          280,
+          326,
+          1140,
+          1908
+        ],
+        "372px 372px 372px"
+      ],
+      "firstCard": [
+        280,
+        326,
+        372,
+        372
+      ],
+      "docW": 1440,
+      "engineEarly": {
+        "url": "/search?q=cyrus",
+        "engine": "rebuy"
+      },
+      "secsToDom": 16,
+      "secsToCards": 22,
+      "drawn": true
+    },
+    {
+      "name": "results 768",
+      "url": "/search?q=cyrus",
+      "title": "Search: 42 results for \"cyrus\" - SPY+ Optic",
+      "nav": {
+        "dcl": 9506,
+        "load": 15492
+      },
+      "engine": "rebuy",
+      "events": [
+        [
+          "resultsPage.init",
+          19175
+        ],
+        [
+          "quickview.init",
+          19179
+        ],
+        [
+          "resultsPage.productsChange",
+          20213
+        ],
+        [
+          "resultsPage.ready",
+          20313
+        ],
+        [
+          "quickview.ready",
+          21567
+        ]
+      ],
+      "themeHeader": "hidden",
+      "themeResults": "hidden",
+      "container": "shown",
+      "spinner": "hidden",
+      "cards": 15,
+      "firstName": "CYRUS\nBlack",
+      "nameLines": [
+        [
+          36,
+          344,
+          42,
+          17
+        ],
+        [
+          36,
+          364,
+          29,
+          14
+        ]
+      ],
+      "input": [
+        16,
+        142,
+        736,
+        50
+      ],
+      "resultTitle": "You searched for: \"cyrus\"",
+      "filters": [
+        "Price",
+        "Category",
+        "Collection",
+        "Color",
+        "Size"
+      ],
+      "sort": "Sort By: Relevance",
+      "grid": [
+        [
+          16,
+          323,
+          736,
+          2980
+        ],
+        "362px 362px"
+      ],
+      "firstCard": [
+        16,
+        323,
+        362,
+        362
+      ],
+      "docW": 768
+    },
+    {
+      "name": "results 390",
+      "url": "/search?q=cyrus",
+      "title": "Search: 42 results for \"cyrus\" - SPY+ Optic",
+      "nav": {
+        "dcl": 9506,
+        "load": 15492
+      },
+      "engine": "rebuy",
+      "events": [
+        [
+          "resultsPage.init",
+          19175
+        ],
+        [
+          "quickview.init",
+          19179
+        ],
+        [
+          "resultsPage.productsChange",
+          20213
+        ],
+        [
+          "resultsPage.ready",
+          20313
+        ],
+        [
+          "quickview.ready",
+          21567
+        ]
+      ],
+      "themeHeader": "hidden",
+      "themeResults": "hidden",
+      "container": "shown",
+      "spinner": "hidden",
+      "cards": 15,
+      "firstName": "CYRUS\nBlack",
+      "nameLines": [
+        [
+          28,
+          363,
+          42,
+          17
+        ],
+        [
+          28,
+          383,
+          29,
+          14
+        ]
+      ],
+      "input": [
+        16,
+        150,
+        358,
+        50
+      ],
+      "resultTitle": "You searched for: \"cyrus\"",
+      "filters": [
+        "Price",
+        "Category",
+        "Collection",
+        "Color",
+        "Size"
+      ],
+      "sort": "Sort By: Relevance",
+      "grid": [
+        [
+          16,
+          350,
+          358,
+          1468
+        ],
+        "173px 173px"
+      ],
+      "firstCard": [
+        16,
+        350,
+        173,
+        173
+      ],
+      "docW": 390
+    },
+    {
+      "name": "flyout",
+      "opened": true,
+      "closedByEscape": true
+    }
+  ],
+  "zeroPrice": [
+    {
+      "id": 10396582707507,
+      "title": "SS25 SPY Bear CA Republic SS Tee",
+      "handle": "spy-ss25-spy-bear-ca-republic-ss-tee-no-colour-reference-sunglasses",
+      "type": "Gear"
+    },
+    {
+      "id": 10396580512051,
+      "title": "SPY Diego Snapback Hat Gaslamp Navy",
+      "handle": "spy-spy-diego-snapback-hat-gaslamp-navy-sunglasses",
+      "type": "Gear"
+    },
+    {
+      "id": 10396581134643,
+      "title": "SPY Diego Snapback Hat Friar Brown",
+      "handle": "spy-spy-diego-snapback-hat-friar-brown-sunglasses",
+      "type": "Gear"
+    },
+    {
+      "id": 10396582543667,
+      "title": "SS25 SPY Palms SS Tee",
+      "handle": "spy-ss25-spy-palms-ss-tee-no-colour-reference-sunglasses",
+      "type": "Gear"
+    },
+    {
+      "id": 10396585460019,
+      "title": "Box Logo SS Tee Black",
+      "handle": "spy-box-logo-ss-tee-black-sunglasses",
+      "type": "Gear"
+    },
+    {
+      "id": 10396585230643,
+      "title": "SPY B&B Surf Cap Black",
+      "handle": "spy-spy-b-b-surf-cap-black-sunglasses",
+      "type": "Gear"
+    }
+  ],
+  "patched": [
+    "redirect",
+    "section",
+    "container",
+    "collection"
+  ],
+  "errors": []
+}

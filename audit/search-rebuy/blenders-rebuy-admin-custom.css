@@ -1,0 +1,624 @@
+.rebuy-smart-search__absolute-image {
+    object-fit: contain !important;
+}
+
+@media (min-width: 768px) {
+  .rebuy-quick-view-dropdown__search-input {
+    width: 1300px;
+  }
+}
+#rebuy-quick-view-flyout-search .rebuy-quick-view__overlay, #rebuy-quick-view-dropdown-search .rebuy-quick-view__overlay {
+  box-shadow: none;
+}
+
+.rebuy-quick-view-dropdown__search-input {
+  padding: 16px 24px;
+  border-radius: 8px;
+  border-color: black;
+  gap: 24px;
+}
+
+.rebuy-quick-view__search-input i {
+  color: black;
+}
+
+.rebuy-quick-view-dropdown__search-input input {
+  color: black;
+  font-size: 16px;
+}
+
+.rebuy-quick-view__title {
+  color: black;
+  text-transform: uppercase;
+  font-size: 20px;
+}
+
+.rebuy-quick-view__collection-list {
+  row-gap: 10px;
+}
+
+.rebuy-quick-view__collection, .rebuy-quick-view__content {
+  padding: 14px 16px;
+  background-color: #F3F4F7;
+  border-radius: 8px;
+  color: black;
+  line-height: 1;
+}
+
+.rebuy-quick-view__product-section .rebuy-quick-view__product {
+  background-color: #F3F4F7;
+  border-radius: 10px;
+  position: relative;
+}
+
+.rebuy-quick-view__product-section .rebuy-quick-view__product img.rebuy-quick-view_image {
+  mix-blend-mode: darken;
+}
+
+.rebuy-quick-view__product-section .rebuy-quick-view__product .rebuy-product-title {
+  position: absolute;
+  top: 40px;
+  left: 20px;  
+  color: #00000099;
+  font-size: 12px;
+  text-align: left;
+  line-height: 1;
+}
+
+.rebuy-quick-view__product-section .rebuy-quick-view__product .rebuy-product-collection {
+  position: absolute;
+  text-transform: uppercase;
+  font-size: 14px;
+  top: 20px;
+  left: 20px;
+  font-weight: bold;
+}
+
+.rebuy-quick-view__product-section .rebuy-quick-view__product .price {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  gap: 8px;
+  flex-direction: row-reverse;
+}
+
+.rebuy-quick-view-dropdown__body-right, .rebuy-quick-view-dropdown__results {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.rebuy-quick-view__product-section .rebuy-quick-view__product .rebuy-product-info {
+  position: static;
+}
+
+.rebuy-quick-view__product-section .rebuy-quick-view__product .price .sale {
+  margin: 0;
+  font-weight: bold;
+}
+
+#rebuy-quick-view-flyout-search .rebuy-quick-view__overlay--wide .rebuy-quick-view__overlay-body,
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__overlay--wide .rebuy-quick-view__overlay-body {
+  max-width: 1300px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#rebuy-quick-view-flyout-search .rebuy-money, #rebuy-quick-view-dropdown-search .rebuy-money {
+  font-weight: bold;
+}
+
+#rebuy-quick-view-flyout-search .rebuy-money.compare-at, #rebuy-quick-view-dropdown-search .rebuy-money.compare-at {
+  font-weight: 400;
+}
+
+  @media (max-width: 480px) {
+    .rebuy-quick-view-dropdown__grid-gap-default {
+      gap: 12px !important;
+    }
+    .rebuy-quick-view__product-section .rebuy-quick-view__product img.rebuy-quick-view_image {
+      padding: 10%;
+    }
+  }
+
+  .rebuy-smart-search-results-page__container.gap-default {
+    gap: 12px 12px !important;
+  }
+
+  /* ── Rebuy Smart Search – Layout & Spacing ── */
+
+  #rebuy-smart-search-results-sidebar-flyout-filter,
+  #rebuy-smart-search-results-sidebar {
+    padding: 0;
+    max-width: 1440px;
+  }
+  #rebuy-search-result-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  /* Header section: search input + context */
+  .rebuy-smart-search-results-page-sidebar__header-section {
+    padding: 24px 0 16px;
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 24px;
+  }
+
+  /* Search input */
+  .rebuy-smart-search-results-page-sidebar__input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 16px;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .rebuy-smart-search-results-page-sidebar__input:focus {
+    border-color: #000;
+  }
+
+  /* Context bar: "You searched for" + sort */
+  .rebuy-smart-search-results-page-sidebar__context-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .rebuy-smart-search-results-page-sidebar__result-title {
+    font-size: 14px;
+    font-weight: 400;
+    color: #666;
+    margin: 0;
+  }
+  .rebuy-smart-search-results-page-sidebar__context-left {
+    flex: 1;
+  }
+  .rebuy-smart-search-results-page-sidebar__context-right {
+    flex-shrink: 0;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  /* Main layout: filters sidebar + products */
+  .rebuy-smart-search-results-page-sidebar__main-section {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+  }
+
+  /* ── Filters sidebar ── */
+
+  .rebuy-smart-search-results-page-sidebar__filter-list-header {
+    padding: 0;
+    border-top: none;
+  }
+  .rebuy-smart-search-results-page-sidebar__filter-section {
+    flex: 0 0 220px;
+    position: sticky;
+    top: 130px;
+  }
+  .rebuy-smart-search-results-page-sidebar__filter-section-title {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #000;
+  }
+  .rebuy-smart-search-results-page-sidebar__filter-container {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .rebuy-smart-search-results-page-sidebar__filter-list-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 12px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .rebuy-smart-search-results-page-sidebar__filter-list-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+  }
+  .rebuy-smart-search-results-page-sidebar__filter-list-body {
+    padding: 0;
+  }
+  .rebuy-smart-search-results-page__filter-option {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .rebuy-smart-search-results-page__filter-option-list {
+    padding: 4px 0;
+  }
+  .rebuy-smart-search-results-page__filter-option-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #444;
+    cursor: pointer;
+  }
+  .rebuy-smart-search-results-page__filter-label {
+    color: #999;
+    font-size: 12px;
+  }
+
+  /* Price filter inputs */
+  .rebuy-smart-search-results-page__filter-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+  }
+  .rebuy-smart-search-results-page__filter-price-block {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .rebuy-smart-search-results-page__filter-price-input {
+    width: 70px;
+    padding: 6px 8px;
+    border: 1px solid #d1d1d1;
+    border-radius: 3px;
+    font-size: 13px;
+  }
+
+  /* ── Selected filters (pill chips) ── */
+  .rebuy-smart-search-results-page-sidebar__selected-filters {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .rebuy-smart-search-results-page-sidebar__selected-filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .rebuy-smart-search-results-page-sidebar__selected-filters-reset {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    color: #666;
+    text-decoration: underline;
+    padding: 0;
+  }
+  .rebuy-smart-search-results-page-sidebar__selected-filters-reset:hover {
+    color: #000;
+  }
+  .rebuy-smart-search-results-page-sidebar__selected-filters-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .rebuy-smart-search-results-page-sidebar__selected-filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #f0f0f0;
+    border: 1px solid #d1d1d1;
+    border-radius: 30px;
+    font-size: 13px;
+    color: var(--color-foreground-heading);
+  }
+  .rebuy-smart-search-results-page__selected-tag-label {
+    font-weight: 500;
+  }
+  .rebuy-smart-search-results-page-sidebar__selected-filter-tag-remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 12px;
+    line-height: 1;
+    transition: color 0.15s;
+  }
+  .rebuy-smart-search-results-page-sidebar__selected-filter-tag-remove:hover {
+    color: #000;
+  }
+
+  /* ── Results section ── */
+  .rebuy-smart-search-results-page-sidebar__result-section {
+    width: 100%;
+    flex: 1;
+    min-width: 0;
+  }
+  .rebuy-smart-search-results-page-sidebar__result-section-title {
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 20px;
+  }
+
+  /* Product grid */
+  .rebuy-smart-search-results-page__container.col-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px 16px;
+  }
+
+  /* Product card */
+  .rebuy-smart-search-results-page__product {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Product image */
+  .rebuy-smart-search-results-page__product-media {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #f3f4f7;
+  }
+  .rebuy-smart-search-results-page__product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    transition: transform 0.3s ease;
+    mix-blend-mode: darken;
+    opacity: 1;
+    padding: 10%;
+  }
+  .rebuy-smart-search-results-page__product-media:hover .rebuy-smart-search-results-page__product-image {
+    transform: scale(1.05);
+  }
+
+  /* Product details - overlaid on image */
+  .rebuy-smart-search-results-page__product-detail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .rebuy-smart-search-results-page__product-detail > * {
+    pointer-events: auto;
+  }
+  .rebuy-smart-search-results-page__product .rebuy-product-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-foreground-muted);
+    text-decoration: none;
+    line-height: 1;
+    text-transform: none;
+    font-family: var(--font-heading);
+    position: absolute;
+    top: 20px;
+    left: 0;
+  }
+
+  .rebuy-smart-search-results-page__flyout.is-visible {
+    z-index: 99999999990;
+  }
+  .rebuy-smart-search-results-page__product .rebuy-product-title:hover {
+    text-decoration: none;
+  }
+
+  /* Reviews - hidden since overlaid layout doesn't need them */
+  .rebuy-smart-search-results-page__product .rebuy-product-review {
+    display: none;
+  }
+
+  /* Price - bottom right */
+  .rebuy-smart-search-results-page__product .rebuy-product-price {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-foreground-heading);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .rebuy-smart-search-results-page__product .rebuy-money.compare-at {
+    font-weight: 400;
+    color: var(--color-foreground-muted);
+  }
+
+  .rebuy-smart-search-results-page__product .rebuy-product-price > div {
+    gap: 8px;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  /* Sort dropdown trigger */
+  .rebuy-smart-search-results-page-sidebar__dropdown-menu-container {
+    position: relative;
+  }
+  .rebuy-smart-search-results-page-sidebar__dropdown-menu-trigger {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    transition: border-color 0.2s;
+    white-space: nowrap;
+  }
+  .rebuy-smart-search-results-page-sidebar__dropdown-menu-trigger:hover {
+    border-color: #000;
+  }
+  .rebuy-smart-search-results-page-sidebar__dropdown-menu-title {
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .rebuy-smart-search-results-page-sidebar__dropdown-menu-trigger i,
+  .rebuy-smart-search-results-page-sidebar__dropdown-menu-trigger .filter-close {
+    font-size: 10px;
+    transition: transform 0.2s;
+  }
+
+  /* Sort dropdown menu */
+  .rebuy-smart-search-results-page-sidebar__dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 10;
+    min-width: 220px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+  }
+  .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item {
+    padding: 5px 20px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item:hover {
+    background: #f5f5f5;
+    color: #000;
+  }
+  .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item--active {
+    font-weight: 600;
+    color: #000;
+    background: #f7f7f7;
+  }
+  .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item--active::before {
+    content: '✓';
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .rebuy-smart-search-results-page-sidebar__filter-trigger--mobile {
+    display: none;
+  }
+
+  .rebuy-smart-search-results-page__flyout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .rebuy-smart-search-results-page__flyout-header-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+  }
+  .rebuy-smart-search-results-page__flyout-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 1024px) {
+    .rebuy-smart-search-results-page__container.col-3 {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px 12px;
+    }
+    .rebuy-smart-search-results-page-sidebar__filter-section {
+      flex: 0 0 180px;
+    }
+    .rebuy-smart-search-results-page-sidebar__main-section {
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    #rebuy-search-result-container {
+      padding: 0 16px 40px;
+    }
+    .rebuy-smart-search-results-page-sidebar__main-section {
+      flex-direction: column;
+    }
+    .rebuy-smart-search-results-page-sidebar__filter-section {
+      display: none;
+    }
+    .rebuy-smart-search-results-page-sidebar__filter-trigger--mobile {
+      display: block;
+    }
+    .rebuy-smart-search-results-page__container.col-3 {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px 12px;
+    }
+    .rebuy-smart-search-results-page-sidebar__result-section-title {
+      font-size: 16px;
+      margin-bottom: 14px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .rebuy-smart-search-results-page__product-detail {
+      padding: 12px;
+    }
+    .rebuy-smart-search-results-page__product-detail .rebuy-product-info .rebuy-product-price .rebuy-money {
+      line-height: 1;
+      font-weight: 500;
+    }
+  }
+
+  /* Collection title on product card */
+  .rebuy-smart-search-results-page__product .rebuy-product-collection {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-foreground-heading);
+    text-transform: uppercase;
+    line-height: 1.25;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  /* Replace Rebuy native loading spinner with Blenders loader */
+  .rebuy-smart-search-results-page__continuous-scroll > *:not(.rebuy-blenders-loader) {
+    display: none !important;
+  }
+  .rebuy-blenders-loader {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+  }

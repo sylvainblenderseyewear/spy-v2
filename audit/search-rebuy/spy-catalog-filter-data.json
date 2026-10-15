@@ -1,0 +1,164 @@
+{
+  "products": 398,
+  "withModelTag": 397,
+  "productTypes": [
+    [
+      "Eyeglasses",
+      149
+    ],
+    [
+      "Sunglasses",
+      127
+    ],
+    [
+      "Motocross Goggles",
+      61
+    ],
+    [
+      "Accessories",
+      24
+    ],
+    [
+      "Snow Goggles",
+      19
+    ],
+    [
+      "Gear",
+      15
+    ],
+    [
+      "Snow Helmets",
+      3
+    ]
+  ],
+  "vendors": [
+    [
+      "Spy",
+      313
+    ],
+    [
+      "SPY",
+      85
+    ]
+  ],
+  "optionNames": [
+    [
+      "Size",
+      398
+    ],
+    [
+      "Lens",
+      398
+    ]
+  ],
+  "tagPrefixes": [
+    [
+      "(plain)",
+      806
+    ],
+    [
+      "collection::",
+      397
+    ]
+  ],
+  "tagSamples": {
+    "collection::": [
+      "collection::BOUNDLESS GAMING",
+      "collection::WOOT RACE LENS",
+      "collection::POSITIVE REVOLUTION DAD HAT",
+      "collection::DIRK REPLACEMENT LENS",
+      "collection::HOT SPOT OPTICAL 58",
+      "collection::CANSTON 56",
+      "collection::HALE 56",
+      "collection::CYRUS GAMING"
+    ]
+  },
+  "plainTags": [
+    [
+      "Spy",
+      398
+    ],
+    [
+      "Sunglasses",
+      397
+    ],
+    [
+      "YGroup_discord",
+      11
+    ]
+  ],
+  "priceRange": [
+    0,
+    270
+  ],
+  "variantsPerProduct": [
+    [
+      "1",
+      252
+    ],
+    [
+      "2",
+      102
+    ],
+    [
+      "3",
+      17
+    ],
+    [
+      "5",
+      12
+    ],
+    [
+      "4",
+      11
+    ],
+    [
+      "6",
+      2
+    ]
+  ],
+  "sample": [
+    {
+      "title": "Boundless Gaming Matte Black",
+      "handle": "spy-boundless-gaming-matte-black-sunglasses",
+      "type": "Eyeglasses",
+      "tags": [
+        "collection::BOUNDLESS GAMING",
+        "Spy",
+        "Sunglasses"
+      ],
+      "options": [
+        "Size=Medium",
+        "Lens=Happy Gaming"
+      ]
+    },
+    {
+      "title": "Woot Race Lens Clear",
+      "handle": "spy-woot-race-lens-clear-sunglasses",
+      "type": "Motocross Goggles",
+      "tags": [
+        "collection::WOOT RACE LENS",
+        "Spy",
+        "Sunglasses"
+      ],
+      "options": [
+        "Size=Large",
+        "Lens=Clear Cat.0"
+      ]
+    },
+    {
+      "title": "Positive Revolution Dad Hat Black",
+      "handle": "spy-positive-revolution-dad-hat-black-sunglasses",
+      "type": "Gear",
+      "tags": [
+        "collection::POSITIVE REVOLUTION DAD HAT",
+        "Spy",
+        "Sunglasses"
+      ],
+      "options": [
+        "Size=One Size",
+        "Lens=No Lens Reference"
+      ]
+    }
+  ]
+}

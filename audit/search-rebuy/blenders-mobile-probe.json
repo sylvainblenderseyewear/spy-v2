@@ -1,0 +1,83 @@
+{
+  "note": "Blenders Rebuy search measured 2026-10-13 in a normal Chrome window resized to 390 and 768 (headless was stopped by Cloudflare). Rects are [x, y, width, height] in CSS px.",
+  "390": {
+    "quickView": {
+      "container": { "rect": [0, 0, 380, 65], "position": "absolute", "zIndex": "2147483635", "background": "rgb(255, 255, 255)" },
+      "header": { "rect": [0, 0, 380, 65], "position": "relative", "zIndex": "2147483647" },
+      "inputWrap": { "rect": [20, 4, 318, 58], "padding": "16px 24px", "border": "1px solid rgb(0, 0, 0)", "radius": "8px", "gap": "24px" },
+      "input": { "rect": [85, 21, 228, 24], "font": "16px/24px 400" },
+      "close": { "rect": [348, 17, 13, 32], "font": "20px/32px" },
+      "overlay": { "selector": "#rebuy-search-overlay", "rect": [0, 0, 390, 844], "position": "fixed", "zIndex": "49", "background": "rgba(30, 30, 30, 0.9)" },
+      "empty": {
+        "titles": ["Most Searched", "Popular Shades"],
+        "chips": ["Providence DX", "Prime", "Women's Sunglasses", "Men's Sunglasses", "New Arrivals"],
+        "cards": 4,
+        "cardRects": [[20, 398, 164, 164], [196, 398, 164, 164], [20, 574, 164, 164], [196, 574, 164, 164]],
+        "grid": { "columns": "164px 164px", "gap": "12px" }
+      },
+      "typedPrime": {
+        "titles": ["Matching Products"],
+        "cards": 12,
+        "cardRects": [[20, 131, 157, 157], [189, 131, 157, 157], [20, 300, 157, 157], [189, 300, 157, 157]],
+        "grid": { "columns": "156.5px 156.5px", "gap": "12px" },
+        "scroller": { "class": "rebuy-quick-view__overlay rebuy-quick-view__overlay--wide", "clientHeight": 744, "scrollHeight": 1085 }
+      },
+      "focusOnOpen": "INPUT#searchInput"
+    },
+    "resultsPage": {
+      "input": [16, 109, 348, 50],
+      "title": [16, 175, 328, 22],
+      "filterButton": { "text": "Filter and sort", "rect": [16, 209, 122, 25] },
+      "cardRects": [[16, 307, 168, 168], [196, 307, 168, 168], [16, 487, 168, 168], [196, 487, 168, 168]],
+      "filterFlyout": {
+        "position": "fixed", "zIndex": "2147483647", "inner": [0, 0, 380, 844],
+        "text": "Filter & Sort (prime - 17) | SORT BY: | RELEVANCE | Price | Collection | Shape | Color | Lens Type | Feature | Size",
+        "focusOnOpen": "close button",
+        "closesOnEscape": false
+      }
+    }
+  },
+  "768": {
+    "quickView": {
+      "container": [0, 0, 758, 65],
+      "panel": [0, 65, 758, 620],
+      "inputWrap": [20, 4, 696, 58],
+      "emptyCardRects": [[20, 319, 165, 165], [205, 319, 165, 165], [389, 319, 165, 165], [574, 319, 165, 165]],
+      "typedCardRects": [[20, 131, 165, 165], [205, 131, 165, 165], [389, 131, 165, 165], [574, 131, 165, 165]],
+      "valueKeptAfterReopen": "prime"
+    },
+    "resultsPage": {
+      "input": [16, 109, 726, 50],
+      "sortTrigger": [379, 175, 216, 43],
+      "filterButton": [607, 184, 122, 25],
+      "sidebarVisible": false,
+      "cardRects": [[16, 290, 357, 357], [385, 290, 357, 357], [16, 659, 357, 357], [385, 659, 357, 357]]
+    }
+  },
+  "1440": {
+    "filters": {
+      "groups": {
+        "Price": "from / to inputs",
+        "Collection": ["Sleeves (1)", "Millenia DX (3)", "Kingpin (2)", "L Series (1)", "Meister X2 (2)"],
+        "Shape": ["Square (2)", "Round (4)"],
+        "Color": ["Sage (1)", "Smoke (1)", "Gold (3)", "Silver (1)"],
+        "Lens Type": ["Polarized (6)"],
+        "Feature": ["Lifestyle (6)"],
+        "Size": ["Large (1)"]
+      },
+      "deepLink": "/search?q=prime&rb_sort_by=relevance&rb_metafields=product.sort_by.shape.Round -> 4 cards, 'Round' chip, state restored",
+      "sortItems": ["Relevance", "Latest Release", "Best Selling", "Price", "Alphabetical(A-Z)", "Alphabetical(Z-A)"],
+      "afterSortUrl": "/search?q=prime&rb_sort_by=highest-price&rb_metafields=product.sort_by.shape.Round",
+      "request": { "sortBy": { "field": "price", "order": "DESC" }, "currentPage": 1, "pageSize": 15, "filters.metafields": ["product.sort_by.shape.Round"], "aggregate.fields": ["availability", "tags", "categories", "vendors", "price", "options", "metafields"] },
+      "seenOnce": "after continuous scroll loaded page 2, ticking 'Sleeves (1)' sent currentPage 2 and the grid showed no products"
+    },
+    "consent": {
+      "method": "consent cookies cleared, page reloaded, banner left unanswered",
+      "currentVisitorConsent": { "marketing": "no", "analytics": "no", "preferences": "no", "sale_of_data": "" },
+      "pandectesStatus": "",
+      "rebuyRequests": 58,
+      "resultCardsRendered": 15,
+      "wall": { "selector": "#gdpr-blocking-page-overlay", "position": "fixed", "zIndex": "2147483646", "background": "rgb(0, 0, 0)", "bodyClass": "cc-scrolling-disabled" }
+    }
+  }
+}

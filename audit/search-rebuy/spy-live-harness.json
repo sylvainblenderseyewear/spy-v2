@@ -1,0 +1,618 @@
+{
+  "loads": [],
+  "home": {
+    "title": "SPY+ Optic",
+    "header": true
+  },
+  "products": [
+    {
+      "name": "DISCORD\nGloss Black",
+      "tags": [
+        "collection::DISCORD",
+        "Spy",
+        "Sunglasses",
+        "YGroup_discord"
+      ],
+      "handle": "spy-discord-gloss-black-sunglasses",
+      "image": "https://cdn.shopify.com/s/files/1/0996/6872/1971/files/Discord_Black_20II-Happy_20Boost_20Bronze_20Polar_20with_20Black_20Mirror-01.jpg?v=1787593963",
+      "price": 21000,
+      "compare": null,
+      "spyModel": "DISCORD"
+    },
+    {
+      "name": "CYRUS\nSoft Matte Olive Fade",
+      "tags": [
+        "collection::CYRUS",
+        "Spy",
+        "Sunglasses"
+      ],
+      "handle": "spy-cyrus-soft-matte-olive-fade-sunglasses",
+      "image": "https://cdn.shopify.com/s/files/1/0996/6872/1971/files/Cyrus_Soft_20Matte_20Olive_20Fade-Happy_20Bronze_20with_20Olive_20Mirror-01.jpg?v=1787593962",
+      "price": 15000,
+      "compare": null,
+      "spyModel": "CYRUS"
+    },
+    {
+      "name": "BOWERY\nGloss Black",
+      "tags": [
+        "collection::BOWERY",
+        "Spy",
+        "Sunglasses"
+      ],
+      "handle": "spy-bowery-gloss-black-sunglasses",
+      "image": "https://cdn.shopify.com/s/files/1/0996/6872/1971/files/BOWERY_Black_20II-Happy_20Gray_20Polar-01.jpg?v=1787593959",
+      "price": 18000,
+      "compare": null,
+      "spyModel": "BOWERY"
+    },
+    {
+      "name": "REGION\nANSI Matte Black",
+      "tags": [
+        "collection::REGION",
+        "Spy",
+        "Sunglasses"
+      ],
+      "handle": "spy-region-ansi-matte-black-sunglasses",
+      "image": "https://cdn.shopify.com/s/files/1/0996/6872/1971/files/Region_ANSI_20Matte_20Black_20-Happy_20Gray_20Green_20Polar_20ANSI-01.jpg?v=1787594043",
+      "price": 17000,
+      "compare": null,
+      "spyModel": "REGION"
+    },
+    {
+      "name": "OVERHAUL\nANSI Matte Black",
+      "tags": [
+        "collection::OVERHAUL",
+        "Spy",
+        "Sunglasses"
+      ],
+      "handle": "spy-overhaul-ansi-matte-black-sunglasses",
+      "image": "https://cdn.shopify.com/s/files/1/0996/6872/1971/files/Overhaul_ANSI_20Matte_20Black_20-Happy_20Gray_20Green-01.jpg?v=1787594036",
+      "price": 17000,
+      "compare": null,
+      "spyModel": "OVERHAUL"
+    },
+    {
+      "name": "REBAR ANSI\nMatte Black",
+      "tags": [
+        "collection::REBAR ANSI",
+        "Spy",
+        "Sunglasses"
+      ],
+      "handle": "spy-rebar-ansi-matte-black-sunglasses",
+      "image": "https://cdn.shopify.com/s/files/1/0996/6872/1971/files/REBAR_20ANSI_Matte_20Black-Happy_20Gray_20Green_20Polar-01.jpg?v=1787594050",
+      "price": 17000,
+      "compare": null,
+      "spyModel": "REBAR ANSI"
+    }
+  ],
+  "box-1440-empty": {
+    "title": {
+      "box": [
+        90,
+        304,
+        270,
+        36
+      ],
+      "lines": [
+        [
+          90,
+          305,
+          55,
+          17
+        ],
+        [
+          145,
+          305,
+          0,
+          17
+        ],
+        [
+          90,
+          325,
+          60,
+          14
+        ]
+      ],
+      "text": " DISCORD\nGloss Black ",
+      "first": "700"
+    },
+    "docW": 1440
+  },
+  "box-1440-results": {
+    "title": {
+      "box": [
+        90,
+        294,
+        270,
+        36
+      ],
+      "lines": [
+        [
+          90,
+          295,
+          55,
+          17
+        ],
+        [
+          145,
+          295,
+          0,
+          17
+        ],
+        [
+          90,
+          315,
+          60,
+          14
+        ]
+      ],
+      "text": " DISCORD\nGloss Black ",
+      "first": "700"
+    },
+    "docW": 1440
+  },
+  "box-768-empty": {
+    "title": {
+      "box": [
+        40,
+        330,
+        127,
+        36
+      ],
+      "lines": [
+        [
+          40,
+          331,
+          55,
+          17
+        ],
+        [
+          95,
+          331,
+          0,
+          17
+        ],
+        [
+          40,
+          351,
+          60,
+          14
+        ]
+      ],
+      "text": " DISCORD\nGloss Black ",
+      "first": "700"
+    },
+    "docW": 768
+  },
+  "box-768-results": {
+    "title": {
+      "box": [
+        40,
+        294,
+        127,
+        36
+      ],
+      "lines": [
+        [
+          40,
+          295,
+          55,
+          17
+        ],
+        [
+          95,
+          295,
+          0,
+          17
+        ],
+        [
+          40,
+          315,
+          60,
+          14
+        ]
+      ],
+      "text": " DISCORD\nGloss Black ",
+      "first": "700"
+    },
+    "docW": 768
+  },
+  "box-390-empty": {
+    "title": {
+      "box": [
+        32,
+        400,
+        145,
+        36
+      ],
+      "lines": [
+        [
+          32,
+          401,
+          55,
+          17
+        ],
+        [
+          87,
+          401,
+          0,
+          17
+        ],
+        [
+          32,
+          421,
+          60,
+          14
+        ]
+      ],
+      "text": " DISCORD\nGloss Black ",
+      "first": "700"
+    },
+    "docW": 390
+  },
+  "box-390-results": {
+    "title": {
+      "box": [
+        32,
+        390,
+        145,
+        36
+      ],
+      "lines": [
+        [
+          32,
+          391,
+          55,
+          17
+        ],
+        [
+          87,
+          391,
+          0,
+          17
+        ],
+        [
+          32,
+          411,
+          60,
+          14
+        ]
+      ],
+      "text": " DISCORD\nGloss Black ",
+      "first": "700"
+    },
+    "docW": 390
+  },
+  "resultsBefore": {
+    "title": "SPY+ Optic",
+    "engine": "rebuy",
+    "themeHeader": "missing",
+    "themeResults": "missing",
+    "container": "shown",
+    "spinner": "shown"
+  },
+  "resultsAfter": {
+    "title": "SPY+ Optic",
+    "engine": "rebuy",
+    "themeHeader": "missing",
+    "themeResults": "missing",
+    "container": "shown",
+    "spinner": "hidden"
+  },
+  "results-1440": {
+    "m": {
+      "container": [
+        0,
+        90,
+        1440,
+        1052
+      ],
+      "input": [
+        20,
+        134,
+        1400,
+        50
+      ],
+      "context": [
+        20,
+        200,
+        1400,
+        43
+      ],
+      "resultTitle": [
+        20,
+        209,
+        668,
+        24
+      ],
+      "sort": [
+        1221,
+        200,
+        199,
+        43
+      ],
+      "mobileTrigger": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "filter": [
+        20,
+        284,
+        220,
+        296
+      ],
+      "productsTitle": [
+        280,
+        284,
+        1140,
+        22
+      ],
+      "grid": [
+        [
+          280,
+          326,
+          1140,
+          756
+        ],
+        "372px 372px 372px",
+        "12px"
+      ],
+      "card": [
+        280,
+        326,
+        372,
+        372
+      ],
+      "price": [
+        582,
+        656,
+        50,
+        22
+      ],
+      "docW": 1440
+    },
+    "title": {
+      "box": [
+        300,
+        346,
+        332,
+        36
+      ],
+      "lines": [
+        [
+          300,
+          347,
+          55,
+          17
+        ],
+        [
+          355,
+          347,
+          0,
+          17
+        ],
+        [
+          300,
+          367,
+          60,
+          14
+        ]
+      ],
+      "text": "DISCORD\nGloss Black",
+      "first": "700"
+    }
+  },
+  "results-768": {
+    "m": {
+      "container": [
+        0,
+        98,
+        768,
+        1375
+      ],
+      "input": [
+        16,
+        142,
+        736,
+        50
+      ],
+      "context": [
+        16,
+        208,
+        736,
+        43
+      ],
+      "resultTitle": [
+        16,
+        217,
+        336,
+        24
+      ],
+      "sort": [
+        384,
+        208,
+        199,
+        43
+      ],
+      "mobileTrigger": [
+        595,
+        217,
+        157,
+        25
+      ],
+      "filter": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "productsTitle": [
+        16,
+        292,
+        736,
+        18
+      ],
+      "grid": [
+        [
+          16,
+          323,
+          736,
+          1110
+        ],
+        "362px 362px",
+        "12px"
+      ],
+      "card": [
+        16,
+        323,
+        362,
+        362
+      ],
+      "price": [
+        308,
+        643,
+        50,
+        22
+      ],
+      "docW": 768
+    },
+    "title": {
+      "box": [
+        36,
+        343,
+        322,
+        36
+      ],
+      "lines": [
+        [
+          36,
+          344,
+          55,
+          17
+        ],
+        [
+          91,
+          344,
+          0,
+          17
+        ],
+        [
+          36,
+          364,
+          60,
+          14
+        ]
+      ],
+      "text": "DISCORD\nGloss Black",
+      "first": "700"
+    }
+  },
+  "results-390": {
+    "m": {
+      "container": [
+        0,
+        106,
+        390,
+        827
+      ],
+      "input": [
+        16,
+        150,
+        358,
+        50
+      ],
+      "context": [
+        16,
+        216,
+        358,
+        61
+      ],
+      "resultTitle": [
+        16,
+        216,
+        338,
+        24
+      ],
+      "sort": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "mobileTrigger": [
+        16,
+        252,
+        358,
+        25
+      ],
+      "filter": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "productsTitle": [
+        16,
+        318,
+        358,
+        18
+      ],
+      "grid": [
+        [
+          16,
+          350,
+          358,
+          543
+        ],
+        "173px 173px",
+        "12px"
+      ],
+      "card": [
+        16,
+        350,
+        173,
+        173
+      ],
+      "price": [
+        127,
+        489,
+        50,
+        22
+      ],
+      "docW": 390
+    },
+    "title": {
+      "box": [
+        28,
+        362,
+        149,
+        36
+      ],
+      "lines": [
+        [
+          28,
+          363,
+          55,
+          17
+        ],
+        [
+          83,
+          363,
+          0,
+          17
+        ],
+        [
+          28,
+          383,
+          60,
+          14
+        ]
+      ],
+      "text": "DISCORD\nGloss Black",
+      "first": "700"
+    }
+  },
+  "escape": "close clicked"
+}

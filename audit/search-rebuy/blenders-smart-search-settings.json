@@ -1,0 +1,1427 @@
+{
+  "settings": {
+    "globalSettings": {
+      "setting": {
+        "excludedProducts": [
+          {
+            "id": 4208,
+            "productId": 7466764730437
+          },
+          {
+            "id": 4209,
+            "productId": 6904673370181
+          },
+          {
+            "id": 4210,
+            "productId": 7468503793733
+          },
+          {
+            "id": 4211,
+            "productId": 7822316339269
+          },
+          {
+            "id": 4212,
+            "productId": 7422890803269
+          },
+          {
+            "id": 4213,
+            "productId": 7422890082373
+          },
+          {
+            "id": 4214,
+            "productId": 6935663444037
+          },
+          {
+            "id": 4215,
+            "productId": 7467053187141
+          },
+          {
+            "id": 4216,
+            "productId": 7774869520453
+          },
+          {
+            "id": 4217,
+            "productId": 7461555241029
+          },
+          {
+            "id": 4218,
+            "productId": 6901542486085
+          },
+          {
+            "id": 4219,
+            "productId": 6901543141445
+          }
+        ],
+        "excludedCollections": [],
+        "renderOos": 0,
+        "owner": 8159,
+        "excludedProductTags": [],
+        "settingsId": 746,
+        "excludedContent": [],
+        "enabled": true,
+        "searchResultsPageUrl": "/search",
+        "searchInfluence": [],
+        "mode": "hybrid",
+        "excludedTerms": [],
+        "excludeOffensiveTerms": true
+      }
+    },
+    "keywordSettings": {
+      "setting": [],
+      "keywords": []
+    },
+    "searchResultsSettings": {
+      "setting": {
+        "settingsId": 734,
+        "owner": 8159,
+        "enabled": true,
+        "embeddedSelector": "#rebuy-search-result-container",
+        "editorLayout": {
+          "id": 0,
+          "layout": "sidebar",
+          "pageTitle": "You searched for: \"{term}\"",
+          "layoutMode": "default",
+          "pagination": {
+            "type": "continuous-scroll",
+            "limitOptions": [
+              15,
+              25,
+              75
+            ],
+            "loadMoreText": "Load More Products",
+            "amountPerPage": 15
+          },
+          "integrations": {
+            "loox": false,
+            "junip": false,
+            "yotpo": false,
+            "okendo": false,
+            "opinew": false,
+            "judgeme": false,
+            "klaviyo": false,
+            "stamped": false,
+            "recharge": false,
+            "reviewsio": false
+          },
+          "soldOutTitle": "Sold Out!",
+          "colorSettings": {
+            "price": "#000000",
+            "salePrice": "#000000",
+            "buttonText": null,
+            "reviewsText": null,
+            "buttonRadius": null,
+            "comparePrice": null,
+            "productTitle": "#000000",
+            "reviewsStarSize": "default",
+            "buttonBackground": null,
+            "buttonBorderColor": null,
+            "buttonBorderWidth": null,
+            "reviewsBackground": null,
+            "reviewsForeground": null
+          },
+          "columnSpacing": "default",
+          "contentSearch": {
+            "showImage": true,
+            "maxDisplayed": 4,
+            "contentLayout": "grid",
+            "textAlignment": "center",
+            "contentSpacing": "default",
+            "contentTabTitle": "Blogs & Pages ({count})",
+            "productTabTitle": "Products ({count})",
+            "showDescription": true,
+            "imageAspectRatio": "1:1",
+            "contentSearchEnabled": false
+          },
+          "addToCartTitle": "Add to Cart",
+          "addToCartEnabled": false,
+          "addedToCartTitle": "Added to Cart",
+          "imageAspectRatio": "1:1",
+          "addingToCartTitle": "Adding to Cart",
+          "shouldShowVariants": false,
+          "filterDropDownStyle": "chevron",
+          "shouldShowSearchBar": true,
+          "sortByDropdownStyle": "sortByDropdown",
+          "noSearchResultsTitle": "No results found for \"{term}\". Check the spelling or use a different word or phrase.",
+          "enabledProductRatings": false,
+          "shouldHideOOSVariants": false,
+          "mobileColumnBreakpoint": 2,
+          "showSecondImageOnHover": false,
+          "tabletColumnBreakpoint": 2,
+          "desktopColumnBreakpoint": 3,
+          "productInfoTextAlignment": "center",
+          "searchBarPlaceHolderText": "Search",
+          "shouldShowSelectedFilters": true,
+          "shouldShowProductFilterCount": true,
+          "shouldKeepAllFiltersCollapsed": true,
+          "shouldShowFirstFilterExpanded": false
+        },
+        "styles": "",
+        "scripts": {
+          "add": {
+            "code": "",
+            "enabled": false
+          },
+          "init": {
+            "code": "",
+            "enabled": false
+          },
+          "view": {
+            "code": "",
+            "enabled": false
+          },
+          "ready": {
+            "code": "",
+            "enabled": false
+          },
+          "beforeAdd": {
+            "code": "",
+            "enabled": false
+          },
+          "beforeReady": {
+            "code": "",
+            "enabled": false
+          },
+          "productsChange": {
+            "code": "",
+            "enabled": false
+          },
+          "beforeProductsChange": {
+            "code": "",
+            "enabled": false
+          }
+        },
+        "filterSettings": [
+          {
+            "id": 4729,
+            "key": "",
+            "name": "Availability",
+            "type": "availability",
+            "index": 0,
+            "label": "",
+            "enabled": false,
+            "namespace": "default",
+            "excludeSpecific": false
+          },
+          {
+            "id": 4730,
+            "key": "",
+            "name": "Product Type",
+            "type": "product-type",
+            "index": 0,
+            "label": "",
+            "enabled": false,
+            "namespace": "default",
+            "excludeSpecific": false
+          },
+          {
+            "id": 4731,
+            "key": "",
+            "name": "Price",
+            "type": "price",
+            "index": 0,
+            "label": "",
+            "enabled": true,
+            "namespace": "default",
+            "excludeSpecific": false
+          },
+          {
+            "id": 4732,
+            "key": "",
+            "name": "Product Tags",
+            "type": "product-tags",
+            "index": 0,
+            "label": "",
+            "enabled": false,
+            "namespace": "default",
+            "excludeSpecific": false
+          },
+          {
+            "id": 4733,
+            "key": "",
+            "name": "Vendor",
+            "type": "vendor",
+            "index": 0,
+            "label": "",
+            "enabled": false,
+            "namespace": "default",
+            "excludeSpecific": false
+          },
+          {
+            "id": 12240,
+            "key": "feature",
+            "name": "Feature",
+            "type": "product-metafield",
+            "index": 5,
+            "label": "",
+            "enabled": true,
+            "namespace": "sort_by",
+            "excludeSpecific": false
+          },
+          {
+            "id": 12241,
+            "key": "lens_type",
+            "name": "Lens Type",
+            "type": "product-metafield",
+            "index": 4,
+            "label": "",
+            "enabled": true,
+            "namespace": "sort_by",
+            "excludeSpecific": false
+          },
+          {
+            "id": 12242,
+            "key": "color",
+            "name": "Color",
+            "type": "product-metafield",
+            "index": 3,
+            "label": "",
+            "enabled": true,
+            "namespace": "sort_by",
+            "excludeSpecific": false
+          },
+          {
+            "id": 12952,
+            "key": "collection",
+            "name": "Collection",
+            "type": "product-metafield",
+            "index": 1,
+            "label": "",
+            "enabled": true,
+            "namespace": "sort_by",
+            "excludeSpecific": false
+          },
+          {
+            "id": 12953,
+            "key": "shape",
+            "name": "Shape",
+            "type": "product-metafield",
+            "index": 2,
+            "label": "",
+            "enabled": true,
+            "namespace": "sort_by",
+            "excludeSpecific": false
+          },
+          {
+            "id": 12954,
+            "key": "color-pattern",
+            "name": "Color-pattern",
+            "type": "product-metafield",
+            "index": 0,
+            "label": "",
+            "enabled": false,
+            "namespace": "shopify",
+            "excludeSpecific": false
+          },
+          {
+            "id": 12955,
+            "key": "lens-polarization",
+            "name": "Lens-polarization",
+            "type": "product-metafield",
+            "index": 0,
+            "label": "",
+            "enabled": false,
+            "namespace": "shopify",
+            "excludeSpecific": false
+          },
+          {
+            "id": 12956,
+            "key": "size",
+            "name": "Size",
+            "type": "product-metafield",
+            "index": 6,
+            "label": "",
+            "enabled": true,
+            "namespace": "sort_by",
+            "excludeSpecific": false
+          }
+        ],
+        "tagFilters": [],
+        "tagExclusions": [],
+        "sortSettings": [
+          {
+            "id": 3661,
+            "key": "relevance",
+            "name": "Relevance",
+            "index": 0,
+            "label": "Relevance",
+            "enabled": true,
+            "lookbackType": "default",
+            "lookbackPeriod": "0"
+          },
+          {
+            "id": 3665,
+            "key": "new-arrivals",
+            "name": "New Arrivals",
+            "index": 1,
+            "label": "Latest Release",
+            "enabled": true,
+            "lookbackType": "default",
+            "lookbackPeriod": "0"
+          },
+          {
+            "id": 3662,
+            "key": "best-sellers",
+            "name": "Best Sellers",
+            "index": 2,
+            "label": "Best Selling",
+            "enabled": true,
+            "lookbackType": "default",
+            "lookbackPeriod": "7"
+          },
+          {
+            "id": 3663,
+            "key": "highest-price",
+            "name": "Highest Price",
+            "index": 3,
+            "label": "Price",
+            "enabled": true,
+            "lookbackType": "default",
+            "lookbackPeriod": "0"
+          },
+          {
+            "id": 7334,
+            "key": "name-ascending",
+            "name": "Name (A-Z)",
+            "index": 4,
+            "label": "Alphabetical(A-Z)",
+            "enabled": true,
+            "lookbackType": "default",
+            "lookbackPeriod": "0"
+          },
+          {
+            "id": 7335,
+            "key": "name-descending",
+            "name": "Name (Z-A)",
+            "index": 5,
+            "label": "Alphabetical(Z-A)",
+            "enabled": true,
+            "lookbackType": "default",
+            "lookbackPeriod": "0"
+          },
+          {
+            "id": 31896,
+            "key": "lowest-price",
+            "name": "Lowest Price",
+            "index": 6,
+            "label": "",
+            "enabled": false,
+            "lookbackType": "default",
+            "lookbackPeriod": "0"
+          },
+          {
+            "id": 31897,
+            "key": "highest-rating",
+            "name": "Highest Rating",
+            "index": 7,
+            "label": null,
+            "enabled": false,
+            "lookbackType": "default",
+            "lookbackPeriod": "0"
+          },
+          {
+            "id": 31898,
+            "key": "lowest-rating",
+            "name": "Lowest Rating",
+            "index": 8,
+            "label": null,
+            "enabled": false,
+            "lookbackType": "default",
+            "lookbackPeriod": "0"
+          },
+          {
+            "id": 31899,
+            "key": "oldest",
+            "name": "Oldest",
+            "index": 9,
+            "label": null,
+            "enabled": false,
+            "lookbackType": "default",
+            "lookbackPeriod": "0"
+          }
+        ],
+        "editorCustomBlocks": [],
+        "noResultsWidgets": []
+      }
+    },
+    "quickViewSettings": {
+      "setting": {
+        "settingsId": 743,
+        "owner": 8159,
+        "enabled": true,
+        "triggerSelector": ".header-v2 [data-rebuy-search-trigger]",
+        "embeddedSelector": "",
+        "editorLayout": {
+          "layout": "dropdown",
+          "layoutMode": "left",
+          "integrations": {
+            "loox": false,
+            "junip": false,
+            "yotpo": false,
+            "okendo": false,
+            "opinew": false,
+            "judgeme": false,
+            "klaviyo": false,
+            "stamped": false,
+            "reviewsio": false
+          },
+          "soldOutTitle": "Sold Out",
+          "colorSettings": {
+            "price": "#000000",
+            "salePrice": "#000000",
+            "buttonText": null,
+            "reviewsText": null,
+            "buttonRadius": null,
+            "comparePrice": "#989898",
+            "productTitle": "#000000",
+            "reviewsStarSize": "default",
+            "buttonBackground": null,
+            "buttonBorderColor": null,
+            "buttonBorderWidth": null,
+            "reviewsBackground": null,
+            "reviewsForeground": null
+          },
+          "columnSpacing": "default",
+          "productLayout": "vertical",
+          "addToCartTitle": "Add to Cart",
+          "addToCartEnabled": false,
+          "addedToCartTitle": "Added",
+          "imageAspectRatio": "1:1",
+          "suggestionsCount": 12,
+          "addingToCartTitle": "Adding...",
+          "matchingContentMax": 4,
+          "noResultsPageTitle": "No results for \"{term}\"",
+          "autoCompleteTermsMax": 4,
+          "matchingContentTitle": "Matching Content",
+          "enabledProductRatings": false,
+          "matchingProductsTitle": "Matching Products",
+          "autoCompleteTermsTitle": "Suggested Searches",
+          "matchingCollectionsMax": 4,
+          "matchingContentEnabled": false,
+          "mobileColumnBreakpoint": 2,
+          "suggestedProductsTitle": "Popular Shades",
+          "tabletColumnBreakpoint": 3,
+          "desktopColumnBreakpoint": 4,
+          "matchingProductsEnabled": true,
+          "autoCompleteTermsEnabled": true,
+          "matchingCollectionsTitle": "Matching Collections",
+          "productInfoTextAlignment": "center",
+          "searchBarPlaceHolderText": "Search Blenders product, categories or whatever you like ...",
+          "suggestedProductsEnabled": true,
+          "noResultsPageTitleEnabled": true,
+          "suggestedCollectionsTitle": "Most Searched",
+          "suggestedSearchTermsTitle": "Search Suggestions",
+          "matchingCollectionsEnabled": true,
+          "searchByCollectionsEnabled": false,
+          "suggestedCollectionsEnabled": true,
+          "suggestedSearchTermsEnabled": false,
+          "noResultsSuggestedTermsTitle": "Search Suggestions",
+          "noResultsSuggestedTermsEnabled": false,
+          "noResultsSuggestedProductsTitle": "Recommended Products",
+          "noResultsSuggestedProductsEnabled": false,
+          "noResultsSuggestedCollectionsTitle": "Featured Collections",
+          "noResultsSuggestedCollectionsEnabled": false
+        },
+        "styles": ".rebuy-smart-search__absolute-image {\r\n    object-fit: contain !important;\r\n}\r\n\r\n@media (min-width: 768px) {\r\n  .rebuy-quick-view-dropdown__search-input {\r\n    width: 1300px;\r\n  }\r\n}\r\n#rebuy-quick-view-flyout-search .rebuy-quick-view__overlay, #rebuy-quick-view-dropdown-search .rebuy-quick-view__overlay {\r\n  box-shadow: none;\r\n}\r\n\r\n.rebuy-quick-view-dropdown__search-input {\r\n  padding: 16px 24px;\r\n  border-radius: 8px;\r\n  border-color: black;\r\n  gap: 24px;\r\n}\r\n\r\n.rebuy-quick-view__search-input i {\r\n  color: black;\r\n}\r\n\r\n.rebuy-quick-view-dropdown__search-input input {\r\n  color: black;\r\n  font-size: 16px;\r\n}\r\n\r\n.rebuy-quick-view__title {\r\n  color: black;\r\n  text-transform: uppercase;\r\n  font-size: 20px;\r\n}\r\n\r\n.rebuy-quick-view__collection-list {\r\n  row-gap: 10px;\r\n}\r\n\r\n.rebuy-quick-view__collection, .rebuy-quick-view__content {\r\n  padding: 14px 16px;\r\n  background-color: #F3F4F7;\r\n  border-radius: 8px;\r\n  color: black;\r\n  line-height: 1;\r\n}\r\n\r\n.rebuy-quick-view__product-section .rebuy-quick-view__product {\r\n  background-color: #F3F4F7;\r\n  border-radius: 10px;\r\n  position: relative;\r\n}\r\n\r\n.rebuy-quick-view__product-section .rebuy-quick-view__product img.rebuy-quick-view_image {\r\n  mix-blend-mode: darken;\r\n}\r\n\r\n.rebuy-quick-view__product-section .rebuy-quick-view__product .rebuy-product-title {\r\n  position: absolute;\r\n  top: 40px;\r\n  left: 20px;  \r\n  color: #00000099;\r\n  font-size: 12px;\r\n  text-align: left;\r\n  line-height: 1;\r\n}\r\n\r\n.rebuy-quick-view__product-section .rebuy-quick-view__product .rebuy-product-collection {\r\n  position: absolute;\r\n  text-transform: uppercase;\r\n  font-size: 14px;\r\n  top: 20px;\r\n  left: 20px;\r\n  font-weight: bold;\r\n}\r\n\r\n.rebuy-quick-view__product-section .rebuy-quick-view__product .price {\r\n  position: absolute;\r\n  bottom: 20px;\r\n  right: 20px;\r\n  gap: 8px;\r\n  flex-direction: row-reverse;\r\n}\r\n\r\n.rebuy-quick-view-dropdown__body-right, .rebuy-quick-view-dropdown__results {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 32px;\r\n}\r\n\r\n.rebuy-quick-view__product-section .rebuy-quick-view__product .rebuy-product-info {\r\n  position: static;\r\n}\r\n\r\n.rebuy-quick-view__product-section .rebuy-quick-view__product .price .sale {\r\n  margin: 0;\r\n  font-weight: bold;\r\n}\r\n\r\n#rebuy-quick-view-flyout-search .rebuy-quick-view__overlay--wide .rebuy-quick-view__overlay-body,\r\n#rebuy-quick-view-dropdown-search .rebuy-quick-view__overlay--wide .rebuy-quick-view__overlay-body {\r\n  max-width: 1300px;\r\n  width: 100%;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n#rebuy-quick-view-flyout-search .rebuy-money, #rebuy-quick-view-dropdown-search .rebuy-money {\r\n  font-weight: bold;\r\n}\r\n\r\n#rebuy-quick-view-flyout-search .rebuy-money.compare-at, #rebuy-quick-view-dropdown-search .rebuy-money.compare-at {\r\n  font-weight: 400;\r\n}\r\n\r\n  @media (max-width: 480px) {\r\n    .rebuy-quick-view-dropdown__grid-gap-default {\r\n      gap: 12px !important;\r\n    }\r\n    .rebuy-quick-view__product-section .rebuy-quick-view__product img.rebuy-quick-view_image {\r\n      padding: 10%;\r\n    }\r\n  }\r\n\r\n  .rebuy-smart-search-results-page__container.gap-default {\r\n    gap: 12px 12px !important;\r\n  }\r\n\r\n  /* ── Rebuy Smart Search – Layout & Spacing ── */\r\n\r\n  #rebuy-smart-search-results-sidebar-flyout-filter,\r\n  #rebuy-smart-search-results-sidebar {\r\n    padding: 0;\r\n    max-width: 1440px;\r\n  }\r\n  #rebuy-search-result-container {\r\n    max-width: 1440px;\r\n    margin: 0 auto;\r\n    padding: 0 20px 60px;\r\n  }\r\n\r\n  /* Header section: search input + context */\r\n  .rebuy-smart-search-results-page-sidebar__header-section {\r\n    padding: 24px 0 16px;\r\n    border-bottom: 1px solid #e5e5e5;\r\n    margin-bottom: 24px;\r\n  }\r\n\r\n  /* Search input */\r\n  .rebuy-smart-search-results-page-sidebar__input {\r\n    width: 100%;\r\n    padding: 12px 16px;\r\n    font-size: 16px;\r\n    border: 1px solid #d1d1d1;\r\n    border-radius: 4px;\r\n    outline: none;\r\n    transition: border-color 0.2s;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__input:focus {\r\n    border-color: #000;\r\n  }\r\n\r\n  /* Context bar: \"You searched for\" + sort */\r\n  .rebuy-smart-search-results-page-sidebar__context-section {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    margin-top: 16px;\r\n    flex-wrap: wrap;\r\n    gap: 12px;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__result-title {\r\n    font-size: 14px;\r\n    font-weight: 400;\r\n    color: #666;\r\n    margin: 0;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__context-left {\r\n    flex: 1;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__context-right {\r\n    flex-shrink: 0;\r\n    margin-left: auto;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: flex-end;\r\n    gap: 12px;\r\n  }\r\n\r\n  /* Main layout: filters sidebar + products */\r\n  .rebuy-smart-search-results-page-sidebar__main-section {\r\n    display: flex;\r\n    gap: 40px;\r\n    align-items: flex-start;\r\n  }\r\n\r\n  /* ── Filters sidebar ── */\r\n\r\n  .rebuy-smart-search-results-page-sidebar__filter-list-header {\r\n    padding: 0;\r\n    border-top: none;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__filter-section {\r\n    flex: 0 0 220px;\r\n    position: sticky;\r\n    top: 130px;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__filter-section-title {\r\n    font-size: 18px;\r\n    font-weight: 700;\r\n    text-transform: uppercase;\r\n    letter-spacing: 0.05em;\r\n    margin: 0 0 16px;\r\n    padding-bottom: 12px;\r\n    border-bottom: 2px solid #000;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__filter-container {\r\n    list-style: none;\r\n    padding: 0;\r\n    margin: 0;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__filter-list-toggle {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    width: 100%;\r\n    padding: 12px 0;\r\n    background: none;\r\n    border: none;\r\n    cursor: pointer;\r\n    border-bottom: 1px solid #e5e5e5;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__filter-list-title {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    margin: 0;\r\n    color: #333;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__filter-list-body {\r\n    padding: 0;\r\n  }\r\n  .rebuy-smart-search-results-page__filter-option {\r\n    list-style: none;\r\n    padding: 0;\r\n    margin: 0;\r\n  }\r\n  .rebuy-smart-search-results-page__filter-option-list {\r\n    padding: 4px 0;\r\n  }\r\n  .rebuy-smart-search-results-page__filter-option-checkbox-label {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 6px;\r\n    font-size: 13px;\r\n    color: #444;\r\n    cursor: pointer;\r\n  }\r\n  .rebuy-smart-search-results-page__filter-label {\r\n    color: #999;\r\n    font-size: 12px;\r\n  }\r\n\r\n  /* Price filter inputs */\r\n  .rebuy-smart-search-results-page__filter-price {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 8px;\r\n    padding: 4px 0;\r\n  }\r\n  .rebuy-smart-search-results-page__filter-price-block {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 4px;\r\n  }\r\n  .rebuy-smart-search-results-page__filter-price-input {\r\n    width: 70px;\r\n    padding: 6px 8px;\r\n    border: 1px solid #d1d1d1;\r\n    border-radius: 3px;\r\n    font-size: 13px;\r\n  }\r\n\r\n  /* ── Selected filters (pill chips) ── */\r\n  .rebuy-smart-search-results-page-sidebar__selected-filters {\r\n    margin-bottom: 16px;\r\n    padding-bottom: 12px;\r\n    border-bottom: 1px solid #e5e5e5;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__selected-filters-header {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    margin-bottom: 10px;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__selected-filters-reset {\r\n    background: none;\r\n    border: none;\r\n    cursor: pointer;\r\n    font-size: 13px;\r\n    color: #666;\r\n    text-decoration: underline;\r\n    padding: 0;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__selected-filters-reset:hover {\r\n    color: #000;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__selected-filters-body {\r\n    display: flex;\r\n    flex-wrap: wrap;\r\n    gap: 8px;\r\n    align-items: center;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__selected-filter-tag {\r\n    display: inline-flex;\r\n    align-items: center;\r\n    gap: 6px;\r\n    padding: 6px 12px;\r\n    background: #f0f0f0;\r\n    border: 1px solid #d1d1d1;\r\n    border-radius: 30px;\r\n    font-size: 13px;\r\n    color: var(--color-foreground-heading);\r\n  }\r\n  .rebuy-smart-search-results-page__selected-tag-label {\r\n    font-weight: 500;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__selected-filter-tag-remove {\r\n    background: none;\r\n    border: none;\r\n    cursor: pointer;\r\n    padding: 0;\r\n    display: inline-flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    color: #666;\r\n    font-size: 12px;\r\n    line-height: 1;\r\n    transition: color 0.15s;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__selected-filter-tag-remove:hover {\r\n    color: #000;\r\n  }\r\n\r\n  /* ── Results section ── */\r\n  .rebuy-smart-search-results-page-sidebar__result-section {\r\n    width: 100%;\r\n    flex: 1;\r\n    min-width: 0;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__result-section-title {\r\n    font-size: 20px;\r\n    font-weight: 700;\r\n    text-transform: uppercase;\r\n    letter-spacing: 0.05em;\r\n    margin: 0 0 20px;\r\n  }\r\n\r\n  /* Product grid */\r\n  .rebuy-smart-search-results-page__container.col-3 {\r\n    display: grid;\r\n    grid-template-columns: repeat(3, 1fr);\r\n    gap: 24px 16px;\r\n  }\r\n\r\n  /* Product card */\r\n  .rebuy-smart-search-results-page__product {\r\n    display: flex;\r\n    flex-direction: column;\r\n  }\r\n\r\n  /* Product image */\r\n  .rebuy-smart-search-results-page__product-media {\r\n    display: block;\r\n    position: relative;\r\n    width: 100%;\r\n    aspect-ratio: 1 / 1;\r\n    overflow: hidden;\r\n    border-radius: 10px;\r\n    background: #f3f4f7;\r\n  }\r\n  .rebuy-smart-search-results-page__product-image {\r\n    width: 100%;\r\n    height: 100%;\r\n    object-fit: contain;\r\n    object-position: center;\r\n    transition: transform 0.3s ease;\r\n    mix-blend-mode: darken;\r\n    opacity: 1;\r\n    padding: 10%;\r\n  }\r\n  .rebuy-smart-search-results-page__product-media:hover .rebuy-smart-search-results-page__product-image {\r\n    transform: scale(1.05);\r\n  }\r\n\r\n  /* Product details - overlaid on image */\r\n  .rebuy-smart-search-results-page__product-detail {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    padding: 20px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    pointer-events: none;\r\n    z-index: 2;\r\n  }\r\n  .rebuy-smart-search-results-page__product-detail > * {\r\n    pointer-events: auto;\r\n  }\r\n  .rebuy-smart-search-results-page__product .rebuy-product-title {\r\n    font-size: 12px;\r\n    font-weight: 500;\r\n    color: var(--color-foreground-muted);\r\n    text-decoration: none;\r\n    line-height: 1;\r\n    text-transform: none;\r\n    font-family: var(--font-heading);\r\n    position: absolute;\r\n    top: 20px;\r\n    left: 0;\r\n  }\r\n\r\n  .rebuy-smart-search-results-page__flyout.is-visible {\r\n    z-index: 99999999990;\r\n  }\r\n  .rebuy-smart-search-results-page__product .rebuy-product-title:hover {\r\n    text-decoration: none;\r\n  }\r\n\r\n  /* Reviews - hidden since overlaid layout doesn't need them */\r\n  .rebuy-smart-search-results-page__product .rebuy-product-review {\r\n    display: none;\r\n  }\r\n\r\n  /* Price - bottom right */\r\n  .rebuy-smart-search-results-page__product .rebuy-product-price {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    color: var(--color-foreground-heading);\r\n    position: absolute;\r\n    bottom: 0;\r\n    right: 0;\r\n  }\r\n\r\n  .rebuy-smart-search-results-page__product .rebuy-money.compare-at {\r\n    font-weight: 400;\r\n    color: var(--color-foreground-muted);\r\n  }\r\n\r\n  .rebuy-smart-search-results-page__product .rebuy-product-price > div {\r\n    gap: 8px;\r\n    display: flex;\r\n    flex-direction: row-reverse;\r\n  }\r\n\r\n  /* Sort dropdown trigger */\r\n  .rebuy-smart-search-results-page-sidebar__dropdown-menu-container {\r\n    position: relative;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__dropdown-menu-trigger {\r\n    background: #fff;\r\n    border: 1px solid #e5e7eb;\r\n    border-radius: 8px;\r\n    cursor: pointer;\r\n    font-size: 13px;\r\n    font-weight: 700;\r\n    color: #000;\r\n    text-transform: uppercase;\r\n    letter-spacing: 0.04em;\r\n    display: inline-flex;\r\n    align-items: center;\r\n    gap: 8px;\r\n    padding: 10px 16px;\r\n    transition: border-color 0.2s;\r\n    white-space: nowrap;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__dropdown-menu-trigger:hover {\r\n    border-color: #000;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__dropdown-menu-title {\r\n    font-weight: 700;\r\n    text-transform: uppercase;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__dropdown-menu-trigger i,\r\n  .rebuy-smart-search-results-page-sidebar__dropdown-menu-trigger .filter-close {\r\n    font-size: 10px;\r\n    transition: transform 0.2s;\r\n  }\r\n\r\n  /* Sort dropdown menu */\r\n  .rebuy-smart-search-results-page-sidebar__dropdown-menu {\r\n    position: absolute;\r\n    top: calc(100% + 6px);\r\n    right: 0;\r\n    z-index: 10;\r\n    min-width: 220px;\r\n    background: #fff;\r\n    border: 1px solid #e0e0e0;\r\n    border-radius: 8px;\r\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);\r\n    list-style: none;\r\n    padding: 8px 0;\r\n    margin: 0;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item {\r\n    padding: 5px 20px;\r\n    font-size: 14px;\r\n    color: #333;\r\n    cursor: pointer;\r\n    transition: background 0.15s, color 0.15s;\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 8px;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item:hover {\r\n    background: #f5f5f5;\r\n    color: #000;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item--active {\r\n    font-weight: 600;\r\n    color: #000;\r\n    background: #f7f7f7;\r\n  }\r\n  .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item--active::before {\r\n    content: '✓';\r\n    font-size: 13px;\r\n    font-weight: 700;\r\n  }\r\n\r\n  .rebuy-smart-search-results-page-sidebar__filter-trigger--mobile {\r\n    display: none;\r\n  }\r\n\r\n  .rebuy-smart-search-results-page__flyout-header {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    padding: 16px;\r\n    border-bottom: 1px solid #e5e5e5;\r\n  }\r\n  .rebuy-smart-search-results-page__flyout-header-title {\r\n    font-size: 16px;\r\n    font-weight: 700;\r\n    margin: 0;\r\n  }\r\n  .rebuy-smart-search-results-page__flyout-close {\r\n    background: none;\r\n    border: none;\r\n    font-size: 20px;\r\n    cursor: pointer;\r\n    color: #333;\r\n  }\r\n\r\n  /* ── Responsive ── */\r\n  @media (max-width: 1024px) {\r\n    .rebuy-smart-search-results-page__container.col-3 {\r\n      grid-template-columns: repeat(3, 1fr);\r\n      gap: 16px 12px;\r\n    }\r\n    .rebuy-smart-search-results-page-sidebar__filter-section {\r\n      flex: 0 0 180px;\r\n    }\r\n    .rebuy-smart-search-results-page-sidebar__main-section {\r\n      gap: 24px;\r\n    }\r\n  }\r\n\r\n  @media (max-width: 768px) {\r\n    #rebuy-search-result-container {\r\n      padding: 0 16px 40px;\r\n    }\r\n    .rebuy-smart-search-results-page-sidebar__main-section {\r\n      flex-direction: column;\r\n    }\r\n    .rebuy-smart-search-results-page-sidebar__filter-section {\r\n      display: none;\r\n    }\r\n    .rebuy-smart-search-results-page-sidebar__filter-trigger--mobile {\r\n      display: block;\r\n    }\r\n    .rebuy-smart-search-results-page__container.col-3 {\r\n      grid-template-columns: repeat(2, 1fr);\r\n      gap: 16px 12px;\r\n    }\r\n    .rebuy-smart-search-results-page-sidebar__result-section-title {\r\n      font-size: 16px;\r\n      margin-bottom: 14px;\r\n    }\r\n  }\r\n\r\n  @media (max-width: 480px) {\r\n    .rebuy-smart-search-results-page__product-detail {\r\n      padding: 12px;\r\n    }\r\n    .rebuy-smart-search-results-page__product-detail .rebuy-product-info .rebuy-product-price .rebuy-money {\r\n      line-height: 1;\r\n      font-weight: 500;\r\n    }\r\n  }\r\n\r\n  /* Collection title on product card */\r\n  .rebuy-smart-search-results-page__product .rebuy-product-collection {\r\n    font-size: 14px;\r\n    font-weight: 700;\r\n    color: var(--color-foreground-heading);\r\n    text-transform: uppercase;\r\n    line-height: 1.25;\r\n    position: absolute;\r\n    left: 0;\r\n    top: 0;\r\n  }\r\n\r\n  /* Replace Rebuy native loading spinner with Blenders loader */\r\n  .rebuy-smart-search-results-page__continuous-scroll > *:not(.rebuy-blenders-loader) {\r\n    display: none !important;\r\n  }\r\n  .rebuy-blenders-loader {\r\n    width: 80px;\r\n    height: 80px;\r\n    object-fit: contain;\r\n    display: block;\r\n    margin: 0 auto;\r\n  }",
+        "scripts": {
+          "add": {
+            "code": "",
+            "enabled": false
+          },
+          "init": {
+            "code": "",
+            "enabled": false
+          },
+          "open": {
+            "code": "if(window.__blendersInjectCollectionTitles) window.__blendersInjectCollectionTitles();",
+            "enabled": true
+          },
+          "view": {
+            "code": "if(window.__blendersInjectCollectionTitles) window.__blendersInjectCollectionTitles();",
+            "enabled": true
+          },
+          "close": {
+            "code": "if(window.__blendersInjectCollectionTitles) window.__blendersInjectCollectionTitles();",
+            "enabled": true
+          },
+          "ready": {
+            "code": "if(window.__blendersInjectCollectionTitles) window.__blendersInjectCollectionTitles();",
+            "enabled": true
+          },
+          "beforeAdd": {
+            "code": "",
+            "enabled": false
+          },
+          "beforeReady": {
+            "code": "",
+            "enabled": false
+          },
+          "productsChange": {
+            "code": "if(window.__blendersInjectCollectionTitles) window.__blendersInjectCollectionTitles();",
+            "enabled": true
+          },
+          "beforeProductsChange": {
+            "code": "",
+            "enabled": false
+          }
+        },
+        "suggestedSearchTerms": [
+          "Pink",
+          "Breast cancer",
+          "Prime"
+        ],
+        "suggestedProducts": [
+          {
+            "canPurchase": true,
+            "compareAtPrice": 0,
+            "description": "<p>Our sleeves are the perfect pouches for your Blendz. They fit virtually everywhere, making “pack n’ go” a speedy cinch. The sensationally soft velvet interior lining protects against scratches and scuffs as you seek adventure on every horizon. //</p>\n<p>Note: This sleeve is not compatible with Eclipse, Full Speed or SciFi frames.</p>\n<p><strong>Details:</strong></p>\n<ul>\n<li>\n<strong>Gender</strong>: Unisex</li>\n<li>\n<strong>Material:</strong><span> Velvet interior</span>\n</li>\n<li>\n<strong>Vibe</strong>: Lifestyle</li>\n</ul>",
+            "handle": "dapper-sleeve",
+            "id": "2141352460357",
+            "images": [
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/products/BLNDRS_Dapper_Sleeve_Front.png?v=1644264834"
+              },
+              {
+                "alt": "Dapper Sleeve - Black Leather Sleeve for Sunglasses & Eyeglasses Sunglass Sleeves | $5 US | Blenders Eyewear",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/products/BLNDRS_Dapper_Sleeve_Back.jpg?v=1644264834"
+              }
+            ],
+            "metafields": [],
+            "name": "Dapper Sleeve",
+            "options": [
+              {
+                "option": "Title",
+                "position": 1,
+                "values": [
+                  "Default Title"
+                ]
+              }
+            ],
+            "price": 500,
+            "ratings": {
+              "average": 0,
+              "count": 0
+            },
+            "tags": [
+              "Accessories",
+              "Archive Sale",
+              "Cases and Sleeves",
+              "collection::Sleeves",
+              "EOY",
+              "EOY 50",
+              "frame::Sleeves",
+              "IN STOCK AT PB STORE",
+              "IN STOCK ONLINE",
+              "laborD-50",
+              "Men Gift 50",
+              "netsuiteStatus::Carry Over",
+              "rebuy::Sleeves",
+              "SITEWIDE SALE",
+              "SOLD OUT AT PB STORE",
+              "status::active",
+              "Summer Accessories",
+              "SUMMER SALE"
+            ],
+            "url": "https://blenderseyewear-com.myshopify.com/products/dapper-sleeve",
+            "variants": [
+              {
+                "canPurchase": true,
+                "compareAtPrice": 0,
+                "createdAt": 1556812457,
+                "description": "",
+                "descriptionText": "",
+                "id": "19631014117445",
+                "images": [],
+                "metafields": null,
+                "name": "Default Title",
+                "position": 1,
+                "price": 500,
+                "productId": "2141352460357",
+                "ratings": {
+                  "average": 0,
+                  "count": 0
+                },
+                "sku": "BEA034",
+                "url": "https://blenderseyewear-com.myshopify.com/products/dapper-sleeve?variant=19631014117445",
+                "visible": true
+              }
+            ],
+            "type": "trending-products",
+            "index": 1,
+            "option1": "",
+            "option2": "",
+            "option3": "",
+            "quantity": 1,
+            "properties": {},
+            "reviews": {},
+            "status": "ready",
+            "selected_variant": "[circular]",
+            "selected_variant_id": "19631014117445"
+          },
+          {
+            "canPurchase": true,
+            "compareAtPrice": 0,
+            "description": "<p>Be the show with ‘<strong>Legend Forever</strong>.’ These effortlessly epic shades put a new spin on aviator sunglasses with a masked smoke lens, durable gunmetal frame, and matte black temples. It’s endlessly sleek—and the Pure<strong>Blend™</strong> lens is strong, light, and clear beyond anything we’ve ever offered before. //</p>\n<p><strong>Details:</strong></p>\n<ul>\n<li>\n<strong>Gender:</strong> Unisex</li>\n<li>\n<strong>Frame:</strong> Matte Black</li>\n<li>\n<strong>Lens Color:</strong> Pure<strong>Blend™</strong> Black Smoke</li>\n<li>\n<strong>UV Rating:</strong> 100% UV Protection</li>\n<li>\n<strong>Fit / Size:</strong> Medium - Large</li>\n<li>\n<strong>Vibe:</strong> Progressive</li>\n<li>\n<strong>In the Box:</strong> Microfiber Pouch &amp; Sticker Pack</li>\n</ul>",
+            "handle": "falcon-legend-forever",
+            "id": "6717793042501",
+            "images": [
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/Falcon_Legend_Forever_2_o_98207434-f310-4995-9891-93e9e445e2d1.webp?v=1714584979"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/Falcon_Legend_Forever_1_o_c92e5060-9153-4e2b-9c60-deb0cfe141f8.webp?v=1714584979"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/Falcon_Legend_Forever_3_o_b2d1f87f-8402-42e9-ae25-3a6c80aee3fb.webp?v=1714584979"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/Falcon_Legend_Forever_4_o_915ec4b0-98d2-4679-a712-93bb0927b136.webp?v=1714584979"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/Falcon_Legend_Forever_5_o_31f0caf8-c902-4ff6-bd02-654157f70463.webp?v=1714584979"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/BLNDRS_PDP_OpenBox_1440x720_3529feb3-afdf-4fa1-b27f-ed5aa53df924.jpg?v=1714584979"
+              }
+            ],
+            "metafields": [],
+            "name": "Legend Forever",
+            "options": [
+              {
+                "option": "Title",
+                "position": 1,
+                "values": [
+                  "Default Title"
+                ]
+              }
+            ],
+            "price": 7900,
+            "ratings": {
+              "average": 0,
+              "count": 0
+            },
+            "tags": [
+              "Archive Sale",
+              "badge::pure-blend-polarized",
+              "collection::Falcon",
+              "color::Black",
+              "EOY",
+              "EOY 50",
+              "Fall Favorites",
+              "Fall Styles",
+              "feature::progressive",
+              "Festival",
+              "frame-color::Black",
+              "frame-shape::single lens",
+              "frame::Falcon",
+              "IN STOCK AT PB STORE",
+              "IN STOCK ONLINE",
+              "laborD-40",
+              "lens-color::Black Smoke",
+              "lens-material::Polarized",
+              "lens-material::PureBlend",
+              "lens-type::Polarized",
+              "lens-type::PureBlend",
+              "material::Mixed-Metal",
+              "men",
+              "netsuiteStatus::Phase Out",
+              "packaging::Pouch",
+              "pillbadge::Polarized",
+              "polarized::Polarized",
+              "pureblend test",
+              "R-badge::pure-blend-polarized",
+              "rebuy::Sunglasses",
+              "shape::aviator",
+              "shape::single lens",
+              "SITEWIDE SALE",
+              "size::Medium-Large",
+              "SOLD OUT AT PB STORE",
+              "status::active",
+              "Summer Favorites",
+              "SUMMER SALE",
+              "Sunglasses",
+              "swatch::#2f2f2f-#1b1b19",
+              "unisex",
+              "vibe::Progressive",
+              "view::3-4",
+              "view::force-3-4"
+            ],
+            "url": "https://blenderseyewear-com.myshopify.com/products/falcon-legend-forever",
+            "variants": [
+              {
+                "canPurchase": true,
+                "compareAtPrice": 0,
+                "createdAt": 1661785089,
+                "description": "",
+                "descriptionText": "",
+                "id": "40278677815365",
+                "images": [],
+                "metafields": null,
+                "name": "Default Title",
+                "position": 1,
+                "price": 7900,
+                "productId": "6717793042501",
+                "ratings": {
+                  "average": 0,
+                  "count": 0
+                },
+                "sku": "BE6301",
+                "url": "https://blenderseyewear-com.myshopify.com/products/falcon-legend-forever?variant=40278677815365",
+                "visible": true
+              }
+            ],
+            "type": "trending-products",
+            "index": 1,
+            "option1": "",
+            "option2": "",
+            "option3": "",
+            "quantity": 1,
+            "properties": {},
+            "reviews": {},
+            "status": "ready",
+            "selected_variant": "[circular]",
+            "selected_variant_id": "40278677815365"
+          },
+          {
+            "canPurchase": true,
+            "compareAtPrice": 0,
+            "description": "<p><span data-sheets-root=\"1\"><span>Make a bold statement with purpose. Created in partnership with the Keep-A-Breast Foundation, these limited edition sunglasses pair meaningful impact with stand-out style. The design features a vibrant gloss transparent pink frame enhanced by dynamic color-blocking, paired seamlessly with deep navy non-polarized PureBlend™ lenses that offer crisp visual clarity and full UV protection. Look closely at the temples to reveal a custom-designed Keep-A-Breast wire core running through the transparent arms, perfectly complemented by metallic blue logo hits for a polished, high-contrast finish.</span></span></p>\n<p><strong>Details:</strong></p>\n<ul>\n<li>\n<strong>Gender: </strong><span data-sheets-root=\"1\">Women's</span>\n</li>\n<li>\n<strong>Frame: </strong><span data-sheets-root=\"1\">Gloss Pink Color-Blocked</span>\n</li>\n<li>\n<strong>Lens: </strong><span data-sheets-root=\"1\">PureBlend™ Navy (Non-Polarized)</span>\n</li>\n<li>\n<strong>UV Rating: </strong>100% UV Protection</li>\n<li>\n<strong>Fit / Size: </strong>Medium - Large</li>\n<li>\n<strong>Vibe: </strong>Lifestyle</li>\n<li>\n<strong>In the Box: </strong>EVA Case &amp; Microfiber Pouch</li>\n</ul>",
+            "handle": "mave-keep-a-breast-2026",
+            "id": "8297196519493",
+            "images": [
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MAVE_KEEP-A-BREAST_2_copy_o.webp?v=1791329453"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MAVE_KEEP-A-BREAST_1_copy_o.webp?v=1791329453"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MAVE_KEEP-A-BREAST_3_copy_o.webp?v=1791329453"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MAVE_KEEP-A-BREAST_4_copy_o.webp?v=1791329453"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MAVE_KEEP-A-BREAST_5_copy_o.webp?v=1791329453"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/BLNDRS_KAB_PACKAGING_01_Lifestyle-PDP_1100x550_fe5ad491-0fcd-4e95-adb6-9a4622d8dc20.jpg?v=1791511373"
+              }
+            ],
+            "metafields": [],
+            "name": "Keep A Breast",
+            "options": [
+              {
+                "option": "Title",
+                "position": 1,
+                "values": [
+                  "Default Title"
+                ]
+              }
+            ],
+            "price": 8900,
+            "ratings": {
+              "average": 0,
+              "count": 0
+            },
+            "tags": [
+              "badge::new",
+              "collection::Mave",
+              "IN STOCK ONLINE",
+              "L-badge::new",
+              "lens-material::PureBlend",
+              "lens-type::PureBlend",
+              "netsuiteStatus::New",
+              "packaging::Case",
+              "R-badge::pureblend",
+              "swatch::#EDCCCC-#37414C",
+              "view::3-4",
+              "view::force-3-4",
+              "Women",
+              "year::2026"
+            ],
+            "url": "https://blenderseyewear-com.myshopify.com/products/mave-keep-a-breast-2026",
+            "variants": [
+              {
+                "canPurchase": true,
+                "compareAtPrice": 0,
+                "createdAt": 1790029066,
+                "description": "",
+                "descriptionText": "",
+                "id": "45820241608773",
+                "images": [],
+                "metafields": null,
+                "name": "Default Title",
+                "position": 1,
+                "price": 8900,
+                "productId": "8297196519493",
+                "ratings": {
+                  "average": 0,
+                  "count": 0
+                },
+                "sku": "BE6821",
+                "url": "https://blenderseyewear-com.myshopify.com/products/mave-keep-a-breast-2026?variant=45820241608773",
+                "visible": true
+              }
+            ],
+            "type": "trending-products",
+            "index": 1,
+            "option1": "",
+            "option2": "",
+            "option3": "",
+            "quantity": 1,
+            "properties": {},
+            "reviews": {},
+            "status": "ready",
+            "selected_variant": "[circular]",
+            "selected_variant_id": "45820241608773"
+          },
+          {
+            "canPurchase": true,
+            "compareAtPrice": 0,
+            "description": "<p><meta charset=\"UTF-8\"><span>Designed by Anwar Carrots, the Midnite pairs a crystal-clear frame and orange gradient  Pure<strong>Blend™</strong> lenses with signature green Carrots graphics and gold detailing. Hidden co-branded touches throughout bring the Carrots treatment to one of our newest styles.<br><br></span></p>\n<p><strong>Details:</strong></p>\n<ul>\n<li>\n<strong>Gender:</strong> Unisex</li>\n<li>\n<strong>Frame:</strong> Gloss <span>Crystal Clear</span>\n</li>\n<li>\n<strong>Lens:</strong> Pure<strong>Blend™</strong> <span>Orange Gradient (Non-Polarized)</span>\n</li>\n<li>\n<strong>UV Rating:</strong> 100% UV Protection</li>\n<li>\n<strong>Fit / Size:</strong> Small - Medium</li>\n<li>\n<strong>Vibe:</strong> Lifestyle</li>\n<li>\n<strong>In the Box:</strong> Premium Case &amp; Microfiber Pouch</li>\n</ul>",
+            "handle": "midnite-carrots",
+            "id": "8268360155205",
+            "images": [
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MIDNITE_CARROTS_2_o_fdaab7be-0376-450d-ab51-245236eb5814.webp?v=1789595190"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MIDNITE_CARROTS_1_o_97be805f-9ad0-423a-8101-c752f149f44f.webp?v=1789595190"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MIDNITE_CARROTS_3_o_4d7068b8-dc20-4c92-b8ae-2e141ad26c67.webp?v=1789595190"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MIDNITE_CARROTS_4_o_46afe5f3-5df2-4512-9a36-e0e79ca2ced3.webp?v=1789595190"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MIDNITE_CARROTS_5_o_77764ecd-be17-4f9e-a5d3-84b6632a8129.webp?v=1789595190"
+              },
+              {
+                "alt": "",
+                "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/BLENDERS_2026_Midnite-Carrots_Packaging_BK_01.png?v=1789618327"
+              }
+            ],
+            "metafields": [],
+            "name": "Carrots",
+            "options": [
+              {
+                "option": "Title",
+                "position": 1,
+                "values": [
+                  "Default Title"
+                ]
+              }
+            ],
+            "price": 7900,
+            "ratings": {
+              "average": 0,
+              "count": 0
+            },
+            "tags": [
+              "badge::new",
+              "collection::Midnite",
+              "frame::Midnite",
+              "IN STOCK ONLINE",
+              "L-badge::new",
+              "men",
+              "netsuiteStatus::New",
+              "packaging::Case",
+              "R-badge::pureblend",
+              "swatch::#54A76F-#C0864A",
+              "unisex",
+              "view::3-4",
+              "view::force-3-4",
+              "Women",
+              "year::2026"
+            ],
+            "url": "https://blenderseyewear-com.myshopify.com/products/midnite-carrots",
+            "variants": [
+              {
+                "canPurchase": true,
+                "compareAtPrice": 0,
+                "createdAt": 1788472251,
+                "description": "",
+                "descriptionText": "",
+                "id": "45687804985413",
+                "images": [],
+                "metafields": null,
+                "name": "Default Title",
+                "position": 1,
+                "price": 7900,
+                "productId": "8268360155205",
+                "ratings": {
+                  "average": 0,
+                  "count": 0
+                },
+                "sku": "BE2157",
+                "url": "https://blenderseyewear-com.myshopify.com/products/midnite-carrots?variant=45687804985413",
+                "visible": true
+              }
+            ],
+            "type": "trending-products",
+            "index": 1,
+            "option1": "",
+            "option2": "",
+            "option3": "",
+            "quantity": 1,
+            "properties": {},
+            "reviews": {},
+            "status": "ready",
+            "selected_variant": "[circular]",
+            "selected_variant_id": "45687804985413"
+          }
+        ],
+        "suggestedCollections": [
+          {
+            "descriptionText": "",
+            "handle": "providence-dx",
+            "id": 2778,
+            "name": "Providence DX",
+            "visible": true,
+            "type": "custom",
+            "index": 1,
+            "limit": 1,
+            "enabled": true,
+            "collectionId": 289478672453
+          },
+          {
+            "descriptionText": "",
+            "handle": "prime",
+            "id": 2779,
+            "name": "Prime",
+            "visible": true,
+            "type": "custom",
+            "index": 2,
+            "limit": 1,
+            "enabled": true,
+            "collectionId": 280014782533
+          },
+          {
+            "descriptionText": "Every style. Every vibe. Made for every day.",
+            "handle": "all-womens-sunglasses",
+            "id": 2780,
+            "name": "Women's Sunglasses",
+            "visible": true,
+            "type": "custom",
+            "index": 3,
+            "limit": 1,
+            "enabled": true,
+            "collectionId": 93496115269
+          },
+          {
+            "descriptionText": "Every style. Every vibe. Made for every day.",
+            "handle": "all-mens-sunglasses",
+            "id": 2781,
+            "name": "Men's Sunglasses",
+            "visible": true,
+            "type": "custom",
+            "index": 4,
+            "limit": 1,
+            "enabled": true,
+            "collectionId": 93233381445
+          },
+          {
+            "descriptionText": "Brand new styles for men & women\r\n\r\n\r\n \r\n",
+            "handle": "new-arrivals",
+            "id": 2860,
+            "name": "New Arrivals",
+            "visible": true,
+            "type": "custom",
+            "index": 5,
+            "limit": 1,
+            "enabled": true,
+            "collectionId": 93059153989
+          },
+          {
+            "descriptionText": "See what Alana’s wearing on and off the road. Shop her favorites.",
+            "handle": "alana-springsteen",
+            "id": 2861,
+            "name": "Alana Springsteen's Favorites",
+            "visible": true,
+            "type": "custom",
+            "index": 6,
+            "limit": 1,
+            "enabled": true,
+            "collectionId": 289279246405
+          },
+          {
+            "descriptionText": "The official special-edition sunglasses of Coach Prime, built for those who live like every day is game day.\r\n",
+            "handle": "blenders-x-coach-prime",
+            "id": 2862,
+            "name": "Prime 21",
+            "visible": true,
+            "type": "custom",
+            "index": 7,
+            "limit": 1,
+            "enabled": true,
+            "collectionId": 268279054405
+          },
+          {
+            "descriptionText": "For Men & Women\r\n\r\n",
+            "handle": "polarized",
+            "id": 2863,
+            "name": "Polarized Sunglasses",
+            "visible": true,
+            "type": "custom",
+            "index": 8,
+            "limit": 1,
+            "enabled": true,
+            "collectionId": 93059121221
+          }
+        ],
+        "noResults": {
+          "suggestedSearchTerms": [
+            "Pink",
+            "Breast cancer",
+            "Prime"
+          ],
+          "suggestedProducts": [
+            {
+              "canPurchase": true,
+              "compareAtPrice": 0,
+              "description": "<p>Our sleeves are the perfect pouches for your Blendz. They fit virtually everywhere, making “pack n’ go” a speedy cinch. The sensationally soft velvet interior lining protects against scratches and scuffs as you seek adventure on every horizon. //</p>\n<p>Note: This sleeve is not compatible with Eclipse, Full Speed or SciFi frames.</p>\n<p><strong>Details:</strong></p>\n<ul>\n<li>\n<strong>Gender</strong>: Unisex</li>\n<li>\n<strong>Material:</strong><span> Velvet interior</span>\n</li>\n<li>\n<strong>Vibe</strong>: Lifestyle</li>\n</ul>",
+              "handle": "dapper-sleeve",
+              "id": "2141352460357",
+              "images": [
+                {
+                  "alt": "",
+                  "url": "https://cdn.shopify.com/s/files/1/0148/9585/products/BLNDRS_Dapper_Sleeve_Front.png?v=1644264834"
+                },
+                {
+                  "alt": "Dapper Sleeve - Black Leather Sleeve for Sunglasses & Eyeglasses Sunglass Sleeves | $5 US | Blenders Eyewear",
+                  "url": "https://cdn.shopify.com/s/files/1/0148/9585/products/BLNDRS_Dapper_Sleeve_Back.jpg?v=1644264834"
+                }
+              ],
+              "metafields": [],
+              "name": "Dapper Sleeve",
+              "options": [
+                {
+                  "option": "Title",
+                  "position": 1,
+                  "values": [
+                    "Default Title"
+                  ]
+                }
+              ],
+              "price": 500,
+              "ratings": {
+                "average": 0,
+                "count": 0
+              },
+              "tags": [
+                "Accessories",
+                "Archive Sale",
+                "Cases and Sleeves",
+                "collection::Sleeves",
+                "EOY",
+                "EOY 50",
+                "frame::Sleeves",
+                "IN STOCK AT PB STORE",
+                "IN STOCK ONLINE",
+                "laborD-50",
+                "Men Gift 50",
+                "netsuiteStatus::Carry Over",
+                "rebuy::Sleeves",
+                "SITEWIDE SALE",
+                "SOLD OUT AT PB STORE",
+                "status::active",
+                "Summer Accessories",
+                "SUMMER SALE"
+              ],
+              "url": "https://blenderseyewear-com.myshopify.com/products/dapper-sleeve",
+              "variants": [
+                {
+                  "canPurchase": true,
+                  "compareAtPrice": 0,
+                  "createdAt": 1556812457,
+                  "description": "",
+                  "descriptionText": "",
+                  "id": "19631014117445",
+                  "images": [],
+                  "metafields": null,
+                  "name": "Default Title",
+                  "position": 1,
+                  "price": 500,
+                  "productId": "2141352460357",
+                  "ratings": {
+                    "average": 0,
+                    "count": 0
+                  },
+                  "sku": "BEA034",
+                  "url": "https://blenderseyewear-com.myshopify.com/products/dapper-sleeve?variant=19631014117445",
+                  "visible": true
+                }
+              ],
+              "type": "trending-products",
+              "index": 1,
+              "option1": "",
+              "option2": "",
+              "option3": "",
+              "quantity": 1,
+              "properties": {},
+              "reviews": {},
+              "status": "ready",
+              "selected_variant": "[circular]",
+              "selected_variant_id": "19631014117445"
+            },
+            {
+              "canPurchase": true,
+              "compareAtPrice": 0,
+              "description": "<p>Be the show with ‘<strong>Legend Forever</strong>.’ These effortlessly epic shades put a new spin on aviator sunglasses with a masked smoke lens, durable gunmetal frame, and matte black temples. It’s endlessly sleek—and the Pure<strong>Blend™</strong> lens is strong, light, and clear beyond anything we’ve ever offered before. //</p>\n<p><strong>Details:</strong></p>\n<ul>\n<li>\n<strong>Gender:</strong> Unisex</li>\n<li>\n<strong>Frame:</strong> Matte Black</li>\n<li>\n<strong>Lens Color:</strong> Pure<strong>Blend™</strong> Black Smoke</li>\n<li>\n<strong>UV Rating:</strong> 100% UV Protection</li>\n<li>\n<strong>Fit / Size:</strong> Medium - Large</li>\n<li>\n<strong>Vibe:</strong> Progressive</li>\n<li>\n<strong>In the Box:</strong> Microfiber Pouch &amp; Sticker Pack</li>\n</ul>",
+              "handle": "falcon-legend-forever",
+              "id": "6717793042501",
+              "images": [
+                {
+                  "alt": "",
+                  "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/Falcon_Legend_Forever_2_o_98207434-f310-4995-9891-93e9e445e2d1.webp?v=1714584979"
+                },
+                {
+                  "alt": "",
+                  "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/Falcon_Legend_Forever_1_o_c92e5060-9153-4e2b-9c60-deb0cfe141f8.webp?v=1714584979"
+                },
+                {
+                  "alt": "",
+                  "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/Falcon_Legend_Forever_3_o_b2d1f87f-8402-42e9-ae25-3a6c80aee3fb.webp?v=1714584979"
+                },
+                {
+                  "alt": "",
+                  "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/Falcon_Legend_Forever_4_o_915ec4b0-98d2-4679-a712-93bb0927b136.webp?v=1714584979"
+                },
+                {
+                  "alt": "",
+                  "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/Falcon_Legend_Forever_5_o_31f0caf8-c902-4ff6-bd02-654157f70463.webp?v=1714584979"
+                },
+                {
+                  "alt": "",
+                  "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/BLNDRS_PDP_OpenBox_1440x720_3529feb3-afdf-4fa1-b27f-ed5aa53df924.jpg?v=1714584979"
+                }
+              ],
+              "metafields": [],
+              "name": "Legend Forever",
+              "options": [
+                {
+                  "option": "Title",
+                  "position": 1,
+                  "values": [
+                    "Default Title"
+                  ]
+                }
+              ],
+              "price": 7900,
+              "ratings": {
+                "average": 0,
+                "count": 0
+              },
+              "tags": [
+                "Archive Sale",
+                "badge::pure-blend-polarized",
+                "collection::Falcon",
+                "color::Black",
+                "EOY",
+                "EOY 50",
+                "Fall Favorites",
+                "Fall Styles",
+                "feature::progressive",
+                "Festival",
+                "frame-color::Black",
+                "frame-shape::single lens",
+                "frame::Falcon",
+                "IN STOCK AT PB STORE",
+                "IN STOCK ONLINE",
+                "laborD-40",
+                "lens-color::Black Smoke",
+                "lens-material::Polarized",
+                "lens-material::PureBlend",
+                "lens-type::Polarized",
+                "lens-type::PureBlend",
+                "material::Mixed-Metal",
+                "men",
+                "netsuiteStatus::Phase Out",
+                "packaging::Pouch",
+                "pillbadge::Polarized",
+                "polarized::Polarized",
+                "pureblend test",
+                "R-badge::pure-blend-polarized",
+                "rebuy::Sunglasses",
+                "shape::aviator",
+                "shape::single lens",
+                "SITEWIDE SALE",
+                "size::Medium-Large",
+                "SOLD OUT AT PB STORE",
+                "status::active",
+                "Summer Favorites",
+                "SUMMER SALE",
+                "Sunglasses",
+                "swatch::#2f2f2f-#1b1b19",
+                "unisex",
+                "vibe::Progressive",
+                "view::3-4",
+                "view::force-3-4"
+              ],
+              "url": "https://blenderseyewear-com.myshopify.com/products/falcon-legend-forever",
+              "variants": [
+                {
+                  "canPurchase": true,
+                  "compareAtPrice": 0,
+                  "createdAt": 1661785089,
+                  "description": "",
+                  "descriptionText": "",
+                  "id": "40278677815365",
+                  "images": [],
+                  "metafields": null,
+                  "name": "Default Title",
+                  "position": 1,
+                  "price": 7900,
+                  "productId": "6717793042501",
+                  "ratings": {
+                    "average": 0,
+                    "count": 0
+                  },
+                  "sku": "BE6301",
+                  "url": "https://blenderseyewear-com.myshopify.com/products/falcon-legend-forever?variant=40278677815365",
+                  "visible": true
+                }
+              ],
+              "type": "trending-products",
+              "index": 1,
+              "option1": "",
+              "option2": "",
+              "option3": "",
+              "quantity": 1,
+              "properties": {},
+              "reviews": {},
+              "status": "ready",
+              "selected_variant": "[circular]",
+              "selected_variant_id": "40278677815365"
+            },
+            {
+              "canPurchase": true,
+              "compareAtPrice": 0,
+              "description": "<p><span data-sheets-root=\"1\"><span>Make a bold statement with purpose. Created in partnership with the Keep-A-Breast Foundation, these limited edition sunglasses pair meaningful impact with stand-out style. The design features a vibrant gloss transparent pink frame enhanced by dynamic color-blocking, paired seamlessly with deep navy non-polarized PureBlend™ lenses that offer crisp visual clarity and full UV protection. Look closely at the temples to reveal a custom-designed Keep-A-Breast wire core running through the transparent arms, perfectly complemented by metallic blue logo hits for a polished, high-contrast finish.</span></span></p>\n<p><strong>Details:</strong></p>\n<ul>\n<li>\n<strong>Gender: </strong><span data-sheets-root=\"1\">Women's</span>\n</li>\n<li>\n<strong>Frame: </strong><span data-sheets-root=\"1\">Gloss Pink Color-Blocked</span>\n</li>\n<li>\n<strong>Lens: </strong><span data-sheets-root=\"1\">PureBlend™ Navy (Non-Polarized)</span>\n</li>\n<li>\n<strong>UV Rating: </strong>100% UV Protection</li>\n<li>\n<strong>Fit / Size: </strong>Medium - Large</li>\n<li>\n<strong>Vibe: </strong>Lifestyle</li>\n<li>\n<strong>In the Box: </strong>EVA Case &amp; Microfiber Pouch</li>\n</ul>",
+              "handle": "mave-keep-a-breast-2026",
+              "id": "8297196519493",
+              "images": [
+                {
+                  "alt": "",
+                  "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MAVE_KEEP-A-BREAST_2_copy_o.webp?v=1791329453"
+                },
+                {
+                  "alt": "",
+                  "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MAVE_KEEP-A-BREAST_1_copy_o.webp?v=1791329453"
+                },
+                {
+                  "alt": "",
+                  "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MAVE_KEEP-A-BREAST_3_copy_o.webp?v=1791329453"
+                },
+                {
+                  "alt": "",
+                  "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MAVE_KEEP-A-BREAST_4_copy_o.webp?v=1791329453"
+                },
+                {
+                  "alt": "",
+                  "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/MAVE_KEEP-A-BREAST_5_copy_o.webp?v=1791329453"
+                },
+                {
+                  "alt": "",
+                  "url": "https://cdn.shopify.com/s/files/1/0148/9585/files/BLNDRS_KAB_PACKAGING_01_Lifestyle-PDP_1100x550_fe5ad491-0fcd-4e95-adb6-9a4622d8dc20.jpg?v=1791511373"
+                }
+              ],
+              "metafields": [],
+              "name": "Keep A Breast",
+              "options": [
+                {
+                  "option": "Title",
+                  "position": 1,
+                  "values": [
+                    "Default Title"
+                  ]
+                }
+              ],
+              "price": 8900,
+              "ratings": {
+                "average": 0,
+                "count": 0
+              },
+              "tags": [
+                "badge::new",
+                "collection::Mave",
+                "IN STOCK ONLINE",
+                "L-badge::new",
+                "lens-material::PureBlend",
+                "lens-type::PureBlend",
+                "netsuiteStatus::New",
+                "packaging::Case",
+                "R-badge::pureblend",
+                "swatch::#EDCCCC-#37414C",
+                "view::3-4",
+                "view::force-3-4",
+                "Women",
+                "year::2026"
+              ],
+              "url": "https://blenderseyewear-com.myshopify.com/products/mave-keep-a-breast-2026",
+              "variants": [
+                {
+                  "canPurchase": true,
+                  "compareAtPrice": 0,
+                  "createdAt": 1790029066,
+                  "description": "",
+                  "descriptionText": "",
+                  "id": "45820241608773",
+                  "images": [],
+                  "metafields": null,
+                  "name": "Default Title",
+                  "position": 1,
+                  "price": 8900,
+                  "productId": "8297196519493",
+                  "ratings": {
+                    "average": 0,
+                    "count": 0
+                  },
+                  "sku": "BE6821",
+                  "url": "https://blenderseyewear-com.myshopify.com/products/mave-keep-a-breast-2026?variant=45820241608773",
+                  "visible": true
+                }
+              ],
+              "type": "trending-products",
+              "index": 1,
+              "option1": "",
+              "option2": "",
+              "option3": "",
+              "quantity": 1,
+              "properties": {},
+              "reviews": {},
+              "status": "ready",
+              "selected_variant": "[circular]",
+              "selected_variant_id": "45820241608773"
+            }
+          ],
+          "suggestedCollections": []
+        }
+      }
+    }
+  },
+  "searchUrls": {
+    "search": "/smart-search/search",
+    "settings": "/smart-search/settings"
+  },
+  "currencySymbol": "$"
+}
