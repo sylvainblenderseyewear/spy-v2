@@ -637,6 +637,11 @@
           ]
         }
       },
+      "custom_css": [
+        "div#shopify-block-AeEJSYnV3TERSSHY0V__yotpo_loyalty_rewards_product_points_module_app_block_pbhpX7 {flex-basis: 100%;}",
+        ".group-block-content.layout-panel-flex.layout-panel-flex--row {flex-wrap: wrap;}",
+        ".yotpo-product-points-inner-wrapper {display: flex; gap: 5px;}"
+      ],
       "settings": {
         "content_width": "content-center-aligned",
         "desktop_media_position": "left",
