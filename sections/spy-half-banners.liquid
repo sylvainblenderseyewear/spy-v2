@@ -52,7 +52,7 @@
         {%- if block.settings.link != blank -%}{%- assign banner_tag = 'a' -%}{%- endif -%}
 
         {%- comment -%} Each half banner reports on its own {%- endcomment -%}
-        {%- assign promo_name = block.settings.heading | default: block.settings.cta_label -%}
+        {%- assign promo_name = block.settings.promotion_name | default: block.settings.heading -%}
 
         <div
           class="spy-half-banners__col basis-full min-[992px]:basis-[var(--shb-basis)] shrink-0 grow-0 [display:flex]"
@@ -61,7 +61,9 @@
           {%- render 'spy-promotion-event',
             id: block.id,
             slot: 'half_banner',
-            name: promo_name
+            name: promo_name,
+            link: block.settings.link,
+            fallback: block.settings.cta_label
           -%}
           <{{ banner_tag }}
             {% if banner_tag == 'a' %}href="{{ block.settings.link }}"{% endif %}
@@ -168,7 +170,8 @@
         { "type": "range", "id": "heading_size", "label": "Heading size (992px and up)", "min": 16, "max": 96, "step": 1, "unit": "px", "default": 48 },
         { "type": "range", "id": "heading_size_mobile", "label": "Heading size (below 992px)", "min": 14, "max": 64, "step": 1, "unit": "px", "default": 26 },
         { "type": "text", "id": "cta_label", "label": "CTA label" },
-        { "type": "url", "id": "link", "label": "Link" }
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "promotion_name", "label": "Promotion name", "info": "Name in Google Analytics promotion reports. Empty: the heading, then the title of the linked page." }
       ]
     }
   ],

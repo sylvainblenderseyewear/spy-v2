@@ -6,13 +6,44 @@
 
   @param {string} id - stable id, usually section.id or block.id
   @param {string} slot - where the banner sits, e.g. 'feature_banner'
-  @param {string} [name] - human name for reports; falls back to the slot
+  @param {string} [name] - human name for reports
+  @param {string} [link] - banner link; with no name, the linked page's title is used
+  @param {string} [fallback] - last try before the slot, e.g. the CTA label
 {%- enddoc -%}
+
+{%- liquid
+  # "LEARN MORE" says nothing in a report, the page it opens does
+  assign promo_name = name
+  if promo_name == blank and link != blank
+    assign path = link | split: '?' | first | split: '#' | first
+    assign parts = path | split: '/'
+    assign kind = ''
+    for part in parts
+      case kind
+        when 'collections'
+          assign promo_name = collections[part].title
+        when 'pages'
+          assign promo_name = pages[part].title
+        when 'products'
+          assign promo_name = all_products[part].title
+        when 'blogs'
+          assign promo_name = blogs[part].title
+      endcase
+      if promo_name != blank
+        break
+      endif
+      assign kind = part
+    endfor
+  endif
+
+  # Two-line headings: the line break becomes a space, not nothing
+  assign promo_name = promo_name | default: fallback | default: slot | newline_to_br | replace: '<br />', ' ' | strip_newlines | strip
+-%}
 
 <spy-promotion
   hidden
   data-promotion-id="{{ id | escape }}"
-  data-promotion-name="{{ name | default: slot | strip_newlines | strip | escape }}"
+  data-promotion-name="{{ promo_name | escape }}"
   data-creative-slot="{{ slot | escape }}"
 ></spy-promotion>
 <script src="{{ 'spy-promotion-event.js' | asset_url }}" defer></script>
