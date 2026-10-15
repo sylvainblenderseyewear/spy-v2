@@ -423,11 +423,16 @@ analytics.subscribe('checkout_completed', (event) => {
 */
 function promotion(event) {
   const d = (event && event.customData) || {};
+  const id = d.promotion_id || '';
+  const name = d.promotion_name || '';
   return {
-    promotion_id: d.promotion_id || '',
-    promotion_name: d.promotion_name || '',
+    promotion_id: id,
+    promotion_name: name,
     creative_slot: d.creative_slot || '',
     location_id: d.location_id || '',
+    // GA4 leaves a promotion out of its Promotions report unless it has an
+    // item. A banner sells no single product, so the banner is the item.
+    items: [{ item_id: 'promo_' + id, item_name: name }],
   };
 }
 

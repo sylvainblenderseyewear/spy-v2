@@ -165,5 +165,23 @@ function check(name, ok, detail = '') {
   check('purchase without a code sends no coupon key', plain && !('coupon' in plain[2]), JSON.stringify(plain && plain[2]));
 }
 
+// Promotions need an item, or GA4 leaves them out of its Promotions report
+{
+  const p = load();
+  p.consent({ analyticsProcessingAllowed: true, marketingAllowed: true, saleOfDataAllowed: true });
+  const banner = { ...doc, customData: { promotion_id: 'b1', promotion_name: 'Happy Boost', creative_slot: 'half_banner', location_id: '/' } };
+  await p.fire('custom_view_promotion', banner);
+  await p.fire('custom_select_promotion', banner);
+  const view = p.events('view_promotion')[0];
+  const click = p.events('select_promotion')[0];
+  check('view_promotion keeps the banner name', view && view[2].promotion_name === 'Happy Boost', JSON.stringify(view && view[2]));
+  check('view_promotion has the banner as its item',
+    view && Array.isArray(view[2].items) && view[2].items.length === 1 && view[2].items[0].item_id === 'promo_b1' && view[2].items[0].item_name === 'Happy Boost',
+    JSON.stringify(view && view[2].items));
+  check('select_promotion has the banner as its item',
+    click && Array.isArray(click[2].items) && click[2].items[0].item_id === 'promo_b1',
+    JSON.stringify(click && click[2].items));
+}
+
 console.log(failed ? `\n${failed} failed` : '\nall passed');
 process.exit(failed ? 1 : 0);
