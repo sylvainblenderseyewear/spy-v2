@@ -1,0 +1,640 @@
+<div class="spy-mc" data-rebuy-component="cart-items" data-rebuy-component-id="cart_items">
+  <!-- .spy-mc marks the Figma cart: the theme CSS for it applies only when this is on the page -->
+  <ul
+    v-if="hasItems()"
+    data-smartcart-items
+    tabindex="0"
+    role="list"
+  >
+    <li
+      class="rebuy-cart__flyout-item spy-mc-item"
+      v-for="(item, index) in items()"
+      v-if="!isHiddenItem(item)"
+      :key="getLineItemKey(item, index)"
+      v-bind:class="[ 'product-' + item.handle, itemProductTagsClasses(item), itemPropertyClasses(item) ]"
+      aria-label="product"
+      role="listitem"
+    >
+      <!-- Image -->
+      <div class="rebuy-cart__flyout-item-media">
+        <a
+          v-bind:aria-disabled="!isItemClickable(item)"
+          v-bind:aria-label="itemLinkLabel(item)"
+          v-bind:class="[{ 'click-disabled': !isItemClickable(item) }]"
+          v-bind:href="isItemClickable(item) ? itemURL(item) : null"
+        >
+          <img
+            v-bind:src="sizeImage(item.image, '480x480')"
+            v-bind:alt="itemImageAlt(item)"
+          />
+        </a>
+      </div>
+
+      <!-- Item Info -->
+      <div v-bind:class="['rebuy-cart__flyout-item-info', { 'is-dropdown-mode': hideQuantitySelectors && !hideQuantitySelectors(item) && quantityInputEnabled() && getQuantityInputType() !== 'buttons' }]">
+        <!-- Model over colour. The model is the product's "collection::" tag;
+             the colour is what is left of the title. No tag = full title. -->
+        <div
+          class="spy-mc-item__head"
+          v-for="name in [((title, model) => (model && title.length > model.length && title.toLowerCase().indexOf(model.toLowerCase()) === 0) ? { model: model, colour: title.slice(model.length).trim() } : { model: '', colour: title })(String(itemTitle(item) || ''), (String((item.product && item.product.tags) || '').split(',').map(t => t.trim()).find(t => t.toLowerCase().indexOf('collection::') === 0) || '').slice(12))]"
+          v-bind:key="'name-' + getLineItemKey(item, index)"
+        >
+          <span class="spy-mc-item__model" v-if="name.model">{{ name.model }}</span>
+          <a
+            role="heading"
+            aria-level="5"
+            v-bind:aria-disabled="!isItemClickable(item)"
+            v-bind:class="[
+              'rebuy-cart__flyout-item-product-title',
+              { 'click-disabled': !isItemClickable(item) }
+            ]"
+            v-bind:href="isItemClickable(item) ? itemURL(item) : null"
+            v-bind:tabindex="isItemClickable(item) ? 0 : -1"
+          >{{ name.colour }}</a>
+        </div>
+
+        <!-- Variant Title: only when the product really has a choice -->
+        <div
+          class="rebuy-cart__flyout-item-variant-title"
+          v-html="item.variant_title"
+          v-if="item.variant_title && item.product && item.product.variants && item.product.variants.length > 1"
+        ></div>
+
+        <!-- Discount Message -->
+        <div
+          class="rebuy-cart__flyout-item-discount-message"
+          v-if="hasLineItemDiscount(item)"
+          v-html="lineItemDiscountMessage(item)"
+        ></div>
+
+        <!-- Item Properties -->
+        <div
+          class="rebuy-cart__flyout-item-properties"
+          v-if="hasItemProperties(item)"
+        >
+          <div
+            class="rebuy-cart__flyout-item-property rebuy-cart__flyout-item-property--delivery-frequency"
+            v-if="itemDeliveryFrequency(item)"
+            v-html="itemDeliveryFrequency(item)"
+          ></div>
+          <div
+            class="rebuy-cart__flyout-item-property"
+            v-for="property in itemProperties(item)"
+            v-bind:class="[ itemPropertyKeyClass(property), itemPropertyValueClass(property) ]"
+          >
+            <span
+              class="rebuy-cart__flyout-item-property-name"
+              v-html="property.key"
+            ></span>
+            <span class="rebuy-cart__flyout-item-property-separator">
+              :
+            </span>
+            <span
+              class="rebuy-cart__flyout-item-property-value"
+              v-html="property.value"
+            ></span>
+          </div>
+        </div>
+
+        <!-- Price left, stepper right -->
+        <div class="spy-mc-item__foot">
+          <!-- Pricing -->
+          <div class="rebuy-cart__flyout-item-price">
+            <div v-if="itemHasDiscount(item)">
+              <span
+                class="rebuy-money sale"
+              >
+                <span class="sr-only">Sale price</span>
+                <span v-html="formatMoney(itemPrice(item))"></span>
+              </span>
+              <span
+                class="rebuy-money compare-at"
+              >
+                <span class="sr-only">Original price</span>
+                <span v-html="formatMoney(compareAtPrice(item))"></span>
+              </span>
+            </div>
+            <div v-if="!itemHasDiscount(item)">
+              <span
+                class="rebuy-money"
+              >
+                <span class="sr-only">Price</span>
+                <span v-html="formatMoney(itemPrice(item))"></span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Quantity. There is no separate remove button: minus at 1 removes the line. -->
+          <div v-bind:class="['rebuy-cart__flyout-item-quantity', { 'is-dropdown-mode': hideQuantitySelectors && !hideQuantitySelectors(item) && quantityInputEnabled() && getQuantityInputType() !== 'buttons' }]">
+            <!-- Buttons/Default Mode -->
+            <div
+              class="rebuy-cart__flyout-item-quantity-widget"
+              v-if="hideQuantitySelectors && !hideQuantitySelectors(item) && (!quantityInputEnabled() || getQuantityInputType() === 'buttons')"
+            >
+              <button
+                class="rebuy-cart__flyout-item-quantity-widget-button"
+                v-bind:aria-label="(item.quantity <= (item.quantity_rule?.increment || 1) ? 'Remove ' : 'Decrease quantity of ') + itemTitle(item)"
+                v-on:click="decreaseItem(item)"
+                v-bind:disabled="!isQuantityEnabled(item) || !canDecreaseQuantity(item)"
+                type="button"
+              >
+                <rebuy-icon
+                  v-bind:name="(item.status == 'decreasing' || item.status == 'removing') ? 'refresh-cw' : 'minus'"
+                  v-bind:fast-spin="item.status == 'decreasing' || item.status == 'removing'"
+                ></rebuy-icon>
+              </button>
+
+              <input
+                v-if="quantityInputEnabled()"
+                type="number"
+                class="rebuy-cart__flyout-item-quantity-widget-input"
+                v-bind:value="item.quantity"
+                v-bind:min="getEffectiveQuantityLimits(item).min"
+                v-bind:max="getEffectiveQuantityLimits(item).max"
+                v-bind:step="item.quantity_rule?.increment || 1"
+                v-on:change="setItemQuantity(item, parseInt($event.target.value, 10))"
+                v-bind:aria-label="'Quantity of ' + itemTitle(item)"
+                v-bind:disabled="!isQuantityEnabled(item)"
+              />
+              <span
+                v-else
+                class="rebuy-cart__flyout-item-quantity-widget-label"
+              >
+                <span class="sr-only">Quantity of {{ itemTitle(item) }}</span>
+                {{ item.quantity }}
+              </span>
+
+              <button
+                class="rebuy-cart__flyout-item-quantity-widget-button"
+                v-bind:aria-label="'Increase quantity of ' + itemTitle(item)"
+                v-on:click="increaseItem(item)"
+                v-bind:disabled="!isQuantityEnabled(item) || !canIncreaseQuantity(item)"
+                type="button"
+              >
+                <rebuy-icon
+                  v-bind:name="(item.status == 'increasing') ? 'refresh-cw' : 'plus'"
+                  v-bind:fast-spin="item.status == 'increasing'"
+                ></rebuy-icon>
+              </button>
+            </div>
+
+            <!-- Dropdown Select Mode -->
+            <div
+              v-bind:class="['rebuy-cart__flyout-item-quantity-dropdown', { 'is-disabled': !isQuantityEnabled(item) }]"
+              v-if="hideQuantitySelectors && !hideQuantitySelectors(item) && quantityInputEnabled() && getQuantityInputType() !== 'buttons'"
+            >
+              <div class="rebuy-cart__flyout-item-quantity-dropdown-content">
+                <span class="rebuy-cart__flyout-item-quantity-dropdown-label">{{ getQuantityLabel() }}</span>
+                <span class="rebuy-cart__flyout-item-quantity-dropdown-value">{{ item.quantity }}</span>
+              </div>
+              <div class="rebuy-cart__flyout-item-quantity-dropdown-separator"></div>
+              <!-- Quantity Error (dropdown mode) -->
+              <span
+                v-if="getQuantityError(item)"
+                class="rebuy-cart__flyout-item-quantity-dropdown-error"
+                role="alert"
+              >{{ getQuantityError(item) }}</span>
+              <div class="rebuy-cart__flyout-item-quantity-dropdown-caret">
+                <rebuy-icon name="chevron-down"></rebuy-icon>
+              </div>
+              <select
+                class="rebuy-cart__flyout-item-quantity-dropdown-native"
+                v-bind:id="'quantity-select-' + item.key"
+                v-bind:value="item.quantity"
+                v-on:change="setItemQuantity(item, parseInt($event.target.value, 10))"
+                v-bind:disabled="!isQuantityEnabled(item)"
+                v-bind:aria-label="'Quantity of ' + itemTitle(item)"
+              >
+                <option
+                  v-for="qty in getQuantityOptions(item)"
+                  v-bind:key="qty"
+                  v-bind:value="qty"
+                  v-bind:selected="qty === item.quantity"
+                >{{ qty }}</option>
+              </select>
+            </div>
+
+            <!-- Quantity Error (buttons mode) -->
+            <span
+              v-if="getQuantityError(item) && (!quantityInputEnabled() || getQuantityInputType() === 'buttons')"
+              class="rebuy-cart__flyout-item-quantity-error"
+              role="alert"
+            >{{ getQuantityError(item) }}</span>
+          </div>
+
+          <!-- Remove Item: only for lines that have no stepper, or they could never leave the cart -->
+          <button
+            class="rebuy-cart__flyout-item-remove"
+            type="button"
+            v-if="hideQuantitySelectors && hideQuantitySelectors(item)"
+            v-bind:aria-label="'Remove ' + itemTitle(item)"
+            v-on:click="removeItem(item)"
+          >
+            <rebuy-icon
+              v-bind:name="(item.status == 'removing') ? 'refresh-cw' : 'trash'"
+              v-bind:fast-spin="item.status == 'removing'"
+            ></rebuy-icon>
+          </button>
+        </div>
+
+        <!-- Bundle Details -->
+        <div class="rebuy-cart__flyout-item-bundle" v-if="itemIsBundle(item, index) && !hideBundleOptions(item)">
+
+          <!-- Expand / Collapse Bundle Details -->
+          <button
+            v-if="itemBundleLength(item, index) > 0"
+            class="rebuy-cart__flyout-item-bundle-toggle-button"
+            v-on:click="toggleActiveBundle(item, index)"
+            type="button"
+            v-bind:aria-label="(isBundleVisible(item, index) ? 'Collapse' : 'Expand') + ' bundle of ' + itemTitle(item)"
+          >
+            {{ isBundleVisible(item, index) ? 'Hide' : 'Show' }}
+            <span v-html="itemBundleLength(item, index)"></span>
+            items
+            <span class="rebuy-cart__flyout-bundle-chev-icon">
+              <rebuy-icon v-bind:name="isBundleVisible(item, index) ? 'chevron-up' : 'chevron-down'"></rebuy-icon>
+            </span>
+          </button>
+
+          <ul
+            class="rebuy-cart__flyout-item-bundle-children"
+            v-if="itemBundleLength(item, index) > 0 && isBundleVisible(item, index)"
+            tabindex="0"
+          >
+            <li class="rebuy-cart__flyout-item-bundle-child" v-for="(component, componentIndex) in getBundleComponents(item, index)">
+              <div class="rebuy-cart__flyout-item-bundle-child-left">
+                <div class="rebuy-cart__flyout-item-bundle-image-container">
+                  <img
+                    v-bind:src="getBundleOptionImage(item.product, component, componentIndex, item, index)"
+                    v-bind:alt="childBundleTitle(component, componentIndex, item, index)"
+                    class="rebuy-cart__flyout-item-bundle-image"
+                  />
+                </div>
+              </div>
+
+              <div class="rebuy-cart__flyout-item-bundle-child-right">
+                <h5 class="rebuy-cart__flyout-item-bundle-title">
+                  <span
+                    v-if="hasChildBundleQuantity(component)"
+                    class="rebuy-cart__flyout-item-bundle-quantity"
+                    v-html="childBundleQuantityLabel(component)"
+                  ></span>
+                  <span
+                    class="rebuy-cart__flyout-item-bundle-product-title"
+                    v-html="childBundleTitle(component, componentIndex, item, index)"
+                  ></span>
+                </h5>
+                <p v-if="isStorefrontComponent(component) && !hasDefaultVariantTitle(component.variantTitle)" v-html="component.variantTitle" class="rebuy-cart__flyout-item-bundle-value"></p>
+                <p v-else v-html="component.value" class="rebuy-cart__flyout-item-bundle-value"></p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- End Bundle Details -->
+
+        <!-- Nested Cart Items -->
+        <div v-if="displayNestedItems(item)" class="rebuy-cart__flyout-item-nested-items">
+          <!-- Toggle Button -->
+          <button
+            v-if="nestedCartItemsDropdownEnabled()"
+            class="rebuy-cart__flyout-item-nested-items-toggle-button"
+            v-on:click="toggleNestedItemsDropdown(item)"
+            type="button"
+            v-bind:aria-label="nestedItemsAriaLabel(item)"
+          >
+            <span v-html="nestedButtonLabel(item)"></span>
+          </button>
+
+          <!-- Nested Items List -->
+          <ul
+            v-bind:class="[
+              'rebuy-cart__flyout-item-nested-items-list',
+              nestedItemsListClasses(item)
+            ]"
+          >
+            <li
+              class="rebuy-cart__flyout-item"
+              v-for="childItem in item.children"
+              v-if="!isHiddenItem(childItem)"
+              :key="childItem.key"
+              v-bind:class="[ 'product-' + childItem.handle, itemProductTagsClasses(childItem), itemPropertyClasses(childItem) ]"
+              aria-label="product"
+              role="listitem"
+            >
+              <!-- Image -->
+              <div class="rebuy-cart__flyout-item-media-nested">
+                <a
+                  v-bind:href="itemURL(childItem)"
+                  v-bind:aria-label="itemLinkLabel(childItem)"
+                >
+                  <img
+                    v-bind:src="sizeImage(childItem.image, '240x240')"
+                    v-bind:alt="itemImageAlt(childItem)"
+                  />
+                </a>
+              </div>
+
+              <!-- Item Info -->
+              <div v-bind:class="['rebuy-cart__flyout-item-info', { 'is-dropdown-mode': hideQuantitySelectors && !hideQuantitySelectors(childItem) && quantityInputEnabled() && getQuantityInputType() !== 'buttons' }]">
+                <!-- Product Title -->
+                <a
+                  role="heading"
+                  aria-level="5"
+                  class="rebuy-cart__flyout-item-product-title"
+                  v-bind:href="itemURL(childItem)"
+                  v-html="childItem.product_title"
+                ></a>
+
+                <!-- Variant Title -->
+                <div
+                  class="rebuy-cart__flyout-item-variant-title"
+                  v-html="childItem.variant_title"
+                  v-if="childItem.variant_title"
+                ></div>
+
+                <!-- Discount Message -->
+                <div
+                  class="rebuy-cart__flyout-item-discount-message"
+                  v-if="hasLineItemDiscount(childItem)"
+                  v-html="lineItemDiscountMessage(childItem)"
+                ></div>
+
+                <!-- Item Properties -->
+                <div
+                  class="rebuy-cart__flyout-item-properties"
+                  v-if="hasItemProperties(childItem)"
+                >
+                  <div
+                    class="rebuy-cart__flyout-item-property rebuy-cart__flyout-item-property--delivery-frequency"
+                    v-if="itemDeliveryFrequency(childItem)"
+                    v-html="itemDeliveryFrequency(childItem)"
+                  ></div>
+                  <div
+                    class="rebuy-cart__flyout-item-property"
+                    v-for="property in itemProperties(childItem)"
+                    v-bind:class="[ itemPropertyKeyClass(property), itemPropertyValueClass(property) ]"
+                  >
+                    <span
+                      class="rebuy-cart__flyout-item-property-name"
+                      v-html="property.key"
+                    ></span>
+                    <span class="rebuy-cart__flyout-item-property-separator">
+                      :
+                    </span>
+                    <span
+                      class="rebuy-cart__flyout-item-property-value"
+                      v-html="property.value"
+                    ></span>
+                  </div>
+                </div>
+
+                <!-- Remove Item -->
+                <button
+                  class="rebuy-cart__flyout-item-remove"
+                  type="button"
+                  v-bind:aria-label="'Remove ' + childItem.product_title"
+                  v-on:click="removeItem(childItem)"
+                >
+                  <rebuy-icon
+                    v-bind:name="(childItem.status == 'removing') ? 'refresh-cw' : 'trash'"
+                    v-bind:fast-spin="childItem.status == 'removing'"
+                  ></rebuy-icon>
+                </button>
+
+                <!-- Quantity -->
+                <div v-bind:class="['rebuy-cart__flyout-item-quantity', { 'is-dropdown-mode': hideQuantitySelectors && !hideQuantitySelectors(childItem) && quantityInputEnabled() && getQuantityInputType() !== 'buttons' }]">
+                  <!-- Buttons/Default Mode -->
+                  <div
+                    class="rebuy-cart__flyout-item-quantity-widget"
+                    v-if="hideQuantitySelectors && !hideQuantitySelectors(childItem) && (!quantityInputEnabled() || getQuantityInputType() === 'buttons')"
+                  >
+                    <button
+                      class="rebuy-cart__flyout-item-quantity-widget-button"
+                      v-bind:aria-label="'Decrease quantity of ' + childItem.product_title"
+                      v-on:click="decreaseItem(childItem)"
+                      v-bind:disabled="!isQuantityEnabled(childItem) || !canDecreaseQuantity(childItem)"
+                      type="button"
+                    >
+                      <rebuy-icon
+                        v-bind:name="(childItem.status == 'decreasing') ? 'refresh-cw' : 'minus'"
+                        v-bind:fast-spin="childItem.status == 'decreasing'"
+                      ></rebuy-icon>
+                    </button>
+
+                    <input
+                      v-if="quantityInputEnabled()"
+                      type="number"
+                      class="rebuy-cart__flyout-item-quantity-widget-input"
+                      v-bind:value="childItem.quantity"
+                      v-bind:min="getEffectiveQuantityLimits(childItem).min"
+                      v-bind:max="getEffectiveQuantityLimits(childItem).max"
+                      v-bind:step="childItem.quantity_rule?.increment || 1"
+                      v-on:change="setItemQuantity(childItem, parseInt($event.target.value, 10))"
+                      v-bind:aria-label="'Quantity of ' + childItem.product_title"
+                      v-bind:disabled="!isQuantityEnabled(childItem)"
+                    />
+                    <span
+                      v-else
+                      class="rebuy-cart__flyout-item-quantity-widget-label"
+                    >
+                      <span class="sr-only">Quantity of {{ childItem.product_title }}</span>
+                      {{ childItem.quantity }}
+                    </span>
+
+                    <button
+                      class="rebuy-cart__flyout-item-quantity-widget-button"
+                      v-bind:aria-label="'Increase quantity of ' + childItem.product_title"
+                      v-on:click="increaseItem(childItem)"
+                      v-bind:disabled="!isQuantityEnabled(childItem) || !canIncreaseQuantity(childItem)"
+                      type="button"
+                    >
+                      <rebuy-icon
+                        v-bind:name="(childItem.status == 'increasing') ? 'refresh-cw' : 'plus'"
+                        v-bind:fast-spin="childItem.status == 'increasing'"
+                      ></rebuy-icon>
+                    </button>
+                  </div>
+
+                  <!-- Dropdown Select Mode -->
+                  <div
+                    v-bind:class="['rebuy-cart__flyout-item-quantity-dropdown', { 'is-disabled': !isQuantityEnabled(childItem) }]"
+                    v-if="hideQuantitySelectors && !hideQuantitySelectors(childItem) && quantityInputEnabled() && getQuantityInputType() !== 'buttons'"
+                  >
+                    <div class="rebuy-cart__flyout-item-quantity-dropdown-content">
+                      <span class="rebuy-cart__flyout-item-quantity-dropdown-label">{{ getQuantityLabel() }}</span>
+                      <span class="rebuy-cart__flyout-item-quantity-dropdown-value">{{ childItem.quantity }}</span>
+                    </div>
+                    <div class="rebuy-cart__flyout-item-quantity-dropdown-separator"></div>
+                    <!-- Quantity Error (dropdown mode) -->
+                    <span
+                      v-if="getQuantityError(childItem)"
+                      class="rebuy-cart__flyout-item-quantity-dropdown-error"
+                      role="alert"
+                    >{{ getQuantityError(childItem) }}</span>
+                    <div class="rebuy-cart__flyout-item-quantity-dropdown-caret">
+                      <rebuy-icon name="chevron-down"></rebuy-icon>
+                    </div>
+                    <select
+                      class="rebuy-cart__flyout-item-quantity-dropdown-native"
+                      v-bind:id="'quantity-select-' + childItem.key"
+                      v-bind:value="childItem.quantity"
+                      v-on:change="setItemQuantity(childItem, parseInt($event.target.value, 10))"
+                      v-bind:disabled="!isQuantityEnabled(childItem)"
+                      v-bind:aria-label="'Quantity of ' + childItem.product_title"
+                    >
+                      <option
+                        v-for="qty in getQuantityOptions(childItem)"
+                        v-bind:key="qty"
+                        v-bind:value="qty"
+                        v-bind:selected="qty === childItem.quantity"
+                      >{{ qty }}</option>
+                    </select>
+                  </div>
+
+                  <!-- Quantity Error (buttons mode) -->
+                  <span
+                    v-if="getQuantityError(childItem) && (!quantityInputEnabled() || getQuantityInputType() === 'buttons')"
+                    class="rebuy-cart__flyout-item-quantity-error"
+                    role="alert"
+                  >{{ getQuantityError(childItem) }}</span>
+                </div>
+
+                <!-- Pricing -->
+                <div class="rebuy-cart__flyout-item-price">
+                  <div v-if="itemHasDiscount(childItem)">
+                    <span
+                      class="rebuy-money sale"
+                    >
+                      <span class="sr-only">Sale price</span>
+                      <span v-html="formatMoney(itemPrice(childItem))"></span>
+                    </span>
+                    <span
+                      class="rebuy-money compare-at"
+                    >
+                      <span class="sr-only">Original price</span>
+                      <span v-html="formatMoney(compareAtPrice(childItem))"></span>
+                    </span>
+                  </div>
+                  <div v-if="!itemHasDiscount(childItem)">
+                    <span
+                      class="rebuy-money"
+                    >
+                      <span class="sr-only">Price</span>
+                      <span v-html="formatMoney(itemPrice(childItem))"></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <!-- End Info -->
+            </li>
+          </ul>
+        </div>
+        <!-- End Nested Cart Items -->
+
+      </div>
+      <!-- End Info -->
+
+      <!-- Buy More Save More -->
+      <div
+        v-if="itemHasBMSM(item) && bMSMFinalTierNotReached(item)"
+        class="rebuy-cart__flyout-item-buy-more-save-more"
+      >
+        <div
+          v-if="hasBMSMButtons()"
+          class="rebuy-cart__flyout-item-buy-more-save-more-container"
+        >
+          <div
+            v-for="tier in getBMSMTiers()"
+            class="rebuy-cart__flyout-item-buy-more-save-more-button-container"
+            v-if="tier.quantity > item.quantity"
+          >
+            <button
+              v-on:click="adjustBMSMQuantity(item, tier)"
+              class="rebuy-button rebuy-cart__flyout-item-buy-more-save-more-button"
+              v-bind:aria-label="getBMSMButtonText(tier)"
+            >
+              <span v-html="getBMSMButtonText(tier)"></span>
+            </button>
+          </div>
+        </div>
+
+        <span
+          v-if="!hasBMSMButtons()"
+          class="rebuy-cart__flyout-buy-more-save-more-dynamic-message-text"
+          v-html="buyMoreSaveMoreDynamicText(item)"
+        ></span>
+      </div>
+      <!-- End Buy More Save More -->
+
+      <!-- Switch to Subscription -->
+      <div
+        class="rebuy-cart__flyout-item-subscription"
+        v-if="hasSwitchToSubscription(item)"
+      >
+        <button
+          class="rebuy-button outline"
+          v-if="!item.product.subscription || item.status == 'downgrading' || item.status == 'upgrading'"
+          v-bind:aria-label="'Switch ' + itemTitle(item) + ' to a Subscription'"
+          v-bind:disabled="(item.status == 'downgrading' || item.status == 'upgrading')"
+          v-on:click="updateItemDeliveryFrequency(item, selectedSubscriptionFrequency(item, 0), 'onetime')"
+          type="button"
+        >
+          <span v-html="switchToSubscriptionLabel(item)"></span>
+        </button>
+
+        <select
+          class="rebuy-select muted"
+          aria-label="Subscription delivery frequency"
+          v-if="item.product.subscription && item.status != 'downgrading'"
+          v-model="item.product.subscription_frequency"
+          v-on:change="updateItemDeliveryFrequency(item)"
+        >
+          <optgroup
+            v-if="!item.product.is_subscription_only && !subscriptionDowngradeDisabled()"
+            v-bind:label="getSwitchToSubscriptionLabel('onetime_option_group_label')"
+          >
+            <option
+              v-bind:value="'onetime'"
+              v-html="getSwitchToSubscriptionLabel('onetime_option_label')"
+            ></option>
+          </optgroup>
+          <optgroup v-bind:label="subscriptionOptionGroupLabel(item)">
+            <option
+              v-for="frequency in subscriptionFrequencies(item)"
+              v-bind:value="frequency"
+              v-html="subscriptionOptionLabel(item, frequency, item.product.subscription_interval)"
+            ></option>
+          </optgroup>
+        </select>
+      </div>
+      <!-- End Switch to Subscription -->
+    </li>
+  </ul>
+
+  <!-- Empty Cart: the copy comes from the Empty Cart field in Rebuy, then the trust row -->
+  <div class="rebuy-cart__flyout-empty-cart spy-mc-empty" v-if="!hasItems()">
+    <div class="spy-mc-empty__copy" v-html="emptyCartMarkup()"></div>
+
+    <ul class="spy-mc-trust" role="list">
+      <li class="spy-mc-trust__item">
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="17" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/>
+        </svg>
+        <span>Lifetime warranty</span>
+      </li>
+      <li class="spy-mc-trust__item">
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="17" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+        </svg>
+        <span>Pay in installments</span>
+      </li>
+      <li class="spy-mc-trust__item">
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="17" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.500" cy="18.500" r="2.500"/><circle cx="18.500" cy="18.500" r="2.500"/>
+        </svg>
+        <span>Easy returns</span>
+      </li>
+    </ul>
+  </div>
+
+</div>

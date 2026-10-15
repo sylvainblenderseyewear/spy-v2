@@ -1,0 +1,11 @@
+<component
+  :is="getCartTitleHeadingTag()"
+  id="rebuy-cart-title"
+  data-rebuy-component-id="title_bar"
+  data-rebuy-component="title-bar"
+  :class="['rebuy-cart__title', getCartTitleClassName()]"
+>
+  <span v-html="getCartTitle()"></span>
+  <!-- Count sits inline and stays "(0)" on an empty cart -->
+  <span class="spy-cart-title-count">{{ (typeof cart !== "undefined" && cart && cart.item_count != null) ? " (" + cart.item_count + ")" : "" }}</span>
+</component>

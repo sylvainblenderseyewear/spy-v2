@@ -8,8 +8,15 @@
   No preview parameters, so this is exactly what a shopper gets. Set THEME_ID to
   run the same checks against an unpublished theme before it goes live.
 
+  Two Rebuy carts exist: 37798 (the 320px source copy) and 38089 (the Figma
+  redesign, 375px, full width on phones). The checks follow whichever one is
+  live; where a check needs room beside the panel and the panel fills the
+  screen, it is reported as n/a.
+
   Run:  node scripts/production-cart-check.mjs        (needs SPY_PASSWORD in .env)
         WIDTH=390 for mobile · THEME_ID=189382623539 for the dev theme · HEADED=1
+        CART_ID=38089 to insist on one cart · PREVIEW_CART=38089 to run against an
+        unpublished cart (use it with the dev theme, which has its CSS)
 */
 import { chromium } from 'playwright-core';
 import { readFileSync } from 'node:fs';
@@ -24,18 +31,31 @@ try {
 const STORE = process.env.SPY_STORE || 'https://spyoptic-com.myshopify.com';
 const PASSWORD = process.env.SPY_PASSWORD || '';
 const THEME_ID = process.env.THEME_ID || '';
-const CART_ID = Number(process.env.CART_ID || 37798);
+const PREVIEW_CART = process.env.PREVIEW_CART || '';
+const CART_ID = Number(process.env.CART_ID || PREVIEW_CART || 0); // 0 = whichever known cart is live
 const WIDTH = Number(process.env.WIDTH || 1440);
 if (!PASSWORD) {
   console.error('SPY_PASSWORD is not set. Add it to .env.');
   process.exit(2);
 }
 
-const at = (path) => `${STORE}${path}${THEME_ID ? `${path.includes('?') ? '&' : '?'}preview_theme_id=${THEME_ID}` : ''}`;
+// Panel width each known cart should have at a given viewport width
+const PANEL = {
+  37798: () => 320,
+  38089: (vw) => (vw <= 480 ? vw : 375),
+};
+
+const at = (path) => {
+  const url = new URL(STORE + path);
+  if (THEME_ID) url.searchParams.set('preview_theme_id', THEME_ID);
+  if (PREVIEW_CART) {
+    url.searchParams.set('preview_smart_cart', PREVIEW_CART);
+    url.searchParams.set('cart_version', '2');
+  }
+  return url.toString();
+};
 const BAG = '[data-testid="cart-drawer-trigger"]:visible';
 const ATC = 'button[name="add"]:visible, add-to-cart-component button:visible';
-// Left of the 320px panel at every width (at 390 it covers x 70-390)
-const OUTSIDE = Math.round(Math.min(WIDTH * 0.3, (WIDTH - 320) / 2));
 const OURS = /spy-cart-handoff|spy-[a-z-]+\.js|tailwind\.css|cart-drawer\.js|cart-products|cart-summary/i;
 
 const browser = await chromium.launch({ channel: 'chrome', headless: process.env.HEADED !== '1' });
@@ -45,6 +65,13 @@ const check = (name, pass, detail = '') => {
   results.push({ check: name, result: pass ? 'ok' : 'FAIL', detail: String(detail).slice(0, 60) });
   if (!pass) failures++;
 };
+const skip = (name, why) => results.push({ check: name, result: 'n/a', detail: why });
+
+// Where the open panel starts, so "outside the cart" is measured, not assumed
+const panelBox = (page) => page.evaluate(() => {
+  const r = document.querySelector('#rebuy-cart .rebuy-cart__flyout')?.getBoundingClientRect();
+  return r ? { x: Math.round(r.x), width: Math.round(r.width) } : null;
+});
 
 async function session() {
   const context = await browser.newContext({ viewport: { width: WIDTH, height: 900 } });
@@ -174,17 +201,29 @@ async function pageScrolls(page, x) {
   check('A banner accepted', Boolean(clicked), clicked ?? 'no Accept button');
 
   await clearCart(page);
-  // Rebuy boots on the load after consent, and can lose a cold first load
-  await go(page, '/collections/all', 9000);
-  if ((await state(page)).engine !== 'rebuy') await go(page, '/collections/all', 9000);
+  // Rebuy boots on the load after consent, 6-15s after each load (slower in
+  // preview), and can lose a cold first load. Wait for the handover, not the clock.
+  const rebuyOwnsTheBag = () => page
+    .waitForFunction(() => document.documentElement.dataset.cartEngine === 'rebuy', null, { timeout: 30000 })
+    .then(() => true, () => false);
+  await go(page, '/collections/all', 3000);
+  if (!(await rebuyOwnsTheBag())) {
+    await go(page, '/collections/all', 3000);
+    await rebuyOwnsTheBag();
+  }
   let s = await state(page);
   check('A engine is "rebuy"', s.engine === 'rebuy', s.engine);
-  check(`A live Smart Cart is ${CART_ID}`, s.cartId === CART_ID, s.cartId);
+  check(
+    CART_ID ? `A live Smart Cart is ${CART_ID}` : 'A live Smart Cart is a known one',
+    CART_ID ? s.cartId === CART_ID : Boolean(PANEL[s.cartId]),
+    s.cartId
+  );
   check('A empty cart shows no badge', s.badge === '', s.badge);
   check('A page scrolls (cart closed)', await pageScrolls(page, WIDTH / 2));
 
   const { handle } = await seedCart(page);
-  await go(page, '/collections/all', 9000);
+  await go(page, '/collections/all', 3000);
+  await rebuyOwnsTheBag();
   check('A badge shows with an item', (await state(page)).badge === '1');
 
   // Mouse: one cart only
@@ -194,12 +233,24 @@ async function pageScrolls(page, x) {
   check('A bag opens Smart Cart', s.rebuyOpen, s.title);
   check('A theme drawer stays shut', !s.drawerOpen);
   check('A title counts the item', /\(1\)/.test(s.title), s.title);
-  check('A page scrolls behind the open cart', await pageScrolls(page, OUTSIDE));
+  const box = await panelBox(page);
+  const wanted = PANEL[s.cartId]?.(WIDTH);
+  check('A panel width fits this cart', Boolean(box && wanted) && Math.abs(box.width - wanted) <= 1, `${box?.width}px, want ${wanted ?? '?'} (cart ${s.cartId})`);
 
-  // Outside click closes, like the source
-  await page.mouse.click(OUTSIDE, 450);
-  await page.waitForTimeout(1500);
-  check('A outside click closes it', !(await state(page)).rebuyOpen);
+  // Half way across the free page. The Figma cart fills a phone screen, so
+  // there is no "outside" there; close it with its own button instead.
+  const outside = box && box.x > 40 ? Math.round(box.x / 2) : null;
+  if (outside) {
+    check('A page scrolls behind the open cart', await pageScrolls(page, outside));
+    await page.mouse.click(outside, 450);
+    await page.waitForTimeout(1500);
+    check('A outside click closes it', !(await state(page)).rebuyOpen);
+  } else {
+    skip('A page scrolls behind the open cart', `panel fills the ${WIDTH}px screen`);
+    skip('A outside click closes it', `panel fills the ${WIDTH}px screen`);
+    await page.locator('#rebuy-cart .rebuy-cart__flyout-close').click({ timeout: 5000 });
+    await page.waitForTimeout(1500);
+  }
 
   // Keyboard: Enter opens, focus moves in, close returns it to the bag
   await page.locator(BAG).first().focus();
@@ -267,7 +318,7 @@ async function pageScrolls(page, x) {
   await context.close();
 }
 
-console.log(`${THEME_ID ? `theme ${THEME_ID}` : 'LIVE theme'} · ${WIDTH}px`);
+console.log(`${THEME_ID ? `theme ${THEME_ID}` : 'LIVE theme'}${PREVIEW_CART ? ` · preview cart ${PREVIEW_CART}` : ''} · ${WIDTH}px`);
 console.table(results);
 console.log(failures ? `${failures} failure(s)` : 'both engines behave — one cart per shopper');
 await browser.close();

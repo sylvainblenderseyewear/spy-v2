@@ -1,0 +1,27 @@
+<div
+  v-if="hasItems()"
+  data-rebuy-component="cart-subtotal"
+  data-rebuy-component-id="cart_subtotal"
+>
+  <div class="rebuy-cart__flyout-subtotal spy-mc-total">
+    <div class="rebuy-cart__flyout-subtotal-label">
+      <span v-html="subtotalLabel()"></span>
+    </div>
+
+    <!-- Savings badge: compare-at savings plus discounts. Hidden at zero. -->
+    <div
+      class="spy-mc-saving"
+      v-if="typeof getOriginalCartTotal === 'function' && typeof subtotalNumber === 'function' && getOriginalCartTotal() > subtotalNumber()"
+    >
+      <svg class="spy-mc-saving__icon" aria-hidden="true" focusable="false" viewBox="0 0 448 512" width="12" height="12">
+        <path fill="currentColor" d="M0 80V229.500c0 17 6.700 33.300 18.700 45.300l176 176c25 25 65.500 25 90.500 0L418.700 317.300c25-25 25-65.500 0-90.500l-176-176c-12-12-28.300-18.700-45.300-18.700H48C21.500 32 0 53.500 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/>
+      </svg>
+      <span>You're saving <span v-html="formatMoney(getOriginalCartTotal() - subtotalNumber())"></span></span>
+    </div>
+
+    <div class="rebuy-cart__flyout-subtotal-amount">
+      <span class="sr-only">Cart total</span>
+      <span v-html="typeof subtotalNumber === 'function' ? formatMoney(subtotalNumber()) : subtotal()"></span>
+    </div>
+  </div>
+</div>

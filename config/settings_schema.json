@@ -1862,6 +1862,24 @@
         ],
         "default": "solid",
         "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },
+      {
+        "type": "header",
+        "content": "Rebuy Smart Cart"
+      },
+      {
+        "type": "text",
+        "id": "rebuy_cart_recs_widget_id",
+        "label": "\"You Might Also Like\" widget ID",
+        "info": "The Rebuy widget that shows the colour over the model on its cards. The ID is in Rebuy > Widgets. Empty uses Rebuy's own card.",
+        "default": "315461"
+      },
+      {
+        "type": "text",
+        "id": "rebuy_cart_empty_widget_id",
+        "label": "Empty-cart tabs widget ID",
+        "info": "The Rebuy tabbed widget with the best sellers of an empty cart. Same colour-over-model name. Empty uses Rebuy's own rows.",
+        "default": "315471"
       }
     ]
   },

@@ -707,3 +707,209 @@ leave `/password`. Behaviour then passed 12/12.
 
 The homepage hero is a broken frame in that Chrome too, but not because of consent: this network's DNS
 sends `player.vimeo.com` to `10.10.7.111`. Check the video from another network.
+
+---
+
+## Figma redesign built on a copy — 14 Oct
+
+The new mini-cart (`audit/page-spec-mini-cart-figma.md`) is built on an **unpublished copy** of the
+live cart. The live cart **37798 was not touched** (last edit still 12 Oct, widget 314347 intact).
+
+| | Live today | New, not published |
+|---|---|---|
+| Cart | `SPY mini-cart (1:1 source)` **37798** | `SPY mini-cart (Figma redesign)` **38089** |
+| Theme CSS | on `main` | in the working tree; each cart's rules apply only to that cart (see "Two carts, one stylesheet") |
+
+Preview: `https://spyoptic-com.myshopify.com/?preview_theme_id=189382623539&preview_smart_cart=38089&viewcart=true&cart_version=2`
+(accept the cookie banner first, Rebuy does not load without it).
+
+### What cart 38089 holds
+
+| Slot | Component | Setting |
+|---|---|---|
+| Fixed top bar | Cart Title | `Shopping Cart`, custom template with the `(N)` count |
+| Goal box | Tiered Progress Bar `Free shipping` | one tier, type Free Shipping, **$50**, Shopify Functions off (text only, no discount) |
+| | labels | `You're <b>{{remaining_amount}} away</b> from Free Shipping!` / `You unlocked Free Shipping!` |
+| Body 1 | Cart Items | custom template `SPY cart items - Figma redesign`; empty-cart copy `Your bag is currently empty.` / `Shop our best sellers` |
+| Body 2 | Widget **315460** `Bundle with Accessories` | list, 3 products, `+ Add`; data source **325522** |
+| Body 3 | Widget **315461** `You Might Also Like` | grid, 2 columns, 4 products, `+ Add`; data source **325521** |
+| Body 4 | Widget **315471** `Empty cart best sellers` (tabbed) | 4 tabs, 11 products each, list |
+| Footer 1 | Cart Subtotal | labels `Total :`, custom template `SPY subtotal - total and savings badge` |
+| Footer 2 | Checkout Area | Checkout button **on**, label `Checkout Securely`; View Cart **off** |
+| Footer 3 | Custom Code Block | the trust row (`src/rebuy/trust-row.html`) |
+
+Data sources made for it:
+
+| ID | Name | Rule |
+|---|---|---|
+| 325522 | Cart - Bundle with Accessories | see "Bundle rules" below |
+| 325521 | Cart - You Might Also Like | see "You Might Also Like rules" below |
+| 325527 | Mini-cart empty state - Men | Anything → collection `mens-sunglasses` |
+| 325528 | Mini-cart empty state - Women | Anything → collection `womens-sunglasses` |
+| 325529 | Mini-cart empty state - Goggles | Anything → collection `goggles` |
+| 325530 | Mini-cart empty state - Eyeglasses | Anything → collection `eyeglasses` |
+
+All of them filter out-of-stock products, unpublished products and products already in the cart.
+
+**Bundle rules (325522), as the Figma frames draw them.** A sunglasses cart shows case, pouch and the
+replacement lens of that model; a goggle cart shows only its lens. Rules run top to bottom and the
+widget keeps the first 3 products.
+
+| # | If the cart has a product in | Show |
+|---|---|---|
+| 1 | `sunglasses` or `eyeglasses` | Sunglass Case Black, Sunglass Pouch Pouch Aliens |
+| 2-7 | `cyrus` · `dirk` · `discord` · `helm` · `montana` · `rocky` | that model's `…-replacement-lens` collection |
+| 8-10 | `marauder` · `marauder-se` · `waypoint` | `replacement-lens-marauder` · `-marauder-se` · `-waypoint` |
+| 11-12 | `foundation` · `woot-race` (moto, added 15 Oct) | `foundation-lens` · `woot-race-lens` |
+| 13 | `woot` or `woot-race` | `woot-woot-race-mx-lens` (its name says it fits both; unpublished today) |
+| 14 | `sunglasses` or `eyeglasses` | Sunglass Case Small Black (fills the third row when the model has no lens) |
+
+Only exact model ↔ lens pairs are mapped, so the box never offers a lens that does not fit. The
+Marauder SE, Waypoint and Woot/Woot Race MX lenses are unpublished today, so those rules show nothing
+yet. Checked: gaming eyeglasses → case, pouch, small case; Cyrus → case, pouch, Cyrus lens; Marauder →
+Marauder lens only; Foundation → 3 Foundation lens tints; Woot Race → its 2 lenses; Woot → no box.
+
+**You Might Also Like rules (325521).** Same category first, ranked by Rebuy's Smart Sort (what was
+bought together with the cart's products), then Rebuy's AI to fill: snow goggles → `snow-goggle-frames`,
+moto goggles → `moto-goggles`, sunglasses → `sunglasses`, eyeglasses → `eyeglasses`, then Recommended
+(AI). An exclusion filter drops every accessory by its `collection::` tag (29 tags: lenses, cases,
+pouches, tear-offs, CVS, nose guard, side shields), so a lens never shows here and in the bundle box at
+the same time. Checked: Marauder → Marauder SE ×2, Marauder Elite Eco, Crusher Elite Eco (close to the
+Figma goggle frame); Cyrus → Montana + Cyrus colourways; gaming → Cyrus Gaming, Crossway Screen ×2,
+Crossway Gaming. Changing the ranking is one dropdown per rule in Rebuy (Similar Sort shows the same
+frame in other colours first).
+
+### Where the code lives
+
+| Part | File | Goes where |
+|---|---|---|
+| Line item, empty message | `src/rebuy/cart-items.html` | Rebuy → cart → Cart Items → Advanced → Edit Code |
+| Total + savings badge | `src/rebuy/cart-subtotal.html` | Rebuy → cart → Cart Subtotal → Advanced → Edit Code |
+| Title with count | `src/rebuy/cart-title.html` | Rebuy → cart → Cart Title → Edit Code (unchanged) |
+| Trust row | `src/rebuy/trust-row.html` | Rebuy → cart → footer Custom Code Block |
+| Colour-over-model name on cards and tab rows | `snippets/spy-rebuy-widget-templates.liquid` | theme; Rebuy reads `script#rebuy-widget-<id>` |
+| Widget IDs for that snippet | theme settings → Cart → Rebuy Smart Cart | `rebuy_cart_recs_widget_id` (315461), `rebuy_cart_empty_widget_id` (315471) |
+| All styling | `src/tailwind.css`, blocks "Rebuy Smart Cart: …" (shared / OLD / NEW) | theme |
+
+`src/rebuy/` is the source of truth. A change there must be pasted into Rebuy again; Rebuy keeps a
+Previous Templates history for each.
+
+### Two carts, one stylesheet
+
+The Cart Items template of 38089 carries `class="spy-mc"` on its root. The stylesheet has three blocks:
+
+- **shared** — the closed-panel Tab fix, the body scroll unlock, the hidden-Checkout guard;
+- **OLD source cart** — the 12 Oct rules, every selector `#rebuy-cart:not(:has(.spy-mc))`;
+- **NEW Figma cart** — every selector `#rebuy-cart:has(.spy-mc)`.
+
+So the theme can go live any time **before** the Rebuy switch without changing the live cart, and
+once both are live, rolling back is only the switch. Proof, on the live theme and live cart 37798 with
+the theme's CSS swapped for the working tree's: every element of the open cart has the same box and
+the same computed style, at 1440 and 390, with items (131 elements) and empty (91). Delete the OLD
+block once 37798 is retired.
+
+**Order matters one way (corrected 15 Oct).** Switching 38089 Live *before* the push is not safe:
+`main` still has the old, unscoped `#rebuy-cart` rules, which would put the 320px styles on the new
+cart until the push lands. Push first, then switch.
+
+### How the templates decide things
+
+- **Model and colour.** The model is the product tag `collection::<MODEL>`. The colour is what is left of
+  the title after the model. No tag, or a title that does not start with the model = the full title.
+- **Variant line.** Printed only when the product has more than one variant.
+- **Remove.** There is no × button. Minus at quantity 1 removes the line (Rebuy's own `decreaseItem`
+  does this) and its label then reads "Remove …". Lines without a stepper (gifts) keep a small remove button.
+- **Savings badge.** `getOriginalCartTotal() - subtotalNumber()`: compare-at savings plus discounts.
+  Hidden at zero. No product has a compare-at price today, so it was checked with a faked one.
+- **Bundle vs. recommendations.** The CSS tells the two widgets apart by Rebuy layout (`line` vs `grid`),
+  not by ID. The tabbed widget shows only in an empty cart; bundle and recommendations only with items.
+- **Size / lens picker.** A widget product with a real choice keeps Rebuy's picker. One option = no picker.
+
+### Checked on the preview (dev theme + cart 38089)
+
+| Check | Result |
+|---|---|
+| `node scripts/rebuy-figma-behaviour.mjs` at 1440 / 768 / 390 | 23 / 23 at each width |
+| Geometry against the spec (header 48, items at y94 / y199, bundle 311px rows, cards 164 wide, footer 151) | matches |
+| Panel | 375 wide and docked right from 481px; full width on phones |
+| axe on the open cart, WCAG 2.1 A + AA | only the orange contrast (2.68:1), the accepted brand choice |
+| Keyboard focus ring | the theme's ring in ink on every control (was Rebuy's blue `#2491c4`); drawn inside on the clipped image link |
+| Live cart under the new stylesheet | identical, see "Two carts, one stylesheet" |
+| Captures | `audit/mini-cart-figma/build/` (two-items, goggle, empty, one-item-below) |
+
+One 390 run failed on "minus at 1 removes the line": Rebuy took longer than the fixed wait. The script
+now waits for the list instead of the clock, and passed again at 390 and 1440 after that change.
+
+The 14 Oct evening checks ran with the working tree's CSS served in place of the theme's
+(`LOCAL_CSS=1` in `rebuy-figma-preview.mjs` / `rebuy-figma-behaviour.mjs`), because the Shopify CLI
+login had expired. `THEME_ID=live CART_ID=live` points the preview script at the published theme and cart.
+
+15 Oct, after the login: `shopify theme dev` synced the dev theme 189382623539 again. Its
+`tailwind.css` is byte-identical to the working tree's build (same SHA-256), and
+`rebuy-figma-behaviour.mjs` passes 23/23 on it at 1440, 768 and 390 without the CSS swap. The live
+cart (37798) on that theme still opens at 320px, flush right (x1120 at 1440, x70 at 390).
+
+A page error seen now and then, `Cannot read properties of undefined (reading 'createShopifyExtend')`,
+comes from Shopify's Web Pixels sandbox (`/cdn/wpm/…`), not from the theme or Rebuy.
+
+### Not the design, on purpose
+
+| Design | Built | Why |
+|---|---|---|
+| Orange `#ED773B` | palette color3 (`#f27e37`) | one orange control for the whole site |
+| Grey `#A2A2A2` secondary text | `--color-spy-muted` `#767676` | 2.6:1 fails AA; same rule as the rest of the site |
+| DIN weight 500 | `font-weight: 500` in CSS, renders Regular | the Medium file is not loaded; it will pick it up once added |
+| `GET 20% OFF` in the bundle title | title is `Bundle with Accessories` | no discount exists; the claim would be false |
+| Copy typos | `Free Shipping!` line, `Pay in installments`, `Easy returns`, `Goggles`, `Shop our best sellers` | plain grammar fixes |
+| No picker on `+ ADD` | picker shown when the product has a choice | adding a size or lens silently is a wrong order waiting to happen |
+| Free shipping scrolls with the items | fixed under the header | Rebuy pins Cart Items first in the body, so the line sits in the goal box |
+
+### To publish (not done)
+
+1. Push the theme changes to `main` (any time; the live cart keeps its look). **Push first** — see
+   "Order matters one way".
+2. Rebuy → Smart Cart → `SPY mini-cart (Figma redesign)` → Live. Rebuy turns 37798 off by itself.
+3. Roll back = the same switch on 37798. No revert needed.
+4. Check: `node scripts/production-cart-check.mjs` at `WIDTH=1440`, `768`, `390`, and
+   `node scripts/rebuy-cart-responsive.mjs`. Both follow whichever cart is live.
+5. Later: delete the OLD CSS block once 37798 is retired.
+
+**The older check scripts follow the live cart (15 Oct).** `production-cart-check.mjs` and
+`rebuy-cart-responsive.mjs` read `Rebuy.SmartCart.settings.id` and expect 320px for 37798, or 375px
+(full width up to 480px) for 38089. Where a check needs room beside the panel and the new panel
+fills a phone screen, it reports n/a. `PREVIEW_CART=38089` runs them against the unpublished cart on
+the dev theme. Both now wait for Rebuy to own the bag instead of a fixed 8-9s: in preview Rebuy
+often boots later, and a bag click before the handover opens the theme drawer (that is how the
+first 768 and 390 runs failed). `rebuy-cart-behaviour.mjs` needed no change. `cart-measure.mjs`
+keeps the old spec, which the theme drawer fallback still follows.
+
+| Run, 15 Oct | 1440 | 768 | 390 |
+|---|---|---|---|
+| `production-cart-check.mjs`, live store, cart 37798 | 34/34 | — | 34/34 |
+| `production-cart-check.mjs`, dev theme + `PREVIEW_CART=38089` | 34/34 | 34/34 | 32 + 2 n/a |
+| `rebuy-cart-responsive.mjs`, cart 37798 on the dev theme | 320 ok | 320 ok | 320 ok |
+| `rebuy-cart-responsive.mjs`, `PREVIEW_CART=38089` | 375 ok | 375 ok | 390 full width ok |
+
+The 38089 production run is the first test of the new cart through both consent paths, the PDP
+add (opens after 2.5s at 1440) and the drawer → Smart Cart handover.
+
+### Still open
+
+- **Bundle discount.** Rebuy can show and apply 20% (widget → Discount), but it needs a real Shopify
+  discount. Business decision, then one setting.
+- **Bundle rules, the rest.** Exact-fit lenses are mapped for 12 models (6 sunglasses, 3 snow, 3 moto).
+  Crusher Elite, Marauder Elite, Raider, Megalith and McCoy lenses exist but no frame has the same
+  model name (the frames are "Crusher Elite Eco", "Marauder Elite Eco"…), and the lens copy says
+  nothing about fit. Which lens fits which frame is a product question, then one rule each.
+- **Free-shipping threshold.** $50, taken from the site's own trust badge.
+- **Best sellers.** The tabs list the collections in Shopify's order, not sales data.
+- **Fallback drawer.** Visitors who have not accepted cookies still get the theme drawer, with the old look.
+- **Cart page.** The only button now goes to checkout.
+- **DIN Medium (500).** Needs the font file.
+
+### A mistake to know about
+
+While replacing the cart block in `src/tailwind.css` I cut the file at the old block and appended the new
+one. The other session had appended its Smart Search styles after that block an hour earlier, so they
+went with it. Restored byte for byte from that session's own command (they sit at the end of the file
+again) and checked against its built CSS: all 29 rules are back.

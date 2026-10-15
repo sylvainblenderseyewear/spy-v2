@@ -2,6 +2,10 @@
   Measures the mini-cart against audit/page-spec-cart-drawer.md §10.
   Works on either engine so both paths are held to one spec.
 
+  That spec is the old 320px source cart. The theme drawer (the consent
+  fallback) still follows it. The Figma Rebuy cart (38089) has its own checks:
+  scripts/rebuy-figma-preview.mjs and scripts/rebuy-figma-behaviour.mjs.
+
   Run:  node scripts/cart-measure.mjs --engine=theme --width=1440
   Exit: 0 = match, 1 = drift or cart did not open.
 */

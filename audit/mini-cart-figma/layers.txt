@@ -1,0 +1,227 @@
+Figma "SPY + Mini Cart" / page Design — layer values read from the Properties panel, 2026-10-13.
+File: https://www.figma.com/design/2JmJZntpEWKt4VPOZQ1ui5/SPY---Mini-Cart
+
+Format:  depth | node id | name or "T: text"; properties
+  col / row     auto-layout direction
+  w / h         size in px ("fill" = stretches, "hug" = wraps content, bare number = fixed)
+  r             corner radius          b       border weight
+  pad           padding (one value = all sides; four = top right bottom left)
+  gap           gap between children
+  font          family weight size/line-height ls<letter-spacing>   (DIN = DIN Next LT Pro)
+  ha / va       text alignment          op     opacity
+  fill          colour                  stroke border paint
+  Top / Left    position of an absolutely placed child
+Open any node with  ...?node-id=<id with ":" as "-">
+
+=== 2 ITEMS — 8:388 (reference frame) ===
+0|8:388|Mini Cart - Sunglasses; col; w 375; h 1,242hug; gap 24; fill #FFFFFF
+1|7:300|Frame 294; w 375; h 48
+2|7:303|Frame; w 24; h 24; Top; 12; Left; 338
+3|7:304|Vector; w 12.73; h 12.73; Top; 5.64; Left; 5.64; fill #000000
+2|7:302|T: Shopping Cart (2); w 178; h 20; Top; 14; Left; 16; font DIN 700 16/100% ls0%; case Title case; fill #30333D
+2|7:301|Rectangle 40; w 375; h 48; fill #FFFFFF; fx Drop shadow; X; 0; Y; 4; Blur; 10; Spread; 0; #000000; 5%
+1|8:387|Frame 1171277266; col; w 375fill; h 1,170hug; gap 32
+2|7:329|Frame 1171277260; col; w 343; h 479hug; gap 8
+3|7:330|T: You unlocked Free Shipping!; w 325; h 14; font DIN 500 14/100% ls0%; fill #000000
+3|7:331|Frame 348; col; w 343fill; h 97hug; gap 8
+4|7:332|Frame 299; row; w 343fill; h 97hug; b Bottom; 1; justify space-between; stroke 1; Bottom side; #DEE2E9; Outer alignment
+5|7:333|image; Image; upscale_image [Upscaled].png; Scale; Crop; w 121; h 97; r 4
+5|7:334|Frame 1171277259; col; w 207; h 70hug; gap 8
+6|7:335|Frame 1171277257; col; w 207fill; h 32hug; gap 4
+7|7:336|T: CYRUS SWITCH; w 207; h 14; font DIN 500 12/100% ls0%; fill #A2A2A2
+7|7:337|T: Translucent Gunmetal; w 207; h 14; font DIN 500 14/100% ls0%; fill #000000
+6|7:338|Frame 1171277258; row; w 207fill; h 30hug; justify space-between
+7|7:339|T: $200; w 31; h 14; font DIN 400 14/100% ls0%; fill #30333D
+7|7:340|Frame 114; row; w 64; h 30; r 2; b 1.2; pad 6 20 6 20; gap 6; stroke 1.2; All sides; #DEE2E9; Center alignment
+8|7:341|Frame; w 16; h 16
+9|7:342|Vector; w 9.33; h 1.33; Top; 7.33; Left; 3.33; fill #000000
+8|7:343|T: 1; w 8; h 12; font DIN 500 14/12 ls0%; ha Center; va Middle; fill Charcoal; #232B38
+8|7:344|Frame; w 16; h 16
+9|7:345|Vector; w 9.33; h 9.33; Top; 3.33; Left; 3.33; fill #000000
+3|7:346|Frame 691; col; w 343fill; h 97hug; gap 8
+4|7:347|Frame 299; row; w 343fill; h 97hug; b Bottom; 1; justify space-between
+5|7:348|image; Images; image.png; Scale; Fit; upscale_image [Upscaled].png; Scale; Crop; w 121; h 97; r 4
+5|7:349|Frame 1171277259; col; w 207; h 70hug; gap 8
+6|7:350|Frame 1171277257; col; w 207fill; h 32hug; gap 4
+7|7:351|T: Rebar AnsI; w 207; h 14; font DIN 500 12/100% ls0%; case Uppercase; fill #A2A2A2
+7|7:352|T: Matte Translucent Gunmetal; w 207; h 14; font DIN 500 14/100% ls0%; fill #000000
+6|7:353|Frame 1171277258; row; w 207fill; h 30hug; justify space-between
+7|7:354|T: $200; w 31; h 14; font DIN 400 14/100% ls0%; fill #30333D
+7|7:355|Frame 114; row; w 64; h 30; r 2; b 1.2; pad 6 20 6 20; gap 6; stroke 1.2; All sides; #DEE2E9; Center alignment
+8|7:356|Frame; w 16; h 16
+9|7:357|Vector; w 9.33; h 1.33; Top; 7.33; Left; 3.33; fill #000000
+8|7:358|T: 1; w 8; h 12; font DIN 500 14/12 ls0%; ha Center; va Middle; fill Charcoal; #232B38
+8|7:359|Frame; w 16; h 16
+9|7:360|Vector; w 9.33; h 9.33; Top; 3.33; Left; 3.33; fill #000000
+3|7:361|Frame 398; col; w 343fill; h 247hug; r 4; b 1; pad 16; gap 10; fill #FFFFFF; stroke 1; All sides; #DEE2E9; Inner alignment
+4|7:362|Frame 821; row; w 311fill; h 17hug; gap 95
+5|7:363|T: Bundle with Accessories. GET 20% OFF; w 237; h 17; font DIN 400 14/100% ls0%; Span (GET 20% OFF): DIN 700 14/100% ls0%; fill #000000
+4|7:364|Frame 820; row; w 311fill; h 56hug; justify space-between
+5|7:365|Frame 827; row; w 311fill; h 56hug; justify space-between
+6|7:366|image; Image; image.png; Scale; Crop; Blend; Darken; w 56; h 56
+6|7:367|Frame 819; col; w 156; h 35hug; gap 4
+7|7:368|T: Sunglass case; w 156; h 17; font DIN 500 14/100% ls0%; fill #000000
+7|7:369|Frame 790; row; w 156fill; h 14hug
+8|7:370|T: $8 $12; w 56; h 14; font DIN 400 14/100% ls0%; Span ($12): DIN 400 14/100% ls0%; deco Strikethrough
+6|7:371|Frame 114; row; w 62; h 30; r 2; b 1; stroke 1; All sides; #DEE2E9; Center alignment
+7|7:372|T: + Add; w 36; h 12; font DIN 700 13/12 ls0%; ha Center; va Middle; case Uppercase; fill Main Orange; #ED773B
+4|7:373|Frame 824; row; w 311fill; h 56hug; justify space-between
+5|7:374|Frame 827; row; w 311fill; h 56hug; justify space-between
+6|7:375|image; Image; image.png; Scale; Crop; Blend; Darken; w 56; h 56
+6|7:376|Frame 819; col; w 156; h 35hug; gap 4
+7|7:377|T: Pouch Aliens; w 156; h 17; font DIN 700 14/100% ls0%; fill #000000
+7|7:378|Frame 790; row; w 156fill; h 14hug
+8|7:379|T: $5 $8; w 56; h 14; font DIN 400 14/100% ls0%; Span ($8): DIN 400 14/100% ls0%; deco Strikethrough
+6|7:380|Frame 114; row; w 62; h 30; r 2; b 1; stroke 1; All sides; #DEE2E9; Center alignment
+7|7:381|T: + Add; w 36; h 12; font DIN 700 13/12 ls0%; ha Center; va Middle; case Uppercase; fill Main Orange; #ED773B
+4|8:390|Frame 825; row; w 311fill; h 56hug; justify space-between
+5|8:391|Frame 827; row; w 311fill; h 56hug; justify space-between
+6|8:392|image; Image; image.png; Scale; Crop; w 56; h 56
+6|8:393|Frame 819; col; w 156; h 35hug; gap 4
+7|8:394|T: Cyrus Replacement Lens; w 156; h 17; font DIN 700 14/100% ls0%; fill #000000
+7|8:395|Frame 790; row; w 156fill; h 14hug
+8|8:396|T: $50 $60; w 56; h 14; font DIN 400 14/100% ls0%; Span ($60): DIN 400 14/100% ls0%; deco Strikethrough
+6|8:397|Frame 114; row; w 62; h 30; r 2; b 1; stroke 1; All sides; #DEE2E9; Center alignment
+7|8:398|T: + Add; w 36; h 12; font DIN 700 13/12 ls0%; ha Center; va Middle; case Uppercase; fill Main Orange; #ED773B
+2|8:389|Frame 1171277268; col; w 375fill; h 659hug
+3|7:193|Frame 392; col; w 375fill; h 511hug; pad 24 20 24 20; gap 14; fill #F2F4F7
+4|7:194|T: You Might Also Like; w 335; h 19; font DIN 700 16/120% ls0%; case Title case; fill #000000
+4|7:195|Frame 1171277263; col; w 335fill; h 430hug; gap 4
+5|7:196|Frame 343; row; w 335fill; h 208hug; justify space-between
+6|7:197|Frame 346; row; w 164hug; h 208hug; pad Top; 10; Bottom; 10; gap 10; fill #FFFFFF
+7|7:198|Frame 102; col; w 164; h 188hug; gap 12
+8|7:199|image; Image; image.png; w 104; h 70; fill #FFFFFF
+8|7:200|Frame 96; row; w 164fill; h 52hug; justify space-between; pad Right; 10; Left; 10
+9|7:201|Frame 15; row; w 144fill; h 52hug; gap 6
+10|7:202|Frame 247; col; w 132; h 52hug; gap 6
+11|7:203|T: Soft Matte Black; w 132; h 12; font DIN 400 12/100% ls0%; ha Center; va Middle; fill #A2A2A2
+11|7:204|T: TARMAC; w 132; h 14; font DIN 700 14/100% ls0%; ha Center; fill #000000
+11|7:205|T: $200; w 132; h 14; font DIN 400 14/100% ls0%; ha Center; va Middle; fill #30333D
+8|7:206|Frame 1171277262; col; w 164fill; h 42hug; pad Right; 10; Bottom; 10; Left; 10; gap 10
+9|7:207|Frame 116; row; w 144fill; h 32; b 1; pad 6 20 6 20; gap 10; stroke 1; All sides; Main Orange; #ED773B; Inner alignment
+10|7:208|T: + ADD; w 33; h 12; font DIN 700 12/100% ls0%; ha Center; va Middle; fill Main Orange; #ED773B
+6|7:209|Frame 345; row; w 164hug; h 207hug; pad Top; 10; Bottom; 10; gap 10; fill #FFFFFF
+7|7:210|Frame 102; col; w 164; h 187hug; gap 12
+8|7:211|image; Image; image.png; w 102; h 69; fill #FFFFFF
+   (text block and button identical to the first card: 7:212–7:220)
+5|7:221|Frame 345; row; w 335fill; h 218hug; justify space-between
+6|7:222|Frame 346; row; w 164hug; h 218hug; pad Top; 10; Bottom; 10; gap 10; fill #FFFFFF
+7|7:223|Frame 102; col; w 164; h 198hug; gap 12
+8|7:224|image; Image; image.png; w 119; h 80
+   (text block and button identical to the first card: 7:225–7:233)
+6|7:234|Frame 345; row; w 164hug; h 218hug; pad Top; 10; Bottom; 10; gap 10; fill #FFFFFF
+7|7:235|Frame 102; col; w 164; h 198hug; gap 12
+8|7:236|image; Image; image.png; w 119; h 80
+11|7:240|T: Soft Matte Black; w 132; h 12; font DIN 400 12/100% ls0%; ha Center; va Middle; fill #A2A2A2
+11|7:241|T: CEDROS; w 132; h 14; font DIN 700 14/100% ls0%; ha Center; fill #000000
+11|7:242|T: $40 $170; w 132; h 14; font DIN 400 14/100% ls0%; ha Center; va Middle; Span ($170): DIN 400 14/100% ls0%; deco Strikethrough
+9|7:244|Frame 116; row; w 144fill; h 32; b 1; pad 6 20 6 20; gap 10; stroke 1; All sides; Main Orange; #ED773B; Inner alignment
+10|7:245|T: + ADD; w 33; h 12; font DIN 700 12/100% ls0%; ha Center; va Middle; fill Main Orange; #ED773B
+3|7:305|Frame 690; col; w 375fill; h 148; b Top; 1; pad 19 16 16 16; gap 12; fill #FFFFFF; stroke 1; Top side; #EDEFF3; 60%; Inner alignment
+4|7:306|Frame 337; row; w 343fill; h 24hug; justify space-between
+5|7:307|Frame 830; row; w 37hug; h 14hug; gap 8
+6|7:308|T: Total :; w 37; h 14; font DIN 400 14/14 ls0%; va Middle; fill #000000
+5|7:309|Frame 1171277251; row; w 162hug; h 24hug; gap 8
+6|7:310|Frame 818; w 118; h 24; fill #F2F4F7
+7|7:313|T: You're saving $60; w 84; h 14; Top; 5; Left; 26; font DIN 400 11/14 ls0%; va Middle; fill #000000
+7|7:311|Frame; w 12; h 12; Top; 6; Left; 10
+8|7:312|Vector; w 9.33; h 9.33; Top; 3.33; Left; 3.33; fill #000000
+6|7:314|T: $400; w 36; h 16; font DIN 500 16/16 ls0%; ha Right; va Bottom; fill #000000
+4|7:315|Frame 19; row; w 343; h 48; gap 12; fill #ED773B
+5|7:316|Frame; w 16; h 16
+6|7:317|Vector; w 12; h 13.33; Top; 1.33; Left; 2; fill #FFFFFF
+5|7:318|T: CheckOut Securely; w 144; h 16; font DIN 700 14/14 ls4%; va Bottom; case Uppercase; fill #FFFFFF
+4|7:319|Frame 687; row; w 339; h 20; r 10; pad Right; 4; Left; 4; gap 12
+5|7:320|Frame 1171277256; row; w 113hug; h 18hug; gap 2
+6|7:321|Box-Return--Streamline-Outlined-Expansion; Image; upscale_image [Upscaled].png; w 17; h 16
+6|7:322|T: Lifetime warranty; w 94; h 18; op 80%; font DIN 500 12/18 ls0%; ha Center; va Middle; fill #000000
+5|7:323|Frame 1171277257; row; w 113hug; h 18hug; gap 2
+6|7:324|Box-Return--Streamline-Outlined-Expansion; Image; upscale_image [Upscaled].png; w 17; h 16
+6|7:325|T: Pay in installment; w 94; h 18; op 80%; font DIN 500 12/18 ls0%; ha Center; va Middle; fill #000000
+5|7:326|Frame 1171277254; row; w 81hug; h 18hug; gap 2
+6|7:327|Box-Return--Streamline-Outlined-Expansion; Image; upscale_image [Upscaled].png; Scale; Fit; w 17; h 16
+6|7:328|T: Easy return; w 62; h 18; op 80%; font DIN 500 12/18 ls0%; ha Center; va Middle; fill #000000
+
+=== EMPTY CART — 8:399 (repeated list rows left out) ===
+0|8:399|Mini Cart - Sunglasses; col; w 375; h 1,203; gap 24; fill #FFFFFF
+1|8:400|Frame 294; w 375; h 48          (header, same as above, title "Shopping Cart (0)")
+1|8:405|Frame 1171277266; col; w 375fill; h 1,079; gap 32
+2|8:406|Frame 1171277260; col; w 343; h 1,101hug; gap 16
+3|8:662|Frame 1171277269; col; w 343fill; h 67hug; gap 10
+4|11:35|Frame 1171277272; col; w 343fill; h 37hug; gap 4
+5|8:407|T: Your bag is currently empty.; w 343; h 16; font DIN 700 16/100% ls0%; ha Center; fill #000000
+5|8:546|T: Start shop our best sellers; w 343; h 17; font DIN 300 14/120% ls0%; ha Center; fill #000000
+4|11:24|Frame 687; row; w 339; h 20; r 10; pad Right; 4; Left; 4; gap 12
+5|11:25|Frame 1171277256; row; w 112hug; h 18hug; gap 2
+6|11:26|Box-Return--Streamline-Outlined-Expansion; Image; upscale_image [Upscaled].png; w 17; h 16
+6|11:27|T: Lifetime warranty; w 93; h 18; op 80%; font DIN 400 12/18 ls0%; ha Center; va Middle; fill #000000
+5|11:28|Frame 1171277257; row; w 112hug; h 18hug; gap 2
+6|11:30|T: Pay in installment; w 93; h 18; op 80%; font DIN 400 12/18 ls0%; ha Center; va Middle; fill #000000
+5|11:31|Frame 1171277254; row; w 80hug; h 18hug; gap 2
+6|11:33|T: Easy return; w 61; h 18; op 80%; font DIN 400 12/18 ls0%; ha Center; va Middle; fill #000000
+3|8:673|Frame 1171277270; col; w 343fill; h 1,018hug; gap 8
+4|8:674|Frame 1171277271; row; w 343fill; h 32hug; gap 8
+5|8:664|Frame 1171277261; row; w 80; h 32; gap 10; fill #ED773B
+6|8:665|T: Men; w 28; h 12; font DIN 700 12/14 ls0%; ha Center; case Uppercase; fill #FFFFFF
+5|8:666|Frame 1171277261; row; w 80; h 32; b 1; gap 10; stroke 1; All sides; #DEE2E9; Inner alignment
+6|8:667|T: Women; w 42; h 4; font DIN 700 12/100% ls0%; ha Center; va Middle; case Uppercase; fill #000000
+5|8:668|Frame 1171277262; row; w 80; h 32; b 1; gap 10; stroke 1; All sides; #DEE2E9; Inner alignment
+6|8:669|T: Goggle; w 44; h 14; font DIN 700 12/100% ls0%; ha Center; va Middle; case Uppercase; fill #000000
+5|8:670|Frame 1171277263; row; w 80; h 32; b 1; gap 10; stroke 1; All sides; #DEE2E9; Inner alignment
+6|8:671|T: eyeglasses; w 71; h 14; font DIN 700 12/100% ls0%; ha Center; va Middle; case Uppercase; fill #000000
+4|8:605|Frame 1171277253; col; w 343fill; h 978hug; gap 1; fill #FFFFFF
+5|8:750|Frame 400; row; w 343fill; h 88; b Bottom; 1; pad Right; 10; Left; 10; gap 20; stroke 1; Bottom side; #DEE2E9; Outer alignment
+6|8:751|Rectangle 34; Image; image.png; w 81; h 64; r Top-left; 4; Bottom-left; 4
+6|8:752|Frame 96; row; w 222fill; h 52; justify space-between
+7|8:753|Frame 15; col; w 141; h 52; gap 7
+8|8:754|Frame 1171277261; col; w 141fill; h 30hug; gap 2
+9|8:755|T: Matte Black; w 141; h 14; font DIN 500 12/100% ls0%; fill #A2A2A2
+9|8:756|T: CYRUS; w 43; h 14; font DIN 700 14/100% ls0%; case Uppercase; fill #000000
+8|8:757|T: $ 200; w 31; h 14; font DIN 400 14/100% ls-5%; fill #30333D
+8|8:758|T: $ 30; w 27; h 14; font DIN 400 14/100% ls0%; deco Strikethrough; fill #6F7176; 70%      (clipped, not visible)
+7|8:759|Frame 114; row; w 62; h 30; r 2; b 1; stroke 1; All sides; #DEE2E9; Center alignment
+8|8:760|T: + Add; w 36; h 12; font DIN 700 13/12 ls0%; ha Center; va Middle; case Uppercase; fill Main Orange; #ED773B
+   (ten more rows of the same build: Rebar Se Ansi, Rebar Ansi, MONOLITH, Discord, Overhaul,
+    Helm Tech, Dirty Mo 2, MONTANA, REgion XL, Cooper; the last row has no bottom border)
+
+=== GOGGLES — 8:805 (only what differs from the 2-item frame) ===
+0|8:805|Mini Cart - Goggles; col; w 375; h 1,005hug; gap 24; fill #FFFFFF
+2|8:812|Frame 1171277260; col; w 343; h 242hug; gap 8
+5|8:816|image; Image; image.png; Scale; Fit; w 121; h 97; r 4
+7|8:819|T: MARAUDER SE; w 207; h 14; font DIN 500 12/100% ls0%; fill #A2A2A2
+7|8:820|T: Seafoam; w 207; h 14; font DIN 500 14/100% ls0%; fill #000000
+3|8:844|Frame 398; col; w 343fill; h 115hug; r 4; b 1; pad 16; gap 10; fill #FFFFFF; stroke 1; All sides; #DEE2E9; Inner alignment
+6|8:868|Frame 819; col; w 156; h 50hug; gap 4
+7|8:869|T: Replacement Lens Marauder; w 156; h 32; font DIN 700 14/16 ls0%; fill #000000
+11|8:885|T: Soft Matte Black; w 132; h 12; font DIN 400 12/100% ls0%; ha Center; va Middle; fill #929292
+11|8:886|T: MARUDER ELITE ECO; w 132; h 14; font DIN 700 14/100% ls0%; ha Center; fill #000000
+11|8:898|T: MARUDER ELITE; ...   11|8:911|T: CRUSHER ELITE; ...   11|8:923|T: CADET; ...
+
+=== 1 ITEM — 8:958 (only what differs) ===
+0|8:958|Mini Cart - Sunglasses; col; w 375; h 1,137hug; gap 24; fill #FFFFFF
+2|8:961|T: Shopping Cart (1); ...
+2|8:965|Frame 1171277260; col; w 343; h 374hug; gap 8
+3|8:966|T: You're $25 away from get Free Shipping!; w 325; h 14; font DIN 400 14/100% ls0%; Span ($25 away): DIN 700 14/100% ls0%; fill #000000
+
+=== DESKTOP — 8:1290 (2 items) and 6:366 (1 item) ===
+0|8:1290|Desktop - Mini Cart; w 1,904; h 913
+1|8:1573|Mini Cart - Sunglasses; col; w 375; h 1,242hug; Left; 1529; gap 24; fill #FFFFFF     (same build as 8:388)
+2|8:2120|Frame 690; col; w 375; h 148; ...                                                    (second footer, pinned to the panel bottom)
+1|8:1292|Rectangle 70; w 1,529; h 972; op 20%; fill #000000; fx Background blur; Blur; 44
+1|8:1291|image 2; Image; image.png; w 1,904; h 972; fx Layer blur; Blur; 24
+0|6:366|Desktop - Mini Cart; w 1,904; h 913
+1|8:1107|Mini Cart - Sunglasses; col; w 375; h 913; Left; 1529; gap 24; fill #FFFFFF          (same build as 8:958)
+2|8:1265|Frame 690; col; w 375; h 148; ...                                                    (pinned footer)
+1|6:524|Rectangle 70; w 1,529; h 972; op 20%; fill #000000; fx Background blur; Blur; 44
+1|6:365|image 2; Image; image.png; w 1,904; h 972; fx Layer blur; Blur; 24
+
+=== ALTERNATES (older) ===
+3:512 Mini Cart - Alt 4 (375 × 1201) and 7:2 Mini Cart - Alt 5 (375 × 1155).
+Footer in both:  Frame 690; ... Interactions; Scroll position; Fixed
+Alt 4 recommendation row: Frame 391; row; w 335fill; h 90; b 1; pad Right; 10; Left; 10; gap 12; stroke 1; All sides; #DEE2E9
+Alt 5 line item:          Frame 299; row; w 343fill; h 97hug; b 1; pad Right; 10; stroke 1; All sides; #DEE2E9
+Alt 5 bundle button:      Frame 114; row; w 62; h 30; b 1; stroke 1; All sides; #ED773B
+
+=== Colours sampled from the 100% captures (Figma does not expose mixed-span colours) ===
+Bundle row:  sale price #000000, struck compare price #999999
+Card:        sale price #000000, struck compare price #A2A2A2
