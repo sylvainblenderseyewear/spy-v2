@@ -251,7 +251,13 @@ Goran saved it by hand on 13 Oct: new code pasted from `audit/ga4-custom-pixel.j
 - **Not tested, needs a real order:** `coupon` and `shipping_tier` on `purchase`. Blocked until the store can take payments.
 - **Still open for Legal:** Data sale is on, so do-not-sell and GPC visitors still get no GA4.
 
-Not done, needs a decision: banner names (#6 below) are theme content, not pixel code. Either give every banner a heading or add a "Promotion name" setting.
+**Banner names (#6 below) — fixed 14 Oct, not committed yet.**
+
+- **Theme:** every banner now sends a real name. Order: the new optional *Promotion name* setting (half banners, feature link banners), then the heading, then the title of the linked page, then the CTA label, then the slot. Heroes send the title the page shows. Two-line headings keep a space: "SHOP ALL SAFETY SUNGLASSES", was "SHOP ALLSAFETY SUNGLASSES". Checked offline with LiquidJS, 13 cases; the old snippet fails 10 of them. Theme check: no new offenses.
+- **Pixel:** `view_promotion` and `select_promotion` sent no `items`. Google's event reference marks `items` as required on `view_promotion`, and says promotions without items are left out of the Promotions report. So no banner has ever reached that report, whatever its name. Each event now carries the banner as one item: `item_id` `promo_<promotion_id>`, `item_name` = the promotion name. `scripts/ga4-pixel-test.mjs`: 17/17.
+- **Pixel saved by Goran on 15 Oct:** the store serves version 9, permission unchanged (Analytics + Data sale). Realtime doesn't show items, so check the next day: GA4 Promotions report or the BigQuery `items` column on `view_promotion`.
+- **Still needed:** commit and push for the theme part. Until then the banners send their old names, now with an item.
+- **Never report today:** collection heroes and PDP feature banners. Their event only fires when the section's own image is set, and those templates leave it blank. Fine: they are page headers, not promotions.
 
 ## Verification run — 12 Oct (live store, Shopify admin, GA4, Tag Manager)
 
