@@ -6,6 +6,7 @@
  * 1. Tiles show the model name over the colourway, like Blenders.
  * 2. /search waits for Rebuy only if Rebuy search ran for this shopper lately,
  *    and gives the page back to the theme results if Rebuy does not show up.
+ * 3. More products load on scroll, in the box and on the results page (like Blenders).
  *
  * The /search decision itself is inline in sections/search-header.liquid, so it
  * lands before the first paint. It reads the same SEEN_KEY.
@@ -173,3 +174,111 @@ document.addEventListener('keydown', (event) => {
     .querySelector('.rebuy-smart-search-results-page__flyout.is-visible .rebuy-smart-search-results-page__flyout-close')
     ?.click();
 });
+
+/* ── 4. Infinite scroll ─────────────────────────────────────────────────── */
+
+/*
+ * Box: Rebuy's quick search returns 12 products (it refuses more than 20) and the
+ * box never asks again. So near the end we page through the full search, drop the
+ * products already shown and add the rest to Rebuy's own list.
+ */
+const MORE_PAGE_SIZE = 12;
+// Ask for the next page while the last tile is still this far below the fold
+const MORE_LEAD_PX = 300;
+
+const more = { term: '', page: 0, done: false, busy: false, seen: new Set() };
+const quickView = () => window.Rebuy?.SmartSearch?.quickView?.view;
+
+// A new search (Rebuy's own) starts the paging again
+document.addEventListener('rebuy:smartsearch.quickview.productsChange', (event) => {
+  more.term = (quickView()?.searchTerm || '').trim();
+  more.page = 0;
+  more.done = false;
+  more.seen = new Set((event.detail?.products || []).map((product) => String(product.id)));
+  requestAnimationFrame(checkBoxEnd); // a short list never scrolls, so check now
+});
+
+async function loadMore() {
+  const rebuy = window.Rebuy;
+  const view = quickView();
+  const init = rebuy?.util?.initializeSmartSearchProduct;
+  const term = (view?.searchTerm || '').trim();
+  if (!view || !init || more.busy || more.done || !term || term !== more.term || view.quickViewSearchLoading) return;
+
+  more.busy = true;
+  HTML.dataset.spySearchMore = 'loading';
+  try {
+    const query = { ...view.resultPageSearchQuery, searchTerm: term, pageSize: MORE_PAGE_SIZE, currentPage: more.page + 1, matchingCollectionsEnabled: false };
+    const response = await fetch(`https://rebuyengine.com/api/v1/smart-search/search?key=${encodeURIComponent(rebuy.shop.api_key)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(query),
+    });
+    const products = (await response.json())?.data?.products;
+    if (!Array.isArray(products)) throw new Error(`Rebuy search answered ${response.status}`);
+    // The shopper typed on while we waited: this page belongs to an old term
+    if (term !== more.term || term !== (view.searchTerm || '').trim()) return;
+
+    more.page += 1;
+    if (products.length < MORE_PAGE_SIZE) more.done = true;
+    const integrations = view.editorLayout?.integrations || {};
+    const fresh = products.filter((product) => !more.seen.has(String(product.id)));
+    for (const product of fresh) {
+      more.seen.add(String(product.id));
+      init(product, integrations, undefined, view.excludedProductOptionNames || []);
+    }
+    addModels(fresh);
+    view.products.push(...fresh);
+  } catch (error) {
+    more.done = true; // keep the products we have, stop asking
+    console.warn('[spy-rebuy-search] more results:', error);
+  } finally {
+    more.busy = false;
+    delete HTML.dataset.spySearchMore;
+  }
+  // A page of repeats can leave the end in view, so look again
+  requestAnimationFrame(checkBoxEnd);
+}
+
+function checkBoxEnd() {
+  const box = document.querySelector('#rebuy-quick-view-dropdown-search');
+  if (!box || more.done || !more.term) return;
+  const tiles = [...box.querySelectorAll('.rebuy-quick-view__product')].filter((tile) => tile.getBoundingClientRect().height > 0);
+  const last = tiles[tiles.length - 1];
+  if (!last) return;
+  const panel = document.querySelector('#rebuy-quick-view-overlay');
+  const visibleBottom = Math.min(innerHeight, panel ? panel.getBoundingClientRect().bottom : innerHeight);
+  if (last.getBoundingClientRect().bottom < visibleBottom + MORE_LEAD_PX) loadMore();
+}
+
+let boxCheck = 0;
+document.addEventListener(
+  'scroll',
+  () => {
+    if (boxCheck || !quickView()?.isQuickViewOpen) return;
+    boxCheck = requestAnimationFrame(() => {
+      boxCheck = 0;
+      checkBoxEnd();
+    });
+  },
+  { capture: true, passive: true }
+);
+
+/*
+ * Results page: Rebuy's continuous scroll listens to window only, but from 990px
+ * the theme scrolls .page-wrapper, so page 2 never came. Run Rebuy's own check
+ * when that wrapper scrolls; Rebuy still decides and fetches.
+ */
+let pageCheck = 0;
+document.querySelector('.page-wrapper')?.addEventListener(
+  'scroll',
+  () => {
+    if (pageCheck) return;
+    pageCheck = requestAnimationFrame(() => {
+      pageCheck = 0;
+      const smartSearch = window.Rebuy?.SmartSearch;
+      if (smartSearch?.resultsPage?.isVisible) smartSearch.handleContinuousScrollProductFetching?.();
+    });
+  },
+  { passive: true }
+);

@@ -4605,6 +4605,38 @@ html .blog-content a {
   box-shadow: none !important;
 }
 
+/* More results are loading (assets/spy-rebuy-search.js): a spinner under the tiles */
+html[data-spy-search-more='loading'] #rebuy-quick-view-dropdown-search .rebuy-quick-view__product-section::after {
+  content: '' !important;
+  display: block !important;
+  width: 28px !important;
+  height: 28px !important;
+  margin: 24px auto 8px !important;
+  border: 2px solid var(--color-spy-tile) !important;
+  border-top-color: var(--color-spy-ink) !important;
+  border-radius: 50% !important;
+  animation: spy-search-more 0.8s linear infinite !important;
+}
+
+@keyframes spy-search-more {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-spy-search-more='loading'] #rebuy-quick-view-dropdown-search .rebuy-quick-view__product-section::after {
+    animation: none !important;
+  }
+}
+
+/* Rebuy shows "Powered by Rebuy" only in its admin preview; shoppers never
+   see it, and Blenders' box has none, so the preview matches them too */
+#rebuy-quick-view-dropdown-search .powered-by-rebuy,
+#rebuy-search-result-container .powered-by-rebuy {
+  display: none !important;
+}
+
 #rebuy-quick-view-dropdown-search .rebuy-quick-view__overlay--wide .rebuy-quick-view__overlay-body {
   max-width: 1300px !important;
 }

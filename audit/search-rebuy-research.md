@@ -574,3 +574,40 @@ with the old 15 s-from-start timer fell back to the theme results correctly.
 - Rebuy's selected-filter remove buttons have an empty `aria-label`.
 - Go-live (Quick View + Results Page switches), the Pandectes rule and the theme cookie clean-up, and
   the commit are all still to do.
+
+## Infinite scroll and "Powered by Rebuy" — 16 Oct, evening
+
+Asked by Goran: product lists in the search box and on the results page should load more on scroll, as on
+Blenders, and the box should not show "Powered by Rebuy". Blenders itself could not be watched this time
+(Cloudflare puts a "verify you are human" check in front of a headless browser; not worked around), so
+this reads Rebuy's own code (`SmartSearch.*.js` on cdn.rebuyengine.com) and tests SPY live.
+
+**Results page.** Continuous scroll was already set, the same as Blenders (`pagination.type:
+"continuous-scroll"`, 15 per page), but page 2 never came on desktop. Rebuy's check
+(`handleContinuousScrollProductFetching`) measures with `getBoundingClientRect`, but Rebuy only runs it on
+`window` scroll, and from 990px the theme scrolls `.page-wrapper`. `assets/spy-rebuy-search.js` now runs
+Rebuy's own check when `.page-wrapper` scrolls. Phones scroll the window, so they always worked.
+
+**Search box.** Rebuy's box has no paging at all, in either mode: it asks `/smart-search/search/quick-view`
+for 12 (the endpoint refuses more than 20, HTTP 400) and never asks again; Blenders' box settings have no
+paging either. The module now pages through the full search (`/smart-search/search`, 12 a page, the
+endpoint the results page uses) when the last tile nears the bottom of the panel, drops products already
+shown, prepares them with Rebuy's own `Rebuy.util.initializeSmartSearchProduct`, adds the model line and
+pushes them into the box's list (`Rebuy.SmartSearch.quickView.view.products`, unkeyed, so the scroll stays
+put). A new term starts again from Rebuy's 12. A spinner shows under the tiles while a page loads.
+
+**"Powered by Rebuy"** is drawn only in Rebuy's admin preview: `shouldShowPoweredByRebuy()` returns
+`AdminBar.smartSearchPreview`, which the `preview_smart_search` parameter or the `_rpreview_smart_search`
+cookie turns on. Shoppers never see it. It is hidden in the box and on the results page anyway, so a
+preview looks like the live store (and like Blenders).
+
+| Live store, working-tree code served in place of the theme's | 1440 | 390 (iPhone, touch) |
+|---|---|---|
+| Box, "black": tiles while scrolling | 12 → 48 → 108 | 12 → 36 → 84 |
+| Box: repeats / model line on added tiles | none / all but one (no model match) | none / all but one |
+| Box: new term "cyrus" | starts again at 12, pages to 36 | same |
+| Results page, "black" | 15 → 120 (Rebuy fetched pages 2–8) | 16 → 48 |
+| Preview mode: "Powered by Rebuy" | rendered by Rebuy, hidden | same |
+
+Console noise seen, not ours: accessiBe asks for `cdn.acsbapp.com/config/spyoptic-com.myshopify.com/config.json`
+(404, the app has no config for this store) and Shopify's `shop.app` frame breaks a frame-ancestors rule.
