@@ -1,0 +1,482 @@
+{
+  "steps": [
+    {
+      "name": "A banner",
+      "answered": "Decline"
+    },
+    {
+      "name": "A after decline",
+      "rebuy": "object",
+      "rebuyRequests": 0,
+      "flag": null
+    },
+    {
+      "name": "A theme bar",
+      "themeModalOpen": false,
+      "rebuyBox": false,
+      "predictive": 0
+    },
+    {
+      "name": "A theme results",
+      "url": "/search?q=cyrus&options%5Bprefix%5D=last&type=product",
+      "engine": "(none)",
+      "nav": {
+        "dcl": 10364,
+        "load": 10923
+      },
+      "events": [],
+      "themeHeader": "shown",
+      "themeResults": "shown",
+      "container": "hidden",
+      "cards": 0,
+      "names": [],
+      "filters": [],
+      "grid": null,
+      "firstCard": null,
+      "docW": 1440,
+      "vw": 1440,
+      "themeCards": 10
+    },
+    {
+      "name": "B banner",
+      "answered": "Accept"
+    },
+    {
+      "name": "B home boot",
+      "ready": true,
+      "load": 7873,
+      "events": [
+        [
+          "smartcart.ready",
+          13180
+        ],
+        [
+          "rebuy.ready",
+          15972
+        ],
+        [
+          "quickview.ready",
+          20531
+        ]
+      ],
+      "searchOn": true,
+      "preview": false,
+      "cartId": 37798,
+      "cartEngine": "rebuy",
+      "flag": "1792163245069"
+    },
+    {
+      "name": "B box empty 1440",
+      "mounted": true,
+      "panel": [
+        0,
+        0,
+        1440,
+        0
+      ],
+      "themeModalOpen": false,
+      "titles": [
+        "Most Searched",
+        "Popular Products"
+      ],
+      "chips": [
+        "Sunglasses",
+        "Snow Goggles",
+        "Moto Goggles",
+        "Eyeglasses",
+        "New Arrivals"
+      ],
+      "cards": 4,
+      "names": [
+        "CYRUS\nSoft Matte Olive Fade",
+        "DISCORD\nGloss Black",
+        "BOWERY\nGloss Black",
+        "REGION\nANSI Matte Black"
+      ],
+      "nameLines": [
+        17,
+        14
+      ],
+      "prices": [
+        "Price $150.00",
+        "Price $220.00",
+        "Price $180.00",
+        "Price $220.00"
+      ],
+      "focus": "searchInput",
+      "docW": 1440,
+      "vw": 1440
+    },
+    {
+      "name": "B box results 1440",
+      "mounted": true,
+      "panel": [
+        0,
+        0,
+        1440,
+        0
+      ],
+      "themeModalOpen": false,
+      "titles": [
+        "Matching Collections",
+        "Matching Products"
+      ],
+      "chips": [
+        "Murdered out collection",
+        "Cyrus",
+        "Watermen — Happy Boost Black Mirror",
+        "Watermen — Happy Boost Ice Blue Mirror"
+      ],
+      "cards": 12,
+      "names": [
+        "CYRUS\nWhitewall",
+        "CYRUS\nBlack",
+        "CYRUS\nHoney Tort",
+        "CYRUS\nTranslucent Gunmetal"
+      ],
+      "nameLines": [
+        17,
+        14
+      ],
+      "prices": [
+        "Price $150.00",
+        "Price $150.00",
+        "Price $150.00",
+        "Price $150.00"
+      ],
+      "focus": "searchInput",
+      "docW": 1440,
+      "vw": 1440
+    },
+    {
+      "name": "B results 1440",
+      "url": "/search?q=cyrus",
+      "engine": "rebuy",
+      "nav": {
+        "dcl": 7416,
+        "load": 10592
+      },
+      "events": [
+        [
+          "quickview.ready",
+          11534
+        ],
+        [
+          "smartcart.ready",
+          11593
+        ],
+        [
+          "rebuy.ready",
+          12456
+        ],
+        [
+          "resultsPage.ready",
+          12729
+        ],
+        [
+          "resultsPage.productsChange",
+          14331
+        ],
+        [
+          "rebuy.ready",
+          15285
+        ]
+      ],
+      "themeHeader": "hidden",
+      "themeResults": "hidden",
+      "container": "shown",
+      "cards": 15,
+      "names": [
+        "CYRUS\nBlack",
+        "CYRUS\nWhitewall",
+        "CYRUS\nGloss Black"
+      ],
+      "resultTitle": "You searched for: \"cyrus\"",
+      "filters": [
+        "Price",
+        "Category",
+        "Collection",
+        "Color",
+        "Size"
+      ],
+      "sort": "Sort By: Relevance",
+      "grid": "372px 372px 372px",
+      "firstCard": [
+        280,
+        326,
+        372,
+        372
+      ],
+      "docW": 1440,
+      "vw": 1440,
+      "drawn": true,
+      "secsFromEnter": 14.5,
+      "rebuyRequests": 70
+    },
+    {
+      "name": "B results 768",
+      "url": "/search?q=cyrus",
+      "engine": "rebuy",
+      "nav": {
+        "dcl": 7416,
+        "load": 10592
+      },
+      "events": [
+        [
+          "quickview.ready",
+          11534
+        ],
+        [
+          "smartcart.ready",
+          11593
+        ],
+        [
+          "rebuy.ready",
+          12456
+        ],
+        [
+          "resultsPage.ready",
+          12729
+        ],
+        [
+          "resultsPage.productsChange",
+          14331
+        ],
+        [
+          "rebuy.ready",
+          15285
+        ]
+      ],
+      "themeHeader": "hidden",
+      "themeResults": "hidden",
+      "container": "shown",
+      "cards": 15,
+      "names": [
+        "CYRUS\nBlack",
+        "CYRUS\nWhitewall",
+        "CYRUS\nGloss Black"
+      ],
+      "resultTitle": "You searched for: \"cyrus\"",
+      "filters": [
+        "Price",
+        "Category",
+        "Collection",
+        "Color",
+        "Size"
+      ],
+      "sort": "Sort By: Relevance",
+      "grid": "362px 362px",
+      "firstCard": [
+        16,
+        323,
+        362,
+        362
+      ],
+      "docW": 768,
+      "vw": 768
+    },
+    {
+      "name": "B results 390",
+      "url": "/search?q=cyrus",
+      "engine": "rebuy",
+      "nav": {
+        "dcl": 7416,
+        "load": 10592
+      },
+      "events": [
+        [
+          "quickview.ready",
+          11534
+        ],
+        [
+          "smartcart.ready",
+          11593
+        ],
+        [
+          "rebuy.ready",
+          12456
+        ],
+        [
+          "resultsPage.ready",
+          12729
+        ],
+        [
+          "resultsPage.productsChange",
+          14331
+        ],
+        [
+          "rebuy.ready",
+          15285
+        ]
+      ],
+      "themeHeader": "hidden",
+      "themeResults": "hidden",
+      "container": "shown",
+      "cards": 15,
+      "names": [
+        "CYRUS\nBlack",
+        "CYRUS\nWhitewall",
+        "CYRUS\nGloss Black"
+      ],
+      "resultTitle": "You searched for: \"cyrus\"",
+      "filters": [
+        "Price",
+        "Category",
+        "Collection",
+        "Color",
+        "Size"
+      ],
+      "sort": "Sort By: Relevance",
+      "grid": "173px 173px",
+      "firstCard": [
+        16,
+        350,
+        173,
+        173
+      ],
+      "docW": 390,
+      "vw": 390
+    },
+    {
+      "name": "B flyout 390",
+      "opened": true,
+      "closedByEscape": true
+    },
+    {
+      "name": "B box empty 390",
+      "mounted": true,
+      "panel": [
+        0,
+        0,
+        390,
+        0
+      ],
+      "themeModalOpen": false,
+      "titles": [
+        "Most Searched",
+        "Popular Products"
+      ],
+      "chips": [
+        "Sunglasses",
+        "Snow Goggles",
+        "Moto Goggles",
+        "Eyeglasses",
+        "New Arrivals"
+      ],
+      "cards": 4,
+      "names": [
+        "CYRUS\nSoft Matte Olive Fade",
+        "DISCORD\nGloss Black",
+        "BOWERY\nGloss Black",
+        "REGION\nANSI Matte Black"
+      ],
+      "nameLines": [
+        17,
+        14
+      ],
+      "prices": [
+        "Price $150.00",
+        "Price $220.00",
+        "Price $180.00",
+        "Price $220.00"
+      ],
+      "focus": "searchInput",
+      "docW": 390,
+      "vw": 390
+    },
+    {
+      "name": "B box results 390",
+      "mounted": true,
+      "panel": [
+        0,
+        0,
+        390,
+        0
+      ],
+      "themeModalOpen": false,
+      "titles": [
+        "Matching Collections",
+        "Matching Products"
+      ],
+      "chips": [
+        "Murdered out collection",
+        "Cyrus",
+        "Watermen — Happy Boost Black Mirror",
+        "Watermen — Happy Boost Ice Blue Mirror"
+      ],
+      "cards": 12,
+      "names": [
+        "CYRUS\nBlack",
+        "CYRUS\nWhitewall",
+        "CYRUS\nHoney Tort",
+        "CYRUS\nTranslucent Gunmetal"
+      ],
+      "nameLines": [
+        17,
+        14
+      ],
+      "prices": [
+        "Price $150.00",
+        "Price $150.00",
+        "Price $150.00",
+        "Price $150.00"
+      ],
+      "focus": "searchInput",
+      "docW": 390,
+      "vw": 390
+    },
+    {
+      "name": "B box results 768",
+      "mounted": true,
+      "panel": [
+        0,
+        0,
+        768,
+        0
+      ],
+      "themeModalOpen": false,
+      "titles": [
+        "Matching Collections",
+        "Matching Products"
+      ],
+      "chips": [
+        "Murdered out collection",
+        "Cyrus",
+        "Watermen — Happy Boost Black Mirror",
+        "Watermen — Happy Boost Ice Blue Mirror"
+      ],
+      "cards": 12,
+      "names": [
+        "CYRUS\nBlack",
+        "CYRUS\nWhitewall",
+        "CYRUS\nHoney Tort",
+        "CYRUS\nTranslucent Gunmetal"
+      ],
+      "nameLines": [
+        17,
+        14
+      ],
+      "prices": [
+        "Price $150.00",
+        "Price $150.00",
+        "Price $150.00",
+        "Price $150.00"
+      ],
+      "focus": "searchInput",
+      "docW": 768,
+      "vw": 768
+    }
+  ],
+  "errors": [
+    "A console Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
+    "A console Failed to load resource: the server responded with a status of 403 ()",
+    "A console Failed to load resource: the server responded with a status of 404 ()",
+    "A console Failed to load resource: the server responded with a status of 404 ()",
+    "B console Framing 'https://shop.app/' violates the following Content Security Policy directive: \"frame-ancestors 'self' https://shop.app https://admin.shopify.com\". The request has been blocked.\n",
+    "B console Failed to load resource: the server responded with a status of 403 ()",
+    "B console Failed to load resource: the server responded with a status of 404 ()",
+    "B console Failed to load resource: the server responded with a status of 404 ()",
+    "B console Failed to load resource: the server responded with a status of 404 ()",
+    "B console Failed to load resource: the server responded with a status of 404 ()"
+  ]
+}

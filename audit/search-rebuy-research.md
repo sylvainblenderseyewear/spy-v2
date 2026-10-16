@@ -57,6 +57,11 @@ Admin custom CSS (16,373 characters): `audit/search-rebuy/blenders-rebuy-admin-c
 **Quick View (search box)**
 - Layout `dropdown`. Columns 4 / 3 / 2 (desktop / tablet / mobile). 12 results. Image ratio 1:1.
 - Before typing: "Most Searched" (suggested collections) and "Popular Shades" (4 suggested products).
+  **[16 Oct] Popular Shades are not hand-picked.** Every item is `type: "trending-products"` from one
+  source, so Rebuy's automatic Trending Products fills the row. It changes by itself: on 13 Oct Dapper
+  Sleeve, Legend Forever, Keep A Breast, Carrots; on 16 Oct Lavender Drift, Dapper Sleeve, Legend Forever,
+  Keep A Breast. The $5 sleeve shows because Rebuy can't drop one product from Trending, only exclude it
+  from all search (Rebuy FAQ). The no-results "Recommended Products" row is off.
 - While typing: "Matching Products", "Matching Collections" (max 4), autocomplete terms (max 4). Matching
   content is off.
 - Add to cart off, ratings off.
@@ -574,6 +579,50 @@ with the old 15 s-from-start timer fell back to the theme results correctly.
 - Rebuy's selected-filter remove buttons have an empty `aria-label`.
 - Go-live (Quick View + Results Page switches), the Pandectes rule and the theme cookie clean-up, and
   the commit are all still to do.
+
+### 10.7 Live, 16 Oct
+
+Goran switched Quick View and Results Page on. Rebuy's public settings call now answers global, Quick View
+and Results Page all `enabled: true` (mode still "lexical").
+
+**Checked on production as real shoppers** (no preview flag, no routes, no patches; script
+`spy-rebuy-golive.mjs` in the session scratchpad; pictures in `audit/search-rebuy/golive/`):
+- **Decline:** 0 requests to rebuyengine.com (Pandectes still blocks Rebuy). The search icon opens the
+  theme bar with its own suggestions, and Enter lands on `/search?q=cyrus&options[prefix]=last&type=product`
+  with the theme results (10 cards). No Rebuy flag is stored.
+- **Accept:** the icon opens Rebuy's box at 1440 / 768 / 390. Empty state shows "Most Searched" (5
+  collections) and "Popular Products" (4 tiles), all as MODEL / Colourway. Typing "cyrus" shows Matching
+  Collections and 12 products. Enter goes to `/search?q=cyrus`, where Rebuy draws 15 cards, 5 filters and
+  "Sort by: Relevance". The grid is 3 / 2 / 2 columns. The mobile filter panel opens and Escape closes it.
+  No horizontal scroll at any width.
+- The live cart is still 37798 (`Rebuy.SmartCart.settings.id`).
+- **Console:** nothing from the theme or Rebuy. The noise is Shopify's own: the Shop Pay `shop.app/pay/hop`
+  frame (403, CSP), aborted monorail beacons, and the Vimeo player, which this line's DNS blocks. Also
+  `cdn.acsbapp.com/config/…/config.json` 404s, because the accessiBe licence is still not active (see the ADA
+  report).
+- **Timing on this line (headless, cold profile):** home load 8–26 s, and Rebuy's box ready 12.6 s after
+  load. `/search` load 6–11 s, and Rebuy's cards came 3.2–3.7 s after load. Before Rebuy is ready, the
+  search icon opens the theme bar. That is the planned hand-over, not a bug.
+
+**Popular Products now Trending, as on Blenders (16 Oct).** Goran switched it in the Quick View editor:
+User History off, Trending Products on with 4, the four hand-picked stand-ins removed, title still
+"Popular Products". Rebuy's public settings now list 4 `trending-products` items. On the live box with no
+preview, at 1440 and 390, they are CYRUS / Black, CYRUS REPLACEMENT LENS ($30), CYRUS / Soft Matte Black
+and DISCORD / Matte Black Leopard (`golive-*-box-empty-trending.png`). At 390 the long lens name is cut to
+"CYRUS REPLACEMEN…" by the same one-line rule as the product cards.
+
+**Next (agreed 14 Oct: "at search launch"):** remove the Pandectes "Rebuy" rule, so shoppers who decline
+also get Rebuy search and Smart Cart. The theme part went live on 17 Oct, ahead of the rule (safe: while
+the rule stays, Rebuy never runs for those shoppers):
+- `layout/theme.liquid`: Rebuy is out of the Reject-all clean-up (cookies `_ruid`/`_rsession`, storage
+  `_renriched`/`_ruid`/`_rsession`).
+- Comments in `assets/spy-cart-handoff.js` and `assets/spy-rebuy-search.js` no longer say that Pandectes
+  blocks Rebuy.
+
+Still to do: delete the rule in Pandectes (All settings → Auto blocker → Custom rules →
+"Rebuy"). After that, run a Decline check on production: Rebuy should load, search and the cart should
+work, and we see which Rebuy cookies are set without consent. If Rebuy sets `_ruid`/`_rsession` for
+shoppers who declined, move them in the Pandectes cookie list from Functionality to Strictly necessary.
 
 ## Infinite scroll and "Powered by Rebuy" — 16 Oct, evening
 
