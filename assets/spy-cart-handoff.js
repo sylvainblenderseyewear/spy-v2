@@ -157,3 +157,53 @@ window.addEventListener(
   },
   { passive: true }
 );
+
+/**
+ * The new cart (`.spy-mc`) prints prices like the rest of the site: $170, not
+ * $170.00, but real cents stay ($32.50). Rebuy formats money once in the cart
+ * and once in each widget inside it, so wrap all of them. The old cart keeps
+ * Rebuy's cents; the search box is outside the cart and keeps them too.
+ */
+const noCents = (html) => String(html).replace(/(\d)[.,]00(?!\d)/g, '$1');
+
+function dropCents(vm) {
+  const format = vm?.formatMoney;
+  if (typeof format !== 'function' || format.spyNoCents) return;
+
+  const wrapped = (...args) => noCents(format.apply(vm, args));
+  wrapped.spyNoCents = true;
+  vm.formatMoney = wrapped;
+  vm.$forceUpdate();
+}
+
+function dropCartCents() {
+  const cart = document.querySelector('#rebuy-cart');
+  if (!cart?.querySelector('.spy-mc')) return;
+
+  dropCents(cart.__vue__);
+  for (const widget of window.Rebuy?.widgets || []) {
+    if (document.getElementById(`rebuy-widget-${widget.id}`)?.closest('#rebuy-cart')) dropCents(widget.View?.vue);
+  }
+}
+
+function watchCartCents() {
+  const cart = document.querySelector('#rebuy-cart');
+  if (!cart || cart.spyCentsWatch) return;
+  cart.spyCentsWatch = true;
+  dropCartCents();
+
+  // Widgets mount later (cart fills, empties), so check again after each render
+  let queued = false;
+  new MutationObserver(() => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      dropCartCents();
+    });
+  }).observe(cart, { childList: true, subtree: true });
+}
+
+if (document.querySelector('#rebuy-cart')?.__vue__) watchCartCents();
+document.addEventListener('rebuy:smartcart.ready', watchCartCents);
+document.addEventListener('rebuy:smartcart.show', watchCartCents);

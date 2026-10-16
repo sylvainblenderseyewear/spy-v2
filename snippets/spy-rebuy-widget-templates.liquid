@@ -6,6 +6,9 @@
   Rebuy reads a widget's template from script#rebuy-widget-<id>. These are
   Rebuy's own default templates (cart widget, tabbed widget) with one change:
   the title link. Everything else is styled in src/tailwind.css (#rebuy-cart).
+  "You Might Also Like" also shows one card per model, like the Figma: the
+  widget asks Rebuy for 8 and the loop keeps the first 4 different models,
+  topping up with other colourways only when there are fewer.
   An empty widget ID in the theme settings = Rebuy's own template.
 {%- enddoc -%}
 
@@ -47,7 +50,11 @@ v-bind:class="['widget-type-' + config.type.replace('_','-'), 'widget-display-' 
             <div class="rebuy-product-grid" v-bind:class="layoutClasses" role="list">
 
                 <div
-                    v-for="(product, product_index) in products"
+                    v-for="(product, product_index) in ((list) => {
+                        const model = (p) => (String(p.tags || '').split(',').map((t) => t.trim()).find((t) => t.toLowerCase().indexOf('collection::') === 0) || 'id:' + p.id).toLowerCase();
+                        const firsts = list.filter((p, i) => list.findIndex((q) => model(q) === model(p)) === i);
+                        return firsts.concat(list.filter((p) => firsts.indexOf(p) === -1)).slice(0, 4);
+                    })(products)"
                     v-bind:class="[
                         product.handle,
                         'product-id-' + product.id,
