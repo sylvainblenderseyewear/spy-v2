@@ -17,6 +17,7 @@
                               theme's, so CSS can be checked without a dev server
         EVAL=path/to/file.js  a function body run in the page before the captures; result is printed
         OUT=dir               where the screenshots go
+        SCROLLBARS=1          real scrollbars, like Chrome on Windows (Playwright hides them)
         HEADED=1 to watch
 */
 import { chromium } from 'playwright-core';
@@ -64,6 +65,7 @@ const context = await chromium.launchPersistentContext(PROFILE, {
   channel: 'chrome',
   headless: process.env.HEADED !== '1',
   viewport: { width: WIDTHS[0], height: HEIGHT },
+  ...(process.env.SCROLLBARS === '1' ? { ignoreDefaultArgs: ['--hide-scrollbars'] } : {}),
 });
 if (CART_ID === 'live') await context.clearCookies({ name: /^_rpreview_smart_cart/ });
 const page = context.pages()[0] || (await context.newPage());

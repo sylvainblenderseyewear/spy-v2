@@ -3540,6 +3540,26 @@ html .blog-content a {
   backdrop-filter: blur(22px);
 }
 
+/* Body: no scrollbar, as drawn. A Windows scrollbar took 15px off every row
+   and wrapped the trust row. Wheel, touch and keys still scroll it, and the
+   scroll stops here instead of moving the page behind. */
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-scroll-area] {
+  scrollbar-width: none !important;
+  overscroll-behavior: contain !important;
+}
+
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-scroll-area]::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* A swipe on the fixed parts scrolled the page behind the cart, out of sight
+   on a phone. Taps and pinch zoom still work there. */
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-anchor='header'],
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-anchor='goalBox'],
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-anchor='footer'] {
+  touch-action: pinch-zoom !important;
+}
+
 /* Header: 48px bar with a soft shadow over the scrolling body */
 #rebuy-cart:has(.spy-mc) [data-rebuy-cart-anchor='header'] {
   position: relative !important;
@@ -4287,12 +4307,15 @@ html .blog-content a {
 }
 
 /* Trust row: in the footer, and again under the empty-cart message */
+/* The three items measure 314px. The gaps give way (12 down to 4) before the
+   row wraps, so it stays on one line down to 322px, a 360px phone included. */
 #rebuy-cart:has(.spy-mc) .spy-mc-trust {
   display: flex !important;
   flex-wrap: wrap !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 4px 12px !important;
+  row-gap: 4px !important;
+  column-gap: clamp(4px, calc((100% - 314px) / 2), 12px) !important;
   min-height: 20px !important;
   margin: 0 !important;
   padding: 0 !important;

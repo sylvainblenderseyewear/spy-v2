@@ -718,10 +718,11 @@ live cart. The live cart **37798 was not touched** (last edit still 12 Oct, widg
 | | Live today | New, not published |
 |---|---|---|
 | Cart | `SPY mini-cart (1:1 source)` **37798** | `SPY mini-cart (Figma redesign)` **38089** |
-| Theme CSS | on `main` | in the working tree; each cart's rules apply only to that cart (see "Two carts, one stylesheet") |
+| Theme CSS | on `main` | on `main` too, live since 15 Oct (`102e46b`); each cart's rules apply only to that cart (see "Two carts, one stylesheet") |
 
 Preview: `https://spyoptic-com.myshopify.com/?preview_theme_id=189382623539&preview_smart_cart=38089&viewcart=true&cart_version=2`
-(accept the cookie banner first, Rebuy does not load without it).
+(accept the cookie banner first, Rebuy does not load without it). Since the push, the live theme
+previews it too: `https://spyoptic-com.myshopify.com/?preview_smart_cart=38089&viewcart=true&cart_version=2`.
 
 ### What cart 38089 holds
 
@@ -864,10 +865,11 @@ comes from Shopify's Web Pixels sandbox (`/cdn/wpm/…`), not from the theme or 
 | No picker on `+ ADD` | picker shown when the product has a choice | adding a size or lens silently is a wrong order waiting to happen |
 | Free shipping scrolls with the items | fixed under the header | Rebuy pins Cart Items first in the body, so the line sits in the goal box |
 
-### To publish (not done)
+### To publish (step 1 done)
 
 1. Push the theme changes to `main` (any time; the live cart keeps its look). **Push first** — see
-   "Order matters one way".
+   "Order matters one way". **Done 15 Oct:** `102e46b` went out with the search push
+   (`75e1471..1a579fb`); checked on 16 Oct, see "Live theme checked against the Figma".
 2. Rebuy → Smart Cart → `SPY mini-cart (Figma redesign)` → Live. Rebuy turns 37798 off by itself.
 3. Roll back = the same switch on 37798. No revert needed.
 4. Check: `node scripts/production-cart-check.mjs` at `WIDTH=1440`, `768`, `390`, and
@@ -913,3 +915,127 @@ While replacing the cart block in `src/tailwind.css` I cut the file at the old b
 one. The other session had appended its Smart Search styles after that block an hour earlier, so they
 went with it. Restored byte for byte from that session's own command (they sit at the end of the file
 again) and checked against its built CSS: all 29 rules are back.
+
+## Live theme checked against the Figma — 16 Oct
+
+**State.** The theme side is live since 15 Oct (`102e46b`). The Rebuy switch is not done: cart
+**37798 is still the live cart**, and 38089 is only seen in preview.
+
+**The push changed nothing for shoppers.** The live theme serves the same `tailwind.css` as git HEAD,
+byte for byte (231 new-cart rules). Live cart 37798 against the snapshot taken before the push, every
+element's box and computed style: 131 elements with items, 91 empty, **0 differences** at 1440 and 390.
+
+| Run, 16 Oct, live theme | 1440 | 768 | 390 |
+|---|---|---|---|
+| `production-cart-check.mjs`, live cart 37798 | 34/34 | 34/34 | 34/34 |
+| `rebuy-cart-responsive.mjs`, 37798 | 320 ok | 320 ok | 320 ok |
+| `production-cart-check.mjs`, `PREVIEW_CART=38089` | 34/34 | 34/34 | 32 + 2 n/a |
+| `rebuy-figma-behaviour.mjs`, 38089 | 23/23 | 23/23 | 23/23 |
+| `rebuy-cart-responsive.mjs`, `PREVIEW_CART=38089` | 375 ok | 375 ok | 390 full width ok |
+
+The first 390 production run died before the page loaded (`ERR_SOCKET_NOT_CONNECTED`); the rerun passed.
+
+### Cart 38089 on the live theme, value by value
+
+`scripts/rebuy-figma-spec.js` checks every value in `audit/page-spec-mini-cart-figma.md`. It runs as the
+`EVAL` of `rebuy-figma-preview.mjs` (how: its header). Every drawn state at 375 (the frame width), 390,
+768 and 1440, plus the two 1904 × 913 desktop frames. Side by side with the Figma:
+`audit/mini-cart-figma/live-check/`.
+
+| State (Figma frame) | Values | Exact | Look identical | On the 14 Oct list | Not drawn, built so | Wrong |
+|---|---|---|---|---|---|---|
+| Two items `8:388` | 210 | 189 | 3 | 10 | 8 | 0 |
+| One item, under $50 `8:958` | 143 | 131 | 2 | 8 | 2 | 0 |
+| Goggle `8:805` | 172 | 156 | 2 | 9 | 5 | 0 |
+| Empty `8:399` | 64 | 57 | 1 | 5 | 1 | 0 |
+| Desktop, 2 items `8:1290` | 210 | 189 | 3 | 10 | 8 | 0 |
+| Desktop, 1 item `6:366` | 174 | 157 | 2 | 9 | 6 | 0 |
+
+The same at 375, 390, 768 and 1440; at 390 the panel fills the screen and the checks follow its 358px
+content. The panel docks at x1529 on the desktop frame, as drawn; dim 20% + blur 22px everywhere.
+
+**Not drawn, and not on the 14 Oct list — needs a decision:**
+
+- **Fit/lens line on each line item** (`Medium Large / Happy Grey Green`). Printed when the product has
+  options, so the shopper sees which lens is in the bag. Long lens names wrap: the item grows 97 → 100px.
+- **Cents, in the cart only.** Rebuy prints `$150.00`; the theme prints `$150` on PDP and PLP and keeps
+  real cents (`$57.50`), and the Figma draws `$200`. Same in bundle rows, cards, total and the
+  `$46.00 away` line.
+
+**On the 14 Oct list, still unanswered — what each one costs on screen:**
+
+- Size/lens picker kept: recommendation cards 243px instead of 208–218 (a picker in one card stretches
+  its neighbour); best-seller rows 127px instead of 88, so the empty-cart list is about 40% longer.
+- No `GET 20% OFF`, so no struck prices in the bundle box.
+- Grey `#767676` (AA) instead of `#A2A2A2`; orange = palette color3 (`#f27e37`) instead of `#ED773B`.
+- Copy fixes: `from Free Shipping`, `Shop our best sellers`, `Pay in installments`, `Easy returns`, `GOGGLES`.
+
+**Content, not styling:**
+
+- Best sellers: the MEN tab lists `mens-sunglasses` in collection order, colourways included (Cyrus ×3,
+  Discord ×3 in 11 rows). The Figma has 11 different models.
+- Savings badge hidden: no product has a compare-at price.
+- Bundle box only where a rule matches; an accessory-only cart has none.
+- On a cold first load the bundle box and recommendations can land a few seconds after the cart opens
+  (Rebuy loads them separately). One capture caught it; the rerun was complete.
+- The consent button (bottom left) stays above the dimmed page.
+
+**Look identical:** stepper border 1.2px (Chrome paints 1px); the card button is filled white on a white
+card; idle tab line-height 14 against 12 (one centred line in a 32px tab).
+
+**Tiny:** bundle box 244px against 247 (Figma's title box is 17px for 14px type); bundle names always
+use line-height 16 (Figma: 16 only when the name wraps).
+
+### Production store again — 16 Oct, evening
+
+Cart 37798 is still the live cart; git and the theme have not changed since the push.
+
+| Run, 16 Oct, 17:00–17:45 | Result |
+|---|---|
+| `production-cart-check.mjs`, live cart 37798, 1440 / 768 / 390 | 34/34 each |
+| `rebuy-figma-behaviour.mjs`, 38089, 390 | 23/23 |
+| `rebuy-figma-spec.js`, 38089, two items at 375 | 0 wrong (same counts as the morning) |
+| Phone (iPhone 13 emulation: touch, 3x) and desktop, 38089 | full screen / 375 docked right; header and footer stay put; no sideways overflow; no page errors |
+| `Checkout Securely`, phone and desktop | lands on Shopify checkout with the item, $150.00 (the phone folds the order summary) |
+| Touch scroll inside the cart (raw touch events; a page swipe as the control) | scrolls; nothing cancels `touchmove` |
+
+**Found: a swipe that starts on the footer scrolls the page behind the cart.** On a phone the cart covers
+the screen, so the shopper does not see it, but the page has moved when they close the cart. Cause: the
+shared "body scroll unlock", kept so the page scrolls beside the old 320px cart. A fix would lock the page
+only while 38089 is open at 480px and below. Not changed yet.
+
+At about 17:15 the store started to answer 429 and "Verifying your connection…" after a day of test
+runs. Everything was stopped, and only the missing runs were repeated once it cleared (about 17:30).
+
+### Fixed in the theme, pushed 16 Oct, evening
+
+Three faults on the production store, all CSS, all scoped to the new cart (`:has(.spy-mc)`):
+
+1. **A real scrollbar squeezed the cart.** Chrome on Windows draws a 15px scrollbar inside the cart body,
+   so every row was 328px instead of 343, and the empty-cart trust row wrapped (Goran's screenshot).
+   Playwright hides scrollbars, so no check saw it. The body now has no scrollbar, as drawn
+   (`scrollbar-width: none`); wheel, touch and keys still scroll it.
+2. **The trust row needs 338px** (three items of 314px and two 12px gaps). A 360px phone gives it 328, so
+   it wrapped there too. The gaps now shrink from 12 to 4 before the row wraps:
+   `column-gap: clamp(4px, calc((100% - 314px) / 2), 12px)`.
+3. **A swipe on the header, the free-shipping line or the footer scrolled the page behind the cart.**
+   Those parts are `touch-action: pinch-zoom` now, and the body has `overscroll-behavior: contain`.
+
+| Check, with the working tree's CSS served in place of the live one | Before | After |
+|---|---|---|
+| Desktop 1440 with a real scrollbar: line item / recommendation card | 328 / not measured | 343 / 164 |
+| Trust rows, desktop with a scrollbar | empty-cart row wraps | one line, 12px gaps |
+| Trust rows at 360px (Galaxy S8) | 2 lines | one line, 7px gaps |
+| iPhone 13: swipe on header, free-shipping line, body, footer, and past the end | footer swipe moved the page 385px | page stays at 0; the body still scrolls; the checkout button still takes the tap |
+| `rebuy-figma-spec.js`, two items, 1440 with a real scrollbar | — | 0 wrong, with two new checks (scrollbar takes no room, trust rows on one line) |
+| `rebuy-figma-behaviour.mjs`, 390 | — | 23/23 |
+| Live cart 37798 under the new CSS, element by element | — | 0 differences (131 elements, 1440 and 390) |
+
+`SCROLLBARS=1` in `rebuy-figma-preview.mjs` now shows real scrollbars.
+
+**Not the theme: empty tabs.** For about an hour Rebuy returned 0 products for the Men, Women and Goggles
+lists (data sources 325527–325529) while the storefront showed 61, 7 and 24 products in those
+collections. Rebuy hides an empty tab, so the empty cart showed one, then three tabs. A fresh cache key
+changed nothing, and the lists came back by themselves (Women first, then Men, then Goggles), most
+likely Rebuy re-reading the catalog. If it happens again: Clear Cache on those data sources, then check
+Rebuy's product sync.
