@@ -1,9 +1,9 @@
 /**
  * Picks which cart answers the bag: Rebuy Smart Cart or the theme drawer.
  *
- * Rebuy is consent-gated — Pandectes blocks rebuyengine.com until the shopper
- * accepts, and plenty of them never will. So the theme drawer is the default and
- * Rebuy only takes over once Smart Cart is genuinely callable. Nobody loses a cart.
+ * Rebuy boots 6-15s after load, and some shoppers never get it (blockers, an
+ * outage). So the theme drawer is the default and Rebuy only takes over once
+ * Smart Cart is genuinely callable. Nobody loses a cart.
  *
  * Rebuy's own docs: Smart Cart "cannot automatically remove, hide or otherwise
  * override your theme's native cart drawer. Both can and will exist until you take
@@ -69,7 +69,7 @@ document.addEventListener('rebuy:smartcart.show', () => {
 });
 
 if (!claim()) {
-  // Rebuy loads late, and only after consent. Watch instead of checking once.
+  // Rebuy loads late. Watch instead of checking once.
   for (const name of READY_EVENTS) {
     document.addEventListener(name, claim);
   }
@@ -78,7 +78,7 @@ if (!claim()) {
     if (claim()) clearInterval(poll);
   }, POLL_MS);
 
-  // Consent may never come. Stop looking and stay on the theme drawer.
+  // Rebuy may never come. Stop looking and stay on the theme drawer.
   setTimeout(() => clearInterval(poll), GIVE_UP_MS);
 }
 

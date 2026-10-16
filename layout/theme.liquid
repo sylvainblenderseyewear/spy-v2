@@ -206,13 +206,12 @@
 
       // "Reject all" stops the trackers but leaves their cookies behind, so remove them here.
       // Also runs on each page load, in case a tracker wrote again before the page changed.
+      // Rebuy is not here: search and the cart run on it for every shopper.
       (() => {
         const COOKIES = {
           analytics: [/^_ga(_|$)/], // GA4
           marketing: [/^_sp_(id|ses)\./, /^yotpo_pixel$/], // Yotpo (its Snowplow)
-          preferences: [/^_r(uid|session)$/], // Rebuy
         };
-        const STORAGE = { preferences: ['_renriched', '_ruid', '_rsession'] }; // Rebuy
 
         // A cookie only goes away with its own domain, so try this host and each parent
         const expire = (name) => {
@@ -227,11 +226,6 @@
           const names = document.cookie.split(';').map((c) => c.split('=')[0].trim());
           for (const purpose of purposes) {
             names.filter((name) => COOKIES[purpose].some((re) => re.test(name))).forEach(expire);
-            for (const key of STORAGE[purpose] || []) {
-              try {
-                localStorage.removeItem(key);
-              } catch {}
-            }
           }
         };
 

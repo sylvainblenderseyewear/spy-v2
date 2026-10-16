@@ -1,7 +1,7 @@
 /**
  * Rebuy Smart Search glue. Rebuy draws the search box and the results page
  * (the PM asked for the Blenders layout); the theme search stays the fallback,
- * because Rebuy boots late and Pandectes blocks it until the shopper accepts.
+ * because Rebuy boots late and may not load at all (blockers, an outage).
  *
  * 1. Tiles show the model name over the colourway, like Blenders.
  * 2. /search waits for Rebuy only if Rebuy search ran for this shopper lately,
