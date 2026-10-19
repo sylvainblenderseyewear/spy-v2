@@ -181,8 +181,9 @@ function dropCartCents() {
   if (!cart?.querySelector('.spy-mc')) return;
 
   dropCents(cart.__vue__);
+  // Look inside the cart: the theme's template script carries the same id
   for (const widget of window.Rebuy?.widgets || []) {
-    if (document.getElementById(`rebuy-widget-${widget.id}`)?.closest('#rebuy-cart')) dropCents(widget.View?.vue);
+    if (cart.querySelector(`[id="rebuy-widget-${widget.id}"]`)) dropCents(widget.View?.vue);
   }
 }
 
