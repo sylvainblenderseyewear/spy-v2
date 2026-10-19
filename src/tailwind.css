@@ -5015,6 +5015,15 @@ html[data-spy-search-more='loading'] #rebuy-quick-view-dropdown-search .rebuy-qu
   color: var(--color-spy-muted) !important;
 }
 
+/* No results under the other ticks: the value stays in the list, greyed (spy-rebuy-search.js §6) */
+#rebuy-search-result-container [data-spy-empty] {
+  opacity: 0.45;
+}
+
+#rebuy-search-result-container [data-spy-empty] .rebuy-smart-search-results-page__filter-option-checkbox-label {
+  cursor: default;
+}
+
 #rebuy-search-result-container .rebuy-checkbox {
   border-color: var(--color-spy-border) !important;
   background-color: var(--color-background) !important;

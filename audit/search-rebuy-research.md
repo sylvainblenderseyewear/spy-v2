@@ -813,3 +813,35 @@ values reach the search page only after the Rebuy switch below, maybe plus a pro
 3. New products: add `sort_by.color` to the catalogue import (Matrixify column
    `Metafield: sort_by.color [single_line_text_field]`), or re-run `scripts/colour-groups.mjs
    <export> <out> --only-missing` on a fresh export and write the missing ones.
+
+**20 Oct:** the switch is not saved yet. Rebuy's settings (live and cached) still have Frame Color
+(`spec.frame_color`, label "Color") on and `sort_by.color` off.
+
+## Steady filter lists — 20 Oct
+
+Goran: ticking a filter value changes the filter lists.
+
+**Cause (Rebuy, not the theme):** `mapFilterWithSearchAggregates` rebuilds every list from the filtered
+answer's aggregates only, so the ticked group shrinks to the ticked value and other groups lose values.
+Values in one group are ANDed and the API has no "or" (pipe, comma, "OR", nested arrays, `operator` all
+give 0 or HTTP 500). Blenders' page does the same: ticking Shape "Square" leaves "Square (72)" alone.
+
+**Fix (theme, `assets/spy-rebuy-search.js` §6 + one rule in `src/tailwind.css`):**
+- Each list keeps the values it showed before the first tick, in the order first seen (Rebuy's order
+  changes from answer to answer). Values the filtered answer adds go at the end.
+- Counts follow the ticks; a value with 0 stays in the list greyed and can't be ticked
+  (`[data-spy-empty]`, opacity .45).
+- A tick in a group replaces that group's old tick (one value per group, since Rebuy can't show
+  "A or B"). The template calls the view's own `handleUpdateSearchQuery`, bound when the view was made
+  (`fnWrap` keeps the original), so the switch wraps the view's copy.
+- A ticked group counts its values without its own tick: one extra one-product search, cached per
+  state; none needed while only one group is ticked. A link with ticks in the address fetches the first
+  lists with one search.
+- Rebuy's `globalData.searchUrls.search` is a path (`/smart-search/search`) its API helper prefixes; call
+  `https://rebuyengine.com/api/v1/smart-search/search` directly (a relative fetch hits the store, 404).
+
+**Checked on production with the local file** (`scratch steady-test.mjs`, desktop and phone, 28 checks
+each, 0 failures): Category keeps 7 values after a tick; switching Eyeglasses → Sunglasses gives 149 → 127
+results with one tick left; with Sunglasses + a colour ticked, each ticked value's count equals the total;
+Reset brings the first lists back in the first order. Known data quirk: Rebuy counts case variants apart
+("Soft Matte Black" 13, but ticking it finds 14 with "Soft matte Black"); gone with `sort_by.color`.
