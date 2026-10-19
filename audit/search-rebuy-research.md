@@ -660,3 +660,156 @@ preview looks like the live store (and like Blenders).
 
 Console noise seen, not ours: accessiBe asks for `cdn.acsbapp.com/config/spyoptic-com.myshopify.com/config.json`
 (404, the app has no config for this store) and Shopify's `shop.app` frame breaks a frame-ancestors rule.
+
+## Search page filters — 19 Oct
+
+Goran: the Collection filter showed `gid://shopify/Collection/…` to shoppers; check it and the fonts.
+
+**Cause.** Rebuy's results page filters (public settings, `searchResultsSettings.setting.filterSettings`):
+Price, Product Type (label "Category"), `custom.collection` (label "Collection"), `spec.frame_color`
+(label "Color"), option "size" (label "Size"). `custom.collection` is a list of collection references, and
+Rebuy prints a metafield filter's raw value, so it printed the ids. The values are the products' model
+collections (Cyrus, Discord, Region xl, …), all of them published.
+
+**Fix (theme, not pushed yet).** `sections/search-header.liquid` writes `#spy-search-collections`
+(`{"<collection id>": "<title>"}` from the global `collections` loop). `assets/spy-rebuy-search.js` §5 wraps
+`Rebuy.SmartSearch.mapFilterWithSearchAggregates` and, for metafield filters only, sets `readableValue`
+(Rebuy prints it first and keeps it for the ticked-filter pills; the filtering still uses the id),
+capitalises the sentence-case titles ("Region XL"), and drops values it cannot name and placeholders
+("No Colour Reference", empty). Price, Category and Size are left exactly as Rebuy draws them.
+
+Checked on production with the module and the map served locally: groups Price · Category · Collection ·
+Color · Size; Collection reads "Rocky (3) | Dax 57 (3) | Cyrus (8) | Region XL (3) | Foundation Plus (6) …";
+ticking Rocky gives 3 Rocky products and the pill reads "Rocky".
+
+**Fonts are right:** DIN everywhere, at the Blenders sizes: FILTERS 18/700 uppercase, group titles 14/700,
+options 13, counts 12 (#767676), pills 13.
+
+**Data, not theme (needs the catalogue cleaned):**
+- Size repeats the same size in two spellings: MEDIUM LARGE (70) / MEDIUM-LARGE (37), LARGE-EXTRA-LARGE /
+  LARGE-EXTRA LARGE, SMALL MEDIUM / SMALL-MEDIUM.
+- Color repeats colours in two word orders: Soft Matte Black / Black Soft Matte, Matte Black / Black Matte.
+- `spec.frame_color` holds the placeholder "No Colour Reference" (now hidden by the theme).
+- The filter called "Collection" lists models; "Model" would read better (Rebuy → Smart Search → Results
+  Page → filter "Collection" → label).
+
+## Colour groups without a new metafield — 19 Oct, research
+
+PM: "for the color, ideally group them … possible to use a metafield". Goran: find a way that creates no
+extra metafield. Nothing below has been written to the store.
+
+**Every metafield level (Admin API + Settings → Custom data):**
+
+| Level | Definitions | Colour-related |
+|---|---|---|
+| Product | 40 | `spec.frame_color` (text, 725/725 filled, 280 exact names, shown on the PDP). Nothing holds a group. |
+| Variant | 12 | `spec.frame_color` and `spec.frame_material` exist but are empty (0). `spec.base_tint` / `lens_tint` are lens colours. |
+| Collection | 6 | none (`collection.*` hero/copy, `custom.fit_guide`) |
+| Page | 1 | none (`guide.technology`, empty) |
+| Shop | 0 | 9 app values without definitions (Yotpo, Swell, Pandectes) |
+| Customer, order, blog, article | 0 | — |
+| Metaobjects | fit_guide 13, technology 1, collection_story 0 + Yotpo loyalty types | none |
+
+**What Rebuy's search page can do (measured on its API, 19 Oct):**
+- Values inside one filter are ANDed, for every type: Black (42) + Matte Black (46) → 0, two tags → 0,
+  Sunglasses + Eyeglasses → 0. So the theme cannot merge raw values into a group; a group must be one value
+  in the data.
+- Value caps, fixed on Rebuy's server (no admin setting, no request parameter works): all metafield
+  filters share **30** values, ranked by count; tags get **20**; options and product type are not capped.
+  Today "sunglasses" (398 results) shows 21 collections + 9 colours, and the 9 are Black, Matte Black,
+  Black Matte, Black Soft Matte, Soft Matte Black, Honey Tort, Crystal, Clear, No Colour Reference. No red,
+  blue or white is offered.
+
+**Options:**
+
+| Route | New metafield? | Verdict |
+|---|---|---|
+| A. Product tag `color::<Family>` (same style as `collection::MODEL`) + Rebuy Product Tags filter | No | **Recommended** |
+| B. Reuse the empty variant `spec.frame_color` as the group | No new definition | No: same key means two things, one write per variant, the catalogue import may fill it |
+| C. Overwrite product `spec.frame_color` with the group | No | No: the PDP loses the exact colour |
+| D. Option / vendor / product type | No | No: changes variants, cart titles, feeds |
+| E. New group metafield (Blenders uses `sort_by.color`) or Shopify's `shopify.color-pattern` | Yes | Out, by Goran's rule |
+
+Simulated with real result sets and the draft families (scratch `rebuy-family-sim*.mjs`):
+
+| Search | Families in results | A: shown by Rebuy (20 tag slots) | B: shown (30 metafield slots) |
+|---|---|---|---|
+| sunglasses | 14 | 9 (cut: Pattern, Orange, Brown, Red, Yellow & Gold) | 12 |
+| happy lens | 14 | 9 | 11 |
+| matte | 12 | 7 | 9 |
+| black | 10 | 1 | 2 |
+| eyeglasses | 7 | 5 | 7 |
+| blue | 6 | 5 | 6 |
+| cyrus | 8 | 8 | 8 |
+
+Tags lose more because about 180 `collection::` tags plus Spy / Sunglasses / YGroup_discord take the slots.
+Those tags cannot go: 166 of the 182 collections are smart collections built on them. So route A needs the
+theme to fill in the cut families (below). Side gain: with the raw Color filter off, Collection gets all
+30 metafield slots (today 21).
+
+**Route A, the plan:**
+1. PM picks the family list. The old site (spyoptic.com PLP, SFCC `refinementColor`) uses **9**: Black,
+   Blue, Green, Grey, Orange, Red, Pink, Beige, Brown (no White, Clear, Tortoise, Yellow, Pattern). My draft
+   had 14 (replaced by `audit/colour-groups.csv`, see the next section) and mapped 660 of 725; the other 65 are 22 "No Colour
+   Reference" and art names (Khaki, Coffee, Burgandy, SEND NOODS…). The old site's cards are per model, so
+   copying its exact per-colourway buckets needs a crawl of its variation data (read-only, not done).
+2. Store write, needs Goran's OK: add one tag `color::<Family>` per product (`tagsAdd` keeps the other tags;
+   undo with `tagsRemove`).
+3. Theme (`assets/spy-rebuy-search.js` §5 + `sections/search-header.liquid`): in the Product Tags filter
+   show only `color::` tags, print them without the prefix (labels and pills, via the results view's
+   `formatTagValue`), and add the families Rebuy's 20 cap dropped: one light API count per missing family
+   with the current term and filters, shown only when the count is above 0. Family list from
+   `collections.all.all_tags`, so no setting to keep in sync.
+4. Goran in Rebuy: Results Page → Filters → EDIT: Product Tags on, label "Color"; Frame Color off; Save.
+   Order: tags, then theme push, then this switch (before the theme code, the group would list Spy,
+   Sunglasses and every `collection::` tag).
+5. New products: the catalogue import carries the tag; Flow "Product created" → Run code (same word list)
+   → Add product tags as a safety net. Flow has no "product updated" trigger, so a later colour change
+   needs the tag changed by hand.
+
+**Collection pages:** Shopify Search & Discovery is not installed, so they have no Color filter and no value
+grouping today. Later they can use the same tags (theme hides the other tags) or S&D grouping on
+`spec.frame_color`; check S&D's 100-values-per-filter limit first.
+
+## Colour groups: new metafield `sort_by.color`, like Blenders — 19 Oct, done
+
+Goran chose a new metafield after the research above ("use a new metafield for it"), and the group list
+from Blenders ("check the blenders about it"). Route A (tags) is dropped.
+
+**How Blenders does it** (Shopify admin + Rebuy API + its storefront, 19 Oct):
+- Rebuy search Color filter = product metafield **`sort_by.color`** ("Color", single line text, 366
+  products, free text). Its values are loose lens names: Smoke 41, Pink, Champagne, Silver, Light Blue,
+  Rainbow Lavender, Crystal Orb, Smoke Mirror, Crimson Polar… (24+). Other `sort_by.*` filters: shape,
+  lens_type, feature, collection, size. Blenders hits the same 30-value cap (5 metafield filters share it).
+- Collection pages: a theme tag filter on `color::<Group>` tags (several per product, frame + lens), 17
+  groups with swatch images (`color-<handle>.jpg` in Files): Black, Blue, Brown, Champagne, Clear, Gold,
+  Green, Grey, Orange, Pink, Purple, Rainbow, Red, Silver, Tortoise, White, Yellow.
+
+**What SPY got** (no theme change needed; Rebuy prints the text as it is):
+- Definition `sort_by.color` ("Color", single line text, **choices = Blenders' 17 groups**, pinned,
+  admin-filterable, smart-collection condition, storefront read). Same key as Blenders; the choices keep
+  the filter tidy, unlike Blenders' free text.
+- Values: one group per product from `spec.frame_color`, first colour word wins (`scripts/colour-groups.mjs`,
+  review file `audit/colour-groups.csv`). Written to **789 of 932** products with `metafieldsSet` (the
+  connector blocks bulk mutations). Checked: definition count 789, every group count matches the file
+  (Black 317, Blue 71, Grey 64, White 53, Tortoise 45, Clear 43, Green 39, Orange 38, Brown 32, Pink 25,
+  Purple 18, Red 14, Yellow 11, Rainbow 9, Silver 7, Gold 3; Champagne unused).
+- Rules worth knowing: sand / tan / khaki → Brown; silver and gold have their own groups; prints with no
+  colour word (USA, tie-dye, psychedelic, splatter, trippy) → Rainbow; "Checkers Red" → Red.
+- **143 products left empty** for the merch team (pick from the photo in the admin dropdown): 82 "No Colour
+  Reference" placeholders and art / collab names (Snowcatz, Speedway Dawn, SPY + SlayCo, Taco Tuesday…).
+
+**Rebuy only filters on metafields that are switched on as filters** (API, 19 Oct: `spec.frame_material`
+and `spec.polarized` return 0 although every product has them; `spec.frame_color` works). So the new
+values reach the search page only after the Rebuy switch below, maybe plus a product re-sync.
+
+**Left to do:**
+1. Goran in Rebuy: Smart Search → Results → Filters → EDIT → Product Metafields → find **Color**
+   (`product.metafields.sort_by.color`, may be under LOAD MORE): toggle on, label **Color**; toggle
+   **Frame Color** off; Save. Then check the order in the Filters list (Price, Category, Collection, Color,
+   Size) and Save the page.
+2. Me: check through the API that `product.sort_by.color.Black` returns results; if it stays 0, a Rebuy
+   product re-sync is needed (Goran).
+3. New products: add `sort_by.color` to the catalogue import (Matrixify column
+   `Metafield: sort_by.color [single_line_text_field]`), or re-run `scripts/colour-groups.mjs
+   <export> <out> --only-missing` on a fresh export and write the missing ones.

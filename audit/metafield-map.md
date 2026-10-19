@@ -55,6 +55,15 @@ Same as default PDP, plus:
 
 ---
 
+## Search Page — Rebuy Smart Search (not theme blocks)
+
+| Filter | Source | Metafield(s) Read |
+|---|---|---|
+| Collection | Rebuy product-metafield filter | `custom.collection` (ids; `sections/search-header.liquid` writes `#spy-search-collections` and `assets/spy-rebuy-search.js` prints the names) |
+| Color | Rebuy product-metafield filter (switch from Frame Color pending in Rebuy) | `sort_by.color` (group); was `spec.frame_color` (280 raw names) |
+
+---
+
 ## Homepage Sections — `index.json`
 
 | Section | File | Content Source |

@@ -138,6 +138,14 @@
 
 ---
 
+## Product Metafields — `sort_by` namespace (filters only, same as Blenders)
+
+| Key | Type | Display Name | Pinned | Notes |
+|---|---|---|---|---|
+| `sort_by.color` | single_line_text, choices | Color | ✅ | Colour group for the search Color filter. One of Blenders' 17: Black, Blue, Brown, Champagne, Clear, Gold, Green, Grey, Orange, Pink, Purple, Rainbow, Red, Silver, Tortoise, White, Yellow. Picked from `spec.frame_color` by `scripts/colour-groups.mjs`; empty when no colour word (placeholders, art names). Admin-filterable, smart-collection condition, storefront read. Created 19 Oct 2026. |
+
+---
+
 ## Variant Metafields
 
 | Key | Type | Owner | Display Name | Notes |

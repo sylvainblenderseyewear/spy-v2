@@ -865,15 +865,21 @@ comes from Shopify's Web Pixels sandbox (`/cdn/wpm/…`), not from the theme or 
 | No picker on `+ ADD` | picker shown when the product has a choice | adding a size or lens silently is a wrong order waiting to happen |
 | Free shipping scrolls with the items | fixed under the header | Rebuy pins Cart Items first in the body, so the line sits in the goal box |
 
-### To publish (step 1 done)
+### To publish (steps 1-4 done; 38089 LIVE since 19 Oct, 16:43 UTC)
 
 1. Push the theme changes to `main` (any time; the live cart keeps its look). **Push first** — see
    "Order matters one way". **Done 15 Oct:** `102e46b` went out with the search push
    (`75e1471..1a579fb`); checked on 16 Oct, see "Live theme checked against the Figma".
 2. Rebuy → Smart Cart → `SPY mini-cart (Figma redesign)` → Live. Rebuy turns 37798 off by itself.
-3. Roll back = the same switch on 37798. No revert needed.
+   **Done 19 Oct, 16:43 UTC** by the search session on Goran's ask (`/admin/smartcart/` → 38089 row menu →
+   Enable → "Yes, enable Cart"), right after it pushed `1c2ca1b` (cart widgets are looked up inside
+   `#rebuy-cart`, because the theme's `script#rebuy-widget-<id>` template has the same id). Rebuy's public
+   config now reports 38089 enabled. Widget 315461's limit is 16 (one card per model needs the spare).
+3. Roll back = the same switch on 37798 (row menu → Enable). No revert needed.
 4. Check: `node scripts/production-cart-check.mjs` at `WIDTH=1440`, `768`, `390`, and
-   `node scripts/rebuy-cart-responsive.mjs`. Both follow whichever cart is live.
+   `node scripts/rebuy-cart-responsive.mjs`. Both follow whichever cart is live. **Done 19 Oct** (search
+   session, live cart, no preview): 34/34 at 1440 and 768, 32 + 2 n/a at 390; the PM's test carts (Cyrus
+   Black, Marauder Everblack, Crusher Elite JR Eco) show the right bundles and 4 different models.
 5. Later: delete the OLD CSS block once 37798 is retired.
 
 **The older check scripts follow the live cart (15 Oct).** `production-cart-check.mjs` and
@@ -954,18 +960,24 @@ The first 390 production run died before the page loaded (`ERR_SOCKET_NOT_CONNEC
 The same at 375, 390, 768 and 1440; at 390 the panel fills the screen and the checks follow its 358px
 content. The panel docks at x1529 on the desktop frame, as drawn; dim 20% + blur 22px everywhere.
 
-**Not drawn, and not on the 14 Oct list — needs a decision:**
+**Not drawn, and not on the 14 Oct list — decided 16 Oct (Goran, relayed by the search session):**
 
 - **Fit/lens line on each line item** (`Medium Large / Happy Grey Green`). Printed when the product has
   options, so the shopper sees which lens is in the bag. Long lens names wrap: the item grows 97 → 100px.
+  **Keep.**
 - **Cents, in the cart only.** Rebuy prints `$150.00`; the theme prints `$150` on PDP and PLP and keeps
   real cents (`$57.50`), and the Figma draws `$200`. Same in bundle rows, cards, total and the
-  `$46.00 away` line.
+  `$46.00 away` line. **Match the site:** done by the search session in `assets/spy-cart-handoff.js`
+  (wraps the templates' `formatMoney` for 38089 only; `$170`, `$32.50` kept), pushed 17 Oct (`c485239`).
+- Same session, same day: "You Might Also Like" shows one card per model (`snippets/spy-rebuy-widget-templates.liquid`
+  takes the first 4 different models). Widget 315461's limit goes from 4 to 8 in Rebuy **after** that
+  theme push, or 38089 shows 8 cards.
 
-**On the 14 Oct list, still unanswered — what each one costs on screen:**
+**On the 14 Oct list — what each one costs on screen:**
 
-- Size/lens picker kept: recommendation cards 243px instead of 208–218 (a picker in one card stretches
-  its neighbour); best-seller rows 127px instead of 88, so the empty-cart list is about 40% longer.
+- Size/lens picker kept (**Goran 16 Oct: keep**): recommendation cards 243px instead of 208–218 (a picker
+  in one card stretches its neighbour); best-seller rows 127px instead of 88, so the empty-cart list is
+  about 40% longer.
 - No `GET 20% OFF`, so no struck prices in the bundle box.
 - Grey `#767676` (AA) instead of `#A2A2A2`; orange = palette color3 (`#f27e37`) instead of `#ED773B`.
 - Copy fixes: `from Free Shipping`, `Shop our best sellers`, `Pay in installments`, `Easy returns`, `GOGGLES`.
@@ -1039,3 +1051,24 @@ collections. Rebuy hides an empty tab, so the empty cart showed one, then three 
 changed nothing, and the lists came back by themselves (Women first, then Men, then Goggles), most
 likely Rebuy re-reading the catalog. If it happens again: Clear Cache on those data sources, then check
 Rebuy's product sync.
+
+### Live cart against the Figma — 19 Oct, after the switch
+
+`scripts/rebuy-figma-spec.js` on the live theme and the live cart (no preview), with real scrollbars
+(`SCROLLBARS=1`):
+
+| State | 1440 | 768 | 390 | 375 |
+|---|---|---|---|---|
+| Two items: exact / look identical / flagged / note / wrong | 194 / 3 / 10 / 5 / **0** | 193 / 3 / 10 / 5 / 1 | 193 / 3 / 10 / 5 / 1 | 193 / 3 / 10 / 5 / 1 |
+| Empty cart | 59 / 1 / 5 / 1 / **0** | — | — | 58 / 1 / 5 / 1 / 1 |
+
+The prices now pass (`$150`, `$300` total), so three "note" rows are gone. The empty-cart tabs still repeat
+models (Cyrus ×3, Discord ×3 in 11 rows).
+
+The one "wrong" below 990px is the page's own scrollbar, not the cart. Below 990px the window scrolls, and a
+classic (Windows) scrollbar stays to the right of a fixed panel: at 768 the panel sits at x383, left of the
+10px scrollbar. Without a classic scrollbar, which is every phone, tablet and Mac, it sits exactly at x393
+and x0 (probe, same session). The only real side effect: below 480px the panel is `100vw` wide, and `100vw`
+counts that scrollbar, so in a desktop window squeezed to phone width the cart is 10px wider than the window.
+`width: 100%` on the flyout would fix that one case. Not changed. The spec script now docks against the
+visible width (`clientWidth`) and reports the `100vw` case as a note.

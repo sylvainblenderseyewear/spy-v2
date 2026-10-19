@@ -71,8 +71,10 @@ const items = q('.spy-mc-item');
 const isEmpty = items.length === 0;
 
 // ---- panel + the page behind
-add('panel', 'width', VW <= 480 ? `${VW} (full screen)` : '375', P, VW <= 480 ? near(P, VW) : near(P, 375));
-add('panel', 'docked right, full height', `x ${VW - P} · h ${VH}`, `x ${r1(F.x)} · h ${r1(F.height)}`, near(F.x, VW - P) && near(F.height, VH) && near(F.y, 0));
+// A classic (Windows) scrollbar on the page stays to the right of a fixed panel, so dock against what is visible
+const SEEN = document.documentElement.clientWidth;
+add('panel', 'width', VW <= 480 ? `${SEEN} (full screen)` : '375', P, VW <= 480 ? near(P, SEEN) : near(P, 375), VW <= 480 && near(P, VW) && SEEN < VW ? 'note: 100vw counts the page scrollbar, so the panel is wider than the window' : '');
+add('panel', 'docked right, full height', `x ${SEEN - P} · h ${VH}`, `x ${r1(F.x)} · h ${r1(F.height)}`, near(F.x, SEEN - P) && near(F.height, VH) && near(F.y, 0));
 const bg = root.querySelector('.rebuy-cart__background');
 if (bg) {
   eq('page behind', 'overlay colour', '#000000@0.2', hex(cs(bg).backgroundColor));
