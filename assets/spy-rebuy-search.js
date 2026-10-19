@@ -282,3 +282,65 @@ document.querySelector('.page-wrapper')?.addEventListener(
   },
   { passive: true }
 );
+
+/* ── 5. Filter labels ───────────────────────────────────────────────────── */
+
+/*
+ * Rebuy prints a metafield filter's raw value. Collection reads custom.collection,
+ * which holds collection references, so shoppers saw gid://shopify/Collection/….
+ * Rebuy prints readableValue first and keeps it for the ticked-filter pills, while
+ * the filtering still uses the id. So name each value, after every time Rebuy
+ * maps the filters. The names come from sections/search-header.liquid.
+ */
+let collectionNames = null;
+function collectionName(gid) {
+  if (!collectionNames) {
+    try {
+      collectionNames = JSON.parse(document.getElementById('spy-search-collections')?.textContent || '{}');
+    } catch {
+      collectionNames = {};
+    }
+  }
+  const title = collectionNames[String(gid).split('/').pop()];
+  // Titles came over in sentence case ("Region xl"): capitalise, codes in full ("XL", "ANSI", "SS25")
+  return title && title.replace(/\S+/g, (word) => (/^([a-z]{1,2}|ansi|spy|bkl|[a-z]*\d+[a-z\d]*)$/i.test(word) ? word.toUpperCase() : word[0].toUpperCase() + word.slice(1)));
+}
+
+// Placeholders the data migration left behind; a shopper should never see them
+const PLACEHOLDER = /^\s*(no colou?r reference|n\/a|-)?\s*$/i;
+
+function labelFilters(filters) {
+  if (!Array.isArray(filters)) return;
+  for (let i = filters.length - 1; i >= 0; i--) {
+    const filter = filters[i];
+    // Only metafield values are plain text; price, product type and options stay as Rebuy draws them
+    if (filter.type !== 'product-metafield' || !Array.isArray(filter.values)) continue;
+    if (filter.key === 'collection') {
+      for (const value of filter.values) value.readableValue = collectionName(value.value) || value.readableValue;
+      // A reference we can't name (an unpublished collection) would show the raw id
+      filter.values = filter.values.filter((value) => value.readableValue);
+    }
+    filter.values = filter.values.filter((value) => typeof value.value !== 'string' || !PLACEHOLDER.test(value.readableValue ?? value.value));
+    // Nothing left to tick: drop the group rather than show it empty
+    if (filter.values.length === 0) filters.splice(i, 1);
+  }
+}
+
+function wrapFilterMapping() {
+  const smartSearch = window.Rebuy?.SmartSearch;
+  const map = smartSearch?.mapFilterWithSearchAggregates;
+  if (typeof map !== 'function' || smartSearch.spyLabelsFilters) return;
+  smartSearch.spyLabelsFilters = true;
+  smartSearch.mapFilterWithSearchAggregates = function (...args) {
+    const result = map.apply(this, args);
+    labelFilters(this.resultsPage?.mappedAggregatedFilters);
+    return result;
+  };
+  // Filters Rebuy mapped before this ran
+  labelFilters(smartSearch.resultsPage?.mappedAggregatedFilters);
+  smartSearch.resultsPage?.view?.$forceUpdate?.();
+}
+
+for (const name of ['rebuy.ready', 'rebuy:smartsearch.resultsPage.ready', 'rebuy:smartsearch.resultsPage.productsChange']) {
+  document.addEventListener(name, wrapFilterMapping);
+}
