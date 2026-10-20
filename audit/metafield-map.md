@@ -60,7 +60,7 @@ Same as default PDP, plus:
 | Filter | Source | Metafield(s) Read |
 |---|---|---|
 | Collection | Rebuy product-metafield filter | `custom.collection` (ids; `sections/search-header.liquid` writes `#spy-search-collections` and `assets/spy-rebuy-search.js` prints the names) |
-| Color | Rebuy product-metafield filter (switch from Frame Color pending in Rebuy) | `sort_by.color` (group); was `spec.frame_color` (280 raw names) |
+| Color | Rebuy product-metafield filter (since 20 Oct) | `sort_by.color` (group); was `spec.frame_color` (280 raw names) |
 
 ---
 

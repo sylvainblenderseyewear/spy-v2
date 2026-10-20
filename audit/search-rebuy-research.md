@@ -812,10 +812,16 @@ values reach the search page only after the Rebuy switch below, maybe plus a pro
    product re-sync is needed (Goran).
 3. New products: add `sort_by.color` to the catalogue import (Matrixify column
    `Metafield: sort_by.color [single_line_text_field]`), or re-run `scripts/colour-groups.mjs
-   <export> <out> --only-missing` on a fresh export and write the missing ones.
+   <export.jsonl> <out-dir>` on a fresh export (query at the top of the script) and write its JSONL. By
+   default it only fills products without a group, so picks made by hand in the admin stay;
+   `--overwrite` replaces groups that differ from the rules. `--self-test` checks the word rules.
 
-**20 Oct:** the switch is not saved yet. Rebuy's settings (live and cached) still have Frame Color
-(`spec.frame_color`, label "Color") on and `sort_by.color` off.
+**20 Oct, done:** Goran's own Save did not stick, so on his ask I set it in his Chrome (Filters → EDIT →
+Load More → Color `sort_by.color` on, label "Color"; Frame Color off; panel Save; Color dragged back above
+Size; top Save → "Save Results Page layout setting?" → Yes). Rebuy's settings now read Price · Category ·
+Collection · Color (`sort_by.color`) · Size. Rebuy indexed the groups at once, no re-sync: "sunglasses"
+offers Black 176, Clear 33, Grey 32, Tortoise 26, Blue 22, Brown 17, Green 16, White 11, Pink 10, Red 6
+(10 groups; the 30-value cap is shared with Collection), and Black / Blue filter to 176 / 22.
 
 ## Steady filter lists — 20 Oct
 
@@ -845,3 +851,150 @@ each, 0 failures): Category keeps 7 values after a tick; switching Eyeglasses �
 results with one tick left; with Sunglasses + a colour ticked, each ticked value's count equals the total;
 Reset brings the first lists back in the first order. Known data quirk: Rebuy counts case variants apart
 ("Soft Matte Black" 13, but ticking it finds 14 with "Soft matte Black"); gone with `sort_by.color`.
+
+**Review, 20 Oct (Goran: "check again your code and logic") — three bugs found and fixed; uploaded to unpublished `Staging v2` on 20 Oct:**
+1. *A greyed "(0)" was not always 0.* Rebuy's answer holds at most 30 metafield values (Collection +
+   Color), so a value missing from a full answer may just be cut. Measured: "sunglasses" + Eyeglasses
+   greyed White, Red, Brown (they have 1, 1, 2); + Black greyed 7 collections that have products. Now a
+   value missing from a full answer shows without a number and stays tickable; an open group gets exact
+   counts (one one-product search per such value, 12 at a time, cached per state); only true zeros grey.
+2. *Zero-result answers broke the counts.* Rebuy sends no `Search-Size-Total` header and no aggregates
+   object content for 0 results (`aggregates: []`, `pageInfo.serverSize: 0`); the code read that as an
+   error. The total now comes from `data.pageInfo.serverSize` (equals the header when it exists).
+3. *Late answers after Reset.* An extra search landing after the shopper cleared every tick re-applied
+   steady lists with no counts kept (all rows greyed). `applySteady` now does nothing without ticks.
+   Also: the first-lists search retries if the search term changed while it was out, and the price
+   conversion no longer changes the caller's filters (it skewed one signature).
+Checked with `steady-test.mjs` on production with the local file, desktop and phone: 45 checks each, 0
+failures, including "every greyed row really has 0" and "shown counts match Rebuy" through the API, and a
+price-range case ($150+: Sunglasses 104 = total).
+
+The latest `assets/spy-rebuy-search.js` was uploaded alone to theme `Staging v2` (`165560156400`); the
+live theme was not changed. The checks above used the local file on production, so review the Staging v2
+preview before signing off.
+
+## How Blenders does colour — 20 Oct, research (command line only)
+
+Sources: Blenders' public product feed (`blenderseyewear-com.myshopify.com/products.json`, 243 products;
+the custom domain and the HTML pages sit behind Cloudflare) and Rebuy's public search API (536 products,
+tags included). The theme code and the metafield definitions need `shopify store auth` on Blenders (not
+granted yet: the OAuth prompt timed out). Scratch: `blenders-*.mjs`.
+
+**Two colour systems, both filled by hand, no rules:**
+
+| | Search page (Rebuy) | Collection pages (theme) |
+|---|---|---|
+| Data | metafield `sort_by.color`, one value per product | tags `color::<Group>`, 1 to 7 per product |
+| Meaning | the **lens** colour | frame **and** lens colours mixed |
+| Values | loose names: Smoke, Light Blue, Champagne, Rainbow Lavender, Crystal Orb… (24+) | the 17 groups (+ strays "black", "Tan") |
+| Coverage | ~366 products | 284 of 536 (53%); 119 have 1 tag, 110 have 2, 49 have 3+ |
+
+- Example: "Matte Gold" has `sort_by.color` Blue, `lens-color::Blue`, `frame-color::Gold`, `color::Gold`.
+  "Dark Smoke" has `color::Grey` only although its frame tags are Black and Grey and its lens is Blue, so
+  `color::` is picked per product, not computed.
+- Newer, partial tags split the two: `frame-color::` on 214 products, `lens-color::` on 209 (lens values
+  such as "Black Smoke", "Silver Mirror", not the 17 groups). `swatch::#frame-#lens` tags (two hex colours)
+  drive the card swatches.
+- Tags follow `namespace::Value`, and `netsuiteStatus::…` shows the data comes from NetSuite. Casing drifts
+  (`shape::Square` 66 / `square` 62, `color::black`), a sign of hand entry upstream.
+- The collection filter groups are tag namespaces: Collection (`collection::`), Color, Shape, Feature,
+  Lens Type, Size / Face Size. Each option's `data-tag-handle` is the tag's handle (`color-champagne`), and
+  its swatch is a Files image `color-<handle>.jpg`.
+- The search filters use a second, parallel set: `sort_by.color/shape/lens_type/feature/collection/size`
+  metafields, so shape, collection and size are kept twice (tag and metafield). Blenders also has
+  `shopify.color-pattern` (Shopify's category metafield) in Rebuy's list, switched off.
+
+**What it means for SPY:** Blenders has no automatic method to copy; its groups are hand-made in NetSuite,
+twice. SPY's `sort_by.color` (one group per product, from the frame colour by `scripts/colour-groups.mjs`,
+fixed by hand in the admin dropdown) uses the same key and the same 17 names, keeps one source for search
+and, later, for collection pages through Search & Discovery, so nothing is kept twice. What SPY does not
+have is Blenders' lens colour; that would be a second field (`lens-color`-like) if the PM wants it.
+
+## Color group and search filter review — 20 Oct, current API evidence
+
+Scope: read-only research of the production store `spyoptic-com.myshopify.com`, the local grouping
+script, and the saved catalog audit. No product values, Rebuy settings, or theme code were changed.
+API evidence is saved in `audit/search-rebuy/color-filter-current.json` (18:18 UTC). These are API
+checks, not a browser review of the staging theme on the separate `spydevsylv` store.
+
+### Data source and coverage
+
+The path is `spec.frame_color` → the offline `scripts/colour-groups.mjs` rules →
+`sort_by.color` → Rebuy's product metafield Color filter. The script generates a review CSV and mutation
+input; it does not update Shopify or run automatically when a product is created or changed.
+It chooses one group from the first recognized color word, keeps existing assignments by default, and
+supports explicit overwrite. This describes frame color, not lens color.
+
+The saved CSV has 932 products: 789 assigned (84.7%) and 143 unassigned. Of the unassigned products,
+138 are marked ACTIVE; ACTIVE does not establish Online Store publication or Rebuy eligibility.
+82 unassigned rows contain placeholder frame colors; the other 61 have names the rules cannot classify.
+All saved assignments agree with the current rules. The script's 21 word examples pass.
+These catalog figures come from the saved export, not a new Shopify Admin export.
+
+### Current Rebuy configuration and the missing-color problem
+
+The settings API confirms this order: Price, Category, Collection (`custom.collection`), Color
+(`sort_by.color`), Size. The old raw `spec.frame_color` filter is not enabled.
+
+For `searchTerm: "sunglasses"` without filters, Rebuy returns 398 products. This is a text search:
+only 127 results have the product type Sunglasses, so the query total is not a sunglasses-category total.
+The baseline aggregates contain exactly 30 metafield values: 20 collections and 10 colors.
+Individual color queries prove six additional colors have results despite being absent from that list:
+
+| Color absent from baseline | Matching products |
+|---|---:|
+| Gold | 1 |
+| Orange | 5 |
+| Purple | 6 |
+| Rainbow | 3 |
+| Silver | 3 |
+| Yellow | 1 |
+
+Champagne has zero results. The 17 individual color queries sum to 368 products. Given the intended
+single-value schema, this suggests 30 of the 398 results have no matching allowed color group; a fresh
+product-level export is needed to distinguish missing values, stale indexing, and unexpected values.
+
+**Gap in the local theme fix:** it preserves the initial aggregate values and recovers counts for known
+values omitted by later responses. It does not populate all 17 possible colors. `captureSteady` returns
+without exact-count recovery when no list filter is selected, and `applySteady` starts from the
+truncated base list. The six colors above are therefore not guaranteed to be offered initially even
+though matching products exist. Preserving filter lists alone does not solve initial completeness.
+
+### Multi-selection: current documentation and measured behavior disagree
+
+[Rebuy's current filter documentation](https://help.rebuyengine.com/en/articles/16310853-smart-search-results-page-filters-sorting)
+describes OR within a filter and AND across filters. The production
+[documented search endpoint](https://developers.rebuyengine.com/reference/smart-search/) returned:
+
+| Filters, with search term "sunglasses" | Total |
+|---|---:|
+| Black | 176 |
+| Blue | 22 |
+| Black and Blue in the metafields array | 0 |
+| Category Sunglasses | 127 |
+| Category Eyeglasses | 149 |
+| Both categories in the categories array | 0 |
+| Category Sunglasses plus Black | 76 |
+
+Thus OR was not observed for either of the two same-filter probes on this store. Do not remove
+`wrapTickSwitch` based solely on the general documentation. Ask Rebuy to explain the discrepancy,
+including any rollout or request-shape requirements. The evidence establishes current responses,
+not a permanent platform-wide lack of OR support.
+
+### Recommended next work
+
+1. Make all 17 allowed color groups available as candidates from a shared configuration, then obtain
+   exact counts when the Color panel opens. Count with the other selected filters applied and the
+   Color selection removed. Preserve the candidate order and disable only confirmed zeros.
+   Cache requests per search term and filter state; leave failed counts unknown.
+2. Resolve the OR discrepancy with Rebuy before allowing several selected colors. If OR becomes
+   available, update both selection handling and count behavior together.
+3. Review the 143 unassigned products using their images and product data. Do not guess a color from
+   a collaboration name. Make the catalogue import or an explicit recurring workflow populate
+   `sort_by.color`; preserve merchandising overrides.
+4. Confirm whether the shopper-facing label should be "Frame Color". The current data describes the
+   frame; a lens-color filter would need its own source and assignments.
+
+The earlier Blenders notes identify observed field/tag values. Claims that all assignments are manual
+in NetSuite, or that no automation exists, remain inferences until its import or automation setup is
+inspected.
