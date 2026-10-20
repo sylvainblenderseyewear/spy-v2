@@ -330,6 +330,7 @@ function labelFilters(filters) {
 function wrapFilterMapping() {
   const smartSearch = window.Rebuy?.SmartSearch;
   wrapTickSwitch(smartSearch);
+  wrapExpand(smartSearch);
   const map = smartSearch?.mapFilterWithSearchAggregates;
   if (typeof map !== 'function' || smartSearch.spyLabelsFilters) return;
   smartSearch.spyLabelsFilters = true;
@@ -358,13 +359,25 @@ for (const name of ['rebuy.ready', 'rebuy:smartsearch.resultsPage.ready', 'rebuy
  * list keeps the values it showed before the first tick (values with no results
  * go grey), and a tick in a group replaces that group's old tick. A ticked group
  * counts its values without its own tick: one small extra search, kept per state.
+ *
+ * Rebuy's answer holds at most 30 metafield values (Collection and Color together),
+ * so a value missing from a full answer is not proof of 0. It shows without a
+ * count and stays tickable; an open group gets its exact counts, one search each.
  */
 const STEADY_LISTS = { 'product-type': 'categories', 'product-option': 'options', 'product-metafield': 'metafields', 'variant-metafield': 'metafields' };
 const TICK_LISTS = { 'product-type': 'categories', 'product-options': 'options', 'product-metafield': 'metafields', 'variant-metafield': 'metafields' };
-const steady = { term: null, base: null, baseSig: '', baseBusy: false, present: [], current: new Map(), others: new Map(), shown: new Map(), busy: new Set() };
+const METAFIELD_CAP = 30;
+// Exact counts asked at once for one open group
+const EXACT_MAX = 12;
+const steady = {
+  term: null, base: null, baseSig: '', baseCapped: false, baseBusy: false, capped: false,
+  present: [], current: new Map(), others: new Map(), shown: new Map(), busy: new Set(), exact: new Map(), exactBusy: new Set(),
+};
 const clone = (value) => JSON.parse(JSON.stringify(value ?? null));
 const hasListTicks = (filters) => ['tags', 'categories', 'options', 'vendors', 'metafields'].some((list) => (filters?.[list] || []).length > 0);
 const enabledFilters = (smartSearch) => (smartSearch.globalData?.settings?.searchResultsSettings?.setting?.filterSettings || []).filter((filter) => filter.enabled);
+const isCapped = (aggregates) =>
+  ((Array.isArray(aggregates) && aggregates.find((aggregate) => aggregate && 'metafields' in aggregate)?.metafields) || []).reduce((sum, field) => sum + (field.values?.length || 0), 0) >= METAFIELD_CAP;
 
 /** Where a filter's ticks live in the query, and how its entries start there. */
 function groupOf(filter) {
@@ -384,9 +397,15 @@ function groupOf(filter) {
 const ticksOf = (group, filters) => (filters?.[group.list] || []).filter((entry) => typeof entry === 'string' && entry.startsWith(group.prefix));
 const keyOf = (group, item) => String(group.list === 'categories' ? item.categories : item.value);
 
-function signatureOf(filters, group) {
+/** The filters with one group's ticks taken out. */
+function withoutGroup(filters, group) {
   const copy = clone(filters) || {};
-  if (group) copy[group.list] = (copy[group.list] || []).filter((entry) => !(typeof entry === 'string' && entry.startsWith(group.prefix)));
+  copy[group.list] = (copy[group.list] || []).filter((entry) => !(typeof entry === 'string' && entry.startsWith(group.prefix)));
+  return copy;
+}
+
+function signatureOf(filters) {
+  const copy = clone(filters) || {};
   for (const list of ['tags', 'categories', 'options', 'vendors', 'metafields']) if (Array.isArray(copy[list])) copy[list].sort();
   return JSON.stringify(copy);
 }
@@ -398,24 +417,29 @@ function countsOf(group, values) {
   return counts;
 }
 
-/** The first list in its order with today's counts, then values it never had, then a tick it never had. */
-function steadyValues(group, baseValues, liveValues, picks) {
+/**
+ * The first list in its order with today's counts, then values it never had, then a
+ * tick it never had. missing(key) gives the count of a value the answer left out:
+ * 0, an exact count, or null when not known yet (shown without a number).
+ */
+function steadyValues(group, baseValues, liveValues, picks, missing = () => 0) {
   const counts = countsOf(group, liveValues);
+  const countOf = (key) => (counts.has(key) ? counts.get(key) : missing(key));
   if (group.list === 'options') {
     const out = {};
-    for (const [key, value] of Object.entries(baseValues || {})) out[key] = { ...value, numProducts: counts.get(key) ?? 0 };
+    for (const [key, value] of Object.entries(baseValues || {})) out[key] = { ...value, numProducts: countOf(key) };
     for (const [key, value] of Object.entries(liveValues || {})) if (!(key in out)) out[key] = value;
-    for (const key of picks) if (!(key in out)) out[key] = { numProducts: 0 };
+    for (const key of picks) if (!(key in out)) out[key] = { numProducts: countOf(key) };
     return out;
   }
-  const out = (baseValues || []).map((item) => ({ ...item, numProducts: counts.get(keyOf(group, item)) ?? 0 }));
+  const out = (baseValues || []).map((item) => ({ ...item, numProducts: countOf(keyOf(group, item)) }));
   const listed = new Set(out.map((item) => keyOf(group, item)));
   for (const item of Array.isArray(liveValues) ? liveValues : []) {
     if (listed.has(keyOf(group, item))) continue;
     out.push(item);
     listed.add(keyOf(group, item));
   }
-  for (const key of picks) if (!listed.has(key)) out.push(group.list === 'categories' ? { categories: key, numProducts: 0 } : { value: key, numProducts: 0 });
+  for (const key of picks) if (!listed.has(key)) out.push(group.list === 'categories' ? { categories: key, numProducts: countOf(key) } : { value: key, numProducts: countOf(key) });
   return out;
 }
 
@@ -453,11 +477,12 @@ function labelled(filter, values) {
   return temp[0]?.values ?? [];
 }
 
-/** A one-product search that only brings back the counts for these filters. */
+/** A one-product search that only brings back the counts and the total for these filters. */
 async function countSearch(smartSearch, filters) {
   const rebuy = window.Rebuy;
   const query = clone(smartSearch.resultsPage.searchQuery);
-  Object.assign(query, { filters, sortBy: {}, fields: ['product_id'], pageSize: 1, currentPage: 1 });
+  // A copy: the price conversion below must not change the caller's filters
+  Object.assign(query, { filters: clone(filters), sortBy: {}, fields: ['product_id'], pageSize: 1, currentPage: 1 });
   // Rebuy's own search sends the price range converted, so do the same
   const toInteger = rebuy.util?.convertBackToInteger;
   for (const end of ['min', 'max']) {
@@ -471,9 +496,13 @@ async function countSearch(smartSearch, filters) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(query),
   });
-  const aggregates = (await response.json())?.data?.aggregates;
-  if (!Array.isArray(aggregates)) throw new Error(`Rebuy search answered ${response.status}`);
-  return aggregates;
+  const data = (await response.json())?.data;
+  // The total is pageInfo.serverSize: an answer with no results has no Search-Size-Total header
+  const header = response.headers.get('search-size-total');
+  const total = Number.isFinite(data?.pageInfo?.serverSize) ? data.pageInfo.serverSize : header ? Number(header) : NaN;
+  const aggregates = Array.isArray(data?.aggregates) ? data.aggregates : null;
+  if (!aggregates || !Number.isFinite(total)) throw new Error(`Rebuy search answered ${response.status}`);
+  return { aggregates, total };
 }
 
 /** After every Rebuy search: remember what it drew, then put the steady lists in. */
@@ -484,11 +513,14 @@ function captureSteady(smartSearch) {
 
   const term = String(query.searchTerm || '').trim().toLowerCase();
   if (term !== steady.term) {
-    Object.assign(steady, { term, base: null, baseSig: '' });
+    Object.assign(steady, { term, base: null, baseSig: '', baseCapped: false });
     steady.others.clear();
     steady.shown.clear();
+    steady.exact.clear();
   }
   steady.present = filters.slice();
+  // Rebuy keeps the answer it just mapped; a full one may have left values out
+  const capped = isCapped(smartSearch.resultsPage.searchResults?.aggregates);
 
   if (!hasListTicks(query.filters)) {
     // Nothing ticked: these are the lists every later tick keeps. Rebuy returns
@@ -501,12 +533,12 @@ function captureSteady(smartSearch) {
       if (before?.has(group.id)) filter.values = inOrder(group, filter.values, before.get(group.id).values);
       steady.base.set(group.id, { filter, values: filter.values });
     }
-    steady.current = new Map();
-    steady.baseSig = signatureOf(query.filters);
+    Object.assign(steady, { current: new Map(), baseSig: signatureOf(query.filters), baseCapped: capped });
     steady.others.clear();
     steady.shown.clear();
     return;
   }
+  steady.capped = capped;
   steady.current = new Map(steady.present.filter(groupOf).map((filter) => [groupOf(filter).id, filter.values]));
   // Landed with ticks in the address: fetch the untouched lists first
   if (!steady.base) loadBase(smartSearch);
@@ -516,7 +548,8 @@ function captureSteady(smartSearch) {
 function applySteady(smartSearch) {
   const query = smartSearch?.resultsPage?.searchQuery;
   const filters = smartSearch?.resultsPage?.mappedAggregatedFilters;
-  if (!query || !Array.isArray(filters) || !steady.base) return;
+  // With nothing ticked Rebuy's own lists are right (and no current counts are kept)
+  if (!query || !Array.isArray(filters) || !steady.base || !hasListTicks(query.filters)) return;
 
   // A group Rebuy dropped (no value left) comes back from the first lists, greyed
   const shown = steady.present.slice();
@@ -528,25 +561,38 @@ function applySteady(smartSearch) {
     const entry = group && steady.base.get(group.id);
     if (!entry) continue;
     const picks = ticksOf(group, query.filters).map((tick) => tick.slice(group.prefix.length));
+    // Counts for the current ticks; a ticked group counts without its own tick
+    let counted = query.filters;
     let live = steady.current.get(group.id);
+    let capped = steady.capped;
     if (picks.length) {
-      // A ticked group counts what each of its values would give instead
-      const sig = signatureOf(query.filters, group);
+      counted = withoutGroup(query.filters, group);
+      const othersSig = signatureOf(counted);
       const other = steady.others.get(group.id);
-      if (other?.sig === sig) live = other.values;
-      else if (sig === steady.baseSig) live = entry.values;
+      if (other?.sig === othersSig) ({ values: live, capped } = other);
+      else if (othersSig === steady.baseSig) [live, capped] = [entry.values, steady.baseCapped];
       else {
-        loadOthers(smartSearch, filter, group, sig);
+        loadOthers(smartSearch, filter, group, othersSig);
         const before = steady.shown.get(group.id);
         if (before) {
           filter.values = before; // keep what is on screen until the counts come
           continue;
         }
-        live = entry.values;
+        [live, capped] = [entry.values, steady.baseCapped];
       }
     }
-    filter.values = steadyValues(group, entry.values, live, picks);
+    // A value a full answer left out is not known to be 0 (see the note on top)
+    const sig = signatureOf(counted);
+    const unknown = [];
+    const missing = (key) => {
+      if (!capped || group.list !== 'metafields') return 0;
+      const exact = steady.exact.get(`${group.id}|${sig}|${key}`);
+      if (exact === undefined) unknown.push(key);
+      return exact ?? null;
+    };
+    filter.values = steadyValues(group, entry.values, live, picks, missing);
     steady.shown.set(group.id, filter.values);
+    if (unknown.length && filter.isExpanded) loadExact(smartSearch, group, counted, sig, unknown);
   }
   filters.splice(0, filters.length, ...shown);
 }
@@ -557,7 +603,7 @@ async function loadBase(smartSearch) {
   const term = steady.term;
   try {
     const filters = { ...clone(smartSearch.resultsPage.searchQuery.filters), tags: [], categories: [], options: [], vendors: [], metafields: [] };
-    const aggregates = await countSearch(smartSearch, filters);
+    const { aggregates } = await countSearch(smartSearch, filters);
     if (term !== steady.term || steady.base) return;
     const base = new Map();
     for (const filter of enabledFilters(smartSearch)) {
@@ -565,13 +611,15 @@ async function loadBase(smartSearch) {
       const values = group && labelled(filter, valuesFrom(aggregates, filter));
       if (values && Object.keys(values).length) base.set(group.id, { filter, values });
     }
-    Object.assign(steady, { base, baseSig: signatureOf(filters) });
+    Object.assign(steady, { base, baseSig: signatureOf(filters), baseCapped: isCapped(aggregates) });
     applySteady(smartSearch);
     smartSearch.resultsPage.view?.$forceUpdate?.();
   } catch (error) {
     console.warn('[spy-rebuy-search] steady filters:', error); // Rebuy's own lists stay
   } finally {
     steady.baseBusy = false;
+    // The search term changed while we waited: ask again for the new one
+    if (!steady.base && term !== steady.term && hasListTicks(smartSearch.resultsPage?.searchQuery?.filters)) loadBase(smartSearch);
   }
 }
 
@@ -581,11 +629,9 @@ async function loadOthers(smartSearch, filter, group, sig) {
   steady.busy.add(ask);
   const term = steady.term;
   try {
-    const filters = clone(smartSearch.resultsPage.searchQuery.filters);
-    filters[group.list] = (filters[group.list] || []).filter((entry) => !(typeof entry === 'string' && entry.startsWith(group.prefix)));
-    const aggregates = await countSearch(smartSearch, filters);
+    const { aggregates } = await countSearch(smartSearch, withoutGroup(smartSearch.resultsPage.searchQuery.filters, group));
     if (term !== steady.term) return;
-    steady.others.set(group.id, { sig, values: labelled(filter, valuesFrom(aggregates, filter)) });
+    steady.others.set(group.id, { sig, values: labelled(filter, valuesFrom(aggregates, filter)), capped: isCapped(aggregates) });
     applySteady(smartSearch);
     smartSearch.resultsPage.view?.$forceUpdate?.();
   } catch (error) {
@@ -593,6 +639,33 @@ async function loadOthers(smartSearch, filter, group, sig) {
   } finally {
     steady.busy.delete(ask);
   }
+}
+
+/** Exact counts for values a full answer left out, in an open group: one small search each. */
+async function loadExact(smartSearch, group, counted, sig, keys) {
+  const term = steady.term;
+  const ask = keys.map((key) => [key, `${group.id}|${sig}|${key}`]).filter(([, id]) => !steady.exactBusy.has(id)).slice(0, EXACT_MAX);
+  if (!ask.length) return;
+  await Promise.all(
+    ask.map(async ([key, id]) => {
+      steady.exactBusy.add(id);
+      try {
+        const filters = clone(counted);
+        filters[group.list] = [...(filters[group.list] || []), `${group.prefix}${key}`];
+        const { total } = await countSearch(smartSearch, filters);
+        if (term === steady.term) steady.exact.set(id, total);
+      } catch (error) {
+        // Stays without a number for this state, so a failing search is not asked again
+        if (term === steady.term) steady.exact.set(id, null);
+        console.warn('[spy-rebuy-search] steady filters:', error);
+      } finally {
+        steady.exactBusy.delete(id);
+      }
+    })
+  );
+  if (term !== steady.term) return;
+  applySteady(smartSearch);
+  smartSearch.resultsPage.view?.$forceUpdate?.();
 }
 
 /*
@@ -630,15 +703,32 @@ function wrapTickSwitch(smartSearch) {
   view.handleUpdateSearchQuery = switching;
 }
 
-// A value with no results under the other ticks stays listed, greyed and not tickable
+/** Opening a group is when the counts a full answer left out are worth asking for. */
+function wrapExpand(smartSearch) {
+  const view = smartSearch?.resultsPage?.view;
+  const toggle = view?.handleToggleFilterExpansion;
+  if (typeof toggle !== 'function' || toggle.spyCounts) return;
+  const opening = function (...args) {
+    const result = toggle.apply(this, args);
+    applySteady(smartSearch);
+    return result;
+  };
+  opening.spyCounts = true;
+  view.handleToggleFilterExpansion = opening;
+}
+
+// A value with no results under the other ticks stays listed, greyed and not tickable.
+// "()" is a value not counted yet: no number, still tickable.
 function markEmpty() {
   const inputs = document.querySelectorAll(
     '#rebuy-search-result-container input.rebuy-checkbox[id^="rebuy-metafield-"], #rebuy-search-result-container input.rebuy-checkbox[id^="rebuy-option-product-type-"]'
   );
   for (const input of inputs) {
     const row = input.closest('li');
-    const count = row?.querySelector('.rebuy-smart-search-results-page__filter-label')?.textContent.match(/\((\d+)\)/);
-    const empty = Boolean(count) && Number(count[1]) === 0 && !input.checked;
+    const label = row?.querySelector('.rebuy-smart-search-results-page__filter-label');
+    const count = label?.textContent.match(/\((\d*)\)/);
+    if (label) label.hidden = Boolean(count) && count[1] === '';
+    const empty = Boolean(count?.[1]) && Number(count[1]) === 0 && !input.checked;
     input.disabled = empty;
     row?.toggleAttribute('data-spy-empty', empty);
   }
