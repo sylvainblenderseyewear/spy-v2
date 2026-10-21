@@ -1,0 +1,26 @@
+[mcp_servers.playwright]
+startup_timeout_sec = 120
+command = "cmd"
+args = [
+    "/c",
+    "npx",
+    "-y",
+    "@playwright/mcp@latest",
+]
+
+[mcp_servers.shopify-dev-mcp]
+startup_timeout_sec = 120
+command = "cmd"
+args = [
+    "/c",
+    "npx",
+    "-y",
+    "@shopify/dev-mcp@latest",
+]
+
+[mcp_servers.shopify-dev-mcp.env]
+npm_config_cache = "C:\\Users\\Administrator\\.codex\\cache\\shopify-dev-mcp"
+npm_config_fetch_timeout = "20000"
+npm_config_fetch_retries = "2"
+npm_config_fetch_retry_mintimeout = "1000"
+npm_config_fetch_retry_maxtimeout = "5000"
