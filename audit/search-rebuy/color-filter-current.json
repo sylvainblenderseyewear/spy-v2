@@ -1,0 +1,2385 @@
+{
+  "checkedAt": "2026-10-20T18:18:45.010Z",
+  "shop": "spyoptic-com.myshopify.com",
+  "searchTerm": "sunglasses",
+  "filterSettings": [
+    {
+      "id": 19067,
+      "key": "",
+      "name": "Price",
+      "type": "price",
+      "index": 0,
+      "label": "",
+      "enabled": true,
+      "namespace": "default",
+      "excludeSpecific": false
+    },
+    {
+      "id": 19066,
+      "key": "",
+      "name": "Product Type",
+      "type": "product-type",
+      "index": 1,
+      "label": "Category",
+      "enabled": true,
+      "namespace": "default",
+      "excludeSpecific": false
+    },
+    {
+      "id": 19071,
+      "key": "collection",
+      "name": "Collection",
+      "type": "product-metafield",
+      "index": 2,
+      "label": "",
+      "enabled": true,
+      "namespace": "custom",
+      "excludeSpecific": false
+    },
+    {
+      "id": 19109,
+      "key": "color",
+      "name": "Color",
+      "type": "product-metafield",
+      "index": 3,
+      "label": "Color",
+      "enabled": true,
+      "namespace": "sort_by",
+      "excludeSpecific": false
+    },
+    {
+      "id": 19070,
+      "key": "",
+      "name": "size",
+      "type": "product-option",
+      "index": 4,
+      "label": "Size",
+      "enabled": true,
+      "namespace": "default",
+      "excludeSpecific": false
+    }
+  ],
+  "results": [
+    {
+      "name": "baseline",
+      "filters": {},
+      "status": 200,
+      "successful": true,
+      "total": 398,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Eyeglasses",
+              "numProducts": "149"
+            },
+            {
+              "categories": "Sunglasses",
+              "numProducts": "127"
+            },
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "61"
+            },
+            {
+              "categories": "Accessories",
+              "numProducts": "24"
+            },
+            {
+              "categories": "Snow Goggles",
+              "numProducts": "19"
+            },
+            {
+              "categories": "Gear",
+              "numProducts": "15"
+            },
+            {
+              "categories": "Snow Helmets",
+              "numProducts": "3"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 26,
+                  "value": "Tortoise"
+                },
+                {
+                  "numProducts": 6,
+                  "value": "Red"
+                },
+                {
+                  "numProducts": 32,
+                  "value": "Grey"
+                },
+                {
+                  "numProducts": 17,
+                  "value": "Brown"
+                },
+                {
+                  "numProducts": 176,
+                  "value": "Black"
+                },
+                {
+                  "numProducts": 11,
+                  "value": "White"
+                },
+                {
+                  "numProducts": 22,
+                  "value": "Blue"
+                },
+                {
+                  "numProducts": 16,
+                  "value": "Green"
+                },
+                {
+                  "numProducts": 10,
+                  "value": "Pink"
+                },
+                {
+                  "numProducts": 33,
+                  "value": "Clear"
+                }
+              ]
+            },
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 11,
+                  "value": "gid://shopify/Collection/510633673011"
+                },
+                {
+                  "numProducts": 9,
+                  "value": "gid://shopify/Collection/510637179187"
+                },
+                {
+                  "numProducts": 6,
+                  "value": "gid://shopify/Collection/510632755507"
+                },
+                {
+                  "numProducts": 6,
+                  "value": "gid://shopify/Collection/510634033459"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510635508019"
+                },
+                {
+                  "numProducts": 9,
+                  "value": "gid://shopify/Collection/510634131763"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510634230067"
+                },
+                {
+                  "numProducts": 9,
+                  "value": "gid://shopify/Collection/510636065075"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510633902387"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510636097843"
+                },
+                {
+                  "numProducts": 8,
+                  "value": "gid://shopify/Collection/510632526131"
+                },
+                {
+                  "numProducts": 14,
+                  "value": "gid://shopify/Collection/510636982579"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510635606323"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510636949811"
+                },
+                {
+                  "numProducts": 12,
+                  "value": "gid://shopify/Collection/510637441331"
+                },
+                {
+                  "numProducts": 7,
+                  "value": "gid://shopify/Collection/510635704627"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510632821043"
+                },
+                {
+                  "numProducts": 15,
+                  "value": "gid://shopify/Collection/510636687667"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510636425523"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510634295603"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Black",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Black"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 176,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Sunglasses",
+              "numProducts": "76"
+            },
+            {
+              "categories": "Eyeglasses",
+              "numProducts": "69"
+            },
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "11"
+            },
+            {
+              "categories": "Gear",
+              "numProducts": "8"
+            },
+            {
+              "categories": "Snow Goggles",
+              "numProducts": "8"
+            },
+            {
+              "categories": "Accessories",
+              "numProducts": "3"
+            },
+            {
+              "categories": "Snow Helmets",
+              "numProducts": "1"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510634197299"
+                },
+                {
+                  "numProducts": 8,
+                  "value": "gid://shopify/Collection/510637179187"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510634295603"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510635573555"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510633640243"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510635376947"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510634950963"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510634656051"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510635999539"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510634524979"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510632984883"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510632526131"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510633673011"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510632722739"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510634623283"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510634131763"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510634033459"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510635508019"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510636327219"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510633902387"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510632755507"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510637343027"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510633967923"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510635868467"
+                },
+                {
+                  "numProducts": 7,
+                  "value": "gid://shopify/Collection/510636687667"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510632821043"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510634918195"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510636458291"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510634328371"
+                }
+              ]
+            },
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 176,
+                  "value": "Black"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Blue",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Blue"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 22,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "9"
+            },
+            {
+              "categories": "Eyeglasses",
+              "numProducts": "7"
+            },
+            {
+              "categories": "Sunglasses",
+              "numProducts": "5"
+            },
+            {
+              "categories": "Gear",
+              "numProducts": "1"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 22,
+                  "value": "Blue"
+                }
+              ]
+            },
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634983731"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636949811"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633673011"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632526131"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632755507"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637474099"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510637441331"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510634131763"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635573555"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510635704627"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634197299"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637113651"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632821043"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635147571"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637277491"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636065075"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634230067"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Brown",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Brown"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 17,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Sunglasses",
+              "numProducts": "9"
+            },
+            {
+              "categories": "Gear",
+              "numProducts": "3"
+            },
+            {
+              "categories": "Eyeglasses",
+              "numProducts": "2"
+            },
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "2"
+            },
+            {
+              "categories": "Snow Helmets",
+              "numProducts": "1"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633902387"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635704627"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635573555"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635114803"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634492211"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635147571"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634033459"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634361139"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634983731"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636949811"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637310259"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632722739"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633115955"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637015347"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635344179"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636327219"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635934003"
+                }
+              ]
+            },
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 17,
+                  "value": "Brown"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Champagne",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Champagne"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 0,
+      "aggregates": []
+    },
+    {
+      "name": "Clear",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Clear"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 33,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Eyeglasses",
+              "numProducts": "23"
+            },
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "8"
+            },
+            {
+              "categories": "Sunglasses",
+              "numProducts": "2"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636523827"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632591667"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636163379"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633312563"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510632526131"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634131763"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635639091"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632984883"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632919347"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636065075"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633804083"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633214259"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634787123"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635245875"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632755507"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635835699"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635508019"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636556595"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633410867"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634295603"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635606323"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636097843"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634983731"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636425523"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634426675"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635311411"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633607475"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633181491"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634623283"
+                }
+              ]
+            },
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 33,
+                  "value": "Clear"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Gold",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Gold"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 1,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "1"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635704627"
+                }
+              ]
+            },
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "Gold"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Green",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Green"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 16,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Sunglasses",
+              "numProducts": "9"
+            },
+            {
+              "categories": "Eyeglasses",
+              "numProducts": "4"
+            },
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "3"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637441331"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633902387"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635934003"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634361139"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635966771"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510633673011"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510636687667"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633574707"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635540787"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632526131"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633115955"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636785971"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634033459"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632755507"
+                }
+              ]
+            },
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 16,
+                  "value": "Green"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Grey",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Grey"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 32,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Sunglasses",
+              "numProducts": "13"
+            },
+            {
+              "categories": "Eyeglasses",
+              "numProducts": "11"
+            },
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "6"
+            },
+            {
+              "categories": "Accessories",
+              "numProducts": "1"
+            },
+            {
+              "categories": "Snow Helmets",
+              "numProducts": "1"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633115955"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635114803"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510634295603"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636163379"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636982579"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635704627"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635868467"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633279795"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636785971"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634033459"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637343027"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635278643"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635606323"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636097843"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632821043"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634819891"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637539635"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635901235"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510636425523"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637310259"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635934003"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510636065075"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510634361139"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510636687667"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636523827"
+                }
+              ]
+            },
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 32,
+                  "value": "Grey"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orange",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Orange"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 5,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "3"
+            },
+            {
+              "categories": "Accessories",
+              "numProducts": "1"
+            },
+            {
+              "categories": "Sunglasses",
+              "numProducts": "1"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 5,
+                  "value": "Orange"
+                }
+              ]
+            },
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633673011"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634230067"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636065075"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636982579"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637179187"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pink",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Pink"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 10,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Eyeglasses",
+              "numProducts": "6"
+            },
+            {
+              "categories": "Snow Goggles",
+              "numProducts": "2"
+            },
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "1"
+            },
+            {
+              "categories": "Sunglasses",
+              "numProducts": "1"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634131763"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634819891"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635966771"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636359987"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510633279795"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634426675"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636065075"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637211955"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633869619"
+                }
+              ]
+            },
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 10,
+                  "value": "Pink"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Purple",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Purple"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 6,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Sunglasses",
+              "numProducts": "3"
+            },
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "2"
+            },
+            {
+              "categories": "Eyeglasses",
+              "numProducts": "1"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 6,
+                  "value": "Purple"
+                }
+              ]
+            },
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633673011"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633902387"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634000691"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634131763"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636687667"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637441331"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Rainbow",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Rainbow"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 3,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "2"
+            },
+            {
+              "categories": "Accessories",
+              "numProducts": "1"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 3,
+                  "value": "Rainbow"
+                }
+              ]
+            },
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635704627"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636327219"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636982579"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Red",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Red"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 6,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "4"
+            },
+            {
+              "categories": "Eyeglasses",
+              "numProducts": "1"
+            },
+            {
+              "categories": "Snow Goggles",
+              "numProducts": "1"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510637441331"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634230067"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635639091"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637211955"
+                }
+              ]
+            },
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 6,
+                  "value": "Red"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Silver",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Silver"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 3,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Eyeglasses",
+              "numProducts": "2"
+            },
+            {
+              "categories": "Sunglasses",
+              "numProducts": "1"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635213107"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637113651"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634721587"
+                }
+              ]
+            },
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 3,
+                  "value": "Silver"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tortoise",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Tortoise"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 26,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Eyeglasses",
+              "numProducts": "22"
+            },
+            {
+              "categories": "Sunglasses",
+              "numProducts": "4"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633083187"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636556595"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632624435"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632689971"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633574707"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633607475"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635245875"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635540787"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510636687667"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632984883"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510632755507"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636097843"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633967923"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637474099"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637179187"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635639091"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633181491"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633410867"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634787123"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635606323"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635901235"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635835699"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636425523"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634623283"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633017651"
+                }
+              ]
+            },
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 26,
+                  "value": "Tortoise"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "White",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.White"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 11,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Snow Goggles",
+              "numProducts": "4"
+            },
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "3"
+            },
+            {
+              "categories": "Sunglasses",
+              "numProducts": "2"
+            },
+            {
+              "categories": "Eyeglasses",
+              "numProducts": "1"
+            },
+            {
+              "categories": "Gear",
+              "numProducts": "1"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510633673011"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510634918195"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633869619"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634230067"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636687667"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637113651"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636228915"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636491059"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633050419"
+                }
+              ]
+            },
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 11,
+                  "value": "White"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Yellow",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Yellow"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 1,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Motocross Goggles",
+              "numProducts": "1"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510636065075"
+                }
+              ]
+            },
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 1,
+                  "value": "Yellow"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Black + Blue",
+      "filters": {
+        "metafields": [
+          "product.sort_by.color.Black",
+          "product.sort_by.color.Blue"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 0,
+      "aggregates": []
+    },
+    {
+      "name": "Sunglasses category",
+      "filters": {
+        "categories": [
+          "Sunglasses"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 127,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Sunglasses",
+              "numProducts": "127"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 9,
+                  "value": "Brown"
+                },
+                {
+                  "numProducts": 13,
+                  "value": "Grey"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "Purple"
+                },
+                {
+                  "numProducts": 76,
+                  "value": "Black"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "Blue"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "Tortoise"
+                },
+                {
+                  "numProducts": 9,
+                  "value": "Green"
+                }
+              ]
+            },
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510632821043"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510633902387"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510637310259"
+                },
+                {
+                  "numProducts": 15,
+                  "value": "gid://shopify/Collection/510636687667"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510634950963"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510634524979"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510634328371"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510635999539"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510635573555"
+                },
+                {
+                  "numProducts": 10,
+                  "value": "gid://shopify/Collection/510637179187"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510635868467"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510637343027"
+                },
+                {
+                  "numProducts": 9,
+                  "value": "gid://shopify/Collection/510634131763"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510634361139"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510637113651"
+                },
+                {
+                  "numProducts": 6,
+                  "value": "gid://shopify/Collection/510635508019"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510635934003"
+                },
+                {
+                  "numProducts": 6,
+                  "value": "gid://shopify/Collection/510634033459"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510635540787"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510632722739"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510633115955"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510633640243"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510636785971"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Eyeglasses category",
+      "filters": {
+        "categories": [
+          "Eyeglasses"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 149,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Eyeglasses",
+              "numProducts": "149"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510632984883"
+                },
+                {
+                  "numProducts": 6,
+                  "value": "gid://shopify/Collection/510636425523"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510636949811"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510636523827"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510634197299"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510634623283"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510633279795"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510635901235"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510633607475"
+                },
+                {
+                  "numProducts": 6,
+                  "value": "gid://shopify/Collection/510632755507"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510634983731"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510633967923"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510634295603"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510635606323"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510635376947"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510634426675"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510635245875"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510636556595"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510635639091"
+                },
+                {
+                  "numProducts": 8,
+                  "value": "gid://shopify/Collection/510632526131"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510636097843"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510633181491"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510633410867"
+                }
+              ]
+            },
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 23,
+                  "value": "Clear"
+                },
+                {
+                  "numProducts": 22,
+                  "value": "Tortoise"
+                },
+                {
+                  "numProducts": 6,
+                  "value": "Pink"
+                },
+                {
+                  "numProducts": 11,
+                  "value": "Grey"
+                },
+                {
+                  "numProducts": 7,
+                  "value": "Blue"
+                },
+                {
+                  "numProducts": 69,
+                  "value": "Black"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "Green"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sunglasses + Eyeglasses categories",
+      "filters": {
+        "categories": [
+          "Sunglasses",
+          "Eyeglasses"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 0,
+      "aggregates": []
+    },
+    {
+      "name": "Sunglasses category + Black",
+      "filters": {
+        "categories": [
+          "Sunglasses"
+        ],
+        "metafields": [
+          "product.sort_by.color.Black"
+        ]
+      },
+      "status": 200,
+      "successful": true,
+      "total": 76,
+      "aggregates": [
+        {
+          "categories": [
+            {
+              "categories": "Sunglasses",
+              "numProducts": "76"
+            }
+          ]
+        },
+        {
+          "metafields": [
+            {
+              "key": "collection",
+              "metafieldType": "product",
+              "namespace": "custom",
+              "values": [
+                {
+                  "numProducts": 8,
+                  "value": "gid://shopify/Collection/510637179187"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510633902387"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634557747"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633115955"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634590515"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510633541939"
+                },
+                {
+                  "numProducts": 7,
+                  "value": "gid://shopify/Collection/510636687667"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510634328371"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637015347"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510633640243"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510635999539"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510632722739"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637310259"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510632821043"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510637113651"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510635540787"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510637343027"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510635573555"
+                },
+                {
+                  "numProducts": 5,
+                  "value": "gid://shopify/Collection/510635508019"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634361139"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510635868467"
+                },
+                {
+                  "numProducts": 4,
+                  "value": "gid://shopify/Collection/510634131763"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510634033459"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510634098995"
+                },
+                {
+                  "numProducts": 1,
+                  "value": "gid://shopify/Collection/510637408563"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510634524979"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510635934003"
+                },
+                {
+                  "numProducts": 3,
+                  "value": "gid://shopify/Collection/510634950963"
+                },
+                {
+                  "numProducts": 2,
+                  "value": "gid://shopify/Collection/510636785971"
+                }
+              ]
+            },
+            {
+              "key": "color",
+              "metafieldType": "product",
+              "namespace": "sort_by",
+              "values": [
+                {
+                  "numProducts": 76,
+                  "value": "Black"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

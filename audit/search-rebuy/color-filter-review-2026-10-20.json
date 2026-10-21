@@ -1,0 +1,526 @@
+{
+  "checkedAt": "2026-10-20T21:38:30.037Z",
+  "shop": "spyoptic-com.myshopify.com",
+  "repositoryHead": "490ec26",
+  "source": "assets/spy-rebuy-search.js",
+  "scope": "Read-only review of deployed Rebuy color filter logic; no theme code or Rebuy settings changed.",
+  "api": {
+    "checkedAt": "2026-10-20T21:33:48.974Z",
+    "searchTerm": "sunglasses",
+    "checks": [
+      {
+        "name": "baseline",
+        "status": 200,
+        "total": 398,
+        "metafieldValues": 30,
+        "colors": [
+          {
+            "numProducts": 22,
+            "value": "Blue"
+          },
+          {
+            "numProducts": 33,
+            "value": "Clear"
+          },
+          {
+            "numProducts": 17,
+            "value": "Brown"
+          },
+          {
+            "numProducts": 26,
+            "value": "Tortoise"
+          },
+          {
+            "numProducts": 16,
+            "value": "Green"
+          },
+          {
+            "numProducts": 11,
+            "value": "White"
+          },
+          {
+            "numProducts": 10,
+            "value": "Pink"
+          },
+          {
+            "numProducts": 6,
+            "value": "Red"
+          },
+          {
+            "numProducts": 32,
+            "value": "Grey"
+          },
+          {
+            "numProducts": 176,
+            "value": "Black"
+          }
+        ]
+      },
+      {
+        "name": "Gold",
+        "status": 200,
+        "total": 1,
+        "metafieldValues": 2,
+        "colors": [
+          {
+            "numProducts": 1,
+            "value": "Gold"
+          }
+        ]
+      },
+      {
+        "name": "Orange",
+        "status": 200,
+        "total": 5,
+        "metafieldValues": 6,
+        "colors": [
+          {
+            "numProducts": 5,
+            "value": "Orange"
+          }
+        ]
+      },
+      {
+        "name": "Purple",
+        "status": 200,
+        "total": 6,
+        "metafieldValues": 7,
+        "colors": [
+          {
+            "numProducts": 6,
+            "value": "Purple"
+          }
+        ]
+      },
+      {
+        "name": "Rainbow",
+        "status": 200,
+        "total": 3,
+        "metafieldValues": 4,
+        "colors": [
+          {
+            "numProducts": 3,
+            "value": "Rainbow"
+          }
+        ]
+      },
+      {
+        "name": "Silver",
+        "status": 200,
+        "total": 3,
+        "metafieldValues": 4,
+        "colors": [
+          {
+            "numProducts": 3,
+            "value": "Silver"
+          }
+        ]
+      },
+      {
+        "name": "Yellow",
+        "status": 200,
+        "total": 1,
+        "metafieldValues": 2,
+        "colors": [
+          {
+            "numProducts": 1,
+            "value": "Yellow"
+          }
+        ]
+      },
+      {
+        "name": "Champagne",
+        "status": 200,
+        "total": 0,
+        "metafieldValues": 0,
+        "colors": []
+      },
+      {
+        "name": "Black + Blue",
+        "status": 200,
+        "total": 0,
+        "metafieldValues": 0,
+        "colors": []
+      }
+    ]
+  },
+  "desktopSelections": [
+    {
+      "total": 176,
+      "filters": {
+        "price": {},
+        "tags": [],
+        "categories": [],
+        "options": [],
+        "vendors": [],
+        "metafields": [
+          "product.sort_by.color.Black"
+        ]
+      },
+      "colors": [
+        {
+          "numProducts": 16,
+          "value": "Green"
+        },
+        {
+          "numProducts": 33,
+          "value": "Clear"
+        },
+        {
+          "numProducts": 17,
+          "value": "Brown"
+        },
+        {
+          "numProducts": 176,
+          "value": "Black"
+        },
+        {
+          "numProducts": 11,
+          "value": "White"
+        },
+        {
+          "numProducts": 10,
+          "value": "Pink"
+        },
+        {
+          "numProducts": 6,
+          "value": "Red"
+        },
+        {
+          "numProducts": 26,
+          "value": "Tortoise"
+        },
+        {
+          "numProducts": 32,
+          "value": "Grey"
+        },
+        {
+          "numProducts": 22,
+          "value": "Blue"
+        }
+      ],
+      "checked": [
+        "rebuy-metafield-product-metafield-color-Black"
+      ],
+      "filterGroupIds": [
+        19067,
+        19066,
+        19071,
+        19109,
+        19070
+      ]
+    },
+    {
+      "total": 22,
+      "filters": {
+        "price": {},
+        "tags": [],
+        "categories": [],
+        "options": [],
+        "vendors": [],
+        "metafields": [
+          "product.sort_by.color.Blue"
+        ]
+      },
+      "colors": [
+        {
+          "numProducts": 16,
+          "value": "Green"
+        },
+        {
+          "numProducts": 33,
+          "value": "Clear"
+        },
+        {
+          "numProducts": 17,
+          "value": "Brown"
+        },
+        {
+          "numProducts": 176,
+          "value": "Black"
+        },
+        {
+          "numProducts": 11,
+          "value": "White"
+        },
+        {
+          "numProducts": 10,
+          "value": "Pink"
+        },
+        {
+          "numProducts": 6,
+          "value": "Red"
+        },
+        {
+          "numProducts": 26,
+          "value": "Tortoise"
+        },
+        {
+          "numProducts": 32,
+          "value": "Grey"
+        },
+        {
+          "numProducts": 22,
+          "value": "Blue"
+        }
+      ],
+      "checked": [
+        "rebuy-metafield-product-metafield-color-Blue"
+      ],
+      "filterGroupIds": [
+        19067,
+        19066,
+        19071,
+        19109,
+        19070
+      ]
+    }
+  ],
+  "categoryCounts": {
+    "total": 127,
+    "filters": {
+      "price": {},
+      "tags": [],
+      "categories": [
+        "Sunglasses"
+      ],
+      "options": [],
+      "vendors": [],
+      "metafields": []
+    },
+    "colors": [
+      {
+        "numProducts": 9,
+        "value": "Green"
+      },
+      {
+        "numProducts": 2,
+        "value": "Clear"
+      },
+      {
+        "numProducts": 9,
+        "value": "Brown"
+      },
+      {
+        "numProducts": 76,
+        "value": "Black"
+      },
+      {
+        "numProducts": 2,
+        "value": "White"
+      },
+      {
+        "numProducts": 1,
+        "value": "Pink"
+      },
+      {
+        "numProducts": 0,
+        "value": "Red"
+      },
+      {
+        "numProducts": 4,
+        "value": "Tortoise"
+      },
+      {
+        "numProducts": 13,
+        "value": "Grey"
+      },
+      {
+        "numProducts": 5,
+        "value": "Blue"
+      },
+      {
+        "numProducts": 3,
+        "value": "Purple"
+      }
+    ],
+    "rows": [
+      {
+        "color": "Green",
+        "disabled": false,
+        "checked": false,
+        "count": "(9)"
+      },
+      {
+        "color": "Clear",
+        "disabled": false,
+        "checked": false,
+        "count": "(2)"
+      },
+      {
+        "color": "Brown",
+        "disabled": false,
+        "checked": false,
+        "count": "(9)"
+      },
+      {
+        "color": "Black",
+        "disabled": false,
+        "checked": false,
+        "count": "(76)"
+      },
+      {
+        "color": "White",
+        "disabled": false,
+        "checked": false,
+        "count": "(2)"
+      },
+      {
+        "color": "Pink",
+        "disabled": false,
+        "checked": false,
+        "count": "(1)"
+      },
+      {
+        "color": "Red",
+        "disabled": true,
+        "checked": false,
+        "count": "(0)"
+      },
+      {
+        "color": "Tortoise",
+        "disabled": false,
+        "checked": false,
+        "count": "(4)"
+      },
+      {
+        "color": "Grey",
+        "disabled": false,
+        "checked": false,
+        "count": "(13)"
+      },
+      {
+        "color": "Blue",
+        "disabled": false,
+        "checked": false,
+        "count": "(5)"
+      },
+      {
+        "color": "Purple",
+        "disabled": false,
+        "checked": false,
+        "count": "(3)"
+      }
+    ]
+  },
+  "mobile": {
+    "selected": {
+      "width": 390,
+      "total": 2,
+      "filters": {
+        "price": {},
+        "tags": [],
+        "categories": [
+          "Sunglasses"
+        ],
+        "options": [],
+        "vendors": [],
+        "metafields": [
+          "product.sort_by.color.White"
+        ]
+      },
+      "colors": [
+        {
+          "numProducts": 9,
+          "value": "Green"
+        },
+        {
+          "numProducts": 2,
+          "value": "Clear"
+        },
+        {
+          "numProducts": 9,
+          "value": "Brown"
+        },
+        {
+          "numProducts": 76,
+          "value": "Black"
+        },
+        {
+          "numProducts": 2,
+          "value": "White"
+        },
+        {
+          "numProducts": 1,
+          "value": "Pink"
+        },
+        {
+          "numProducts": 0,
+          "value": "Red"
+        },
+        {
+          "numProducts": 4,
+          "value": "Tortoise"
+        },
+        {
+          "numProducts": 13,
+          "value": "Grey"
+        },
+        {
+          "numProducts": 5,
+          "value": "Blue"
+        },
+        {
+          "numProducts": 3,
+          "value": "Purple"
+        }
+      ]
+    },
+    "reset": {
+      "total": 398,
+      "filters": {
+        "price": {},
+        "tags": [],
+        "categories": [],
+        "options": [],
+        "vendors": [],
+        "metafields": []
+      },
+      "colorCount": 10
+    }
+  },
+  "tablet": {
+    "width": 768,
+    "total": 398,
+    "colors": [
+      "Green",
+      "Clear",
+      "Brown",
+      "Black",
+      "White",
+      "Pink",
+      "Red",
+      "Tortoise",
+      "Grey",
+      "Blue"
+    ]
+  },
+  "finding": {
+    "title": "Initial Color options omit valid values because the shared metafield aggregation is capped.",
+    "severity": "P2",
+    "hiddenNonzeroColors": {
+      "Gold": 1,
+      "Orange": 5,
+      "Purple": 6,
+      "Rainbow": 3,
+      "Silver": 3,
+      "Yellow": 1
+    },
+    "sourceLines": [
+      425,
+      435,
+      525,
+      534,
+      584,
+      595
+    ],
+    "reason": "captureSteady uses only values returned in the initial aggregate. Exact count requests can repair counts for known values but cannot discover color names omitted from that aggregate.",
+    "suggestedDirection": "Build Color options from the complete configured group list and obtain counts for groups missing from capped aggregates."
+  },
+  "screenshots": [
+    "audit/search-rebuy/color-filter-review-baseline-1440.png",
+    "audit/search-rebuy/color-filter-review-selected-390.png",
+    "audit/search-rebuy/color-filter-review-baseline-768.png"
+  ],
+  "console": "Observed accessiBe configuration 404 and one cart.js connection-closed error; no spy-rebuy-search.js error observed."
+}
