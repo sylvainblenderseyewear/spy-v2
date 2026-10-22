@@ -13,15 +13,29 @@ const SOURCE = readFileSync(new URL('../audit/ga4-custom-pixel.js', import.meta.
 
 const tick = () => new Promise((r) => setTimeout(r, 0));
 
+const DOM_EVENTS = ['clicked', 'form_submitted', 'input_blurred', 'input_changed', 'input_focused'];
+
 // A fresh pixel per test, so state never leaks between them
 function load({ cookies = {} } = {}) {
   const handlers = {};
   const privacy = {};
   const store = new Map();
+  const docListeners = {};
+  const winListeners = {};
+  const on = (list) => (type, fn) => (list[type] = list[type] || []).push(fn);
   const ctx = {
     console,
     atob,
-    document: { createElement: () => ({}), head: { appendChild() {} } },
+    URL,
+    URLSearchParams,
+    __now: 1_000_000,
+    document: {
+      createElement: () => ({}),
+      head: { appendChild() {} },
+      visibilityState: 'visible',
+      addEventListener: on(docListeners),
+    },
+    addEventListener: on(winListeners),
     analytics: { subscribe: (name, fn) => (handlers[name] = fn) },
     browser: {
       cookie: { get: async (name) => cookies[name] || '' },
@@ -38,16 +52,27 @@ function load({ cookies = {} } = {}) {
   };
   ctx.window = ctx;
   vm.createContext(ctx);
+  vm.runInContext('Date.now = () => globalThis.__now;', ctx); // a clock the tests can move
   vm.runInContext(SOURCE, ctx);
 
   const calls = () => ctx.dataLayer.map((a) => Array.from(a));
   const events = (name) => calls().filter((c) => c[0] === 'event' && (!name || c[1] === name));
+  // Shopify also hands every event to the matching bulk subscription
   const fire = async (name, payload) => {
-    await handlers[name](payload);
+    const bulk = DOM_EVENTS.includes(name) ? 'all_dom_events' : name.startsWith('custom_') ? 'all_custom_events' : 'all_standard_events';
+    const event = { name, ...payload };
+    if (handlers[bulk]) await handlers[bulk](event);
+    if (handlers[name]) await handlers[name](event);
     await tick();
   };
   const consent = (c) => privacy.visitorConsentCollected({ customerPrivacy: c });
-  return { fire, consent, calls, events };
+  const advance = (ms) => (ctx.__now += ms);
+  const setVisible = (visible) => {
+    ctx.document.visibilityState = visible ? 'visible' : 'hidden';
+    (docListeners.visibilitychange || []).forEach((fn) => fn());
+  };
+  const pagehide = () => (winListeners.pagehide || []).forEach((fn) => fn());
+  return { fire, consent, calls, events, advance, setVisible, pagehide };
 }
 
 const doc = { context: { document: { location: { href: 'https://spyoptic.com/checkouts/cn/TOKEN123/en-us' }, title: 'Checkout', referrer: '' } } };
@@ -181,6 +206,123 @@ function check(name, ok, detail = '') {
   check('select_promotion has the banner as its item',
     click && Array.isArray(click[2].items) && click[2].items[0].item_id === 'promo_b1',
     JSON.stringify(click && click[2].items));
+}
+
+const all = { analyticsProcessingAllowed: true, marketingAllowed: true, saleOfDataAllowed: true };
+const viewed = { ...doc, data: { productVariant: variant } };
+const click = (href) => ({ ...doc, data: { element: { tagName: 'A', href } } });
+const page = (href) => ({ context: { document: { location: { href }, title: 'SPY', referrer: '' } } });
+const engaged = (p) => p.events().reduce((sum, e) => sum + ((e[2] && e[2].engagement_time_msec) || 0), 0);
+
+// Engagement: visible time rides on the next event, like gtag does on a normal page
+{
+  const p = load();
+  p.consent(all);
+  await p.fire('page_viewed', doc);
+  p.advance(12000);
+  await p.fire('product_viewed', viewed);
+  await p.fire('product_viewed', viewed);
+  const [first, second] = p.events('view_item');
+  check('next event carries the visible time', first && first[2].engagement_time_msec === 12000, JSON.stringify(first && first[2]));
+  check('time is not counted twice', second && !('engagement_time_msec' in second[2]), JSON.stringify(second && second[2]));
+}
+
+// Hiding the page sends what is left; time spent hidden doesn't count
+{
+  const p = load();
+  p.consent(all);
+  await p.fire('page_viewed', doc);
+  p.advance(8000);
+  p.setVisible(false);
+  p.advance(60000);
+  p.setVisible(true);
+  p.advance(3000);
+  p.pagehide();
+  const sent = p.events('user_engagement').map((e) => e[2].engagement_time_msec);
+  check('hidden page sends user_engagement', sent[0] === 8000, JSON.stringify(sent));
+  check('leaving the page sends the rest, hidden time left out', sent[1] === 3000 && sent.length === 2, JSON.stringify(sent));
+}
+
+// A tab left open stops counting after 5 idle minutes; a click starts it again
+{
+  const p = load();
+  p.consent(all);
+  await p.fire('page_viewed', doc);
+  p.advance(10 * 60000);
+  await p.fire('clicked', click('/collections/sunglasses'));
+  p.advance(4000);
+  p.setVisible(false);
+  check('idle time is capped at 5 minutes', engaged(p) === 5 * 60000 + 4000, String(engaged(p)));
+}
+
+// Blips under a second are noise
+{
+  const p = load();
+  p.consent(all);
+  await p.fire('page_viewed', doc);
+  p.advance(400);
+  p.setVisible(false);
+  check('sub-second visit sends no user_engagement', p.events('user_engagement').length === 0);
+}
+
+// No choice yet: engagement waits like everything else
+{
+  const p = load();
+  await p.fire('page_viewed', doc);
+  p.advance(20000);
+  p.setVisible(false);
+  await p.fire('clicked', click('https://www.instagram.com/spyoptic/'));
+  check('no choice: no engagement or clicks sent', p.events().length === 0, JSON.stringify(p.events()));
+}
+
+// Outbound links and file downloads, as GA4's own enhanced measurement reports them
+{
+  const p = load();
+  p.consent(all);
+  await p.fire('clicked', click('https://stores.spyoptic.com/search?q=boston#map'));
+  const out = p.events('click')[0];
+  check('outbound click is sent', out && out[2].outbound === true && out[2].link_domain === 'stores.spyoptic.com', JSON.stringify(out && out[2]));
+  check('outbound click drops the query string', out && out[2].link_url === 'https://stores.spyoptic.com/search', JSON.stringify(out && out[2].link_url));
+
+  await p.fire('clicked', click('/collections/sunglasses'));
+  await p.fire('clicked', click('https://www.spyoptic.com/pages/about'));
+  await p.fire('clicked', click('mailto:help@spyoptic.com'));
+  await p.fire('clicked', { ...doc, data: { element: { tagName: 'BUTTON', href: null } } });
+  check('own links, mailto and buttons send nothing', p.events('click').length === 1, JSON.stringify(p.events('click')));
+
+  await p.fire('clicked', click('https://cdn.shopify.com/s/files/1/size-chart.PDF?v=3'));
+  const file = p.events('file_download')[0];
+  check('file link sends file_download',
+    file && file[2].file_extension === 'pdf' && file[2].file_name === 'size-chart.PDF' && file[2].link_url === 'https://cdn.shopify.com/s/files/1/size-chart.PDF',
+    JSON.stringify(file && file[2]));
+}
+
+// Newsletter and contact sign-ups count as leads, once per tab
+{
+  const p = load();
+  p.consent(all);
+  await p.fire('page_viewed', page('https://spyoptic.com/?customer_posted=true#footer'));
+  const set = p.calls().filter((c) => c[0] === 'set').pop();
+  await p.fire('page_viewed', page('https://spyoptic.com/?customer_posted=true#footer')); // refresh
+  await p.fire('page_viewed', page('https://spyoptic.com/pages/contact?contact_posted=true#contact_form'));
+  await p.fire('page_viewed', page('https://spyoptic.com/pages/contact'));
+  const leads = p.events('generate_lead').map((e) => e[2].lead_source);
+  check('sign-ups send generate_lead once each', JSON.stringify(leads) === '["newsletter","contact_form"]', JSON.stringify(leads));
+  check('the success flag stays out of page_location', set && !/customer_posted/.test(set[1].page_location), JSON.stringify(set && set[1]));
+}
+
+// Contact and address steps, once per checkout like shipping
+{
+  const p = load();
+  p.consent(all);
+  for (let i = 0; i < 2; i++) {
+    await p.fire('checkout_contact_info_submitted', checkout('F'));
+    await p.fire('checkout_address_info_submitted', checkout('F'));
+  }
+  check('add_contact_info once per checkout', p.events('add_contact_info').length === 1);
+  check('add_address_info once per checkout', p.events('add_address_info').length === 1);
+  const a = p.events('add_address_info')[0];
+  check('checkout steps carry value and items', a && a[2].value === 155 && a[2].currency === 'USD' && a[2].items.length === 1, JSON.stringify(a && a[2]));
 }
 
 console.log(failed ? `\n${failed} failed` : '\nall passed');

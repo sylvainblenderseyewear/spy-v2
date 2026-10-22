@@ -32,15 +32,17 @@ const pending = [];
 const PENDING_MAX = 50;
 
 function gtag() {
-  const cmd = arguments[0];
+  let args = arguments;
+  const cmd = args[0];
+  if (cmd === 'event') args = withEngagement(args);
   if (cmd === 'event' || cmd === 'set') {
     if (consentDeclined) return;
     if (!consentReady) {
-      if (pending.length < PENDING_MAX) pending.push(arguments);
+      if (pending.length < PENDING_MAX) pending.push(args);
       return;
     }
   }
-  dataLayer.push(arguments);
+  dataLayer.push(args);
 }
 
 // Block everything until the shopper has chosen.
@@ -51,6 +53,83 @@ gtag('consent', 'default', {
   ad_personalization: 'denied',
   wait_for_update: 500,
 });
+
+/* ---------- engagement time ---------- */
+
+/*
+  GA4 reads engagement time from engagement_time_msec (gtag sends it as `_et`).
+  gtag only counts while its own frame has focus, and this sandbox frame never
+  has it, so GA4 got none: engagement time read zero and every one-page visit
+  looked like a bounce. Count the time the page is visible instead and put it
+  on the next event, as gtag does on a normal page. Stop counting after 5
+  minutes with no sign of the shopper.
+*/
+const IDLE_MS = 5 * 60 * 1000;
+let lastActive = Date.now();
+let visibleSince = isVisible() ? lastActive : null;
+let banked = 0;
+
+function isVisible() {
+  return document.visibilityState !== 'hidden';
+}
+
+// Move the visible time so far into the bank, up to the idle cut-off
+function bank() {
+  if (visibleSince === null) return;
+  const now = Date.now();
+  const end = Math.min(now, lastActive + IDLE_MS);
+  if (end > visibleSince) banked += end - visibleSince;
+  visibleSince = now;
+}
+
+function takeEngagement() {
+  bank();
+  const ms = Math.round(banked);
+  banked = 0;
+  return ms;
+}
+
+function markActive() {
+  bank();
+  lastActive = Date.now();
+}
+
+// gtag only reads real `arguments` objects from the dataLayer
+function asArguments() {
+  return arguments;
+}
+
+function withEngagement(args) {
+  const params = args[2] || {};
+  if ('engagement_time_msec' in params) return args;
+  const ms = takeEngagement();
+  return ms ? asArguments(args[0], args[1], Object.assign({}, params, { engagement_time_msec: ms })) : args;
+}
+
+function sendEngagement() {
+  bank();
+  visibleSince = null;
+  const ms = takeEngagement();
+  // A blip under a second is not engagement
+  if (ms >= 1000) gtag('event', 'user_engagement', { engagement_time_msec: ms });
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (isVisible()) {
+    lastActive = Date.now();
+    visibleSince = lastActive;
+  } else {
+    sendEngagement();
+  }
+});
+
+// Leaving the page: send the rest before this frame goes away
+window.addEventListener('pagehide', sendEngagement);
+
+// Clicks, typing, banners scrolling into view and Shopify events all mean someone is there
+analytics.subscribe('all_standard_events', markActive);
+analytics.subscribe('all_custom_events', markActive);
+analytics.subscribe('all_dom_events', markActive);
 
 /*
   Opt-in everywhere, like Blenders: GA4 waits for an explicit choice.
@@ -188,7 +267,7 @@ function item(v, qty) {
   internal params. Campaign params (utm_*, gclid, fbclid) must survive — GA4
   reads attribution straight off page_location.
 */
-const JUNK_PARAMS = ['_r', '_fd', '_ab', '_sm', 'preview_theme_id'];
+const JUNK_PARAMS = ['_r', '_fd', '_ab', '_sm', 'preview_theme_id', 'customer_posted', 'contact_posted'];
 
 function cleanUrl(href) {
   try {
@@ -218,11 +297,32 @@ function setPage(event) {
   });
 }
 
+/*
+  The footer sign-up and the contact page are plain Shopify forms. After a
+  good submit Shopify reloads the page with customer_posted=true or
+  contact_posted=true, so that is the moment to count a lead.
+*/
+const LEADS = { customer_posted: 'newsletter', contact_posted: 'contact_form' };
+
+function leadSource(href) {
+  try {
+    const params = new URL(href).searchParams;
+    const flag = Object.keys(LEADS).find((k) => params.get(k) === 'true');
+    return flag ? LEADS[flag] : '';
+  } catch (e) {
+    return '';
+  }
+}
+
 /* ---------- funnel ---------- */
 
-analytics.subscribe('page_viewed', (event) => {
+analytics.subscribe('page_viewed', async (event) => {
   setPage(event);
   gtag('event', 'page_view');
+  const doc = event.context && event.context.document;
+  const source = doc && doc.location ? leadSource(doc.location.href) : '';
+  // Once per tab, so refreshing the "thanks" page doesn't count again
+  if (source && (await firstTime('lead', source))) gtag('event', 'generate_lead', { lead_source: source });
 });
 
 analytics.subscribe('collection_viewed', (event) => {
@@ -348,6 +448,25 @@ async function firstTime(step, token) {
 }
 
 /*
+  Contact and address come before shipping. With them, a funnel exploration
+  shows where in checkout people stop. Counted once per checkout, like shipping.
+*/
+async function checkoutStep(event, step, name) {
+  setPage(event);
+  const c = event.data.checkout;
+  if (!c || !c.totalPrice) return;
+  if (!(await firstTime(step, c.token))) return;
+  gtag('event', name, {
+    currency: c.currencyCode,
+    value: Number(c.totalPrice.amount),
+    items: (c.lineItems || []).map((li) => item(li.variant, li.quantity)),
+  });
+}
+
+analytics.subscribe('checkout_contact_info_submitted', (event) => checkoutStep(event, 'contact', 'add_contact_info'));
+analytics.subscribe('checkout_address_info_submitted', (event) => checkoutStep(event, 'address', 'add_address_info'));
+
+/*
   The next two fill GA4's built-in checkout funnel. Without them the report
   jumps from begin_checkout straight to purchase, so a drop-off at shipping
   looks the same as one at payment.
@@ -444,4 +563,43 @@ analytics.subscribe('custom_view_promotion', (event) => {
 analytics.subscribe('custom_select_promotion', (event) => {
   setPage(event);
   gtag('event', 'select_promotion', promotion(event));
+});
+
+/* ---------- links ---------- */
+
+/*
+  GA4's own outbound-click and file-download tracking needs gtag in the page.
+  Shopify passes every click to the pixel with the element's href, so rebuild
+  both here. Query strings are dropped: they can carry emails or tokens.
+*/
+const OWN_HOSTS = ['spyoptic.com', 'www.spyoptic.com', 'spyoptic-com.myshopify.com'];
+const FILE_TYPES = /\.(pdf|zip|docx?|xlsx?|pptx?|csv|txt)$/i;
+
+analytics.subscribe('clicked', (event) => {
+  const el = event.data && event.data.element;
+  const doc = event.context && event.context.document;
+  if (!el || !el.href || !doc || !doc.location) return;
+  let url;
+  let pageHost;
+  try {
+    url = new URL(el.href, doc.location.href);
+    pageHost = new URL(doc.location.href).hostname;
+  } catch (e) {
+    return;
+  }
+  if (url.protocol !== 'https:' && url.protocol !== 'http:') return; // mailto:, tel:, javascript:
+  const link = url.origin + url.pathname;
+  const file = url.pathname.match(FILE_TYPES);
+  if (file) {
+    setPage(event);
+    gtag('event', 'file_download', {
+      file_extension: file[1].toLowerCase(),
+      file_name: url.pathname.split('/').pop(),
+      link_url: link,
+    });
+    return;
+  }
+  if (url.hostname === pageHost || OWN_HOSTS.includes(url.hostname)) return;
+  setPage(event);
+  gtag('event', 'click', { link_url: link, link_domain: url.hostname, outbound: true });
 });
