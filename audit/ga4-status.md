@@ -223,6 +223,28 @@ send you chasing a bug that is not there.
 
 ---
 
+## More events — 21 Oct (pixel written and tested, not saved yet)
+
+Sylvain said a tag in the theme gets more events. Most of that gap can be closed inside the pixel:
+
+| Event | Adds | How |
+|---|---|---|
+| `user_engagement`, plus `engagement_time_msec` on every event | Engagement time, engaged sessions, bounce rate. GA4 got none before: gtag only counts while its own frame has focus, and the sandbox frame never has it | The pixel counts the time the page is visible and stops after 5 idle minutes. gtag.js maps `engagement_time_msec` to its own `_et` |
+| `click` (`outbound: true`) | Clicks to other sites: store locator, SportRx, socials | Shopify's `clicked` event; query strings dropped |
+| `file_download` | PDF and other file links | Same |
+| `generate_lead` (`lead_source` newsletter / contact_form) | Footer sign-ups and contact form sends | `customer_posted=true` / `contact_posted=true` on the reload after a good submit, once per tab; both flags now stay out of `page_location` |
+| `add_contact_info`, `add_address_info` | Two more checkout steps, as Blenders tracks | Shopify standard events, once per checkout |
+
+`scripts/ga4-pixel-test.mjs`: 33/33. The pixel before this change fails the 13 new checks.
+
+**To ship:** paste `audit/ga4-custom-pixel.js` into SPY GA4 and Save; the permission stays Analytics only. Then Realtime should list the new event names. Engagement rate shows in reports a day later. `lead_source` needs a custom dimension to appear in reports (optional).
+
+**Consent re-test, 21 Oct (live store, throwaway headless Chrome):**
+- **GA4 is clean.** With Decline or no choice, the pixel never loads and 0 hits reach sgtm.spyoptic.com. With Accept, it loads and hits carry `gcs=G111` plus `gcd`, the Consent Mode v2 field.
+- **Microsoft Clarity breaks the opt-in.** It's an app pixel added after 12 Oct: `projectId` z0a90z9n1e, no privacy purposes. With Decline or no choice it still sends ~27 requests to clarity.ms and bing.com and sets CLID, MUID, SM, MR and SRM_B. Pandectes' Clarity integration is off. Either disconnect it, or turn that integration on and set Clarity to wait for consent; then re-test.
+
+**Not in this change:** scroll depth and product-card clicks (`select_item`) need theme code. Loading gtag.js from sgtm.spyoptic.com needs a server-container setting first; Google moved that setting in 2025, so check the container's clients before changing the pixel.
+
 ## Follow-up — 13 Oct (checked as goran@ in the browser)
 
 Every row of the 12 Oct run below was re-checked and holds. Four things are new.
