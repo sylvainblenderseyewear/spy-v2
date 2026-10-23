@@ -51,7 +51,7 @@
     --rf-font: {{ block.settings.font }};
     --rf-accent: {{ block.settings.accent_color }};
     --rf-accent-hover: {{ accent_hover | strip }};
-    --rf-border: {{ block.settings.border_color }};
+    --rf-border: {{ block.settings.border_color | default: 'var(--color-input-border)' }};
     --rf-text: {{ block.settings.text_color }};
     --rf-placeholder: {{ block.settings.placeholder_color }};
     --rf-button-text: {{ block.settings.button_text_color }};
@@ -217,7 +217,7 @@
       "type": "color",
       "id": "border_color",
       "label": "Input border at rest",
-      "default": "#cccccc"
+      "info": "Leave empty to use the theme's input border (Theme settings > Colors). Keep it 3:1 on the background."
     },
     {
       "type": "color",

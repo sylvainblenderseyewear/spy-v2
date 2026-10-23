@@ -23,7 +23,7 @@
   --color-spy-positive: #3b861e; /* closest AA green 4.55:1 for In Stock (source #4bb151, 2.72:1) */
   --color-spy-negative: #d7403a; /* source sentiment-negative — Sold Out */
   --color-spy-cart-stock: #3b861e; /* cart In Stock green, AA 4.55:1 (source #88c290 was 2.07:1) */
-  --color-spy-input-border: #cccccc; /* source select/input outline */
+  --color-spy-input-border: var(--color-input-border); /* form fields: the theme's Input border setting; keep it 3:1 on white (WCAG 1.4.11). Source was #ccc */
   --color-spy-price:   #565656; /* source card price — PLP tile */
   --color-spy-price-reco: #242424; /* source card price — PDP recommendation tile */
   --color-spy-review-label: #191919; /* source .text-m — the "N Reviews" label by the stars */
@@ -2550,6 +2550,14 @@ product-recommendations .slideshow-control svg {
   color: var(--color-spy-review-link) !important;
 }
 
+/* At 320px Yotpo's "Search Reviews" box keeps a fixed 288px width in a 268px
+   column, and the whole page then scrolls sideways (1.4.10 Reflow) */
+.yotpo .free-text-search:not(#\#),
+.yotpo .free-text-search-input:not(#\#) {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
 /* ── Old-site content: its own orange follows the one setting ─────────────
    Pages and posts moved from the old site set an orange themselves, in style
    blocks and inline styles, so the theme setting never reached them. Only
@@ -2572,6 +2580,12 @@ html .blog-content a {
 .spy-warranty,
 :root:has(.spy-faq-hero) {
   --spy-orange: var(--color-spy-orange-ui) !important;
+}
+
+/* The FAQ body draws its search box with a light divider line (1.26:1). Use the
+   field border; one more element in the selector wins, and its :focus still does */
+html .spy-faq-search-input {
+  border-color: var(--color-input-border);
 }
 
 /* FAQ link hover had its own fixed orange; shade the setting instead */

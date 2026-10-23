@@ -2257,7 +2257,7 @@
                         "font": "var(--font-body--family)",
                         "accent_color": "{{ settings.color_palette.color3 }}",
                         "accent_color_hover": "",
-                        "border_color": "#cccccc",
+                        "border_color": "",
                         "text_color": "#242424",
                         "placeholder_color": "#a6a6a6",
                         "button_text_color": "#ffffff",

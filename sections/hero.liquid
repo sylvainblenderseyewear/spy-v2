@@ -107,6 +107,13 @@
   assign mobile_widths = '416, 600, 800, 1200, 1600'
   assign mobile_widths_array = mobile_widths | split: ', '
 
+  # No alt text in Files leaves alt out, and screen readers then read the file name.
+  # The hero's words are real text, so an unnamed picture is decoration: alt="".
+  assign image_1_alt = section.settings.image_1.alt | default: ''
+  assign image_1_mobile_alt = section.settings.image_1_mobile.alt | default: ''
+  assign image_2_alt = section.settings.image_2.alt | default: ''
+  assign image_2_mobile_alt = section.settings.image_2_mobile.alt | default: ''
+
   assign fetch_priority = 'auto'
 
   if section.index == 1
@@ -139,7 +146,7 @@
           width: section.settings.image_1.width,
           widths: widths,
           height: section.settings.image_1.height,
-          alt: section.settings.image_1.alt,
+          alt: image_1_alt,
           class: 'hero__media',
           sizes: sizes,
           fetchpriority: fetch_priority,
@@ -155,7 +162,7 @@
           width: section.settings.image_1.width,
           widths: widths,
           height: section.settings.image_1.height,
-          alt: section.settings.image_1.alt,
+          alt: image_1_alt,
           class: 'hero__media',
           sizes: sizes,
           fetchpriority: fetch_priority,
@@ -191,7 +198,7 @@
             width: section.settings.image_1_mobile.width,
             widths: mobile_widths,
             height: section.settings.image_1_mobile.height,
-            alt: section.settings.image_1_mobile.alt,
+            alt: image_1_mobile_alt,
             class: 'hero__media',
             sizes: sizes_mobile,
             fetchpriority: fetch_priority,
@@ -243,7 +250,7 @@
           width: section.settings.image_2.width,
           widths: widths,
           height: section.settings.image_2.height,
-          alt: section.settings.image_2.alt,
+          alt: image_2_alt,
           class: 'hero__media',
           sizes: sizes,
           fetchpriority: fetch_priority,
@@ -259,7 +266,7 @@
           width: section.settings.image_2.width,
           widths: widths,
           height: section.settings.image_2.height,
-          alt: section.settings.image_2.alt,
+          alt: image_2_alt,
           class: 'hero__media',
           sizes: sizes,
           fetchpriority: fetch_priority,
@@ -295,7 +302,7 @@
             width: section.settings.image_2_mobile.width,
             widths: mobile_widths,
             height: section.settings.image_2_mobile.height,
-            alt: section.settings.image_2_mobile.alt,
+            alt: image_2_mobile_alt,
             class: 'hero__media',
             sizes: sizes_mobile,
             fetchpriority: fetch_priority,

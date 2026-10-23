@@ -242,5 +242,27 @@
         });
       })();
     </script>
+
+    <script>
+      // From 990px the page scrolls inside .page-wrapper, not the window. With focus on <body>
+      // (a fresh page, or after a click on plain text) PageDown, Space and the arrows went to the
+      // window and did nothing, so pass them on to the page (WCAG 2.1.1).
+      document.addEventListener('keydown', (event) => {
+        if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
+        const active = document.activeElement;
+        if (active && active !== document.body && active !== document.documentElement) return;
+
+        const page = document.querySelector('.page-wrapper');
+        if (!page || page.scrollHeight <= page.clientHeight || document.documentElement.hasAttribute('scroll-lock')) return;
+
+        const screen = page.clientHeight * 0.85;
+        const moves = { PageDown: screen, PageUp: -screen, ArrowDown: 40, ArrowUp: -40, ' ': event.shiftKey ? -screen : screen };
+        if (event.key === 'Home') page.scrollTo({ top: 0 });
+        else if (event.key === 'End') page.scrollTo({ top: page.scrollHeight });
+        else if (event.key in moves) page.scrollBy({ top: moves[event.key] });
+        else return;
+        event.preventDefault();
+      });
+    </script>
   </body>
 </html>

@@ -6,6 +6,25 @@ const WORD_BULLET = /^[\s ]*[•●▪◦‣·][\s ]*/;
 /** A faked indent: padding, then any marker the paste left behind as plain text. */
 const FAKE_INDENT = /^[\s ]{2,}(?:[•●▪◦‣·]|\d+\.|[a-z]\.)?[\s ]*/;
 
+let tableLabelCount = 0;
+
+/**
+ * The nearest heading before an element, looking back through its earlier
+ * siblings and then its parents' ones.
+ * @param {Element} element
+ * @returns {HTMLElement | null}
+ */
+function headingBefore(element) {
+  for (let node = element; node && node.tagName !== 'RTE-FORMATTER'; node = node.parentElement) {
+    for (let sibling = node.previousElementSibling; sibling; sibling = sibling.previousElementSibling) {
+      if (/^H[1-6]$/.test(sibling.tagName)) return /** @type {HTMLElement} */ (sibling);
+      const inner = sibling.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      if (inner.length) return /** @type {HTMLElement} */ (inner[inner.length - 1]);
+    }
+  }
+  return null;
+}
+
 /**
  * A custom element that formats rte content for easier styling
  */
@@ -105,6 +124,27 @@ class RTEFormatter extends Component {
       parent.insertBefore(wrapper, table);
       wrapper.appendChild(table);
     }
+
+    // A table wider than the screen scrolls sideways, and keyboard users can only
+    // do that from a box that takes focus. So while it scrolls, the box becomes a
+    // Tab stop named after the table's caption or the heading above it (2.1.1).
+    const label = table.caption || headingBefore(wrapper);
+    if (label && !label.id) label.id = `rte-table-label-${++tableLabelCount}`;
+
+    // Watch the table too: it can widen (fonts loading) while the box keeps its size
+    const watch = new ResizeObserver(() => {
+      if (wrapper.scrollWidth > wrapper.clientWidth + 1) {
+        wrapper.tabIndex = 0;
+        wrapper.setAttribute('role', 'region');
+        if (label) wrapper.setAttribute('aria-labelledby', label.id);
+      } else {
+        wrapper.removeAttribute('tabindex');
+        wrapper.removeAttribute('role');
+        wrapper.removeAttribute('aria-labelledby');
+      }
+    });
+    watch.observe(wrapper);
+    watch.observe(table);
   }
 
   /**
