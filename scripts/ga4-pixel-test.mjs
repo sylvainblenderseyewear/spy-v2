@@ -77,7 +77,12 @@ function load({ cookies = {} } = {}) {
 
 const doc = { context: { document: { location: { href: 'https://spyoptic.com/checkouts/cn/TOKEN123/en-us' }, title: 'Checkout', referrer: '' } } };
 const money = (amount) => ({ amount, currencyCode: 'USD' });
-const variant = { id: 1, title: 'Matte Black', price: money(140), product: { title: 'Cyrus', vendor: 'Spy', type: 'Sunglasses' } };
+const variant = {
+  id: '45001',
+  title: 'Matte Black',
+  price: money(140),
+  product: { id: '7001', title: 'Cyrus', vendor: 'Spy', type: 'Sunglasses', url: '/products/cyrus-matte-black' },
+};
 
 function checkout(token, extra = {}) {
   return {
@@ -323,6 +328,84 @@ const engaged = (p) => p.events().reduce((sum, e) => sum + ((e[2] && e[2].engage
   check('add_address_info once per checkout', p.events('add_address_info').length === 1);
   const a = p.events('add_address_info')[0];
   check('checkout steps carry value and items', a && a[2].value === 155 && a[2].currency === 'USD' && a[2].items.length === 1, JSON.stringify(a && a[2]));
+}
+
+// Items: the product is the key, like Blenders; the variant and the Merchant Center ID ride along
+{
+  const p = load();
+  p.consent(all);
+  await p.fire('product_viewed', viewed);
+  const it = p.events('view_item')[0][2].items[0];
+  check('item_id is the product ID', it.item_id === '7001', JSON.stringify(it));
+  check('variant ID and Merchant Center ID ride along', it.item_variant_id === '45001' && it.merchant_center_id === 'shopify_US_7001_45001', JSON.stringify(it));
+  // gtag reads a bare `id` as an old alias of item_id and drops it
+  check('items carry no bare id field', !('id' in it), JSON.stringify(it));
+
+  const gid = { ...variant, id: 'gid://shopify/ProductVariant/45002', product: { ...variant.product, id: 'gid://shopify/Product/7002' } };
+  await p.fire('product_viewed', { ...doc, data: { productVariant: gid } });
+  const g = p.events('view_item')[1][2].items[0];
+  check('Shopify gid IDs are reduced to the number', g.item_id === '7002' && g.merchant_center_id === 'shopify_US_7002_45002', JSON.stringify(g));
+}
+
+// Lists: positions, and a click on a listed product credited to its list
+{
+  const p = load();
+  p.consent(all);
+  const discord = { ...variant, id: '45009', product: { ...variant.product, id: '7009', title: 'Discord', url: '/products/discord-gloss-black' } };
+  await p.fire('collection_viewed', { ...doc, data: { collection: { id: '9', title: 'Sunglasses', productVariants: [variant, discord] } } });
+  const list = p.events('view_item_list')[0][2];
+  check('list items carry their position', list.items[0].index === 0 && list.items[1].index === 1, JSON.stringify(list.items.map((i) => i.index)));
+
+  await p.fire('clicked', click('/collections/sunglasses/products/discord-gloss-black?variant=45009'));
+  const sel = p.events('select_item')[0];
+  check('clicking a listed product sends select_item',
+    sel && sel[2].item_list_id === '9' && sel[2].item_list_name === 'Sunglasses' && sel[2].items[0].item_id === '7009' && sel[2].items[0].index === 1,
+    JSON.stringify(sel && sel[2]));
+  await p.fire('clicked', click('/products/not-in-the-list'));
+  check('a product that was not listed sends no select_item', p.events('select_item').length === 1 && p.events('click').length === 0);
+}
+
+// Search results are a list too
+{
+  const p = load();
+  p.consent(all);
+  await p.fire('search_submitted', { ...doc, data: { searchResult: { query: 'discord', productVariants: [variant] } } });
+  check('search still sends search_term', p.events('search')[0] && p.events('search')[0][2].search_term === 'discord');
+  const l = p.events('view_item_list')[0];
+  check('search results send view_item_list', l && l[2].item_list_id === 'search_results' && l[2].item_list_name === 'Search results' && l[2].items.length === 1, JSON.stringify(l && l[2]));
+  await p.fire('clicked', click('https://www.spyoptic.com/products/cyrus-matte-black'));
+  const s = p.events('select_item')[0];
+  check('a click from search results names that list', s && s[2].item_list_name === 'Search results', JSON.stringify(s && s[2]));
+}
+
+// Purchase: new or returning, and nothing when Shopify doesn't know (guest)
+{
+  const p = load();
+  p.consent(all);
+  await p.fire('checkout_completed', checkout('G', { order: { id: 901, customer: { id: '5', isFirstOrder: true } } }));
+  await p.fire('checkout_completed', checkout('H', { order: { id: 902, customer: { id: '6', isFirstOrder: false } } }));
+  await p.fire('checkout_completed', checkout('I', { order: { id: 903, customer: null } }));
+  const [first, again, guest] = p.events('purchase').map((e) => e[2]);
+  check('first order is customer_type new', first && first.customer_type === 'new', JSON.stringify(first && first.customer_type));
+  check('repeat order is customer_type returning', again && again.customer_type === 'returning', JSON.stringify(again && again.customer_type));
+  check('guest order sends no customer_type', guest && !('customer_type' in guest), JSON.stringify(guest));
+}
+
+// The first and payment steps count once per checkout too
+{
+  const p = load();
+  p.consent(all);
+  const paid = { transactions: [{ gateway: 'shopify_payments', paymentMethod: { name: 'Visa', type: 'creditCard' } }] };
+  for (let i = 0; i < 2; i++) {
+    await p.fire('checkout_started', checkout('J'));
+    await p.fire('payment_info_submitted', checkout('J', paid));
+  }
+  check('begin_checkout once per checkout', p.events('begin_checkout').length === 1, String(p.events('begin_checkout').length));
+  check('add_payment_info once per checkout', p.events('add_payment_info').length === 1, String(p.events('add_payment_info').length));
+  const pay = p.events('add_payment_info')[0];
+  check('payment_type is the payment method name', pay && pay[2].payment_type === 'Visa', JSON.stringify(pay && pay[2].payment_type));
+  await p.fire('checkout_started', checkout('K'));
+  check('a new checkout starts again', p.events('begin_checkout').length === 2);
 }
 
 console.log(failed ? `\n${failed} failed` : '\nall passed');

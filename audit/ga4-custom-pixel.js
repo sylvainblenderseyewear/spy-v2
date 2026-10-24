@@ -243,19 +243,30 @@ gtag('config', TAG_ID, {
 */
 
 /*
-  item_id = variant ID, on purpose.
-  Staging SKUs use three schemes on the same product (13-digit placeholders,
-  UPCs, and SPY refs like YS020004), so SKU is not a usable key yet.
-  Revisit after the NetSuite/Matrixify migration.
+  item_id is the product ID, like Blenders: a model's lens and size variants
+  add up in item reports, and a product sold under two SKU schemes counts once.
+  The variant stays in item_variant / item_variant_id. merchant_center_id is
+  the Google Merchant Center ID (shopify_US_<product>_<variant>), the key
+  Google Ads matches on once the feed is connected. Not `id`: gtag reads that
+  as an old name for item_id and drops it. SKU is no key: it has three schemes.
 */
+// Shopify may hand over gid://shopify/Product/123; keep the number
+function shortId(id) {
+  return String(id || '').split('/').pop();
+}
+
 function item(v, qty) {
   const p = v.product || {};
+  const productId = shortId(p.id) || shortId(v.id);
+  const variantId = shortId(v.id);
   return {
-    item_id: String(v.id),
+    item_id: productId,
     item_name: p.title,
     item_brand: (p.vendor || '').toUpperCase(), // staging has both "Spy" and "SPY"
     item_category: p.type, // thin data — most products are typed "Sunglasses"
     item_variant: v.title,
+    item_variant_id: variantId,
+    merchant_center_id: 'shopify_US_' + productId + '_' + variantId,
     price: Number(v.price && v.price.amount) || 0,
     quantity: qty || 1,
   };
@@ -325,20 +336,38 @@ analytics.subscribe('page_viewed', async (event) => {
   if (source && (await firstTime('lead', source))) gtag('event', 'generate_lead', { lead_source: source });
 });
 
+/*
+  Remember the last list shown, by product handle, so a click on one of its
+  products can go out as select_item. GA4 then credits the add to cart and the
+  purchase to that list.
+*/
+let shownList = null;
+
+function productHandle(url) {
+  const m = String(url || '').match(/\/products\/([^/?#]+)/);
+  return m ? m[1] : '';
+}
+
+function viewList(id, name, variants) {
+  const list = variants || [];
+  const items = list.map((v, i) => Object.assign(item(v, 1), { index: i }));
+  shownList = { id, name, byHandle: new Map() };
+  list.forEach((v, i) => {
+    const handle = productHandle(v.product && v.product.url);
+    if (handle && !shownList.byHandle.has(handle)) shownList.byHandle.set(handle, items[i]);
+  });
+  const params = { item_list_id: id, item_list_name: name, items: items.slice(0, 20) };
+  // GA4 wants a currency whenever items carry a price
+  const currency = (list[0] && list[0].price && list[0].price.currencyCode) || shopCurrency();
+  if (currency) params.currency = currency;
+  gtag('event', 'view_item_list', params);
+}
+
 analytics.subscribe('collection_viewed', (event) => {
   setPage(event);
   const c = event.data.collection;
   if (!c) return;
-  const variants = (c.productVariants || []).slice(0, 20);
-  const params = {
-    item_list_id: c.id,
-    item_list_name: c.title,
-    items: variants.map((v) => item(v, 1)),
-  };
-  // GA4 wants a currency whenever items carry a price
-  const currency = (variants[0] && variants[0].price && variants[0].price.currencyCode) || shopCurrency();
-  if (currency) params.currency = currency;
-  gtag('event', 'view_item_list', params);
+  viewList(c.id, c.title, c.productVariants);
 });
 
 analytics.subscribe('product_viewed', (event) => {
@@ -357,6 +386,8 @@ analytics.subscribe('search_submitted', (event) => {
   const r = event.data.searchResult;
   if (!r) return;
   gtag('event', 'search', { search_term: r.query });
+  // The results are a list too, so a click on one can be credited
+  if ((r.productVariants || []).length) viewList('search_results', 'Search results', r.productVariants);
 });
 
 analytics.subscribe('product_added_to_cart', (event) => {
@@ -394,10 +425,12 @@ analytics.subscribe('cart_viewed', (event) => {
   });
 });
 
-analytics.subscribe('checkout_started', (event) => {
+analytics.subscribe('checkout_started', async (event) => {
   setPage(event);
   const c = event.data.checkout;
   if (!c || !c.totalPrice) return;
+  // Back from PayPal or a refresh starts the same checkout again
+  if (!(await firstTime('begin', c.token))) return;
   gtag('event', 'begin_checkout', {
     currency: c.currencyCode,
     value: Number(c.totalPrice.amount),
@@ -496,17 +529,21 @@ analytics.subscribe('checkout_shipping_info_submitted', async (event) => {
   gtag('event', 'add_shipping_info', params);
 });
 
-analytics.subscribe('payment_info_submitted', (event) => {
+analytics.subscribe('payment_info_submitted', async (event) => {
   setPage(event);
   const c = event.data.checkout;
   if (!c || !c.totalPrice) return;
+  // A declined card and a second try is still one payment step
+  if (!(await firstTime('payment', c.token))) return;
   const params = {
     currency: c.currencyCode,
     value: Number(c.totalPrice.amount),
     items: (c.lineItems || []).map((li) => item(li.variant, li.quantity)),
   };
+  // "Visa" or "PayPal" reads better in reports than the gateway name
   const tx = (c.transactions || [])[0];
-  if (tx && tx.gateway) params.payment_type = tx.gateway;
+  const method = tx && ((tx.paymentMethod && (tx.paymentMethod.name || tx.paymentMethod.type)) || tx.gateway);
+  if (method) params.payment_type = method;
   gtag('event', 'add_payment_info', params);
 });
 
@@ -528,6 +565,9 @@ analytics.subscribe('checkout_completed', (event) => {
   if (tier) params.shipping_tier = tier;
   const coupon = couponCodes(c);
   if (coupon) params.coupon = coupon;
+  // New or returning buyer; GA4 says leave it out when unsure, e.g. a guest
+  const buyer = c.order && c.order.customer;
+  if (buyer && typeof buyer.isFirstOrder === 'boolean') params.customer_type = buyer.isFirstOrder ? 'new' : 'returning';
   gtag('event', 'purchase', params);
 });
 
@@ -599,7 +639,15 @@ analytics.subscribe('clicked', (event) => {
     });
     return;
   }
-  if (url.hostname === pageHost || OWN_HOSTS.includes(url.hostname)) return;
+  if (url.hostname === pageHost || OWN_HOSTS.includes(url.hostname)) {
+    // A product picked from the last list shown
+    const picked = shownList && shownList.byHandle.get(productHandle(url.pathname));
+    if (picked) {
+      setPage(event);
+      gtag('event', 'select_item', { item_list_id: shownList.id, item_list_name: shownList.name, items: [picked] });
+    }
+    return;
+  }
   setPage(event);
   gtag('event', 'click', { link_url: link, link_domain: url.hostname, outbound: true });
 });
