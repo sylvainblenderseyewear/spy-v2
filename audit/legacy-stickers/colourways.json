@@ -1,0 +1,4309 @@
+{
+ "source": "https://www.spyoptic.com/us/{sunglasses,goggles,snow-helmets,eyeglasses}/?start=0&sz=200",
+ "crawled": "2026-10-23",
+ "note": "Every colourway the legacy PLPs list (tile default + swatches), with its stickers in slot order (sticker1..3).",
+ "count": 575,
+ "colourways": [
+  {
+   "model": "ABEL 53",
+   "colourway": "Dark Tort/Gunmetal-Gunmetal",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BEWILDER",
+   "colourway": "Black Marble Tort-Happy Gray Green Black Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BEWILDER",
+   "colourway": "Matte Translucent Sienna Red-Happy Gray Green",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BEWILDER",
+   "colourway": "Translucent Light Blue-Gray with Navy Spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BEWILDER",
+   "colourway": "Translucent Light Gray-Bronze with Iridescent Spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BEWILDER OPTICAL 53",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BEWILDER OPTICAL 53",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BEWILDER OPTICAL 53",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BEWILDER OPTICAL 53",
+   "colourway": "Translucent Sage Green-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BEWILDER OPTICAL 53",
+   "colourway": "Translucent Salmon-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BEWILDER OPTICAL 55",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BEWILDER OPTICAL 55",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BEWILDER OPTICAL 55",
+   "colourway": "Translucent Sage Green-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BEWILDER OPTICAL 55",
+   "colourway": "Translucent Salmon-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BEWILDER SCREEN",
+   "colourway": "Matte Gunmetal-Happy Screen",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BEWILDER SCREEN",
+   "colourway": "Matte Translucent Rose-Happy Screen",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BOLSTER",
+   "colourway": "Matte Black-",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "BOUNDLESS",
+   "colourway": "Matte Crystal-Gray",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BOUNDLESS",
+   "colourway": "Matte Nude-Happy Brown",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BOUNDLESS",
+   "colourway": "Matte White-Gray with Black Spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BOUNDLESS",
+   "colourway": "Translucent Red-Bronze with Light Blue spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BOUNDLESS GAMING",
+   "colourway": "Matte Black-Happy Gaming",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BOUNDLESS OPTICAL 53",
+   "colourway": "Black-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BOUNDLESS OPTICAL 53",
+   "colourway": "Brushed Gray-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BOUNDLESS OPTICAL 53",
+   "colourway": "Gloss Peach Pink Tort-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BOUNDLESS OPTICAL 53",
+   "colourway": "Soft Translucent Blush-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BOUNDLESS OPTICAL 55",
+   "colourway": "Black-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BOUNDLESS OPTICAL 55",
+   "colourway": "Brushed Gray-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BOUNDLESS OPTICAL 55",
+   "colourway": "Gloss Peach Pink Tort-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BOUNDLESS OPTICAL 55",
+   "colourway": "Soft Translucent Blush-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BOUNDLESS SCREEN",
+   "colourway": "Black-Happy Screen",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BOUNDLESS SCREEN",
+   "colourway": "Matte Crystal-Happy Screen",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BOUNDLESS SCREEN",
+   "colourway": "Peach Tort-Happy Screen",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BOUNTY",
+   "colourway": "Matte Black ANSI RX-Clear",
+   "stickers": [
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BOWERY",
+   "colourway": "Black II-Happy Gray Polar",
+   "stickers": [
+    "26-SPY-Digital-PDP-Icon-MurdrdOut-CAT4.svg",
+    "26-SPY-Digital-PDP-Icon-MurdrdOut-WARNING.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BOWERY",
+   "colourway": "Black-Happy Gray Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BOWERY",
+   "colourway": "Matte Black II-Happy Gray Polar",
+   "stickers": [
+    "26-SPY-Digital-PDP-Icon-MurdrdOut-CAT4.svg",
+    "26-SPY-Digital-PDP-Icon-MurdrdOut-WARNING.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BOWERY",
+   "colourway": "Matte Black-Happy Gray Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BRADEN 49",
+   "colourway": "Black Matte-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BRAVO LENS",
+   "colourway": "-HD Plus Gray Green with Silver Spectra Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "BRAVO LENS",
+   "colourway": "-HD Plus LL Persimmon with Silver Spectra Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "BRAVO LENS",
+   "colourway": "-HD Plus Persimmon",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "BREAKAWAY",
+   "colourway": "Black-Clear AFP",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "BREAKAWAY",
+   "colourway": "Blue-Clear AFP",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "BREAKAWAY",
+   "colourway": "Orange-HD Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "BREAKAWAY",
+   "colourway": "Red-HD Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "BREAKAWAY",
+   "colourway": "White-HD Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "BRODY 5050 57",
+   "colourway": "Black Clear Gunmetal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BRODY 5050 57",
+   "colourway": "Dark Tort Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BRODY 5050 57",
+   "colourway": "Matte Black Gloss Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BRODY 5050 57",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BRODY 5050 59",
+   "colourway": "Black Clear Gunmetal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BRODY 5050 59",
+   "colourway": "Crystal Matte Silver-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BRODY 5050 59",
+   "colourway": "Dark Tort Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BRODY 5050 59",
+   "colourway": "Matte Black Gloss Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BRODY 5050 59",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "BRODY 58",
+   "colourway": "Black Matte-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BRODY 58",
+   "colourway": "Blonde Tortoise Matte-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BRODY 58",
+   "colourway": "Blue Brush Matte-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "BRODY 58",
+   "colourway": "Matte Black Trans Sepia-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CANSTON 54",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CANSTON 54",
+   "colourway": "Matte Blue Matte Silver-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CANSTON 54",
+   "colourway": "Matte Silver-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CANSTON 56",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CANSTON 56",
+   "colourway": "Matte Blue Matte Silver-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CANSTON 56",
+   "colourway": "Matte Silver-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CEDROS",
+   "colourway": "blush-tort_happy-gray",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CEDROS",
+   "colourway": "translucent-dark-green_happy-dark-brown-polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CLIVE 53",
+   "colourway": "Black Horn Gunmetal-Clear",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "COLESON 55",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "COLESON 55",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "COLESON 55",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "COLESON 55",
+   "colourway": "Java-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "COLESON 55",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "COLESON 57",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "COLESON 57",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "COLESON 57",
+   "colourway": "Java-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "COLESON 57",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "COOPER",
+   "colourway": "Black-Happy Gray Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "COOPER",
+   "colourway": "Brown Stripe Tort-Happy Bronze",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "COOPER",
+   "colourway": "Soft Matte Black-Happy Boost Polar Black Mirror",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "COOPER XL",
+   "colourway": "Matte Black-Happy Gray",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "COOPER XL",
+   "colourway": "Matte Black-Happy Gray Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CROSSWAY",
+   "colourway": "Matte Black-Gray Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CROSSWAY",
+   "colourway": "Matte Gray-Gray Polar with Black Spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CROSSWAY",
+   "colourway": "Translucent Light Blue-Gray with Navy Spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CROSSWAY",
+   "colourway": "Translucent Orange-Yellow",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CROSSWAY GAMING",
+   "colourway": "Matte Black-Happy Gaming",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CROSSWAY OPTICAL 56",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CROSSWAY OPTICAL 56",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CROSSWAY OPTICAL 56",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CROSSWAY OPTICAL 56",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CROSSWAY OPTICAL 58",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CROSSWAY OPTICAL 58",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CROSSWAY OPTICAL 58",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CROSSWAY OPTICAL 58",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CROSSWAY SCREEN",
+   "colourway": "Matte Black-Happy Screen",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CROSSWAY SCREEN",
+   "colourway": "Translucent Light Blue-Happy Screen",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CRUSHER",
+   "colourway": "Black Matte-LL Persimmon",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "CRUSHER ELITE ECO",
+   "colourway": "Matte Black-Rose Photochromic",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "CRUSHER ELITE ECO",
+   "colourway": "Matte Gray-Bronze with Silver Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "CRUSHER ELITE ECO",
+   "colourway": "Matte Gray-LL Persimmon",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "CRUSHER ELITE ECO",
+   "colourway": "Matte White-LL Persimmon",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "CRUSHER ELITE ECO",
+   "colourway": "White-LL Yellow Photochromic",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "CRUSHER ELITE JR",
+   "colourway": "Spy + So Lazo-Bronze Silver Spectra Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "CRUSHER ELITE JR ECO",
+   "colourway": "Pink Party-Bronze with Silver Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "CRUSHER ELITE JR ECO",
+   "colourway": "Redline-Bronze with Silver Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "CRUSHER ELITE JR ECO",
+   "colourway": "Slime-Bronze with Silver Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "CRUSHER ELITE JR ECO",
+   "colourway": "Slime-LL Persimmon",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "CRUSHER ELITE JR ECO",
+   "colourway": "Weiner Dog-Bronze with Silver Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "CRUSHER JR",
+   "colourway": "Black Matte-LL Persimmon",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "CYRUS",
+   "colourway": "Black II-Happy Gray Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS",
+   "colourway": "Black-Happy Gray Polar Murdered Out Black",
+   "stickers": [
+    "26-SPY-Digital-PDP-Icon-MurdrdOut-CAT4.svg",
+    "26-SPY-Digital-PDP-Icon-MurdrdOut-WARNING.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS",
+   "colourway": "Gloss Black-Happy Boost Bronze Polar with Black Mirror",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS",
+   "colourway": "Matte Black-Happy Boost Polar with Ice Blue Mirror",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CYRUS",
+   "colourway": "Matte Black-Happy Gray Polar Murdered Out Black",
+   "stickers": [
+    "26-SPY-Digital-PDP-Icon-MurdrdOut-CAT4.svg",
+    "26-SPY-Digital-PDP-Icon-MurdrdOut-WARNING.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS",
+   "colourway": "Soft Matte Black-Happy Boost Polar with Black Mirror",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CYRUS 5050 OPTICAL 58",
+   "colourway": "Black Brushed Bronze-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS 5050 OPTICAL 58",
+   "colourway": "Crystal Smoke Matte Dark Gunmetal-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS 5050 OPTICAL 58",
+   "colourway": "Honey Tort Brushed Bronze-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS 5050 OPTICAL 60",
+   "colourway": "Black Brushed Bronze-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS 5050 OPTICAL 60",
+   "colourway": "Crystal Smoke Matte Dark Gunmetal-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS 5050 OPTICAL 60",
+   "colourway": "Honey Tort Brushed Bronze-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS 5050 OPTICAL 60",
+   "colourway": "Matte Black Matte Dark Gunmetal-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CYRUS OPTICAL 58",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS OPTICAL 58",
+   "colourway": "Dark Tort Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS OPTICAL 58",
+   "colourway": "Gray Fade-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS OPTICAL 58",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CYRUS OPTICAL 58",
+   "colourway": "Matte Gray-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS OPTICAL 60",
+   "colourway": "Black Matte-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CYRUS OPTICAL 60",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS OPTICAL 60",
+   "colourway": "Dark Tort Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS OPTICAL 60",
+   "colourway": "Gray Fade-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS OPTICAL 60",
+   "colourway": "Matte Gray-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS REPLACEMENT LENS",
+   "colourway": "-Happy Bronze Polar with Dark Blue Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS REPLACEMENT LENS",
+   "colourway": "-Happy Bronze Polar with Green Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS REPLACEMENT LENS",
+   "colourway": "-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CYRUS SCREEN",
+   "colourway": "Matte Black-Happy Screen",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CYRUS SWITCH",
+   "colourway": "Matte Black-Happy Gray Green & Happy Bronze with Gold Mirror ",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "CYRUS SWITCH",
+   "colourway": "Matte Black-Happy Gray Green & Happy Gray Green with Black Mirror ",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS SWITCH",
+   "colourway": "Matte Black-Happy Gray Green & Happy Gray Green with Pink Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS SWITCH",
+   "colourway": "Translucent Gunmetal-Happy Gray & Happy Gray Green with Blue Mirror ",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CYRUS SWITCH",
+   "colourway": "Translucent Gunmetal-Happy Gray & Happy Gray Gunmetal Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "CZAR",
+   "colourway": "Whitewall-Happy Gray Green with Platinum Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "DAX 57",
+   "colourway": "Black Matte-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "DAX 57",
+   "colourway": "Black Navy-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DAX 57",
+   "colourway": "Black Red-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DESSA",
+   "colourway": "Black Marble Tort-Happy Gray Green",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DESSA",
+   "colourway": "Honey Tort-Happy Dark Brown",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DESSA",
+   "colourway": "Matte Black-Happy Boost Polar",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "DESSA",
+   "colourway": "Translucent Dusty Olive-Happy Bronze Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "DESSA",
+   "colourway": "Translucent Nutmeg-Happy Dark Brown Fade",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DIRK",
+   "colourway": "Soft Matte Black-Happy Gray Green",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "DIRK",
+   "colourway": "Soft Matte Black-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DIRK REPLACEMENT LENS",
+   "colourway": "-Happy Bronze Polar with Dark Blue Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DIRK REPLACEMENT LENS",
+   "colourway": "-Happy Bronze Polar with Green Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DIRK REPLACEMENT LENS",
+   "colourway": "-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "DISCORD",
+   "colourway": "Black II-Happy Boost Bronze Polar with Black Mirror",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD",
+   "colourway": "Black II-Happy Gray Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD",
+   "colourway": "Black-Happy Gray Polar Murdered Out Black",
+   "stickers": [
+    "26-SPY-Digital-PDP-Icon-MurdrdOut-CAT4.svg",
+    "26-SPY-Digital-PDP-Icon-MurdrdOut-WARNING.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD",
+   "colourway": "Matte Black-Happy Gray Polar Murdered Out Black",
+   "stickers": [
+    "26-SPY-Digital-PDP-Icon-MurdrdOut-CAT4.svg",
+    "26-SPY-Digital-PDP-Icon-MurdrdOut-WARNING.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD",
+   "colourway": "Soft Matte Black-Happy Boost Polar with Black Mirror",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "DISCORD GAMING",
+   "colourway": "Matte Black-Happy Gaming",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "DISCORD GAMING",
+   "colourway": "Matte White-Happy Gaming",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD OPTICAL 56",
+   "colourway": "Black Matte-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "DISCORD OPTICAL 56",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD OPTICAL 56",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD OPTICAL 56",
+   "colourway": "Dark Tort Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD OPTICAL 56",
+   "colourway": "Gray Fade-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD OPTICAL 58",
+   "colourway": "Black Matte-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "DISCORD OPTICAL 58",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD OPTICAL 58",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD OPTICAL 58",
+   "colourway": "Dark Tort Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD OPTICAL 58",
+   "colourway": "Gray Fade-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD REPLACEMENT LENS",
+   "colourway": "-Happy Bronze Polar with Dark Blue Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD REPLACEMENT LENS",
+   "colourway": "-Happy Bronze Polar with Green Spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DISCORD REPLACEMENT LENS",
+   "colourway": "-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "DISCORD SLAYCO",
+   "colourway": "Matte Black-Happy Bronze Purple Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "DOLLY 52",
+   "colourway": "Black-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "DOLLY 52",
+   "colourway": "Green Sunset-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "DRAKE 54",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "ELIJAH 55",
+   "colourway": "Gunmetal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "ELIJAH 55",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "ELIJAH 55",
+   "colourway": "Navy Navy-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "ELIJAH 55",
+   "colourway": "Oiled Steel Olive-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "ELIJAH 57",
+   "colourway": "Gunmetal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "ELIJAH 57",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "ELIJAH 57",
+   "colourway": "Navy Navy-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "FIONA",
+   "colourway": "Honey Tort Black-Happy Brown Fade",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "FIONA",
+   "colourway": "Mint Chip Fade-Happy Bronze Fade",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "FLYER REPLACEMENT LENS",
+   "colourway": "-Happy Gray Green ANSI",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "FLYER REPLACEMENT LENS",
+   "colourway": "-Happy Rose",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "FLYER REPLACEMENT LENS",
+   "colourway": "-HD Clear ANSI",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "FLYER REPLACEMENT LENS",
+   "colourway": "-HD Plus Yellow ANSI",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "FLYNN",
+   "colourway": "Black Matte-Happy Grey Green",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "FLYNN",
+   "colourway": "Black/Honey Tort-Happy Dark Brown Fade",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "FLYNN",
+   "colourway": "Soft Matte Black-Happy Boost Polar Black Mirror",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "FLYNN",
+   "colourway": "Soft Matte Black-Happy Bronze with Dark Blue Spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "FLYNN",
+   "colourway": "Soft Matte Black-Happy Gray Green",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "FLYNN 5050",
+   "colourway": "25th Anniv Black Gold Matte-HD Plus Bronze with Gold Spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "FLYNN 5050",
+   "colourway": "Matte Black-Happy Boost Bronze Polar Ice Blue Spectra Mirror",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "FLYNN 5050",
+   "colourway": "Matte Black-Happy Boost Polar Orange Mirror",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "FLYNN 5050",
+   "colourway": "Matte Pink Matte Translucent White-Happy Bronze Pink Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION",
+   "colourway": "Bronze-HD Bronze with Gold Spectra Mirror HD Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION",
+   "colourway": "Matte Black-Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION",
+   "colourway": "Matte Blue-Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "FOUNDATION",
+   "colourway": "Maze Blue-Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION",
+   "colourway": "Revolution-Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION CVS",
+   "colourway": "Clear-Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION CVS",
+   "colourway": "Clear-N/A",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "FOUNDATION CVS REPLACEMENT LENS",
+   "colourway": "-Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "FOUNDATION LENS",
+   "colourway": "Blue-Blue",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION LENS",
+   "colourway": "Clear-Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "FOUNDATION LENS",
+   "colourway": "LL Rose Blue Mirror-LL Rose Blue Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION LENS",
+   "colourway": "Orange-Orange",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION LENS",
+   "colourway": "Yellow-Yellow",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION NOSE GUARD",
+   "colourway": "Black-",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "FOUNDATION PLUS",
+   "colourway": "Camo Orange-HD Smoke Red Spectra Mirror + HD Clear",
+   "stickers": [
+    "spy-bonuslens-2.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION PLUS",
+   "colourway": "Classic Orange-HD Smoke Red Spectra Mirror + HD Clear",
+   "stickers": [
+    "spy-bonuslens-2.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION PLUS",
+   "colourway": "HD Smoke Red Spectra Mirror + HD Clear",
+   "stickers": [
+    "spy-bonuslens-2.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION PLUS",
+   "colourway": "Matte Black-HD Smoke Platinum Spectra Mirror plus HD Clear AFP",
+   "stickers": [
+    "spy-bonuslens-2.png"
+   ],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "FOUNDATION PLUS",
+   "colourway": "SPY + SlayCo-HD Smoke with Silver Spectra Mirror HD Clear",
+   "stickers": [
+    "spy-bonuslens-2.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION TEAR OFF",
+   "colourway": "Clear-10pack",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION TEAR OFF",
+   "colourway": "Clear-20pack",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION TEAR OFF",
+   "colourway": "Clear-50pack",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FOUNDATION TEAR OFF",
+   "colourway": "Foundation Tear Off 10 Pack, Clear-10pack",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "FOUNDATION TEAR OFF",
+   "colourway": "Pro Laminate - Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "FRAZIER LENS",
+   "colourway": "-Happy Bronze Polar with Dark Blue Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "FRAZIER LENS",
+   "colourway": "-Happy Bronze Polar with Green Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "FRAZIER LENS",
+   "colourway": "-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "GALACTIC MIPS",
+   "colourway": "Black Eye Spy Matte-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "GALACTIC MIPS",
+   "colourway": "Chrome Blue-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "GALACTIC MIPS",
+   "colourway": "Gray Spy For Life-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "GALACTIC MIPS",
+   "colourway": "Matte Clay-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "GALACTIC MIPS",
+   "colourway": "Matte Dusty Pink-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "GALACTIC MIPS",
+   "colourway": "Matte Lilac-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "GALACTIC MIPS",
+   "colourway": "Orange Spy Ink Matte-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "GALACTIC MIPS",
+   "colourway": "White Light Gray Matte-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "GENERAL",
+   "colourway": "Soft Matte Black-Happy Gray Green",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "GENERAL",
+   "colourway": "Soft Matte Black-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "GENRE",
+   "colourway": "GENRE CLUB MIDNIGHT, Soft matte Black-Happy Bronze Gold Spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "GENRE",
+   "colourway": "Soft matte Black-Happy Bronze Gold Spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "GENRE",
+   "colourway": "Translucent Aqua Matte Black-Happy Gray with Purple Spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "GENRE",
+   "colourway": "Translucent Magenta Matte Black-Happy Gray",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "GENRE",
+   "colourway": "Translucent Red Matte Black-Happy Gray Green",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "GETAWAY LENS",
+   "colourway": "-Bronze (VLT:25perCent)",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "GETAWAY LENS",
+   "colourway": "-Persimmon (VLT:53perCent)",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "GORDON 55",
+   "colourway": "Matte Black Matte Black-Clear",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "GORDON 55",
+   "colourway": "Matte Navy Tort/Matte Black-Gray Green",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "GORDON 55",
+   "colourway": "Matte Olive Brush/Matte Black-Gray Green",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HALE 56",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HALE 58",
+   "colourway": "Black Clear Gunmetal-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HALE 58",
+   "colourway": "Black Matte-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HALE 58",
+   "colourway": "Black Tortoise Matte-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HANGOUT",
+   "colourway": "juneshine-mango-daydream_happy-bronze",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HANGOUT",
+   "colourway": "Matte White-Bronze Platinum Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HANGOUT",
+   "colourway": "Translucent Watermelon-Gray",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HANGOUT",
+   "colourway": "translucent-purple_happy-bronze-platinum-spectra-mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HARDWIN 50",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HARDWIN 50",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HARDWIN 50",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HARDWIN 50",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HARDWIN 52",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HARDWIN 52",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HARDWIN 52",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HARDWIN 52",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HARDWIN FUSION 50",
+   "colourway": "Black Brushed Bronze-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HARDWIN FUSION 50",
+   "colourway": "Crystal Smoke Matte Dark Gunmetal-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HARDWIN FUSION 50",
+   "colourway": "Honey Tort Brushed Bronze-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HARDWIN FUSION 50",
+   "colourway": "Matte Black Matte Dark Gunmetal-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HARDWIN FUSION 52",
+   "colourway": "Black Brushed Bronze-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HARDWIN FUSION 52",
+   "colourway": "Crystal Smoke Matte Dark Gunmetal-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HARDWIN FUSION 52",
+   "colourway": "Honey Tort Brushed Bronze-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HARDWIN FUSION 52",
+   "colourway": "Matte Black Matte Dark Gunmetal-SPY Demo Lens with SPY Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HELM",
+   "colourway": "Black Matte-Happy Bronze Polar with Green Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HELM",
+   "colourway": "Black Soft Matte-Happy Grey Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HELM",
+   "colourway": "Black Soft Matte-HD Plus Grey Green",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HELM",
+   "colourway": "Matte Black-HD Plus Bronze with Gold Spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HELM OPTICAL 54",
+   "colourway": "Black Matte-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HELM OPTICAL 54",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HELM OPTICAL 54",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HELM OPTICAL 54",
+   "colourway": "Matte Gray-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HELM OPTICAL 56",
+   "colourway": "Black Matte-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HELM OPTICAL 56",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HELM OPTICAL 56",
+   "colourway": "Dark Tort Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HELM OPTICAL 56",
+   "colourway": "Matte Gray-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HELM REPLACEMENT LENS",
+   "colourway": "-Happy Bronze Polar with Dark Blue Spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HELM REPLACEMENT LENS",
+   "colourway": "-Happy Bronze Polar with Green Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HELM REPLACEMENT LENS",
+   "colourway": "-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HELM TECH SIDE SHIELDS",
+   "colourway": "Unfinished Satin Black-No Lens Reference",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HIELO",
+   "colourway": "Soft Matte Black-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HOLDEN 53",
+   "colourway": "Brushed Gunmetal Matte Gray Smoke-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HOLDEN 53",
+   "colourway": "Brushed Gunmetal/Dark Tort-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HOLDEN 53",
+   "colourway": "Matte Black Black Horn-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HOLT 54",
+   "colourway": "Matte Classic Camo Tort Matte Black-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HOT SPOT OPTICAL 56",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HOT SPOT OPTICAL 56",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HOT SPOT OPTICAL 56",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HOT SPOT OPTICAL 56",
+   "colourway": "Translucent Brick-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HOT SPOT OPTICAL 56",
+   "colourway": "Translucent Honey-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HOT SPOT OPTICAL 58",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HOT SPOT OPTICAL 58",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HOT SPOT OPTICAL 58",
+   "colourway": "Translucent Brick-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HOT SPOT OPTICAL 58",
+   "colourway": "Translucent Honey-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HOTSPOT GAMING",
+   "colourway": "Matte Black-Happy Gaming",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "HOTSPOT GAMING",
+   "colourway": "translucent-purple_happy-gaming",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "HOTSPOT SCREEN",
+   "colourway": "Matte Black-Happy Screen",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "JACKMAN REPLACEMENT LENS",
+   "colourway": "-Clear ANSI",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "JACKMAN REPLACEMENT LENS",
+   "colourway": "-Happy Gray Green ANSI",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "JETT 54",
+   "colourway": "Mahogany Mojave-Clear",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "JUSTICE 57",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "JUSTICE 57",
+   "colourway": "Matte Black Gloss Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "JUSTICE 57",
+   "colourway": "Matte Black Trans Sepia-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "JUSTICE 57",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "JUSTICE 59",
+   "colourway": "Matte Black Gloss Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "JUSTICE 59",
+   "colourway": "Matte Black Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "JUSTICE 59",
+   "colourway": "Matte Black Trans Sepia-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "KADEN 50",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "KADEN 50",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "KADEN 50",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "KADEN 50",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "KADEN 52",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "KADEN 52",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "KADEN 52",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "KADEN 52",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "KADEN FUSION 50",
+   "colourway": "Black Brushed Bronze-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "KADEN FUSION 50",
+   "colourway": "Crystal Smoke Matte Dark Gunmetal",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "KADEN FUSION 50",
+   "colourway": "Honey Tort Fade Brushed Bronze",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "KADEN FUSION 50",
+   "colourway": "Matte Black Matte Dark Gunmetal",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "KADEN FUSION 52",
+   "colourway": "Black Brushed Bronze-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "KADEN FUSION 52",
+   "colourway": "Crystal Smoke Matte Dark Gunmetal",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "KADEN FUSION 52",
+   "colourway": "Honey Tort Fade Brushed Bronze",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "KADEN FUSION 52",
+   "colourway": "Matte Black Matte Dark Gunmetal",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "KIPTON 52",
+   "colourway": "Granite Smoke-Bronze",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "LEWIS 51",
+   "colourway": "Black Gunmetal-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "LEWIS 51",
+   "colourway": "Dark Tort Gold-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "LEWIS 51",
+   "colourway": "Matte Green Smoke Matte Gunmetal-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "LIL GALACTIC MIPS",
+   "colourway": "Black Eye Spy Matte-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "LIL GALACTIC MIPS",
+   "colourway": "Chrome Blue-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "LIL GALACTIC MIPS",
+   "colourway": "Gray Spy For Life-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "LIL GALACTIC MIPS",
+   "colourway": "Matte Azure-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "LIL GALACTIC MIPS",
+   "colourway": "Matte Bubblegum-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "LIL GALACTIC MIPS",
+   "colourway": "Matte Green-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "LIL GALACTIC MIPS",
+   "colourway": "Orange Spy Ink Matte-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "LIL GALACTIC MIPS",
+   "colourway": "White Light Gray Matte-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "LOGAN",
+   "colourway": "Black Soft Matte-Happy Gray Green",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "LOGAN",
+   "colourway": "Black Soft Matte-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "LOGAN",
+   "colourway": "Clear Smoke-Happy Gray Green with Silver Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "LOGAN",
+   "colourway": "Matte Black ANSI RX-Clear ANSI",
+   "stickers": [
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "LOGAN",
+   "colourway": "Matte Black ANSI RX-Happy Gray Green ANSI",
+   "stickers": [
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MAINLINE ANSI",
+   "colourway": "ANSI RX Matte Gray-Happy Boost Polar with Ice Blue Mirror",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "MAINLINE ANSI",
+   "colourway": "ANSI RX Matte Sand-Happy Gray",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MAINLINE ANSI",
+   "colourway": "Matte Black ANSI RX-Happy Boost Polar with Black Mirror",
+   "stickers": [
+    "pictohappyboost.png",
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "MAINLINE ANSI",
+   "colourway": "Matte Black ANSI RX-Happy Bronze Polar with Green Mirror",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MAINLINE ANSI",
+   "colourway": "Matte Black ANSI RX-Happy Bronze with Gold Mirror",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MAINLINE ANSI",
+   "colourway": "Matte Black ANSI RX-Happy Gray Green Polar",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MARAUDER",
+   "colourway": "ESSENTIALS-Happy Bronze with Gold Mirror & Happy LL Yellow with Green Mirror",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "spy-deadbolt.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARAUDER",
+   "colourway": "EVERBLACK-Happy Boost Bronze with Ice Blue Mirror & Happy Boost LL Coral",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "spy-deadbolt.png",
+    "pictohappyboost.png"
+   ],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "MARAUDER",
+   "colourway": "EVERWHITE-Happy Bronze with Black Mirror & Happy LL Persimmon with Silver Mirror",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "spy-deadbolt.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARAUDER",
+   "colourway": "Speedway Dawn-Happy Bronze with Red Mirror & Happy LL Persimmon with Silver Mirror",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "spy-deadbolt.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARAUDER",
+   "colourway": "Trippy Threads-Happy Bronze with Purple Mirror & Happy LL Persimmon with Silver Mirror",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "spy-deadbolt.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARAUDER ELITE ECO",
+   "colourway": "Matte Black-Happy Boost Black Mirror + HB LL Coral",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "spy-deadbolt.png",
+    "pictohappyboost.png"
+   ],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "MARAUDER ELITE ECO",
+   "colourway": "Matte Black-Happy Boost Ice Blue Mirror + HB LL Coral",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "spy-deadbolt.png",
+    "pictohappyboost.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARAUDER ELITE ECO",
+   "colourway": "Matte White-Happy Boost Black Mirror + HB LL Coral",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "spy-deadbolt.png",
+    "pictohappyboost.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARAUDER ELITE ECO",
+   "colourway": "Matte White-Happy Boost Ice Blue Mirror + HB LL Coral",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "spy-deadbolt.png",
+    "pictohappyboost.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARAUDER SE",
+   "colourway": "Dusty Pink-Happy Bronze with Platinum Mirror & Happy LL Persimmon with Silver Mirror",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "spy-deadbolt.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARAUDER SE",
+   "colourway": "EVERWHITE-Happy Bronze with Black Mirror & Happy LL Persimmon with Silver Mirror",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "spy-deadbolt.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARAUDER SE",
+   "colourway": "Merlot-Happy Bronze with Silver Mirror & Happy LL Gray Green with Red Mirror",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "spy-deadbolt.png"
+   ],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "MARAUDER SE",
+   "colourway": "Snowcatz-Happy Bronze with Pink Platinum Mirror & Happy LL Persimmon with Silver Mirror",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "spy-deadbolt.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARAUDER SE",
+   "colourway": "Steel Gray-Happy Bronze with Silver Mirror & Happy LL Persimmon with Silver Mirror",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "spy-deadbolt.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARSHALL 2.0",
+   "colourway": "Dusty Pink-Happy ML Rose with Silver Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARSHALL 2.0",
+   "colourway": "EVERBLACK-Happy Boost Bronze with Ice Blue Mirror",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "MARSHALL 2.0",
+   "colourway": "EVERBLACK-Happy Boost LL Coral",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARSHALL 2.0",
+   "colourway": "EVERWHITE-Happy LL Persimmon with Silver Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARSHALL 2.0",
+   "colourway": "Snowcatz-Happy ML Rose with Pink Platinum Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARSHALL LENS",
+   "colourway": "No Colour Reference-Happy Rose Dark Blue Spectra Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARSHALL LENS",
+   "colourway": "No Colour Reference-HD Plus LL Persimmon with Lucid Silver",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "MARSHALL LENS",
+   "colourway": "No Colour Reference-HD Plus LL Pink with Blue Spectra Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARSHALL LENS",
+   "colourway": "Persimmon-HD LL Persimmon",
+   "stickers": [
+    "spy-bonuslens-2.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MARSHALL LENS",
+   "colourway": "Yellow-HD Plus LL Yellow with Green Spectra Mirror",
+   "stickers": [
+    "spy-bonuslens-2.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MCCOY REPLACEMENT LENS",
+   "colourway": "No Colour Reference-Happy Bronze Polar with Dark Blue Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MCCOY REPLACEMENT LENS",
+   "colourway": "No Colour Reference-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "MEGALITH",
+   "colourway": "Black Metal-Happy Boost Bronze with Black Mirror & Happy LL Yellow",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MEGALITH",
+   "colourway": "ESSENTIALS-Happy ML Rose with Gold Mirror & Happy LL Yellow",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MEGALITH",
+   "colourway": "EVERBLACK-Happy Boost Bronze with Ice Blue Mirror & Happy LL Yellow",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MEGALITH",
+   "colourway": "EVERBLACK-Happy Rose Photochromic & Happy LL Yellow",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "MEGALITH",
+   "colourway": "Speedway Dusk-Happy ML Rose with Black Mirror & Happy LL Yellow",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "MONA 52",
+   "colourway": "black/blue-horn_",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MONA 52",
+   "colourway": "Dark Tort-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "MONOLITH GAMING",
+   "colourway": "Matte Black-Happy Gaming",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "MONOLITH SPEED",
+   "colourway": "Black-Happy Bronze Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "MONOLITH SPEED",
+   "colourway": "Black-Happy Low Light Yellow",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MONOLITH SPEED",
+   "colourway": "Silver-Happy Gray Green",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MONOLITH SPEED",
+   "colourway": "teal_happy-gray-green-prurple-mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MONTANA",
+   "colourway": "Black Soft Matte-Happy Grey Green",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MONTANA",
+   "colourway": "Black Soft Matte-HD Plus Bronze with Gold Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "MONTANA",
+   "colourway": "Black Soft Matte-HD Plus Grey Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MONTANA",
+   "colourway": "Matte Gray/Translucent Black-Happy Bronze Light Green Spectra Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MONTANA",
+   "colourway": "Soft Matte Black-Happy Boost Polar Ice Blue Mirror",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "MONTANA REPLACEMENT LENS",
+   "colourway": "-Happy Bronze Polar with Dark Blue Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MONTANA REPLACEMENT LENS",
+   "colourway": "-Happy Bronze Polar with Green Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "MONTANA REPLACEMENT LENS",
+   "colourway": "-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "NELSON 57",
+   "colourway": "Matte Navy/Dark Tort-Clear",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "NELSON 57",
+   "colourway": "Matte Silver Crystal-Clear",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "NEUTRON MIPS",
+   "colourway": "Grey-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "NEUTRON MIPS",
+   "colourway": "Matte Black-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "NEUTRON MIPS",
+   "colourway": "White-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "NINETY SIX",
+   "colourway": "Matte Black-Happy Gray Green",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "OSLIND 48",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "OSLIND 48",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "OSLIND 48",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "OSLIND 48",
+   "colourway": "Java-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "OSLIND 48",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "OSLIND 50",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "OSLIND 50",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "OSLIND 50",
+   "colourway": "Java-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "OSLIND 50",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "OVERHAUL",
+   "colourway": "ANSI Matte Black-Happy Gray Green",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "OVERHAUL",
+   "colourway": "ANSI Matte Gray-Happy Boost Polar with Ice Blue Mirror",
+   "stickers": [
+    "pictohappyboost.png",
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "OVERHAUL",
+   "colourway": "ANSI Matte Steel Blue-Happy Gray Polar with Platinum Mirror",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "OVERHAUL",
+   "colourway": "ANSI Soft Matte Black-Happy Boost Polar with Black Mirror",
+   "stickers": [
+    "pictohappyboost.png",
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "OVERHAUL",
+   "colourway": "ANSI Translucent Matte Black-Happy Boost Bronze Polar",
+   "stickers": [
+    "pictohappyboost.png",
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "OVERHAUL XL",
+   "colourway": "Matte Black-Happy Gray Green",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "OVERHAUL XL",
+   "colourway": "Matte Black-Happy Gray Green Polar",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "OVERHAUL XL",
+   "colourway": "Matte Gray-Happy Boost Polar Ice Blue Mirror",
+   "stickers": [
+    "pictohappyboost.png",
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "OVERHAUL XL",
+   "colourway": "Matte Olive-Happy Bronze Pewter Mirror",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "OVERHAUL XL",
+   "colourway": "Soft Matte Black-Happy Boost Polar Black Mirror",
+   "stickers": [
+    "pictohappyboost.png",
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "PIPER",
+   "colourway": "Black-Happy Gray Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "PIPER",
+   "colourway": "Bronze Fade-Bronze Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "PIPER",
+   "colourway": "Matte Black-Gray Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "PIPER",
+   "colourway": "Matte Gray-Gray Polarized",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "PIPER",
+   "colourway": "Matte White-Gray Polarized",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "PRESLEY 54",
+   "colourway": "Pink Smoke-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "QUANTA 2 REPLACEMENT LENS",
+   "colourway": "-Clear ANSI",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "QUANTA 2 REPLACEMENT LENS",
+   "colourway": "-Happy Gray Green ANSI",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "QUANTA 2 REPLACEMENT LENS",
+   "colourway": "-Happy Gray Green Polar ANSI",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "RAIDER",
+   "colourway": "Matte Black-Bronze with Silver Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "RAIDER",
+   "colourway": "Matte Black-ML Rose with Red Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "RAIDER",
+   "colourway": "OG Black-ML Rose with Silver Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REBAR ANSI",
+   "colourway": "Matte Army Green-Happy Gray",
+   "stickers": [
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "REBAR ANSI",
+   "colourway": "Matte Black-Happy Boost Polar with Black Mirror",
+   "stickers": [
+    "pictohappyboost.png",
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "REBAR ANSI",
+   "colourway": "Matte Black-Happy Boost Polar with Ice Blue Mirror",
+   "stickers": [
+    "pictohappyboost.png",
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "REBAR ANSI",
+   "colourway": "Matte Black-Happy Gray Green Polar ANSI",
+   "stickers": [
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "REBAR ANSI",
+   "colourway": "Matte Gunmetal-Happy Gray Green Polar with Dark Blue Mirror",
+   "stickers": [
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "REBAR ANSI",
+   "colourway": "Matte Translucent Gunmetal-Happy Gray Polar",
+   "stickers": [
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "REBAR ANSI",
+   "colourway": "Sand Matte-Happy Gray",
+   "stickers": [
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "REBAR SE ANSI",
+   "colourway": "Matte Black-Happy Bronze with Gold Mirror",
+   "stickers": [
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "REBAR SE ANSI",
+   "colourway": "Matte Black-Happy Gray Green ANSI",
+   "stickers": [
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "REBAR SE ANSI",
+   "colourway": "Matte Black-Happy Gray Green Polar ANSI",
+   "stickers": [
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "REBAR SE ANSI",
+   "colourway": "Matte Olive-Happy Gray",
+   "stickers": [
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "REBAR SE ANSI",
+   "colourway": "Matte Sand-Happy Gray",
+   "stickers": [
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "REBAR SE ANSI",
+   "colourway": "Matte Translucent Gunmetal-Happy Gray with Gunmetal Mirror",
+   "stickers": [
+    "ANSI_SVG_NEW_V4.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "REGION",
+   "colourway": "ANSI Matte Black-Happy Bronze with Gold Mirror",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "REGION",
+   "colourway": "ANSI Matte Black-Happy Gray Green Polar ANSI",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "REGION",
+   "colourway": "ANSI Matte Gray-Happy Boost Polar with Ice Blue Mirror",
+   "stickers": [
+    "pictohappyboost.png",
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "REGION",
+   "colourway": "ANSI Matte Olive-Happy Bronze with Pewter Mirror",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "REGION",
+   "colourway": "ANSI Matte Sand-Happy Gray",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "REGION",
+   "colourway": "ANSI Soft Matte Black-Happy Boost Polar with Black Mirror",
+   "stickers": [
+    "pictohappyboost.png",
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "REGION XL",
+   "colourway": "Matte Black-Happy Gray Green Polar ANSI",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "REGION XL",
+   "colourway": "Matte Sand-Happy Gray",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "REGION XL",
+   "colourway": "Matte Steel Blue-Happy Gray Green Polar with Silver Mirror",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "REGION XL",
+   "colourway": "Soft Matte Black-Happy Boost Polar with Black Mirror",
+   "stickers": [
+    "pictohappyboost.png",
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "REGION XL",
+   "colourway": "Translucent Matte Black-Happy Boost Polar with Orange Mirror",
+   "stickers": [
+    "pictohappyboost.png",
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "RENLEY 56",
+   "colourway": "Crystal Smoke-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "RENLEY 56",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "RENLEY 56",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "RENLEY 58",
+   "colourway": "Crystal Smoke-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "RENLEY 58",
+   "colourway": "Honey Tort-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "RENLEY 58",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "RENLEY FUSION  54",
+   "colourway": "Crystal Smoke Matte Dark Gunmetal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "RENLEY FUSION  54",
+   "colourway": "Honey Tort Brushed Bronze-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "RENLEY FUSION  54",
+   "colourway": "Matte Black Matte Dark Gunmetal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "RENLEY FUSION 56",
+   "colourway": "Crystal Smoke Matte Dark Gunmetal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "RENLEY FUSION 56",
+   "colourway": "Honey Tort Brushed Bronze-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "RENLEY FUSION 56",
+   "colourway": "Matte Black Matte Dark Gunmetal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "REPLACEMENT LENS ACE",
+   "colourway": "No Colour Reference-Happy Gray Green Red Spectra Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS ACE",
+   "colourway": "No Colour Reference-Happy LL Pink Blue Spectra Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS ACE",
+   "colourway": "No Colour Reference-Happy Low Light Yellow",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS ACE",
+   "colourway": "No Colour Reference-Happy Rose Dark Blue Spectra Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS ACE",
+   "colourway": "REPLACEMENT LENS ACE : 100071000225, No Colour Reference-Happy Bronze Green Spectra Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "REPLACEMENT LENS CRUSHER ELITE",
+   "colourway": "No Colour Reference-Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS CRUSHER ELITE",
+   "colourway": "No Colour Reference-HD Bronze with Silver Spectra Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "REPLACEMENT LENS CRUSHER ELITE",
+   "colourway": "No Colour Reference-HD LL Persimmon",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS LEGACY SE",
+   "colourway": "No Colour Reference-Happy Bronze Red Spectra Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS LEGACY SE",
+   "colourway": "No Colour Reference-Happy LL Gray Green Red Spectra Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "REPLACEMENT LENS MARAUDER",
+   "colourway": "No Colour Reference-Happy Boost Bronze with Happy Blue Mirror",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "REPLACEMENT LENS MARAUDER",
+   "colourway": "No Colour Reference-Happy Boost LL Coral",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS MARAUDER",
+   "colourway": "No Colour Reference-Happy LL Persimmon",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS MARAUDER",
+   "colourway": "No Colour Reference-Happy LL Yellow",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS MARAUDER",
+   "colourway": "No Colour Reference-LL Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS MARAUDER ELITE",
+   "colourway": "No Colour Reference-Happy Boost Bronze with Happy Blue Mirror",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "REPLACEMENT LENS MARAUDER ELITE",
+   "colourway": "No Colour Reference-Happy Boost LL Coral",
+   "stickers": [
+    "pictohappyboost.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS MARAUDER ELITE",
+   "colourway": "No Colour Reference-Happy Bronze with Silver Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS MARAUDER ELITE",
+   "colourway": "No Colour Reference-Happy LL Persimmon",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS RAIDER",
+   "colourway": "No Colour Reference-Bronze Red Spectra Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "REPLACEMENT LENS RAIDER",
+   "colourway": "No Colour Reference-LL Yellow",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "REPLACEMENT LENS RAIDER",
+   "colourway": "No Colour Reference-ML Rose Silver Spectra Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "RICO 52",
+   "colourway": "Matte Black Clear Fade-Clear Fade",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "RICO 52",
+   "colourway": "Matte Black Tort Fade-Clear Fade",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "RICO 52",
+   "colourway": "Matte Black-Clear",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "RICO 52",
+   "colourway": "Matte Seaweed-Clear",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "ROCKY",
+   "colourway": "Matte Black-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "ROCKY",
+   "colourway": "Matte Translucent Gunmetal-Happy Gray Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "ROCKY",
+   "colourway": "Soft Matte Black-Happy Bronze Polar with Green Mirror",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "ROCKY",
+   "colourway": "SOSI Matte Black-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "ROCKY REPLACEMENT LENS",
+   "colourway": "-Happy Bronze Polar with Dark Blue Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "ROCKY REPLACEMENT LENS",
+   "colourway": "-Happy Bronze Polar with Green Spectra",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "ROCKY REPLACEMENT LENS",
+   "colourway": "-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "SHEA 53",
+   "colourway": "Matte Black-Gray Green",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "SPRINTER REPLACEMENT LENS",
+   "colourway": "-Happy Gray Green ANSI",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "SPRINTER REPLACEMENT LENS",
+   "colourway": "-Happy Gray Green Polar ANSI",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "SPRINTER REPLACEMENT LENS",
+   "colourway": "-HD Clear ANSI",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "STARGAZER MIPS",
+   "colourway": "Matte Black-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "STARGAZER MIPS",
+   "colourway": "Matte Dark Gray-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "STARGAZER MIPS",
+   "colourway": "Matte Muted Gray-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "STARGAZER MIPS",
+   "colourway": "Trevor Kennison Matte Dark Gray-No Lens Reference",
+   "stickers": [
+    "mipslogo.png"
+   ],
+   "page": "helmets",
+   "from": "tile"
+  },
+  {
+   "model": "STEVIE 52",
+   "colourway": "Black/Blue Horn-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "STEVIE 52",
+   "colourway": "Dark Tort-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "SUNGLASS CASE",
+   "colourway": "Black-",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "SUNGLASS POUCH",
+   "colourway": "Beyond Control",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "SUNGLASS POUCH",
+   "colourway": "BONES-",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "SUNGLASS POUCH",
+   "colourway": "Pouch Aliens",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "SUNGLASS POUCH",
+   "colourway": "Taco Tuesday",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "SUNGLASS POUCH",
+   "colourway": "Tie Dye",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "SUPER FLYNN",
+   "colourway": "Matte Black-Happy Gray Green",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "SUPER FLYNN",
+   "colourway": "Matte Olive Green-Happy Bronze Pewter Mirror",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "SUPER FLYNN",
+   "colourway": "Matte Purple-HD Plus Grey Green with Pink Spectra Mirror",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "SUPER FLYNN",
+   "colourway": "Matte Sand-Happy Gray Green Black Spectra Mirror",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "SUPER FLYNN",
+   "colourway": "Translucent Matte Black-HD Plus Green with Orange Spectra Mirror",
+   "stickers": [
+    "ANSI_SVG_Z87_V1.svg"
+   ],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "SURF CAT",
+   "colourway": "Black-Gray",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "TARMAC",
+   "colourway": "Brown Stripe Tort-Happy Bronze Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "tile"
+  },
+  {
+   "model": "TARMAC",
+   "colourway": "Soft matte Black-Happy Gray Green",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "TARMAC",
+   "colourway": "Soft matte Black-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "TARMAC",
+   "colourway": "SOSI Matte Black-Happy Gray Green",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "TARMAC",
+   "colourway": "SOSI Matte Black-Happy Gray Green Polar",
+   "stickers": [],
+   "page": "sunglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "TRENTON 57",
+   "colourway": "Matte Black Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "VAUGHN 54",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "VAUGHN 54",
+   "colourway": "Crystal Smoke-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "VAUGHN 54",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "VAUGHN 54",
+   "colourway": "Matte Blue-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "VAUGHN 54",
+   "colourway": "Translucent Brown-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "VAUGHN 56",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "VAUGHN 56",
+   "colourway": "Crystal Smoke-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "VAUGHN 56",
+   "colourway": "Matte Black Gloss Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "VAUGHN 56",
+   "colourway": "Matte Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "VAUGHN 56",
+   "colourway": "Translucent Brown-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "WARREN 56",
+   "colourway": "Black Marble Matte-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "WARREN 56",
+   "colourway": "Black Matte-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "WARREN 56",
+   "colourway": "Dark Navy Matte-",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "WAYPOINT",
+   "colourway": "Dusty Pink-Happy Bronze with Platinum Mirror & Happy LL Persimmon with Silver Mirror",
+   "stickers": [
+    "spy-bonuslens-2.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "WAYPOINT",
+   "colourway": "EVERBLACK-Happy Boost Bronze with Ice Blue Mirror & Happy Boost LL Coral",
+   "stickers": [
+    "spy-bonuslens-2.png",
+    "pictohappyboost.png"
+   ],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "WAYPOINT",
+   "colourway": "Island Glow-Happy Bronze with Tropical Green Mirror & Happy LL Persimmon with Silver Mirror",
+   "stickers": [
+    "spy-bonuslens-2.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "WAYPOINT",
+   "colourway": "Snowcatz-Happy Bronze with Pink Platinum Mirror & Happy LL Persimmon with Silver Mirror",
+   "stickers": [
+    "spy-bonuslens-2.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "WAYPOINT",
+   "colourway": "Speedway Dawn-Happy Bronze with Red Mirror & Happy LL Persimmon with Silver Mirror",
+   "stickers": [
+    "spy-bonuslens-2.png"
+   ],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "WESTON 54",
+   "colourway": "Black Matte-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "WESTON 54",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "WESTON 54",
+   "colourway": "Crystal-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "WESTON 54",
+   "colourway": "Soft Black Matte-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "WESTON 54",
+   "colourway": "Translucent Green-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "WESTON 56",
+   "colourway": "Black Matte-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "WESTON 56",
+   "colourway": "Black-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "tile"
+  },
+  {
+   "model": "WESTON 56",
+   "colourway": "Dark Tortoise-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "WESTON 56",
+   "colourway": "Translucent Blue-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "WESTON 56",
+   "colourway": "Translucent Green-Demo  W/ Spy+ Lens Print",
+   "stickers": [],
+   "page": "eyeglasses",
+   "from": "swatch"
+  },
+  {
+   "model": "WOOT MX",
+   "colourway": "Black Sand-Smoke AFP",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "WOOT MX",
+   "colourway": "Black-Clear AFP",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "WOOT MX",
+   "colourway": "Matte Black-HD Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "WOOT MX",
+   "colourway": "Matte USA-HD Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "WOOT MX",
+   "colourway": "WOOT, Matte USA-HD Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "WOOT RACE",
+   "colourway": "Matte Navy-HD Smoke Dark Blue Spectra Mirror + HD Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "WOOT RACE",
+   "colourway": "Matte Purple-HD Smoke Purple Spectra Mirror + HD Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "WOOT RACE",
+   "colourway": "Matte Red-HD Smoke Red Spectra Mirror + HD Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "WOOT RACE",
+   "colourway": "Reverb Blue-HD Smoke with Light Blue Spectra Mirror - HD Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "swatch"
+  },
+  {
+   "model": "WOOT RACE LENS",
+   "colourway": "LL Smoke Blue Mirror-LL Smoke Blue Mirror",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  },
+  {
+   "model": "WOOT/WOOT RACE CVS SYSTEM",
+   "colourway": "-Clear",
+   "stickers": [],
+   "page": "goggles",
+   "from": "tile"
+  }
+ ]
+}

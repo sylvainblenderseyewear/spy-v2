@@ -100,6 +100,12 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "spy_tech_badge_A1": {
+              "type": "spy-tech-badge",
+              "name": "Tech Badge",
+              "settings": {},
+              "blocks": {}
+            },
             "card-gallery": {
               "type": "_product-card-gallery",
               "settings": {
@@ -190,6 +196,7 @@
             }
           },
           "block_order": [
+            "spy_tech_badge_A1",
             "card-gallery",
             "swatches_card",
             "spy_color_count_A1",

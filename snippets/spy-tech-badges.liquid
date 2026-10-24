@@ -1,118 +1,33 @@
 {%- doc -%}
-  Renders the top-right tech badges for a product card, in order: the Happy Boost
-  icon (from a `technology` metaobject), the ANSI badge (from `spec.ansi_rating`),
-  then the tag-driven badges. Reads product-level spec metafields, so
-  combined-listing children pass their own data.
+  Renders a product card's stickers, top right of the image. Each sticker is one
+  product tag, set per product to match spyoptic.com (scripts/card-stickers.mjs
+  works them out from the legacy site):
 
-  @param {object} product - product to read `spec` metafields and tags from
-  @param {boolean} [force_happy_boost] - show the icon even when this product has no
-    Happy Boost metaobject. The grouped PLP card uses it: the technology sits on
-    variants across the whole model, not on the card's representative colourway.
-  @param {object} [happy_boost_icon] - image to fall back to when forced and no
-    metaobject icon is available
-  @param {object} [mips_icon] - Mips picto, for the `badge::mips` tag. Every card
-    reads this tag, since a helmet carries Mips wherever its card shows up.
-  @param {boolean} [show_tag_badges] - also read the `badge::bonus-lens` tag.
-    Grouped PLP only, the one card the source gives that badge.
-  @param {object} [bonus_lens_icon] - bonus lens picto, for the `badge::bonus-lens` tag
-  @param {object} [deadbolt_icon] - deadbolt picto, printed with the bonus lens one
+    badge::bonus-lens · badge::deadbolt · badge::happy-boost · badge::ansi-z87
+    badge::ansi-z87-2-plus · badge::cat-4 · badge::not-for-driving · badge::mips
+
+  They print in that order, the legacy site's. The art lives in the shop's Files;
+  a block can swap the four pictos it has settings for.
+
+  @param {object} product - product whose tags pick the stickers
+  @param {object} [happy_boost_icon] - Happy Boost picto, instead of the pictohappyboost file
+  @param {object} [mips_icon] - Mips picto, instead of the mips file
+  @param {object} [bonus_lens_icon] - bonus lens picto, instead of the Bonus_Lens file
+  @param {object} [deadbolt_icon] - Deadbolt picto, instead of the deadbolt file
 {%- enddoc -%}
 
 {%- liquid
-  assign specs = product.metafields.spec
-
-  # Happy Boost technology -> colourful HB icon
-  assign hb_icon = nil
-  if specs.technologies.value != blank
-    for tech in specs.technologies.value
-      assign tname = tech.fields.name.value | downcase
-      if tname contains 'happy boost'
-        assign hb_icon = tech.fields.icon.value
-        break
-      endif
-    endfor
-  endif
-
-  if hb_icon == blank and force_happy_boost
-    assign hb_icon = happy_boost_icon
-  endif
-
-  # ANSI rating -> which badge. `spec.ansi_rating` decides it; the certifications
-  # list is the fallback so products migrated before the rating field keep a badge.
-  # Spaces are stripped so "ANSI Z87 -2+" and "ANSI Z87-2+" read the same.
-  assign ansi_kind = nil
-  assign ansi_raw = specs.ansi_rating.value | default: specs.ansi_rating
-
-  if ansi_raw != blank
-    assign a = ansi_raw | downcase | replace: ' ', ''
-    if a contains 'z87'
-      if a contains '2+'
-        assign ansi_kind = 'z87-2'
-      else
-        assign ansi_kind = 'z87'
-      endif
-    endif
-  endif
-
-  if ansi_kind == nil and specs.certifications.value != blank
-    for cert in specs.certifications.value
-      assign c = cert | downcase | replace: ' ', ''
-      if c contains 'z87'
-        if c contains '2+' or c contains 'z87-2' or c contains 'z87.2'
-          assign ansi_kind = 'z87-2'
-        else
-          assign ansi_kind = 'z87'
-        endif
-        break
-      endif
-    endfor
-  endif
-
-  # Badge tags, read in one pass: `badge::mips` -> Mips picto, and on the grouped
-  # PLP `badge::bonus-lens` -> bonus lens + deadbolt pictos, always as a pair
-  assign has_mips = false
-  assign has_bonus_lens = false
-
+  # One pass over the tags. The pipes stop "badge::ansi-z87" matching inside "badge::ansi-z87-2-plus"
+  assign badge_tags = '|'
   for tag in product.tags
     assign tag_key = tag | downcase | strip
-    if tag_key == 'badge::mips'
-      assign has_mips = true
-    elsif tag_key == 'badge::bonus-lens' and show_tag_badges
-      assign has_bonus_lens = true
+    if tag_key contains 'badge::'
+      assign badge_tags = badge_tags | append: tag_key | append: '|'
     endif
   endfor
 -%}
 
-{%- if hb_icon != blank -%}
-  {%- render 'spy-badge-image', image: hb_icon, alt: 'Happy Boost', modifier: 'hb' -%}
-{%- endif -%}
-
-{%- if ansi_kind != nil -%}
-  {%- liquid
-    # Badge art lives in the shop's Files, so the metafield stays a plain rating string
-    if ansi_kind == 'z87-2'
-      assign ansi_src = 'https://cdn.shopify.com/s/files/1/0846/9803/8512/files/ANSI_-Z87.webp?v=1785272041'
-      assign ansi_alt = 'ANSI Z87-2+'
-    else
-      assign ansi_src = 'https://cdn.shopify.com/s/files/1/0846/9803/8512/files/ANSI_Z87.webp?v=1785272040'
-      assign ansi_alt = 'ANSI Z87'
-    endif
-  -%}
-  {%- render 'spy-badge-image', image: ansi_src, alt: ansi_alt, modifier: 'ansi' -%}
-{%- endif -%}
-
-{%- if has_mips -%}
-  {%- render 'spy-badge-image',
-    image: mips_icon,
-    fallback_file: 'mips.webp',
-    alt: 'Mips',
-    modifier: 'mips',
-    width: 225,
-    height: 225
-  -%}
-{%- endif -%}
-
-{%- if has_bonus_lens -%}
+{%- if badge_tags contains '|badge::bonus-lens|' -%}
   {%- render 'spy-badge-image',
     image: bonus_lens_icon,
     fallback_file: 'Bonus_Lens.webp',
@@ -121,6 +36,9 @@
     width: 274,
     height: 284
   -%}
+{%- endif -%}
+
+{%- if badge_tags contains '|badge::deadbolt|' -%}
   {%- render 'spy-badge-image',
     image: deadbolt_icon,
     fallback_file: 'deadbolt.webp',
@@ -128,5 +46,49 @@
     modifier: 'deadbolt',
     width: 153,
     height: 153
+  -%}
+{%- endif -%}
+
+{%- if badge_tags contains '|badge::happy-boost|' -%}
+  {%- render 'spy-badge-image',
+    image: happy_boost_icon,
+    fallback_file: 'pictohappyboost.webp',
+    alt: 'Happy Boost',
+    modifier: 'hb',
+    width: 153,
+    height: 153
+  -%}
+{%- endif -%}
+
+{%- if badge_tags contains '|badge::ansi-z87|' -%}
+  {%- render 'spy-badge-image', fallback_file: 'ANSI_Z87.webp', alt: 'ANSI Z87', modifier: 'ansi', width: 50, height: 50 -%}
+{%- endif -%}
+
+{%- if badge_tags contains '|badge::ansi-z87-2-plus|' -%}
+  {%- render 'spy-badge-image', fallback_file: 'ANSI_-Z87.webp', alt: 'ANSI Z87-2+', modifier: 'ansi', width: 50, height: 50 -%}
+{%- endif -%}
+
+{%- if badge_tags contains '|badge::cat-4|' -%}
+  {%- render 'spy-badge-image', fallback_file: 'MurdrdOut-CAT4.svg', alt: 'Cat. 4 lens', modifier: 'cat-4', width: 80, height: 80 -%}
+{%- endif -%}
+
+{%- if badge_tags contains '|badge::not-for-driving|' -%}
+  {%- render 'spy-badge-image',
+    fallback_file: 'MurdrdOut-WARNING.svg',
+    alt: 'Not for use while driving',
+    modifier: 'not-for-driving',
+    width: 80,
+    height: 80
+  -%}
+{%- endif -%}
+
+{%- if badge_tags contains '|badge::mips|' -%}
+  {%- render 'spy-badge-image',
+    image: mips_icon,
+    fallback_file: 'mips.webp',
+    alt: 'Mips',
+    modifier: 'mips',
+    width: 225,
+    height: 225
   -%}
 {%- endif -%}

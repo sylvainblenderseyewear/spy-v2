@@ -1,5 +1,5 @@
 {%- doc -%}
-  One picto in a card's top-right badge row, at the shared badge size.
+  One sticker in a card's top-right badge row, 40px wide like the legacy site.
 
   Takes a picked image or falls back to a file in the shop's Files, so badge art
   stays swappable from the theme editor without touching code.
@@ -40,12 +40,13 @@
     assign box_width = icon.width | default: width | default: 80
     assign box_height = icon.height | default: height | default: 80
   -%}
+  {%- comment -%} 40px wide like the legacy sticker, height from the art {%- endcomment -%}
   <img
     src="{{ src }}"
     alt="{{ alt }}"
     width="{{ box_width }}"
     height="{{ box_height }}"
     loading="lazy"
-    class="spy-tech-badge__{{ modifier }} h-7 w-auto object-contain min-[750px]:h-10"
+    class="spy-tech-badge__{{ modifier }} block w-10 h-auto max-w-none shrink-0"
   >
 {%- endif -%}

@@ -17,11 +17,12 @@
 -%}
 
 {%- unless skip -%}
+{%- comment -%} Legacy sticker row: 11.2px from the top, 5px from the right (the 70% scale under 544px is in src/tailwind.css) {%- endcomment -%}
 <spy-tech-badge
-  class="spy-tech-badge absolute top-[11.2px] right-[5px] z-10 flex flex-wrap items-start justify-end gap-1 pointer-events-none"
+  class="spy-tech-badge absolute top-[11.2px] right-[5px] z-10 pointer-events-none"
   {{ block.shopify_attributes }}
 >
-  <span class="spy-tech-badge__current flex flex-wrap items-start justify-end gap-1" data-tech-current>
+  <span class="spy-tech-badge__current flex items-start gap-1" data-tech-current>
     {%- render 'spy-tech-badges', product: product, mips_icon: block.settings.mips_icon -%}
   </span>
 
@@ -50,7 +51,7 @@
       "type": "image_picker",
       "id": "mips_icon",
       "label": "Mips badge",
-      "info": "Shown on products tagged `badge::mips`. Defaults to the mips file."
+      "info": "Shown on products tagged `badge::mips`. Defaults to the mips file. The other stickers come from their own badge:: tags."
     }
   ],
   "presets": [
