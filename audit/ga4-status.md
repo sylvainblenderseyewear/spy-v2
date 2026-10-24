@@ -223,7 +223,33 @@ send you chasing a bug that is not there.
 
 ---
 
-## More events — 21 Oct (pixel written and tested, not saved yet)
+## Polish — 22 Oct (saved by Goran: the store serves version 11, checked 25 Oct)
+
+| Change | Why |
+|---|---|
+| `item_id` = **product** ID (was variant), plus `item_variant_id` and `merchant_center_id` (`shopify_US_<product>_<variant>`) | Same model as Blenders: lens/size variants add up in item reports, and a product sold under two SKU schemes counts once. The Merchant Center ID is ready for Google Ads. It can't be called `id`: gtag.js reads `id` as an old alias of `item_id` and drops it (`hg={id:"id",…}`) |
+| `index` on list items; search results sent as `view_item_list` ("Search results") | Positions in lists, and search results become a list |
+| `select_item` when a product from the last list is clicked | GA4 credits the add to cart and the purchase to the list the product was found in |
+| `customer_type` new / returning on `purchase` | GA4's recommended field, from Shopify's `isFirstOrder`. Left out for guests, as Google advises |
+| `begin_checkout` and `add_payment_info` once per checkout | Like the other steps: a refresh, PayPal return or second card no longer adds a step |
+| `payment_type` = payment method name ("Visa", "PayPal") | Falls back to the method type, then the gateway |
+
+`scripts/ga4-pixel-test.mjs`: 50/50. Version 10 fails the 14 new checks. No personal data added.
+
+**Mind at the switch:** item reports change key from variant to product from the day this was saved. Pre-launch data is test data, so that's harmless.
+
+**Not re-checked live yet:** `select_item`, the search-results list and `customer_type` (needs a real order). To see `item_variant_id` / `merchant_center_id` in GA4 reports, register them as item-scoped custom dimensions (optional; BigQuery has them either way).
+
+## More events — 21 Oct (saved by Goran 22 Oct, version 10, verified live)
+
+**Live check, 22 Oct** (throwaway headless Chrome on the live store; Accept clicked on the banner):
+- **Deployed code:** the store serves version 10 with the new handlers. The permission is still Analytics + Data sale.
+- **Engagement:** time rides on the next event, e.g. `_et=14233` after 12 s on the homepage and `_et=13503` on add_to_cart.
+- **Sign-ups:** `generate_lead` arrived with `lead_source` newsletter (from `/?customer_posted=true`) and contact_form; the flag is stripped from `page_location`.
+- **Outbound:** clicking the footer AvantLink link sent `click` with `outbound=true`, `link_domain=www.avantlink.com` and no query string. There are no file links on the site, so `file_download` stays covered by the tests only.
+- **Unchanged and working:** page_view, view_item_list, view_item, add_to_cart, view_cart, search, and view_promotion with the new names (Sunglasses, Rewards program, Happy Boost) and `promo_` items. Every hit carries `gcs=G111` plus `gcd`.
+- **Decline:** the pixel isn't even downloaded, and 0 hits.
+- **Not checked by machine:** `user_engagement` when the tab is hidden (Playwright keeps pages "visible" even when minimised), and `add_contact_info` / `add_address_info` (need a real checkout). Both are for GA4 Realtime by hand.
 
 Sylvain said a tag in the theme gets more events. Most of that gap can be closed inside the pixel:
 
@@ -242,6 +268,12 @@ Sylvain said a tag in the theme gets more events. Most of that gap can be closed
 **Consent re-test, 21 Oct (live store, throwaway headless Chrome):**
 - **GA4 is clean.** With Decline or no choice, the pixel never loads and 0 hits reach sgtm.spyoptic.com. With Accept, it loads and hits carry `gcs=G111` plus `gcd`, the Consent Mode v2 field.
 - **Microsoft Clarity breaks the opt-in.** It's an app pixel added after 12 Oct: `projectId` z0a90z9n1e, no privacy purposes. With Decline or no choice it still sends ~27 requests to clarity.ms and bing.com and sets CLID, MUID, SM, MR and SRM_B. Pandectes' Clarity integration is off. Either disconnect it, or turn that integration on and set Clarity to wait for consent; then re-test.
+- **Fixed 22 Oct (Goran, Pandectes admin), verified live the same day:**
+  - **Settings:** Google Consent Mode on, all three ID boxes empty (an ID would load a second GA4 tag); Microsoft Clarity integration on, Project ID empty (the Clarity app already loads the tag); custom blocker rule `clarity.ms` → Performance.
+  - **No choice / Decline:** the page carries consent "denied", Clarity sends 0 data calls and sets no cookies, GA4 0 hits.
+  - **Accept:** consent "granted", Clarity reports granted and sets `_clck`/`_clsk`, GA4 hits arrive.
+  - **GPC:** nothing runs.
+  - **Left over:** before consent the browser still downloads Clarity's tag file once, but it doesn't run, as Pandectes documents for blocked scripts.
 
 **Not in this change:** scroll depth and product-card clicks (`select_item`) need theme code. Loading gtag.js from sgtm.spyoptic.com needs a server-container setting first; Google moved that setting in 2025, so check the container's clients before changing the pixel.
 
