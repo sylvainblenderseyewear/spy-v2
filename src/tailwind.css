@@ -442,12 +442,17 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     text-align: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    /* Hiding waits 0.1s: Tab blurs the card link before it focuses this button, and
+       a button that hid in between could not take the focus. */
+    transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease, visibility 0s linear 0.1s;
   }
 
-  :is(collection-component, .section-resource-list, .block-resource-list) .product-card:hover .spy-quick-view-btn {
+  /* Keyboard focus anywhere in the card shows it too. `visibility: hidden` can't take
+     focus, so the :focus-visible rule below could never fire on its own. */
+  :is(collection-component, .section-resource-list, .block-resource-list) .product-card:is(:hover, :has(:focus-visible)) .spy-quick-view-btn {
     opacity: 1;
     visibility: visible;
+    transition-delay: 0s;
   }
 
   /* Source's .btn-outline-primary:hover — fills in. :active matches it, with no
@@ -549,7 +554,9 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   z-index: 2;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease;
+  /* Hiding waits 0.1s so Tab can move from the card link into the row: the link blurs
+     first, and a row that hid in between could not take the focus. */
+  transition: opacity 0.3s ease, visibility 0s linear 0.1s;
 }
 
 :is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-swatches__item {
@@ -597,13 +604,15 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 }
 
 /* The swap: hovering the image band fades the labels out and the thumbs in.
-   Scoped to .spy-image-container, so the text band is not a trigger. */
-:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-image-container:hover .spy-swatches {
+   Scoped to .spy-image-container, so the text band is not a trigger. Keyboard focus
+   in the band (the card link) does the same, so Tab can reach the thumbs. */
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-image-container:is(:hover, :has(:focus-visible)) .spy-swatches {
   opacity: 1;
   visibility: visible;
+  transition-delay: 0s;
 }
 
-:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-image-container:hover .spy-tile-labels {
+:is(collection-component, .section-resource-list, .block-resource-list) .product-card .spy-image-container:is(:hover, :has(:focus-visible)) .spy-tile-labels {
   opacity: 0;
   visibility: hidden;
 }
@@ -675,16 +684,18 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 /* The swap has to hang off the whole card here: there is no band element to
    scope to, and Horizon's full-card `.product-card__link` overlay sits above
    the text anyway, so a region test could never fire. Hovering the title
-   therefore also reveals the thumbs — the one behaviour this path can't match. */
+   therefore also reveals the thumbs — the one behaviour this path can't match.
+   Keyboard focus in the card reveals them as well, so Tab can reach them. */
 :is(collection-component, .section-resource-list, .block-resource-list)
-  .product-card:not(:has(.spy-color-swatches)):hover
+  .product-card:not(:has(.spy-color-swatches)):is(:hover, :has(:focus-visible))
   .spy-swatches {
   opacity: 1;
   visibility: visible;
+  transition-delay: 0s;
 }
 
 :is(collection-component, .section-resource-list, .block-resource-list)
-  .product-card:not(:has(.spy-color-swatches)):hover
+  .product-card:not(:has(.spy-color-swatches)):is(:hover, :has(:focus-visible))
   :is(.spy-color-count, .spy-variant-name, .spy-product-badge) {
   opacity: 0;
   visibility: hidden;

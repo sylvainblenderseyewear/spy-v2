@@ -670,12 +670,20 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "spy_quick_view_modal": {
+      "type": "spy-quick-view",
+      "settings": {
+        "full_details_label": "View Full Details",
+        "dialog_label": "Quick view"
+      }
     }
   },
   "order": [
     "main",
     "spy_feature_banner_A1",
     "yotpo_reviews_section",
-    "product_recommendations_qggXJq"
+    "product_recommendations_qggXJq",
+    "spy_quick_view_modal"
   ]
 }

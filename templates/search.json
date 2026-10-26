@@ -123,10 +123,18 @@
         "fallback_heading": "...Or check those",
         "fallback_count": 3
       }
+    },
+    "spy_quick_view_modal": {
+      "type": "spy-quick-view",
+      "settings": {
+        "full_details_label": "View Full Details",
+        "dialog_label": "Quick view"
+      }
     }
   },
   "order": [
     "search",
-    "main"
+    "main",
+    "spy_quick_view_modal"
   ]
 }

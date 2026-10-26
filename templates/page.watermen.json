@@ -2519,6 +2519,13 @@
         "content_width": "page",
         "content_max_width": 1440
       }
+    },
+    "spy_quick_view_modal": {
+      "type": "spy-quick-view",
+      "settings": {
+        "full_details_label": "View Full Details",
+        "dialog_label": "Quick view"
+      }
     }
   },
   "order": [
@@ -2533,6 +2540,7 @@
     "bronze",
     "lens_benefits_header",
     "lens_benefits",
-    "footer_banner"
+    "footer_banner",
+    "spy_quick_view_modal"
   ]
 }

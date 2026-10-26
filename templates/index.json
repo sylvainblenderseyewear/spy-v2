@@ -823,7 +823,6 @@
     },
     "spy_quick_view_modal": {
       "type": "spy-quick-view",
-      "disabled": true,
       "settings": {
         "full_details_label": "View Full Details",
         "dialog_label": "Quick view"

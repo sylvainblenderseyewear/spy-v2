@@ -132,6 +132,66 @@
       {% content_for 'block', type: 'spy-frame-summary', id: 'qv-frame-summary', closest.product: p %}
 
       {%- comment -%}
+        Size / lens choice. The source dialog prints a "Size" label over a row of equal
+        buttons: 40px tall, 8px apart, 12px semibold, the picked one filled ink.
+        Staging keeps Size and Lens as variant options, so each option with more than
+        one value gets a row. Without this the buy button always took the first variant.
+        A pick reloads the dialog for that variant (spy-quick-view.js).
+      {%- endcomment -%}
+      {%- liquid
+        assign has_choice = false
+        for option in p.options_with_values
+          if option.values.size > 1
+            assign has_choice = true
+            break
+          endif
+        endfor
+      -%}
+      {%- if has_choice -%}
+        <div data-spy-qv-options>
+          {%- for option in p.options_with_values -%}
+            {%- if option.values.size > 1 -%}
+              <fieldset class="m-0 mt-3 min-w-0 border-0 p-0">
+                <legend class="m-0 mb-3 p-0 text-[16px] font-normal leading-[22.4px] text-spy-text">{{ option.name | escape }}</legend>
+                <div class="[display:flex] flex-wrap gap-2">
+                  {%- for value in option.values -%}
+                    <label class="flex-[1_1_calc(33.333%_-_8px)] cursor-pointer">
+                      <input
+                        type="radio"
+                        class="peer sr-only"
+                        name="spy-qv-option-{{ option.position }}"
+                        value="{{ value | escape }}"
+                        data-spy-qv-option="{{ option.position }}"
+                        {% if value.selected %}
+                          checked
+                        {% endif %}
+                      >
+                      <span class="[display:flex] min-h-10 w-full items-center justify-center border border-solid border-spy-input-border bg-white px-1.5 py-1 text-center text-[12px] font-semibold leading-[11.2px] text-black peer-checked:border-spy-ink peer-checked:bg-spy-ink peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spy-ink{% unless value.available %} opacity-50{% endunless %}">
+                        {{- value | escape -}}
+                        {%- unless value.available -%}
+                          <span class="sr-only"> ({{ 'products.product.sold_out' | t }})</span>
+                        {%- endunless -%}
+                      </span>
+                    </label>
+                  {%- endfor -%}
+                </div>
+              </fieldset>
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- comment -%} What each pick maps to, read by spy-quick-view.js {%- endcomment -%}
+          <script type="application/json" data-spy-qv-variants>
+            [
+              {%- for v in p.variants -%}
+                {"id":{{ v.id }},"options":{{ v.options | json }},"available":{{ v.available | json }}}
+                {%- unless forloop.last %},{% endunless -%}
+              {%- endfor -%}
+            ]
+          </script>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%}
         Size Chart sits between the lens rows and the stock line, as on the source.
         The block ships its own inline script and portals its drawer to <body>, so
         spy-quick-view.js re-runs that script after each fetch.

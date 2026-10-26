@@ -31,16 +31,20 @@
     return node ? node.innerHTML : null;
   }
 
+  // Only rebuild when the sticker set really changes: new <img> tags for the same
+  // stickers made them blink on every move.
+  function show(badge, html) {
+    const slot = currentSlot(badge);
+    if (slot && html != null && slot.innerHTML !== html) slot.innerHTML = html;
+  }
+
   function preview(badge, id) {
     ensureDefault(badge);
-    const html = keyHTML(badge, id);
-    const slot = currentSlot(badge);
-    if (html != null && slot) slot.innerHTML = html;
+    show(badge, keyHTML(badge, id));
   }
 
   function restore(badge) {
-    const slot = currentSlot(badge);
-    if (slot && badge.__defaultHTML != null) slot.innerHTML = badge.__defaultHTML;
+    if (badge.__defaultHTML != null) show(badge, badge.__defaultHTML);
   }
 
   // Picking a swatch makes its badges the new resting state.
@@ -67,21 +71,38 @@
     return null;
   }
 
-  document.addEventListener('pointerover', (e) => {
+  // Hovering or focusing a swatch previews its stickers.
+  function enter(e) {
     const swatch = swatchFrom(e.target);
     if (!swatch?.id) return;
     const badge = badgeOf(swatch.el);
     if (badge) preview(badge, swatch.id);
-  });
+  }
 
-  document.addEventListener('pointerout', (e) => {
+  // Thumbnails keep their preview anywhere in the row — gaps and arrow included —
+  // the same rule spy-card.js uses for the photo, so the two never disagree.
+  // Variant swatches on the standard card still end at the swatch itself.
+  function leave(e) {
+    const row = e.target.closest?.('.spy-swatches');
+    if (row) {
+      if (row.contains(e.relatedTarget)) return;
+      const badge = badgeOf(row);
+      if (badge) restore(badge);
+      return;
+    }
+
     const swatch = swatchFrom(e.target);
     if (!swatch) return;
     // Ignore moves between children of the same swatch
     if (e.relatedTarget && swatch.el.contains(e.relatedTarget)) return;
     const badge = badgeOf(swatch.el);
     if (badge) restore(badge);
-  });
+  }
+
+  document.addEventListener('pointerover', enter);
+  document.addEventListener('focusin', enter);
+  document.addEventListener('pointerout', leave);
+  document.addEventListener('focusout', leave);
 
   document.addEventListener('change', (e) => {
     const input = e.target.closest?.('input[data-option-value-id]');

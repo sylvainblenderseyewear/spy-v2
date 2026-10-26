@@ -5,7 +5,7 @@
 
   Colourways come from the product's colour option when it has more than one
   value (combined listing). Staging has one product per colourway instead, so we
-  fall back to the model collection — the same one the breadcrumb uses.
+  fall back to the model's own collection, found by the `collection::MODEL` tag.
 
   @param {object} product - Product the picker belongs to
   @param {string} [wrapper_class] - Replaces the default top margin
@@ -35,21 +35,28 @@
   endif
 
   comment
-    No real colour option — find the model collection (first one that is not a
-    broad category), same rule as the breadcrumb.
+    No real colour option — use the model's collection, matched on the
+    `collection::MODEL` tag the way the grouped card does. "First collection that is
+    not a category" picked curated ones (Men's Sunglasses, Blue Light Glasses) and
+    filled the picker with other models.
   endcomment
   assign model_col = nil
   if has_option_colors == false and p != blank
-    assign category_handles = 'sunglasses,eyeglasses,goggles,snow-goggles,moto-goggles,snow-helmets,gear,accessories' | split: ','
-    for col in p.collections
-      if col.handle == 'frontpage' or col.handle == 'all'
-        continue
-      endif
-      unless category_handles contains col.handle
-        assign model_col = col
-        break
-      endunless
-    endfor
+    capture group_name
+      render 'spy-group-name', product: p
+    endcapture
+    assign group_name = group_name | strip
+    if group_name != blank
+      assign group_key = group_name | handleize
+      assign group_title = group_name | downcase
+      for col in p.collections
+        assign col_title = col.title | downcase | strip
+        if col.handle == group_key or col_title == group_title
+          assign model_col = col
+          break
+        endif
+      endfor
+    endif
   endif
 -%}
 

@@ -32,31 +32,26 @@
     img.setAttribute('src', url);
   }
 
-  // Hovering a colour thumbnail previews that colour on the main image.
-  document.addEventListener('pointerover', (e) => {
+  // Hovering or focusing a colour thumbnail previews that colour on the main image.
+  function preview(e) {
     const item = e.target.closest?.('.spy-swatches__item');
     if (!item) return;
     const card = item.closest('product-card');
     if (card) swapImage(card, item.getAttribute('data-full'));
-  });
+  }
 
-  document.addEventListener('pointerout', (e) => {
-    const card = e.target.closest?.('product-card');
-    if (!card) return;
+  // The preview lasts while the pointer or focus is anywhere in the thumbnail ROW —
+  // the 8px gaps and the arrow count as the row — and ends when it leaves the row.
+  // spy-tech-badge.js uses the same rule, so the photo and the stickers change together.
+  function leave(e) {
+    const row = e.target.closest?.('.spy-swatches');
+    if (!row || row.contains(e.relatedTarget)) return;
+    const card = row.closest('product-card');
+    if (card) restoreImage(card);
+  }
 
-    // Left the thumbnail ROW → back to the default image.
-    // Testing the row, not the individual thumb, on purpose: the thumbs sit 8px
-    // apart, and that gap is not a thumb. Testing `.spy-swatches__item` here made
-    // every move between two colours restore-then-swap, so the image flashed back
-    // to the default between each one.
-    const item = e.target.closest?.('.spy-swatches__item');
-    if (item && !e.relatedTarget?.closest?.('.spy-swatches')) {
-      restoreImage(card);
-    }
-
-    // Left the whole card → reset
-    if (e.relatedTarget?.closest?.('product-card') !== card) {
-      restoreImage(card);
-    }
-  });
+  document.addEventListener('pointerover', preview);
+  document.addEventListener('focusin', preview);
+  document.addEventListener('pointerout', leave);
+  document.addEventListener('focusout', leave);
 })();

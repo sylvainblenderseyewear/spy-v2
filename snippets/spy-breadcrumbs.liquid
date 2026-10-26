@@ -28,9 +28,16 @@
   assign bc_blog = closest.blog | default: blog
 
   if bc_product != blank and is_pdp
-    # Broad category first, then the model line. Staging data is thin (eyeglasses
-    # sit under "Sunglasses"), so real hierarchy arrives with the migration.
+    # Broad category first, then the model line, like the source's "Sunglasses ›
+    # CYRUS SWITCH". The model comes from the `collection::MODEL` tag: the first
+    # other collection was often a curated one (Men's Sunglasses, Blue Light Glasses).
     assign category_handles = 'sunglasses,eyeglasses,goggles,snow-goggles,moto-goggles,snow-helmets,gear,accessories' | split: ','
+    capture bc_group
+      render 'spy-group-name', product: bc_product
+    endcapture
+    assign bc_group = bc_group | strip
+    assign bc_group_key = bc_group | handleize
+    assign bc_group_title = bc_group | downcase
     assign cat_col = null
     assign line_col = null
     for col in bc_product.collections
@@ -41,8 +48,11 @@
         if cat_col == null
           assign cat_col = col
         endif
-      elsif line_col == null
-        assign line_col = col
+      elsif line_col == null and bc_group != blank
+        assign col_title = col.title | downcase | strip
+        if col.handle == bc_group_key or col_title == bc_group_title
+          assign line_col = col
+        endif
       endif
     endfor
     if cat_col != null

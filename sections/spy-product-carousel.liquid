@@ -268,13 +268,17 @@
           let moved = false;
           let downX = 0;
           let downY = 0;
+          let pressType = '';
 
           track.addEventListener('pointerdown', (e) => {
-            if (e.pointerType !== 'mouse') return;
-            down = true;
-            moved = false;
+            // Note every press, touch and pen too, so the click check never measures
+            // from an old press (that cancelled every tap on phones and tablets)
+            pressType = e.pointerType;
             downX = e.clientX;
             downY = e.clientY;
+            moved = false;
+            if (e.pointerType !== 'mouse') return;
+            down = true;
             startX = e.clientX;
             startScroll = track.scrollLeft;
             // Utilities compile !important, so inline styles need the priority flag
@@ -306,18 +310,23 @@
           window.addEventListener('pointerup', end);
           window.addEventListener('pointercancel', end);
 
-          // Swallow the click after a real drag so the card link does not open
+          // Swallow the click after a real mouse drag so the card link does not open.
+          // Taps, keyboard Enter and screen readers never drag the rail, so their clicks
+          // always go through (keyboard and screen reader clicks carry detail 0).
           track.addEventListener(
             'click',
             (e) => {
+              const fromMouse = pressType === 'mouse' && e.detail > 0;
+              pressType = '';
+              if (!fromMouse) return;
               // Compare against where the press started. pointermove can be swallowed
               // by a native image drag, so `moved` alone is not reliable.
               const travelled = Math.hypot(e.clientX - downX, e.clientY - downY);
               if (moved || travelled > 5) {
                 e.preventDefault();
                 e.stopPropagation();
-                moved = false;
               }
+              moved = false;
             },
             true
           );

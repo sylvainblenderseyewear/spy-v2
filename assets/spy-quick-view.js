@@ -1,6 +1,6 @@
 // Quick View dialog: any [data-spy-qv="handle"] opens the shell in
 // spy-quick-view.liquid and fills it with the spy-quick-view-content section.
-// The gallery arrows and the colour picker are wired after each fetch.
+// The gallery arrows, the colour picker and the size/lens buttons are wired after each fetch.
 (() => {
   const SECTION = 'spy-quick-view-content';
 
@@ -19,6 +19,7 @@
   }
 
   let lastTrigger = null;
+  let loadId = 0;
   const cache = new Map();
 
   const message = (text) =>
@@ -61,13 +62,49 @@
     });
   };
 
+  /* ── size / lens ─────────────────────────────────────────────────────── */
+
+  // A pick reloads the dialog for the matching variant, so price, stock, the
+  // colour details and the buy button all follow it. A combination that doesn't
+  // exist falls back to a variant that has the value just picked.
+  const bindOptions = (handle) => {
+    const box = body.querySelector('[data-spy-qv-options]');
+    if (!box) return;
+
+    let variants = [];
+    try {
+      variants = JSON.parse(box.querySelector('[data-spy-qv-variants]')?.textContent || '[]');
+    } catch {
+      return;
+    }
+
+    box.addEventListener('change', (event) => {
+      const input = event.target.closest('input[data-spy-qv-option]');
+      if (!input) return;
+
+      const picked = [...box.querySelectorAll('input[data-spy-qv-option]:checked')].map((el) => [
+        Number(el.dataset.spyQvOption) - 1,
+        el.value,
+      ]);
+      const position = Number(input.dataset.spyQvOption) - 1;
+      const hasValue = (variant) => variant.options[position] === input.value;
+
+      const variant =
+        variants.find((v) => picked.every(([index, value]) => v.options[index] === value)) ||
+        variants.find((v) => hasValue(v) && v.available) ||
+        variants.find(hasValue);
+
+      if (variant) load(handle, variant.id, { option: input.dataset.spyQvOption, value: input.value });
+    });
+  };
+
   /* ── panels that ship their own script ───────────────────────────────── */
 
   // innerHTML never runs a <script>, and the fit guide carries its own (it reads
   // document.currentScript.previousElementSibling, so the copy has to land in the
   // same spot). Swapping each inert tag for a live one keeps that lookup valid.
   const runScripts = () => {
-    body.querySelectorAll('script').forEach((inert) => {
+    body.querySelectorAll('script:not([type="application/json"])').forEach((inert) => {
       const live = document.createElement('script');
       for (const attr of inert.attributes) live.setAttribute(attr.name, attr.value);
       live.textContent = inert.textContent;
@@ -86,26 +123,41 @@
 
   /* ── open / close ────────────────────────────────────────────────────── */
 
-  const load = (handle) => {
-    pdpLink?.setAttribute('href', `/products/${handle}`);
+  // `picked` is set when a size/lens button asked for this load: the dialog keeps its
+  // scroll position and focus goes back to that button once the new markup is in.
+  const load = (handle, variantId, picked) => {
+    const query = variantId ? `variant=${variantId}` : '';
+    const key = `${handle}?${query}`;
+    const id = ++loadId;
+
+    pdpLink?.setAttribute('href', `/products/${handle}${query ? `?${query}` : ''}`);
 
     const render = (html) => {
+      // A slower, older request must not overwrite a newer pick
+      if (id !== loadId) return;
       body.innerHTML = html;
       runScripts();
       bindGallery();
       bindColorPicker();
-      // A colourway swap can swap in a taller panel — start it from the top again
-      if (layer) layer.scrollTop = 0;
+      bindOptions(handle);
+      if (picked) {
+        const selector = `input[data-spy-qv-option="${picked.option}"][value="${CSS.escape(picked.value)}"]`;
+        body.querySelector(selector)?.focus();
+      } else if (layer) {
+        // A colourway swap can swap in a taller panel — start it from the top again
+        layer.scrollTop = 0;
+      }
     };
 
-    if (cache.has(handle)) {
-      render(cache.get(handle));
+    if (cache.has(key)) {
+      render(cache.get(key));
       return;
     }
 
-    body.innerHTML = message('Loading&hellip;');
+    // A size/lens pick keeps the current content up until the new one arrives
+    if (!picked) body.innerHTML = message('Loading&hellip;');
 
-    fetch(`/products/${handle}?section_id=${SECTION}`)
+    fetch(`/products/${handle}?${query ? `${query}&` : ''}section_id=${SECTION}`)
       .then((response) => {
         if (!response.ok) throw new Error(response.statusText);
         return response.text();
@@ -113,10 +165,11 @@
       .then((html) => {
         const section = new DOMParser().parseFromString(html, 'text/html').querySelector('.shopify-section');
         const markup = section ? section.innerHTML : html;
-        cache.set(handle, markup);
+        cache.set(key, markup);
         render(markup);
       })
       .catch(() => {
+        if (id !== loadId) return;
         body.innerHTML = message(
           `Could not load this product. <a class="text-[color:var(--color-spy-orange-ui)] underline" href="/products/${handle}">View full details</a>`
         );
@@ -136,7 +189,9 @@
     layer?.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     load(handle);
-    root.querySelector('[data-spy-qv-close]')?.focus();
+    // Into the dialog: the × button. The backdrop shares the close hook but is a div,
+    // and a div can't take focus, so focus used to stay on the page.
+    root.querySelector('button[data-spy-qv-close]')?.focus();
   };
 
   const close = () => {
@@ -145,8 +200,16 @@
     syncPageInert();
     layer?.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-    lastTrigger?.focus();
+
+    // Back to the Quick View button. It is hidden again once its card loses hover,
+    // so go through the card link: keyboard focus on it shows the button again.
+    const trigger = lastTrigger;
     lastTrigger = null;
+    if (!trigger) return;
+    trigger.focus();
+    if (document.activeElement === trigger) return;
+    trigger.closest('product-card')?.querySelector('a.product-card__link')?.focus();
+    trigger.focus();
   };
 
   document.addEventListener('click', (event) => {
