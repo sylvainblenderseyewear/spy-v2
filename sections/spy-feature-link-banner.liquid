@@ -149,7 +149,13 @@
 -%}
 
 {%- unless skip_section -%}
-  {%- assign banner_alt = section.settings.heading | strip_newlines | escape -%}
+  {%- liquid
+    assign banner_alt = section.settings.heading | strip_newlines | escape
+    # An image-only banner is still a link, so it takes the file's alt as its name
+    if section.settings.eyebrow == blank and section.settings.heading == blank and section.settings.cta_label == blank
+      assign banner_alt = desktop_img.alt | default: mobile_img.alt | escape
+    endif
+  -%}
   {%- liquid
     # Source headings scale on Bootstrap's RFS curve up to the desktop size,
     # which they hit at a 1200px viewport. min() covers both sides in one value.
@@ -173,6 +179,7 @@
       --flb-mb-d: {{ section.settings.margin_bottom | default: 0 }}px;
       --flb-ratio-d: {{ ratio }};
       --flb-ratio-m: {{ ratio_mobile }};
+      {% if section.settings.heading_color != blank %}--flb-heading-color: {{ section.settings.heading_color }};{% endif %}
     "
     {{ section.shopify_attributes }}
   >
@@ -229,7 +236,10 @@
         or section.settings.heading != blank
         or section.settings.cta_label != blank
     -%}
-      {%- comment -%} Source insets, every width: container gutter 15px, copy box 16/16/64 {%- endcomment -%}
+      {%- comment -%}
+        Source insets, every width: container gutter 15px, copy box 16/16/64.
+        Centred copy gets 16 all round. The source keys this off the mobile alignment only.
+      {%- endcomment -%}
       <div class="spy-feature-link-banner__overlay absolute inset-0 flex pointer-events-none {{ scrim }}">
         <div
           class="
@@ -247,7 +257,8 @@
           <div
             class="
               spy-feature-link-banner__box
-              flex flex-col gap-2 w-fit max-w-full px-4 pt-4 pb-16 text-white
+              flex flex-col gap-2 w-fit max-w-full px-4 pt-4 text-white
+              {% if section.settings.content_valign_mobile == 'center' %}pb-4{% else %}pb-16{% endif %}
               {{ box_m }} {{ box_d }} {{ text_m }} {{ text_d }}
             "
           >
@@ -261,7 +272,8 @@
             {%- comment -%} Source .banner-heading: 600 at 1.2, with 8px under it {%- endcomment -%}
             <h2
               class="
-                text-white font-semibold uppercase leading-[1.2] m-0 pb-2 tracking-normal
+                {% if section.settings.heading_color != blank %}text-[color:var(--flb-heading-color)]{% else %}text-white{% endif %}
+                font-semibold uppercase leading-[1.2] m-0 pb-2 tracking-normal
                 text-[length:var(--flb-heading-mobile)] min-[992px]:text-[length:var(--flb-heading)]
               "
             >
@@ -586,6 +598,12 @@
       "step": 1,
       "unit": "px",
       "default": 32
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading colour",
+      "info": "Leave empty for white."
     },
     {
       "type": "header",

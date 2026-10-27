@@ -48,3 +48,6 @@ Old SFCC URL (spyoptic.com),New Shopify URL,Status,Notes
 /us/login,/account/login,Pending,Login
 /us/sunglasses/ansi-photochromic.html,/pages/ansi-photochromic,Pending,ANSI Photochromic collection landing
 /us/sunglasses/watermen-collection.html,/pages/watermen,Pending,Watermen collection landing page
+/us/giftguide.html,/pages/gift-guide,Pending,Gift Guide landing page
+/us/gear/apparel/,/collections/gear,Pending,"Apparel; no apparel collection, Gear holds the tees, hats and beanies"
+/us/buy-now-pay-later.html,/pages/buy-now-pay-later,Pending,Buy now pay later (page not created yet)

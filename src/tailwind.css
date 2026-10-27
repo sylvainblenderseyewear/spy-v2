@@ -2357,6 +2357,12 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   padding-bottom: 1.5rem; /* 24px */
 }
 
+/* Same for the SPY product rails (homepage, gift guide): the source's carousel
+   tiles have no rating or Compare row either, so 24px at every width. */
+.spy-product-carousel .product-card .spy-tile-body {
+  padding-bottom: 1.5rem; /* 24px */
+}
+
 /* Arrows ride the viewport edge, half off-screen, the way slick leaves them:
    35px circles, orange glyph on white, pulled 14px past the page edge. */
 [data-template='page.watermen'] .resource-list__carousel slideshow-arrows {

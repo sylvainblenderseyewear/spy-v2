@@ -98,6 +98,13 @@
           {%- comment %} Source insets the art 88% x 90% and pins it to the top, not the middle {% endcomment -%}
           <div class="relative overflow-hidden mx-auto w-[var(--spy-tile-img-w)] h-[var(--spy-tile-img-h)] bg-spy-slate">
             {%- if img != blank -%}
+              {%- liquid
+                # Only fade the art out when there is a hover image to fade in, or the tile goes blank
+                assign img_class = 'spy-category-tiles__img absolute inset-0 w-full h-full object-cover pointer-events-none'
+                if block.settings.hover_image != blank
+                  assign img_class = 'spy-category-tiles__img absolute inset-0 w-full h-full object-cover pointer-events-none group-hover:opacity-0'
+                endif
+              -%}
               {{
                 img
                 | image_url: width: 1200
@@ -106,7 +113,7 @@
                   alt: tile_alt,
                   sizes: sizes,
                   widths: '300, 450, 600, 800, 1000, 1200',
-                  class: 'spy-category-tiles__img absolute inset-0 w-full h-full object-cover pointer-events-none group-hover:opacity-0'
+                  class: img_class
               }}
             {%- endif -%}
 

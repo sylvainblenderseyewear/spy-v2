@@ -12,6 +12,9 @@
 
   Arrows only appear where the source shows them: slick hides them when every slide
   already fits, so a 5-product rail has none on desktop.
+
+  Some rails (the gift guide) keep slick's centre mode above 1140 too. With five
+  products that is just empty space at both ends, so it is plain track padding here.
 {%- endcomment -%}
 
 {%- liquid
@@ -84,6 +87,7 @@
     --spc-b-sm: {{ basis_sm }}; --spc-b-md: {{ basis_md }};
     --spc-b-lg: {{ basis_lg }}; --spc-b-xl: {{ basis_xl }};
     --spc-peek: {{ peek }}px;
+    --spc-peek-d: {{ section.settings.peek_desktop | default: 0 }}px;
     --spc-inset-m: {{ section.settings.track_inset_mobile }}px;
     --spc-inset-d: {{ section.settings.track_inset }}px;
     --spc-mt: {{ section.settings.margin_top }}px;
@@ -117,7 +121,7 @@
 
     <div
       data-track
-      class="spy-product-carousel__track [&_img]:[-webkit-user-drag:none] [&[data-dragging]_a]:pointer-events-none [&[data-dragging]_button]:pointer-events-none [display:flex] overflow-x-auto snap-x snap-mandatory mx-[var(--spc-inset-m)] min-[992px]:mx-[var(--spc-inset-d)] px-[var(--spc-peek)] min-[541px]:px-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+      class="spy-product-carousel__track [&_img]:[-webkit-user-drag:none] [&[data-dragging]_a]:pointer-events-none [&[data-dragging]_button]:pointer-events-none [display:flex] overflow-x-auto snap-x snap-mandatory mx-[var(--spc-inset-m)] min-[992px]:mx-[var(--spc-inset-d)] px-[var(--spc-peek)] min-[541px]:px-0 min-[1141px]:px-[var(--spc-peek-d)] min-[1141px]:scroll-px-[var(--spc-peek-d)] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
     >
       {%- if coll != blank and coll.products.size > 0 -%}
         {%- for product in coll.products limit: max_items -%}
@@ -508,6 +512,17 @@
       "unit": "px",
       "default": 50,
       "info": "Matches slick's centre mode. Set 0 for full-width cards."
+    },
+    {
+      "type": "range",
+      "id": "peek_desktop",
+      "label": "Space at both ends (above 1140px)",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "Slick's centre mode on wide screens. The homepage uses 0, the gift guide 50."
     },
     {
       "type": "header",
