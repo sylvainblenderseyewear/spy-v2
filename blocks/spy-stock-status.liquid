@@ -1,6 +1,7 @@
 {%- doc -%}
   Stock line under the price: green "In Stock" when the current variant is
-  available, red "Sold Out" when not. Mirrors the source PDP.
+  available, red "Sold Out" when not. Mirrors the source PDP. A size and lens
+  that don't exist together give no variant, so that reads "Unavailable".
 {%- enddoc -%}
 
 {%- liquid
@@ -12,15 +13,23 @@
 {%- comment -%}
   Source style is body-m (14/20, weight 500, +1% tracking) with the availability
   list sitting 24px under the price and 12px above the swatches. Colour comes from
-  the sentiment tokens, not a Tailwind palette green.
+  the sentiment tokens, not a Tailwind palette green. spy-variant-sync.js swaps the
+  line when a size or lens is picked.
 {%- endcomment -%}
-<div class="spy-stock-status mt-6 mb-3 text-[14px] font-medium leading-5 tracking-[0.01em]" {{ block.shopify_attributes }}>
-  {%- if available -%}
+<div
+  class="spy-stock-status mt-6 mb-3 text-[14px] font-medium leading-5 tracking-[0.01em]"
+  data-spy-variant-sync="{{ block.id }}"
+  {{ block.shopify_attributes }}
+>
+  {%- if variant == blank -%}
+    <span class="text-[color:var(--color-spy-muted)]">{{ block.settings.unavailable_label | default: 'Unavailable' }}</span>
+  {%- elsif available -%}
     <span class="text-[color:var(--color-spy-positive)]">{{ block.settings.in_stock_label | default: 'In Stock' }}</span>
   {%- else -%}
     <span class="text-[color:var(--color-spy-negative)]">{{ block.settings.sold_out_label | default: 'Sold Out' }}</span>
   {%- endif -%}
 </div>
+<script src="{{ 'spy-variant-sync.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
@@ -28,7 +37,8 @@
   "tag": null,
   "settings": [
     { "type": "text", "id": "in_stock_label", "label": "In stock label", "default": "In Stock" },
-    { "type": "text", "id": "sold_out_label", "label": "Sold out label", "default": "Sold Out" }
+    { "type": "text", "id": "sold_out_label", "label": "Sold out label", "default": "Sold Out" },
+    { "type": "text", "id": "unavailable_label", "label": "Unavailable label", "info": "When the picked size and lens don't exist together", "default": "Unavailable" }
   ],
   "presets": [{ "name": "Stock Status", "category": "SPY" }]
 }

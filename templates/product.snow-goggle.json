@@ -356,6 +356,29 @@
               "settings": {},
               "blocks": {}
             },
+            "variant_picker_size_lens": {
+              "type": "variant-picker",
+              "name": "Size / lens",
+              "settings": {
+                "variant_style": "buttons",
+                "show_swatches": true,
+                "option_label_text_color": "",
+                "variant_style_class": "default",
+                "custom_variant_background": "{{ settings.color_palette.background }}",
+                "custom_variant_text": "{{ settings.color_palette.foreground }}",
+                "custom_variant_border": "{{ settings.color_palette.foreground }}",
+                "selected_variant_style_class": "default",
+                "custom_selected_variant_background": "{{ settings.color_palette.foreground }}",
+                "custom_selected_variant_text": "{{ settings.color_palette.background }}",
+                "custom_selected_variant_border": "{{ settings.color_palette.foreground }}",
+                "alignment": "left",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "spy_notify_A1": {
               "type": "spy-notify-me",
               "name": "Notify Me",
@@ -368,6 +391,7 @@
             "divider_VJhene",
             "spy_swatches_A1",
             "spy_frame_summary_A1",
+            "variant_picker_size_lens",
             "spy_frame_fit_guide_A1",
             "spy_lens_info_A1",
             "divider_after_lens",

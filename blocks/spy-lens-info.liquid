@@ -122,6 +122,11 @@
   endunless
 -%}
 
+{%- comment -%}
+  The box-less wrapper holds the tiles and their drawer, so spy-variant-sync.js can
+  swap both in for a newly picked lens — the lens data is per variant.
+{%- endcomment -%}
+<div class="contents" data-spy-variant-sync="{{ block.id }}">
 {%- unless skip_block -%}
 {%- comment -%}
   No rule above the heading — the source section has border-top: 0. Its heading row
@@ -327,6 +332,8 @@
   <script src="{{ 'spy-drawer.js' | asset_url }}" defer></script>
 {%- endif -%}
 {%- endunless -%}
+</div>
+<script src="{{ 'spy-variant-sync.js' | asset_url }}" defer></script>
 
 {% schema %}
 {

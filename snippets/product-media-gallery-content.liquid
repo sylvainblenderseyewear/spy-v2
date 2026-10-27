@@ -156,6 +156,14 @@
   endcapture
   assign sizes = sizes | strip
 
+  # The PDP carousel is full width below 769px and 7 of 12 columns below 992px
+  # (src/tailwind.css). Horizon's sizes say half width from 750px, so tablets
+  # loaded a file half the size they show. Only the PDP gallery block has the
+  # media_presentation setting; the featured product carousel has none.
+  if block_settings.media_presentation == 'carousel'
+    assign sizes = sizes | prepend: '(max-width: 768.98px) 100vw, (max-width: 991.98px) calc(58vw - 64px), '
+  endif
+
   assign product_media_container_class = 'product-media-container'
   if block_settings.constrain_to_viewport
     assign product_media_container_class = product_media_container_class | append: ' constrain-height'

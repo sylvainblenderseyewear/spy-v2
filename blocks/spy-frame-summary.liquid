@@ -63,6 +63,11 @@
   endif
 -%}
 
+{%- comment -%}
+  The box-less wrapper is always there, so spy-variant-sync.js can swap in the
+  summary for a newly picked size or lens, even when one of the two is empty.
+{%- endcomment -%}
+<div class="contents" data-spy-variant-sync="{{ block.id }}">
 {%- if has_any -%}
 <div class="pt-6 text-[color:var(--color-spy-text)]" {{ block.shopify_attributes }}>
 
@@ -95,6 +100,8 @@
 
 </div>
 {%- endif -%}
+</div>
+<script src="{{ 'spy-variant-sync.js' | asset_url }}" defer></script>
 
 {% schema %}
 {

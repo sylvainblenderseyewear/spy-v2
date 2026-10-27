@@ -1110,7 +1110,8 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 /* ═══════════════════════════════════════════════════════════════════════
    PDP (product.default) — match the SPY Cyrus Switch source layout.
    Scoped to the product-information section so the rest of the site is safe.
-   Uses Horizon's own 750px two-column breakpoint to avoid a ratio jump.
+   Source tiers: one column below 769px, a dot carousel below 992px, the
+   thumbnail rail from 992px. Horizon switches all of it at 750px.
    ═══════════════════════════════════════════════════════════════════════ */
 
 /* Column split, straight from the source: `.ds-main-grid` is `repeat(12, 1fr)`
@@ -1137,6 +1138,53 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   /* The 24px inset that offsets every row in this column is the source's
      `.pdp-primary-info { padding: 0 0 48px 24px }`. It lives in the template's
      product-details padding settings, since Horizon writes those inline. */
+}
+
+/* 750–768: Horizon already goes two columns, the source is still stacked. Same
+   placement as Horizon's mobile grid: full-bleed gallery, details in the content
+   column with no 24px inset. */
+@media screen and (min-width: 750px) and (max-width: 768.98px) {
+  [data-testid="product-information"] product-component.product-information__grid.product-information--media-left {
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
+  /* The long selector outweighs Horizon's (0,4,0) half-gap padding rules */
+  [data-testid="product-information"] product-component.product-information__grid.product-information--media-left > .product-information__media {
+    grid-column: 1 / -1;
+    padding-right: 0;
+  }
+  [data-testid="product-information"] product-component.product-information__grid.product-information--media-left > .product-details {
+    grid-column: 2 / 3;
+    padding-left: 0;
+  }
+  [data-testid="product-information"] product-component .product-details > .group-block {
+    padding-inline: 0;
+  }
+}
+
+/* Below 992px the source gallery is a dot carousel: no thumbnail rail, no
+   arrows. Use Horizon's mobile controls, which are already in the markup. */
+@media screen and (min-width: 750px) and (max-width: 991.98px) {
+  /* !important: Horizon's thumbnail grid stacks two :has() for (0,3,3) */
+  [data-testid="product-information"] .media-gallery--carousel slideshow-component {
+    display: flex !important;
+  }
+  [data-testid="product-information"] slideshow-controls.mobile\:hidden,
+  [data-testid="product-information"] slideshow-arrows.mobile\:hidden {
+    display: none !important;
+  }
+  [data-testid="product-information"] slideshow-controls.media-gallery__mobile-controls {
+    display: flex !important;
+  }
+}
+
+/* Source `.carousel-container { margin: 0 -1rem }` from 769 to 991px: the
+   gallery runs 16px into the page margin and into the column gap. */
+@media screen and (min-width: 769px) and (max-width: 991.98px) {
+  [data-testid="product-information"] .product-information__media {
+    min-width: calc(100% + 2rem);
+    margin-inline: -1rem;
+  }
 }
 
 /* White stage behind gallery images, like the source */
@@ -1387,19 +1435,21 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 
 /* ── PDP pixel pass — exact values from source detail.css / global.css ─── */
 
-/* Product name: source computes 32px/40px, w700, uppercase, ls 0.5%, #242424.
+/* Product name: source computes 24px/32px below 992px and 32px/40px from 992px,
+   w700, uppercase, ls 0.5%, #242424.
    !important beats the text block's inline font_size/line_height/letter_spacing. */
 [data-testid="product-information"] .product-details h1 {
   font-size: 1.5rem !important;
-  line-height: 1.25 !important;
+  line-height: 2rem !important;
   letter-spacing: 0.005em !important;
   color: var(--color-spy-text) !important;
   font-weight: 700;
   margin-bottom: 0.25rem;
 }
-@media (min-width: 750px) {
+@media (min-width: 992px) {
   [data-testid="product-information"] .product-details h1 {
     font-size: 2rem !important;
+    line-height: 2.5rem !important;
   }
 }
 
@@ -1458,6 +1508,82 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 [data-testid="product-information"] .slideshow-controls__thumbnails {
   gap: 4px;
   padding: 0 !important;
+}
+
+/* ── Size / lens buttons (Horizon's variant picker) ─────────────────────
+   Source PDP: "Size" 16/24 medium, 12px above and below; equal buttons 40px
+   tall, 8px apart, 1px border, 12px semibold black; the picked one filled ink,
+   no sliding pill. One-value options (One Size, No Lens Reference) never show
+   on the source, so they are hidden. Quick View draws the same look itself. */
+[data-testid="product-information"] .variant-option[data-testid="variant-option-single"] {
+  display: none;
+}
+
+/* Two or three values share the row like the source. Long lens lists go on in
+   rows of three instead of squeezing six names into one row. */
+[data-testid="product-information"] .variant-option--buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(33.333% - 6px), 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+[data-testid="product-information"] .variant-option--buttons legend {
+  margin: 0 0 12px;
+  color: var(--color-spy-text);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+[data-testid="product-information"] .variant-option--buttons .variant-option__button-label {
+  min-width: 0;
+  min-height: 40px;
+  padding: 1px 6px;
+  border: 1px solid var(--color-spy-input-border);
+  border-radius: 0;
+  background: var(--color-white);
+  color: var(--color-black);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 11.2px;
+  white-space: normal;
+}
+
+[data-testid="product-information"] .variant-option--buttons .variant-option__button-label__text {
+  text-align: center;
+}
+
+/* Horizon's sliding pill and pseudo-border would draw a second box */
+[data-testid="product-information"] .variant-option--buttons .variant-option__button-label__pill,
+[data-testid="product-information"] .variant-option--buttons .variant-option__button-label::before {
+  display: none;
+}
+
+[data-testid="product-information"] .variant-option--buttons .variant-option__button-label:has(:checked) {
+  border-color: var(--color-spy-ink);
+  background: var(--color-spy-ink);
+  color: var(--color-white);
+}
+
+/* Sold out or a missing size/lens pair: the source fades the whole button and
+   strikes the text. Horizon's diagonal line and inner border go. */
+[data-testid="product-information"] .variant-option--buttons .variant-option__button-label:has([data-option-available="false"]) {
+  border-width: 1px;
+  color: var(--color-black);
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+[data-testid="product-information"] .variant-option--buttons .variant-option__button-label:has([data-option-available="false"])::after,
+[data-testid="product-information"] .variant-option--buttons .variant-option__strikethrough {
+  display: none;
+}
+
+[data-testid="product-information"] .variant-option--buttons .variant-option__button-label:has([data-option-available="false"]):has(:checked) {
+  border-color: var(--color-spy-muted);
+  background: var(--color-spy-muted);
+  color: var(--color-white);
 }
 
 /* ── Collection filter sidebar ───────────────────────────────────────
