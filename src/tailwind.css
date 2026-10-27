@@ -1438,7 +1438,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 /* Product name: source computes 24px/32px below 992px and 32px/40px from 992px,
    w700, uppercase, ls 0.5%, #242424.
    !important beats the text block's inline font_size/line_height/letter_spacing. */
-[data-testid="product-information"] .product-details h1 {
+[data-testid="product-information"] :is(.product-details, .spy-pdp-header) h1 {
   font-size: 1.5rem !important;
   line-height: 2rem !important;
   letter-spacing: 0.005em !important;
@@ -1453,8 +1453,24 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   }
 }
 
+/* Below 992px the title, price and stars sit above the gallery
+   (snippets/spy-pdp-header.liquid), so the column's own copies go. The source's
+   column also gains 24px on top while it is stacked. */
+@media screen and (max-width: 991.98px) {
+  /* Only the group that holds the title: the upsell card below has a price too */
+  [data-testid="product-information"] .product-details .text-block:has(> h1),
+  [data-testid="product-information"] .product-details .group-block-content:has(> .text-block > h1) :is(product-price, .spy-rating-embed) {
+    display: none;
+  }
+}
+@media screen and (max-width: 768.98px) {
+  [data-testid="product-information"] product-component .product-details {
+    padding-top: 1.5rem;
+  }
+}
+
 /* Price uses the source's "lead" style: --ds-lead 1.125rem/1.75rem, 500, -1% */
-[data-testid="product-information"] .product-details .price {
+[data-testid="product-information"] :is(.product-details, .spy-pdp-header) .price {
   font-size: 1.125rem;
   line-height: 1.75rem;
   font-weight: 500;

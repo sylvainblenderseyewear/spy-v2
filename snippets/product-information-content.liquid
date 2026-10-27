@@ -96,6 +96,7 @@
   {% endif %}
   {% if request.page_type == 'product' %}
     {% render 'spy-breadcrumbs', product: product, variant: 'pdp' %}
+    {% render 'spy-pdp-header', product: product %}
     {%- comment -%} Hover zoom on the gallery image, in place of Horizon's click lightbox {%- endcomment -%}
     <script src="{{ 'spy-hover-zoom.js' | asset_url }}" defer></script>
   {% endif %}
