@@ -22,7 +22,8 @@ Cards print the stickers in this order, the legacy site's slot order:
 
 The six files from 24 Aug are the same art as the legacy files (checked pixel by pixel; only WebP noise).
 Geometry is the legacy one: 40px wide, height from the art, 11.2px from the top, 5px from the right,
-4px apart, the whole row at 70% under 544px (`src/tailwind.css`).
+4px apart, the whole row at 70% under 544px (`src/tailwind.css`). The product page shows the same tags on
+its photo at the legacy PDP size, 50px wide (`snippets/product-media-gallery-content.liquid`).
 
 To add a sticker to a new product, add its tag in the admin. To swap the art, replace the file in Files
 or use the image settings on the card blocks.

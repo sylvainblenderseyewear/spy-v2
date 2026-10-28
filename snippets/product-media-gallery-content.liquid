@@ -451,6 +451,27 @@
       {% endcapture %}
     {% endif %}
 
+    {%- comment -%}
+      Stickers ride in the stage next to the arrows, so the thumbnail rail never shifts
+      them: 11.2px from the top, 5px from the right, 50px each (cards use 40), 4px apart,
+      70% below 544px, like the source PDP. Same badge:: tags as the product cards.
+    {%- endcomment -%}
+    {%- if block_settings.show_stickers -%}
+      {%- capture spy_stickers -%}{%- render 'spy-tech-badges', product: selected_product -%}{%- endcapture -%}
+      {%- assign spy_stickers = spy_stickers | strip -%}
+      {%- if spy_stickers != '' -%}
+        {%- capture slideshow_arrows -%}
+          {{ slideshow_arrows }}
+          <div
+            class="spy-pdp-stickers pointer-events-none absolute top-[11.2px] right-[5px] z-[var(--layer-raised)] [display:flex] items-start gap-1 max-[544px]:scale-[0.7] [&_img]:w-[50px]"
+            data-testid="spy-pdp-stickers"
+          >
+            {{ spy_stickers }}
+          </div>
+        {%- endcapture -%}
+      {%- endif -%}
+    {%- endif -%}
+
     {%- comment -%} Focusable so keyboard users can arrow through the photos {%- endcomment -%}
     {%- assign gallery_label = 'accessibility.slideshow' | t -%}
     {% render 'slideshow',

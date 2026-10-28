@@ -93,6 +93,21 @@
                 </svg>
               </button>
             {%- endif -%}
+
+            {%- comment -%}
+              Stickers, 50px like the PDP. The source pins them to its padded gallery
+              column, so they sit 11.2px down and 10px past the photo's right edge.
+            {%- endcomment -%}
+            {%- capture qv_stickers -%}{%- render 'spy-tech-badges', product: p -%}{%- endcapture -%}
+            {%- assign qv_stickers = qv_stickers | strip -%}
+            {%- if qv_stickers != '' -%}
+              <div
+                class="pointer-events-none absolute top-[11.2px] right-[-10px] z-[2] [display:flex] items-start gap-1 max-[544px]:scale-[0.7] [&_img]:w-[50px]"
+                data-testid="spy-qv-stickers"
+              >
+                {{ qv_stickers }}
+              </div>
+            {%- endif -%}
           </div>
 
           {%- comment -%}

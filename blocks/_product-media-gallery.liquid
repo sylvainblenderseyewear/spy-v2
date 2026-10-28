@@ -277,6 +277,14 @@
       "label": "t:settings.hide_unselected_variant_media"
     },
     {
+      "type": "checkbox",
+      "id": "show_stickers",
+      "label": "Show stickers",
+      "info": "Top right of the photo, from the product's badge:: tags like the product cards.",
+      "default": true,
+      "visible_if": "{{ block.settings.media_presentation == 'carousel' }}"
+    },
+    {
       "type": "header",
       "content": "t:content.padding"
     },

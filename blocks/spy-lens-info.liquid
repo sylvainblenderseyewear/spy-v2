@@ -157,27 +157,36 @@
     {%- endif -%}
   </div>
 
-  {%- comment -%} 2x2 tiles, 8px gutters, no frame or divider lines {%- endcomment -%}
-  <div class="[display:grid] grid-cols-2 gap-2">
+  {%- comment -%}
+    Source: a list below 992px (label left, value right, 60px rows), then 2x2 tiles
+    with the value on top. Label comes first in the markup, as on the source, so a
+    screen reader says "Lens category, 3". 8px gutters, no frame or divider lines.
+  {%- endcomment -%}
+  {%- liquid
+    assign tile_cls = 'bg-[color:var(--color-spy-surface)] [display:flex] flex-row items-center justify-between gap-3 px-3 py-4 text-left min-[992px]:h-full min-[992px]:min-h-[76px] min-[992px]:flex-col-reverse min-[992px]:gap-0 min-[992px]:text-center'
+    assign label_cls = 'text-[12px] leading-4 tracking-[0.015em] text-[color:var(--color-spy-ink)]'
+    assign value_cls = 'text-[18px] leading-7 font-medium tracking-[-0.01em] text-[color:var(--color-spy-ink)]'
+  -%}
+  <div class="[display:grid] grid-cols-1 gap-2 min-[992px]:grid-cols-2">
 
     {%- if vlt != blank -%}
-      <div class="bg-[color:var(--color-spy-surface)] flex flex-col items-center justify-between gap-0 px-3 py-4 h-full min-h-[76px] text-center">
-        <span class="text-[18px] leading-7 font-medium tracking-[-0.01em] text-[color:var(--color-spy-ink)]">{{ vlt }}%</span>
-        <span class="text-[12px] leading-4 tracking-[0.015em] text-[color:var(--color-spy-ink)]">Visible Light Transmission (VLT)</span>
+      <div class="{{ tile_cls }}">
+        <span class="{{ label_cls }}">Visible Light Transmission (VLT)</span>
+        <span class="{{ value_cls }}">{{ vlt }}%</span>
       </div>
     {%- endif -%}
 
     {%- if lens_cat != blank -%}
-      <div class="bg-[color:var(--color-spy-surface)] flex flex-col items-center justify-between gap-0 px-3 py-4 h-full min-h-[76px] text-center">
-        <span class="text-[18px] leading-7 font-medium tracking-[-0.01em] text-[color:var(--color-spy-ink)]">{{ cat_num }}</span>
-        <span class="text-[12px] leading-4 tracking-[0.015em] text-[color:var(--color-spy-ink)]">Lens category</span>
+      <div class="{{ tile_cls }}">
+        <span class="{{ label_cls }}">Lens category</span>
+        <span class="{{ value_cls }}">{{ cat_num }}</span>
       </div>
     {%- endif -%}
 
     {%- if base_tint != blank -%}
-      <div class="bg-[color:var(--color-spy-surface)] flex flex-col items-center justify-between gap-0 px-3 py-4 h-full min-h-[76px] text-center">
-        <span class="text-[18px] leading-7 font-medium tracking-[-0.01em] text-[color:var(--color-spy-ink)]">{{ base_tint }}</span>
-        <span class="text-[12px] leading-4 tracking-[0.015em] text-[color:var(--color-spy-ink)]">Tint base</span>
+      <div class="{{ tile_cls }}">
+        <span class="{{ label_cls }}">Tint base</span>
+        <span class="{{ value_cls }}">{{ base_tint }}</span>
       </div>
     {%- endif -%}
 
@@ -202,16 +211,16 @@
       endif
     -%}
     {%- if tech_name != blank or icon_src != blank -%}
-      <div class="bg-[color:var(--color-spy-surface)] flex flex-col items-center justify-between gap-0 px-3 py-4 h-full min-h-[76px] text-center">
+      <div class="{{ tile_cls }}">
+        <span class="{{ label_cls }}">Technology</span>
         {%- if icon_src != blank -%}
           {%- comment -%} Source sits the logo in a py-2 px-4 box, centred by a flex row {%- endcomment -%}
           <div class="[display:flex] justify-center px-6 py-2">
             <img src="{{ icon_src }}" alt="{{ tech_name }}" width="{{ icon_w }}" height="{{ icon_h }}" loading="lazy" class="h-5 w-auto max-w-full">
           </div>
         {%- else -%}
-          <span class="text-[18px] leading-7 font-medium tracking-[-0.01em] text-[color:var(--color-spy-ink)]">{{ tech_name }}</span>
+          <span class="{{ value_cls }}">{{ tech_name }}</span>
         {%- endif -%}
-        <span class="text-[12px] leading-4 tracking-[0.015em] text-[color:var(--color-spy-ink)]">Technology</span>
       </div>
     {%- endif -%}
 

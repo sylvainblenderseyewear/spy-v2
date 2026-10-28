@@ -79,8 +79,9 @@ Two different content widths are in play:
   (last column flush with the `col-10` right edge).
 * Header: **16px / 600 / uppercase / #fff**, height 22.39, `margin-right 16px`.
 * Links: **12px / #fff**, item line-height **20px**, **no gap between header and first link**.
-* Responsive < 769px: headers become **accordion toggles** (chevron `.toggle`, 10 × 10,
-  rotates 180°→0°, transition .3s), panels `display:none` until opened; header/item padding
+* Responsive < 769px: headers become **accordion toggles** (`.toggle`, 10 × 10: a "+" from two
+  10 × 2 `#fff` border bars; open spins it 180° and the upright bar's width goes to 0, leaving
+  "−"; transition .3s — re-measured 28 Oct, it was not a chevron), panels `display:none` until opened; header/item padding
   `.25rem 0`; columns stack full width, 30.39 tall each, 16px apart; `ml-md-4` drops off.
 
 ## 4. Payment — `.footer-section-border-bottom` › `.site-footer_reinsurance-payment`

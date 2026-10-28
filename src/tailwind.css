@@ -1493,7 +1493,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   opacity: 0.5;
 }
 
-/* Cell width comes from the `thumbnail_width` setting (85px, source value).
+/* Cell width follows the rail column from 992px (see "Gallery stage width" below).
    Keep the 1px border in BOTH states. Horizon drops it on the selected cell,
    which made the thumb image jump 68px → 72px when you picked one. !important
    because Horizon's own rules load after this file. */
@@ -2664,6 +2664,35 @@ product-recommendations .slideshow-control svg {
 
   [data-testid='product-information'] media-gallery slideshow-component > slideshow-container {
     grid-area: container;
+  }
+}
+
+/* The source rail is a Bootstrap column of the gallery, so it scales with it: a
+   quarter (col-3) at 992–1199, a twelfth (col-xl-1) from 1200. 85px was only its
+   1920 size. Cells fill the column; Horizon would cap them at 7vw. */
+@media screen and (min-width: 992px) {
+  [data-testid='product-information'] media-gallery slideshow-component {
+    grid-template:
+      'controls container' auto
+      'controls arrows' min-content
+      / 25% minmax(0, 1fr) !important;
+  }
+
+  [data-testid='product-information'] .slideshow-controls__thumbnails {
+    width: 100%;
+  }
+
+  [data-testid='product-information'] .slideshow-controls__thumbnail {
+    width: 100% !important;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  [data-testid='product-information'] media-gallery slideshow-component {
+    grid-template:
+      'controls container' auto
+      'controls arrows' min-content
+      / calc(100% / 12) minmax(0, 1fr) !important;
   }
 }
 

@@ -26,12 +26,16 @@
     <span
       class="mr-4 text-[length:var(--spy-fmenu-heading-size,16px)] leading-[var(--spy-fmenu-heading-lh,22.4px)] [font-weight:var(--spy-fmenu-heading-weight,600)] [text-transform:var(--spy-fmenu-heading-case,uppercase)]"
     >{{ heading }}</span>
+    {%- comment -%}
+      Source toggle: a 10px "+" from two 2px bars. Opening spins it half a turn and
+      drops the upright bar to leave "−"; closing grows it back. 0.3s like the source.
+    {%- endcomment -%}
     <span
-      class="w-[10px] shrink-0 transition-transform duration-300 group-open:rotate-180 min-[769px]:hidden [&_svg]:block [&_svg]:h-[10px] [&_svg]:w-[10px]"
+      class="relative h-[10px] w-[10px] shrink-0 transition-transform duration-300 ease-[ease] group-open:rotate-180 min-[769px]:hidden
+        before:absolute before:bottom-[4px] before:left-0 before:h-0 before:w-[10px] before:rotate-90 before:border-b-2 before:border-current before:transition-[width] before:duration-300 before:ease-[ease] before:content-[''] group-open:before:w-0 group-open:before:transition-none
+        after:absolute after:bottom-[4px] after:left-0 after:h-0 after:w-[10px] after:border-b-2 after:border-current after:content-['']"
       aria-hidden="true"
-    >
-      {{- 'icon-caret.svg' | inline_asset_content -}}
-    </span>
+    ></span>
   </summary>
 
   <div class="spy-fmenu-panel">

@@ -116,12 +116,12 @@ bar/tick, "Read more" and the chevrons use content-primary.
 | media column | 759.3 wide, stage padding 48 (`.slick-slide > span`) | ✅ 762.2 / 48 |
 | displayed stage image | ~560 | ✅ 566 |
 | zoom | 1340px layer painted 1:1 → factor = 1340 ÷ displayed, no transition, `cursor: crosshair` | ✅ matches |
-| thumbnails | 85 cell / 65 image / 2px radius / 2px `#242424` when active | ✅ matches |
+| thumbnails | Fluid column of the gallery: a quarter (`col-3`) at 992–1199, a twelfth (`col-xl-1`) from 1200 — 63.3 cell / 43.3 image at 1440, 85 / 65 only at 1920. 2px radius, 2px border (`#242424` when active), 8px inset, 4px apart; stage = column − cell − 16 | ✅ matches since 28 Oct (was a fixed 85px) |
 | gallery arrows | 40×40, radius 18, `#fff`, shadow `0 0 9px rgba(119,119,119,.1)`, FA `\f104`/`\f105` at 20px, opacity .75 | ✅ chevrons |
 | breadcrumb | category only, `label-s`, 40 tall (8px above a 32px row) | ✅ matches |
 | price | `lead` | ✅ matches |
 | stock | `body-m`, `#4BB151`, 24 above / 12 below | ✅ matches |
-| lens panel | heading row 24, tiles 2×2 @ 76 min, 8px gutters, Cat scale `0 repeat(4,1fr)` 68.8 tall | ✅ matches |
+| lens panel | heading row 24, tiles 2×2 @ 76 min from 992 (value over label, `column-reverse`); **below 992 a one-column list** — label left 12/16, value right 18/28 500, rows 60 (68 with a logo), `16px 12px` padding; 8px gutters, Cat scale `0 repeat(4,1fr)` 68.8 tall | ✅ matches since 28 Oct (the list was missing) |
 | accordion | header 66 (`20px 12px`), rule **under** the header, rows 52 (`16px` pad), 50/50 split, single-open via `data-parent` | ✅ matches (native `name=`) |
 
 ## Open items

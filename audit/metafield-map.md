@@ -9,6 +9,7 @@
 | Block / Section | File | Metafield(s) Read |
 |---|---|---|
 | Breadcrumbs | `blocks/spy-breadcrumbs.liquid` | `product.collections` (first non-all/non-frontpage) |
+| Gallery stickers | Horizon `_product-media-gallery` block, "Show stickers" (`snippets/product-media-gallery-content.liquid` → `snippets/spy-tech-badges.liquid`) | **Product tags, not metafields**: the same `badge::` tags as the card Tech Badge, 50px at the top right of the photo (carousel only) |
 | Lens Info | `blocks/spy-lens-info.liquid` | `spec.vlt_percent`, `spec.lens_category`, `spec.base_tint`, `spec.mirror_tint`, `spec.polarized`, `spec.technologies` → `technology.name`, `.icon`; `goggle.otg`. With no `spec.technologies`, `spec.lens_technology` text is matched against `technology.aliases` so the logo still resolves — add an alias, no code change. |
 | Variant picker | Horizon `variant-picker` block | `product.options_with_values`, `variant.swatch` (file) |
 | Frame Fit Guide | `blocks/spy-frame-fit-guide.liquid` | **Collection**: `custom.fit_guide` → `fit_guide.frame_name`, `.image_front`, `.image_side`, `.temple_width`, `.temple_length`, `.lens_height`, `.frame_fit`, `.temple_pressure`, `.frame_size` (smallest collection wins). Fallback: `spec.fit` |
@@ -51,7 +52,7 @@ Same as default PDP, plus:
 | Collection Story | `sections/spy-collection-story.liquid` | `collection.story` → `collection_story.hero`, `.hero_mobile`, `.headline`, `.body`, `.featured_products` |
 | ~~Compare Bar~~ (removed from `collection.json`) | `sections/spy-compare.liquid` | localStorage (JS-driven) |
 | Quick View Modal | `sections/spy-quick-view.liquid` | — (modal shell; content fetched via section rendering API) |
-| Quick View Content | `sections/spy-quick-view-content.liquid` | `spec.vlt_percent`, `spec.lens_category`, `spec.base_tint`, `spec.mirror_tint`, `spec.polarized`, `spec.technologies`, `product.options_with_values`, `product.variants` |
+| Quick View Content | `sections/spy-quick-view-content.liquid` | `spec.vlt_percent`, `spec.lens_category`, `spec.base_tint`, `spec.mirror_tint`, `spec.polarized`, `spec.technologies`, `product.options_with_values`, `product.variants`; gallery stickers from `badge::` product tags (`snippets/spy-tech-badges.liquid`, 50px) |
 
 ---
 
