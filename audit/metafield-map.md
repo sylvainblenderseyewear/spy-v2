@@ -39,7 +39,7 @@ Same as default PDP, plus:
 
 | Block / Section | File | Metafield(s) Read |
 |---|---|---|
-| Collection Hero | `sections/spy-collection-hero.liquid` | `collection.hero_image` (desktop, ~6.4:1) · `collection.hero_image_mobile` (2:1) · `collection.hero_image_tablet` (⚠️ not defined yet — falls back to desktop). Also read from the `custom` namespace, and overridable per breakpoint by section settings. Title is `collection.title`. |
+| Collection Hero | `sections/spy-collection-hero.liquid` | `collection.hero_image` (desktop, from 769px) · `collection.hero_image_mobile` (below 769px) · `collection.hero_heading` (multi-line text, Enter = line break; else the section's Override text, else `collection.title`) · `collection.hero_heading_size` (integer px, optional fixed size like the old 22px two-line titles). Also read from the `custom` namespace; the section's images are the fallback. Data per collection: `audit/plp-hero-source.csv`. |
 | Collection Header | Horizon `section` with text blocks | `collection.title`, `collection.description` (Liquid vars) |
 | Product Grid | Horizon `main-collection` | — |
 | Grouped Product Grid | `sections/spy-grouped-collection.liquid` | Product tag `collection::MODEL` for the group; the matching model collection's `all_products_count` for the colourway count and `products.first` for the card's representative |

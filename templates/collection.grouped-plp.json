@@ -13,24 +13,16 @@
       "type": "spy-collection-hero",
       "settings": {
         "show_fallback": true,
-        "fallback_bg": "#000000",
-        "height_desktop": 240,
-        "height_tablet": 120,
-        "ratio_mobile": 2,
-        "focal_desktop": "center",
-        "focal_tablet": "center",
-        "focal_mobile": "center",
         "show_heading": true,
-        "heading": "Sunglasses",
+        "heading": "",
         "heading_color": "#ffffff",
         "heading_weight": "400",
-        "heading_tracking": "0.05",
-        "title_size_desktop": 28,
-        "title_size_tablet": 22,
-        "title_size_mobile": 14,
-        "panel_width_desktop": 64,
-        "panel_width_tablet": 58,
-        "panel_width_mobile": 52
+        "heading_tracking": "0",
+        "title_vw_desktop": 1.8,
+        "title_vw_tablet": 3,
+        "title_vw_mobile": 4,
+        "panel_width_desktop": 66,
+        "panel_width_mobile": 50
       }
     },
     "section_dHFxNJ": {

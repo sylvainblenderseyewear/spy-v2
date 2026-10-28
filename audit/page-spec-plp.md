@@ -13,7 +13,7 @@
 |---|---|---|---|---|
 | 1 | Announcement Bar | Shared | No (shared) | — |
 | 2 | Navigation | Shared | No (shared) | Yes |
-| 3 | Collection Hero | H1 headline ("Ski and Snowboard Goggles"), hero image. Background image with text overlay or text below image (⚠️ MEASURE exact layout). | CUSTOM collection-hero block | Yes | Yes — separate images |
+| 3 | Collection Hero | H1 headline ("Ski and Snowboard Goggles") over the art at its own ratio; title only when a category has no art. Measured — see Collection Hero below. | CUSTOM `spy-collection-hero` | Yes | Yes — desktop/mobile images, switch at 769px |
 | 4 | Intro Copy | Expandable "read more/less" text block — `collection.intro_copy` rich text metafield | CUSTOM expandable-text block | Yes | — |
 | 5 | Filter + Sort Bar | Sticky filter bar on desktop. Facets: Category, Color, Price Range, Lens Tech (Cat 1/2/3). Sort: Most Popular / Price ↑ / ↓. | CUSTOM filter-bar (Shopify Search & Discovery integration) | Yes | Drawer on mobile |
 | 6 | Product Grid | Multi-column grid of product cards | CUSTOM product-grid | Yes | 1 col to 768, 2 from 769, 3 from 992, 4 from 1459.2px; 24 per page + "More results" (+24) |
@@ -66,10 +66,20 @@
 ---
 
 ## Collection Hero
-- **H1:** Collection name ("Ski and Snowboard Goggles")
-- **Image:** `collection.hero_image` file metafield — **RESPONSIVE: separate desktop/mobile settings**
-- **Intro text:** paragraph below or overlaid on hero
-- **Breadcrumb:** Home › Goggles › Snow Goggles
+Measured live 28 Oct 2026 (`.category-banner`, search.css) and matched on the preview theme to 0.01px.
+
+- **Image:** `<picture>`, desktop crop from **769px**, mobile crop below. No tablet crop. `width:100%; height:auto`, so the
+  band is as tall as the art: 1920×300 → 225px at 1440, 1920×400 → 300px, 800×400 → 384px at 768 and 195px at 390.
+- **H1:** DIN 400, uppercase, `line-height:1.2`, no letter spacing, white. Size **1.8vw** from 769 (25.92px at 1440),
+  **3vw** 544–768 (23.04px at 768), **4vw** below 544 (15.6px at 390).
+- **Name box:** overlay `position:absolute; inset:0`, flex, vertically centred, 15px side padding. The box is
+  `calc(66% - 2rem)` wide from 769px and `calc(50% - 1rem)` below, text centred in it (898.59 / 353 / 164px).
+- **Two-line titles:** five categories (both Replacement Lenses, Sunglass Cases, Youth Motocross Goggles, Motocross
+  Goggle Accessories) wrap the name in `<span style="font-size:22px">…<br>…</span>`. The H1 keeps its vw line box.
+- **No image** (Discord Series, Helm Series): `.search-banner-empty`, no band. The name is in flow, `#1d2a2b`,
+  `margin-top:16px`, same sizes and box.
+- **Breadcrumb:** text starts 17.8px under the banner at 1440, 13px at 768/390.
+- **Data:** every category's heading and art is in `audit/plp-hero-source.csv` (`collection.hero_*` metafields).
 
 ---
 
@@ -94,7 +104,7 @@
 |---|---|---|---|
 | Filter bar | Horizontal, sticky sidebar or top-bar | Horizontal compressed | "Filter" button → slide-up drawer |
 | Product grid | 3 columns (4 from 1459.2px) | 1 column (2 from 769px) | 1 column |
-| Hero image | Desktop image | ⚠️ tablet image or desktop | Mobile image |
+| Hero image | Desktop image (from 769px) | Mobile image (2:1, 384px tall) | Mobile image |
 | Intro copy | Show ~3 lines → read more | Same | Same |
 | Compare bar | Bottom fixed bar | Bottom fixed bar | Bottom fixed bar |
 
@@ -102,7 +112,7 @@
 
 ## Breakpoint-Specific Settings Required
 
-1. **Collection hero image:** separate desktop (`collection.hero_image_desktop`) + mobile (`collection.hero_image_mobile`) image settings
+1. **Collection hero image:** separate desktop (`collection.hero_image`) + mobile (`collection.hero_image_mobile`) metafields, switching at 769px
 2. **Filter:** mobile = drawer trigger; desktop = inline bar
 
 ---
