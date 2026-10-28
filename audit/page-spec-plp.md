@@ -78,7 +78,15 @@ Measured live 28 Oct 2026 (`.category-banner`, search.css) and matched on the pr
   Goggle Accessories) wrap the name in `<span style="font-size:22px">…<br>…</span>`. The H1 keeps its vw line box.
 - **No image** (Discord Series, Helm Series): `.search-banner-empty`, no band. The name is in flow, `#1d2a2b`,
   `margin-top:16px`, same sizes and box.
-- **Breadcrumb:** text starts 17.8px under the banner at 1440, 13px at 768/390.
+- **Breadcrumb** (`.breadcrumb`, measured 28 Oct): 8px under the banner, min 32px tall, crumbs centred; below
+  992px a 16px bottom pad pins them to the top (row 38.4px). Each `li` is 16px / 22.4px holding a 12px/16px
+  inline-block link, so the text starts **17.8px** under the banner from 992 and **13px** below; the intro text
+  then starts at 41 / 47.4px. Separator `/` 16px regular, 8px each side. Colour stays `--color-spy-muted`
+  (#767676): the source's #a6a6a6 fails AA. Built in `snippets/spy-breadcrumbs.liquid`; matched to the pixel.
+- **Still differs (not part of the breadcrumb):** page margin 45.7px at 1024 and 15px from 769 to 991 on the
+  source vs 32px on ours (grid included); the source intro always collapses to one line + "Read more ▾"
+  (ours shows short copy in full, and the Sunglasses copy differs); at 768 the source shows the mobile
+  Filter + Sort bar (two half-width controls) where ours shows the desktop one.
 - **Data:** every category's heading and art is in `audit/plp-hero-source.csv` (`collection.hero_*` metafields).
 
 ---

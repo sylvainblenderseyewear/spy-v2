@@ -11,16 +11,30 @@ Cards print the stickers in this order, the legacy site's slot order:
 
 | Tag | Sticker | File in Shopify Files | Legacy art |
 |---|---|---|---|
-| `badge::bonus-lens` | Bonus lens | `Bonus_Lens.webp` (migrated 24 Aug) | `spy-bonuslens-2.png` |
-| `badge::deadbolt` | Deadbolt | `deadbolt.webp` (migrated 24 Aug) | `spy-deadbolt.png` |
-| `badge::happy-boost` | Happy Boost | `pictohappyboost.webp` (migrated 24 Aug) | `pictohappyboost.png` |
-| `badge::ansi-z87` | ANSI Z87 | `ANSI_Z87.webp` (migrated 24 Aug) | `ANSI_SVG_Z87_V1.svg` |
-| `badge::ansi-z87-2-plus` | ANSI Z87-2+ | `ANSI_-Z87.webp` (migrated 24 Aug) | `ANSI_SVG_NEW_V4.svg` |
-| `badge::cat-4` | CAT. 4 LENS | `MurdrdOut-CAT4.svg` (migrated 24 Oct) | `26-SPY-Digital-PDP-Icon-MurdrdOut-CAT4.svg` |
+| `badge::bonus-lens` | Bonus lens | `spy-bonuslens-2-clear.png` | `spy-bonuslens-2.png` |
+| `badge::deadbolt` | Deadbolt | `spy-deadbolt-clear.png` | `spy-deadbolt.png` |
+| `badge::happy-boost` | Happy Boost | `pictohappyboost-clear.png` | `pictohappyboost.png` |
+| `badge::ansi-z87` | ANSI Z87 | `ANSI_SVG_Z87_V1.svg` | `ANSI_SVG_Z87_V1.svg` |
+| `badge::ansi-z87-2-plus` | ANSI Z87-2+ | `ANSI_SVG_NEW_V4.svg` | `ANSI_SVG_NEW_V4.svg` |
+| `badge::cat-4` | CAT. 4 LENS | `MurdrdOut-CAT4-clear.svg` | `26-SPY-Digital-PDP-Icon-MurdrdOut-CAT4.svg` |
 | `badge::not-for-driving` | NOT FOR USE WHILE DRIVING | `MurdrdOut-WARNING.svg` (migrated 24 Oct) | `26-SPY-Digital-PDP-Icon-MurdrdOut-WARNING.svg` |
-| `badge::mips` | Mips | `mips.webp` (migrated 24 Aug) | `mipslogo.png` |
+| `badge::mips` | Mips | `mipslogo.png` | `mipslogo.png` |
 
-The six files from 24 Aug are the same art as the legacy files (checked pixel by pixel; only WebP noise).
+Since 28 Oct 2026 every sticker has a **transparent background**, so it sits on any photo without a box
+(Goran's call; it differs from the legacy site on purpose):
+
+- ANSI Z87, ANSI Z87-2+, Not for driving and Mips are the legacy files as they are (already transparent; the
+  yellow circle is the Mips logo itself).
+- Happy Boost, Bonus lens and Deadbolt are the legacy PNGs with their white backing removed (Happy Boost face,
+  Bonus lens fill, Deadbolt square; Deadbolt keeps the white text in its circle). Edge pixels were un-blended
+  from white, so there is no white fringe on dark photos.
+- CAT. 4 LENS lost its black tile and prints its text black, like Not for driving.
+
+The untouched legacy originals (`ANSI_SVG_*`, `spy-bonuslens-2.png`, `spy-deadbolt.png`, `pictohappyboost.png`,
+`mipslogo.png`, `MurdrdOut-CAT4.svg`) are in Files too, so going back is a file name in
+`snippets/spy-tech-badges.liquid`. The WebPs migrated on 24 Aug are unused: the two ANSI ones had a solid white
+back and were 50px rasters. Transparent art also needs a clear background on the PDP: the gallery's white
+image backing skips `.spy-pdp-stickers` (`src/tailwind.css`).
 Geometry is the legacy one: 40px wide, height from the art, 11.2px from the top, 5px from the right,
 4px apart, the whole row at 70% under 544px (`src/tailwind.css`). The product page shows the same tags on
 its photo at the legacy PDP size, 50px wide (`snippets/product-media-gallery-content.liquid`).

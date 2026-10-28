@@ -127,13 +127,24 @@
   assign titles = crumb_titles | split: sep
   assign links = crumb_links | split: sep
 
+  # Source .breadcrumb: a 32px row with the crumbs centred; below 992px a 16px bottom pad
+  # pins them to the top. Each crumb is a 16/22.4 line box holding the 12px text as an
+  # inline-block, like the source li > a, so the text lands on the same baseline.
+  # The "/" is 16px regular with 8px each side.
+  assign nav_class = 'w-full text-[12px] font-bold uppercase leading-4 tracking-[0.01em] text-spy-muted'
+  assign list_class = 'm-0 flex min-h-8 list-none flex-wrap items-center gap-x-2 gap-y-1 p-0 max-[992px]:pb-4'
+  assign item_class = 'text-[16px] leading-[22.4px]'
+  assign crumb_class = 'inline-block text-[12px] leading-4'
+  assign sep_class = 'select-none text-[16px] font-normal leading-[22.4px] opacity-70'
+
   # PDP measurements from the source: 12/16 bold uppercase, 1% tracking, muted,
   # sitting 8px under the header in a 32px row with nothing below it.
-  assign nav_class = 'w-full text-[12px] font-bold uppercase leading-4 tracking-[0.01em] text-spy-muted'
-  assign list_class = 'm-0 flex h-8 list-none flex-wrap items-center gap-x-1.5 gap-y-1 p-0'
   if is_pdp
     assign nav_class = 'w-full pt-2 text-[12px] font-bold uppercase leading-4 tracking-[0.01em] text-spy-muted'
     assign list_class = 'm-0 flex h-8 list-none flex-wrap items-center gap-x-1.5 gap-y-0 p-0'
+    assign item_class = ''
+    assign crumb_class = ''
+    assign sep_class = 'select-none opacity-70'
   endif
 -%}
 
@@ -147,9 +158,9 @@
     <ol class="{{ list_class }}">
       {%- comment -%} The source PDP trail starts at the category, so no Home crumb there {%- endcomment -%}
       {%- unless is_pdp -%}
-        <li>
+        <li class="{{ item_class }}">
           <a
-            class="text-spy-muted no-underline transition-colors duration-150 hover:text-spy-orange-ui"
+            class="{{ crumb_class }} text-spy-muted no-underline transition-colors duration-150 hover:text-spy-orange-ui"
             href="{{ routes.root_url }}"
           >
             {{- 'breadcrumbs.home' | t -}}
@@ -158,15 +169,15 @@
       {%- endunless -%}
       {%- for title in titles -%}
         {%- unless is_pdp and forloop.first -%}
-          <li class="select-none opacity-70" aria-hidden="true">/</li>
+          <li class="{{ sep_class }}" aria-hidden="true">/</li>
         {%- endunless -%}
-        <li>
+        <li class="{{ item_class }}">
           {%- comment -%} On a PDP every crumb is a collection, so none of them is the current page {%- endcomment -%}
           {%- if forloop.last and is_pdp == false -%}
-            <span aria-current="page">{{ title }}</span>
+            <span class="{{ crumb_class }}" aria-current="page">{{ title }}</span>
           {%- else -%}
             <a
-              class="text-spy-muted no-underline transition-colors duration-150 hover:text-spy-orange-ui"
+              class="{{ crumb_class }} text-spy-muted no-underline transition-colors duration-150 hover:text-spy-orange-ui"
               href="{{ links[forloop.index0] }}"
             >
               {{- title -}}

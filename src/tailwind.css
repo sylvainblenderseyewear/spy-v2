@@ -1187,8 +1187,9 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   }
 }
 
-/* White stage behind gallery images, like the source */
-[data-testid="product-information"] .product-information__media img {
+/* White stage behind gallery images, like the source. Not the stickers: their art is
+   transparent, so a white back would show as a box on any photo that isn't white. */
+[data-testid="product-information"] .product-information__media img:not(.spy-pdp-stickers img) {
   background: #fff;
 }
 
