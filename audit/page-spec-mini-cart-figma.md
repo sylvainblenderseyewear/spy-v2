@@ -199,7 +199,8 @@ Region XL, Cooper.
 | Part | Value |
 |---|---|
 | Panel | the same 375px cart, **left 1529 → flush right**, full viewport height |
-| Overlay | covers the 1529px left of the panel · `#000000` at **20%** · **background blur 44** |
+| Overlay | covers the 1529px left of the panel · `#000000` at **20%** layer opacity · background blur 44, but it hides under the overlay's own solid fill |
+| Page picture | `image 2` under the overlay has **layer blur 24**: the blur you see. Measured on both frames: CSS `blur(10px)` (not 22px, fixed 21 Oct) |
 | Footer | pinned to the panel bottom; the body scrolls under it |
 
 Nothing in the panel is re-laid-out for desktop: it is the mobile frame, docked. No tablet frame exists.

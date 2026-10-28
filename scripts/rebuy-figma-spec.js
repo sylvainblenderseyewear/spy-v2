@@ -78,7 +78,9 @@ add('panel', 'docked right, full height', `x ${SEEN - P} · h ${VH}`, `x ${r1(F.
 const bg = root.querySelector('.rebuy-cart__background');
 if (bg) {
   eq('page behind', 'overlay colour', '#000000@0.2', hex(cs(bg).backgroundColor));
-  eq('page behind', 'blur (Figma 44 = CSS 22px)', 'blur(22px)', cs(bg).backdropFilter || cs(bg).webkitBackdropFilter);
+  // The overlay's own blur 44 hides under its solid fill; what shows is the picture's
+  // layer blur 24, measured at 10px on both desktop frames
+  eq('page behind', 'blur (picture layer blur 24)', 'blur(10px)', cs(bg).backdropFilter || cs(bg).webkitBackdropFilter);
 }
 eq('panel', 'background', '#ffffff', hex(cs(fly).backgroundColor));
 add('panel', 'font family', 'DIN Next LT Pro', cs(fly).fontFamily.split(',')[0], /DIN/i.test(cs(fly).fontFamily));

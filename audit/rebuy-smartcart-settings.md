@@ -958,7 +958,8 @@ The first 390 production run died before the page loaded (`ERR_SOCKET_NOT_CONNEC
 | Desktop, 1 item `6:366` | 174 | 157 | 2 | 9 | 6 | 0 |
 
 The same at 375, 390, 768 and 1440; at 390 the panel fills the screen and the checks follow its 358px
-content. The panel docks at x1529 on the desktop frame, as drawn; dim 20% + blur 22px everywhere.
+content. The panel docks at x1529 on the desktop frame, as drawn; dim 20% + blur 22px everywhere (blur was
+too strong, 10px since 21 Oct: see the last section).
 
 **Not drawn, and not on the 14 Oct list — decided 16 Oct (Goran, relayed by the search session):**
 
@@ -1072,3 +1073,25 @@ and x0 (probe, same session). The only real side effect: below 480px the panel i
 counts that scrollbar, so in a desktop window squeezed to phone width the cart is 10px wider than the window.
 `width: 100%` on the flyout would fix that one case. Not changed. The spec script now docks against the
 visible width (`clientWidth`) and reports the `100vw` case as a note.
+
+
+### Page-behind blur was twice the design — 21 Oct
+
+Question: "is the blur behind the open cart normal?" Yes, the Figma draws it, but we ran `blur(22px)` and
+the design shows about 10px. In both desktop frames the overlay (`Rectangle 70`) is solid black at
+**layer** opacity 20%, so its own background blur 44 hides under that fill. The blur you see belongs to
+the page picture under it (`image 2`, **layer blur 24**). On 14 Oct I read the 44 as the effect (44 / 2 = 22).
+
+Gaussian edge fits on the captures, all at the Figma export's 0.494 scale:
+
+| Capture | σ at 0.494 | σ at 1904 |
+|---|---|---|
+| Figma `6:366` and `8:1290`, hero → white band | 4.9–5.2 | ≈ 10 |
+| Live cart, 16 Oct, `blur(22px)` | 12.2 | ≈ 22–25 |
+| Local CSS, `blur(10px)` | 4.9–5.4 | ≈ 10–11 |
+
+Fix: `src/tailwind.css` `blur(22px)` → `blur(10px)`, and `rebuy-figma-spec.js` expects `blur(10px)`. The
+untouched live CSS fails that check (`blur(22px)`); with `LOCAL_CSS=1` on the live theme and live cart, two
+items: 0 wrong at 1440, 768, 390 and 1904 × 913 (194 exact each). That first live run also had no
+bundle box and no "You Might Also Like": the known cold-load race, both were there on every later load.
+**Not pushed:** the live cart keeps 22px until the theme push.

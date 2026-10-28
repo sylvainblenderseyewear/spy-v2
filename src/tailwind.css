@@ -3735,11 +3735,13 @@ html .spy-faq-search-input {
   transition: transform 426ms cubic-bezier(0.5, 0.25, 0, 1) !important;
 }
 
-/* Page behind the cart: 20% black and blurred (Figma blur 44 = 22px radius) */
+/* Page behind the cart: 20% black and blurred. The blur you see in Figma is the
+   picture's layer blur 24 (measured 10px); the overlay's blur 44 hides under its
+   solid fill. */
 #rebuy-cart:has(.spy-mc) .rebuy-cart__background {
   background: rgb(0 0 0 / 0.2) !important;
-  -webkit-backdrop-filter: blur(22px);
-  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 /* Body: no scrollbar, as drawn. A Windows scrollbar took 15px off every row
