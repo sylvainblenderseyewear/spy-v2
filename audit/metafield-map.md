@@ -10,7 +10,7 @@
 |---|---|---|
 | Breadcrumbs | `blocks/spy-breadcrumbs.liquid` | `product.collections` (first non-all/non-frontpage) |
 | Gallery stickers | Horizon `_product-media-gallery` block, "Show stickers" (`snippets/product-media-gallery-content.liquid` → `snippets/spy-tech-badges.liquid`) | **Product tags, not metafields**: the same `badge::` tags as the card Tech Badge, 50px at the top right of the photo (carousel only) |
-| Lens Info | `blocks/spy-lens-info.liquid` | `spec.vlt_percent`, `spec.lens_category`, `spec.base_tint`, `spec.mirror_tint`, `spec.polarized`, `spec.technologies` → `technology.name`, `.icon`; `goggle.otg`. With no `spec.technologies`, `spec.lens_technology` text is matched against `technology.aliases` so the logo still resolves — add an alias, no code change. |
+| Lens Info | `blocks/spy-lens-info.liquid` | `spec.vlt_percent`, `spec.lens_category`, `spec.base_tint` (`spec.lens_tint` fallback), variant `spec.lens_technology` matched to `technology.name` / `.aliases` → tile `.icon` + "Read more" panel (`.drawer_logo`, `.short_blurb`, `.drawer_benefits`, `.drawer_note`, or another entry's panel via `.drawer_source`). `spec.technologies` is only a fallback when there is no lens type. A new lens type needs an alias, no code change. Logic: `audit/lens-tech-images.md`. |
 | Variant picker | Horizon `variant-picker` block | `product.options_with_values`, `variant.swatch` (file) |
 | Frame Fit Guide | `blocks/spy-frame-fit-guide.liquid` | **Collection**: `custom.fit_guide` → `fit_guide.frame_name`, `.image_front`, `.image_side`, `.temple_width`, `.temple_length`, `.lens_height`, `.frame_fit`, `.temple_pressure`, `.frame_size` (smallest collection wins). Fallback: `spec.fit` |
 | Buy Buttons | Horizon `buy-buttons` block | — |
@@ -124,7 +124,7 @@ These templates use Horizon built-in sections, branded via `settings_data.json`:
 
 | Metaobject | Fields | Used By |
 |---|---|---|
-| `technology` | `name`, `icon` (file), `short_blurb`, `long_description` (rich_text), `link` (url) | `spy-lens-info`, `spy-spec-table`, `spy-tech-guide` |
+| `technology` | `name`, `icon` (file), `short_blurb`, `long_description` (rich_text), `link` (url), `aliases` (list), `drawer_logo` (file), `drawer_benefits` (rich_text), `drawer_note` (rich_text), `drawer_source` (→ `technology`) | `spy-lens-info`, `spy-spec-table`, `spy-tech-guide` |
 | `fit_guide` | `frame_name`, `image_front` (file), `image_side` (file), `temple_width` (int), `temple_length` (int), `lens_height` (int), `frame_fit`, `temple_pressure`, `frame_size` | `spy-frame-fit-guide` — linked from the **collection** metafield `custom.fit_guide` |
 | `size_chart` | `name`, `image` (file), `category`, `table_html` (rich_text) | Defined but empty — no entries, no `pdp.size_chart` product definition |
 | `collection_story` | `headline`, `hero` (file), `hero_mobile` (file), `body` (rich_text), `featured_products` (list.product_reference) | `spy-collection-story` |
