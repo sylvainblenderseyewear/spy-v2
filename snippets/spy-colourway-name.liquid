@@ -9,6 +9,10 @@
   Falls back to the colour option (real combined listings after the migration) and
   prints nothing when neither answers — the caller keeps the slot's height.
 
+  October titles also name the lens, so the name stops at the product's
+  `spec.frame_color` when it starts with it: `Speedway Dusk Happy ML Rose …` →
+  `Speedway Dusk`.
+
   @param {object} product - product to read the name from
 
   @example
@@ -91,6 +95,26 @@
       endif
     endfor
     assign spy_cw_name = spy_cw_name | strip
+  endif
+
+  comment
+    Lens names in the title make a two-line label. Keep only the frame colour when
+    the name starts with it as a whole word; other names are left alone.
+  endcomment
+  assign spy_cw_frame = product.metafields.spec.frame_color.value | strip
+  assign spy_cw_frame_size = spy_cw_frame | size
+  assign spy_cw_size = spy_cw_name | size
+
+  if spy_cw_frame_size > 0 and spy_cw_size > spy_cw_frame_size
+    assign spy_cw_head = spy_cw_name | slice: 0, spy_cw_frame_size | downcase
+    assign spy_cw_frame_lower = spy_cw_frame | downcase
+    assign spy_cw_next = spy_cw_name | slice: spy_cw_frame_size, 1
+
+    if spy_cw_head == spy_cw_frame_lower
+      if spy_cw_next == ' ' or spy_cw_seps contains spy_cw_next
+        assign spy_cw_name = spy_cw_name | slice: 0, spy_cw_frame_size | strip
+      endif
+    endif
   endif
 
   assign spy_cw_check = spy_cw_name | downcase

@@ -1,4 +1,4 @@
-# Page spec — Gift Guide (`page.gift-guide`) — built, verified on a preview theme, not pushed
+# Page spec — Gift Guide (`page.gift-guide`) — live: pushed 28 Oct (`cf5daf5`), page published 28 Oct
 
 Source: `https://www.spyoptic.com/us/giftguide.html`, read live on 27 Oct 2026 in a signed-in Chrome.
 DataDome shows a slider check to automated browsers, so Playwright could not load it.
@@ -147,9 +147,9 @@ source has no h1.
 - **How the store writes were done:** `shopify store execute` with the stored CLI store login.
   It had no file or theme scopes at first; `shopify store auth` added `read/write_files` and
   `read/write_themes` on 27 Oct.
-- **Page — created 27 Oct, hidden:** `gid://shopify/Page/162887008563`, handle `gift-guide`,
-  title `Gift Guide`, template suffix `gift-guide`. Publish it once the template is on the live
-  theme and the open links are sorted.
+- **Page — created 27 Oct hidden, published 28 Oct** on Goran's word ("this page is good"):
+  `gid://shopify/Page/162887008563`, handle `gift-guide`, title `Gift Guide`, template suffix
+  `gift-guide`. `/pages/gift-guide` answers 200 on the live store. The open links below still 404.
 - **Rail 1 → collection `gift-guide-sunglasses` — created 27 Oct** (`Collection/514458059059`,
   manual sort, on the Online Store, `seo.hidden = 1` so it stays out of search and the sitemap), all
   live: `spy-discord-soft-matte-black-sunglasses`, `spy-cyrus-soft-matte-black-sunglasses`,
@@ -157,8 +157,8 @@ source has no h1.
   `spy-region-xl-soft-matte-black-sunglasses`. The source tiles show the Happy Boost Polar Black
   Mirror lens of each.
 - **Rail 2 → collection `gift-guide-goggles` — created 27 Oct** (`Collection/514458091827`, same
-  setup). Only Waypoint is live; the other four are ACTIVE in the admin but not on the Online Store
-  (the October new-product batch), so the rail shows them once they are published:
+  setup). All five live since 28 Oct: the four goggles (October new-product batch) were published
+  to the Online Store only on Goran's word; Waypoint is also on Point of Sale:
   `spy-marauder-elite-spy-eric-jackson-happy-bronze-black-spectra-mirror-happy-ll-gray-green-red-spectra-mirror-snow-goggles`
   (source: SPY+ Eric Jackson with Happy Boost lenses; no exact lens match),
   `spy-megalith-speedway-dusk-happy-ml-rose-with-black-mirror-and-happy-ll-yellow-snow-goggles`,
@@ -182,7 +182,8 @@ source has no h1.
   Targets that don't exist yet are plain paths, so they start working once created.
 - **Free shipping copy:** the source strip says "$50". The store's rate rule is free from $70
   (the footer says $50, the PDP trust row $100). Copied as is; the threshold is the client's call.
-- **Redirects added:** `/us/giftguide.html` → `/pages/gift-guide`, `/us/gear/apparel/` →
+- **Redirects added to `audit/redirect-urls.csv`** (Pending like all 52 rows: none is created in
+  Shopify yet, they go in at cutover): `/us/giftguide.html` → `/pages/gift-guide`, `/us/gear/apparel/` →
   `/collections/gear`, `/us/buy-now-pay-later.html` → `/pages/buy-now-pay-later`. The existing
   PDP rows still point at placeholder handles (`/products/waypoint` etc.), not the real ones.
 - Source accessibility gaps, not copied: no `h1`, `alt=""` on every banner image, the Flynn link
@@ -219,11 +220,9 @@ Screenshots: `audit/gift-guide/theme-{390,768,1440}.png`, same frame as the sour
 
 ## Open
 
-- **Push** (Goran): the four Liquid/JSON files, the `src/tailwind.css` rule and a clean CSS
-  build. The working tree's `assets/tailwind.css` also holds another session's uncommitted CSS.
-- **Publish the page** once the template is live and the open links below are sorted.
-- **Publish the four rail-2 goggles** (Marauder Elite, Megalith, Marshall 2.0, Raider) to fill the
-  second rail.
+- ~~Push~~ done 28 Oct (`cf5daf5`), verified on the live theme.
+- ~~Publish the page~~ done 28 Oct 02:25 UTC; `/pages/gift-guide` answers 200 on the live store.
+- ~~Publish the four rail-2 goggles~~ done 28 Oct (Online Store); the rail shows all five, PDPs 200.
 - Missing link targets (sale tree, `happy-boost-snow`, `megalith`, `/pages/buy-now-pay-later`) and
   the $50 free-shipping copy against the $70 rule: client decisions.
 - Delete the preview theme `189998596403` after review.
