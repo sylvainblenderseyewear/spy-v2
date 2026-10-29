@@ -40,6 +40,17 @@
           },
           "blocks": {}
         },
+        "spy_mega_menu_LCcPdM": {
+          "type": "spy-mega-menu",
+          "name": "SPY Mega Menu",
+          "settings": {
+            "menu": "main-menu",
+            "highlight_item": "Sale",
+            "store_locator_url": "https://stores.spyoptic.com",
+            "store_locator_label": "Find a store"
+          },
+          "blocks": {}
+        },
         "menu_images_sunglasses": {
           "type": "spy-menu-promo",
           "name": "Menu images — Sunglasses",
@@ -81,6 +92,7 @@
       "block_order": [
         "mega_menu",
         "utility_nav",
+        "spy_mega_menu_LCcPdM",
         "menu_images_sunglasses",
         "spy_menu_promo_QLN7Hy"
       ],
