@@ -2747,6 +2747,14 @@ product-recommendations .slideshow-control svg {
   box-sizing: border-box !important;
 }
 
+/* Yotpo loyalty points sit in the PDP price row. On a line of their own, or the
+   row's space-between pushes the stars into the middle. The template's own rule
+   keys on a generated block id that changes in every copy of the theme, so match
+   the block's name instead. */
+.shopify-app-block[id*="__yotpo_loyalty_rewards_product_points_module_app_block"] {
+  flex-basis: 100%;
+}
+
 /* ── Old-site content: its own orange follows the one setting ─────────────
    Pages and posts moved from the old site set an orange themselves, in style
    blocks and inline styles, so the theme setting never reached them. Only

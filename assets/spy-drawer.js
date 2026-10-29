@@ -19,6 +19,8 @@
 
   const portalAll = () =>
     document.querySelectorAll('[data-spy-drawer]').forEach((d) => {
+      // An old copy a fresh one just replaced: putting it back would drop the fresh one
+      if (!d.isConnected) return;
       portal(d);
       if (!('open' in d.dataset)) d.inert = true;
     });
@@ -29,6 +31,8 @@
     portalAll();
   }
   document.addEventListener('shopify:section:load', portalAll);
+  // A colour pick swaps the product sections in place (spy-colourway-switch.js)
+  document.addEventListener('spy:product:switched', portalAll);
 
   // Drawers live on <body>, so an inert page keeps Tab inside the open one.
   // Quick View can stack with a drawer, so check every overlay, not just this one.

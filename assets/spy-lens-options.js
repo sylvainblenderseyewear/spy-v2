@@ -85,8 +85,9 @@
     initAll();
   }
 
-  // Re-run after a theme-editor block edit re-renders the section.
+  // Re-run after a theme-editor block edit re-renders the section, or a colour pick swaps it.
   document.addEventListener('shopify:section:load', initAll);
+  document.addEventListener('spy:product:switched', initAll);
 
   document.addEventListener('click', (e) => {
     const swatch = e.target.closest?.('[data-lens-swatch]');

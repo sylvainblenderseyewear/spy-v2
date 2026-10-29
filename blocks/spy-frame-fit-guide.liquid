@@ -117,8 +117,8 @@
   {%- comment -%} Source row is 36px: 12px above the link + a 24px link box {%- endcomment -%}
   <button
     type="button"
-    {%- comment -%} flex, not inline-flex: inline-level here adds a line box under
-    the row. The source's link is a full-width flex row too. {%- endcomment -%}
+    {% comment %} flex, not inline-flex: inline-level here adds a line box under
+    the row. The source's link is a full-width flex row too. {% endcomment %}
     class="flex w-full items-center justify-start gap-2 mt-3 bg-transparent border-none p-0 cursor-pointer text-left text-[0.875rem] font-medium leading-5 tracking-[0.01em] text-[color:var(--color-spy-text)] hover:text-spy-orange-ui"
     aria-haspopup="dialog"
     aria-expanded="false"
@@ -149,7 +149,7 @@
     class="spy-fit-guide group invisible fixed inset-0 z-[1001] data-[open]:visible"
     role="dialog"
     aria-modal="true"
-    {%- comment -%} Frame name only in the label, so screen readers get the model {%- endcomment -%}
+    {% comment %} Frame name only in the label, so screen readers get the model {% endcomment %}
     aria-label="{{ block.settings.title | default: 'Frame Fit Guide' | append: ' ' | append: frame_name | strip | escape }}"
     aria-hidden="true"
     data-spy-fit-guide-modal

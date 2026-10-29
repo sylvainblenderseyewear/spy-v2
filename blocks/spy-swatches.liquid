@@ -31,12 +31,6 @@
       endif
     endfor
   endif
-
-  assign has_option_colors = false
-  if color_option != nil and color_option.values.size > 1
-    assign has_option_colors = true
-  endif
-
 -%}
 
 {%- if p != blank -%}
@@ -97,9 +91,12 @@
   {%- endif -%}
 {%- endif -%}
 
-{%- unless is_pdp -%}
+{%- if is_pdp -%}
+  {%- comment -%} Picks another colourway without a page load {%- endcomment -%}
+  <script type="module" src="{{ 'spy-colourway-switch.js' | asset_url }}"></script>
+{%- else -%}
   <script src="{{ 'spy-card.js' | asset_url }}" defer></script>
-{%- endunless -%}
+{%- endif -%}
 
 {% schema %}
 {
