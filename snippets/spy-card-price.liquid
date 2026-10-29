@@ -7,7 +7,8 @@
 
   Range covers the whole model when a model collection is passed, since the card
   stands for the model rather than the one colourway it shows. Falls back to the
-  product's own variant range otherwise.
+  product's own variant range otherwise. Reads variants like the colour list in
+  `spy-model-collection-facts`: $0 rows don't count when the product has a real price.
 
   @param {object} product - colourway the card shows
   @param {object} [group_collection] - the model's collection, to price the whole group
@@ -18,21 +19,36 @@
 {%- enddoc -%}
 
 {%- liquid
-  assign low = product.price_min
-  assign high = product.price_max
-  assign low_compare = product.compare_at_price_max
+  assign low = nil
+  assign high = nil
+  assign low_compare = 0
 
   if group_collection != blank and group_collection.products.size > 0
-    assign low = nil
-    assign high = nil
-    assign low_compare = 0
     for colourway in group_collection.products
-      if low == nil or colourway.price_min < low
-        assign low = colourway.price_min
-        assign low_compare = colourway.compare_at_price_max
+      for v in colourway.variants
+        if colourway.price_max > 0 and v.price == 0
+          continue
+        endif
+        if low == nil or v.price < low
+          assign low = v.price
+          assign low_compare = v.compare_at_price | default: 0
+        endif
+        if high == nil or v.price > high
+          assign high = v.price
+        endif
+      endfor
+    endfor
+  else
+    for v in product.variants
+      if product.price_max > 0 and v.price == 0
+        continue
       endif
-      if high == nil or colourway.price_max > high
-        assign high = colourway.price_max
+      if low == nil or v.price < low
+        assign low = v.price
+        assign low_compare = v.compare_at_price | default: 0
+      endif
+      if high == nil or v.price > high
+        assign high = v.price
       endif
     endfor
   endif

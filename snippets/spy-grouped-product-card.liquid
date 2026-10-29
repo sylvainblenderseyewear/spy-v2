@@ -16,7 +16,7 @@
 
   @param {object} product - the colourway that represents the group
   @param {string} group_name - model name from the `collection: xxx` tag
-  @param {number} group_count - how many colourways the group holds
+  @param {number} group_count - colourway count to use when no model collection is found
   @param {object} [group_collection] - the model's collection, when the caller already holds it
   @param {object} [block] - calling block, for appearance + label settings
     (`card_per: 'colourway'` = one card per colourway, like the source homepage rail:
@@ -46,28 +46,10 @@
     assign target = product.url
   endif
 
-  # Groups always hold at least the product in hand
-  assign count = group_count | plus: 0
-  if count < 1
-    assign count = 1
-  endif
-
   assign per_colourway = false
   if block_settings.card_per == 'colourway'
     assign per_colourway = true
   endif
-
-  if per_colourway
-    capture count_label
-      render 'spy-colourway-name', product: product
-    endcapture
-    assign count_label = count_label | strip
-  elsif count == 1
-    assign count_label = block_settings.label_colors_one | default: '1 color available'
-  else
-    assign count_label = block_settings.label_colors_many | default: '[count] colors available'
-  endif
-  assign count_label = count_label | replace: '[count]', count
 
   assign image_sizes = image_sizes | default: '(min-width: 750px) 50vw, 100vw'
   assign card_gap_value = block_settings.product_card_gap | default: 16
@@ -81,7 +63,7 @@
   if per_colourway
     # This card is one colourway, so nothing reads the rest of the model
     assign model_collection = nil
-  elsif model_collection == blank and show_swatches and group_name != blank
+  elsif model_collection == blank and group_name != blank
     assign group_key = group_name | handleize
     assign group_title = group_name | downcase | strip
     for col in product.collections
@@ -92,6 +74,38 @@
       endif
     endfor
   endif
+
+  # Blenders-style colour list (frame + lens): the count and the thumbnails both read it
+  assign count = group_count | plus: 0
+  assign colour_entries = ''
+  if model_collection != blank
+    capture model_facts
+      render 'spy-model-collection-facts', product: product, group_name: group_name, model_collection: model_collection
+    endcapture
+    assign model_facts = model_facts | strip | split: '~^~'
+    assign list_count = model_facts[0] | plus: 0
+    if list_count > 0
+      assign count = list_count
+      assign colour_entries = model_facts[2] | split: ','
+    endif
+  endif
+
+  # Groups always hold at least the product in hand
+  if count < 1
+    assign count = 1
+  endif
+
+  if per_colourway
+    capture count_label
+      render 'spy-colourway-name', product: product
+    endcapture
+    assign count_label = count_label | strip
+  elsif count == 1
+    assign count_label = block_settings.label_colors_one | default: '1 color available'
+  else
+    assign count_label = block_settings.label_colors_many | default: '[count] colors available'
+  endif
+  assign count_label = count_label | replace: '[count]', count
 
   if block_settings.background_color != blank
     render 'contrast-override', background_color: block_settings.background_color, section_id: block.id
@@ -235,39 +249,67 @@
               >
             </a>
           </div>
-        {%- elsif show_swatches and model_collection != blank -%}
+        {%- elsif show_swatches and colour_entries != blank -%}
           {%- assign tech_store = '' -%}
+          {%- assign tech_keys = '|' -%}
           <div class="spy-swatches" data-spy-swatches>
-            {%- for colourway in model_collection.products limit: swatch_count -%}
-              {%- if colourway.featured_media != blank -%}
+            {%- for entry in colour_entries limit: swatch_count -%}
+              {%- liquid
+                assign entry_parts = entry | split: '.'
+                assign p_idx = entry_parts[0] | plus: 0
+                assign v_idx = entry_parts[1] | plus: 0
+                assign colourway = model_collection.products[p_idx]
+                assign colour_variant = colourway.variants[v_idx]
+                assign colour_media = colour_variant.featured_media | default: colourway.featured_media
+
+                # Frame from the title, lens from the variant
+                assign colour_name = colourway.title
+                for opt in colourway.options_with_values
+                  assign opt_name = opt.name | downcase
+                  if opt_name == 'lens'
+                    assign lens_index = opt.position | minus: 1
+                    assign lens_name = colour_variant.options[lens_index]
+                    assign lens_lower = lens_name | downcase
+                    unless lens_lower contains 'no lens' or lens_lower contains 'demo'
+                      assign colour_name = colourway.title | append: ' - ' | append: lens_name
+                    endunless
+                    break
+                  endif
+                endfor
+              -%}
+              {%- if colour_media != blank -%}
                 {%- comment -%}
-                  Each thumbnail carries its own colourway's stickers, so hovering one swaps
-                  them with the image. Built in this loop and parked in a <template>.
+                  Each thumbnail carries its frame's stickers, so hovering one swaps them with
+                  the image. One set per frame, parked in a <template>.
                 {%- endcomment -%}
-                {%- capture tech_entry -%}
-                  <span data-tech-key="{{ colourway.id }}">
-                    {%- render 'spy-tech-badges',
-                      product: colourway,
-                      happy_boost_icon: hb_icon,
-                      mips_icon: mips_icon,
-                      bonus_lens_icon: bonus_lens_icon,
-                      deadbolt_icon: deadbolt_icon
-                    -%}
-                  </span>
-                {%- endcapture -%}
-                {%- assign tech_store = tech_store | append: tech_entry -%}
+                {%- assign tech_probe = '|' | append: colourway.id | append: '|' -%}
+                {%- unless tech_keys contains tech_probe -%}
+                  {%- assign tech_keys = tech_keys | append: colourway.id | append: '|' -%}
+                  {%- capture tech_entry -%}
+                    <span data-tech-key="{{ colourway.id }}">
+                      {%- render 'spy-tech-badges',
+                        product: colourway,
+                        happy_boost_icon: hb_icon,
+                        mips_icon: mips_icon,
+                        bonus_lens_icon: bonus_lens_icon,
+                        deadbolt_icon: deadbolt_icon
+                      -%}
+                    </span>
+                  {%- endcapture -%}
+                  {%- assign tech_store = tech_store | append: tech_entry -%}
+                {%- endunless -%}
 
                 <a
-                  href="{{ colourway.url }}"
+                  href="{{ colour_variant.url }}"
                   class="spy-swatches__item"
                   data-tech-key="{{ colourway.id }}"
-                  data-full="{{ colourway.featured_media | image_url: width: 640 }}"
-                  aria-label="{{ title | escape }} — {{ colourway.title | escape }}"
+                  data-full="{{ colour_media | image_url: width: 640 }}"
+                  aria-label="{{ title | escape }} — {{ colour_name | escape }}"
                 >
                   {%- comment -%} 240 covers the widest the thumb flexes to on a 3x screen {%- endcomment -%}
                   <img
-                    src="{{ colourway.featured_media | image_url: width: 240 }}"
-                    alt="{{ colourway.title | escape }}"
+                    src="{{ colour_media | image_url: width: 240 }}"
+                    alt="{{ colour_name | escape }}"
                     width="42"
                     height="26"
                     loading="lazy"
@@ -278,8 +320,8 @@
 
             {%- if count > swatch_count -%}
               {%- comment -%}
-                The source points this at the model's own page. Each colourway is still its
-                own product here, so the model collection is the page that lists them all.
+                The source points this at the model's own page. Here the model collection
+                is the page that lists them all.
               {%- endcomment -%}
               <a
                 href="{{ model_collection.url }}"

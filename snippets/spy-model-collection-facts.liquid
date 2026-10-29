@@ -1,22 +1,26 @@
 {%- doc -%}
-  Prints two facts about the collection that holds a model's colourways, as
-  `count~^~first_product_id`.
+  Prints facts about the collection that holds a model's colourways, as
+  `count~^~first_product_id~^~colour_list`.
 
   Staging keeps one collection per model, handle-matched to the group tag
   (`collection::CYRUS` → `cyrus`), which makes it the only page-independent
-  source of truth on the grouped PLP: `count` is the real colourway total that
-  a 50-product page can't see, and `first_product_id` names one colourway as
-  the model's representative so the same card can't appear on two pages.
+  source of truth on the grouped PLP.
+
+  Like the Blenders card, every colour fact comes from one list. Here a colour is
+  a frame (product) + lens (variant), as SPY keeps lenses as variants: size never
+  counts, $0 rows are skipped when the product has a real price, and "No Lens
+  Reference" / demo lenses count as the frame alone. The list holds
+  `product_index.variant_index` pairs of the collection's products, the given
+  product's own colourway first, then in stock, then sold out. `count` is its length.
 
   Only an exact handle or title match counts — a curated collection the product
-  happens to sit in must never be mistaken for the model. Both fields come back
+  happens to sit in must never be mistaken for the model. All fields come back
   blank when there's no match, and the caller falls back to page-scoped
   grouping.
 
-  `first_product_id` costs a product fetch, so ask for it only when needed.
-
   @param {object} product - a colourway of the model
   @param {string} group_name - model name from the group tag
+  @param {object} [model_collection] - the model's collection, when the caller already holds it
   @param {boolean} [want_first] - also print the representative's id
 
   @example
@@ -29,24 +33,112 @@
 {%- liquid
   assign total = ''
   assign first_id = ''
+  assign colour_list = ''
 
-  if group_name != blank
+  assign col = model_collection
+  if col == blank and group_name != blank
     assign group_key = group_name | handleize
     assign group_title = group_name | downcase | strip
 
-    for col in product.collections
-      assign col_title = col.title | downcase | strip
-      if col.handle == group_key or col_title == group_title
-        assign total = col.all_products_count
-        if want_first
-          assign first_id = col.products.first.id
-        endif
+    for c in product.collections
+      assign c_title = c.title | downcase | strip
+      if c.handle == group_key or c_title == group_title
+        assign col = c
         break
       endif
     endfor
   endif
 
+  if col != blank
+    if want_first
+      assign first_id = col.products.first.id
+    endif
+
+    assign own_variant = product.selected_or_first_available_variant
+    assign own_key = ''
+    assign seen = '|'
+    assign own_entry = ''
+    assign in_stock = ''
+    assign sold_out = ''
+    assign total = 0
+
+    for p in col.products
+      assign p_idx = forloop.index0
+
+      assign lens_pos = 0
+      for opt in p.options_with_values
+        assign opt_name = opt.name | downcase
+        if opt_name == 'lens'
+          assign lens_pos = opt.position
+          break
+        endif
+      endfor
+
+      # Key of the card's own colourway, so it can lead the list
+      if p.id == product.id
+        case lens_pos
+          when 1
+            assign own_lens = own_variant.option1
+          when 2
+            assign own_lens = own_variant.option2
+          when 3
+            assign own_lens = own_variant.option3
+          else
+            assign own_lens = ''
+        endcase
+        assign own_lens = own_lens | downcase | split: ' ' | join: ' '
+        if own_lens contains 'no lens' or own_lens contains 'demo'
+          assign own_lens = ''
+        endif
+        assign own_key = p.id | append: ':' | append: own_lens | append: '|'
+      endif
+
+      for v in p.variants
+        if p.price_max > 0 and v.price == 0
+          continue
+        endif
+
+        case lens_pos
+          when 1
+            assign lens = v.option1
+          when 2
+            assign lens = v.option2
+          when 3
+            assign lens = v.option3
+          else
+            assign lens = ''
+        endcase
+        assign lens = lens | downcase | split: ' ' | join: ' '
+        if lens contains 'no lens' or lens contains 'demo'
+          assign lens = ''
+        endif
+
+        # Size rows of the same lens are one colour
+        assign key = p.id | append: ':' | append: lens | append: '|'
+        assign probe = '|' | append: key
+        if seen contains probe
+          continue
+        endif
+        assign seen = seen | append: key
+        assign total = total | plus: 1
+
+        assign entry = p_idx | append: '.' | append: forloop.index0 | append: ','
+        if key == own_key
+          assign own_entry = entry
+        elsif v.available
+          assign in_stock = in_stock | append: entry
+        else
+          assign sold_out = sold_out | append: entry
+        endif
+      endfor
+    endfor
+
+    assign colour_list = own_entry | append: in_stock | append: sold_out
+  endif
+
   echo total
   echo '~^~'
   echo first_id
+  echo '~^~'
+  echo colour_list
 -%}

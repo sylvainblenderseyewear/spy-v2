@@ -183,12 +183,6 @@
               endif
               assign probe = sep | append: group_key | append: sep
 
-              capture model_facts
-                render 'spy-model-collection-facts', product: product, group_name: group_name
-              endcapture
-              assign model_facts = model_facts | strip | split: '~^~'
-              assign model_total = model_facts[0] | plus: 0
-
               # Does this colourway get to stand for the model?
               assign is_representative = true
               if rendered_keys contains probe
@@ -209,8 +203,7 @@
             {%- liquid
               assign rendered_keys = rendered_keys | append: group_key | append: sep
 
-              # Colourway count: the model collection knows the total a single page
-              # can't see, so it wins over what we counted here.
+              # Fallback count only: the card counts the colours from the model collection
               assign group_count = 1
               for candidate_key in group_keys
                 if candidate_key == group_key
@@ -218,9 +211,6 @@
                   break
                 endif
               endfor
-              if model_total > group_count
-                assign group_count = model_total
-              endif
             -%}
 
             <li
