@@ -15,10 +15,31 @@
   comment
     Every media type rides along, like the source carousel. Staging is images
     only today, so the video branch stays dormant until the migration lands.
+    Like the PDP, only the picked colourway's shots show (spy-colourway-media).
   endcomment
   assign gallery = p.media
+  capture colourway_ids
+    render 'spy-colourway-media', product: p
+  endcapture
+  assign colourway_ids = colourway_ids | strip
+  if colourway_ids != blank
+    assign gallery = '' | split: ','
+    for m in p.media
+      assign probe = ',' | append: m.id | append: ','
+      if colourway_ids contains probe
+        assign one = p.media | where: 'id', m.id
+        assign gallery = gallery | concat: one
+      endif
+    endfor
+  endif
 
   assign title_class = 'block text-[30px] font-normal uppercase leading-[36px] text-[color:var(--color-spy-ink)]'
+
+  # The model name, like the PDP and the source; the colour sits in FRAME / LENS
+  capture qv_title
+    render 'spy-group-name', product: p
+  endcapture
+  assign qv_title = qv_title | strip | default: p.title
 -%}
 
 <div
@@ -29,7 +50,7 @@
   data-product-url="{{ p.url }}"
 >
   {%- comment -%} Stacked layout leads with the name, so it moves out of the info column {%- endcomment -%}
-  <h2 class="{{ title_class }} px-[15px] pb-2 min-[769px]:hidden">{{ p.title }}</h2>
+  <h2 class="{{ title_class }} px-[15px] pb-2 min-[769px]:hidden">{{ qv_title | escape }}</h2>
 
   <div class="[display:flex] flex-wrap">
     {%- comment -%} ── Gallery ─────────────────────────────────────────── {%- endcomment -%}
@@ -121,7 +142,7 @@
 
     {%- comment -%} ── Product info ────────────────────────────────────── {%- endcomment -%}
     <div class="w-full px-[15px] min-[769px]:w-[41.666667%]">
-      <h2 class="{{ title_class }} mb-2 hidden min-[769px]:block">{{ p.title }}</h2>
+      <h2 class="{{ title_class }} mb-2 hidden min-[769px]:block">{{ qv_title | escape }}</h2>
 
       <div class="[display:flex] flex-wrap items-center gap-x-3 gap-y-1 pb-2">
         <div class="text-[16px] font-bold leading-[1.4] text-[color:var(--color-spy-text)]" data-spy-qv-price>
@@ -142,7 +163,10 @@
         an empty label row). The picker's own 22px would collapse into the rule's
         margin and land 16px short, so set the gap here.
       {%- endcomment -%}
-      {%- render 'spy-color-picker', product: p, wrapper_class: 'mt-[38px]' -%}
+      {%- capture colour_row -%}
+        {%- render 'spy-color-picker', product: p, wrapper_class: 'mt-[38px]' -%}
+      {%- endcapture -%}
+      {{- colour_row -}}
 
       {% content_for 'block', type: 'spy-frame-summary', id: 'qv-frame-summary', closest.product: p %}
 
@@ -152,6 +176,11 @@
         Staging keeps Size and Lens as variant options, so each option with more than
         one value gets a row. Without this the buy button always took the first variant.
         A pick reloads the dialog for that variant (spy-quick-view.js).
+
+        Like the source, the colour row above already lists every lens, so the lens row
+        stays hidden, and the size row only shows when the picked colourway comes in
+        more than one size (both flags come from spy-color-picker). Hidden rows keep
+        their checked radio, so a size pick still knows the lens.
       {%- endcomment -%}
       {%- liquid
         assign has_choice = false
@@ -161,12 +190,30 @@
             break
           endif
         endfor
+
+        assign lens_in_row = false
+        if colour_row contains 'data-spy-colourways'
+          assign lens_in_row = true
+        endif
+        assign one_size = false
+        if colour_row contains 'data-spy-one-size'
+          assign one_size = true
+        endif
       -%}
       {%- if has_choice -%}
         <div data-spy-qv-options>
           {%- for option in p.options_with_values -%}
             {%- if option.values.size > 1 -%}
-              <fieldset class="m-0 mt-3 min-w-0 border-0 p-0">
+              {%- liquid
+                assign option_key = option.name | downcase
+                assign row_hidden = false
+                if lens_in_row and option_key == 'lens'
+                  assign row_hidden = true
+                elsif one_size and option_key == 'size'
+                  assign row_hidden = true
+                endif
+              -%}
+              <fieldset class="m-0 mt-3 min-w-0 border-0 p-0" {% if row_hidden %}hidden{% endif %}>
                 <legend class="m-0 mb-3 p-0 text-[16px] font-normal leading-[22.4px] text-spy-text">{{ option.name | escape }}</legend>
                 <div class="[display:flex] flex-wrap gap-2">
                   {%- for value in option.values -%}

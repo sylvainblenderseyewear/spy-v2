@@ -4,13 +4,14 @@
   Two looks, set by the `display` setting:
   - card: small thumbs for PLP / carousel cards. Hovering swaps the card image
     (spy-card.js) and an arrow appears when more colours exist than fit.
-  - pdp: the 56px colour picker from the product page. Shows every colourway,
-    marks the current one, and links out to its PDP.
+  - pdp: the 56px colour picker from the product page. Shows every colourway
+    (frame + lens), marks the current one, and loads a pick in place
+    (spy-colourway-switch.js). The lens buttons hide while it is on the page.
 
   Colours come from the product's colour option when it has more than one value
-  (combined listing). Staging has one product per colourway instead, so the pdp
-  look falls back to the model collection — the same collection the breadcrumb
-  uses. Both paths disappear once the migration brings real combined listings.
+  (combined listing). Staging has one product per frame with lenses as variants
+  instead, so the pdp look lists the model collection's frames times their lenses
+  — the same collection the breadcrumb uses.
 {%- enddoc -%}
 
 {%- liquid
@@ -35,8 +36,14 @@
 
 {%- if p != blank -%}
   {%- if is_pdp -%}
-    {%- comment -%} Markup lives in the snippet so the quick view dialog reuses it {%- endcomment -%}
-    {%- render 'spy-color-picker', product: p, shopify_attributes: block.shopify_attributes -%}
+    {%- comment -%}
+      Markup lives in the snippet so the quick view dialog reuses it. The box-less
+      wrapper lets spy-variant-sync.js swap in a fresh copy after a size pick, so the
+      swatch links keep the size just picked.
+    {%- endcomment -%}
+    <div class="contents" data-spy-variant-sync="{{ block.id }}">
+      {%- render 'spy-color-picker', product: p, shopify_attributes: block.shopify_attributes -%}
+    </div>
   {%- else -%}
     {%- comment -%}
       Square and fixed on purpose. These were 72x52 and free to wrap, so a card with four
@@ -94,6 +101,7 @@
 {%- if is_pdp -%}
   {%- comment -%} Picks another colourway without a page load {%- endcomment -%}
   <script type="module" src="{{ 'spy-colourway-switch.js' | asset_url }}"></script>
+  <script src="{{ 'spy-variant-sync.js' | asset_url }}" defer></script>
 {%- else -%}
   <script src="{{ 'spy-card.js' | asset_url }}" defer></script>
 {%- endif -%}

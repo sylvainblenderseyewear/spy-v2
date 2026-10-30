@@ -53,11 +53,24 @@
 - **RESPONSIVE:** yes — layout changes at tablet/mobile
 
 ### Variant Pickers
-- **Frame Color:** swatch grid — small circular or square images. Label updates when selected. Hover preview shows image change in gallery.
-- **Lens:** dropdown or swatch row — lens name (e.g., "Happy Gray Green & Happy Gray Green with Black Mirror")
-- **Extra Lens:** dropdown
-- **Swatch images:** per-variant metafield `variant.swatch` (file)
-- **Selected state:** border/ring highlight ⚠️ MEASURE color/width
+Checked on the live source on 30 Oct 2026. I read Product-Variation for 135 masters and the PDP script (`productDetail.js`).
+- **Colour row = colourways.** It is the master's one `color` attribute, and each value is a frame plus its lens. The extra lens is in the name ("Matte Black-Happy Gray Green & Happy Bronze with Gold Mirror").
+  - Cyrus Switch has 5, Discord 15, Foundation Plus 18.
+  - Replacement lenses have lens-only values.
+  - Each value is a 56px photo of that colourway, in Business Manager order. The pick stays in place.
+  - A sold-out value stays in the row, at 0.5 opacity with a 69×2px bar at 45°. It is still clickable and shows Sold Out with the button off.
+  - Swatches do nothing on hover.
+- **No lens buttons and no extra-lens picker on any master.** FRAME and LENS are read-only lines under the row.
+- **Size buttons appear only where the master has a `size` attribute.** These are helmets, tees, Woot tear-off packs, the Sunglass Case, and a few goggles and replacement lenses (One size / Medium-Large).
+  - Picking a colour selects the first enabled size.
+  - Sizes not made in that colour are disabled, and sold-out sizes are struck through.
+- **A click** fetches Product-Variation over AJAX (about 1–2 s). The URL and tab title don't change.
+- **Title:** the H1 is the master name ("CYRUS SWITCH", "DISCORD") and never changes with a colour pick. The tab title is "<MODEL> Sunglasses by Spy Optic". The colourway only appears in FRAME / LENS and in the image alt text.
+  - **Ours:** the `product-title` block with `title_source: group` + `page_heading` shows the model from the `collection::` tag. So do `spy-pdp-header` and the quick view. The tab title stays the product's SEO title.
+- **Gallery:** only the picked colourway's photos, from Product-Variation `images.large`: 7 for Cyrus Switch, 8 for Discord. A master view with no colour picked shows 1.
+  - The product video goes in at `videoPosition` (Cyrus Switch: second thumbnail; Discord has none).
+  - **Ours:** `snippets/spy-colourway-media.liquid` keeps the picked lens's run of photos. A run starts at a variant's main photo; 392 of 398 products are ordered that way.
+- **Ours:** `spy-color-picker` + `spy-frame-colourways` list the model collection's frames × lenses. Horizon's Lens row is hidden. Size shows only when the picked colourway comes in 2+ real sizes. The picked size is kept across frames when it exists.
 
 ### Add to Cart
 - **Color:** orange `#f57f29`

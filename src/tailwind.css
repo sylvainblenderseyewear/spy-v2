@@ -1536,6 +1536,15 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   display: none;
 }
 
+/* The source has no lens buttons: its colour row lists every frame + lens, and so does
+   ours (spy-color-picker), so the lens row goes while that row is on the page. Size
+   stays only when the picked colourway comes in more than one size (helmets, tees).
+   The hidden radios stay checked, so Horizon still sends the right variant. */
+[data-testid="product-information"]:has(.spy-swatches[data-spy-colourways]) .variant-option--buttons:has(input[data-option-name="Lens" i]),
+[data-testid="product-information"]:has(.spy-swatches [data-spy-one-size]) .variant-option--buttons:has(input[data-option-name="Size" i]) {
+  display: none;
+}
+
 /* Two or three values share the row like the source. Long lens lists go on in
    rows of three instead of squeezing six names into one row. */
 [data-testid="product-information"] .variant-option--buttons {

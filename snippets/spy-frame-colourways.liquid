@@ -1,0 +1,198 @@
+{%- doc -%}
+  The PDP colour swatches of one frame, one per lens. The source's colour row lists
+  every frame + lens and has no lens buttons, so here each lens of a frame gets a
+  thumb. Used by spy-color-picker, once per frame of the model.
+
+  Same rules as the card count (spy-model-collection-facts): size never counts, $0
+  rows are skipped when the frame has a real price, and "No Lens Reference" / demo
+  lenses count as the frame alone.
+
+  A swatch opens the variant it shows. It keeps the picked size when its lens comes in
+  that size, like the source, else takes the first in stock, else the first. On the
+  page's own colourway it also prints a hidden `data-spy-one-size` marker when that
+  colourway comes in one size only, so the size buttons can go too.
+
+  @param {product} product - The frame
+  @param {boolean} [current] - The frame is the page's product
+  @param {string} [current_lens] - Lens key of the picked variant
+  @param {string} [current_size] - Size key of the picked variant
+  @param {string} link_class - Swatch classes
+  @param {string} oos_class - Extra classes for a sold-out swatch
+
+  @example
+  {%- render 'spy-frame-colourways', product: sp, current: true, current_lens: own_lens, current_size: own_size, link_class: swatch_link, oos_class: swatch_oos -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign lens_pos = 0
+  assign size_pos = 0
+  for opt in product.options_with_values
+    assign opt_name = opt.name | downcase
+    if opt_name == 'lens'
+      assign lens_pos = opt.position
+    elsif opt_name == 'size'
+      assign size_pos = opt.position
+    endif
+  endfor
+
+  comment
+    One lens key and one size key per variant, in variant order. '-' is the frame
+    alone and '~' a $0 row to skip; neither is ever a real lens name.
+  endcomment
+  assign lens_keys = ''
+  assign size_keys = ''
+  for v in product.variants
+    case lens_pos
+      when 1
+        assign lens = v.option1
+      when 2
+        assign lens = v.option2
+      when 3
+        assign lens = v.option3
+      else
+        assign lens = ''
+    endcase
+    assign lens = lens | downcase | split: ' ' | join: ' '
+    if lens == blank or lens contains 'no lens' or lens contains 'demo'
+      assign lens = '-'
+    endif
+    if product.price_max > 0 and v.price == 0
+      assign lens = '~'
+    endif
+
+    case size_pos
+      when 1
+        assign size_value = v.option1
+      when 2
+        assign size_value = v.option2
+      when 3
+        assign size_value = v.option3
+      else
+        assign size_value = ''
+    endcase
+    # "Medium Large" and "Medium-Large" are one size
+    assign size_value = size_value | downcase | replace: '-', ' ' | split: ' ' | join: ' '
+    if size_value == blank
+      assign size_value = '-'
+    endif
+
+    assign lens_keys = lens_keys | append: lens | append: '^'
+    assign size_keys = size_keys | append: size_value | append: '^'
+  endfor
+  assign lens_keys = lens_keys | split: '^'
+  assign size_keys = size_keys | split: '^'
+  assign seen = '^'
+-%}
+
+{%- for v in product.variants -%}
+  {%- liquid
+    assign key = lens_keys[forloop.index0]
+    if key == '~'
+      continue
+    endif
+    assign probe = '^' | append: key | append: '^'
+    if seen contains probe
+      continue
+    endif
+    assign seen = seen | append: key | append: '^'
+
+    # The variant this swatch opens, whether any size is in stock, and how many sizes
+    assign same_ok = nil
+    assign same_any = nil
+    assign first_ok = nil
+    assign first_any = nil
+    assign sizes = '^'
+    assign size_count = 0
+    for w in product.variants
+      assign w_size = size_keys[forloop.index0]
+      if lens_keys[forloop.index0] != key
+        continue
+      endif
+      if first_any == nil
+        assign first_any = w
+      endif
+      if w.available and first_ok == nil
+        assign first_ok = w
+      endif
+      if current_size != blank and w_size == current_size
+        if w.available and same_ok == nil
+          assign same_ok = w
+        endif
+        if same_any == nil
+          assign same_any = w
+        endif
+      endif
+      assign size_probe = '^' | append: w_size | append: '^'
+      unless sizes contains size_probe
+        assign sizes = sizes | append: w_size | append: '^'
+        assign size_count = size_count | plus: 1
+      endunless
+    endfor
+    assign pick = same_ok
+    if pick == nil
+      assign pick = same_any
+    endif
+    if pick == nil
+      assign pick = first_ok
+    endif
+    if pick == nil
+      assign pick = first_any
+    endif
+
+    assign is_current = false
+    if current and key == current_lens
+      assign is_current = true
+    endif
+
+    # Other frames without a picture stay out, as before. The page's own frame always
+    # shows, or its lenses could not be picked at all.
+    assign media = pick.featured_media | default: product.featured_media
+    if media == blank and current != true
+      continue
+    endif
+
+    assign name = product.title
+    if key != '-'
+      case lens_pos
+        when 1
+          assign lens_name = pick.option1
+        when 2
+          assign lens_name = pick.option2
+        when 3
+          assign lens_name = pick.option3
+      endcase
+      assign name = name | append: ' – ' | append: lens_name
+    endif
+
+    assign cls = link_class
+    assign in_stock = true
+    if first_ok == nil
+      assign in_stock = false
+      assign cls = cls | append: oos_class
+    endif
+  -%}
+  {%- comment -%} spy-colourway-switch.js loads these in place on the PDP {%- endcomment -%}
+  <a
+    href="{{ pick.url }}"
+    class="{{ cls }}"
+    data-spy-colourway
+    data-product-title="{{ product.title | escape }}"
+    {% if is_current %}aria-current="true"{% endif %}
+    {% unless in_stock %}data-spy-oos{% endunless %}
+    aria-label="{{ name | escape }}{% unless in_stock %} ({{ 'products.product.sold_out' | t }}){% endunless %}"
+  >
+    {%- if media != blank -%}
+      <img
+        src="{{ media | image_url: width: 160 }}"
+        alt="{{ name | escape }}"
+        width="56"
+        height="56"
+        loading="lazy"
+        class="m-auto block h-[90%] w-[90%] object-contain"
+      >
+    {%- endif -%}
+  </a>
+  {%- if is_current and size_count < 2 -%}
+    <span hidden data-spy-one-size></span>
+  {%- endif -%}
+{%- endfor -%}

@@ -49,15 +49,17 @@
 
   /* ── colourways ──────────────────────────────────────────────────────── */
 
-  // Staging keeps one product per colourway, so a swatch points at another PDP.
-  // Swap the dialog content instead of leaving the page.
+  // Staging keeps one product per frame with lenses as variants, so a swatch points at
+  // a variant of this or another PDP. Swap the dialog content instead of leaving the page.
   const bindColorPicker = () => {
     body.querySelectorAll('.spy-swatches a[href]').forEach((link) => {
       link.addEventListener('click', (event) => {
-        const handle = link.getAttribute('href')?.match(/\/products\/([^/?#]+)/)?.[1];
+        const url = new URL(link.href, window.location.href);
+        const handle = url.pathname.match(/\/products\/([^/?#]+)/)?.[1];
         if (!handle) return;
         event.preventDefault();
-        load(handle);
+        if (link.getAttribute('aria-current') === 'true') return;
+        load(handle, url.searchParams.get('variant') || undefined);
       });
     });
   };

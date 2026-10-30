@@ -1,0 +1,94 @@
+{%- doc -%}
+  Prints the media ids of the picked colourway as ",id,id,", for the PDP gallery
+  and the quick view. Prints nothing when the photos can't be told apart, and the
+  caller then shows them all.
+
+  SPY keeps one product per frame, and its photos come in a run per lens: a
+  variant's main photo, then that lens's other shots, up to the next main photo
+  (392 of 398 products, checked 30 Oct 2026). The source shows only the picked
+  colourway's shots, so this keeps that run. Photos before the first main photo,
+  and videos, belong to every colourway.
+
+  A variant without its own photo takes the run of another size with the same lens.
+
+  @param {product} product - The frame
+  @param {variant} [variant] - The picked variant, defaults to the selected one
+
+  @example
+  {%- capture colourway_ids -%}{%- render 'spy-colourway-media', product: product -%}{%- endcapture -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign picked = variant | default: product.selected_or_first_available_variant
+
+  # The photo each variant opens on
+  assign main_ids = ','
+  for v in product.variants
+    if v.featured_media
+      assign main_ids = main_ids | append: v.featured_media.id | append: ','
+    endif
+  endfor
+
+  assign target = picked.featured_media.id
+  if target == blank and main_ids != ','
+    assign lens_pos = 0
+    for opt in product.options_with_values
+      assign opt_name = opt.name | downcase
+      if opt_name == 'lens'
+        assign lens_pos = opt.position
+        break
+      endif
+    endfor
+    if lens_pos > 0
+      case lens_pos
+        when 1
+          assign picked_lens = picked.option1
+        when 2
+          assign picked_lens = picked.option2
+        when 3
+          assign picked_lens = picked.option3
+      endcase
+      # The catalogue spells some lenses two ways ("Polar with Orange Mirror" /
+      # "Polar Orange Mirror"), so match without the "with"
+      assign picked_lens = picked_lens | downcase | replace: ' with ', ' ' | split: ' ' | join: ' '
+      for v in product.variants
+        if v.featured_media == blank
+          continue
+        endif
+        case lens_pos
+          when 1
+            assign v_lens = v.option1
+          when 2
+            assign v_lens = v.option2
+          when 3
+            assign v_lens = v.option3
+        endcase
+        assign v_lens = v_lens | downcase | replace: ' with ', ' ' | split: ' ' | join: ' '
+        if v_lens == picked_lens
+          assign target = v.featured_media.id
+          break
+        endif
+      endfor
+    endif
+  endif
+
+  if target != blank
+    assign out = ','
+    assign seen_main = false
+    assign in_run = false
+    for m in product.media
+      assign probe = ',' | append: m.id | append: ','
+      if main_ids contains probe
+        assign seen_main = true
+        assign in_run = false
+        if m.id == target
+          assign in_run = true
+        endif
+      endif
+      if seen_main == false or in_run or m.media_type != 'image'
+        assign out = out | append: m.id | append: ','
+      endif
+    endfor
+    echo out
+  endif
+-%}

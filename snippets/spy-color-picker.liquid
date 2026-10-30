@@ -4,8 +4,15 @@
   the quick view dialog.
 
   Colourways come from the product's colour option when it has more than one
-  value (combined listing). Staging has one product per colourway instead, so we
-  fall back to the model's own collection, found by the `collection::MODEL` tag.
+  value (combined listing). Staging has one product per frame with lenses as
+  variants instead, so the list is every frame of the model's own collection
+  (found by the `collection::MODEL` tag) times its lenses, like the source's
+  frame + lens colour row. No model collection: this product's own lenses.
+
+  That list covers every lens, so the container says so with `data-spy-colourways`
+  and the PDP and quick view hide their lens buttons. A hidden `data-spy-one-size`
+  marker inside means the picked colourway comes in one size, so the size buttons
+  go too (spy-frame-colourways).
 
   @param {object} product - Product the picker belongs to
   @param {string} [wrapper_class] - Replaces the default top margin
@@ -63,7 +70,6 @@
 {%- if p != blank -%}
 {%- liquid
   assign swatch_base = 'spy-swatches__item relative block h-14 w-14 rounded-[2px] bg-white overflow-hidden'
-  assign swatch_on = swatch_base | append: ' border-2 border-[color:var(--color-spy-text)]'
   # Links take the outline from aria-current, so the PDP can mark a pick before the swap lands
   assign swatch_link = swatch_base | append: ' border border-[color:var(--color-spy-border)] aria-[current=true]:border-2 aria-[current=true]:border-[color:var(--color-spy-text)]'
   comment
@@ -71,8 +77,52 @@
     same as the source's .swatch-not-orderable (69x2px, 45deg, #f2f2f2).
   endcomment
   assign swatch_oos = ' spy-swatches__item--oos opacity-50 after:content-[""] after:absolute after:block after:top-[25px] after:-left-2 after:h-[2px] after:w-[69px] after:rotate-45 after:bg-[#f2f2f2] after:pointer-events-none'
+
+  unless has_option_colors
+    # The picked colourway: its lens marks the current swatch, its size is kept on a switch
+    assign own = p.selected_or_first_available_variant
+    assign own_lens = '-'
+    assign own_size = ''
+    for opt in p.options_with_values
+      assign opt_lower = opt.name | downcase
+      unless opt_lower == 'lens' or opt_lower == 'size'
+        continue
+      endunless
+      case opt.position
+        when 1
+          assign own_value = own.option1
+        when 2
+          assign own_value = own.option2
+        when 3
+          assign own_value = own.option3
+      endcase
+      if opt_lower == 'lens'
+        assign own_lens = own_value | downcase | split: ' ' | join: ' '
+        if own_lens == blank or own_lens contains 'no lens' or own_lens contains 'demo'
+          assign own_lens = '-'
+        endif
+      else
+        assign own_size = own_value | downcase | replace: '-', ' ' | split: ' ' | join: ' '
+      endif
+    endfor
+
+    # The model collection lists the page's frame; render it alone if it ever falls outside
+    assign own_listed = false
+    if model_col != nil
+      for sp in model_col.products
+        if sp.id == p.id
+          assign own_listed = true
+          break
+        endif
+      endfor
+    endif
+  endunless
 -%}
-<div class="spy-swatches flex flex-wrap items-center gap-2 aria-busy:cursor-progress {{ wrapper_class | default: 'mt-[22px]' }}" {{ shopify_attributes }}>
+<div
+  class="spy-swatches flex flex-wrap items-center gap-2 aria-busy:cursor-progress {{ wrapper_class | default: 'mt-[22px]' }}"
+  {% unless has_option_colors %}data-spy-colourways{% endunless %}
+  {{ shopify_attributes }}
+>
   {%- if has_option_colors -%}
     {%- for v in color_option.values -%}
       {%- assign media = v.variant.featured_media | default: p.featured_media -%}
@@ -108,53 +158,36 @@
         </a>
       {%- endif -%}
     {%- endfor -%}
-  {%- elsif model_col != nil -%}
-    {%- for sp in model_col.products -%}
-      {%- if sp.featured_media != blank -%}
+  {%- else -%}
+    {%- comment -%} Collection order, then each frame's lenses in variant order; a pick stays in place {%- endcomment -%}
+    {%- unless own_listed -%}
+      {%- render 'spy-frame-colourways',
+        product: p,
+        current: true,
+        current_lens: own_lens,
+        current_size: own_size,
+        link_class: swatch_link,
+        oos_class: swatch_oos
+      -%}
+    {%- endunless -%}
+    {%- if model_col != nil -%}
+      {%- for sp in model_col.products -%}
         {%- liquid
-          assign cls = swatch_link
-          comment
-            One product per colourway in staging, so stock is read off the
-            product itself rather than a variant.
-          endcomment
-          assign sp_available = sp.available
-          unless sp_available
-            assign cls = cls | append: swatch_oos
-          endunless
+          assign is_own = false
+          if sp.id == p.id
+            assign is_own = true
+          endif
         -%}
-        {%- comment -%} spy-colourway-switch.js loads these in place on the PDP {%- endcomment -%}
-        <a
-          href="{{ sp.url }}"
-          class="{{ cls }}"
-          data-spy-colourway
-          data-product-title="{{ sp.title | escape }}"
-          {% if sp.id == p.id %}aria-current="true"{% endif %}
-          {% unless sp_available %}data-spy-oos{% endunless %}
-          aria-label="{{ sp.title | escape }}{% unless sp_available %} ({{ 'products.product.sold_out' | t }}){% endunless %}"
-        >
-          <img
-            src="{{ sp.featured_media | image_url: width: 160 }}"
-            alt="{{ sp.title | escape }}"
-            width="56"
-            height="56"
-            loading="lazy"
-            class="m-auto block h-[90%] w-[90%] object-contain"
-          >
-        </a>
-      {%- endif -%}
-    {%- endfor -%}
-  {%- elsif p.featured_media != blank -%}
-    {%- comment -%} single colourway — still show it, marked as current {%- endcomment -%}
-    <span class="{{ swatch_on }}" aria-label="{{ p.title | escape }}">
-      <img
-        src="{{ p.featured_media | image_url: width: 160 }}"
-        alt="{{ p.title | escape }}"
-        width="56"
-        height="56"
-        loading="lazy"
-        class="m-auto block h-[90%] w-[90%] object-contain"
-      >
-    </span>
+        {%- render 'spy-frame-colourways',
+          product: sp,
+          current: is_own,
+          current_lens: own_lens,
+          current_size: own_size,
+          link_class: swatch_link,
+          oos_class: swatch_oos
+        -%}
+      {%- endfor -%}
+    {%- endif -%}
   {%- endif -%}
 </div>
 {%- endif -%}

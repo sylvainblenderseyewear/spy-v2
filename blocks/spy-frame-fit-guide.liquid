@@ -1,6 +1,8 @@
 {%- doc -%}
   Frame Fit Guide — the PDP "Size Chart" link and the drawer it opens.
-  Eyewear only; goggles have their own inline block (spy-goggle-fit-guide).
+  Eyewear only; goggles have their own inline block (spy-goggle-fit-guide). Shows
+  only when the frame's guide has drawings, measurements or a frame size, like the
+  source, where products without a guide have no Size Chart link at all.
 
   The drawer is the source's fit guide: a 500px panel on the right over a light
   grey veil, with two tabs. "This frame" reads the collection's custom.fit_guide
@@ -8,8 +10,6 @@
   measure" is the same copy for every product, so it lives in block settings.
 
   Opens on "This frame" (the source opens on "How to measure") — see default_tab.
-  Frames whose guide has no drawings/measurements/size still open on "How to measure",
-  since their first panel would only hold the spec.fit fallback scale.
 {%- enddoc -%}
 
 {%- liquid
@@ -113,12 +113,27 @@
   assign label_cls = 'font-semibold uppercase text-[10px] leading-[1.5] tracking-[2.5px] text-spy-orange-ui m-0 mb-2.5'
 -%}
 
+{%- comment -%}
+  Like the source, the link only shows for a frame whose guide has drawings,
+  measurements or a frame size. spyoptic.com gives 12 sunglasses models a Size Chart
+  and every other product none; its goggles and helmets carry an inline guide
+  instead. The spec.fit fallback alone, or the how-to on its own, is not a guide.
+{%- endcomment -%}
+{%- unless has_guide_data -%}
+  {%- if request.design_mode -%}
+    <p class="m-0 mt-3 text-[13px] text-[color:var(--color-spy-muted)]" {{ block.shopify_attributes }}>
+      Size Chart shows once this frame's collection has a Fit Guide with drawings or measurements.
+    </p>
+  {%- endif -%}
+{%- else -%}
 <div class="spy-frame-fit-guide" {{ block.shopify_attributes }}>
-  {%- comment -%} Source row is 36px: 12px above the link + a 24px link box {%- endcomment -%}
+  {%- comment -%}
+    Source row is 36px: 12px above the link + a 24px link box. flex, not inline-flex:
+    inline-level here adds a line box under the row. The source's link is a
+    full-width flex row too.
+  {%- endcomment -%}
   <button
     type="button"
-    {% comment %} flex, not inline-flex: inline-level here adds a line box under
-    the row. The source's link is a full-width flex row too. {% endcomment %}
     class="flex w-full items-center justify-start gap-2 mt-3 bg-transparent border-none p-0 cursor-pointer text-left text-[0.875rem] font-medium leading-5 tracking-[0.01em] text-[color:var(--color-spy-text)] hover:text-spy-orange-ui"
     aria-haspopup="dialog"
     aria-expanded="false"
@@ -142,14 +157,14 @@
 
   {%- comment -%}
     Kept in the DOM so the slide can animate. group + group-data-[open] drives
-    the veil and the panel together.
+    the veil and the panel together. The frame name is only in the label, so
+    screen readers get the model.
   {%- endcomment -%}
   <div
     id="{{ drawer_id }}"
     class="spy-fit-guide group invisible fixed inset-0 z-[1001] data-[open]:visible"
     role="dialog"
     aria-modal="true"
-    {% comment %} Frame name only in the label, so screen readers get the model {% endcomment %}
     aria-label="{{ block.settings.title | default: 'Frame Fit Guide' | append: ' ' | append: frame_name | strip | escape }}"
     aria-hidden="true"
     data-spy-fit-guide-modal
@@ -240,13 +255,13 @@
                 <div class="flex flex-col gap-4">
                   {%- if diagram_front != blank -%}
                     <div class="flex flex-col items-center gap-[5px]">
-                      <img src="{{ diagram_front }}" alt="{{ front_alt | escape }}" loading="lazy" class="block h-auto w-full">
+                      <img src="{{ diagram_front }}" alt="{{ front_alt | escape }}" width="{{ img_front.width }}" height="{{ img_front.height }}" loading="lazy" class="block h-auto w-full">
                       <span class="text-center text-[9px] uppercase tracking-[1.5px] text-[#bbb]">{{ block.settings.front_caption }}</span>
                     </div>
                   {%- endif -%}
                   {%- if diagram_profile != blank -%}
                     <div class="flex flex-col items-center gap-[5px]">
-                      <img src="{{ diagram_profile }}" alt="{{ profile_alt | escape }}" loading="lazy" class="block h-auto w-full">
+                      <img src="{{ diagram_profile }}" alt="{{ profile_alt | escape }}" width="{{ img_side.width }}" height="{{ img_side.height }}" loading="lazy" class="block h-auto w-full">
                       <span class="text-center text-[9px] uppercase tracking-[1.5px] text-[#bbb]">{{ block.settings.profile_caption }}</span>
                     </div>
                   {%- endif -%}
@@ -517,65 +532,78 @@
     {%- comment -%} The script follows the wrapper, so step back to it {%- endcomment -%}
     const wrap = document.currentScript.previousElementSibling;
     if (!wrap || !wrap.classList.contains('spy-frame-fit-guide')) return;
-    const trigger = wrap.querySelector('[data-spy-fit-guide-open]');
-    const modal = wrap.querySelector('[data-spy-fit-guide-modal]');
-    if (!trigger || !modal) return;
+    const trigger = () => wrap.querySelector('[data-spy-fit-guide-open]');
+    let modal = null;
+    let tabs = [];
+    let panels = [];
+    let landingTab;
 
-    // The PDP column is a sticky stacking context, so a fixed drawer left inside
-    // it still loses to the header. Move it to <body>, where its z-index counts.
-    // Re-rendering in the editor would leave the old copy behind, so drop that first.
-    document.querySelectorAll('[data-spy-fit-guide-modal]').forEach((el) => {
-      if (el !== modal && el.id === modal.id) el.remove();
-    });
-    document.body.appendChild(modal);
-
-    // Tabs
-    const tabs = [...modal.querySelectorAll('[data-spy-tab]')];
-    const panels = [...modal.querySelectorAll('[data-spy-panel]')];
     const showTab = (name) => {
       tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.spyTab === name)));
       panels.forEach((p) => p.classList.toggle('hidden', p.dataset.spyPanel !== name));
     };
-    tabs.forEach((tab) => tab.addEventListener('click', () => showTab(tab.dataset.spyTab)));
-
-    // Liquid already picked the landing tab, so read it off the markup and go back
-    // there on every open — an earlier visit's switch should not stick.
-    const landingTab = (tabs.find((t) => t.getAttribute('aria-selected') === 'true') || tabs[0])?.dataset.spyTab;
 
     // Modal is on <body>, so an inert page keeps Tab inside it; other overlays may still be open
     const syncPageInert = () => {
       const on = !!document.querySelector('[data-spy-drawer][data-open], [data-spy-qv-root][data-open], #spy-compare-modal[data-open], [data-spy-fit-guide-modal][data-open]');
       document.querySelectorAll('.page-wrapper, .skip-to-content-link, access-widget-ui, pandectes-cmp').forEach((el) => { el.inert = on; });
     };
-    modal.inert = true;
 
     const open = () => {
+      if (!modal) return;
       if (landingTab) showTab(landingTab);
       modal.setAttribute('aria-hidden', 'false');
       modal.dataset.open = '';
       modal.inert = false;
       syncPageInert();
-      trigger.setAttribute('aria-expanded', 'true');
+      trigger()?.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
       modal.querySelector('[data-spy-fit-guide-close]')?.focus();
     };
     const close = () => {
+      if (!modal) return;
       modal.setAttribute('aria-hidden', 'true');
       delete modal.dataset.open;
       modal.inert = true;
       syncPageInert();
-      trigger.setAttribute('aria-expanded', 'false');
+      trigger()?.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
-      trigger.focus();
+      trigger()?.focus();
     };
 
-    trigger.addEventListener('click', open);
-    modal.querySelectorAll('[data-spy-fit-guide-close]').forEach((el) => el.addEventListener('click', close));
+    // The PDP column is a sticky stacking context, so a fixed drawer left inside
+    // it still loses to the header. Move it to <body>, where its z-index counts.
+    // An editor re-render or a colour switch (spy-colourway-switch.js) brings a
+    // fresh copy into the block, so take that one and drop the old copy.
+    const adopt = () => {
+      const fresh = wrap.querySelector('[data-spy-fit-guide-modal]');
+      if (!fresh) return;
+      document.querySelectorAll('[data-spy-fit-guide-modal]').forEach((el) => {
+        if (el !== fresh && el.id === fresh.id) el.remove();
+      });
+      document.body.appendChild(fresh);
+      modal = fresh;
+      modal.inert = true;
+      tabs = [...modal.querySelectorAll('[data-spy-tab]')];
+      panels = [...modal.querySelectorAll('[data-spy-panel]')];
+      tabs.forEach((tab) => tab.addEventListener('click', () => showTab(tab.dataset.spyTab)));
+      // Liquid already picked the landing tab, so read it off the markup and go back
+      // there on every open — an earlier visit's switch should not stick.
+      landingTab = (tabs.find((t) => t.getAttribute('aria-selected') === 'true') || tabs[0])?.dataset.spyTab;
+      modal.querySelectorAll('[data-spy-fit-guide-close]').forEach((el) => el.addEventListener('click', close));
+    };
+    adopt();
+    document.addEventListener('spy:product:switched', adopt);
+
+    wrap.addEventListener('click', (e) => {
+      if (e.target instanceof Element && e.target.closest('[data-spy-fit-guide-open]')) open();
+    });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.dataset.open !== undefined) close();
+      if (e.key === 'Escape' && modal?.dataset.open !== undefined) close();
     });
   })();
 </script>
+{%- endunless -%}
 
 {% schema %}
 {
@@ -594,7 +622,7 @@
       "type": "select",
       "id": "default_tab",
       "label": "Open on",
-      "info": "Falls back to \"How to measure\" unless the frame's Fit Guide has drawings, measurements or a size — a fit value on its own is not enough to open on",
+      "info": "The link only shows when the frame's Fit Guide has drawings, measurements or a size",
       "options": [
         { "value": "frame", "label": "This frame" },
         { "value": "howto", "label": "How to measure" }

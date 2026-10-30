@@ -1,7 +1,8 @@
 {%- doc -%}
   Title, price and stars above the PDP gallery below 992px, like the source's
   `.ds-main-grid.d-lg-none` header. The right column hides its own title, price and
-  stars there (src/tailwind.css), so one h1 shows at any width.
+  stars there (src/tailwind.css), so one h1 shows at any width. The title is the
+  model name (`collection::MODEL` tag), as on the source.
 
   The price is Horizon's product-price with its own block id, so a size or lens
   pick updates it like the column's price. The stars are the same Yotpo markup as
@@ -14,6 +15,12 @@
 {%- enddoc -%}
 
 {%- liquid
+  # The model name, like the column's title block and the source; colours sit in FRAME / LENS
+  capture title_text
+    render 'spy-group-name', product: product
+  endcapture
+  assign title_text = title_text | strip | default: product.title
+
   # Yotpo keys reviews to the old store's ids and wants an absolute image URL
   assign yotpo_id = product.metafields.yotpo.product_id.value | default: product.id
   assign yotpo_img = product.featured_image | image_url: width: 600
@@ -26,7 +33,7 @@
 -%}
 
 <div class="spy-pdp-header min-[992px]:hidden" data-testid="spy-pdp-header">
-  <h1>{{ product.title }}</h1>
+  <h1>{{ title_text | escape }}</h1>
   <div class="[display:flex] items-start justify-between gap-3">
     <product-price
       class="text-block rte text-left paragraph spacing-style"

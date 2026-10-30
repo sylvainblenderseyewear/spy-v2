@@ -31,6 +31,45 @@
 
   if block_settings.hide_variants
     assign variant_images = selected_product.images | where: 'attached_to_variant?', true | map: 'src'
+
+    # SPY: one product per frame, so "hide other variants" also has to drop the other
+    # lenses' extra shots — keep the picked colourway's run only, like the source
+    capture colourway_ids
+      render 'spy-colourway-media', product: selected_product
+    endcapture
+    assign colourway_ids = colourway_ids | strip
+  endif
+
+  # No dedicated photo for this variant yet? Still hide every OTHER variant's
+  # photo instead of dumping the whole product's media in unfiltered - a bare
+  # "else" here used to skip the hide_variants filter and blow up the gallery.
+  assign sorted_media = '' | split: ','
+  if selected_variant_media
+    assign sorted_media = sorted_media | concat: selected_product.media | where: 'id', selected_variant_media.id
+  endif
+
+  for media in selected_product.media
+    if selected_variant_media and media.id == selected_variant_media.id
+      continue
+    endif
+
+    if colourway_ids != blank
+      assign media_probe = ',' | append: media.id | append: ','
+      unless colourway_ids contains media_probe
+        continue
+      endunless
+    elsif block_settings.hide_variants and variant_images contains media.src
+      continue
+    endif
+
+    assign found_media = selected_product.media | where: 'id', media.id
+    assign sorted_media = sorted_media | concat: found_media
+  endfor
+
+  # Every photo belongs to some other variant, so hiding them all leaves an
+  # empty gallery. Show the product's media rather than a 0px hole.
+  if sorted_media.size == 0
+    assign sorted_media = selected_product.media
   endif
 
   if block_settings.slideshow_controls_style == 'thumbnails'
@@ -63,13 +102,13 @@
 
   assign slideshow_controls_style = block_settings.slideshow_controls_style
   # Use a counter instead of dots when there are many images to avoid cropping/overflow.
-  if slideshow_controls_style == 'dots' and selected_product.media.size > 15
+  if slideshow_controls_style == 'dots' and sorted_media.size > 15
     assign slideshow_controls_style = 'counter'
   endif
 
   assign render_slideshow_arrows = false
 
-  if selected_product.media.size <= 1
+  if sorted_media.size <= 1
     assign slideshow_class = 'product-media-gallery__slideshow--single-media slideshow--single-media'
   else
     assign slideshow_class = ''
@@ -101,32 +140,6 @@
     endif
   endif
 
-  # No dedicated photo for this variant yet? Still hide every OTHER variant's
-  # photo instead of dumping the whole product's media in unfiltered - a bare
-  # "else" here used to skip the hide_variants filter and blow up the gallery.
-  assign sorted_media = '' | split: ','
-  if selected_variant_media
-    assign sorted_media = sorted_media | concat: selected_product.media | where: 'id', selected_variant_media.id
-  endif
-
-  for media in selected_product.media
-    if selected_variant_media and media.id == selected_variant_media.id
-      continue
-    endif
-
-    if block_settings.hide_variants and variant_images contains media.src
-      continue
-    endif
-
-    assign found_media = selected_product.media | where: 'id', media.id
-    assign sorted_media = sorted_media | concat: found_media
-  endfor
-
-  # Every photo belongs to some other variant, so hiding them all leaves an
-  # empty gallery. Show the product's media rather than a 0px hole.
-  if sorted_media.size == 0
-    assign sorted_media = selected_product.media
-  endif
   assign has_image_drop = sorted_media | has: 'media_type', 'image'
 
   # Determine if we're in single column mode (carousel or grid with one column)

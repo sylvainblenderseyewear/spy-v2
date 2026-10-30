@@ -22,6 +22,11 @@
   {% assign text = 'placeholders.product_title' | t %}
   {% assign product_title = '<p role="heading" aria-level="3">' | append: text | append: '</p>' %}
   {% render 'text', fallback_text: product_title, block: block %}
+{% elsif block.settings.page_heading %}
+  {%- comment -%} SPY: the product page's own h1, so no link back to the page itself {%- endcomment -%}
+  {% assign safe_title = title_text | escape %}
+  {% assign product_title = '<h1>' | append: safe_title | append: '</h1>' %}
+  {% render 'text', fallback_text: product_title, block: block %}
 {% else %}
   {% assign product_title = '<p role="heading" aria-level="3">' | append: title_text | append: '</p>' %}
   <a
@@ -58,6 +63,13 @@
         }
       ],
       "default": "product"
+    },
+    {
+      "type": "checkbox",
+      "id": "page_heading",
+      "label": "Product page heading",
+      "info": "Prints the title as the page's h1, without a link. Use it on the product page, not on cards.",
+      "default": false
     },
     {
       "type": "header",
