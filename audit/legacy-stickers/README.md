@@ -11,30 +11,34 @@ Cards print the stickers in this order, the legacy site's slot order:
 
 | Tag | Sticker | File in Shopify Files | Legacy art |
 |---|---|---|---|
-| `badge::bonus-lens` | Bonus lens | `spy-bonuslens-2-clear.png` | `spy-bonuslens-2.png` |
-| `badge::deadbolt` | Deadbolt | `spy-deadbolt-clear.png` | `spy-deadbolt.png` |
-| `badge::happy-boost` | Happy Boost | `pictohappyboost-clear.png` | `pictohappyboost.png` |
+| `badge::bonus-lens` | Bonus lens | `spy-bonuslens-2.png` | `spy-bonuslens-2.png` |
+| `badge::deadbolt` | Deadbolt | `spy-deadbolt.png` | `spy-deadbolt.png` |
+| `badge::happy-boost` | Happy Boost | `pictohappyboost.png` | `pictohappyboost.png` |
 | `badge::ansi-z87` | ANSI Z87 | `ANSI_SVG_Z87_V1.svg` | `ANSI_SVG_Z87_V1.svg` |
 | `badge::ansi-z87-2-plus` | ANSI Z87-2+ | `ANSI_SVG_NEW_V4.svg` | `ANSI_SVG_NEW_V4.svg` |
-| `badge::cat-4` | CAT. 4 LENS | `MurdrdOut-CAT4-clear.svg` | `26-SPY-Digital-PDP-Icon-MurdrdOut-CAT4.svg` |
+| `badge::cat-4` | CAT. 4 LENS | `MurdrdOut-CAT4.svg` | `26-SPY-Digital-PDP-Icon-MurdrdOut-CAT4.svg` |
 | `badge::not-for-driving` | NOT FOR USE WHILE DRIVING | `MurdrdOut-WARNING.svg` (migrated 24 Oct) | `26-SPY-Digital-PDP-Icon-MurdrdOut-WARNING.svg` |
 | `badge::mips` | Mips | `mipslogo.png` | `mipslogo.png` |
 
-Since 28 Oct 2026 every sticker has a **transparent background**, so it sits on any photo without a box
-(Goran's call; it differs from the legacy site on purpose):
+Since 30 Oct 2026 the art is the **legacy files as they are** (Goran checked spyoptic.com and found some
+stickers with a background, which reverses the 28 Oct all-transparent call). Checked live on 30 Oct: these
+8 files are the only sticker art on the sunglasses, goggles, snow-helmets and eyeglasses grids, and the legacy
+CSS adds no background, so any backing is in the art itself:
 
-- ANSI Z87, ANSI Z87-2+, Not for driving and Mips are the legacy files as they are (already transparent; the
-  yellow circle is the Mips logo itself).
-- Happy Boost, Bonus lens and Deadbolt are the legacy PNGs with their white backing removed (Happy Boost face,
-  Bonus lens fill, Deadbolt square; Deadbolt keeps the white text in its circle). Edge pixels were un-blended
-  from white, so there is no white fringe on dark photos.
-- CAT. 4 LENS lost its black tile and prints its text black, like Not for driving.
+| Sticker | Backing in the art |
+|---|---|
+| Happy Boost | white face inside the round badge, clear corners |
+| Bonus lens | white lens fill, rest clear |
+| Deadbolt | full white square |
+| CAT. 4 LENS | full black square, white text |
+| ANSI Z87, ANSI Z87-2+, Not for driving, Mips | none (the yellow circle is the Mips logo itself) |
 
-The untouched legacy originals (`ANSI_SVG_*`, `spy-bonuslens-2.png`, `spy-deadbolt.png`, `pictohappyboost.png`,
-`mipslogo.png`, `MurdrdOut-CAT4.svg`) are in Files too, so going back is a file name in
-`snippets/spy-tech-badges.liquid`. The WebPs migrated on 24 Aug are unused: the two ANSI ones had a solid white
-back and were 50px rasters. Transparent art also needs a clear background on the PDP: the gallery's white
-image backing skips `.spy-pdp-stickers` (`src/tailwind.css`).
+Our Files hold the same images: the SVGs are byte-identical, and the PNGs only gain Shopify's `eXIf` tag (Deadbolt
+also gets its colour profile re-compressed; same pixels, same profile). The 28 Oct transparent versions
+(`spy-bonuslens-2-clear.png`, `spy-deadbolt-clear.png`, `pictohappyboost-clear.png`, `MurdrdOut-CAT4-clear.svg`)
+stay in Files unused, so switching back is a file name in `snippets/spy-tech-badges.liquid`. The WebPs migrated
+on 24 Aug are unused too: the two ANSI ones had a solid white back and were 50px rasters. The PDP gallery's white
+image backing still skips `.spy-pdp-stickers` (`src/tailwind.css`), or the clear corners would show as a white box.
 Geometry is the legacy one: 40px wide, height from the art, 11.2px from the top, 5px from the right,
 4px apart, the whole row at 70% under 544px (`src/tailwind.css`). The product page shows the same tags on
 its photo at the legacy PDP size, 50px wide (`snippets/product-media-gallery-content.liquid`).

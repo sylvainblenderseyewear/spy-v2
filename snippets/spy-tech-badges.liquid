@@ -6,8 +6,10 @@
     badge::bonus-lens · badge::deadbolt · badge::happy-boost · badge::ansi-z87
     badge::ansi-z87-2-plus · badge::cat-4 · badge::not-for-driving · badge::mips
 
-  They print in that order, the legacy site's. The art lives in the shop's Files;
-  a block can swap the four pictos it has settings for.
+  They print in that order, the legacy site's. The art is the legacy files as they are,
+  kept in the shop's Files: Happy Boost, bonus lens, Deadbolt and Cat. 4 carry their own
+  white or black backing, like on spyoptic.com. A block can swap the four pictos it has
+  settings for.
 
   @param {object} product - product whose tags pick the stickers
   @param {object} [happy_boost_icon] - Happy Boost picto, instead of the pictohappyboost file
@@ -30,7 +32,7 @@
 {%- if badge_tags contains '|badge::bonus-lens|' -%}
   {%- render 'spy-badge-image',
     image: bonus_lens_icon,
-    fallback_file: 'spy-bonuslens-2-clear.png',
+    fallback_file: 'spy-bonuslens-2.png',
     alt: 'Bonus lens included',
     modifier: 'bonus-lens',
     width: 274,
@@ -41,7 +43,7 @@
 {%- if badge_tags contains '|badge::deadbolt|' -%}
   {%- render 'spy-badge-image',
     image: deadbolt_icon,
-    fallback_file: 'spy-deadbolt-clear.png',
+    fallback_file: 'spy-deadbolt.png',
     alt: 'Deadbolt lens change system',
     modifier: 'deadbolt',
     width: 153,
@@ -52,7 +54,7 @@
 {%- if badge_tags contains '|badge::happy-boost|' -%}
   {%- render 'spy-badge-image',
     image: happy_boost_icon,
-    fallback_file: 'pictohappyboost-clear.png',
+    fallback_file: 'pictohappyboost.png',
     alt: 'Happy Boost',
     modifier: 'hb',
     width: 153,
@@ -69,7 +71,7 @@
 {%- endif -%}
 
 {%- if badge_tags contains '|badge::cat-4|' -%}
-  {%- render 'spy-badge-image', fallback_file: 'MurdrdOut-CAT4-clear.svg', alt: 'Cat. 4 lens', modifier: 'cat-4', width: 80, height: 80 -%}
+  {%- render 'spy-badge-image', fallback_file: 'MurdrdOut-CAT4.svg', alt: 'Cat. 4 lens', modifier: 'cat-4', width: 80, height: 80 -%}
 {%- endif -%}
 
 {%- if badge_tags contains '|badge::not-for-driving|' -%}
