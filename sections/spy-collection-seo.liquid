@@ -1,11 +1,11 @@
-{%- doc -%}
+{%- comment -%}
   Bottom-of-PLP SEO copy, the way the source shows it: an 870px centred column
   clipped to 80px with a "Read more" toggle underneath, left-aligned to the page
   edge rather than to the copy.
 
   Content comes from the `collection.seo_content` metafield. Headings inside it
   render as the source's 25px uppercase titles; paragraphs as 16px body.
-{%- enddoc -%}
+{%- endcomment -%}
 
 {%- liquid
   assign seo_meta = collection.metafields.collection.seo_content

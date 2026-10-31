@@ -7,14 +7,16 @@ import { morphSection } from '@theme/section-renderer';
 
 const LINK = '[data-spy-colourway]';
 const FRESH_MS = 60_000;
+const MAX_CACHED = 24;
 /** @type {Map<string, {at: number, sections: Promise<Record<string, string>>}>} */
 const cache = new Map();
 let latest = 0;
 
-// Every product section on the page; the quick view shell is the same for any product
+// Every product section on the page; the quick view shell is the same for any product.
+// Its dialog moves to <body>, so spy-quick-view.js marks the section it leaves behind.
 const sectionIds = () =>
   [...document.querySelectorAll('main .shopify-section')]
-    .filter((section) => !section.querySelector('[data-spy-qv-root]'))
+    .filter((section) => !section.matches('[data-spy-qv-shell]') && !section.querySelector('[data-spy-qv-root]'))
     .map((section) => section.id.replace(/^shopify-section-/, ''));
 
 /**
@@ -39,8 +41,12 @@ function fetchSections(target) {
 
 /** @param {string} target */
 function load(target) {
+  const now = Date.now();
   const hit = cache.get(target);
-  if (hit && Date.now() - hit.at < FRESH_MS) return hit.sections;
+  if (hit && now - hit.at < FRESH_MS) return hit.sections;
+  // Drop stale answers, then the oldest once the list gets long
+  for (const [key, entry] of cache) if (now - entry.at >= FRESH_MS) cache.delete(key);
+  while (cache.size >= MAX_CACHED) cache.delete(cache.keys().next().value);
   const sections = fetchSections(target);
   sections.catch(() => cache.delete(target));
   cache.set(target, { at: Date.now(), sections });
@@ -54,8 +60,29 @@ const targetOf = (link) => {
 };
 
 // The colourway the page really shows. The swatch outline moves on click, before the swap
-// lands, so it can't tell which title is in the tab after two quick picks.
-let shownTitle = document.querySelector(`main .spy-swatches ${LINK}[aria-current="true"]`)?.getAttribute('data-product-title') || '';
+// lands, so it can't tell which title is in the tab after two quick picks. A $0 row has
+// no swatch of its own, so any swatch of this page's frame gives the title then.
+const pageSwatch = () =>
+  document.querySelector(`main .spy-swatches ${LINK}[aria-current="true"]`) ||
+  [...document.querySelectorAll(`main .spy-swatches ${LINK}`)].find(
+    (link) => new URL(link.getAttribute('href') || '', window.location.href).pathname === window.location.pathname
+  );
+let shownTitle = pageSwatch()?.getAttribute('data-product-title') || '';
+
+// Horizon's own size pick fetches its page too. If that answer came in after a swatch
+// switch it would put the old colourway back, so a switch lets it land first.
+/** @type {Promise<void> | null} */
+let horizonPick = null;
+document.addEventListener('shopify:product:select', (event) => {
+  const from = event.target instanceof Element ? event.target : null;
+  if (!from?.closest('main') || from.closest('product-card, [data-spy-qv-root]')) return;
+  // @ts-ignore ProductSelectEvent carries Horizon's fetch as a promise
+  const landed = Promise.resolve(event.promise).then(() => {}, () => {});
+  horizonPick = landed;
+  landed.then(() => {
+    if (horizonPick === landed) horizonPick = null;
+  });
+});
 
 // Horizon's morph can't uncheck a radio the shopper clicked, so after a switch the lens
 // row could end up with no pick at all. Copy the server's picks onto the live radios.
@@ -104,6 +131,12 @@ async function switchTo(link) {
   try {
     const sections = await load(target);
     if (ticket !== latest) return;
+    if (horizonPick) {
+      await Promise.race([horizonPick, new Promise((resolve) => setTimeout(resolve, 4000))]);
+      // Its listeners update price, gallery and form on the same promise; let them finish
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      if (ticket !== latest) return;
+    }
     const ids = Object.keys(sections);
     // A sibling on another template has other section ids: load it the normal way
     if (!ids.length || ids.some((id) => !sections[id])) throw new Error('section missing');
@@ -156,13 +189,18 @@ const warm = (/** @type {Event} */ event) => {
   if (!link || link.getAttribute('aria-current') === 'true') return;
   load(targetOf(link)).catch(() => {});
 };
-// A row can hold 15+ colourways: wait for the pointer to rest, so a sweep across it
-// doesn't fetch every one
+// A row can hold 15+ colourways: wait for the pointer or the keyboard focus to rest, so
+// a sweep across it (or tabbing past it) doesn't fetch every one
 let hoverTimer = 0;
 document.addEventListener('pointerover', (event) => {
   clearTimeout(hoverTimer);
   if (linkFrom(event)) hoverTimer = window.setTimeout(() => warm(event), 80);
 });
 document.addEventListener('pointerout', () => clearTimeout(hoverTimer));
-document.addEventListener('focusin', warm);
+let focusTimer = 0;
+document.addEventListener('focusin', (event) => {
+  clearTimeout(focusTimer);
+  if (linkFrom(event)) focusTimer = window.setTimeout(() => warm(event), 250);
+});
+document.addEventListener('focusout', () => clearTimeout(focusTimer));
 document.addEventListener('touchstart', warm, { passive: true });

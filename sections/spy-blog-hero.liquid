@@ -1,4 +1,4 @@
-{%- doc -%}
+{%- comment -%}
   Journal hero — the full-bleed banner above the blog search and post grid.
 
   The source ships a DIFFERENT crop per breakpoint, not one image scaled: desktop art
@@ -7,7 +7,7 @@
   no height setting — the art's ratio sets it, exactly like the source's `.banner-image`.
 
   Image comes from section settings (Layer 2) so an editor picks it in the theme editor.
-{%- enddoc -%}
+{%- endcomment -%}
 
 {%- liquid
   assign img_desktop = section.settings.image_desktop

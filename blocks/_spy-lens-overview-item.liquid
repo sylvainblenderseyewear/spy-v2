@@ -47,6 +47,8 @@
           {{ img | image_url: width: 600 }} 600w
         "
         sizes="(min-width: 769px) 160px, 90px"
+        width="{{ img.width }}"
+        height="{{ img.height }}"
         alt="{{ alt | escape }}"
         loading="lazy"
         class="

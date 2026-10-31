@@ -87,6 +87,8 @@
             {%- if left_img != blank -%}
               <img
                 src="{{ left_img | image_url: width: 1000 }}"
+                width="{{ left_img.width }}"
+                height="{{ left_img.height }}"
                 alt=""
                 loading="lazy"
                 class="block w-full h-full object-cover"

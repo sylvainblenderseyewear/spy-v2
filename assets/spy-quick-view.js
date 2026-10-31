@@ -14,6 +14,8 @@
   // The PLP sits inside stacking contexts (sticky header, card hover layers), so a
   // fixed dialog left in place can end up painted under them. Move it to <body>.
   if (root.parentElement !== document.body) {
+    // Mark the section it leaves, so the PDP colour switch doesn't re-render an empty shell
+    root.closest('.shopify-section')?.setAttribute('data-spy-qv-shell', '');
     document.body.appendChild(root);
     void root.offsetWidth;
   }
@@ -59,7 +61,12 @@
         if (!handle) return;
         event.preventDefault();
         if (link.getAttribute('aria-current') === 'true') return;
-        load(handle, url.searchParams.get('variant') || undefined);
+        // Outline the pick straight away and keep the panel up while it loads, like the PDP
+        const row = link.closest('.spy-swatches');
+        row?.querySelector('[aria-current="true"]')?.removeAttribute('aria-current');
+        link.setAttribute('aria-current', 'true');
+        row?.setAttribute('aria-busy', 'true');
+        load(handle, url.searchParams.get('variant') || undefined, { swatch: true });
       });
     });
   };
@@ -125,8 +132,9 @@
 
   /* ── open / close ────────────────────────────────────────────────────── */
 
-  // `picked` is set when a size/lens button asked for this load: the dialog keeps its
-  // scroll position and focus goes back to that button once the new markup is in.
+  // `picked` is set when a size/lens button or a swatch asked for this load: the dialog
+  // keeps its content and scroll position, and focus goes back to the pick once the new
+  // markup is in.
   const load = (handle, variantId, picked) => {
     const query = variantId ? `variant=${variantId}` : '';
     const key = `${handle}?${query}`;
@@ -143,8 +151,13 @@
       bindColorPicker();
       bindOptions(handle);
       if (picked) {
-        const selector = `input[data-spy-qv-option="${picked.option}"][value="${CSS.escape(picked.value)}"]`;
-        body.querySelector(selector)?.focus();
+        if (picked.option) {
+          const selector = `input[data-spy-qv-option="${picked.option}"][value="${CSS.escape(picked.value)}"]`;
+          body.querySelector(selector)?.focus();
+        }
+        // A swatch is a new link after the swap, and the size row hides when the new
+        // colourway comes in one size: land on the picked swatch then
+        if (!body.contains(document.activeElement)) body.querySelector('.spy-swatches [aria-current="true"]')?.focus();
       } else if (layer) {
         // A colourway swap can swap in a taller panel — start it from the top again
         layer.scrollTop = 0;

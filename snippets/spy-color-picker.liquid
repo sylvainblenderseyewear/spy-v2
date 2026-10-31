@@ -105,6 +105,11 @@
         assign own_size = own_value | downcase | replace: '-', ' ' | split: ' ' | join: ' '
       endif
     endfor
+    # A $0 row has no swatch (spy-frame-colourways skips it), so it outlines none and the
+    # priced swatch of that lens stays clickable
+    if p.price_max > 0 and own.price == 0
+      assign own_lens = '~'
+    endif
 
     # The model collection lists the page's frame; render it alone if it ever falls outside
     assign own_listed = false

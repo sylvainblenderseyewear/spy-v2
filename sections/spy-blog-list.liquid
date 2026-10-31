@@ -1,4 +1,4 @@
-{%- doc -%}
+{%- comment -%}
   Journal listing — keyword search box over the post grid, 1:1 with spyoptic.com/us/spy-blog/.
 
   Measured off the source (computed styles, all four widths):
@@ -19,7 +19,7 @@
 
   Search filters the rendered posts on title, excerpt and tags as you type — the source
   does the same over one AJAX page of 24. See assets/spy-blog-search.js.
-{%- enddoc -%}
+{%- endcomment -%}
 
 <div
   class="mx-auto w-full max-w-[540px] px-[15px] min-[768px]:max-w-[720px] min-[992px]:max-w-[960px] min-[1200px]:max-w-[1440px]"
@@ -32,9 +32,9 @@
         <label class="sr-only" for="spy-blog-search-{{ section.id }}">
           {{- section.settings.search_placeholder -}}
         </label>
+        {% comment %} rounded-none: Horizon's base.css rounds inputs 4px, the source is square {% endcomment %}
         <input
           id="spy-blog-search-{{ section.id }}"
-          {% comment %} rounded-none: Horizon's base.css rounds inputs 4px, the source is square {% endcomment %}
           class="block w-[172px] rounded-none border border-spy-ink bg-white py-2 pl-8 pr-1 text-[13px] leading-[18.2px] text-spy-ink placeholder:text-spy-label focus:outline-none focus-visible:ring-2 focus-visible:ring-spy-orange-ui"
           type="search"
           name="q"
@@ -99,6 +99,8 @@
                 <img
                   class="h-full w-full object-cover"
                   src="{{ body_image_src }}"
+                  width="800"
+                  height="800"
                   alt="{{ article.title | escape }}"
                   loading="lazy"
                 >
