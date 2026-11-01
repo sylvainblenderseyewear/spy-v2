@@ -4,12 +4,17 @@
   only when the frame's guide has drawings, measurements or a frame size, like the
   source, where products without a guide have no Size Chart link at all.
 
-  The drawer is the source's fit guide: a 500px panel on the right over a light
-  grey veil, with two tabs. "This frame" reads the collection's custom.fit_guide
-  metaobject (drawings + measurements, rows appear only when filled). "How to
-  measure" is the same copy for every product, so it lives in block settings.
-
-  Opens on "This frame" (the source opens on "How to measure") — see default_tab.
+  The drawer is a 500px panel on the right over a light grey veil. spyoptic.com
+  fills it one of four ways per model (checked 31 Oct 2026):
+  - full guide (Cyrus Switch, Mainline): two tabs. "This frame" reads the
+    collection's custom.fit_guide metaobject, "How to measure" is shared copy.
+  - spec sheet (Rebar): fit and size cards, three measurements, captioned drawings.
+  - fit card (Rebar SE): a plain card and table, then the drawings.
+  - drawings only (Discord, Cyrus, Montana, Bowery, Overhaul, Overhaul XL,
+    Region, Region XL).
+  The store's guide data has no fields for this, so the model lists are block
+  settings and the two sheets are child blocks (_spy-fit-spec-sheet,
+  _spy-fit-card). Models in no list get the full guide.
 {%- enddoc -%}
 
 {%- liquid
@@ -31,6 +36,8 @@
     if fg_found == false or c.all_products_count < fg_count
       assign fg = candidate
       assign fg_count = c.all_products_count
+      assign fg_model = c.handle
+      assign fg_model_title = c.title
       assign fg_found = true
     endif
   endfor
@@ -97,8 +104,42 @@
   endif
 
   comment
-    We open on "This frame" — the frame's own numbers are what people came for.
-    The source opens on "How to measure"; editors can flip it back.
+    Which drawer this model gets. The model is the collection that carries the
+    guide, so the Discord eyeglasses keep the full guide while the Discord
+    sunglasses get drawings only, as on the source.
+  endcomment
+  assign layout = 'full'
+  if fg_found
+    assign model_key = ',' | append: fg_model | append: ','
+    assign card_list = block.settings.card_models | downcase | remove: ' ' | prepend: ',' | append: ','
+    assign specs_list = block.settings.specs_models | downcase | remove: ' ' | prepend: ',' | append: ','
+    assign drawings_list = block.settings.drawings_models | downcase | remove: ' ' | prepend: ',' | append: ','
+    if card_list contains model_key
+      assign layout = 'card'
+    elsif specs_list contains model_key
+      assign layout = 'specs'
+    elsif drawings_list contains model_key
+      if diagram_front != blank or diagram_profile != blank
+        assign layout = 'drawings'
+      endif
+    endif
+  endif
+
+  comment
+    The two sheets bring their own copy, so they show even when the guide is thin.
+  endcomment
+  if layout == 'card' or layout == 'specs'
+    assign has_guide_data = true
+  endif
+
+  assign drawer_label = block.settings.title | default: 'Frame Fit Guide' | append: ' ' | append: frame_name | strip
+  if layout != 'full'
+    assign drawer_label = block.settings.fallback_label | default: 'Size Chart' | append: ' ' | append: fg_model_title | strip
+  endif
+
+  comment
+    Opens on "This frame", like the source: the frame's own numbers are what
+    people came for. Editors can switch it to "How to measure".
   endcomment
   assign active_tab = block.settings.default_tab | default: 'frame'
   if has_frame_tab == false or has_guide_data == false
@@ -106,9 +147,9 @@
   endif
 
   comment
-    Source type: condensed uppercase for labels, tracked out. Uses the theme
-    heading font so a font swap in settings carries through. Line-height is the
-    widget's inherited 1.5 — the labels never set their own.
+    Source type: Barlow Condensed for labels, uppercase and tracked out, Barlow
+    for the rest; the widget loads both. Here they are font settings served by
+    Shopify. Line-height is the widget's inherited 1.5 — labels never set their own.
   endcomment
   assign label_cls = 'font-semibold uppercase text-[10px] leading-[1.5] tracking-[2.5px] text-spy-orange-ui m-0 mb-2.5'
 -%}
@@ -127,6 +168,16 @@
   {%- endif -%}
 {%- else -%}
 <div class="spy-frame-fit-guide" {{ block.shopify_attributes }}>
+  {%- if layout == 'full' -%}
+    {%- comment -%} The full guide's Barlow faces. Browsers fetch them only once the drawer shows text. {%- endcomment -%}
+    {%- style -%}
+      {{ block.settings.label_font | font_face: font_display: 'swap' }}
+      {{ block.settings.label_font | font_modify: 'weight', '400' | font_face: font_display: 'swap' }}
+      {{ block.settings.label_font | font_modify: 'weight', '700' | font_face: font_display: 'swap' }}
+      {{ block.settings.text_font | font_face: font_display: 'swap' }}
+      {{ block.settings.text_font | font_modify: 'weight', '300' | font_face: font_display: 'swap' }}
+    {%- endstyle -%}
+  {%- endif -%}
   {%- comment -%}
     Source row is 36px: 12px above the link + a 24px link box. flex, not inline-flex:
     inline-level here adds a line box under the row. The source's link is a
@@ -165,8 +216,9 @@
     class="spy-fit-guide group invisible fixed inset-0 z-[1001] data-[open]:visible"
     role="dialog"
     aria-modal="true"
-    aria-label="{{ block.settings.title | default: 'Frame Fit Guide' | append: ' ' | append: frame_name | strip | escape }}"
+    aria-label="{{ drawer_label | escape }}"
     aria-hidden="true"
+    style="--spy-fg-label: {{ block.settings.label_font.family | escape }}, {{ block.settings.label_font.fallback_families }}; --spy-fg-text: {{ block.settings.text_font.family | escape }}, {{ block.settings.text_font.fallback_families }};"
     data-spy-fit-guide-modal
   >
     {%- comment -%} Source veil is #e6e6e6 at 60%, not a black scrim {%- endcomment -%}
@@ -182,13 +234,14 @@
     >
       {%- comment -%}
         Source header holds nothing but the close glyph, so the bar is 16px of
-        padding either side of a single line — about 61px at desktop. The × is a
-        text character, not an icon, and it scales with the viewport like the source.
+        padding either side of a single line — 60px at desktop. The × is a text
+        character, not an icon. It scales with the viewport like the source and
+        stops at 1.75rem from 1200px, as Bootstrap's fluid type does.
       {%- endcomment -%}
       <div class="flex shrink-0 items-start justify-end">
         <button
           type="button"
-          class="cursor-pointer border-none bg-transparent p-4 text-[calc(1.3rem_+_0.6vw)] font-extralight leading-none text-black opacity-50 [text-shadow:0_1px_0_#fff] hover:opacity-75"
+          class="cursor-pointer border-none bg-transparent p-4 text-[calc(1.3rem_+_0.6vw)] min-[1200px]:text-[1.75rem] font-extralight leading-none text-black opacity-50 [text-shadow:0_1px_0_#fff] hover:opacity-75"
           aria-label="{{ 'actions.close' | t }}"
           data-spy-fit-guide-close
         >
@@ -198,19 +251,88 @@
 
       {%- comment -%} Source modal body keeps 16px around the widget, so it never touches the panel edge {%- endcomment -%}
       <div class="min-h-0 flex-1 overflow-y-auto p-4">
+      {%- liquid
+        comment
+          Bare drawings, for "drawings only" and the fit card. Rebar SE has its own
+          pair on the source, but its guide is Rebar's, so the card brings them.
+        endcomment
+        assign bare_front = diagram_front
+        assign bare_profile = diagram_profile
+        assign front_w = img_front.width
+        assign front_h = img_front.height
+        assign profile_w = img_side.width
+        assign profile_h = img_side.height
+        if layout == 'card'
+          assign bare_front = 'spy-fit-guide-rebar-se-front.png' | asset_url
+          assign bare_profile = 'spy-fit-guide-rebar-se-profile.png' | asset_url
+          assign front_w = 720
+          assign front_h = 386
+          assign profile_w = 720
+          assign profile_h = 386
+        endif
+      -%}
+      {%- capture bare_drawings -%}
+        {%- comment -%} Full width, 15px in: Bootstrap's column padding on the source {%- endcomment -%}
+        {%- if bare_front != blank -%}
+          <div class="px-[15px]"><img src="{{ bare_front }}" alt="{{ block.settings.front_caption | escape }}" width="{{ front_w }}" height="{{ front_h }}" loading="lazy" class="block h-auto max-w-full"></div>
+        {%- endif -%}
+        {%- if bare_profile != blank -%}
+          <div class="px-[15px]"><img src="{{ bare_profile }}" alt="{{ block.settings.profile_caption | escape }}" width="{{ profile_w }}" height="{{ profile_h }}" loading="lazy" class="block h-auto max-w-full"></div>
+        {%- endif -%}
+      {%- endcapture -%}
+
+      {%- case layout -%}
+        {%- when 'drawings' -%}
+          {%- comment -%} Two line drawings and nothing else, like the source {%- endcomment -%}
+          {{ bare_drawings }}
+
+        {%- when 'specs' -%}
+          {%- comment -%}
+            Rebar's sheet. Its own CSS asks for the OS font; the copy is a child
+            block, the drawings below come from the guide.
+          {%- endcomment -%}
+          <div class="py-5 text-[16px] leading-[1.4] text-[#1a1a1a] [font-family:-apple-system,BlinkMacSystemFont,Segoe_UI,Roboto,Helvetica_Neue,Arial,sans-serif]">
+            {% content_for 'block', type: '_spy-fit-spec-sheet', id: 'fit-spec-sheet' %}
+
+            {%- comment -%} Drawings on grey tiles, 300px at most, captioned underneath {%- endcomment -%}
+            <div class="flex flex-col gap-5">
+              {%- if diagram_front != blank -%}
+                <div class="rounded-[8px] bg-[#fafafa] p-5 text-center">
+                  <img src="{{ diagram_front }}" alt="{{ front_alt | escape }}" width="{{ img_front.width }}" height="{{ img_front.height }}" loading="lazy" class="mx-auto block h-auto w-full max-w-[300px]">
+                  <div class="mt-[15px] text-[12px] font-semibold uppercase tracking-[1px] text-[#666]">{{ block.settings.front_caption }}</div>
+                </div>
+              {%- endif -%}
+              {%- if diagram_profile != blank -%}
+                <div class="rounded-[8px] bg-[#fafafa] p-5 text-center">
+                  <img src="{{ diagram_profile }}" alt="{{ profile_alt | escape }}" width="{{ img_side.width }}" height="{{ img_side.height }}" loading="lazy" class="mx-auto block h-auto w-full max-w-[300px]">
+                  <div class="mt-[15px] text-[12px] font-semibold uppercase tracking-[1px] text-[#666]">{{ block.settings.profile_caption }}</div>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+
+        {%- when 'card' -%}
+          {%- comment -%} Rebar SE: the card is a child block, its own drawings follow {%- endcomment -%}
+          {% content_for 'block', type: '_spy-fit-card', id: 'fit-card' %}
+          {{ bare_drawings }}
+
+        {%- else -%}
       {%- comment -%}
         Source sets the widget's own base type (13px/1.5, #111) and a thin grey
         scrollbar, so inner copy does not inherit the page scale. It also caps
         itself at 70vh and scrolls inside that, leaving the panel white below.
       {%- endcomment -%}
-      <div class="max-h-[70vh] overflow-y-auto overflow-x-hidden overscroll-contain text-[13px] leading-[1.5] text-[#111] [scrollbar-color:#ddd_#fff] [scrollbar-width:thin] [touch-action:pan-y] [&::-webkit-scrollbar-thumb]:rounded-[2px] [&::-webkit-scrollbar-thumb]:bg-[#ddd] [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar]:w-1">
+      <div class="max-h-[70vh] overflow-y-auto overflow-x-hidden overscroll-contain text-[13px] leading-[1.5] text-[#111] [font-family:var(--spy-fg-text)] [scrollbar-color:#ddd_#fff] [scrollbar-width:thin] [touch-action:pan-y] [&::-webkit-scrollbar-thumb]:rounded-[2px] [&::-webkit-scrollbar-thumb]:bg-[#ddd] [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar]:w-1">
         {%- comment -%} Header: 3px orange rule, eyebrow, condensed title, grey sub.
         No top padding — the close bar above already supplies it. {%- endcomment -%}
         <div class="border-b border-[#ebebeb] px-5 pb-[18px]">
           <div class="mb-4 h-[3px] bg-spy-orange"></div>
-          <p class="m-0 mb-[5px] text-[10px] font-normal uppercase leading-[1.5] tracking-[3px] text-spy-orange-ui" style="font-family: var(--font-heading--family);">{{ block.settings.eyebrow }}</p>
-          {%- comment -%} Title breaks where the editor breaks it — source splits "Frame Fit / Guide" {%- endcomment -%}
-          <h2 class="m-0 mb-1.5 text-[26px] font-bold uppercase leading-none tracking-[2px] text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ block.settings.title | escape | newline_to_br }}</h2>
+          <p class="m-0 mb-[5px] text-[10px] font-normal uppercase leading-[1.5] tracking-[3px] text-spy-orange-ui" style="font-family: var(--spy-fg-label);">{{ block.settings.eyebrow }}</p>
+          {%- comment -%}
+            Title breaks where the editor breaks it — source splits "Frame Fit / Guide".
+            The site's own h2 rule beats the widget here: DIN, 28/36 and 38/44 from 992px.
+          {%- endcomment -%}
+          <h2 class="m-0 mb-1.5 text-[28px] font-bold uppercase leading-[36px] tracking-[0.01em] text-[color:var(--color-spy-text)] min-[992px]:text-[38px] min-[992px]:leading-[44px]" style="font-family: var(--font-heading--family);">{{ block.settings.title | escape | newline_to_br }}</h2>
           <p class="m-0 text-[12px] font-light leading-[1.5] text-[#999]">{{ block.settings.subtitle }}</p>
         </div>
 
@@ -226,7 +348,7 @@
               aria-selected="{% if active_tab == 'frame' %}true{% else %}false{% endif %}"
               aria-controls="{{ drawer_id }}-frame"
               class="{{ tab_cls }}"
-              style="font-family: var(--font-heading--family);"
+              style="font-family: var(--spy-fg-label);"
               data-spy-tab="frame"
             >
               {{ block.settings.tab_frame_label }}
@@ -237,7 +359,7 @@
               aria-selected="{% if active_tab == 'howto' %}true{% else %}false{% endif %}"
               aria-controls="{{ drawer_id }}-howto"
               class="{{ tab_cls }}"
-              style="font-family: var(--font-heading--family);"
+              style="font-family: var(--spy-fg-label);"
               data-spy-tab="howto"
             >
               {{ block.settings.tab_howto_label }}
@@ -251,7 +373,7 @@
             {%- comment -%} Diagrams sit on the grey band, 18/20 in, 14 under {%- endcomment -%}
             {%- if diagram_front != blank or diagram_profile != blank -%}
               <div class="border-b border-[#ebebeb] bg-[#f6f6f6] px-5 pb-[14px] pt-[18px]">
-                <p class="{{ label_cls }}" style="font-family: var(--font-heading--family);">{{ block.settings.diagrams_label }}</p>
+                <p class="{{ label_cls }}" style="font-family: var(--spy-fg-label);">{{ block.settings.diagrams_label }}</p>
                 <div class="flex flex-col gap-4">
                   {%- if diagram_front != blank -%}
                     <div class="flex flex-col items-center gap-[5px]">
@@ -271,7 +393,7 @@
 
             {%- if has_measures -%}
               <div class="border-b border-[#ebebeb] bg-white px-5 py-[18px]">
-                <p class="{{ label_cls }}" style="font-family: var(--font-heading--family);">{{ block.settings.measurements_label }}</p>
+                <p class="{{ label_cls }}" style="font-family: var(--spy-fg-label);">{{ block.settings.measurements_label }}</p>
                 <table class="w-full border-collapse">
                   <tbody class="[&_td]:border-b [&_td]:border-[#f3f3f3] [&_td]:py-[9px] [&_td]:align-middle [&_tr:last-child_td]:border-b-0">
                     {%- liquid
@@ -279,26 +401,26 @@
                         Unit stays on the body font — the cell around it is set
                         in the heading face for the number.
                       endcomment
-                      assign unit_cls = 'text-[11px] font-normal text-[#bbb] [font-family:var(--font-body--family)]'
+                      assign unit_cls = 'text-[11px] font-normal text-[#bbb] [font-family:var(--spy-fg-text)]'
                       assign val_cls = 'text-right text-[18px] font-semibold whitespace-nowrap text-[color:var(--color-spy-text)]'
                       assign name_cls = 'text-[12px] text-[#666]'
                     -%}
                     {%- if temple_width != blank -%}
                       <tr>
                         <td class="{{ name_cls }}">{{ block.settings.temple_width_label }}</td>
-                        <td class="{{ val_cls }}" style="font-family: var(--font-heading--family);">{{ temple_width }}<span class="{{ unit_cls }}"> mm</span></td>
+                        <td class="{{ val_cls }}" style="font-family: var(--spy-fg-label);">{{ temple_width }}<span class="{{ unit_cls }}"> mm</span></td>
                       </tr>
                     {%- endif -%}
                     {%- if temple_length != blank -%}
                       <tr>
                         <td class="{{ name_cls }}">{{ block.settings.temple_length_label }}</td>
-                        <td class="{{ val_cls }}" style="font-family: var(--font-heading--family);">{{ temple_length }}<span class="{{ unit_cls }}"> mm</span></td>
+                        <td class="{{ val_cls }}" style="font-family: var(--spy-fg-label);">{{ temple_length }}<span class="{{ unit_cls }}"> mm</span></td>
                       </tr>
                     {%- endif -%}
                     {%- if lens_height != blank -%}
                       <tr>
                         <td class="{{ name_cls }}">{{ block.settings.lens_height_label }}</td>
-                        <td class="{{ val_cls }}" style="font-family: var(--font-heading--family);">{{ lens_height }}<span class="{{ unit_cls }}"> mm</span></td>
+                        <td class="{{ val_cls }}" style="font-family: var(--spy-fg-label);">{{ lens_height }}<span class="{{ unit_cls }}"> mm</span></td>
                       </tr>
                     {%- endif -%}
                   </tbody>
@@ -360,8 +482,8 @@
                     -%}
                     <div class="{% unless forloop.last %}mb-[18px]{% endunless %}">
                       <div class="mb-2 flex items-center justify-between gap-3">
-                        <p class="{{ label_cls }} mb-0" style="font-family: var(--font-heading--family);">{{ row_label }}</p>
-                        <span class="rounded-[2px] bg-[#111] px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[1px] text-white" style="font-family: var(--font-heading--family);">{{ row_tag }}</span>
+                        <p class="{{ label_cls }} mb-0" style="font-family: var(--spy-fg-label);">{{ row_label }}</p>
+                        <span class="rounded-[2px] bg-[#111] px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[1px] text-white" style="font-family: var(--spy-fg-label);">{{ row_tag }}</span>
                       </div>
                       {%- if row_desc != blank -%}
                         {%- comment -%} 6px above, 16px below — the source leaves the p its default bottom margin {%- endcomment -%}
@@ -385,7 +507,7 @@
                                 assign pill = pill | append: 'border-[#e0e0e0] bg-white text-[#ccc]'
                               endif
                             -%}
-                            <div class="{{ pill }}" style="font-family: var(--font-heading--family);">{{ sz }}</div>
+                            <div class="{{ pill }}" style="font-family: var(--spy-fg-label);">{{ sz }}</div>
                           {%- endfor -%}
                         </div>
                         {%- comment -%} 3px bar, filled up to the active size {%- endcomment -%}
@@ -410,7 +532,7 @@
             <div class="mb-[18px] text-[12px] font-light leading-[1.6] text-[#666] [&_p]:m-0 [&_strong]:font-medium [&_strong]:text-[color:var(--color-spy-text)]">{{ block.settings.howto_intro }}</div>
           {%- endif -%}
 
-          <p class="{{ label_cls }}" style="font-family: var(--font-heading--family);">{{ block.settings.steps_label }}</p>
+          <p class="{{ label_cls }}" style="font-family: var(--spy-fg-label);">{{ block.settings.steps_label }}</p>
 
           {%- comment -%}
             Three steps: 28px numbered rail on the left (first one orange), copy and
@@ -445,17 +567,17 @@
               -%}
                 <div class="flex gap-3 border-b border-[#f3f3f3] py-[14px] last:border-b-0">
                   <div class="flex w-7 shrink-0 flex-col items-center">
-                    <div class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full text-[13px] font-bold text-white {% if forloop.first %}bg-spy-orange{% else %}bg-[#111]{% endif %}" style="font-family: var(--font-heading--family);">{{ forloop.index }}</div>
+                    <div class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full text-[13px] font-bold text-white {% if forloop.first %}bg-spy-orange{% else %}bg-[#111]{% endif %}" style="font-family: var(--spy-fg-label);">{{ forloop.index }}</div>
                     {%- unless forloop.last -%}
                       <div class="mt-1 min-h-[10px] w-px flex-1 bg-[#e8e8e8]"></div>
                     {%- endunless -%}
                   </div>
                   <div class="min-w-0 flex-1">
-                    <div class="mb-1 text-[14px] font-semibold uppercase tracking-[0.5px] text-[color:var(--color-spy-text)]" style="font-family: var(--font-heading--family);">{{ s_title }}</div>
+                    <div class="mb-1 text-[14px] font-semibold uppercase tracking-[0.5px] text-[color:var(--color-spy-text)]" style="font-family: var(--spy-fg-label);">{{ s_title }}</div>
                     {%- comment -%} Keeps its default 16px bottom margin, like the source {%- endcomment -%}
                     <p class="mt-0 mb-4 text-[11.5px] font-light leading-[1.55] text-[#777]">{{ s_text }}</p>
                     {%- comment -%} Diagram is capped at 160px and centred in the grey panel {%- endcomment -%}
-                    <div class="mt-2.5 flex justify-center rounded-[4px] bg-[#f6f6f6] p-2 [&_svg]:h-auto [&_svg]:w-full [&_svg]:max-w-[160px] [&_svg]:[font-family:var(--font-heading--family)]">
+                    <div class="mt-2.5 flex justify-center rounded-[4px] bg-[#f6f6f6] p-2 [&_svg]:h-auto [&_svg]:w-full [&_svg]:max-w-[160px] [&_svg]:[font-family:var(--spy-fg-label)]">
                       {%- case i -%}
                         {%- when '1' -%}
                           <svg viewBox="0 0 150 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><ellipse cx="75" cy="44" rx="30" ry="34" fill="none" stroke="#ccc" stroke-width="1.5"/><ellipse cx="45" cy="46" rx="4" ry="6" fill="none" stroke="#ccc" stroke-width="1.5"/><ellipse cx="105" cy="46" rx="4" ry="6" fill="none" stroke="#ccc" stroke-width="1.5"/><line x1="45" y1="28" x2="105" y2="28" stroke="var(--color-spy-orange)" stroke-width="1.5" stroke-dasharray="3,2"/><line x1="45" y1="25" x2="45" y2="31" stroke="var(--color-spy-orange)" stroke-width="1.5"/><line x1="105" y1="25" x2="105" y2="31" stroke="var(--color-spy-orange)" stroke-width="1.5"/><text x="75" y="23" text-anchor="middle" font-size="8" fill="var(--color-spy-orange)" font-weight="600">{{ s_title | upcase }}</text><path d="M61 31 Q68 27 75 29" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/><path d="M75 29 Q82 27 89 31" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -475,13 +597,13 @@
             change them without touching code.
           {%- endcomment -%}
           {%- if block.settings.ref_rows != blank -%}
-            <p class="{{ label_cls }} mt-5" style="font-family: var(--font-heading--family);">{{ block.settings.ref_label }}</p>
+            <p class="{{ label_cls }} mt-5" style="font-family: var(--spy-fg-label);">{{ block.settings.ref_label }}</p>
             <table class="mt-4 w-full border-collapse text-[11px]">
               <thead>
                 <tr class="[&_th]:bg-[#111] [&_th]:px-2 [&_th]:py-[7px] [&_th]:text-left [&_th]:text-[10px] [&_th]:font-semibold [&_th]:uppercase [&_th]:tracking-[1.5px] [&_th]:text-white">
                   {%- assign heads = block.settings.ref_heads | split: '|' -%}
                   {%- for h in heads -%}
-                    <th style="font-family: var(--font-heading--family);">{{ h | strip }}</th>
+                    <th style="font-family: var(--spy-fg-label);">{{ h | strip }}</th>
                   {%- endfor -%}
                 </tr>
               </thead>
@@ -494,7 +616,7 @@
                     <tr>
                       {%- for c in cells -%}
                         {%- if forloop.first -%}
-                          <td><span class="text-[12px] font-bold tracking-[1px] text-[#111]" style="font-family: var(--font-heading--family);">{{ c | strip }}</span></td>
+                          <td><span class="text-[12px] font-bold tracking-[1px] text-[#111]" style="font-family: var(--spy-fg-label);">{{ c | strip }}</span></td>
                         {%- else -%}
                           <td>{{ c | strip }}</td>
                         {%- endif -%}
@@ -509,7 +631,7 @@
           {%- if block.settings.tip_text != blank -%}
             {%- comment -%} Source tip: cream panel with an orange rule down the left {%- endcomment -%}
             <div class="mt-4 rounded-r-[4px] border-l-[3px] border-spy-orange bg-[#fff8f3] px-3 py-2.5">
-              <div class="mb-[3px] text-[10px] font-bold uppercase tracking-[2px] text-spy-orange-ui" style="font-family: var(--font-heading--family);">{{ block.settings.tip_label }}</div>
+              <div class="mb-[3px] text-[10px] font-bold uppercase tracking-[2px] text-spy-orange-ui" style="font-family: var(--spy-fg-label);">{{ block.settings.tip_label }}</div>
               <p class="mt-0 mb-4 text-[11px] font-light leading-[1.5] text-[#666]">{{ block.settings.tip_text }}</p>
             </div>
           {%- endif -%}
@@ -522,6 +644,7 @@
           </div>
         {%- endif -%}
       </div>
+      {%- endcase -%}
       </div>
     </div>
   </div>
@@ -611,6 +734,14 @@
   "tag": null,
   "settings": [
     { "type": "text", "id": "fallback_label", "label": "Link label", "info": "Trigger text on the PDP — the source calls it \"Size Chart\"", "default": "Size Chart" },
+    { "type": "header", "content": "Drawer per model" },
+    { "type": "paragraph", "content": "spyoptic.com fills the drawer four ways. List model collection handles, comma-separated. A model in no list gets the full guide." },
+    { "type": "text", "id": "drawings_models", "label": "Drawings only", "default": "discord, cyrus, montana, bowery, overhaul, overhaul-xl, region, region-xl" },
+    { "type": "text", "id": "specs_models", "label": "Spec sheet", "info": "Rebar's layout", "default": "rebar-ansi" },
+    { "type": "text", "id": "card_models", "label": "Fit card", "info": "Rebar SE's layout", "default": "rebar-se-ansi" },
+    { "type": "header", "content": "Full guide fonts" },
+    { "type": "font_picker", "id": "label_font", "label": "Label font", "info": "spyoptic.com uses Barlow Condensed", "default": "barlow_condensed_n6" },
+    { "type": "font_picker", "id": "text_font", "label": "Text font", "info": "spyoptic.com uses Barlow", "default": "barlow_n4" },
     { "type": "header", "content": "Drawer header" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "SPY Optic" },
     { "type": "textarea", "id": "title", "label": "Title", "info": "Line breaks are kept — the source splits it over two lines", "default": "Frame Fit\nGuide" },

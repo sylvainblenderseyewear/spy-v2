@@ -1,0 +1,71 @@
+{%- doc -%}
+  Rebar SE's fit card from spyoptic.com, inside the Size Chart drawer.
+  spy-frame-fit-guide renders it for the models on its "Fit card" list and adds
+  the two drawings underneath, so this block is the copy only.
+{%- enddoc -%}
+
+{%- assign card_rows = block.settings.rows | newline_to_br | split: '<br />' -%}
+{%- comment -%}
+  Plain Bootstrap on the source, in the site's own type: a card with three short
+  blocks and a table. Its image column stays empty, so from 769px the copy only
+  takes two thirds of the card.
+{%- endcomment -%}
+<div class="mt-6 px-[15px] text-[16px] leading-[1.4] text-[color:var(--color-spy-ink)]" style="font-family: var(--font-body--family);" {{ block.shopify_attributes }}>
+  <h2 class="m-0 mb-4 text-[28px] font-bold uppercase leading-[36px] tracking-[0.01em] text-[color:var(--color-spy-ink)] min-[992px]:text-[38px] min-[992px]:leading-[44px]" style="font-family: var(--font-heading--family);">{{ block.settings.title }}</h2>
+  <div class="mb-4 border border-[#e6e6e6] bg-white p-5">
+    <div class="-mx-[15px] flex flex-wrap">
+      <div class="w-full px-[15px] min-[769px]:w-2/3">
+        {%- for n in (1..3) -%}
+          {%- liquid
+            case n
+              when 1
+                assign card_head = block.settings.fit_heading
+                assign card_text = block.settings.fit_text
+              when 2
+                assign card_head = block.settings.size_heading
+                assign card_text = block.settings.size_text
+              else
+                assign card_head = block.settings.guide_heading
+                assign card_text = block.settings.guide_text
+            endcase
+          -%}
+          {%- if card_text != blank -%}
+            <h4 class="m-0 mb-3 text-[20px] font-bold uppercase leading-[28px] tracking-[0.005em] text-[color:var(--color-spy-ink)] min-[992px]:text-[24px] min-[992px]:leading-[32px]" style="font-family: var(--font-heading--family);">{{ card_head }}</h4>
+            <p class="m-0 mb-4 text-[16px] leading-[1.4]">{{ card_text }}</p>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    <table class="mb-4 w-full border-collapse">
+      <tbody>
+        {%- for row in card_rows -%}
+          {%- assign cells = row | strip | split: '|' -%}
+          {%- if cells.size > 1 -%}
+            <tr>
+              <th scope="row" class="border-t border-[#e6e6e6] p-3 text-left align-top text-[16px] font-bold leading-[1.4]">{{ cells[0] | strip }}</th>
+              <td class="border-t border-[#e6e6e6] p-3 align-top text-[16px] font-normal leading-[1.4]">{{ cells[1] | strip }}</td>
+            </tr>
+          {%- endif -%}
+        {%- endfor -%}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Fit card",
+  "tag": null,
+  "settings": [
+    { "type": "paragraph", "content": "Rebar SE's card on spyoptic.com. Its two drawings ship with the theme." },
+    { "type": "text", "id": "title", "label": "Title", "default": "Sunglasses Fit Guide" },
+    { "type": "text", "id": "fit_heading", "label": "First heading", "default": "Fit" },
+    { "type": "textarea", "id": "fit_text", "label": "First text", "default": "The Rebar SE tends to fit medium to large faces." },
+    { "type": "text", "id": "size_heading", "label": "Second heading", "default": "Size" },
+    { "type": "textarea", "id": "size_text", "label": "Second text", "default": "With a temple length of 135mm, the Rebar SE is a medium frame." },
+    { "type": "text", "id": "guide_heading", "label": "Third heading", "default": "Size Guide" },
+    { "type": "textarea", "id": "guide_text", "label": "Third text", "default": "Glasses measurements can be found on the inside of the temples. Check your current shades to compare." },
+    { "type": "textarea", "id": "rows", "label": "Table", "info": "One row per line: label | value", "default": "Temple Width | 135mm\nBridge Width | 18mm\nLens Width | 60mm" }
+  ]
+}
+{% endschema %}

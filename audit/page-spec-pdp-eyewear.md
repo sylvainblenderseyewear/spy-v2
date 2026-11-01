@@ -32,13 +32,35 @@
 | 5m | Trust Badges (inline) | Free ship · Returns · Warranty · PayPal Pay-in-4 | CUSTOM trust-badge-row | Yes | Stack on mobile |
 | 6 | Lens Info Modal | VLT %, Lens Category (Cat 0–4), Base Tint, technology icons + blurbs. Triggered by "Read more". | CUSTOM modal block | Yes | Full-screen on mobile |
 | 7 | RX States Modal | States where RX is available. "Buy in Prescription" trigger. | CUSTOM modal block | Yes | — |
-| 8 | Size Chart Modal | Image or table from `size_chart` metaobject | CUSTOM modal block | Yes | — |
+| 8 | Size Chart Modal | 500px right drawer (full-bleed <544). Four content types per model — see "Size Chart drawer types" below. Built in `spy-frame-fit-guide` + child blocks `_spy-fit-spec-sheet`, `_spy-fit-card` | CUSTOM modal block | Yes | Full-bleed <544 |
 | 9 | Description | Long-form product description (`pdp.long_description` rich text) | CUSTOM rich-text block | Yes | — |
 | 10 | Technical Information | Spec table — renders only populated `spec.*` fields. Does NOT show goggle/helmet fields on eyewear. | CUSTOM spec-table block | Yes | — |
 | 11 | Feature Banner | Desktop + mobile marketing image (`pdp.feature_banner_desktop` / `_mobile`). Optional CTA overlay. | CUSTOM feature-banner block | Yes | Yes — 2 image slots |
 | 12 | Complete Your Selection | Product recommendations carousel — complementary products (Shopify Search & Discovery). | CUSTOM recommendations-carousel | Yes | Scroll mobile |
 | 13 | Others Also Like | Product recommendations — related products. VTO indicator present ("VTO loading…"). | CUSTOM recommendations-carousel | Yes | Scroll mobile |
 | 14 | Footer | Shared section group | Same as homepage | No (shared) | — |
+
+### Size Chart drawer types (verified 31 Oct 2026)
+
+Source: `Product-SizeChart?cid=pdp-content-section-fit-guide-<model>` content assets in `#sizeChartModal`
+(Bootstrap `.modal-panel`: header 16px padding + `×` at `calc(1.3rem + .6vw)`, 1.75rem from 1200px = 60px bar at
+1440; body padding 16px, `overflow-y: auto`). Only 12 sunglasses models have one. All measurements are computed styles.
+
+| Type | Models | Content | Key measurements |
+|---|---|---|---|
+| Full guide (`spyfg2__` widget) | Cyrus Switch, Mainline ANSI | Tabs This Frame / How to Measure, drawings, 3 measurements, fit + size pills, how-to steps, size table, tip | Opens on **This Frame**. Labels Barlow Condensed 400/600/700, copy Barlow 300/400 (Google Fonts link in the asset). Title is the site h2: DIN 700 28/36, **38/44 from 992px**, tracking 1%. Widget capped at 70vh. Mainline's asset is a copy of Cyrus Switch's (same 145/140/50, only the drawings differ) |
+| Spec sheet | Rebar ANSI | "Frame Specifications", Frame Fit + Frame Size cards, "Precise Measurements" (Temple Width 147, Bridge Width 18, Lens Width 62), Pro Tip, Front/Profile View tiles | Copy in the OS font stack (-apple-system…Segoe UI), headings DIN from the site h2/h3: title 28/36 → 38/44, measurements title 24/32 → 32/40 (992px). Cards #f8f8f8, 3px black left rule, p 20, h3 12px/700 #666 with the site h3 line-height (32 → 40). Box: 1px #e0e0e0, r 8, p 25 (20/15 ≤480), shadow 0 2 4 .05. Grid 2 cols (1 col ≤480), gap 20 (15 ≤768). Value 22px (20 ≤768). Tiles #fafafa r 8 p 20, image max 300px, caption 12px/600 #666 |
+| Fit card | Rebar SE ANSI | "Sunglasses Fit Guide", card with Fit / Size / Size Guide, table (135 / 18 / 60mm), then its own two drawings | Site type: h2 DIN 28/36 → 38/44, h4 20/28 → 24/32, p DIN 16/22.4, ink #1d2a2b. Card 1px #e6e6e6, p 20; copy column 2/3 from 769px (empty image column). Table cells p 12, 1px #e6e6e6 top rules |
+| Drawings only | Discord, Cyrus, Montana, Bowery, Overhaul, Overhaul XL, Region, Region XL | Front + profile line drawings (720×386, numbers drawn in) | `col-sm-12` 15px side padding, image `max-width:100%`: 438px wide at 500px drawer, 328px at 390, stacked with no gap |
+
+**Ours:** the drawer type comes from three model-collection lists in the block settings (defaults = the table
+above), since the store's Fit Guide data has no fields for it and must not change. A model in no list (the other
+38 guides, incl. the Cyrus/Discord eyeglasses, whose collections differ) gets the full guide. Rebar SE's drawings
+ship as theme assets (`spy-fit-guide-rebar-se-*.png`) because its guide entry is Rebar's.
+
+**Data gaps (not fixed, data is off limits):** Rebar SE shares Rebar's guide entry. Our numbers differ from the old
+site's drawings and text: Cyrus Switch 147/145/51 vs 145/140/50, Rebar temple width 152 vs 147, Discord 145/145/45
+vs 140/145/42 in its drawing.
 
 ---
 

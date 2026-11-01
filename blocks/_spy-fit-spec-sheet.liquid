@@ -1,0 +1,75 @@
+{%- doc -%}
+  Rebar's spec sheet from spyoptic.com, inside the Size Chart drawer.
+  spy-frame-fit-guide renders it for the models on its "Spec sheet" list and adds
+  the drawings underneath, so this block is the copy only.
+{%- enddoc -%}
+
+{%- assign spec_rows = block.settings.rows | newline_to_br | split: '<br />' -%}
+<div {{ block.shopify_attributes }}>
+  {%- comment -%}
+    The sheet's CSS sets small headings, but the site's h2/h3 rules win on the
+    source: DIN, bigger from 992px. Its h3 line-height reaches the card labels too.
+  {%- endcomment -%}
+  <div class="mb-[30px] border-b-2 border-black pb-[15px] text-center">
+    <h2 class="m-0 text-[28px] font-bold uppercase leading-[36px] tracking-[0.01em] text-black min-[992px]:text-[38px] min-[992px]:leading-[44px]" style="font-family: var(--font-heading--family);">{{ block.settings.title }}</h2>
+  </div>
+
+  <div class="mb-[30px] flex flex-col gap-5">
+    {%- for n in (1..2) -%}
+      {%- liquid
+        if n == 1
+          assign card_head = block.settings.fit_heading
+          assign card_text = block.settings.fit_text
+        else
+          assign card_head = block.settings.size_heading
+          assign card_text = block.settings.size_text
+        endif
+      -%}
+      {%- if card_text != blank -%}
+        <div class="border-l-[3px] border-black bg-[#f8f8f8] p-5">
+          <h3 class="m-0 mb-2.5 text-[12px] font-bold uppercase leading-[32px] tracking-[1px] text-[#666] min-[992px]:leading-[40px]" style="font-family: var(--font-heading--family);">{{ card_head }}</h3>
+          {%- comment -%} The source marks the key words with a 600 span; strong does that here {%- endcomment -%}
+          <div class="text-[15px] leading-[1.6] text-[#1a1a1a] [&_p]:m-0 [&_strong]:font-semibold [&_strong]:text-black">{{ card_text }}</div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="mb-[30px] rounded-[8px] border border-[#e0e0e0] bg-white px-[15px] py-5 shadow-[0_2px_4px_rgba(0,0,0,0.05)] min-[481px]:p-[25px]">
+    <h3 class="m-0 mb-5 text-center text-[24px] font-bold uppercase leading-[32px] tracking-[0.005em] text-black min-[992px]:text-[32px] min-[992px]:leading-[40px]" style="font-family: var(--font-heading--family);">{{ block.settings.measures_label }}</h3>
+    {%- comment -%} Two per row, one under 481px; the gap narrows to 15px up to 768px {%- endcomment -%}
+    <div class="mb-[15px] [display:grid] grid-cols-1 gap-[15px] min-[481px]:grid-cols-2 min-[769px]:gap-5">
+      {%- for row in spec_rows -%}
+        {%- assign cells = row | strip | split: '|' -%}
+        {%- if cells.size > 1 -%}
+          <div class="rounded-[4px] bg-[#fafafa] px-2.5 py-[15px] text-center transition-all duration-300 ease-[ease] hover:-translate-y-0.5 hover:bg-[#f0f0f0]">
+            <span class="mb-[5px] block text-[11px] font-semibold uppercase tracking-[0.5px] text-[#666]">{{ cells[0] | strip }}</span>
+            <span class="block text-[20px] font-bold text-black min-[769px]:text-[22px]">{{ cells[1] | strip }}<span class="text-[12px] font-normal text-[#999]">{{ cells[2] | strip }}</span></span>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- if block.settings.tip_text != blank -%}
+      <div class="mt-[15px] border-t border-[#e0e0e0] pt-[15px] text-center text-[13px] italic text-[#666]"><strong class="font-bold">{{ block.settings.tip_label }}</strong> {{ block.settings.tip_text }}</div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Spec sheet",
+  "tag": null,
+  "settings": [
+    { "type": "paragraph", "content": "Rebar's sheet on spyoptic.com. The drawings come from the model's Fit Guide." },
+    { "type": "text", "id": "title", "label": "Title", "default": "Frame Specifications" },
+    { "type": "text", "id": "fit_heading", "label": "First card heading", "default": "Frame Fit" },
+    { "type": "richtext", "id": "fit_text", "label": "First card text", "info": "Bold marks the key words", "default": "<p>The Rebar features a <strong>wide fit profile</strong> engineered for large to extra-large faces, providing optimal coverage and comfort during extended wear.</p>" },
+    { "type": "text", "id": "size_heading", "label": "Second card heading", "default": "Frame Size" },
+    { "type": "richtext", "id": "size_text", "label": "Second card text", "default": "<p>With a temple length of <strong>147mm</strong>, the Rebar is classified as a large frame, delivering substantial coverage and bold presence.</p>" },
+    { "type": "text", "id": "measures_label", "label": "Measurements heading", "default": "Precise Measurements" },
+    { "type": "textarea", "id": "rows", "label": "Measurements", "info": "One per line: label | value | unit", "default": "Temple Width | 147 | mm\nBridge Width | 18 | mm\nLens Width | 62 | mm" },
+    { "type": "text", "id": "tip_label", "label": "Tip label", "default": "Pro Tip:" },
+    { "type": "text", "id": "tip_text", "label": "Tip text", "default": "Frame measurements can be found printed on the inside of the temples for easy reference." }
+  ]
+}
+{% endschema %}
