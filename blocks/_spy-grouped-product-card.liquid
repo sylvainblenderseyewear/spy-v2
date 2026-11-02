@@ -10,6 +10,8 @@
   @param {number} [group_count] - how many colourways the model has
   @param {string} [image_sizes] - sizes attribute for the card image
   @param {string} [product_view_context] - context passed to the view event
+  @param {string} [card_per] - 'model' or 'colourway', beats the block setting (colourway PLPs)
+  @param {object} [card_variant] - colourway to show in colourway mode, e.g. the lens that fits the page
 
   @example
   {% content_for 'block',
@@ -27,7 +29,9 @@
   group_count: group_count,
   image_sizes: image_sizes,
   block: block,
-  product_view_context: product_view_context
+  product_view_context: product_view_context,
+  card_per: card_per,
+  variant: card_variant
 -%}
 
 {% schema %}

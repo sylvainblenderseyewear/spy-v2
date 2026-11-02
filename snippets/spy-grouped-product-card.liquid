@@ -23,6 +23,8 @@
     colour name as the label, one thumbnail, this colourway's own badges and price)
   @param {string} [image_sizes] - sizes attribute for the card image
   @param {string} [product_view_context] - context passed to the view event
+  @param {string} [card_per] - 'model' or 'colourway', beats the block setting
+  @param {object} [variant] - colourway to show, priced on its own (colourway PLPs)
 
   @example
   {%- render 'spy-grouped-product-card',
@@ -41,19 +43,21 @@
     assign title = product.title
   endif
 
-  assign target = product.selected_or_first_available_variant.url
+  assign card_variant = variant | default: product.selected_or_first_available_variant
+  assign target = card_variant.url
   if target == blank
     assign target = product.url
   endif
 
+  assign card_mode = card_per | default: block_settings.card_per
   assign per_colourway = false
-  if block_settings.card_per == 'colourway'
+  if card_mode == 'colourway'
     assign per_colourway = true
   endif
 
   assign image_sizes = image_sizes | default: '(min-width: 750px) 50vw, 100vw'
   assign card_gap_value = block_settings.product_card_gap | default: 16
-  assign media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
+  assign media = card_variant.featured_media | default: product.featured_media
 
   assign show_swatches = block_settings.show_swatches
   assign swatch_count = block_settings.swatch_count | default: 4
@@ -207,7 +211,7 @@
         Quick View, revealed on card hover. Sits right after the gallery because the
         CSS pulls it up over the image bottom, so it costs the card no height at rest.
       {%- endcomment -%}
-      {%- render 'spy-quick-view-button', product: product -%}
+      {%- render 'spy-quick-view-button', product: product, variant: variant -%}
 
       {%- comment -%}
         Label band — the source's `.color-swatches`. One box holds the badge and the label
@@ -319,12 +323,9 @@
             {%- endfor -%}
 
             {%- if count > swatch_count -%}
-              {%- comment -%}
-                The source points this at the model's own page. Here the model collection
-                is the page that lists them all.
-              {%- endcomment -%}
+              {%- comment -%} Like the source: the product page, which lists every colourway {%- endcomment -%}
               <a
-                href="{{ model_collection.url }}"
+                href="{{ target }}"
                 class="spy-swatches__more"
                 aria-label="See all {{ count }} colors of {{ title | escape }}"
               >
@@ -364,6 +365,7 @@
         >
           {%- render 'spy-card-price',
             product: product,
+            variant: variant,
             group_collection: model_collection,
             from_label: block_settings.label_price_from
           -%}

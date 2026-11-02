@@ -4,6 +4,9 @@
   `collection::MODEL` tag, so this section folds them together: it counts the
   group, renders one colourway as its card, and skips the rest.
 
+  Colourway pages (picked in the settings, or a model's own collection) skip the
+  folding and show one card per frame, like spyoptic.com's colourway tiles.
+
   Same shell as `main-collection` (filters, sort, pagination), so a collection can
   be moved between the two templates with nothing else to change. No breadcrumb —
   add `spy-breadcrumbs` as a block if the grouped PLP ever wants one.
@@ -42,6 +45,60 @@
   if template.name == 'search'
     assign is_search = true
   endif
+
+  # One card per frame instead of per model: on the pages picked in the settings,
+  # where spyoptic.com shows colourway tiles, and on a model's own collection,
+  # where one model card would be the whole page
+  assign per_colourway = false
+  unless is_search
+    assign colourway_handles = '|'
+    for picked in section.settings.colourway_collections
+      assign colourway_handles = colourway_handles | append: picked.handle | append: '|'
+    endfor
+    assign handle_probe = '|' | append: collection.handle | append: '|'
+
+    if colourway_handles contains handle_probe
+      assign per_colourway = true
+    else
+      capture first_model
+        render 'spy-group-name', product: collection.products.first
+      endcapture
+      assign first_model = first_model | strip
+      if first_model != blank
+        assign first_model_key = first_model | handleize
+        assign first_model_title = first_model | downcase
+        assign collection_title = collection.title | downcase | strip
+        if collection.handle == first_model_key or collection_title == first_model_title
+          assign per_colourway = true
+        endif
+      endif
+    endif
+  endunless
+
+  # Lens words this page is about (Polarized → "polar"), so each frame shows a lens that fits
+  assign page_lens_words = ''
+  if per_colourway
+    assign collection_title = collection.title | downcase
+    assign lens_words = section.settings.colourway_lens_words | split: ','
+    for lens_word in lens_words
+      # New name: an assign can't change the loop variable inside its own loop
+      assign clean_word = lens_word | strip | downcase
+      if clean_word == blank
+        continue
+      endif
+      assign clean_word_handle = clean_word | handleize
+      if collection.handle contains clean_word_handle or collection_title contains clean_word
+        assign page_lens_words = page_lens_words | append: clean_word | append: '|'
+      endif
+    endfor
+  endif
+  assign page_lens_words = page_lens_words | split: '|'
+
+  # Grouping wants every product it can get; colourway pages page like the source
+  assign page_size = 50
+  if per_colourway
+    assign page_size = section.settings.colourway_page_size | default: 24
+  endif
 %}
 
 <div
@@ -66,7 +123,9 @@
     {% comment %} ?page=N restores pages 1..N, so a "More results" URL survives a reload {% endcomment %}
     backfill-pages
     {% comment %} A model whose colourways span two pages renders twice; the stitcher drops the later copy {% endcomment %}
-    dedupe-groups
+    {% unless per_colourway %}
+      dedupe-groups
+    {% endunless %}
   >
     {% render 'skip-to-content-link', href: '#ResultsList', text: 'accessibility.skip_to_results_list' %}
 
@@ -95,7 +154,7 @@
           {%- assign is_fallback = true -%}
         {%- endif -%}
       {%- else -%}
-        {%- paginate collection.products by 50 -%}
+        {%- paginate collection.products by page_size -%}
           {%- assign page_products = collection.products | where: 'id' -%}
           {%- assign pager = paginate -%}
         {%- endpaginate -%}
@@ -131,6 +190,9 @@
             # fronted with something a shopper can actually buy
             assign in_stock_keys = sep
             for product in page_products
+              if per_colourway
+                break
+              endif
               unless product.available
                 continue
               endunless
@@ -183,13 +245,15 @@
               endif
               assign probe = sep | append: group_key | append: sep
 
-              # Does this colourway get to stand for the model?
+              # Does this colourway get to stand for the model? Colourway pages show every frame.
               assign is_representative = true
-              if rendered_keys contains probe
-                assign is_representative = false
-              elsif product.available == false and in_stock_keys contains probe
-                assign is_representative = false
-              endif
+              unless per_colourway
+                if rendered_keys contains probe
+                  assign is_representative = false
+                elsif product.available == false and in_stock_keys contains probe
+                  assign is_representative = false
+                endif
+              endunless
             -%}
 
             {%- unless is_representative -%}
@@ -211,6 +275,38 @@
                   break
                 endif
               endfor
+
+              # Colourway pages: the frame's lens that fits the page, else its first one
+              # in stock. $0 rows are skipped when the frame has real prices.
+              assign card_per = ''
+              assign card_variant = nil
+              if per_colourway
+                assign card_per = 'colourway'
+                assign fit_live = nil
+                assign fit_any = nil
+                assign first_live = nil
+                for v in product.variants
+                  if product.price_max > 0 and v.price == 0
+                    continue
+                  endif
+                  if first_live == nil and v.available
+                    assign first_live = v
+                  endif
+                  assign v_title = v.title | downcase
+                  for page_word in page_lens_words
+                    if v_title contains page_word
+                      if fit_any == nil
+                        assign fit_any = v
+                      endif
+                      if fit_live == nil and v.available
+                        assign fit_live = v
+                      endif
+                      break
+                    endif
+                  endfor
+                endfor
+                assign card_variant = fit_live | default: fit_any | default: first_live | default: product.selected_or_first_available_variant
+              endif
             -%}
 
             <li
@@ -228,7 +324,9 @@
                 group_name: group_name,
                 group_count: group_count,
                 image_sizes: image_sizes,
-                product_view_context: product_view_context
+                product_view_context: product_view_context,
+                card_per: card_per,
+                card_variant: card_variant
               %}
             </li>
 
@@ -337,6 +435,36 @@
       "id": "more_results_label",
       "label": "\"More results\" button label",
       "default": "More results"
+    },
+    {
+      "type": "header",
+      "content": "Colourway pages"
+    },
+    {
+      "type": "paragraph",
+      "content": "These pages show one card per frame colour, like the colourway tiles on spyoptic.com. A collection that holds a single model does this on its own."
+    },
+    {
+      "type": "collection_list",
+      "id": "colourway_collections",
+      "label": "Collections",
+      "limit": 50
+    },
+    {
+      "type": "text",
+      "id": "colourway_lens_words",
+      "label": "Lens words",
+      "info": "Comma-separated. When a page's title or URL holds one of these words, each card shows a lens with that word, e.g. Polarized → a Polar lens.",
+      "default": "Polar, Murdered Out, Happy Boost"
+    },
+    {
+      "type": "range",
+      "id": "colourway_page_size",
+      "label": "Cards per page",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "default": 24
     },
     {
       "type": "header",

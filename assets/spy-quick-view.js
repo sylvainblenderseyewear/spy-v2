@@ -197,13 +197,13 @@
     document.querySelectorAll('.page-wrapper, .skip-to-content-link, access-widget-ui, pandectes-cmp').forEach((el) => { el.inert = on; });
   };
 
-  const open = (handle, trigger) => {
+  const open = (handle, trigger, variantId) => {
     lastTrigger = trigger || null;
     root.dataset.open = '';
     syncPageInert();
     layer?.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-    load(handle);
+    load(handle, variantId);
     // Into the dialog: the × button. The backdrop shares the close hook but is a div,
     // and a div can't take focus, so focus used to stay on the page.
     root.querySelector('button[data-spy-qv-close]')?.focus();
@@ -231,7 +231,8 @@
     const trigger = event.target.closest('[data-spy-qv]');
     if (trigger) {
       event.preventDefault();
-      open(trigger.dataset.spyQv, trigger);
+      // A colourway card opens on its own lens
+      open(trigger.dataset.spyQv, trigger, trigger.dataset.spyQvVariant || undefined);
       return;
     }
     if (event.target.closest('[data-spy-qv-close]')) close();

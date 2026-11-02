@@ -6,6 +6,7 @@
   handle off the button and fills the modal.
 
   @param {object} product - product the modal opens
+  @param {object} [variant] - colourway the modal opens on (colourway cards)
   @param {string} [shopify_attributes] - block attributes, when a block renders it
 
   @example
@@ -22,6 +23,9 @@
   <button
     class="spy-quick-view-btn py-2 px-3 bg-white border border-spy-orange-ui text-spy-orange-ui text-[12px] font-normal uppercase tracking-normal cursor-pointer text-center hover:bg-spy-orange-ui hover:text-white"
     data-spy-qv="{{ product.handle }}"
+    {% if variant != blank %}
+      data-spy-qv-variant="{{ variant.id }}"
+    {% endif %}
     aria-label="Quick View {{ product.title | escape }}"
     type="button"
     {{ shopify_attributes }}
