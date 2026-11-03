@@ -75,8 +75,10 @@
   comment
     Sold-out colourway: half-faded with a thin diagonal bar across the thumb,
     same as the source's .swatch-not-orderable (69x2px, 45deg, #f2f2f2).
+    The empty content value needs single quotes: a double quote ends the class
+    attribute and the bar classes are lost.
   endcomment
-  assign swatch_oos = ' spy-swatches__item--oos opacity-50 after:content-[""] after:absolute after:block after:top-[25px] after:-left-2 after:h-[2px] after:w-[69px] after:rotate-45 after:bg-[#f2f2f2] after:pointer-events-none'
+  assign swatch_oos = " spy-swatches__item--oos opacity-50 after:content-[''] after:absolute after:block after:top-[25px] after:-left-2 after:h-[2px] after:w-[69px] after:rotate-45 after:bg-[#f2f2f2] after:pointer-events-none"
 
   unless has_option_colors
     # The picked colourway: its lens marks the current swatch, its size is kept on a switch

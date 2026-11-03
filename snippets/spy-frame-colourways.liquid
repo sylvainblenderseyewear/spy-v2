@@ -5,7 +5,9 @@
 
   Same rules as the card count (spy-model-collection-facts): size never counts, $0
   rows are skipped when the frame has a real price, and "No Lens Reference" / demo
-  lenses count as the frame alone.
+  lenses count as the frame alone. One difference: a lens with no photo of its own
+  stays out when the frame's main photo belongs to another lens, so no thumb repeats
+  another. The card still counts it.
 
   A swatch opens the variant it shows. It keeps the picked size when its lens comes in
   that size, like the source, else takes the first in stock, else the first. On the
@@ -96,11 +98,12 @@
     endif
     assign seen = seen | append: key | append: '^'
 
-    # The variant this swatch opens, whether any size is in stock, and how many sizes
+    # The variant this swatch opens, the lens photo, whether any size is in stock, and how many sizes
     assign same_ok = nil
     assign same_any = nil
     assign first_ok = nil
     assign first_any = nil
+    assign lens_media = nil
     assign sizes = '^'
     assign size_count = 0
     for w in product.variants
@@ -110,6 +113,9 @@
       endif
       if first_any == nil
         assign first_any = w
+      endif
+      if lens_media == nil and w.featured_media != blank
+        assign lens_media = w.featured_media
       endif
       if w.available and first_ok == nil
         assign first_ok = w
@@ -144,9 +150,27 @@
       assign is_current = true
     endif
 
+    comment
+      The lens's own photo, from any size. Without one, the frame's main photo stands
+      in, unless another lens owns it: the thumb would just repeat that lens. Such a
+      lens stays out, but on its own page it shows bare, so the pick is still marked.
+    endcomment
+    assign media = pick.featured_media | default: lens_media
+    if media == blank and product.featured_media != blank
+      assign media = product.featured_media
+      for w in product.variants
+        if lens_keys[forloop.index0] != '~' and w.featured_media.id == media.id
+          assign media = nil
+          break
+        endif
+      endfor
+      if media == nil and is_current == false
+        continue
+      endif
+    endif
+
     # Other frames without a picture stay out, as before. The page's own frame always
     # shows, or its lenses could not be picked at all.
-    assign media = pick.featured_media | default: product.featured_media
     if media == blank and current != true
       continue
     endif
