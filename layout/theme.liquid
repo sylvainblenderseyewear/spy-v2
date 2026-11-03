@@ -75,6 +75,21 @@
       </div>
 
       <script>
+        // Sticky blocks pin under the SPY header group (nav + announcement bar). Horizon's
+        // --header-height only measures its own header-component, so it stays at 60px here.
+        (function setSpyHeaderOffset() {
+          var group = document.getElementById('header-group');
+          if (!group) return;
+          var update = function () {
+            var pinned = getComputedStyle(group).position === 'sticky';
+            document.documentElement.style.setProperty('--spy-header-offset', (pinned ? group.offsetHeight : 0) + 'px');
+          };
+          update();
+          if ('ResizeObserver' in window) new ResizeObserver(update).observe(group);
+        })();
+      </script>
+
+      <script>
         // Inline header height and menu style calculations to prevent layout shift
         // Note: Updates in calculateHeaderGroupHeight(), updateTransparentHeaderOffset() and setHeaderMenuStyle() utilities.js should be kept in sync with this function
         (function setHeaderHeighCustomProperties() {
