@@ -13,18 +13,23 @@
 {%- comment -%}
   name="product-panels" makes this an exclusive accordion with the spec table: the
   browser closes the open sibling on its own, like the source's data-parent.
+  spy-product-panels.js slides the body open and shut (the source just snaps).
 {%- endcomment -%}
-<details name="product-panels" class="group" {% if block.settings.open_default %}open{% endif %} {{ block.shopify_attributes }}>
+<details name="product-panels" class="group" data-spy-panel {% if block.settings.open_default %}open{% endif %} {{ block.shopify_attributes }}>
   {%- comment -%} Rule sits UNDER the header, and the transparent top border keeps the row 66px {%- endcomment -%}
   <summary class="flex items-center justify-between gap-2 py-5 px-3 border-t border-t-transparent border-b border-b-[color:var(--color-spy-border)] cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-[16px] leading-6 font-bold uppercase tracking-[0] text-[color:var(--color-spy-text)]">
     {{ block.settings.heading | default: 'Description' }}
-    {%- comment -%} Source: fa-chevron-down, 14x9 glyph in ink, 300ms flip {%- endcomment -%}
-    <svg class="w-4 h-4 shrink-0 text-[color:var(--color-spy-text)] transition-transform duration-300 ease-in-out group-open:rotate-180" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 5L8 11.5L14 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    {%- comment -%} Source: fa-chevron-down, 14x9 glyph in ink, 300ms flip. It flips back as soon as a close starts {%- endcomment -%}
+    <svg class="w-4 h-4 shrink-0 text-[color:var(--color-spy-text)] transition-transform duration-300 ease-in-out group-[[open]:not([data-closing])]:rotate-180" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 5L8 11.5L14 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </summary>
-  <div class="px-3 py-4 text-[15px] leading-[1.6] text-[color:var(--color-spy-text-2)] [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_li]:mb-1">
-    {{ body }}
+  {%- comment -%} This wrapper's height is what slides; it clips only while moving {%- endcomment -%}
+  <div data-spy-panel-body class="transition-[height] duration-[350ms] ease-spy-nav motion-reduce:transition-none group-data-[animating]:overflow-hidden">
+    <div class="px-3 py-4 text-[15px] leading-[1.6] text-[color:var(--color-spy-text-2)] [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_li]:mb-1">
+      {{ body }}
+    </div>
   </div>
 </details>
+<script type="module" src="{{ 'spy-product-panels.js' | asset_url }}"></script>
 {%- endif -%}
 
 {% schema %}

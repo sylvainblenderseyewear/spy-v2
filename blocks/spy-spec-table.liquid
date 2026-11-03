@@ -56,14 +56,17 @@
 {%- comment -%}
   Shares name="product-panels" with the description block, so opening one closes the
   other — the native version of the source's Bootstrap data-parent accordion.
+  spy-product-panels.js slides the body open and shut (the source just snaps).
 {%- endcomment -%}
-<details name="product-panels" class="group" {{ block.shopify_attributes }}>
+<details name="product-panels" class="group" data-spy-panel {{ block.shopify_attributes }}>
   {%- comment -%} Rule sits UNDER the header, and the transparent top border keeps the row 66px {%- endcomment -%}
   <summary class="flex items-center justify-between gap-2 py-5 px-3 border-t border-t-transparent border-b border-b-[color:var(--color-spy-border)] cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-[16px] leading-6 font-bold uppercase tracking-[0] text-[color:var(--color-spy-text)]">
     {{ block.settings.heading | default: 'Technical Information' }}
-    {%- comment -%} Source: fa-chevron-down, 14x9 glyph in ink, 300ms flip {%- endcomment -%}
-    <svg class="w-4 h-4 shrink-0 text-[color:var(--color-spy-text)] transition-transform duration-300 ease-in-out group-open:rotate-180" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 5L8 11.5L14 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    {%- comment -%} Source: fa-chevron-down, 14x9 glyph in ink, 300ms flip. It flips back as soon as a close starts {%- endcomment -%}
+    <svg class="w-4 h-4 shrink-0 text-[color:var(--color-spy-text)] transition-transform duration-300 ease-in-out group-[[open]:not([data-closing])]:rotate-180" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 5L8 11.5L14 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </summary>
+  {%- comment -%} This wrapper's height is what slides; it clips only while moving {%- endcomment -%}
+  <div data-spy-panel-body class="transition-[height] duration-[350ms] ease-spy-nav motion-reduce:transition-none group-data-[animating]:overflow-hidden">
   {%- comment -%}
     id is the target of the lens panel's "Read more" — a fragment link into a closed
     <details> makes the browser open it. Rows follow the source: body-m text (14/20,
@@ -211,7 +214,9 @@
 
     </tbody>
   </table>
+  </div>
 </details>
+<script type="module" src="{{ 'spy-product-panels.js' | asset_url }}"></script>
 
 {% schema %}
 {
