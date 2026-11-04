@@ -1132,6 +1132,15 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     top: var(--spy-header-offset, var(--header-height, 1rem));
     align-self: start;
     height: fit-content;
+    /* The open panels' height (spy-product-panels.js), so opening or closing one never
+       moves the pinned image. Keep 350ms and the easing equal to the panel slide */
+    margin-bottom: var(--spy-panels-open, 0px);
+    transition: margin-bottom 350ms var(--ease-spy-nav);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-testid="product-information"] .product-information__media {
+      transition: none;
+    }
   }
   [data-testid="product-information"] product-component.product-information__grid > :not(.product-information__media) {
     grid-column: 8 / span 5;
@@ -1275,11 +1284,14 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 }
 
 /* Thumbnail rail is only as tall as its thumbs — no empty column underneath.
-   Still scrolls when there are more thumbs than the stage height allows. */
+   Still scrolls when there are more thumbs than the stage height allows.
+   Static: it moves with the image as one piece, like the source. Horizon's own sticky
+   (top 0) let it lag behind the image and slide under the header. */
 [data-testid="product-information"] .slideshow-controls__thumbnails-container {
   align-self: start;
   height: fit-content !important;
   max-height: 100%;
+  position: static !important;
 }
 
 /* Hover zoom (assets/spy-hover-zoom.js). The source runs a jQuery zoom clone —
