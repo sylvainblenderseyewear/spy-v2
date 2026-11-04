@@ -1,10 +1,11 @@
 {%- doc -%}
   "Notify me when back in stock" — shows only when the current variant is sold out.
-  The button reveals a small form (email + consent + send), like the source PDP.
 
-  Sending uses Shopify's own contact form, so it works with no app: the request
-  lands in the shop's inbox with the product, colour and variant id. Swap the
-  form for a back-in-stock app later and the markup can stay.
+  With "Open the Back in Stock app popup" on, the button opens the AMP Back in Stock
+  popup for this variant. The app keeps the list and sends the restock email.
+  If the app hasn't loaded, the small email form below opens instead (Shopify's
+  contact form, lands in the shop's inbox), like the source PDP.
+  Click logic lives in spy-notify-me.js.
 {%- enddoc -%}
 
 {%- liquid
@@ -19,21 +20,22 @@
     {%- comment -%} Source: white button, orange hairline + orange uppercase label {%- endcomment -%}
     <button
       type="button"
-      class="spy-notify-me__toggle w-full py-3 border border-spy-orange-ui text-spy-orange-ui uppercase font-bold text-[0.8125rem] tracking-[0.06em] bg-transparent cursor-pointer hover:bg-spy-orange-ui hover:text-white transition-colors aria-expanded:hidden"
+      class="spy-notify-me__toggle w-full py-3 border border-spy-orange-ui text-spy-orange-ui uppercase font-bold text-[0.8125rem] tracking-[0.06em] bg-transparent cursor-pointer hover:bg-spy-orange-ui hover:text-white transition-colors aria-expanded:hidden aria-busy:opacity-60 aria-busy:cursor-progress"
       data-spy-notify-toggle
       aria-expanded="false"
       aria-controls="{{ panel_id }}"
       data-variant-id="{{ variant.id }}"
       data-product-id="{{ p.id }}"
+      {% if block.settings.use_app %}data-spy-notify-app aria-haspopup="dialog"{% endif %}
     >
       {{ block.settings.label | default: 'Notify me when back in stock' }}
     </button>
 
     <div id="{{ panel_id }}" class="spy-notify-me__panel mt-4" hidden>
       {%- form 'contact', id: form_id, class: 'flex flex-col items-start gap-3' -%}
-        {%- comment -%} Remembered outside the form so the script can keep the panel open {%- endcomment -%}
+        {%- comment -%} Tells the script to keep the panel open after a send {%- endcomment -%}
         {%- if form.posted_successfully? or form.errors -%}
-          {%- assign notify_open = true -%}
+          <span data-spy-notify-open hidden></span>
         {%- endif -%}
         {%- if form.posted_successfully? -%}
           <p class="m-0 text-[14px] leading-5 text-[color:var(--color-spy-positive)]" role="status">
@@ -91,27 +93,10 @@
       {%- endform -%}
     </div>
   </div>
-
-  <script>
-    (() => {
-      const root = document.currentScript.previousElementSibling;
-      const toggle = root.querySelector('[data-spy-notify-toggle]');
-      const panel = root.querySelector('.spy-notify-me__panel');
-      if (!toggle || !panel) return;
-      toggle.addEventListener('click', () => {
-        toggle.setAttribute('aria-expanded', 'true');
-        panel.hidden = false;
-        panel.querySelector('input[type="email"]')?.focus();
-      });
-      {%- comment -%} Keep it open when the form comes back with a result {%- endcomment -%}
-      {%- if notify_open -%}
-        toggle.setAttribute('aria-expanded', 'true');
-        panel.hidden = false;
-      {%- endif -%}
-      document.currentScript?.remove();
-    })();
-  </script>
 {%- endunless -%}
+
+{%- comment -%} Outside the unless: the colour switch can bring the button in later {%- endcomment -%}
+<script src="{{ 'spy-notify-me.js' | asset_url }}" type="module"></script>
 
 {% schema %}
 {
@@ -119,6 +104,14 @@
   "tag": null,
   "settings": [
     { "type": "text", "id": "label", "label": "Button label", "default": "Notify me when back in stock" },
+    {
+      "type": "checkbox",
+      "id": "use_app",
+      "label": "Open the Back in Stock app popup",
+      "info": "Needs the AMP Back in Stock app embed. If the app hasn't loaded, the email form below opens instead.",
+      "default": true
+    },
+    { "type": "header", "content": "Email form (when the app isn't used)" },
     { "type": "text", "id": "intro", "label": "Intro text", "default": "We will send you an email when the product is back in stock" },
     { "type": "text", "id": "email_label", "label": "Email label", "default": "Email" },
     { "type": "text", "id": "consent_text", "label": "Consent text", "default": "I agree to receive a notification by email." },
