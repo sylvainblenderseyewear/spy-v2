@@ -90,9 +90,16 @@
       }
 
       // Stays closed for the rest of the visit, but comes back in the editor
-      if (!window.Shopify || !Shopify.designMode) {
+      function restore() {
+        if (window.Shopify && Shopify.designMode) return;
         try { if (sessionStorage.getItem(key)) dismiss(); } catch (e) {}
       }
+      restore();
+
+      // Back/Forward can show the page as it was left, so check again
+      window.addEventListener('pageshow', function (e) {
+        if (e.persisted) restore();
+      });
 
       var btn = aside && aside.querySelector('[data-spy-ann-close]');
       if (btn) btn.addEventListener('click', dismiss);
