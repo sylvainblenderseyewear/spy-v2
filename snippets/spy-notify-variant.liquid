@@ -1,0 +1,76 @@
+{%- doc -%}
+  Prints one variant as a JSON object for the Back in Stock popup's list
+  (spy-notify-me.js reads it from `data-spy-notify-variants`). The label reads like
+  the PDP's FRAME and LENS lines (frame colour – lens), plus the size when asked.
+
+  @param {product} product - The frame
+  @param {object} variant - The variant to list
+  @param {boolean} [with_size] - Add the size to the label
+
+  @example
+  {%- capture item -%}{% render 'spy-notify-variant', product: product, variant: pick %}{%- endcapture -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign nv_lens = ''
+  assign nv_size = ''
+  for nv_option in product.options
+    assign nv_option_name = nv_option | downcase
+    if nv_option_name == 'lens'
+      assign nv_lens = variant.options[forloop.index0]
+    elsif nv_option_name == 'size'
+      assign nv_size = variant.options[forloop.index0]
+    endif
+  endfor
+
+  # Same sources as the FRAME / LENS summary under the swatches
+  assign nv_lens = variant.metafields.spec.lens_name.value | default: nv_lens | strip
+  assign nv_lens_check = nv_lens | downcase
+  if nv_lens_check contains 'no lens' or nv_lens_check contains 'demo'
+    assign nv_lens = ''
+  endif
+
+  assign nv_frame = product.metafields.spec.frame_color.value | strip
+  if nv_frame == blank
+    capture nv_frame
+      render 'spy-colourway-name', product: product
+    endcapture
+    assign nv_frame = nv_frame | strip
+  endif
+  # Tees, cases and spare lenses carry a placeholder colour
+  assign nv_frame_check = nv_frame | downcase
+  if nv_frame_check contains 'no colour reference' or nv_frame_check contains 'no color reference'
+    assign nv_frame = ''
+  endif
+
+  assign nv_label = nv_frame
+  if nv_lens != blank
+    if nv_label != blank
+      assign nv_label = nv_label | append: ' – '
+    endif
+    assign nv_label = nv_label | append: nv_lens
+  endif
+  if with_size and nv_size != blank
+    if nv_label != blank
+      assign nv_label = nv_label | append: ' / '
+    endif
+    assign nv_label = nv_label | append: nv_size
+  endif
+  if nv_label == blank
+    assign nv_label = product.title
+  endif
+
+  assign nv_stock = variant.inventory_management | json
+  assign nv_title = nv_label | json
+  echo '{"id":'
+  echo variant.id
+  echo ',"product_id":'
+  echo product.id
+  echo ',"available":'
+  echo variant.available
+  echo ',"inventory_management":'
+  echo nv_stock
+  echo ',"title":'
+  echo nv_title
+  echo '}'
+-%}

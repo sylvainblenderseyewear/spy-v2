@@ -2,7 +2,9 @@
   "Notify me when back in stock" — shows only when the current variant is sold out.
 
   With "Open the Back in Stock app popup" on, the button opens the AMP Back in Stock
-  popup for this variant. The app keeps the list and sends the restock email.
+  popup for this variant. Its list holds every sold-out colourway of the colour row
+  (data-spy-notify-variants, also on the swatches), so another colour can be picked
+  there. The app keeps the list and sends the restock email.
   If the app hasn't loaded, the small email form below opens instead (Shopify's
   contact form, lands in the shop's inbox), like the source PDP.
   Click logic lives in spy-notify-me.js.
@@ -13,6 +15,33 @@
   assign variant = p.selected_or_first_available_variant
   assign form_id = 'spy-notify-' | append: block.id
   assign panel_id = 'spy-notify-panel-' | append: block.id
+
+  # The popup's heading: the model, as the colours sit in its list
+  capture model_name
+    render 'spy-group-name', product: p
+  endcapture
+  assign model_name = model_name | strip | default: p.title
+
+  # The size joins the label when the frame comes in 2+ real sizes, as on the swatches
+  assign size_keys = '^'
+  assign size_total = 0
+  for opt in p.options_with_values
+    assign opt_name = opt.name | downcase
+    if opt_name == 'size'
+      for value in opt.values
+        assign size_key = value.name | downcase | replace: '-', ' ' | split: ' ' | join: ' '
+        assign size_probe = '^' | append: size_key | append: '^'
+        unless size_keys contains size_probe
+          assign size_keys = size_keys | append: size_key | append: '^'
+          assign size_total = size_total | plus: 1
+        endunless
+      endfor
+    endif
+  endfor
+  assign many_sizes = false
+  if size_total > 1
+    assign many_sizes = true
+  endif
 -%}
 
 {%- unless variant.available -%}
@@ -26,7 +55,13 @@
       aria-controls="{{ panel_id }}"
       data-variant-id="{{ variant.id }}"
       data-product-id="{{ p.id }}"
-      {% if block.settings.use_app %}data-spy-notify-app aria-haspopup="dialog"{% endif %}
+      {% if block.settings.use_app %}
+        data-spy-notify-app
+        aria-haspopup="dialog"
+        data-model-name="{{ model_name | escape }}"
+        {% capture own_item %}{% render 'spy-notify-variant', product: p, variant: variant, with_size: many_sizes %}{% endcapture %}
+        data-spy-notify-variants="[{{ own_item | strip | escape }}]"
+      {% endif %}
     >
       {{ block.settings.label | default: 'Notify me when back in stock' }}
     </button>

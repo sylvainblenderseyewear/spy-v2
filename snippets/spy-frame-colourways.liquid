@@ -106,6 +106,7 @@
     assign lens_media = nil
     assign sizes = '^'
     assign size_count = 0
+    assign ok_sizes = '^'
     for w in product.variants
       assign w_size = size_keys[forloop.index0]
       if lens_keys[forloop.index0] != key
@@ -119,6 +120,9 @@
       endif
       if w.available and first_ok == nil
         assign first_ok = w
+      endif
+      if w.available
+        assign ok_sizes = ok_sizes | append: w_size | append: '^'
       endif
       if current_size != blank and w_size == current_size
         if w.available and same_ok == nil
@@ -194,6 +198,40 @@
       assign in_stock = false
       assign cls = cls | append: oos_class
     endif
+
+    comment
+      The notify popup's list (spy-notify-me.js): the pick when it's sold out. A lens
+      in 2+ sizes lists one record per sold-out size instead, twin spellings merged
+      the same way as above.
+    endcomment
+    assign notify_list = ''
+    if size_count > 1
+      assign listed = '^'
+      for w in product.variants
+        if lens_keys[forloop.index0] != key
+          continue
+        endif
+        assign w_size = size_keys[forloop.index0]
+        assign w_probe = '^' | append: w_size | append: '^'
+        if listed contains w_probe or ok_sizes contains w_probe
+          continue
+        endif
+        assign listed = listed | append: w_size | append: '^'
+        capture w_item
+          render 'spy-notify-variant', product: product, variant: w, with_size: true
+        endcapture
+        if notify_list != ''
+          assign notify_list = notify_list | append: ','
+        endif
+        assign notify_list = notify_list | append: w_item
+      endfor
+    else
+      unless pick.available
+        capture notify_list
+          render 'spy-notify-variant', product: product, variant: pick
+        endcapture
+      endunless
+    endif
   -%}
   {%- comment -%} spy-colourway-switch.js loads these in place on the PDP {%- endcomment -%}
   <a
@@ -203,6 +241,7 @@
     data-product-title="{{ product.title | escape }}"
     {% if is_current %}aria-current="true"{% endif %}
     {% unless in_stock %}data-spy-oos{% endunless %}
+    {% if notify_list != blank %}data-spy-notify-variants="[{{ notify_list | strip | escape }}]"{% endif %}
     aria-label="{{ name | escape }}{% unless in_stock %} ({{ 'products.product.sold_out' | t }}){% endunless %}"
   >
     {%- if media != blank -%}
