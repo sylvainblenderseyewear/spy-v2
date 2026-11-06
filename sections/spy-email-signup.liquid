@@ -34,7 +34,7 @@
         [&_.email-signup\_\_input-group]:w-[calc(100%_-_6px)] [&_.email-signup\_\_input-group]:flex-row [&_.email-signup\_\_input-group]:gap-[var(--su-field-gap,16px)]
         [&_.email-signup\_\_input]:h-[var(--su-field-h,54px)] [&_.email-signup\_\_input]:w-auto [&_.email-signup\_\_input]:flex-1 [&_.email-signup\_\_input]:rounded-[var(--su-input-radius,4px)] [&_.email-signup\_\_input]:border [&_.email-signup\_\_input]:border-solid [&_.email-signup\_\_input]:border-[color:var(--su-input-border,#949596)] [&_.email-signup\_\_input]:bg-[color:var(--su-input-bg,#ffffff)] [&_.email-signup\_\_input]:py-0 [&_.email-signup\_\_input]:pl-4 [&_.email-signup\_\_input]:pr-0 [&_.email-signup\_\_input]:text-[length:var(--su-input-size,20px)] [&_.email-signup\_\_input]:text-[color:var(--su-input-color,#000000)]
         [&_.email-signup\_\_input::placeholder]:uppercase [&_.email-signup\_\_input::placeholder]:text-[color:var(--su-placeholder,#757575)]
-        [&_.email-signup\_\_button]:h-[var(--su-field-h,54px)] [&_.email-signup\_\_button]:w-[var(--su-button-w,70px)] [&_.email-signup\_\_button]:shrink-0 [&_.email-signup\_\_button]:grow-0 [&_.email-signup\_\_button]:rounded-[var(--su-button-radius,6px)] [&_.email-signup\_\_button]:border-0 [&_.email-signup\_\_button]:bg-[color:var(--su-button-bg,#ffffff)] [&_.email-signup\_\_button]:px-[10px] [&_.email-signup\_\_button]:py-0 [&_.email-signup\_\_button]:text-[length:var(--su-button-size,13px)] [&_.email-signup\_\_button]:font-bold [&_.email-signup\_\_button]:uppercase [&_.email-signup\_\_button]:leading-none [&_.email-signup\_\_button]:text-[color:var(--su-button-color,#111111)]"
+        [&_.email-signup\_\_button]:h-[var(--su-field-h,54px)] [&_.email-signup\_\_button]:w-[var(--su-button-w,70px)] [&_.email-signup\_\_button]:shrink-0 [&_.email-signup\_\_button]:grow-0 [&_.email-signup\_\_button]:rounded-[var(--su-button-radius,6px)] [&_.email-signup\_\_button]:border-0 [&_.email-signup\_\_button]:bg-[color:var(--su-button-bg,#ffffff)] [&_.email-signup\_\_button]:px-[10px] [&_.email-signup\_\_button]:py-0 [&_.email-signup\_\_button]:text-[length:var(--su-button-size,13px)] [&_.email-signup\_\_button]:[font-weight:var(--su-button-weight,700)] [&_.email-signup\_\_button]:uppercase [&_.email-signup\_\_button]:leading-none [&_.email-signup\_\_button]:text-[color:var(--su-button-color,#111111)]"
       style="
         max-width: {{ s.form_width }}px;
         min-height: {{ s.form_height }}px;
@@ -52,6 +52,7 @@
         --su-button-bg: {{ s.button_background }};
         --su-button-color: {{ s.button_text_color }};
         --su-button-size: {{ s.button_text_size }}px;
+        --su-button-weight: {{ s.button_text_weight | default: 700 }};
         --su-heading-lh: {{ s.heading_line_height }}px;
       "
     >
@@ -243,6 +244,16 @@
       "step": 1,
       "unit": "px",
       "default": 13
+    },
+    {
+      "type": "select",
+      "id": "button_text_weight",
+      "label": "Button text weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
     },
     {
       "type": "color",

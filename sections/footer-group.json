@@ -729,11 +729,12 @@
         "input_border_color": "#949596",
         "input_text_color": "#000000",
         "placeholder_color": "#757575",
-        "button_width": 70,
+        "button_width": 76,
         "button_radius": 6,
-        "button_text_size": 13,
+        "button_text_size": 14,
+        "button_text_weight": "400",
         "button_background": "#ffffff",
-        "button_text_color": "#111111",
+        "button_text_color": "#1d2a2b",
         "padding_top": 16,
         "padding_bottom": 16
       }
