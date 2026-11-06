@@ -79,15 +79,31 @@
             assign products = products | append: ', '
             assign products = products | split: ','
           endfor
-        elsif recommendations.performed and recommendations.products_count == 0
-          # No recommendations found, pull from catalog
-          if section.settings.recommendation_type == 'related'
-            assign products = collections.all.products | reject: 'id', section.settings.product.id
-          elsif section.settings.recommendation_type == 'complementary'
-            # Do not recommend the All collection as complementary products
-            assign products = null
-          endif
+        elsif section.settings.recommendation_type == 'related'
+          # Shopify sends few or no related picks here, so the product's own category fills the gaps
+          assign fallback_products = collections.all.products
+          assign own_collection_handles = section.settings.product.collections | map: 'handle'
+          assign category_handles = section.settings.fallback_collections | split: ','
+          for category_handle in category_handles
+            assign wanted_handle = category_handle | strip
+            if wanted_handle != blank and own_collection_handles contains wanted_handle
+              assign fallback_products = collections[wanted_handle].products
+              break
+            endif
+          endfor
+          assign fallback_products = fallback_products | reject: 'id', section.settings.product.id
 
+          if section.settings.group_by_model_tag
+            # Grouping skips repeats, so real picks go first and the category tops them up
+            assign products = recommendations.products | concat: fallback_products
+          elsif recommendations.products_count == 0
+            assign products = fallback_products
+          else
+            assign products = recommendations.products
+          endif
+        elsif recommendations.products_count == 0
+          # Do not recommend the All collection as complementary products
+          assign products = null
         else
           assign products = recommendations.products
         endif
@@ -326,6 +342,14 @@
       "label": "Group colourways into one card",
       "info": "Uses the grouped PLP card: one card per model, matched on each product's collection:: tag. The page's own model is left out.",
       "default": false
+    },
+    {
+      "type": "text",
+      "id": "fallback_collections",
+      "label": "Fallback categories",
+      "info": "Collection handles, comma-separated. When Shopify finds too few related products, cards are filled from the first one the product belongs to.",
+      "default": "sunglasses, eyeglasses, snow-goggles, moto-goggles, snow-helmets, replacement-lenses, sunglass-cases, gear",
+      "visible_if": "{{ section.settings.recommendation_type == 'related' }}"
     },
     {
       "type": "header",
