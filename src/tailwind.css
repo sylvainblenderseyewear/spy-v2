@@ -3418,6 +3418,12 @@ html .spy-faq-search-input {
   background: var(--color-spy-cta-hover) !important;
 }
 
+/* Tagged products stay hidden until spy-yotpo-gallery.js has pointed them at a
+   model we sell, so the old site's placeholder and link never show */
+.yotpo-lightbox-wrapper .yotpo-lightbox-product:not([data-spy-product='ok']) {
+  display: none !important;
+}
+
 /* ── Rebuy Smart Cart: rules both carts need ───────────────────────────────
    Two carts exist in Rebuy: the old source copy and the Figma redesign. Each
    block below is scoped to its own cart, so the theme and the Rebuy Live switch
