@@ -89,7 +89,7 @@
             "image": "shopify://shop_images/lifestyle.webp",
             "hover_image": "shopify://shop_images/lifestyle-hover.webp",
             "label": "Lifestyle",
-            "link": "shopify://collections/lifestyle"
+            "link": "shopify://collections/lifestyle-collection"
           }
         },
         "tile_aydk6r": {
@@ -98,7 +98,7 @@
             "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-CLASSICS.webp",
             "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-CLASSICS-HOVER.webp",
             "label": "Classics",
-            "link": "shopify://collections/classics"
+            "link": "shopify://collections/classics-collection"
           }
         },
         "tile_PtCzT4": {
