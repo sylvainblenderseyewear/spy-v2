@@ -76,6 +76,7 @@
         {% if block.settings.element_id != blank %}data-yotpo-element-id="{{ block.settings.element_id }}"{% endif %}
         {{ block.shopify_attributes }}
       ></div>
+      <script src="{{ 'spy-yotpo-gallery.js' | asset_url }}" defer></script>
     {%- elsif request.design_mode -%}
       <p class="m-0 text-[13px] text-[color:var(--color-spy-muted)]" {{ block.shopify_attributes }}>
         Add a Yotpo gallery ID to show this widget.
