@@ -25,12 +25,18 @@
       assign card_link = block.settings[link_key]
     %}
     {% if card_image %}
-      <a href="{{ card_link | default: '#' }}" class="block no-underline">
+      {% capture card_body %}
         {{ card_image | image_url: width: 600 | image_tag: class: 'w-full aspect-[41/32] object-cover', loading: 'lazy' }}
         {% if card_caption != blank %}
           <span class="block mt-2 text-center text-[12px] font-bold uppercase tracking-[0.06em] text-spy-ink">{{ card_caption }}</span>
         {% endif %}
-      </a>
+      {% endcapture %}
+      {%- comment -%} No link set: show a plain card, not a dead "#" link {%- endcomment -%}
+      {% if card_link != blank %}
+        <a href="{{ card_link }}" class="block no-underline">{{ card_body }}</a>
+      {% else %}
+        <div class="block">{{ card_body }}</div>
+      {% endif %}
     {% endif %}
   {% endfor %}
 </div>
