@@ -7,8 +7,8 @@
 {%- liquid
   assign block_settings = block.settings
   assign label = block_settings.label | strip_html | strip
-  # Falls back to the sunglasses PLP so the bar ships with a working link
-  assign href = block_settings.url | default: '/collections/sunglasses'
+  # No link set means plain text, never a guessed page
+  assign href = block_settings.url
   assign block_index = section.blocks | find_index: 'id', block.id
 
   assign message = block_settings.label
@@ -30,19 +30,32 @@
     {{ block.shopify_attributes }}
     aria-hidden="{% if block_index == 0 %}false{% else %}true{% endif %}"
   >
-    <a
-      class="
-        announcement-bar__link
-        no-underline text-current
-        text-[12px] font-semibold uppercase
-        leading-[1.4] tracking-[0.3px]
-        max-[769px]:leading-[1.5] max-[769px]:tracking-[0.2px]
-        max-[481px]:leading-[1.6]
-        transition-opacity duration-200
-        hover:underline hover:opacity-90
-      "
-      href="{{ href }}"
-    >{{ message }}</a>
+    {%- if href != blank -%}
+      <a
+        class="
+          announcement-bar__link
+          no-underline text-current
+          text-[12px] font-semibold uppercase
+          leading-[1.4] tracking-[0.3px]
+          max-[769px]:leading-[1.5] max-[769px]:tracking-[0.2px]
+          max-[481px]:leading-[1.6]
+          transition-opacity duration-200
+          hover:underline hover:opacity-90
+        "
+        href="{{ href }}"
+      >{{ message }}</a>
+    {%- else -%}
+      <span
+        class="
+          announcement-bar__link
+          text-current
+          text-[12px] font-semibold uppercase
+          leading-[1.4] tracking-[0.3px]
+          max-[769px]:leading-[1.5] max-[769px]:tracking-[0.2px]
+          max-[481px]:leading-[1.6]
+        "
+      >{{ message }}</span>
+    {%- endif -%}
   </slideshow-slide>
 {%- endunless -%}
 
@@ -68,7 +81,7 @@
       "type": "url",
       "id": "url",
       "label": "t:settings.link",
-      "info": "Defaults to the Sunglasses collection when empty."
+      "info": "Leave empty to show the text without a link."
     }
   ],
   "presets": [
