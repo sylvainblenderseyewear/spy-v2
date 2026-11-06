@@ -3383,23 +3383,39 @@ html .spy-faq-search-input {
    overrides it with the brand heading face — 35px, dropping to 30px on a
    phone at Yotpo's own breakpoint.
 
-   Yotpo also injects its own style block late in the document with a
-   same-specificity selector (.yotpo-gallery-ID .yotpo-slider-title), and that id
-   changes per gallery so it cannot be targeted by name. Repeating the class
-   outranks it without resorting to !important. */
-.yotpo-pictures-widget .yotpo-slider-title.yotpo-slider-title {
+   The gallery account's own CSS asks for "DINNextLTPro-Bold" !important, the old
+   site's name for its bold file. No face has that name here, so the title fell
+   back to Times. :not(#\#) outranks it, and 700 picks our real bold face. */
+.yotpo-pictures-widget .yotpo-slider-title.yotpo-slider-title:not(#\#) {
   font-family: var(--font-heading--family) !important;
-  /* the heading family IS the bold face, so 700 would synthesise a second bold
-     and widen the word by 12px; the source keeps it at 400 */
-  font-weight: 400 !important;
+  font-weight: 700 !important;
   font-size: 35px !important;
   color: #191919 !important;
 }
 
 @media screen and (max-width: 620px) {
-  .yotpo-pictures-widget .yotpo-slider-title.yotpo-slider-title {
+  .yotpo-pictures-widget .yotpo-slider-title.yotpo-slider-title:not(#\#) {
     font-size: 30px !important;
   }
+}
+
+/* ── Yotpo photo gallery pop-up ──────────────────────────────────────────
+   The account sets the pop-up in Lora and Open Sans with a blue button, so it
+   looked like another site. Bring it to DIN and the theme's primary button.
+   .yotpo-icon spans are glyphs from Yotpo's icon font, so they keep it. */
+.yotpo-lightbox :not(.yotpo-icon):not(#\#) {
+  font-family: var(--font-spy) !important;
+}
+
+.yotpo-lightbox .yotpo-lightbox-product-button:not(.unavailable):not(#\#) {
+  border-radius: 0 !important;
+  background: var(--color-spy-orange-ui) !important;
+  color: var(--color-white) !important;
+  text-transform: uppercase;
+}
+
+.yotpo-lightbox .yotpo-lightbox-product-button:not(.unavailable):not(#\#):is(:hover, :focus-visible) {
+  background: var(--color-spy-cta-hover) !important;
 }
 
 /* ── Rebuy Smart Cart: rules both carts need ───────────────────────────────
