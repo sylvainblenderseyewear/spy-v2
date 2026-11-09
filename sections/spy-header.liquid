@@ -7,12 +7,17 @@
   {%- if request.page_type == 'index' -%}
     <h1 class="sr-only">{{ shop.name }}</h1>
   {%- endif -%}
-  <div class="section section--page-width md:[--page-width:calc(87vw_+_var(--page-margin)*2)] border-b border-[#e5e5e5]">
-    <div class="flex items-center gap-3 md:gap-4 min-h-[49px]">
+  {% comment %}
+    Full menu from 1200px; below that the burger bar (one row can't fit cleanly).
+    Desktop row: 87vw like the source on big screens, wider if its content needs it,
+    never past the page gutter.
+  {% endcomment %}
+  <div class="section section--page-width border-b border-[#e5e5e5]">
+    <div class="flex items-center gap-[clamp(8px,calc(10vw_-_24px),12px)] min-[1200px]:gap-4 min-h-[49px] min-[1200px]:w-max min-[1200px]:min-w-[87vw] min-[1200px]:max-w-full min-[1200px]:justify-self-center">
       <div class="flex items-center shrink-0">
         <a
           href="{{ routes.root_url }}"
-          class="svg-logo-container inline-flex items-center [&_svg]:block [&_svg]:h-[var(--spy-logo-h-m,28px)] [&_svg]:w-[calc(var(--spy-logo-h-m,28px)*66/28)] min-[750px]:[&_svg]:h-[var(--spy-logo-h,36px)] min-[750px]:[&_svg]:w-[calc(var(--spy-logo-h,36px)*79/36)]"
+          class="svg-logo-container inline-flex items-center [&_svg]:block [&_svg]:h-[var(--spy-logo-h-m,28px)] [&_svg]:w-[calc(var(--spy-logo-h-m,28px)*66/28)] min-[1200px]:[&_svg]:h-[var(--spy-logo-h,36px)] min-[1200px]:[&_svg]:w-[calc(var(--spy-logo-h,36px)*79/36)]"
           style="--spy-logo-h: {{ settings.logo_height | default: 36 }}px; --spy-logo-h-m: {{ settings.logo_height_mobile | default: 28 }}px;"
           aria-label="{{ shop.name }}"
         >

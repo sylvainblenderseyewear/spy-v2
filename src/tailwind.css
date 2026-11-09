@@ -1034,11 +1034,9 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     overscroll-behavior: none;
   }
 
-  /* Matches the hamburger's own min-[992px]:hidden breakpoint below — the
-     desktop nav only takes over at 992px (source's real collapse point,
-     confirmed in audit/design-tokens.md and repeated overflow notes across
-     the other page specs), not Tailwind's 768px `md`. */
-  @media screen and (min-width: 992px) {
+  /* Matches the burger's own min-[1200px]:hidden. The source collapses at 992px,
+     but one row can't fit there cleanly, so our full menu starts at 1200px. */
+  @media screen and (min-width: 1200px) {
     html.spy-nav-open .page-wrapper {
       transform: none;
     }

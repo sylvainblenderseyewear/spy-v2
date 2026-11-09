@@ -4,11 +4,19 @@
 %}
 
 <nav
-  class="spy-mega-menu flex items-center self-stretch max-[991px]:order-first min-[992px]:flex-1 min-[992px]:justify-center"
+  class="spy-mega-menu flex items-center self-stretch max-[1200px]:order-first min-[1200px]:flex-[1_1_auto] min-[1200px]:min-w-0 min-[1200px]:justify-center"
   aria-label="{{ 'accessibility.header_navigation_label' | t }}"
   {{ block.shopify_attributes }}
 >
-  <ul class="hidden min-[992px]:flex items-stretch h-full gap-4 lg:gap-8 list-none m-0 p-0">
+  {% comment %}
+    Links sit in even grid columns; the empty columns are the gaps, so they shrink
+    evenly when space is short (64px apart once the row fits). The two edge columns
+    keep the logo and +JOURNAL+ at least as far away as the links are from each other.
+  {% endcomment %}
+  <ul
+    class="hidden min-[1200px]:[display:grid] [grid-template-columns:minmax(4px,16px)_repeat(var(--spy-nav-gaps),max-content_minmax(4px,32px))_max-content_minmax(4px,16px)] h-full list-none m-0 p-0"
+    style="--spy-nav-gaps: {{ menu.links.size | minus: 1 | at_least: 1 }};"
+  >
     {% for link in menu.links %}
       {% liquid
         assign link_handle = link.title | handleize
@@ -17,10 +25,10 @@
           assign is_highlight = true
         endif
       %}
-      <li class="group flex items-stretch">
+      <li class="group flex items-stretch [grid-column:var(--spy-nav-col)]" style="--spy-nav-col: {{ forloop.index | times: 2 }};">
         <a
           href="{{ link.url }}"
-          class="inline-flex items-center h-full px-3 lg:px-4 border-b-2 border-transparent group-hover:border-black text-[14px] font-bold uppercase tracking-[0.5px] no-underline whitespace-nowrap transition-colors duration-200 {% if is_highlight %}text-spy-orange-ui{% else %}text-spy-ink{% endif %}"
+          class="inline-flex items-center h-full px-[clamp(8px,calc(8px_+_(100vw_-_1200px)_*_8_/_279),16px)] border-b-2 border-transparent group-hover:border-black text-[14px] font-bold uppercase tracking-[0.5px] no-underline whitespace-nowrap transition-colors duration-200 {% if is_highlight %}text-spy-orange-ui{% else %}text-spy-ink{% endif %}"
           style="font-family: var(--font-heading--family);"
           {% if link.current %}
             aria-current="page"
@@ -67,7 +75,7 @@
 
   <button
     type="button"
-    class="spy-nav-toggle relative z-[70] flex items-center justify-center w-11 h-11 cursor-pointer text-spy-ink min-[992px]:hidden button-unstyled"
+    class="spy-nav-toggle relative z-[70] flex items-center justify-center w-11 h-11 cursor-pointer text-spy-ink min-[1200px]:hidden button-unstyled"
     aria-label="{{ 'accessibility.menu' | t }}"
     aria-expanded="false"
     aria-controls="spy-mobile-nav"
@@ -78,7 +86,7 @@
   {%- comment -%} inert while closed: the root screen sets visibility:visible, so its links stay tabbable otherwise {%- endcomment -%}
   <div
     id="spy-mobile-nav"
-    class="spy-nav min-[992px]:hidden fixed inset-0 z-[60] invisible pointer-events-none [html.spy-nav-open_&]:visible"
+    class="spy-nav min-[1200px]:hidden fixed inset-0 z-[60] invisible pointer-events-none [html.spy-nav-open_&]:visible"
     role="dialog"
     aria-modal="true"
     aria-label="{{ 'accessibility.menu' | t }}"
