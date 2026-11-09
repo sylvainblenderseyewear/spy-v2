@@ -1094,4 +1094,74 @@ Fix: `src/tailwind.css` `blur(22px)` → `blur(10px)`, and `rebuy-figma-spec.js`
 untouched live CSS fails that check (`blur(22px)`); with `LOCAL_CSS=1` on the live theme and live cart, two
 items: 0 wrong at 1440, 768, 390 and 1904 × 913 (194 exact each). That first live run also had no
 bundle box and no "You Might Also Like": the known cold-load race, both were there on every later load.
-**Not pushed:** the live cart keeps 22px until the theme push.
+**Pushed 28 Oct** in `38d6a36`.
+
+### Cart variant picker and empty-cart tab — 5 Nov
+
+Goran asked two things about the live cart 38089:
+
+1. **The picker under a recommendation.** The empty-cart MEN row (Discord Soft Matte Black) listed 5 rows for
+   3 lenses, four ending in "- OOS". Rebuy's default select prints every `variant.title`; its
+   `formatVariantOptionTitle` adds a hard-coded " - OOS", and widget 315471 has `hide_out_of_stock_variants: false`.
+   The extra rows are the twin records (old SKU + Y-code, "Medium Large" / "Medium-Large").
+2. **The empty cart reopened on GOGGLES** after adding the MEN item and removing it with "−". After a cart change
+   Rebuy refetches every tab with the cart as input, and the data sources leave cart products out. MEN held one
+   product, so it came back empty and Rebuy's `handOverFromEmptyActiveTab` moved to GOGGLES (`remember: false`).
+   Nothing moves it back. Reproduced on the live theme: same browser, same product, ends `MEN GOGGLES*`.
+
+Fix, theme only (`assets/spy-cart-handoff.js`, `snippets/spy-rebuy-widget-templates.liquid`):
+
+- **Picker (final, 9 Nov):** Rebuy's own list, every variant title, sizes and twin records included. Sold-out
+  rows stay disabled and greyed out, as Rebuy's template already made them. The one change is their text: the
+  theme's "Sold out" (`content.product_badge_sold_out`, Liquid `| t | json | escape` inside the raw template)
+  instead of Rebuy's hard-coded " - OOS". Template only, no script.
+- `keepChosenTab()` puts the empty-cart tab back on the shopper's tab (Rebuy's remembered click, else the first)
+  once it has products again. A shopper's click passes through; Rebuy's own jumps (`remember: false`) don't count.
+
+How the picker got there:
+
+- 5 Nov: a script (`variantChoices()`) listed choices by the PDP's rules: one per lens and real size, twins
+  merged, lens name only, sold-out rows left out. Discord SMB (one lens in stock) lost its picker.
+- 6 Nov, Goran: "I think the dropdown is needed. but I mean the dropdown item's color text is not good for
+  customers". Sold-out lenses came back, greyed out with "(Sold out)". 67 frames stored twice as one colour
+  lost their picker.
+- 9 Nov, Goran asked "how can I select the different size product on mini cart?" (the labels left the size
+  out when a frame has one), then: "reverse the code. apply only the outofstock state disable logic." The
+  script is gone; the template is back to Rebuy's list with the sold-out text above.
+
+| | Discord Soft Matte Black, at the screenshot's stock |
+|---|---|
+| Live (Rebuy) | Medium Large / Happy Boost Polar with Black Mirror - OOS · Medium Large / Happy Gray Green - OOS · Medium Large / Happy Gray Green Polar - OOS · Medium-Large / Happy Gray Green - OOS · **Medium-Large / Happy Gray Green Polar** |
+| Now (9 Nov) | Medium Large / Happy Boost Polar with Black Mirror (Sold out) · Medium Large / Happy Gray Green (Sold out) · Medium Large / Happy Gray Green Polar (Sold out) · Medium-Large / Happy Gray Green (Sold out) · **Medium-Large / Happy Gray Green Polar** |
+
+Checks:
+
+- 9 Nov, picker: Vue 2.7.16 compiles both templates with 0 errors, with the Liquid tag as Shopify prints it
+  (`&quot;Sold out&quot;`). Rendered with real variants: Discord SMB 5 rows, 4 disabled "(Sold out)", the
+  in-stock one selected; Flynn 5050 Matte Black 4 rows with their sizes, 3 disabled; a title with "&" prints "&".
+  **Not on the preview yet:** the CLI store login is gone (9 Nov), so 190307041587 still holds the 6 Nov
+  files.
+- 9 Nov, browser check (Goran: "check that minicart don't have a code error"): the local snippet and script
+  were loaded into the preview page in Goran's Chrome (a file input), and the templates were swapped into
+  `script#rebuy-widget-<id>` 3.5 s into the load, before Rebuy read them. Rebuy (Vue 2.7.16) built the cart from
+  them: You Might Also Like in its 2 x 2 grid, Discord SMB 5 rows with 4 disabled "(Sold out)", Bowery 4 rows
+  with 3 disabled, one-variant cards without a picker. 0 console errors and no Vue warnings through page load,
+  Rebuy start-up and cart open. The script parses in the browser. Not run: the empty-cart tabs and + ADD,
+  because the cart held Goran's Cyrus Switch (x1, then x2 from another tab; left as it was). The connection was
+  slow: rebuy.js timed out once (30 s) and Rebuy started 46-90 s after load.
+- 5–6 Nov, tab: preview 190307041587 in Goran's Chrome with cart 38089: add → MEN empty → GOGGLES while the item
+  is in the cart (right); "−" → back on MEN (5 runs; 2.3 s after the cart emptied in the timed run, 0.75 s after
+  MEN had its product again); a clicked GOGGLES stays through re-renders; 0 console errors. The same steps on
+  the live theme end on GOGGLES.
+- Not done: 768 / 390 screenshots. The window is maximized, so resizing did nothing, and the storefront refuses
+  frames.
+
+Data, reported only:
+
+- Rebuy's copy of YS008005 has no stock tracking, so Rebuy counts it in stock and it is the MEN tab's only
+  product. Shopify tracks it at 0 with "deny" and its product JSON says sold out, yet `/cart/add.js` accepted it.
+  Shopify has 4 other men's products in stock that Rebuy leaves out, so Rebuy's product sync is behind Shopify.
+- Shopify stock on 5 Nov: men's 4 of 183 active products, women's 0 of 7, goggles 0 of 228, eyeglasses 0 of 242.
+
+Not committed, not pushed. Preview 190307041587 is for review; 190306976051 is an unused duplicate of live
+made by a retried call (delete on Goran's yes).
