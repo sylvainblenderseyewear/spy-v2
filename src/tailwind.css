@@ -1304,7 +1304,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
     will-change: transform;
   }
 }
-/* Arrows: 46px round buttons with an orange chevron, bottom-left of the stage.
+/* Arrows: 40px round buttons with an orange chevron, bottom-left of the stage.
    Source has them 24px in from the stage edge, 2px apart, centres 37px above the
    stage bottom. Horizon centred them over the slide, covering the product. */
 [data-testid="product-information"] slideshow-arrows {
@@ -1322,8 +1322,8 @@ header-component .menu-list__link[href*="/blogs/journal"] {
      blue. We set explicit colours, so the blend has to go. */
   mix-blend-mode: normal !important;
 }
-/* Source: 2.5rem box, 18px radius, white, soft shadow (not a border), #f27e37
-   chevron at .75 opacity, and 0.5rem between the two buttons. */
+/* Site-wide carousel arrow (QA, 9 Nov): 2.5rem white circle, soft shadow, orange
+   chevron. 0.5rem between the two buttons. */
 [data-testid="product-information"] slideshow-arrows .slideshow-control {
   display: flex !important;
   align-items: center;
@@ -1334,24 +1334,20 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   min-height: 2.5rem !important;
   padding: 0 !important;
   border: 0 !important;
-  border-radius: 18px !important;
+  border-radius: 50% !important;
   background: #fff !important;
-  box-shadow: 0 0 9px 0 rgba(119, 119, 119, 0.1);
+  box-shadow: 0 0 9px 0 rgba(119, 119, 119, 0.35);
   color: var(--color-spy-orange-ui) !important;
   transition: box-shadow 0.3s cubic-bezier(0.5, 0.25, 0, 1);
   pointer-events: auto;
 }
 [data-testid="product-information"] slideshow-arrows .slideshow-control:hover,
 [data-testid="product-information"] slideshow-arrows .slideshow-control:focus-visible {
-  box-shadow: 0 0 9px 0 rgba(119, 119, 119, 0.4);
+  box-shadow: 0 0 9px 0 rgba(119, 119, 119, 0.6);
 }
 [data-testid="product-information"] slideshow-arrows .slideshow-control svg {
   width: 1.25rem !important;
   height: 1.25rem !important;
-  opacity: 0.75;
-}
-[data-testid="product-information"] slideshow-arrows .slideshow-control:hover svg {
-  opacity: 1;
 }
 
 /* ── Info-column rhythm ───────────────────────────────────────────────────
@@ -2392,8 +2388,8 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   padding-bottom: 1.5rem; /* 24px */
 }
 
-/* Arrows ride the viewport edge, half off-screen, the way slick leaves them:
-   35px circles, orange glyph on white, pulled 14px past the page edge. */
+/* Arrows ride the viewport edge the way slick leaves them, pulled 14px past the
+   page edge. The button is the site-wide 40px circle (QA, 9 Nov). */
 [data-template='page.watermen'] .resource-list__carousel slideshow-arrows {
   padding-inline: 0;
   margin-inline: -0.875rem; /* -14px, no container padding under 769 */
@@ -2406,15 +2402,25 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 }
 
 [data-template='page.watermen'] .resource-list__carousel .slideshow-control {
-  width: 2.1875rem; /* 35px */
-  height: 2.1875rem;
+  width: 2.5rem; /* 40px */
+  height: 2.5rem;
   min-width: 0;
   min-height: 0;
   border: 0;
   border-radius: 50%;
   background: #fff;
   color: var(--color-spy-orange-ui);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-spy-orange-ui) 60%, transparent);
+  box-shadow: 0 0 9px 0 rgb(119 119 119 / 0.35);
+  transition: box-shadow 0.3s;
+}
+
+[data-template='page.watermen'] .resource-list__carousel .slideshow-control:is(:hover, :focus-visible) {
+  box-shadow: 0 0 9px 0 rgb(119 119 119 / 0.6);
+}
+
+[data-template='page.watermen'] .resource-list__carousel .slideshow-control svg {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 /* The overhang must not open a horizontal scrollbar. */
@@ -2441,8 +2447,9 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 }
 
 /* ── LENS BENEFITS carousel ─────────────────────────────────────────────
-   Source .hbc-carousel: one 1200px slide with no peek, 50px white arrows
-   inset 20px, and square dots sitting 20px off the foot of the slide. */
+   Source .hbc-carousel: one 1200px slide with no peek, arrows inset 20px, and
+   square dots sitting 20px off the foot of the slide. The arrows are the
+   site-wide 40px circle (QA, 9 Nov), not the source's 50px white squares. */
 [data-template='page.watermen'] .section-carousel .carousel-content slideshow-slides > .card {
   width: 100%;
 }
@@ -2452,12 +2459,26 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 }
 
 [data-template='page.watermen'] .section-carousel .slideshow-control {
-  width: 3.125rem; /* 50px */
-  height: 3.125rem;
-  border-radius: 0;
-  background: rgb(255 255 255 / 0.9);
-  box-shadow: 0 2px 10px rgb(0 0 0 / 0.1);
-  color: #000;
+  width: 2.5rem; /* 40px */
+  height: 2.5rem;
+  /* Horizon's 44px touch-target minimum would stretch it */
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 9px 0 rgb(119 119 119 / 0.35);
+  color: var(--color-spy-orange-ui);
+  transition: box-shadow 0.3s;
+}
+
+[data-template='page.watermen'] .section-carousel .slideshow-control:is(:hover, :focus-visible) {
+  box-shadow: 0 0 9px 0 rgb(119 119 119 / 0.6);
+}
+
+[data-template='page.watermen'] .section-carousel .slideshow-control svg {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 /* Source keeps both arrows drawn at either end; ours hides a disabled one.
@@ -2610,19 +2631,23 @@ product-recommendations slideshow-arrows {
   mix-blend-mode: normal !important;
 }
 
-/* Arrows: 35px white disc, orange glyph, same shadow as the gallery pair */
+/* Arrows: the site-wide 40px white circle with an orange chevron (QA, 9 Nov) */
 product-recommendations .slideshow-control {
   /* min-width is var(--minimum-touch-target) = 44px, which clamps width up; clear both.
-     35px still clears the 24px WCAG 2.2 AA target size. */
+     40px still clears the 24px WCAG 2.2 AA target size. */
   min-width: 0 !important;
   min-height: 0 !important;
-  width: 2.1875rem !important;
-  height: 2.1875rem !important;
+  width: 2.5rem !important;
+  height: 2.5rem !important;
   border: 0 !important;
-  border-radius: 18px !important;
+  border-radius: 50% !important;
   background: #fff !important;
   color: var(--color-spy-orange-ui) !important;
-  box-shadow: 0 0 9px 0 rgb(119 119 119 / 0.1);
+  box-shadow: 0 0 9px 0 rgb(119 119 119 / 0.35);
+  transition: box-shadow 0.3s;
+}
+product-recommendations .slideshow-control:is(:hover, :focus-visible) {
+  box-shadow: 0 0 9px 0 rgb(119 119 119 / 0.6);
 }
 product-recommendations .slideshow-control svg {
   width: 1.25rem;
@@ -3395,6 +3420,45 @@ html .spy-faq-search-input {
   .yotpo-pictures-widget .yotpo-slider-title.yotpo-slider-title:not(#\#) {
     font-size: 30px !important;
   }
+}
+
+/* Gallery arrows: the site-wide carousel arrow (QA, 9 Nov) in place of Yotpo's
+   full-height white bars. The glyph stays Yotpo's icon font, now orange. */
+.yotpo-pictures-widget :is(.yotpo-icon-left-arrow-light, .yotpo-icon-right-arrow-light):not(#\#) {
+  top: 50% !important;
+  bottom: auto !important;
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  margin-top: -1.25rem !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  box-shadow: 0 0 9px 0 rgb(119 119 119 / 0.35) !important;
+  color: var(--color-spy-orange-ui) !important;
+  opacity: 1 !important;
+  transition: box-shadow 0.3s;
+}
+
+.yotpo-pictures-widget .yotpo-icon-left-arrow-light:not(#\#) {
+  left: 5px !important;
+}
+
+/* Yotpo hangs this one off the right edge's zero-width wrapper */
+.yotpo-pictures-widget .yotpo-icon-right-arrow-light:not(#\#) {
+  left: calc(-2.5rem - 5px) !important;
+}
+
+.yotpo-pictures-widget :is(.yotpo-icon-left-arrow-light, .yotpo-icon-right-arrow-light):not(#\#):hover {
+  box-shadow: 0 0 9px 0 rgb(119 119 119 / 0.6) !important;
+}
+
+.yotpo-pictures-widget :is(.yotpo-icon-left-arrow-light, .yotpo-icon-right-arrow-light):not(#\#)::before {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin-top: 0 !important;
+  font-size: 1.25rem !important;
+  line-height: 2.5rem !important;
 }
 
 /* ── Yotpo photo gallery pop-up ──────────────────────────────────────────

@@ -88,27 +88,24 @@
       </div>
 
       {%- comment -%}
-        Source arrows: 51px wide (35 + 8 padding each side), full height, 75% white ground,
-        glyph #f27e37 at 75%. The glyph is FontAwesome's angle-left/right; the SVG below
-        redraws it at its measured ink box — 0.325em wide by 0.5563em tall, 45 degree legs —
-        so 15.6x26.7 at the desktop 48px step and 10.4x17.8 at the 32px one.
+        Site-wide carousel arrow (QA, 9 Nov): 40px white circle with an orange chevron,
+        centred on the strip, in place of the source's full-height white bars.
       {%- endcomment -%}
       <button
         type="button"
-        class="absolute inset-y-0 -left-px z-[2] flex w-[51px] cursor-pointer items-center justify-center border-0 bg-white/75 px-2 text-[color:var(--color-spy-orange-ui)] disabled:hidden hover:[&_svg]:opacity-100"
+        class="absolute left-[5px] top-1/2 z-[2] -translate-y-1/2 [display:flex] h-10 w-10 cursor-pointer items-center justify-center rounded-full border-0 bg-white p-0 text-spy-orange-ui shadow-[0_0_9px_0_rgba(119,119,119,0.35)] transition-shadow hover:shadow-[0_0_9px_0_rgba(119,119,119,0.6)] disabled:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-spy-orange-ui"
         data-spy-strip-prev
         aria-label="{{ 'accessibility.slideshow_previous' | t }}"
       >
-        <svg class="block h-[17.8px] w-[10.4px] opacity-75 min-[992px]:h-[26.7px] min-[992px]:w-[15.6px]" viewBox="0 0 156 267" fill="none" aria-hidden="true"><path d="M145 11L22.5 133.5L145 256" stroke="currentColor" stroke-width="32"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <button
         type="button"
-        class="absolute inset-y-0 -right-px z-[2] flex w-[51px] cursor-pointer items-center justify-center border-0 bg-white/75 px-2 text-[color:var(--color-spy-orange-ui)] disabled:hidden hover:[&_svg]:opacity-100"
+        class="absolute right-[5px] top-1/2 z-[2] -translate-y-1/2 [display:flex] h-10 w-10 cursor-pointer items-center justify-center rounded-full border-0 bg-white p-0 text-spy-orange-ui shadow-[0_0_9px_0_rgba(119,119,119,0.35)] transition-shadow hover:shadow-[0_0_9px_0_rgba(119,119,119,0.6)] disabled:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-spy-orange-ui"
         data-spy-strip-next
         aria-label="{{ 'accessibility.slideshow_next' | t }}"
       >
-        {%- comment -%} pl matches the source's .slick-next::before padding-left, which nudges the glyph right {%- endcomment -%}
-        <svg class="block h-[17.8px] w-[13.6px] pl-[3.2px] opacity-75 min-[992px]:h-[26.7px] min-[992px]:w-[18.8px]" viewBox="0 0 156 267" fill="none" aria-hidden="true"><path d="M11 11L133.5 133.5L11 256" stroke="currentColor" stroke-width="32"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </div>
   </div>

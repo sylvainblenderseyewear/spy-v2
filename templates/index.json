@@ -445,7 +445,7 @@
         "arrows_tablet": false,
         "arrows_desktop": false,
         "dots_mobile": true,
-        "arrow_size": 35,
+        "arrow_size": 40,
         "margin_top": 0,
         "margin_bottom": 0
       }
@@ -669,7 +669,7 @@
         "arrows_tablet": true,
         "arrows_desktop": false,
         "dots_mobile": true,
-        "arrow_size": 35,
+        "arrow_size": 40,
         "margin_top": 0,
         "margin_bottom": 0
       }
