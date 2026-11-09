@@ -4,8 +4,10 @@
   empty-cart tabs.
 
   Rebuy reads a widget's template from script#rebuy-widget-<id>. These are
-  Rebuy's own default templates (cart widget, tabbed widget) with one change:
-  the title link. Everything else is styled in src/tailwind.css (#rebuy-cart).
+  Rebuy's own default templates (cart widget, tabbed widget) with two changes:
+  the title link, and the variant select's sold-out rows, which say the theme's
+  "Sold out" instead of Rebuy's " - OOS". Everything else is styled in
+  src/tailwind.css (#rebuy-cart).
   "You Might Also Like" also shows one card per model, like the Figma: the
   widget asks Rebuy for 8 and the loop keeps the first 4 different models,
   topping up with other colourways only when there are fewer.
@@ -171,13 +173,14 @@ v-bind:class="['widget-type-' + config.type.replace('_','-'), 'widget-display-' 
                             v-bind:aria-label="'variant of ' + product.title"
                             v-model="product.selected_variant_id"
                             v-on:change="selectVariant(product)">
+                            <!-- Sold out: disabled, with the theme's "Sold out" instead of Rebuy's " - OOS" -->
                             <option
                                 v-for="variant in product.variants"
                                 class="rebuy-product-options__option"
                                 :class="{ 'rebuy-product-options__option--oos' : !variantAvailable(variant) }"
                                 v-bind:value="variant.id"
                                 :disabled="!variantAvailable(variant)"
-                                v-html="formatVariantOptionTitle(variant)">
+                                v-html="variant.title + (variantAvailable(variant) ? '' : ' (' + {% endraw %}{{ 'content.product_badge_sold_out' | t | json | escape }}{% raw %} + ')')">
                             </option>
                         </select>
 
@@ -504,13 +507,14 @@ aria-label="Tabbed product recommendations">
                         v-bind:aria-label="'variant of ' + product.title"
                         v-model="product.selected_variant_id"
                         v-on:change="selectVariant(product)">
+                        <!-- Sold out: disabled, with the theme's "Sold out" instead of Rebuy's " - OOS" -->
                         <option
                             v-for="variant in product.variants"
                             class="rebuy-product-options__option"
                             :class="{ 'rebuy-product-options__option--oos' : !variantAvailable(variant) }"
                             v-bind:value="variant.id"
                             :disabled="!variantAvailable(variant)"
-                            v-html="formatVariantOptionTitle(variant)">
+                            v-html="variant.title + (variantAvailable(variant) ? '' : ' (' + {% endraw %}{{ 'content.product_badge_sold_out' | t | json | escape }}{% raw %} + ')')">
                         </option>
                     </select>
 
