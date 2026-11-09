@@ -2389,7 +2389,7 @@ header-component .menu-list__link[href*="/blogs/journal"] {
 }
 
 /* Arrows ride the viewport edge the way slick leaves them, pulled 14px past the
-   page edge. The button is the site-wide 40px circle (QA, 9 Nov). */
+   page edge. The button itself comes from the rail rule below. */
 [data-template='page.watermen'] .resource-list__carousel slideshow-arrows {
   padding-inline: 0;
   margin-inline: -0.875rem; /* -14px, no container padding under 769 */
@@ -2401,11 +2401,19 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   }
 }
 
-[data-template='page.watermen'] .resource-list__carousel .slideshow-control {
+/* Every Horizon rail (Watermen, tech pages, ANSI) gets the site-wide 40px
+   circle (QA, 9 Nov). The `>` keeps it off the card image arrows deeper in.
+   Horizon blends the pair with `difference`, which turns the white disc black. */
+.resource-list__carousel > slideshow-container > slideshow-arrows {
+  mix-blend-mode: normal;
+}
+
+.resource-list__carousel > slideshow-container > slideshow-arrows .slideshow-control {
   width: 2.5rem; /* 40px */
   height: 2.5rem;
   min-width: 0;
   min-height: 0;
+  padding: 0;
   border: 0;
   border-radius: 50%;
   background: #fff;
@@ -2414,11 +2422,11 @@ header-component .menu-list__link[href*="/blogs/journal"] {
   transition: box-shadow 0.3s;
 }
 
-[data-template='page.watermen'] .resource-list__carousel .slideshow-control:is(:hover, :focus-visible) {
+.resource-list__carousel > slideshow-container > slideshow-arrows .slideshow-control:is(:hover, :focus-visible) {
   box-shadow: 0 0 9px 0 rgb(119 119 119 / 0.6);
 }
 
-[data-template='page.watermen'] .resource-list__carousel .slideshow-control svg {
+.resource-list__carousel > slideshow-container > slideshow-arrows .slideshow-control svg {
   width: 1.25rem;
   height: 1.25rem;
 }
