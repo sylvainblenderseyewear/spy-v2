@@ -176,22 +176,53 @@ function dropCents(vm) {
   vm.$forceUpdate();
 }
 
-function dropCartCents() {
+/**
+ * Rebuy reloads the empty-cart tabs after each cart change. If the open tab
+ * comes back empty (its product is in the cart, or a request failed), Rebuy
+ * jumps to the next tab and never jumps back, so removing a MEN item left the
+ * empty cart on GOGGLES. Go back to the shopper's tab once it has products:
+ * the last one they picked, else the first.
+ */
+function keepChosenTab(widget) {
+  const setTab = widget?.setTabbedWidgetActiveTab;
+  if (typeof setTab !== 'function') return;
+
+  if (!setTab.spyChosen) {
+    // Rebuy's own jumps pass remember: false; any other call is the shopper
+    const wrapped = (index, options = {}) => {
+      if (options.remember !== false) widget.spyChosenTab = index;
+      return setTab.call(widget, index, options);
+    };
+    wrapped.spyChosen = true;
+    widget.setTabbedWidgetActiveTab = wrapped;
+  }
+
+  const chosen = widget.getTabbedWidgetRememberedTabIndex?.() ?? widget.spyChosenTab ?? 0;
+  if (widget.data?.active_tab_index === chosen) return;
+  if (!widget.getTabbedWidgetTabs?.()[chosen]?.products?.length) return;
+
+  widget.setTabbedWidgetActiveTab(chosen, { remember: false });
+}
+
+function patchCart() {
   const cart = document.querySelector('#rebuy-cart');
   if (!cart?.querySelector('.spy-mc')) return;
 
   dropCents(cart.__vue__);
   // Look inside the cart: the theme's template script carries the same id
   for (const widget of window.Rebuy?.widgets || []) {
-    if (cart.querySelector(`[id="rebuy-widget-${widget.id}"]`)) dropCents(widget.View?.vue);
+    if (!cart.querySelector(`[id="rebuy-widget-${widget.id}"]`)) continue;
+
+    dropCents(widget.View?.vue);
+    keepChosenTab(widget);
   }
 }
 
-function watchCartCents() {
+function watchCart() {
   const cart = document.querySelector('#rebuy-cart');
   if (!cart || cart.spyCentsWatch) return;
   cart.spyCentsWatch = true;
-  dropCartCents();
+  patchCart();
 
   // Widgets mount later (cart fills, empties), so check again after each render
   let queued = false;
@@ -200,11 +231,11 @@ function watchCartCents() {
     queued = true;
     requestAnimationFrame(() => {
       queued = false;
-      dropCartCents();
+      patchCart();
     });
   }).observe(cart, { childList: true, subtree: true });
 }
 
-if (document.querySelector('#rebuy-cart')?.__vue__) watchCartCents();
-document.addEventListener('rebuy:smartcart.ready', watchCartCents);
-document.addEventListener('rebuy:smartcart.show', watchCartCents);
+if (document.querySelector('#rebuy-cart')?.__vue__) watchCart();
+document.addEventListener('rebuy:smartcart.ready', watchCart);
+document.addEventListener('rebuy:smartcart.show', watchCart);
