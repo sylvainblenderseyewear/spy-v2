@@ -1163,5 +1163,8 @@ Data, reported only:
   Shopify has 4 other men's products in stock that Rebuy leaves out, so Rebuy's product sync is behind Shopify.
 - Shopify stock on 5 Nov: men's 4 of 183 active products, women's 0 of 7, goggles 0 of 228, eyeglasses 0 of 242.
 
-Not committed, not pushed. Preview 190307041587 is for review; 190306976051 is an unused duplicate of live
-made by a retried call (delete on Goran's yes).
+**Pushed 9 Nov** on Goran's "commit and push": `0cfd03e` (tab), `deeb101` (picker), `e8b124e` (this record).
+The live theme then served both new templates (the Liquid tag printed `&quot;Sold out&quot;`) and the script with
+`keepChosenTab`. In the live empty cart the MEN tab showed Discord SMB with 4 disabled "(Sold out)" rows, and the
+console had 0 errors. Previews 190307041587 (review copy, now old) and 190306976051 (unused duplicate of live)
+can be deleted on Goran's yes.
