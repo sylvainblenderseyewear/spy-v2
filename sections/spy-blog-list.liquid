@@ -5,8 +5,9 @@
     container   15px gutters: 540 · 720 (768) · 960 (992) · 1440 (1200)
                 — the 1200 step is the 1410 design width plus both gutters, so the cards
                   line up with the rest of the site's wide pages
-    search      #f8f8f8 box, 16px pad, 48px under the hero, 172x36 white field,
-                1px #1d2a2b border, square, 13/18.2 text, icon 8px in from the left
+    search      #f8f8f8 box, 16px pad, 48px under the hero, 36px white field,
+                1px #1d2a2b border, square, 13/18.2 text, icon 8px in from the left.
+                Full grid width, as QA asked on 9 Nov 2026 (the source box is 172px)
     grid        Bootstrap row: -15px pull, 15px per column, 24px row gap, 80px above
     columns     1 under 992px · 3 from 992 · 4 from 1200
     card        square thumbnail on #f8f8f8, text block 16px under it,
@@ -27,7 +28,7 @@
   {{ section.shopify_attributes }}
 >
   {%- if section.settings.show_search -%}
-    <div class="mx-auto mt-12 w-fit gap-4 bg-spy-tile p-4 [display:flex]">
+    <div class="mt-12 bg-spy-tile p-4">
       <div class="relative">
         <label class="sr-only" for="spy-blog-search-{{ section.id }}">
           {{- section.settings.search_placeholder -}}
@@ -35,7 +36,7 @@
         {% comment %} rounded-none: Horizon's base.css rounds inputs 4px, the source is square {% endcomment %}
         <input
           id="spy-blog-search-{{ section.id }}"
-          class="block w-[172px] rounded-none border border-spy-ink bg-white py-2 pl-8 pr-1 text-[13px] leading-[18.2px] text-spy-ink placeholder:text-spy-label focus:outline-none focus-visible:ring-2 focus-visible:ring-spy-orange-ui"
+          class="block w-full rounded-none border border-spy-ink bg-white py-2 pl-8 pr-1 text-[13px] leading-[18.2px] text-spy-ink placeholder:text-spy-label focus:outline-none focus-visible:ring-2 focus-visible:ring-spy-orange-ui"
           type="search"
           name="q"
           value=""
