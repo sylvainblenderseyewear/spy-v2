@@ -4,7 +4,7 @@
   // The PDP column is a sticky stacking context, so a fixed drawer left inside it
   // still ranks below the header and gets painted over. Move it to <body>, where
   // its z-index counts page-wide.
-  const portal = (drawer) => {
+  const portal = (drawer, settle = true) => {
     if (drawer.parentElement === document.body) return;
     // A re-render in the editor would otherwise leave the old copy behind.
     if (drawer.id) {
@@ -14,14 +14,15 @@
     }
     document.body.appendChild(drawer);
     // Moving the node drops its pending style, so settle it before the class flips.
-    void drawer.offsetWidth;
+    if (settle) void drawer.offsetWidth;
   };
 
   const portalAll = () =>
     document.querySelectorAll('[data-spy-drawer]').forEach((d) => {
       // An old copy a fresh one just replaced: putting it back would drop the fresh one
       if (!d.isConnected) return;
-      portal(d);
+      // Closed drawers have no class flip coming, so skip the forced layout while the page builds
+      portal(d, false);
       if (!('open' in d.dataset)) d.inert = true;
     });
 
