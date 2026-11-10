@@ -12,6 +12,8 @@
   @param {string} [product_view_context] - context passed to the view event
   @param {string} [card_per] - 'model' or 'colourway', beats the block setting (colourway PLPs)
   @param {object} [card_variant] - colourway to show in colourway mode, e.g. the lens that fits the page
+  @param {string} [image_loading] - 'eager' for the first row, else lazy
+  @param {string} [image_fetchpriority] - 'high' for the first card
 
   @example
   {% content_for 'block',
@@ -31,7 +33,9 @@
   block: block,
   product_view_context: product_view_context,
   card_per: card_per,
-  variant: card_variant
+  variant: card_variant,
+  image_loading: image_loading,
+  image_fetchpriority: image_fetchpriority
 -%}
 
 {% schema %}

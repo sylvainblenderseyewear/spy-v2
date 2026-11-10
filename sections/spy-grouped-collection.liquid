@@ -307,6 +307,16 @@
                 endfor
                 assign card_variant = fit_live | default: fit_any | default: first_live | default: product.selected_or_first_available_variant
               endif
+
+              # The first row is the phone LCP, so fetch it with the page, not after layout
+              assign card_loading = 'lazy'
+              assign card_priority = 'auto'
+              if pager.current_page == 1 and card_index < 4
+                assign card_loading = 'eager'
+                if card_index == 0
+                  assign card_priority = 'high'
+                endif
+              endif
             -%}
 
             <li
@@ -326,7 +336,9 @@
                 image_sizes: image_sizes,
                 product_view_context: product_view_context,
                 card_per: card_per,
-                card_variant: card_variant
+                card_variant: card_variant,
+                image_loading: card_loading,
+                image_fetchpriority: card_priority
               %}
             </li>
 

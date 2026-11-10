@@ -25,6 +25,8 @@
   @param {string} [product_view_context] - context passed to the view event
   @param {string} [card_per] - 'model' or 'colourway', beats the block setting
   @param {object} [variant] - colourway to show, priced on its own (colourway PLPs)
+  @param {string} [image_loading] - card image loading, 'lazy' by default
+  @param {string} [image_fetchpriority] - card image priority, 'auto' by default
 
   @example
   {%- render 'spy-grouped-product-card',
@@ -56,6 +58,8 @@
   endif
 
   assign image_sizes = image_sizes | default: '(min-width: 750px) 50vw, 100vw'
+  assign image_loading = image_loading | default: 'lazy'
+  assign image_fetchpriority = image_fetchpriority | default: 'auto'
   assign card_gap_value = block_settings.product_card_gap | default: 16
   assign media = card_variant.featured_media | default: product.featured_media
 
@@ -199,7 +203,12 @@
             {{
               media
               | image_url: width: 1000
-              | image_tag: sizes: image_sizes, widths: '200,300,400,500,600,800,1000', alt: title, loading: 'lazy'
+              | image_tag:
+                sizes: image_sizes,
+                widths: '200,300,400,500,600,800,1000',
+                alt: title,
+                loading: image_loading,
+                fetchpriority: image_fetchpriority
             }}
           {%- else -%}
             {{ 'product-apparel-1' | placeholder_svg_tag }}
