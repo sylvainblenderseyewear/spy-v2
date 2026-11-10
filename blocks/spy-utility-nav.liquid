@@ -77,6 +77,23 @@
             <span slot="signed-out-avatar" class="block w-[18px] h-[18px]">{{- 'spy-fa-user.svg' | inline_asset_content -}}</span>
           {% endif %}
         </shopify-account>
+        <script>
+          (() => {
+            // Phones never show this icon, but a live <shopify-account> pulls Shopify's whole
+            // sign-in stack (~90 requests). Take it out below 992px, put it back if the screen grows.
+            const el = document.currentScript.parentElement.querySelector('shopify-account');
+            const wide = window.matchMedia('(min-width: 992px)');
+            if (!el || wide.matches || window.Shopify?.designMode) return;
+            const spot = document.createComment('shopify-account');
+            el.replaceWith(spot);
+            const back = () => {
+              if (!wide.matches) return;
+              wide.removeEventListener('change', back);
+              spot.replaceWith(el);
+            };
+            wide.addEventListener('change', back);
+          })();
+        </script>
       </div>
     {% endif %}
 
