@@ -43,6 +43,32 @@
 <script>
   (() => {
     const el = document.currentScript.previousElementSibling;
+
+    // The closed phone menu still has layout, so its lazy art loaded with every page.
+    // Park the URL until the menu button is pressed or focused.
+    const holdArt = (root) => {
+      root.querySelectorAll('img[src]').forEach((img) => {
+        img.dataset.src = img.getAttribute('src');
+        img.dataset.srcset = img.getAttribute('srcset') || '';
+        img.removeAttribute('srcset');
+        img.removeAttribute('src');
+      });
+      window.spyPromoArtWake ||= () => {
+        document.querySelectorAll('[data-promo-slot-mobile] img[data-src]').forEach((img) => {
+          if (img.dataset.srcset) img.setAttribute('srcset', img.dataset.srcset);
+          img.setAttribute('src', img.dataset.src);
+          img.removeAttribute('data-src');
+          img.removeAttribute('data-srcset');
+        });
+      };
+      // Bind every time: an editor re-render brings a new menu button
+      document.querySelectorAll('.spy-nav-toggle').forEach((btn) => {
+        ['pointerdown', 'focus', 'click'].forEach((type) =>
+          btn.addEventListener(type, () => window.spyPromoArtWake(), { once: true })
+        );
+      });
+    };
+
     const place = () => {
       const slot = document.querySelector('[data-promo-slot="' + el.dataset.menuPromo + '"]');
       const mobileSlot = document.querySelector('[data-promo-slot-mobile="' + el.dataset.menuPromo + '"]');
@@ -53,7 +79,11 @@
           const copy = el.cloneNode(false);
           copy.removeAttribute('data-shopify-editor-block');
           copy.hidden = false;
-          copy.appendChild(firstLink.cloneNode(true));
+          // Copy through an inert template: a plain cloneNode starts the image download at once
+          const art = document.createElement('template');
+          art.innerHTML = firstLink.outerHTML;
+          holdArt(art.content);
+          copy.appendChild(document.importNode(art.content, true));
           mobileSlot.appendChild(copy);
         }
       }
