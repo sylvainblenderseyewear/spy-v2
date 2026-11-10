@@ -25,10 +25,14 @@
     });
   };
 
+  // Our .yotpo placeholders stay empty until Yotpo renders (never before consent),
+  // so skip the page-wide scans until one holds an element
+  const rendered = () => !!document.querySelector('.yotpo *, .yotpo-pager');
+
   // Batch Yotpo's DOM bursts into one pass per frame; attribute edits don't retrigger childList
   let queued = false;
   new MutationObserver(() => {
-    if (queued) return;
+    if (queued || !rendered()) return;
     queued = true;
     requestAnimationFrame(() => {
       queued = false;
