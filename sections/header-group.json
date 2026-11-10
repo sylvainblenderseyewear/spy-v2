@@ -96,7 +96,7 @@
           "settings": {
             "icon": "🔥",
             "label": "Check out the sale section",
-            "url": ""
+            "url": "/collection/sale"
           },
           "blocks": {}
         }
