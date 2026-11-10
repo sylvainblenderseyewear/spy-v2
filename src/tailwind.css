@@ -3419,7 +3419,7 @@ html .spy-faq-search-input {
    back to Times. :not(#\#) outranks it, and 700 picks our real bold face. */
 .yotpo-pictures-widget .yotpo-slider-title.yotpo-slider-title:not(#\#) {
   font-family: var(--font-heading--family) !important;
-  font-weight: 700 !important;
+  font-weight: 500 !important;
   font-size: 35px !important;
   color: #191919 !important;
 }
