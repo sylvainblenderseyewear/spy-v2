@@ -118,16 +118,20 @@
             {%- endif -%}
 
             {%- if block.settings.hover_image != blank -%}
-              {{
-                block.settings.hover_image
-                | image_url: width: 1200
-                | image_tag:
-                  loading: 'lazy',
-                  alt: '',
-                  sizes: sizes,
-                  widths: '300, 450, 600, 800, 1000, 1200',
-                  class: 'spy-category-tiles__img absolute inset-0 w-full h-full object-cover pointer-events-none opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100'
-              }}
+              {%- comment %} Touch screens never hover, so they get a 1px blank instead of the hover art {% endcomment -%}
+              <picture>
+                <source media="(hover: none)" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+                {{
+                  block.settings.hover_image
+                  | image_url: width: 1200
+                  | image_tag:
+                    loading: 'lazy',
+                    alt: '',
+                    sizes: sizes,
+                    widths: '300, 450, 600, 800, 1000, 1200',
+                    class: 'spy-category-tiles__img absolute inset-0 w-full h-full object-cover pointer-events-none opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100'
+                }}
+              </picture>
             {%- endif -%}
 
             {%- if label != blank -%}
