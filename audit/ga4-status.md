@@ -223,6 +223,18 @@ send you chasing a bug that is not there.
 
 ---
 
+## Staging guard — 5 Nov (written, waiting for Goran's paste)
+
+**Live check, 5 Nov** (store password back on, www.spyoptic.com still SFCC): sgtm `/healthz` and `/healthy` answer 200, and the certificate runs to 16 Dec. The pixel is version 11, needing Analytics + Data sale. **No choice:** the pixel isn't even loaded, 0 hits. **Decline:** 0 hits on two pages. **Accept:** `page_view` + `view_item` through sgtm with `gcs=G111`, status 200. A pixel that loads on Accept still gets the page's earlier events: Shopify "replays" them (shopify.dev, About web pixels), so the landing page counts.
+
+| Change | Why |
+|---|---|
+| The pixel only reports on `spyoptic-com.myshopify.com` (`init.data.shop.myshopifyDomain`, compared case-insensitively). On any other store it queues nothing and never loads gtag.js | The staging store `spydevsylv` runs the same pixel into `G-1F4T2NDY34`, so its test orders land in live reports (open since 23 Sep). The myshopify domain survives the domain switch. A missing domain counts as live, so a Shopify change can't silence production |
+
+`scripts/ga4-pixel-test.mjs`: 54/54 (4 new: staging sends nothing and loads no gtag.js; live still does). **To deploy:** paste into SPY GA4 on production (it becomes version 12) and into the staging store's GA4 pixel, or disconnect that one.
+
+**Still open, admin only:** the reporting time zone (Los Angeles vs Shopify's New York, seen 12 Oct), the Google tag's user-provided data auto-detection (on, seen 12 Oct), team IPs for the internal-traffic rule, the cutover list in §3, and the switch to SPY's property after launch.
+
 ## Polish — 22 Oct (saved by Goran: the store serves version 11, checked 25 Oct)
 
 | Change | Why |

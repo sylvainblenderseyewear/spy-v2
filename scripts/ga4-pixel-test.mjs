@@ -16,12 +16,13 @@ const tick = () => new Promise((r) => setTimeout(r, 0));
 const DOM_EVENTS = ['clicked', 'form_submitted', 'input_blurred', 'input_changed', 'input_focused'];
 
 // A fresh pixel per test, so state never leaks between them
-function load({ cookies = {} } = {}) {
+function load({ cookies = {}, shop } = {}) {
   const handlers = {};
   const privacy = {};
   const store = new Map();
   const docListeners = {};
   const winListeners = {};
+  const scripts = [];
   const on = (list) => (type, fn) => (list[type] = list[type] || []).push(fn);
   const ctx = {
     console,
@@ -31,7 +32,7 @@ function load({ cookies = {} } = {}) {
     __now: 1_000_000,
     document: {
       createElement: () => ({}),
-      head: { appendChild() {} },
+      head: { appendChild: (el) => scripts.push(el.src) },
       visibilityState: 'visible',
       addEventListener: on(docListeners),
     },
@@ -46,7 +47,7 @@ function load({ cookies = {} } = {}) {
     },
     init: {
       customerPrivacy: { analyticsProcessingAllowed: true, marketingAllowed: true, saleOfDataAllowed: true },
-      data: { shop: { paymentSettings: { currencyCode: 'USD' } } },
+      data: { shop: { paymentSettings: { currencyCode: 'USD' }, ...(shop ? { myshopifyDomain: shop } : {}) } },
     },
     api: { customerPrivacy: { subscribe: (name, fn) => (privacy[name] = fn) } },
   };
@@ -72,7 +73,7 @@ function load({ cookies = {} } = {}) {
     (docListeners.visibilitychange || []).forEach((fn) => fn());
   };
   const pagehide = () => (winListeners.pagehide || []).forEach((fn) => fn());
-  return { fire, consent, calls, events, advance, setVisible, pagehide };
+  return { fire, consent, calls, events, advance, setVisible, pagehide, scripts: () => scripts };
 }
 
 const doc = { context: { document: { location: { href: 'https://spyoptic.com/checkouts/cn/TOKEN123/en-us' }, title: 'Checkout', referrer: '' } } };
@@ -406,6 +407,22 @@ const engaged = (p) => p.events().reduce((sum, e) => sum + ((e[2] && e[2].engage
   check('payment_type is the payment method name', pay && pay[2].payment_type === 'Visa', JSON.stringify(pay && pay[2].payment_type));
   await p.fire('checkout_started', checkout('K'));
   check('a new checkout starts again', p.events('begin_checkout').length === 2);
+}
+
+// Only the live store reports: the same code on the staging store stays silent
+{
+  const staging = load({ shop: 'spydevsylv.myshopify.com' });
+  staging.consent(all);
+  await staging.fire('page_viewed', doc);
+  await staging.fire('checkout_completed', checkout('S'));
+  check('staging store: nothing reaches the dataLayer', staging.calls().length === 0, JSON.stringify(staging.calls()));
+  check('staging store: gtag.js never loads', staging.scripts().length === 0, JSON.stringify(staging.scripts()));
+
+  const live = load({ shop: 'spyoptic-com.myshopify.com' });
+  live.consent(all);
+  await live.fire('page_viewed', doc);
+  check('live store: page_view sent', live.events('page_view').length === 1);
+  check('live store: gtag.js loads once', live.scripts().length === 1 && live.scripts()[0].includes('G-1F4T2NDY34'), JSON.stringify(live.scripts()));
 }
 
 console.log(failed ? `\n${failed} failed` : '\nall passed');

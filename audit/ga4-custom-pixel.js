@@ -19,6 +19,14 @@
 const TAGGING_URL = 'https://sgtm.spyoptic.com';
 const TAG_ID = 'G-1F4T2NDY34'; // GT-NS4QG8B8 is the same tag, either works
 
+// Only the live store reports to GA4. On any other store (the staging store
+// spydevsylv) the same code stays silent, so test orders never reach live
+// reports. The myshopify domain keeps its name after the domain switch.
+// If Shopify ever leaves the domain out, keep tracking rather than lose live data.
+const LIVE_SHOP = 'spyoptic-com.myshopify.com';
+const SHOP_DOMAIN = (init && init.data && init.data.shop && init.data.shop.myshopifyDomain) || '';
+const IS_LIVE_SHOP = !SHOP_DOMAIN || SHOP_DOMAIN.trim().toLowerCase() === LIVE_SHOP;
+
 window.dataLayer = window.dataLayer || [];
 
 // Events and page context are held back until the shopper consents, then sent
@@ -32,6 +40,7 @@ const pending = [];
 const PENDING_MAX = 50;
 
 function gtag() {
+  if (!IS_LIVE_SHOP) return;
   let args = arguments;
   const cmd = args[0];
   if (cmd === 'event') args = withEngagement(args);
@@ -146,7 +155,7 @@ let gtagLoaded = false;
 
 // gtag.js is only fetched once there is consent to act on
 function loadGtag() {
-  if (gtagLoaded) return;
+  if (gtagLoaded || !IS_LIVE_SHOP) return;
   gtagLoaded = true;
   const script = document.createElement('script');
   script.async = true;
