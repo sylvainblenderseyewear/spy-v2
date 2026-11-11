@@ -29,10 +29,20 @@
 -%}
 
 {%- unless skip_section -%}
+{%- liquid
+  # Optional backdrop behind the rail (2026 gift guide). Top padding is a share of the card height, like the source
+  assign bg_image = section.settings.background_image
+  assign pad_ratio = section.settings.padding_top_ratio | divided_by: 100.0
+  assign bg_loading = 'lazy'
+  if section.index <= 3
+    assign bg_loading = 'eager'
+  endif
+-%}
 <div
-  class="spy-category-tiles"
+  class="spy-category-tiles{% if bg_image != blank %} relative overflow-hidden{% endif %} pt-[calc(var(--spy-tile-h-sm)*var(--spy-tile-pad))] min-[769px]:pt-[calc(var(--spy-tile-h-md)*var(--spy-tile-pad))] min-[992px]:pt-[calc(var(--spy-tile-h-lg)*var(--spy-tile-pad))]"
   style="
     margin-block: {{ section.settings.margin_top }}px {{ section.settings.margin_bottom }}px;
+    --spy-tile-pad: {{ pad_ratio }};
     --spy-tile-w-sm: {{ w_sm }}vw; --spy-tile-w-md: {{ w_md }}vw; --spy-tile-w-lg: {{ w_lg }}vw;
     --spy-tile-h-sm: {{ h_sm }}vw; --spy-tile-h-md: {{ h_md }}vw; --spy-tile-h-lg: {{ h_lg }}vw;
     --spy-tile-img-w: {{ section.settings.image_width }}%; --spy-tile-img-h: {{ section.settings.image_height }}%;
@@ -42,6 +52,20 @@
   "
   {{ section.shopify_attributes }}
 >
+  {%- if bg_image != blank -%}
+    {%- comment %} Decorative backdrop, cover + centre like the source {% endcomment -%}
+    {{
+      bg_image
+      | image_url: width: 2400
+      | image_tag:
+        loading: bg_loading,
+        alt: '',
+        sizes: '100vw',
+        widths: '800, 1200, 1600, 2000, 2400',
+        class: 'absolute inset-0 w-full h-full object-cover object-center pointer-events-none'
+    }}
+  {%- endif -%}
+
   {%- if section.settings.heading != blank -%}
     <p class="text-[11px] font-bold uppercase tracking-widest text-spy-gray mb-4">
       {{ section.settings.heading }}
@@ -495,6 +519,27 @@
       "unit": "%",
       "default": 90,
       "label": "Image height"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "info": "Fills the whole rail behind the cards (cover, centred)."
+    },
+    {
+      "type": "range",
+      "id": "padding_top_ratio",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "%",
+      "default": 0,
+      "label": "Space above the cards",
+      "info": "Share of the card height. 10 matches the 2026 gift guide."
     },
     {
       "type": "header",
