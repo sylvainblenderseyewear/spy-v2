@@ -119,6 +119,14 @@
     "variant_button_border_width": 1,
     "variant_button_radius": 0,
     "variant_button_width": "equal-width-buttons",
+    "sections": {
+      "password-footer": {
+        "type": "password-footer",
+        "settings": {
+          "background_color": ""
+        }
+      }
+    },
     "content_for_index": [],
     "blocks": {
       "12090905205488370668": {
@@ -181,7 +189,7 @@
       "foreground": "#2c393e",
       "color1": "#6a6c77",
       "color2": "#e5e5e5",
-      "color3": "#f27e37"
+      "color3": "#C05621"
     }
   },
   "presets": {
