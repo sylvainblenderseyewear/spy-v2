@@ -9,160 +9,7 @@
  */
 {
   "sections": {
-    "spy_hero_video": {
-      "type": "spy-feature-link-banner",
-      "settings": {
-        "media_type": "video",
-        "video_url": "https://vimeo.com/1207880633",
-        "video_url_mobile": "https://vimeo.com/1207880633",
-        "video_title": "",
-        "ratio_w": 12,
-        "ratio_h": 5,
-        "ratio_w_mobile": 2,
-        "ratio_h_mobile": 3,
-        "eyebrow": "",
-        "heading": "",
-        "cta_label": "SHOP SUNGLASSES",
-        "link": "shopify://collections/sunglasses",
-        "link_scope": "cta",
-        "cta_style": "solid",
-        "promotion_name": "",
-        "heading_size": 62,
-        "heading_fluid": false,
-        "heading_size_mobile": 26,
-        "heading_color": "",
-        "content_align": "center",
-        "content_valign": "bottom",
-        "text_align": "center",
-        "content_align_mobile": "center",
-        "content_valign_mobile": "bottom",
-        "text_align_mobile": "center",
-        "show_overlay": false,
-        "content_width": "container",
-        "content_max_width": 1140,
-        "margin_top_mobile": 0,
-        "margin_bottom_mobile": 0,
-        "margin_top": 0,
-        "margin_bottom": 0
-      }
-    },
-    "spy_category_tiles_npxaN3": {
-      "type": "spy-category-tiles",
-      "blocks": {
-        "tile_dFjizK": {
-          "type": "tile",
-          "settings": {
-            "image": "shopify://shop_images/snow.webp",
-            "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SNOW-HOVER_jpg.webp",
-            "label": "Snow",
-            "link": "shopify://collections/snow-goggles"
-          }
-        },
-        "tile_Xyd7Pd": {
-          "type": "tile",
-          "settings": {
-            "image": "shopify://shop_images/safety.webp",
-            "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-SAFETY-HOVER_jpg.webp",
-            "label": "Safety",
-            "link": "shopify://collections/safety-sunglasses"
-          }
-        },
-        "tile_qWTqGU": {
-          "type": "tile",
-          "settings": {
-            "label": "",
-            "link": ""
-          }
-        },
-        "tile_AkPFxa": {
-          "type": "tile",
-          "settings": {
-            "image": "shopify://shop_images/fishing.webp",
-            "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-FISHING-HOVER_jpg.webp",
-            "label": "Fishing",
-            "link": "shopify://collections/fishing-sunglasses"
-          }
-        },
-        "tile_ypbPi3": {
-          "type": "tile",
-          "settings": {
-            "image": "shopify://shop_images/lifestyle.webp",
-            "hover_image": "shopify://shop_images/lifestyle-hover.webp",
-            "label": "Lifestyle",
-            "link": "shopify://collections/lifestyle-collection"
-          }
-        },
-        "tile_aydk6r": {
-          "type": "tile",
-          "settings": {
-            "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-CLASSICS.webp",
-            "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-CLASSICS-HOVER.webp",
-            "label": "Classics",
-            "link": "shopify://collections/classics-collection"
-          }
-        },
-        "tile_PtCzT4": {
-          "type": "tile",
-          "settings": {
-            "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-MOTO.webp",
-            "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-MOTO-HOVER.jpg",
-            "label": "Moto",
-            "link": "shopify://collections/moto-goggles"
-          }
-        },
-        "tile_b7znmT": {
-          "type": "tile",
-          "settings": {
-            "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-TRAILV2.webp",
-            "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-TRAIL-HOVER.webp",
-            "label": "Trail",
-            "link": "shopify://collections/trail-collection"
-          }
-        },
-        "tile_TRD7Kn": {
-          "type": "tile",
-          "settings": {
-            "image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-BLUE_LIGHTV2.webp",
-            "hover_image": "shopify://shop_images/25-SPY-Digital-Homepage-ActivityCarousel-BLUELIGHT-HOVER.webp",
-            "label": "Blue Light",
-            "link": "shopify://collections/blue-light-glasses"
-          }
-        }
-      },
-      "block_order": [
-        "tile_dFjizK",
-        "tile_Xyd7Pd",
-        "tile_qWTqGU",
-        "tile_AkPFxa",
-        "tile_ypbPi3",
-        "tile_aydk6r",
-        "tile_PtCzT4",
-        "tile_b7znmT",
-        "tile_TRD7Kn"
-      ],
-      "name": "Category Tiles",
-      "settings": {
-        "heading": "",
-        "columns": 4,
-        "card_width_mobile": "80.5",
-        "card_height_mobile": "110",
-        "card_width_tablet": "30.242",
-        "card_height_tablet": "42.944",
-        "card_width_desktop": "25",
-        "card_height_desktop": "35.972",
-        "image_width": 88,
-        "image_height": 90,
-        "margin_top": 30,
-        "margin_bottom": -50,
-        "transition_speed": 200,
-        "arrow_offset": 1,
-        "title_font": "var(--font-heading--family)",
-        "title_font_weight": "600",
-        "title_font_size": 30,
-        "title_font_size_desktop": "2.083"
-      }
-    },
-    "spy_region_banner": {
+    "gg_crosspoint": {
       "type": "spy-feature-link-banner",
       "settings": {
         "media_type": "image",
@@ -174,98 +21,202 @@
         "ratio_w_mobile": 2,
         "ratio_h_mobile": 3,
         "eyebrow": "",
-        "heading": "BIG ON ATTITUDE. LOW ON PRICE.",
-        "cta_label": "SUPER FLYNN NOW $99",
-        "link": "shopify://collections/flynn",
+        "heading": "",
+        "cta_label": "",
+        "link": "/collections/snow-goggles",
         "link_scope": "banner",
         "cta_style": "solid",
-        "promotion_name": "",
-        "heading_size": 23,
-        "heading_fluid": false,
+        "heading_size": 28,
+        "heading_fluid": true,
         "heading_size_mobile": 26,
-        "heading_color": "",
-        "content_align": "right",
-        "content_valign": "bottom",
-        "text_align": "left",
+        "content_align": "center",
+        "content_valign": "center",
+        "text_align": "",
         "content_align_mobile": "center",
-        "content_valign_mobile": "bottom",
-        "text_align_mobile": "center",
+        "content_valign_mobile": "center",
+        "text_align_mobile": "",
         "show_overlay": false,
         "content_width": "container",
         "content_max_width": 1140,
-        "margin_top_mobile": 48,
+        "margin_top_mobile": 0,
         "margin_bottom_mobile": 0,
-        "margin_top": 8,
-        "margin_bottom": 0
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "image_desktop": "shopify://shop_images/00-Desktop-CrosspointLaunch-FullBanner-1920x800.jpg",
+        "image_mobile": "shopify://shop_images/00-SPYHGG26-Mobile-FullBanner-CrosspointLaunch-800x1200.jpg"
       }
     },
-    "spy_new_arrivals_link": {
-      "type": "section",
+    "gg_rail": {
+      "type": "spy-category-tiles",
       "blocks": {
-        "new_arrivals_link": {
-          "type": "spy-heading",
+        "tile_him": {
+          "type": "tile",
           "settings": {
-            "text": "SHOP NEW ARRIVALS",
-            "link": "shopify://collections/sunglasses",
-            "open_in_new_tab": false,
-            "level": "p",
-            "highlight": "",
-            "highlight_color": "{{ settings.color_palette.color3 }}",
-            "size": 35,
-            "fluid": false,
-            "size_mobile": 35,
-            "weight": "400",
-            "line_height": 140,
-            "letter_spacing": 0,
-            "custom_letter_spacing_mobile": false,
-            "letter_spacing_mobile": 0,
-            "uppercase": false,
-            "text_color": "#1d2a2b",
-            "align": "center",
-            "align_mobile": "",
-            "max_width": 0,
-            "margin_top": 25,
-            "margin_bottom": 40,
-            "margin_top_mobile": 25,
-            "margin_bottom_mobile": 40
-          },
-          "blocks": {}
+            "image": "shopify://shop_images/1-SPYHGG26-CategoryCarousel-ForHim-387x553v2.jpg",
+            "label": "",
+            "link": "shopify://collections/mens-sunglasses"
+          }
+        },
+        "tile_her": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/2-SPYHGG26-CategoryCarousel-ForHer-387x553v2.jpg",
+            "label": "",
+            "link": "shopify://collections/womens-sunglasses"
+          }
+        },
+        "tile_snow": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/3-SPYHGG26-CategoryCarousel-ForSnow-387x553v2.jpg",
+            "label": "",
+            "link": "shopify://collections/snow-goggles"
+          }
+        },
+        "tile_moto": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/4-SPYHGG26-CategoryCarousel-ForMoto-387x553v2.jpg",
+            "label": "",
+            "link": "shopify://collections/moto-goggles"
+          }
+        },
+        "tile_fishing": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/5-SPYHGG26-CategoryCarousel-ForFishing-387x553v2.jpg",
+            "label": "",
+            "link": "shopify://collections/fishing-sunglasses"
+          }
+        },
+        "tile_safety": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/6-SPYHGG26-CategoryCarousel-ForSafety-387x553v2.jpg",
+            "label": "",
+            "link": "shopify://collections/safety-sunglasses"
+          }
+        },
+        "tile_under100": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/7-SPYHGG26-CategoryCarousel-Under100-387x553v2.jpg",
+            "label": "",
+            "link": "/collections/sale-sunglasses"
+          }
         }
       },
       "block_order": [
-        "new_arrivals_link"
+        "tile_him",
+        "tile_her",
+        "tile_snow",
+        "tile_moto",
+        "tile_fishing",
+        "tile_safety",
+        "tile_under100"
       ],
       "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "center",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 0,
-        "section_width": "full-width",
-        "section_height": "fit",
-        "section_height_custom": 50,
-        "background_media": "none",
-        "background_color": "",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": ""
+        "heading": "",
+        "columns": 4,
+        "card_width_mobile": "80.5",
+        "card_height_mobile": "110",
+        "card_width_tablet": "30.242",
+        "card_height_tablet": "42.944",
+        "card_width_desktop": "25",
+        "card_height_desktop": "35.972",
+        "image_width": 88,
+        "image_height": 90,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "transition_speed": 200,
+        "arrow_offset": 1,
+        "title_font": "var(--font-heading--family)",
+        "title_font_weight": "600",
+        "title_font_size": 30,
+        "title_font_size_desktop": "2.083",
+        "background_image": "shopify://shop_images/SPYHGG26-CategoryCarousel-Background-1920x1080.png",
+        "padding_top_ratio": 10
       }
     },
-    "spy_new_arrivals_carousel": {
+    "gg_sun_snow": {
+      "type": "spy-half-banners",
+      "blocks": {
+        "banner_sun": {
+          "type": "banner",
+          "settings": {
+            "image_desktop": "shopify://shop_images/1-SPYHGG26-Desktop-HalfBanner-Sun-1000x800.jpg",
+            "image_alt": "Sunglasses. Shop now",
+            "heading": "",
+            "heading_size": 48,
+            "heading_size_mobile": 26,
+            "cta_label": "",
+            "link": "shopify://collections/sunglasses",
+            "image_mobile": "shopify://shop_images/1-SPYHGG26-Mobile-HalfBanner-Sun-1000x800.jpg"
+          }
+        },
+        "banner_snow": {
+          "type": "banner",
+          "settings": {
+            "image_desktop": "shopify://shop_images/2-SPYHGG26-Desktop-HalfBanner-Snow-1000x800.jpg",
+            "image_alt": "Snow. Shop now",
+            "heading": "",
+            "heading_size": 48,
+            "heading_size_mobile": 26,
+            "cta_label": "",
+            "link": "shopify://collections/snow-goggles",
+            "image_mobile": "shopify://shop_images/2-SPYHGG26-Mobile-HalfBanner-Snow-1000x800.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "banner_sun",
+        "banner_snow"
+      ],
+      "settings": {
+        "columns": 2,
+        "gutter": 0,
+        "margin_top": 0,
+        "margin_bottom": 0
+      }
+    },
+    "gg_murdered_out": {
+      "type": "spy-feature-link-banner",
+      "settings": {
+        "media_type": "image",
+        "video_url": "",
+        "video_url_mobile": "",
+        "video_title": "",
+        "ratio_w": 32,
+        "ratio_h": 10,
+        "ratio_w_mobile": 2,
+        "ratio_h_mobile": 3,
+        "eyebrow": "",
+        "heading": "",
+        "cta_label": "",
+        "link": "/collections/murdered-out-collection",
+        "link_scope": "banner",
+        "cta_style": "solid",
+        "heading_size": 28,
+        "heading_fluid": true,
+        "heading_size_mobile": 26,
+        "content_align": "center",
+        "content_valign": "center",
+        "text_align": "",
+        "content_align_mobile": "center",
+        "content_valign_mobile": "center",
+        "text_align_mobile": "",
+        "show_overlay": false,
+        "content_width": "container",
+        "content_max_width": 1140,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "image_desktop": "shopify://shop_images/3-Desktop-MurdrdOut-FullBanner-1920x600.jpg",
+        "image_mobile": "shopify://shop_images/3-SPYHGG26-Mobile-FullBanner-MurdrdOut-800x1200.jpg"
+      }
+    },
+    "gg_picks_lifestyle": {
       "type": "spy-product-carousel",
       "blocks": {
         "grouped-product-card": {
@@ -365,7 +316,6 @@
               "name": "t:names.product_title",
               "settings": {
                 "title_source": "product",
-                "page_heading": false,
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -424,7 +374,7 @@
         }
       },
       "settings": {
-        "collection": "sunglasses",
+        "collection": "gift-guide-26-lifestyle",
         "use_grouped_card": true,
         "max_products": 5,
         "count_desktop": 5,
@@ -432,7 +382,6 @@
         "count_small": 2,
         "count_mobile": 1,
         "peek": 50,
-        "peek_desktop": 0,
         "track_inset": 16,
         "track_inset_mobile": 0,
         "scroll_desktop": 1,
@@ -447,10 +396,52 @@
         "dots_mobile": true,
         "arrow_size": 40,
         "margin_top": 0,
+        "margin_bottom": 0,
+        "peek_desktop": 0
+      }
+    },
+    "gg_discord_cyrus": {
+      "type": "spy-half-banners",
+      "blocks": {
+        "banner_discord": {
+          "type": "banner",
+          "settings": {
+            "image_desktop": "shopify://shop_images/4-Desktop-Discord-HalfBanner-1000x800.jpg",
+            "image_alt": "Discord. Shop now",
+            "heading": "",
+            "heading_size": 48,
+            "heading_size_mobile": 26,
+            "cta_label": "",
+            "link": "shopify://products/spy-discord-soft-matte-black-sunglasses",
+            "image_mobile": "shopify://shop_images/4-SPYHGG26-Mobile-HalfBanner-Discord-1000x800.jpg"
+          }
+        },
+        "banner_cyrus": {
+          "type": "banner",
+          "settings": {
+            "image_desktop": "shopify://shop_images/5-Desktop-Cyrus-HalfBanner-1000x800.jpg",
+            "image_alt": "Cyrus. Shop now",
+            "heading": "",
+            "heading_size": 48,
+            "heading_size_mobile": 26,
+            "cta_label": "",
+            "link": "shopify://products/spy-cyrus-soft-matte-black-sunglasses",
+            "image_mobile": "shopify://shop_images/5-SPYHGG26-Mobile-HalfBanner-Cyrus-1000x800.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "banner_discord",
+        "banner_cyrus"
+      ],
+      "settings": {
+        "columns": 2,
+        "gutter": 0,
+        "margin_top": 0,
         "margin_bottom": 0
       }
     },
-    "spy_watermen_banner": {
+    "gg_waypoint": {
       "type": "spy-feature-link-banner",
       "settings": {
         "media_type": "image",
@@ -461,35 +452,33 @@
         "ratio_h": 10,
         "ratio_w_mobile": 2,
         "ratio_h_mobile": 3,
-        "image_desktop": "shopify://shop_images/26-SPY-Digital-Homepage-Banner-Week43-Rebar-Desktop-1920x800.jpg",
-        "image_mobile": "shopify://shop_images/26-SPY-Digital-Homepage-Banner-Week43-Rebar-Desktop-1920x800.jpg",
         "eyebrow": "",
-        "heading": "A FORCE OF NATURE",
-        "cta_label": "SHOP REBAR",
-        "link": "shopify://collections/rebar-ansi",
+        "heading": "",
+        "cta_label": "",
+        "link": "shopify://products/spy-waypoint-everblack-sunglasses",
         "link_scope": "banner",
         "cta_style": "solid",
-        "promotion_name": "",
-        "heading_size": 24,
-        "heading_fluid": false,
+        "heading_size": 28,
+        "heading_fluid": true,
         "heading_size_mobile": 26,
-        "heading_color": "",
-        "content_align": "right",
-        "content_valign": "bottom",
-        "text_align": "center",
-        "content_align_mobile": "right",
-        "content_valign_mobile": "bottom",
-        "text_align_mobile": "center",
+        "content_align": "center",
+        "content_valign": "center",
+        "text_align": "",
+        "content_align_mobile": "center",
+        "content_valign_mobile": "center",
+        "text_align_mobile": "",
         "show_overlay": false,
         "content_width": "container",
         "content_max_width": 1140,
-        "margin_top_mobile": 16,
-        "margin_bottom_mobile": 16,
-        "margin_top": 16,
-        "margin_bottom": 16
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "image_desktop": "shopify://shop_images/6-Desktop-Waypoint-FullBanner-1920x600.jpg",
+        "image_mobile": "shopify://shop_images/6-SPYHGG26-Mobile-FullBanner-Waypoint-800x1200.jpg"
       }
     },
-    "spy_watermen_carousel": {
+    "gg_picks_performance": {
       "type": "spy-product-carousel",
       "blocks": {
         "grouped-product-card": {
@@ -589,7 +578,6 @@
               "name": "t:names.product_title",
               "settings": {
                 "title_source": "product",
-                "page_heading": false,
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -648,7 +636,7 @@
         }
       },
       "settings": {
-        "collection": "fishing-sunglasses",
+        "collection": "gift-guide-26-performance",
         "use_grouped_card": true,
         "max_products": 5,
         "count_desktop": 5,
@@ -656,7 +644,6 @@
         "count_small": 2,
         "count_mobile": 1,
         "peek": 50,
-        "peek_desktop": 0,
         "track_inset": 16,
         "track_inset_mobile": 0,
         "scroll_desktop": 1,
@@ -671,166 +658,85 @@
         "dots_mobile": true,
         "arrow_size": 40,
         "margin_top": 0,
-        "margin_bottom": 0
+        "margin_bottom": 0,
+        "peek_desktop": 0
       }
     },
-    "spy_yotpo_gallery": {
-      "type": "section",
-      "blocks": {
-        "widget": {
-          "type": "spy-app-embed",
-          "settings": {
-            "embed": "yotpo_gallery",
-            "code": "",
-            "extra_class": "w-full",
-            "element_id": "",
-            "legacy_id_metafield": "",
-            "legacy_id_preview": "",
-            "gallery_id": "600cb426ea00342fd9db2ca4",
-            "source": "site",
-            "product": "",
-            "mode": "top_rated",
-            "count": 9,
-            "background_color": "transparent",
-            "show_bottomline": true,
-            "show_navigation": true,
-            "autoplay": true,
-            "autoplay_speed": 3000
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "widget"
-      ],
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 0,
-        "section_width": "full-width",
-        "section_height": "fit",
-        "section_height_custom": 50,
-        "background_media": "none",
-        "background_color": "",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 15,
-        "padding-block-end": 15,
-        "custom_class": ""
-      }
-    },
-    "spy_yotpo_reviews": {
-      "type": "section",
-      "blocks": {
-        "widget": {
-          "type": "spy-app-embed",
-          "settings": {
-            "embed": "yotpo_reviews",
-            "code": "<div class=\"yotpo yotpo-reviews-carousel\"  data-background-color=\"transparent\"  data-mode=\"top_rated\"  data-type=\"per_product\"  data-count=\"9\"  data-show-bottomline=\"1\"  data-autoplay-enabled=\"1\"  data-autoplay-speed=\"3000\"  data-show-navigation=\"1\"  data-product-id=\"{{ product.id }}\">&nbsp;</div>",
-            "extra_class": "w-full",
-            "element_id": "",
-            "legacy_id_metafield": "",
-            "legacy_id_preview": "",
-            "gallery_id": "",
-            "source": "site",
-            "product": "",
-            "mode": "top_rated",
-            "count": 9,
-            "background_color": "transparent",
-            "show_bottomline": true,
-            "show_navigation": true,
-            "autoplay": true,
-            "autoplay_speed": 3000
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "widget"
-      ],
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 0,
-        "section_width": "full-width",
-        "section_height": "fit",
-        "section_height_custom": 50,
-        "background_media": "none",
-        "background_color": "",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": ""
-      }
-    },
-    "spy_half_banners": {
+    "gg_megalith_helmets": {
       "type": "spy-half-banners",
       "blocks": {
-        "banner_loyalty": {
+        "banner_megalith": {
           "type": "banner",
           "settings": {
-            "image_desktop": "shopify://shop_images/download.webp",
-            "image_alt": "",
+            "image_desktop": "shopify://shop_images/7-SPYHGG26-Desktop-HalfBanner-Megalith-1000x800.jpg",
+            "image_alt": "Megalith. Shop now",
             "heading": "",
             "heading_size": 48,
             "heading_size_mobile": 26,
-            "cta_label": "LEARN MORE",
-            "link": "shopify://pages/rewards-program",
-            "promotion_name": ""
+            "cta_label": "",
+            "link": "/collections/megalith",
+            "image_mobile": "shopify://shop_images/7-SPYHGG26-Mobile-HalfBanner-Megalith-1000x800.jpg"
           }
         },
-        "banner_boost": {
+        "banner_helmets": {
           "type": "banner",
           "settings": {
-            "image_desktop": "shopify://shop_images/download.jpg",
-            "image_alt": "",
+            "image_desktop": "shopify://shop_images/8-SPYHGG26-Desktop-HalfBanner-Helmets-1000x800.jpg",
+            "image_alt": "Helmets. Shop now",
             "heading": "",
             "heading_size": 48,
             "heading_size_mobile": 26,
-            "cta_label": "SHOP HAPPY BOOST",
-            "link": "shopify://collections/happy-boost",
-            "promotion_name": ""
+            "cta_label": "",
+            "link": "/collections/snow-helmets"
           }
         }
       },
       "block_order": [
-        "banner_loyalty",
-        "banner_boost"
+        "banner_megalith",
+        "banner_helmets"
       ],
       "settings": {
         "columns": 2,
-        "gutter": 15,
+        "gutter": 0,
         "margin_top": 0,
         "margin_bottom": 0
+      }
+    },
+    "gg_sale": {
+      "type": "spy-feature-link-banner",
+      "settings": {
+        "media_type": "image",
+        "video_url": "",
+        "video_url_mobile": "",
+        "video_title": "",
+        "ratio_w": 32,
+        "ratio_h": 10,
+        "ratio_w_mobile": 2,
+        "ratio_h_mobile": 3,
+        "eyebrow": "",
+        "heading": "",
+        "cta_label": "",
+        "link": "/collections/sale-sunglasses",
+        "link_scope": "banner",
+        "cta_style": "solid",
+        "heading_size": 28,
+        "heading_fluid": true,
+        "heading_size_mobile": 26,
+        "content_align": "center",
+        "content_valign": "center",
+        "text_align": "",
+        "content_align_mobile": "center",
+        "content_valign_mobile": "center",
+        "text_align_mobile": "",
+        "show_overlay": false,
+        "content_width": "container",
+        "content_max_width": 1140,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "image_desktop": "shopify://shop_images/9-SPYHGG26-Desktop-FullBanner-Sale-1920x600.jpg",
+        "image_mobile": "shopify://shop_images/9-SPYHGG26-Mobile-FullBanner-Sale-800x1200.jpg"
       }
     },
     "spy_quick_view_modal": {
@@ -842,16 +748,16 @@
     }
   },
   "order": [
-    "spy_hero_video",
-    "spy_category_tiles_npxaN3",
-    "spy_region_banner",
-    "spy_new_arrivals_link",
-    "spy_new_arrivals_carousel",
-    "spy_watermen_banner",
-    "spy_watermen_carousel",
-    "spy_yotpo_gallery",
-    "spy_yotpo_reviews",
-    "spy_half_banners",
+    "gg_crosspoint",
+    "gg_rail",
+    "gg_sun_snow",
+    "gg_murdered_out",
+    "gg_picks_lifestyle",
+    "gg_discord_cyrus",
+    "gg_waypoint",
+    "gg_picks_performance",
+    "gg_megalith_helmets",
+    "gg_sale",
     "spy_quick_view_modal"
   ]
 }
