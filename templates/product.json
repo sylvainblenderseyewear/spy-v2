@@ -34,6 +34,7 @@
             "zoom": false,
             "video_loop": false,
             "hide_variants": true,
+            "show_stickers": true,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -243,7 +244,8 @@
                   "name": "Stock Status",
                   "settings": {
                     "in_stock_label": "In Stock",
-                    "sold_out_label": "Sold Out"
+                    "sold_out_label": "Sold Out",
+                    "unavailable_label": "Unavailable"
                   },
                   "blocks": {}
                 }
@@ -299,6 +301,11 @@
               "name": "Size Chart",
               "settings": {
                 "fallback_label": "Size Chart",
+                "drawings_models": "discord, cyrus, montana, bowery, overhaul, overhaul-xl, region, region-xl",
+                "specs_models": "rebar-ansi",
+                "card_models": "rebar-se-ansi",
+                "label_font": "barlow_condensed_n6",
+                "text_font": "barlow_n4",
                 "eyebrow": "SPY Optic",
                 "title": "Frame Fit\nGuide",
                 "subtitle": "Find your fit using frame specs or learn to measure at home.",
@@ -331,7 +338,40 @@
                 "tip_text": "If you're between sizes, go up — a slightly wider frame is easier to adjust than one that pinches. Our lenses are surfaced for optical clarity edge-to-edge, so coverage won't suffer.",
                 "footer_note": "<p>Measurements may vary slightly by colorway. Questions? <a href=\"/pages/contact\">Chat with our team.</a></p>"
               },
-              "blocks": {}
+              "blocks": {
+                "fit-spec-sheet": {
+                  "type": "_spy-fit-spec-sheet",
+                  "static": true,
+                  "settings": {
+                    "title": "Frame Specifications",
+                    "fit_heading": "Frame Fit",
+                    "fit_text": "<p>The Rebar features a <strong>wide fit profile</strong> engineered for large to extra-large faces, providing optimal coverage and comfort during extended wear.</p>",
+                    "size_heading": "Frame Size",
+                    "size_text": "<p>With a temple length of <strong>147mm</strong>, the Rebar is classified as a large frame, delivering substantial coverage and bold presence.</p>",
+                    "measures_label": "Precise Measurements",
+                    "rows": "Temple Width | 147 | mm\nBridge Width | 18 | mm\nLens Width | 62 | mm",
+                    "tip_label": "Pro Tip:",
+                    "tip_text": "Frame measurements can be found printed on the inside of the temples for easy reference."
+                  },
+                  "blocks": {}
+                },
+                "fit-card": {
+                  "type": "_spy-fit-card",
+                  "static": true,
+                  "settings": {
+                    "title": "Sunglasses Fit Guide",
+                    "fit_heading": "Fit",
+                    "fit_text": "The Rebar SE tends to fit medium to large faces.",
+                    "size_heading": "Size",
+                    "size_text": "With a temple length of 135mm, the Rebar SE is a medium frame.",
+                    "guide_heading": "Size Guide",
+                    "guide_text": "Glasses measurements can be found on the inside of the temples. Check your current shades to compare.",
+                    "rows": "Temple Width | 135mm\nBridge Width | 18mm\nLens Width | 60mm"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": []
             },
             "spy_lens_info_A1": {
               "type": "spy-lens-info",
@@ -404,6 +444,7 @@
               "name": "Notify Me",
               "settings": {
                 "label": "Notify me when back in stock",
+                "use_app": true,
                 "intro": "We will send you an email when the product is back in stock",
                 "email_label": "Email",
                 "consent_text": "I agree to receive a notification by email.",
@@ -523,7 +564,7 @@
             "highlight_color": "{{ settings.color_palette.color3 }}",
             "size": 48,
             "fluid": false,
-            "size_mobile": 48,
+            "size_mobile": 24,
             "weight": "400",
             "line_height": 120,
             "letter_spacing": 0,
@@ -638,6 +679,7 @@
               "name": "t:names.product_title",
               "settings": {
                 "title_source": "group",
+                "page_heading": false,
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -702,6 +744,7 @@
         "product": "{{ closest.product }}",
         "recommendation_type": "related",
         "group_by_model_tag": true,
+        "fallback_collections": "sunglasses, eyeglasses, snow-goggles, moto-goggles, snow-helmets, replacement-lenses, sunglass-cases, gear",
         "layout_type": "carousel",
         "carousel_on_mobile": false,
         "max_products": 10,
