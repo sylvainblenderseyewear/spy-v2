@@ -5273,11 +5273,19 @@ html[data-spy-search-more='loading'] #rebuy-quick-view-dropdown-search .rebuy-qu
   gap: 40px !important;
 }
 
+/* The filter column sticks under the sticky header group and is never taller than
+   the screen, so a long list scrolls inside it. Same 220px footprint as before;
+   spy-rebuy-search.js §7 scrolls the list back to this same 20px gap */
 #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-section {
   position: sticky !important;
-  top: 20px !important;
-  flex: 0 0 220px !important;
-  padding: 0 30px 0 0 !important;
+  top: calc(var(--spy-header-offset, 0px) + 20px) !important;
+  flex: 0 0 210px !important;
+  max-height: calc(100dvh - var(--spy-header-offset, 0px) - 40px) !important;
+  overflow-y: auto !important;
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
+  margin-right: 10px !important;
+  padding: 0 8px 0 0 !important;
 }
 
 #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-section-title {
@@ -5332,6 +5340,12 @@ html[data-spy-search-more='loading'] #rebuy-quick-view-dropdown-search .rebuy-qu
   padding: 0 !important;
 }
 
+/* A shut group is max-height 0 but its list still spills out, unseen. In the scrolling
+   filter column and phone panel that spill was blank space to scroll through */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-list-body:not(.active) {
+  overflow: hidden !important;
+}
+
 #rebuy-search-result-container .rebuy-smart-search-results-page__filter-option-list {
   padding: 4px 0 !important;
 }
@@ -5381,14 +5395,18 @@ html[data-spy-search-more='loading'] #rebuy-quick-view-dropdown-search .rebuy-qu
   padding: 4px 0 !important;
 }
 
+/* The two boxes share the column, however narrow (the To box ran past it) */
 #rebuy-search-result-container .rebuy-smart-search-results-page__filter-price-block {
   display: flex !important;
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
   align-items: center !important;
   gap: 4px !important;
 }
 
 #rebuy-search-result-container .rebuy-smart-search-results-page__filter-price-input {
-  width: 70px !important;
+  width: 100% !important;
+  min-width: 0 !important;
   border: 1px solid var(--color-spy-input-border) !important;
   border-radius: 3px !important;
   padding: 6px 8px !important;
@@ -5653,13 +5671,24 @@ html[data-spy-search-more='loading'] #rebuy-quick-view-dropdown-search .rebuy-qu
   background-color: color-mix(in srgb, var(--color-spy-ink) 70%, transparent) !important;
 }
 
+/* Closed, the panel only slid off screen and Tab still walked through its ~70
+   controls. Hide it once Rebuy's 0.3s slide-out is over; Rebuy sets open filter
+   groups visible itself, so they need it too */
+#rebuy-search-result-container .rebuy-smart-search-results-page__flyout:not(.is-visible),
+#rebuy-search-result-container .rebuy-smart-search-results-page__flyout:not(.is-visible) [class*='__filter-list-body'].active {
+  visibility: hidden !important;
+  transition:
+    left 0.3s ease-in-out,
+    visibility 0s linear 0.3s !important;
+}
+
 @media (max-width: 1024px) {
   #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__main-section {
     gap: 24px !important;
   }
 
   #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-section {
-    flex-basis: 180px !important;
+    flex-basis: 170px !important;
   }
 }
 

@@ -151,6 +151,16 @@
     { {%- for collection in collections -%}"{{ collection.id }}":{{ collection.title | json }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%} }
   </script>
 
+  {%- comment -%} Rebuy lists 30 Collection + Color values at most; the script adds back the colours it left out {%- endcomment -%}
+  <script type="application/json" id="spy-search-filter-values">
+    {"metafield":{{ section.settings.color_filter_metafield | json }},"values":{{ section.settings.color_filter_values | json }}}
+  </script>
+
+  {%- comment -%} Rebuy's results page words that Rebuy has no setting for (assets/spy-rebuy-search.js §8) {%- endcomment -%}
+  <script type="application/json" id="spy-search-texts">
+    {"noFilterResults":{{ section.settings.filters_no_results_label | json }},"removeFilter":{{ section.settings.remove_filter_label | json }}}
+  </script>
+
   <script>
     // Products / Articles tabs. Articles are fetched once, like the source's Search-Content call
     (() => {
@@ -279,6 +289,13 @@
     },
     {
       "type": "text",
+      "id": "filters_no_results_label",
+      "label": "No results line, filters on",
+      "info": "Rebuy results page, when the ticked filters find nothing.",
+      "default": "No products match these filters. Remove a filter or reset them all."
+    },
+    {
+      "type": "text",
       "id": "products_label",
       "label": "Products tab",
       "default": "Products"
@@ -288,6 +305,31 @@
       "id": "articles_label",
       "label": "Articles tab",
       "default": "Articles"
+    },
+    {
+      "type": "header",
+      "content": "Rebuy filters"
+    },
+    {
+      "type": "text",
+      "id": "color_filter_metafield",
+      "label": "Color filter metafield",
+      "info": "namespace.key of Rebuy's Color filter. Rebuy shows 30 Collection and Color values at most, so a broad search can leave colours out.",
+      "default": "sort_by.color"
+    },
+    {
+      "type": "textarea",
+      "id": "color_filter_values",
+      "label": "Color filter values",
+      "info": "One per line. A colour Rebuy left out is added back when the search has products in it. Keep the same as the metafield's choices.",
+      "default": "Black\nBlue\nBrown\nChampagne\nClear\nGold\nGreen\nGrey\nOrange\nPink\nPurple\nRainbow\nRed\nSilver\nTortoise\nWhite\nYellow"
+    },
+    {
+      "type": "text",
+      "id": "remove_filter_label",
+      "label": "Remove filter button",
+      "info": "Read out by screen readers on a ticked filter's ✕. [value] is the filter's name.",
+      "default": "Remove filter: [value]"
     },
     {
       "type": "header",

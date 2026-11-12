@@ -7,7 +7,10 @@
  * 2. /search waits for Rebuy only if Rebuy search ran for this shopper lately,
  *    and gives the page back to the theme results if Rebuy does not show up.
  * 3. More products load on scroll, in the box and on the results page (like Blenders).
- * 4. Filters show names, and their lists stay put when a value is ticked.
+ * 4. Filters show names, their lists stay put when a value is ticked, and colours
+ *    Rebuy's value cap left out still show.
+ * 5. Every new answer starts at page 1, Back and Forward step through the filters,
+ *    filters that find nothing say so, and a ticked row stays under the pointer.
  *
  * The /search decision itself is inline in sections/search-header.liquid, so it
  * lands before the first paint. It reads the same SEEN_KEY.
@@ -18,6 +21,8 @@ const SEEN_KEY = 'spy-rebuy-search';
 // Shopify's script-tag loader starts rebuy.js on the window load event, and its
 // results page was ready 2-5s after that in live tests. Past this, the theme results.
 const RESULTS_TIMEOUT_MS = 10000;
+// Rebuy's loader is in but its big scripts are slow (6-16s on a cold test page): wait this much more
+const RESULTS_GRACE_MS = 15000;
 
 /* ── 1. Model name ──────────────────────────────────────────────────────── */
 
@@ -123,10 +128,16 @@ const forget = () => {
 document.addEventListener('rebuy:smartsearch.quickview.ready', remember);
 document.addEventListener('rebuy:smartsearch.resultsPage.ready', remember);
 
+let resultsReady = false;
+document.addEventListener('rebuy:smartsearch.resultsPage.ready', () => (resultsReady = true), { once: true });
+
 // Rebuy loaded but its search is off (switched off, or the preview ended)
 document.addEventListener('rebuy.ready', () => {
   const rebuy = window.Rebuy;
-  if (rebuy?.shop && !rebuy.shop.has_smart_search_enabled && !rebuy.AdminBar?.smartSearchPreview) forget();
+  if (!rebuy?.shop || rebuy.shop.has_smart_search_enabled || rebuy.AdminBar?.smartSearchPreview) return;
+  forget();
+  // This page is waiting for results that will not come
+  if (HTML.dataset.searchEngine === 'rebuy' && !resultsReady) fallBackToTheme();
 });
 
 /** Show the theme results. They need the product-only search, so reload once if needed. */
@@ -144,20 +155,23 @@ function fallBackToTheme() {
 if (HTML.dataset.searchEngine === 'rebuy') {
   // Rebuy cannot start before the load event, so the clock starts there
   let timer = 0;
-  let ready = false;
+  let grace = true;
+  const giveUp = () => {
+    // rebuy.js sets window.Rebuy as soon as it runs: it is on its way, give it more time once.
+    // Blocked or down, it never appears.
+    if (grace && window.Rebuy) {
+      grace = false;
+      timer = setTimeout(giveUp, RESULTS_GRACE_MS);
+      return;
+    }
+    fallBackToTheme();
+  };
   const arm = () => {
-    if (!ready) timer = setTimeout(fallBackToTheme, RESULTS_TIMEOUT_MS);
+    if (!resultsReady) timer = setTimeout(giveUp, RESULTS_TIMEOUT_MS);
   };
   if (document.readyState === 'complete') arm();
   else window.addEventListener('load', arm, { once: true });
-  document.addEventListener(
-    'rebuy:smartsearch.resultsPage.ready',
-    () => {
-      ready = true;
-      clearTimeout(timer);
-    },
-    { once: true }
-  );
+  document.addEventListener('rebuy:smartsearch.resultsPage.ready', () => clearTimeout(timer), { once: true });
 }
 
 // Rebuy arrived after the theme took the page: keep the page as it is
@@ -252,36 +266,36 @@ function checkBoxEnd() {
   if (last.getBoundingClientRect().bottom < visibleBottom + MORE_LEAD_PX) loadMore();
 }
 
-let boxCheck = 0;
+/*
+ * Results page: Rebuy checks for the next page on window scroll only, and only
+ * while the end of the list is on screen. From 990px the theme scrolls
+ * .page-wrapper, and a jump past the end (End, a scrollbar drag, a fling into the
+ * footer) left the end above the screen, so loading stopped. Check after any
+ * scroll, and again when a page lands, in case the end is still near.
+ */
+const RESULTS_LEAD_PX = 350; // Rebuy's own distance
+
+function checkResultsEnd() {
+  const smartSearch = window.Rebuy?.SmartSearch;
+  const results = smartSearch?.resultsPage;
+  if (!results?.isVisible || results.isLoadingSearchTerm || !results.searchResults?.products?.length) return;
+  if (!smartSearch.shouldRenderContinuousScroll?.() || smartSearch.hasReachedLastPage?.()) return;
+  const list = document.querySelector('#rebuy-search-result-container .rebuy-smart-search-results-page__main-section');
+  if (list && list.getBoundingClientRect().bottom <= innerHeight + RESULTS_LEAD_PX) smartSearch.handleUpdatingPageCount?.('continuous');
+}
+
+let scrollCheck = 0;
 document.addEventListener(
   'scroll',
   () => {
-    if (boxCheck || !quickView()?.isQuickViewOpen) return;
-    boxCheck = requestAnimationFrame(() => {
-      boxCheck = 0;
-      checkBoxEnd();
+    if (scrollCheck) return;
+    scrollCheck = requestAnimationFrame(() => {
+      scrollCheck = 0;
+      if (quickView()?.isQuickViewOpen) checkBoxEnd();
+      checkResultsEnd();
     });
   },
   { capture: true, passive: true }
-);
-
-/*
- * Results page: Rebuy's continuous scroll listens to window only, but from 990px
- * the theme scrolls .page-wrapper, so page 2 never came. Run Rebuy's own check
- * when that wrapper scrolls; Rebuy still decides and fetches.
- */
-let pageCheck = 0;
-document.querySelector('.page-wrapper')?.addEventListener(
-  'scroll',
-  () => {
-    if (pageCheck) return;
-    pageCheck = requestAnimationFrame(() => {
-      pageCheck = 0;
-      const smartSearch = window.Rebuy?.SmartSearch;
-      if (smartSearch?.resultsPage?.isVisible) smartSearch.handleContinuousScrollProductFetching?.();
-    });
-  },
-  { passive: true }
 );
 
 /* ── 5. Filter labels ───────────────────────────────────────────────────── */
@@ -331,6 +345,10 @@ function wrapFilterMapping() {
   const smartSearch = window.Rebuy?.SmartSearch;
   wrapTickSwitch(smartSearch);
   wrapExpand(smartSearch);
+  wrapStartOver(smartSearch, 'handleRemovingFilter');
+  wrapStartOver(smartSearch, 'resetFilters');
+  wrapHistory(smartSearch);
+  wrapNoResults(smartSearch);
   const map = smartSearch?.mapFilterWithSearchAggregates;
   if (typeof map !== 'function' || smartSearch.spyLabelsFilters) return;
   smartSearch.spyLabelsFilters = true;
@@ -354,23 +372,37 @@ for (const name of ['rebuy.ready', 'rebuy:smartsearch.resultsPage.ready', 'rebuy
 
 /*
  * After a tick, Rebuy rebuilds every list from the filtered results: the ticked
- * group shrinks to that one value and the other groups lose values. Rebuy has no
- * "or" inside a group either, so two ticks in one group find nothing. Here each
+ * group shrinks to that one value and the other groups lose values. Here each
  * list keeps the values it showed before the first tick (values with no results
- * go grey), and a tick in a group replaces that group's old tick. A ticked group
- * counts its values without its own tick: one small extra search, kept per state.
+ * go grey). Category, Collection and Color match ALL ticked values, so two ticks
+ * there find nothing and a new tick replaces the group's old one. Size matches
+ * ANY ticked size, so its ticks add up. A ticked group counts its values without
+ * its own tick: one small extra search, kept per state.
  *
  * Rebuy's answer holds at most 30 metafield values (Collection and Color together),
  * so a value missing from a full answer is not proof of 0. It shows without a
  * count and stays tickable; an open group gets its exact counts, one search each.
+ * On a broad search the cap also leaves colours out of the first list, so those
+ * (listed in the search header's settings) are counted and added when they have results.
  */
 const STEADY_LISTS = { 'product-type': 'categories', 'product-option': 'options', 'product-metafield': 'metafields', 'variant-metafield': 'metafields' };
-const TICK_LISTS = { 'product-type': 'categories', 'product-options': 'options', 'product-metafield': 'metafields', 'variant-metafield': 'metafields' };
+// Groups where one tick replaces the other (Rebuy ANDs their values)
+const TICK_LISTS = { 'product-type': 'categories', 'product-metafield': 'metafields', 'variant-metafield': 'metafields' };
 const METAFIELD_CAP = 30;
 // Exact counts asked at once for one open group
 const EXACT_MAX = 12;
+// Values the cap can leave out, offered whenever they have results (sections/search-header.liquid)
+const ALWAYS = (() => {
+  try {
+    const { metafield, values } = JSON.parse(document.getElementById('spy-search-filter-values')?.textContent || '{}');
+    const list = String(values || '').split(/[\n,]/).map((value) => value.trim()).filter(Boolean);
+    return metafield && list.length ? { [`product.${String(metafield).trim()}.`]: list } : {};
+  } catch {
+    return {};
+  }
+})();
 const steady = {
-  term: null, base: null, baseSig: '', baseCapped: false, baseBusy: false, capped: false,
+  term: null, base: null, baseSig: '', baseFilters: null, baseCapped: false, baseBusy: false, capped: false, priceValues: null,
   present: [], current: new Map(), others: new Map(), shown: new Map(), busy: new Set(), exact: new Map(), exactBusy: new Set(),
 };
 const clone = (value) => JSON.parse(JSON.stringify(value ?? null));
@@ -378,6 +410,21 @@ const hasListTicks = (filters) => ['tags', 'categories', 'options', 'vendors', '
 const enabledFilters = (smartSearch) => (smartSearch.globalData?.settings?.searchResultsSettings?.setting?.filterSettings || []).filter((filter) => filter.enabled);
 const isCapped = (aggregates) =>
   ((Array.isArray(aggregates) && aggregates.find((aggregate) => aggregate && 'metafields' in aggregate)?.metafields) || []).reduce((sum, field) => sum + (field.values?.length || 0), 0) >= METAFIELD_CAP;
+const isEmptyAnswer = (smartSearch) => !smartSearch.resultsPage?.searchResults?.products?.length;
+
+/**
+ * With no products Rebuy drops Price, often the very filter to change. Rebuy shows
+ * the group only when it has values (its boxes never read them), so keep the last ones.
+ */
+function keepPrice(smartSearch, list) {
+  const price = enabledFilters(smartSearch).find((filter) => filter.type === 'price');
+  if (!price) return;
+  if (!Object.keys(price.values || {}).length) price.values = steady.priceValues || [{}];
+  if (!list.includes(price)) {
+    list.push(price);
+    list.sort((a, b) => (a.index ?? 0) - (b.index ?? 0));
+  }
+}
 
 /** Where a filter's ticks live in the query, and how its entries start there. */
 function groupOf(filter) {
@@ -477,18 +524,27 @@ function labelled(filter, values) {
   return temp[0]?.values ?? [];
 }
 
+/** A currency's decimals (2 for USD). */
+function currencyDigits(currency) {
+  try {
+    return new Intl.NumberFormat('en', { style: 'currency', currency: currency || 'USD' }).resolvedOptions().maximumFractionDigits;
+  } catch {
+    return 2;
+  }
+}
+
+/** Rebuy's search takes prices in cents (minor units), like its own toSearchMinorUnits. */
+const minorUnits = (amount, currency) => Math.round(Number(amount) * 10 ** currencyDigits(currency));
+
 /** A one-product search that only brings back the counts and the total for these filters. */
 async function countSearch(smartSearch, filters) {
   const rebuy = window.Rebuy;
   const query = clone(smartSearch.resultsPage.searchQuery);
   // A copy: the price conversion below must not change the caller's filters
   Object.assign(query, { filters: clone(filters), sortBy: {}, fields: ['product_id'], pageSize: 1, currentPage: 1 });
-  // Rebuy's own search sends the price range converted, so do the same
-  const toInteger = rebuy.util?.convertBackToInteger;
+  // The query keeps the price range in dollars; Rebuy converts it when it searches, so do the same
   for (const end of ['min', 'max']) {
-    if (!filters.price?.[end]) continue;
-    if (typeof toInteger !== 'function') throw new Error('no price converter');
-    query.filters.price[end] = toInteger(filters.price[end], rebuy.shop.currency);
+    if (filters.price?.[end]) query.filters.price[end] = minorUnits(filters.price[end], rebuy.shop.currency);
   }
   // Same endpoint as §4 (Rebuy's own searchUrls are paths its API helper prefixes)
   const response = await fetch(`https://rebuyengine.com/api/v1/smart-search/search?key=${encodeURIComponent(rebuy.shop.api_key)}`, {
@@ -513,16 +569,20 @@ function captureSteady(smartSearch) {
 
   const term = String(query.searchTerm || '').trim().toLowerCase();
   if (term !== steady.term) {
-    Object.assign(steady, { term, base: null, baseSig: '', baseCapped: false });
+    Object.assign(steady, { term, base: null, baseSig: '', baseFilters: null, baseCapped: false });
     steady.others.clear();
     steady.shown.clear();
     steady.exact.clear();
   }
   steady.present = filters.slice();
+  // An answer with no products has no counts: Rebuy drops some groups and leaves old counts on others
+  const empty = isEmptyAnswer(smartSearch);
+  const price = filters.find((filter) => filter.type === 'price');
+  if (!empty && Object.keys(price?.values || {}).length) steady.priceValues = price.values;
   // Rebuy keeps the answer it just mapped; a full one may have left values out
-  const capped = isCapped(smartSearch.resultsPage.searchResults?.aggregates);
+  const capped = !empty && isCapped(smartSearch.resultsPage.searchResults?.aggregates);
 
-  if (!hasListTicks(query.filters)) {
+  if (!hasListTicks(query.filters) && !(empty && steady.base)) {
     // Nothing ticked: these are the lists every later tick keeps. Rebuy returns
     // values in a different order each time, so keep the order first seen.
     const before = steady.base;
@@ -533,27 +593,73 @@ function captureSteady(smartSearch) {
       if (before?.has(group.id)) filter.values = inOrder(group, filter.values, before.get(group.id).values);
       steady.base.set(group.id, { filter, values: filter.values });
     }
-    Object.assign(steady, { current: new Map(), baseSig: signatureOf(query.filters), baseCapped: capped });
+    Object.assign(steady, { current: new Map(), baseSig: signatureOf(query.filters), baseFilters: clone(query.filters), baseCapped: capped });
     steady.others.clear();
     steady.shown.clear();
+    addLeftOut(smartSearch);
+    if (empty) keepPrice(smartSearch, filters);
     return;
   }
   steady.capped = capped;
-  steady.current = new Map(steady.present.filter(groupOf).map((filter) => [groupOf(filter).id, filter.values]));
+  steady.current = empty ? new Map() : new Map(steady.present.filter(groupOf).map((filter) => [groupOf(filter).id, filter.values]));
   // Landed with ticks in the address: fetch the untouched lists first
   if (!steady.base) loadBase(smartSearch);
   else applySteady(smartSearch);
 }
 
+/**
+ * Values from the search header's list that the cap kept out of the first lists:
+ * each is counted once (one small search) and joins the list when it has results.
+ */
+function addLeftOut(smartSearch) {
+  const query = smartSearch.resultsPage.searchQuery;
+  const filters = smartSearch.resultsPage.mappedAggregatedFilters;
+  // An answer under the cap already lists every value with results
+  if (!steady.base || !steady.baseCapped || !steady.baseFilters) return;
+  const drawn = !hasListTicks(query.filters); // with ticks, applySteady draws the lists
+  for (const filter of enabledFilters(smartSearch)) {
+    const group = groupOf(filter);
+    const wanted = group && ALWAYS[group.prefix];
+    if (!wanted) continue;
+    const entry = steady.base.get(group.id);
+    const values = entry?.values || [];
+    const listed = new Set(values.map((item) => keyOf(group, item).toLowerCase()));
+    const added = [];
+    const unknown = [];
+    for (const key of wanted) {
+      if (listed.has(key.toLowerCase())) continue;
+      const count = steady.exact.get(`${group.id}|${steady.baseSig}|${key}`);
+      if (count === undefined) unknown.push(key);
+      else if (count > 0) added.push({ value: key, numProducts: count });
+    }
+    if (unknown.length) loadExact(smartSearch, group, steady.baseFilters, steady.baseSig, unknown);
+    if (!added.length) continue;
+    const next = [...values, ...added];
+    if (entry) entry.values = next;
+    else steady.base.set(group.id, { filter, values: next });
+    if (!drawn) continue;
+    filter.values = next;
+    // Rebuy drops a group with no values, and the cap can empty this one
+    if (!filters.includes(filter)) {
+      filters.push(filter);
+      filters.sort((a, b) => (a.index ?? 0) - (b.index ?? 0));
+    }
+  }
+}
+
 function applySteady(smartSearch) {
   const query = smartSearch?.resultsPage?.searchQuery;
   const filters = smartSearch?.resultsPage?.mappedAggregatedFilters;
+  if (!query || !Array.isArray(filters) || !steady.base) return;
+  addLeftOut(smartSearch);
+  const empty = isEmptyAnswer(smartSearch);
   // With nothing ticked Rebuy's own lists are right (and no current counts are kept)
-  if (!query || !Array.isArray(filters) || !steady.base || !hasListTicks(query.filters)) return;
+  if (!hasListTicks(query.filters) && !empty) return;
 
   // A group Rebuy dropped (no value left) comes back from the first lists, greyed
   const shown = steady.present.slice();
   for (const { filter } of steady.base.values()) if (!shown.includes(filter)) shown.push(filter);
+  if (empty) keepPrice(smartSearch, shown);
   shown.sort((a, b) => (a.index ?? 0) - (b.index ?? 0));
 
   for (const filter of shown) {
@@ -611,7 +717,7 @@ async function loadBase(smartSearch) {
       const values = group && labelled(filter, valuesFrom(aggregates, filter));
       if (values && Object.keys(values).length) base.set(group.id, { filter, values });
     }
-    Object.assign(steady, { base, baseSig: signatureOf(filters), baseCapped: isCapped(aggregates) });
+    Object.assign(steady, { base, baseSig: signatureOf(filters), baseFilters: filters, baseCapped: isCapped(aggregates) });
     applySteady(smartSearch);
     smartSearch.resultsPage.view?.$forceUpdate?.();
   } catch (error) {
@@ -669,21 +775,27 @@ async function loadExact(smartSearch, group, counted, sig, keys) {
 }
 
 /*
- * A second tick in a group would find nothing, so it replaces the first. The
- * template calls the view's copy of handleUpdateSearchQuery (bound when the view
- * was made), so the switch wraps that copy, not Rebuy.SmartSearch's.
+ * The template calls the view's copy of handleUpdateSearchQuery (bound when the
+ * view was made), so this wraps that copy, not Rebuy.SmartSearch's:
+ * - in a group that matches ALL ticked values a second tick would find nothing, so
+ *   it replaces the first (Size matches ANY, so it keeps them all);
+ * - every change but a page turn is a new answer from page 1 (§7);
+ * - the sort menu closes once a sort is picked;
+ * - a price range typed the wrong way round is turned around.
  */
 function wrapTickSwitch(smartSearch) {
   const view = smartSearch?.resultsPage?.view;
   const update = view?.handleUpdateSearchQuery;
   if (typeof update !== 'function' || update.spySwitches) return;
   const switching = function (type, value, ...rest) {
+    if (type !== 'page') startOver(smartSearch);
+    if (type === 'sort_by') smartSearch.resultsPage.sortFiltersVisible = false;
+    const turned = type === 'price' && turnPrice(smartSearch, value, rest);
     const list = TICK_LISTS[type];
     const filters = smartSearch.resultsPage?.searchQuery?.filters;
     if (list && typeof value === 'string' && Array.isArray(filters?.[list]) && !filters[list].includes(value)) {
       let prefix = null;
       if (list === 'categories') prefix = '';
-      else if (list === 'options') prefix = value.includes(' # ') ? value.slice(0, value.indexOf(' # ') + 3) : null;
       else {
         for (const filter of enabledFilters(smartSearch)) {
           const group = groupOf(filter);
@@ -697,10 +809,33 @@ function wrapTickSwitch(smartSearch) {
         }
       }
     }
-    return update.call(this, type, value, ...rest);
+    const result = update.call(this, type, value, ...rest);
+    if (turned) view.$nextTick?.(() => showPriceBoxes(smartSearch));
+    return result;
   };
   switching.spySwitches = true;
   view.handleUpdateSearchQuery = switching;
+}
+
+/** "From" above "To" finds nothing: swap the two ends. rest[0].price is the typed value. */
+function turnPrice(smartSearch, end, rest) {
+  const boxes = smartSearch.resultsPage.filterPrice;
+  const typed = Number(rest[0]?.price);
+  // An empty box is undefined or NaN; an untouched From box holds "0.00"
+  const other = Number(end === 'min' ? boxes?.max : boxes?.min);
+  if (!boxes || !Number.isFinite(typed) || !Number.isFinite(other) || (end === 'min' ? typed <= other : typed >= other)) return false;
+  if (end === 'min') boxes.max = typed;
+  else boxes.min = typed;
+  rest[0] = { ...rest[0], price: other };
+  return true;
+}
+
+/** Vue leaves a focused box as it was typed, so write both ends back after a swap. */
+function showPriceBoxes(smartSearch) {
+  const { min, max } = smartSearch.resultsPage.filterPrice || {};
+  for (const [id, value] of [['rebuy-option-price-from', min], ['rebuy-option-price-to', max]]) {
+    for (const input of document.querySelectorAll(`#rebuy-search-result-container [id="${id}"]`)) input.value = Number.isFinite(Number(value ?? NaN)) ? value : '';
+  }
 }
 
 /** Opening a group is when the counts a full answer left out are worth asking for. */
@@ -744,4 +879,311 @@ if (resultsRoot) {
       markEmpty();
     });
   }).observe(resultsRoot, { childList: true, subtree: true, characterData: true });
+}
+
+/* ── 7. New answers, Back and Forward ───────────────────────────────────── */
+
+/*
+ * Rebuy keeps the page number continuous scroll reached, so a tick, a chip ✕ or a
+ * sort after three pages asked for page 3 of the new answer: "No results", or the
+ * first 30 products skipped. Every new answer starts at page 1, and when the
+ * shopper is below the top of the list, the list comes back into view.
+ */
+const LIST_GAP_PX = 20; // the filter column's sticky gap under the header (src/tailwind.css)
+let showTop = false;
+
+function startOver(smartSearch) {
+  smartSearch.resultsPage.searchQuery.currentPage = 1;
+  showTop = true;
+}
+
+/** Same as the template's other buttons: a new answer from page 1. */
+function wrapStartOver(smartSearch, name) {
+  const view = smartSearch?.resultsPage?.view;
+  const method = view?.[name];
+  if (typeof method !== 'function' || method.spyStartsOver) return;
+  const wrapped = function (...args) {
+    startOver(smartSearch);
+    return method.apply(this, args);
+  };
+  wrapped.spyStartsOver = true;
+  view[name] = wrapped;
+}
+
+// From 990px the page scrolls inside .page-wrapper, below that the window does
+function pageScroller() {
+  const wrapper = document.querySelector('.page-wrapper');
+  return wrapper && /auto|scroll/.test(getComputedStyle(wrapper).overflowY) ? wrapper : document.scrollingElement || HTML;
+}
+
+function showListTop() {
+  const list = document.querySelector('#rebuy-search-result-container .rebuy-smart-search-results-page__main-section');
+  if (!list) return;
+  const header = parseFloat(getComputedStyle(HTML).getPropertyValue('--spy-header-offset')) || 0;
+  const above = list.getBoundingClientRect().top - header - LIST_GAP_PX;
+  if (above >= 0) return;
+  held = null; // the jump is ours; holding the row now would pull the page back
+  pageScroller().scrollBy({ top: above, behavior: 'instant' });
+}
+
+document.addEventListener('rebuy:smartsearch.resultsPage.productsChange', () => {
+  // Vue draws the new products before the next frame
+  requestAnimationFrame(() => {
+    const results = window.Rebuy?.SmartSearch?.resultsPage;
+    if (showTop) {
+      showTop = false;
+      // A later page means the new answer never came (a failed search): leave the scroll alone
+      if (results?.searchQuery?.currentPage === 1) showListTop();
+    }
+    checkResultsEnd();
+  });
+});
+
+/*
+ * Rebuy adds a history entry after every search, continuous scroll pages too (same
+ * address), and never listens for Back: Back changed the address and left the
+ * results as they were. Pages of one answer now add no entry, and Back or
+ * Forward search again with the filters, price and sort the address holds.
+ */
+let shownAddress = location.search;
+
+function wrapHistory(smartSearch) {
+  const update = smartSearch?.updateUrlQuery;
+  if (typeof update !== 'function' || update.spyHistory) return;
+  const wrapped = function (...args) {
+    // Still true while a continuous scroll page lands (Rebuy clears it after this call)
+    const paging = Boolean(this.resultsPage?._continuousScrollFetching);
+    const own = Object.prototype.hasOwnProperty.call(history, 'pushState');
+    const push = history.pushState;
+    history.pushState = function (state, title, url) {
+      // A scroll page only adds the sort to the address: update it, no Back step (keep the theme's state)
+      if (paging) history.replaceState({ ...(typeof history.state === 'object' ? history.state : {}), ...state }, title, url);
+      else if (new URL(url, location.href).search !== location.search) push.call(history, state, title, url);
+    };
+    try {
+      return update.apply(this, args);
+    } finally {
+      if (own) history.pushState = push;
+      else delete history.pushState;
+      shownAddress = location.search;
+    }
+  };
+  wrapped.spyHistory = true;
+  smartSearch.updateUrlQuery = wrapped;
+}
+
+window.addEventListener(
+  'popstate',
+  () => {
+    const smartSearch = window.Rebuy?.SmartSearch;
+    if (HTML.dataset.searchEngine !== 'rebuy' || !smartSearch?.resultsPage?.isVisible) return;
+    // A #link step: same search
+    if (location.search === shownAddress) return;
+    shownAddress = location.search;
+    // The theme puts back the old scroll spot (scroll-container.js), but only page 1 comes back: drop it
+    if (history.state && typeof history.state === 'object' && 'scrollTop' in history.state) {
+      const state = { ...history.state };
+      delete state.scrollTop;
+      history.replaceState(state, '');
+    }
+    showAddress(smartSearch);
+  },
+  true // before the theme's own listener
+);
+
+/** The address as Rebuy reads it when it starts (its getSmartSearchParameters). */
+function addressParams() {
+  const params = {};
+  for (const part of location.search.slice(1).split('&')) {
+    let [key, value] = part.split('=');
+    if (!key) continue;
+    key = decodeURIComponent(key);
+    if (value) value = decodeURIComponent(value).replace(/\+/g, ' ');
+    params[key] = value && value.includes(',') ? value.split(',').map((item) => item.trim()) : value;
+  }
+  return params;
+}
+
+/** Rebuy's own start-up steps: default query and sort, then the address on top, page 1. */
+function showAddress(smartSearch) {
+  const results = smartSearch.resultsPage;
+  if (typeof smartSearch.handleDefaultSearchQueryState !== 'function' || typeof smartSearch.decodeQueryAndUpdateData !== 'function') {
+    location.reload();
+    return;
+  }
+  const custom = results.searchQuery.responseCustomization;
+  results.searchQuery = smartSearch.handleDefaultSearchQueryState();
+  if (custom) results.searchQuery.responseCustomization = custom;
+  const sorts = [...(smartSearch.globalData?.settings?.searchResultsSettings?.setting?.sortSettings || [])].sort((a, b) => a.index - b.index);
+  const sort = sorts.find((item) => item.enabled)?.key;
+  if (sort) results.searchQuery.sortBy.field = sort;
+  results.hasAdjustedPriceFilter = false;
+  results.selectedAvailabilityFilter = '';
+  const digits = currencyDigits(window.Rebuy?.shop?.currency);
+  results.filterPrice = { max: undefined, min: new Intl.NumberFormat(navigator.language, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(0) };
+  smartSearch.decodeQueryAndUpdateData(addressParams());
+  showTop = true;
+  smartSearch.searchData({ currentPage: 1 });
+}
+
+/* ── 8. No products, and names ──────────────────────────────────────────── */
+
+// Copy from the search header's settings (sections/search-header.liquid)
+const TEXT = (() => {
+  try {
+    return JSON.parse(document.getElementById('spy-search-texts')?.textContent || '{}');
+  } catch {
+    return {};
+  }
+})();
+const escapeHtml = (text) => String(text).replace(/[&<>"']/g, (char) => `&#${char.charCodeAt(0)};`);
+const COLLECTION_GID = /^gid:\/\/shopify\/Collection\/\d+$/;
+
+function wrapNoResults(smartSearch) {
+  const view = smartSearch?.resultsPage?.view;
+  if (!view || view.spyNoResults) return;
+  view.spyNoResults = true;
+
+  // Rebuy's message blames the spelling; with filters on, the filters found nothing
+  const notFound = view.notFoundMessage;
+  if (typeof notFound === 'function') {
+    view.notFoundMessage = function (...args) {
+      return TEXT.noFilterResults && smartSearch.hasSelectedFilters?.() ? escapeHtml(TEXT.noFilterResults) : notFound.apply(this, args);
+    };
+  }
+
+  // With no products Rebuy hides the bar that holds the phone's "Filter and sort" button,
+  // and that panel's filter list: keep both while filters are on, so they can be changed
+  const sortBar = view.shouldShowSortBy;
+  if (typeof sortBar === 'function') {
+    view.shouldShowSortBy = function (...args) {
+      return sortBar.apply(this, args) || Boolean(smartSearch.resultsPage.hasLoadedInitialSearchResults && smartSearch.hasSelectedFilters?.());
+    };
+  }
+  const filterList = view.shouldShowAggregatedFilters;
+  if (typeof filterList === 'function') {
+    view.shouldShowAggregatedFilters = function (...args) {
+      return filterList.apply(this, args) || Boolean(smartSearch.hasSelectedFilters?.() && smartSearch.resultsPage.mappedAggregatedFilters?.length);
+    };
+  }
+
+  // A collection read back from the address (Back, a shared link) has only its id
+  const readable = view.getReadableFilterValue;
+  if (typeof readable === 'function') {
+    view.getReadableFilterValue = function (...args) {
+      const text = readable.apply(this, args);
+      const name = COLLECTION_GID.test(String(text)) && collectionName(text);
+      return name ? escapeHtml(name) : text;
+    };
+  }
+
+  // Rebuy names no ✕ on the Collection, Color and Size chips
+  const removeLabel = view.handleRemovingFilterLabel;
+  if (typeof removeLabel === 'function') {
+    view.handleRemovingFilterLabel = function (type, value, ...rest) {
+      if (!TEXT.removeFilter || (type !== 'metafields' && type !== 'option')) return removeLabel.call(this, type, value, ...rest);
+      const doc = new DOMParser().parseFromString(String(view.getReadableFilterValue(value)), 'text/html');
+      return TEXT.removeFilter.replace('[value]', doc.body.textContent.trim());
+    };
+  }
+}
+
+/* ── 9. A ticked row stays put ──────────────────────────────────────────── */
+
+/*
+ * The first tick adds the "Selected filter" block above the lists and pushed every
+ * row down about 110px, so a quick second click hit another value. Hold the
+ * changed row where it was by scrolling its list (or the page) by as much, until
+ * the shopper scrolls, types or clicks again. Checked every frame: the block's ✕
+ * icons grow it a little later, with no DOM change to tell.
+ */
+const HOLD_MS = 4000;
+let held = null;
+let holding = 0;
+
+document.addEventListener(
+  'change',
+  (event) => {
+    const input = event.target;
+    if (!(input instanceof HTMLInputElement) || !/^(checkbox|number)$/.test(input.type) || !input.closest('#rebuy-search-result-container')) return;
+    const column = input.closest('.rebuy-smart-search-results-page-sidebar__filter-section');
+    // Its height before the tick: a box still held from the last tick can be taller than its content
+    const columnHeight = column && Math.min(column.clientHeight, contentHeight(column));
+    held = { input, top: input.getBoundingClientRect().top, until: performance.now() + HOLD_MS, column, columnHeight };
+    if (!holding) holding = requestAnimationFrame(holdRow);
+  },
+  true
+);
+
+function holdRow() {
+  holding = 0;
+  keepHeld();
+  if (held) holding = requestAnimationFrame(holdRow);
+}
+for (const name of ['wheel', 'touchstart', 'keydown', 'pointerdown']) {
+  document.addEventListener(name, () => (held = null), { capture: true, passive: true });
+}
+
+// The list's own scroller first (the filter column, the phone panel), then the page
+function scrollersOf(element) {
+  const list = [];
+  for (let node = element.parentElement; node && node !== document.body; node = node.parentElement) {
+    if (/auto|scroll/.test(getComputedStyle(node).overflowY)) list.push(node);
+  }
+  const page = pageScroller();
+  if (!list.includes(page)) list.push(page);
+  return list;
+}
+
+const PANEL_BODY = '.rebuy-smart-search-results-page__flyout-body';
+const panelPadding = new WeakMap();
+
+// The column is sticky, so it is its children's offsetParent
+function contentHeight(box) {
+  const last = box.lastElementChild;
+  return last ? last.offsetTop + last.offsetHeight + (parseFloat(getComputedStyle(box).paddingBottom) || 0) : box.clientHeight;
+}
+
+/**
+ * A list too short to scroll gets the room it needs. The filter column keeps its
+ * height from before the tick while the pointer is on it, so the new block overflows
+ * it (a stuck column can't move with the page); the phone panel gets space at its end.
+ */
+function makeRoom(scroller, shift) {
+  const need = scroller.scrollTop + shift - (scroller.scrollHeight - scroller.clientHeight);
+  if (shift <= 0 || need < 1) return;
+  if (scroller === held.column && held.columnHeight) {
+    if (!scroller.style.height) scroller.addEventListener('pointerleave', () => scroller.style.removeProperty('height'), { once: true });
+    scroller.style.height = `${held.columnHeight}px`;
+  } else if (scroller.matches(PANEL_BODY)) {
+    if (!panelPadding.has(scroller)) panelPadding.set(scroller, parseFloat(getComputedStyle(scroller).paddingBottom) || 0);
+    const extra = (parseFloat(scroller.style.paddingBottom) || panelPadding.get(scroller)) - panelPadding.get(scroller);
+    scroller.style.paddingBottom = `${panelPadding.get(scroller) + extra + need}px`;
+  }
+}
+
+function keepHeld() {
+  if (!held) return;
+  if (!held.input.isConnected || performance.now() > held.until) {
+    held = null;
+    return;
+  }
+  const rowTop = () => held.input.getBoundingClientRect().top - held.top;
+  let shift = rowTop();
+  if (Math.abs(shift) < 1) return;
+  for (const scroller of scrollersOf(held.input)) {
+    if (Math.abs(shift) < 1) break;
+    if (held.skip?.has(scroller)) continue;
+    makeRoom(scroller, shift);
+    const before = scroller.scrollTop;
+    scroller.scrollBy({ top: shift, behavior: 'instant' });
+    const next = rowTop();
+    // The page moved but the row didn't (the column is stuck): undo, and leave that scroller alone
+    if (scroller.scrollTop !== before && Math.abs(next - shift) < 1) {
+      scroller.scrollTo({ top: before, behavior: 'instant' });
+      (held.skip ||= new Set()).add(scroller);
+      continue;
+    }
+    shift = next;
+  }
 }
