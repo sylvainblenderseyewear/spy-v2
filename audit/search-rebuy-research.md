@@ -998,3 +998,194 @@ not a permanent platform-wide lack of OR support.
 The earlier Blenders notes identify observed field/tag values. Claims that all assignments are manual
 in NetSuite, or that no automation exists, remain inferences until its import or automation setup is
 inspected.
+
+## Logic check after Rebuy's update — 10 Nov
+
+Goran: "check the rebuy search logic". The store has its password again, so nothing was checked on it.
+
+**Rebuy changed its scripts after 20 Oct** (`SmartSearch.c8ca1eda…` → `037185f4…`, `global-00eae22d…` →
+`d54320cd…`; the old files are gone from the CDN). Every hook the theme uses was looked up in the new code:
+`mapFilterWithSearchAggregates` (still called on the instance, still re-sets the filterSettings objects),
+the view's `handleUpdateSearchQuery` / `handleToggleFilterExpansion`, `handleContinuousScrollProductFetching`
+(still a method, default `.rebuy-smart-search-results-page__main-section`), the filter strings
+`product.<ns>.<key>.<value>` and `<option> # <value>`, the events, ids and classes. All the same, except
+**`Rebuy.util.convertBackToInteger` is gone**: Rebuy now converts the price range inside its search
+(`toSearchMinorUnits` = round(price × 10^decimals)). Our count searches threw "no price converter" whenever
+a price range was set, so the lists fell back to Rebuy's own.
+
+**Search API today ("sunglasses", 397 results):**
+- Category, Collection and Color match ALL ticked values: Black 171 + Blue 22 → 0, Sunglasses 126 +
+  Eyeglasses 149 → 0. **Size matches ANY:** MEDIUM LARGE 118 + MEDIUM 74 → 192 (goggles 5 + 4 → 9), any
+  case. The 19 Oct note "ANDed for every type" never tested options; the theme still forced one size.
+- The 30-value cap: 20 collections + 10 colours. Gold 1, Orange 5, Purple 6, Rainbow 3, Silver 3 and Yellow 1
+  have products but were never offered (Champagne has 0), as the 20 Oct review above found.
+- Price in cents (min 15000 → 107); an empty answer has no `Search-Size-Total`, `serverSize` 0, `aggregates: []`.
+
+**Fixes (theme, uncommitted):** `assets/spy-rebuy-search.js` + `sections/search-header.liquid`
+- Price ranges: counts convert dollars to cents themselves (`minorUnits`, same sum as Rebuy's).
+- Size keeps several ticks; Category, Collection and Color still swap one tick for the next.
+- Left-out colours: new search header settings "Color filter metafield" (`sort_by.color`) and "Color filter
+  values" (the 17 groups, one per line; keep them the same as the metafield's choices). When Rebuy's first
+  answer is capped, each missing value is counted once per search state (7 one-product searches for
+  "sunglasses") and added at the end of the list when it has products. A group the cap emptied comes back.
+- /search fallback: Rebuy took 6-16 s after load on the test page (Playwright turns the cache off), past the
+  10 s timer, so its results were thrown away and the page reloaded with `type=product`. Now `window.Rebuy`
+  at 10 s (rebuy.js sets it as soon as it runs) buys 15 s more; Rebuy saying search is off falls back at
+  once; a blocked Rebuy still falls back at 10 s.
+
+**How it was checked:** a local test page with Rebuy's real current scripts and public API: Playwright
+answers every request to `spyoptic-com.myshopify.com` itself (only `/cart.json`, faked), blocks Rebuy's
+`/analytics/` calls, and loads the working tree's JS and CSS. 29 checks at 1440 and on an iPhone 13
+profile, 0 failures: every shown colour count equals the API's in 7 states (first list, sizes + Orange
+with the group shut and open, sizes + Black, + price $150, price only, a link with ticks), every colour
+with products is offered, two sizes find 192, a left-out colour ticks and filters, a second colour replaces
+the first, the box pages 12 → 48 (desktop) / 60 (phone), no errors from our code. Rebuy blocked → theme
+results at 10 s; slow Rebuy (12-20 s) → no fallback. Theme Check: nothing in the section.
+Script: `search-harness.mjs` in the session scratchpad.
+
+**Still open:** a check on the real store once it opens (load time, look of the added rows). Size has
+duplicate spellings in the data (MEDIUM LARGE / MEDIUM-LARGE, SMALL MEDIUM / SMALL-MEDIUM, 20 PACK / 20-PACK…);
+ticking both now works, but the clean fix is in the product data.
+
+## Browser test, live vs preview — 10 Nov
+
+Goran: "test deeply the rebuy search and filter… the filter method doesn't work even if some filter item
+checked". Tested in his Chrome (signed in past the password) on live `spy-v2/main` and on preview
+190463181107, 1920 wide; the phone flyout was not re-run there (maximised window would not resize).
+Counts were checked row by row against Rebuy's API with a page script.
+
+**Live bugs, all fixed on the preview (waiting for push):**
+- Price range + ticks in two groups: counts freeze. Live, max $100 + Motocross Goggles + Blue: Blue shows
+  17 (API 9), Black 96 (11), Tortoise 22 (0, not greyed, so a tick finds nothing). Preview, same link:
+  60/60 rows right.
+- A second size unticks the first (live: only MEDIUM left, 74). Preview: MEDIUM LARGE + MEDIUM = 78.
+- "sunglasses" offers 10 colours live, 16 on the preview.
+
+**Open on both:**
+- Search finds too little (lexical mode, no synonyms; keyword settings empty): goggles 17 vs goggle 59
+  (collections: 23 snow + 61 moto), snow goggles 5, moto goggles 0, polarized 0, eyeglasses 57 (149 exist),
+  hat 5. And too much: sunglasses 397 incl. 149 eyeglasses + 61 moto goggles; cyrus black 210.
+- Sticky filter column (`src/tailwind.css` 5276, `top: 20px`): sits under the 90px sticky header (FILTERS /
+  Reset hidden while scrolling) and cannot scroll: 1,621px tall with three groups open on an 889px screen,
+  so Size and the lower colours are out of reach until the end of the results.
+- Back button: every infinite-scroll page pushes a history entry (13 entries; 3 Backs to undo one sort),
+  and when the URL does change the page does not follow (a filtered URL shows the unfiltered 397).
+- "Price" sort = high to low only (no low to high); tiles go out of order ($170 between $220s) because
+  Rebuy sorts on product price but shows the picked variant's price (REGION ANSI Matte Black $170-220).
+- Slow: Rebuy starts at the load event; load came at 8.1 s live and 11-58 s on the preview (preview bar
+  23.8 s once), results 13-60 s. The store host itself was slow (HTML 4.6-5.9 s, Shopify `preloads.js`
+  17 s, theme scripts held to ~18 s with no long tasks) - recheck from a normal connection.
+- No-results page has no suggestions (`noResultsWidgets` empty); New Arrivals chip opens an empty
+  collection (0 products); Popular Products shows CYRUS REPLACEMENT LENS at $0.00; chip × buttons have no
+  name and Category's toggle says "Product Type"; box "Matching Collections" for cyrus lists Gift Guide /
+  Women's / Shield collections in imported lowercase; Price "To" box pokes out of the column.
+
+**Works:** ticks, chips, Reset, AND-group swap, greys, price range, sort, infinite scroll (page 3), linked
+ticks, typing a new term on the results page, box paging 12 → 24, product links (200).
+
+## Deeper browser test — 10 Nov (second pass)
+
+Goran: "check again more deeply". Same Chrome, live + preview; phone panel on the local harness (iPhone 13)
+because the maximised window does not resize and Shopify refuses to load in an iframe.
+
+**Critical — filter or sort after scrolling (live, preview, phone):** with continuous scroll, a tick, chip ×,
+price change or sort change calls `searchData(null)`, which keeps `searchQuery.currentPage`. Scrolled to page 3,
+ticking Snow Goggles (19) or a Cyrus collection (14) asks for page 3 of the new answer: "No results found for
+sunglasses", 0 cards, view left in the footer (live and preview). Sorting by Price at page 3 starts at $210 and
+skips the 30 dearest. Reset is fine (it resets the page). Theme fix: set `currentPage = 1` (and scroll to the
+results) in the `handleUpdateSearchQuery` wrapper before Rebuy searches.
+
+**More, by owner:**
+- Theme: End key / scrollbar jump lands in the footer and nothing more loads (Rebuy's `isPartiallyInViewport`
+  needs the results' end on screen); first tick inserts the chip block and shifts every row 110px; the closed
+  filter panel stays focusable (69 controls desktop at x=-1920, 75 phone, not hidden/inert); 0-result states
+  keep Rebuy's "check the spelling" text, accept min > max and drop the Price and Category groups.
+- Rebuy settings: page/article search is off (`contentSearchEnabled: false`) so warranty / returns / shipping /
+  contact give 0 (Shopify has 3-7 pages each); "Latest Release" (`new-arrivals`) = relevance order (all products
+  created 24 Aug); A-Z is case-sensitive; Best Selling ignores relevance; "Home page" collection offered in the
+  box; Collection filter capped at 20 models (Montana 5, Region 5, Fiona 4, Helm 4, Bowery 3, Cooper 3 missing for
+  "sunglasses"); capped counts can be 1 short (Discord 8 vs 9, Cyrus Optical 60 5 vs 6, Foundation 7 vs 8);
+  sort menu stays open after a choice; "polarized" finds 0 while collection Polarized Sunglasses has 34.
+- Data: of 401 indexed products 3 tees are $0, 14 have a $0 variant (tiles show $0.00: Cyrus Matte Black,
+  Discord Matte Black, Logan Black…), 4 have no image, 40 have variants at different prices, 67 are buyable.
+
+**Checked fine:** paging integrity (397/397 under all six sorts, no duplicates, page 1 stable; cyrus 42/42 by
+scrolling), fast clicks (4 ticks 80ms apart end consistent), keyboard ticks (Space, focus kept), box: no HTML
+injection, fast typing ends on the last term, a term change mid-paging leaves no leftovers, Escape and click-
+outside close; theme fallback (Products 396 / Articles 8, Rebuy stays hidden); phone panel opens, locks the page,
+ticks inside, Escape closes; box collection links 200.
+
+## Theme fixes for the browser-test findings — 10 Nov (third pass)
+
+Goran: "fix" (the theme-side list above). Causes read in Rebuy's current code first:
+- `handleUpdateSearchQuery` and `handleRemovingFilter` call `searchData(null)`, which copies `searchQuery`
+  as it is, `currentPage` included; continuous scroll sets that page (`handleUpdatingPageCount('continuous')`).
+- The scroll check (`handleContinuousScrollProductFetching`, helper `39313` in chunk 3913) fetches only when
+  the main section's bottom is ≤ innerHeight + 350 **and** the section is partly on screen.
+- `updateUrlQuery` = `history.pushState` after every search, scroll pages too (the page is not in the address);
+  no `popstate` listener anywhere in Rebuy's search code.
+- `shouldShowAggregatedFilters` and `shouldShowSortBy` need products; with none, Rebuy maps `aggregates: []`, so
+  Price and Category get no values and drop out, while Collection/Color/Size keep their old values. The phone's
+  "Filter and sort" button sits in the sort bar, so it vanished too.
+- The closed panel only has `left: -100%` (0.3s transition), no `visibility`/`inert`.
+- Price: no min/max check. (Rebuy would narrow the range to each answer's cheapest/dearest product, but the API
+  sends `price` as an array, so that code never runs: a range held after a colour came and went.)
+
+**Fixes (theme, uncommitted):** `assets/spy-rebuy-search.js` §4, §6-§9, `sections/search-header.liquid`, `src/tailwind.css`
+- Every change but a page turn (tick, chip ✕, price, sort, Reset) sets page 1 first; once the new answer is
+  drawn, a list top above the screen scrolls back under the header. The sort menu closes after a choice.
+- Our own end-of-list check runs after any scroll (window, `.page-wrapper`, panels) and after each page lands,
+  without Rebuy's "on screen" rule, so End, a scrollbar drag or a fling into the footer keeps loading.
+- History: pushes with an unchanged address are dropped; Back/Forward redraw the address's filters, price and
+  sort with Rebuy's own start-up steps (`handleDefaultSearchQueryState` + `decodeQueryAndUpdateData`), page 1.
+  Collection ids read back from the address show their names on the chips.
+- No products: Price and the first lists stay, every value (0) and off; the message comes from a new setting
+  "No results line, filters on" when filters are ticked; the phone's "Filter and sort" stays. From above To
+  swaps the two ends.
+- The ticked row stays under the pointer: the first tick's chip block (+110px) is offset by scrolling the
+  row's own scroller (filter column, phone panel) or the page.
+- Chip ✕ on Collection/Color/Size gets a name (new setting "Remove filter button", "Remove filter: [value]").
+- CSS: the filter column sticks at header + 20px, max height = screen − header − 40px, scrolls inside
+  (thin bar, stable gutter; same 220px footprint); the closed panel is `visibility: hidden` after its slide;
+  the two price boxes share the column width.
+
+**Found while testing, also fixed:** Rebuy's shut groups are `max-height: 0` with visible overflow, so the
+scrolling column (and the phone panel) had ~580px of blank scroll space; they now clip. Rebuy sets open groups
+`visibility: visible`, which beat the hidden panel (16 controls still reachable) — covered too. The phone panel
+lists filters only with products (`shouldShowAggregatedFilters`) — kept while filters are on. Price shows only
+with values (`hasFilterEnabled`), so the last values are kept. Horizon's `scroll-container.js` (loaded on every
+page via `dialog.js`) saves a scrollTop with each push and restores it on popstate: on Back that jumped to a spot
+page 1 cannot fill, so our capture-phase listener drops it first. The first scroll page adds `rb_sort_by` to the
+address: replaced, not pushed (`_continuousScrollFetching` is still true in that callback).
+
+**The row hold, final shape:** checked every frame for 4s (the chip ✕ icons draw late), until the shopper
+scrolls, types or clicks. Innermost scroller first; a scroller that moves without moving the row (the page
+under a stuck column) is scrolled back and skipped — the first every-frame version kept scrolling the page and
+ran into the footer (caught by the last harness pass: T1 page 2, T5 39px off). A list too short to scroll gets
+room: the column keeps its pre-tick height while the pointer is on it (released on `pointerleave`, then the
+"Selected filter" block shows), the phone panel gets bottom padding. The jump back to the list top ends the
+hold. Real theme, page scrolled 1500px, column stuck and short (497px, only Category open): Snow Goggles row
+369 → 369 → 369, page 1 with 19, the column let go when the pointer left. A stray "10px left" reading earlier
+was Rebuy's 0.1s `translateY(-10px)` group-open slide: the extension's tab draws no frames between actions, so
+measure after a screenshot.
+
+**How it was checked:**
+- Local test page (`search-harness.mjs fixes`, now with the theme's frame: sticky 90/106px header, 1400px
+  footer, `.page-wrapper` scroller from 990px): T1-T10 + T5c, final code: 23/23 at 1440; 23/24 on an iPhone 13
+  profile (the miss is T5c's "panel is short" precondition — earlier checks had already given the panel room;
+  the row held) and `panelroom` on a fresh page: short panel 607/607, row 319 → 319 → 319, 97px room added.
+  Before the fixes 15 of 19 failed. The older 29 logic checks on the final code: 29/29 desktop, 29/29 phone.
+- Real theme, preview 190463181107 in Goran's Chrome (1920×945): scrolled to page 3 (45 cards), ticked Snow
+  Goggles with a real click → page 1, 19 results, first card at 152px, the box stayed under the pointer; Back →
+  no reload, 397, page 1, no jump; End from the top → page 2 loaded; price From 5000 → the new message, Price +
+  all groups kept, every value (0) and off; To 100 then From 300 → $100-$300, 135, focused box rewritten; Price
+  sort → menu closed, $270/$270/$260 first; closed panel 75 controls, 0 reachable, a Tab walk never enters it;
+  first tick on Blue → 675 → 675 → 675 (column 26px + page 84px); 3 scroll pages → no new history entry;
+  Blue → scroll → Sunglasses → Back (22) → Forward (5); wheel over the open column scrolls it, not the page.
+- Theme Check (clean worktree): nothing in `sections/search-header.liquid`.
+- Upload: the 297 KB CSS is too big to send inline, so `stagedUploadsCreate` (FILE, PUT) + `themeFilesUpsert`
+  with URL bodies (an async job); the store's MD5s equal the working tree's.
+
+**Left as is:** the first tick scrolls the column, so the new "Selected filter" block can sit just above its top
+edge (the price of keeping the row still). Rebuy's price chip reads "$5000 - $5000 +" when only From is set (its
+own label). Phone checks ran on the local page only (the Chrome window doesn't resize).
