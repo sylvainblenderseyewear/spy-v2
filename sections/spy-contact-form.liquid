@@ -19,7 +19,8 @@
   Two-column rows use `[display:grid]`, never Tailwind's `grid`. Horizon's base.css
   owns a `.grid` class — the 14-column page layout with `grid-template-areas` —
   and those named areas force 14 columns, which collapses the fields to content
-  width instead of halves.
+  width instead of halves. They split at 544px, not Tailwind's `md`, because that
+  is where the old site goes two columns.
 
   Hidden groups get their inputs disabled, not just hidden: a hidden `required`
   field blocks submission and its value would otherwise still post.
@@ -39,7 +40,7 @@
 -%}
 
 {%- capture label_class -%}
-  mb-1.5 block font-medium text-[length:var(--cf-label-size)] text-[color:var(--cf-label-color)]
+  block text-[length:var(--cf-label-size)] text-[color:var(--cf-label-color)]
 {%- endcapture -%}
 
 {%- capture star -%}
@@ -47,11 +48,13 @@
 {%- endcapture -%}
 
 {%- capture control_class -%}
-  w-full bg-[color:var(--cf-input-bg)] px-3
+  block w-full bg-[color:var(--cf-input-bg)] px-1
   text-[length:var(--cf-input-size)] text-[color:var(--cf-input-color)]
   border border-solid border-[color:var(--cf-input-border)]
   rounded-[var(--cf-radius)]
-  focus:outline-none focus:border-[color:var(--cf-focus-border)]
+  focus:border-[color:var(--cf-focus-border)]
+  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1
+  focus-visible:outline-[color:var(--cf-focus-border)]
 {%- endcapture -%}
 
 {%- capture input_class -%}
@@ -108,7 +111,6 @@
     "
   >
     {%- form 'contact', id: form_id, class: 'spy-contact-form__form' -%}
-      <input type="hidden" name="contact[id]" value="{{ form_id }}">
 
       {%- liquid
         assign form_matches = false
@@ -119,6 +121,7 @@
 
       {%- if form.errors and form_matches -%}
         <div
+          id="{{ form_id }}-errors"
           class="mb-5 border border-solid border-[#c0392b] bg-[#fdeceb] px-4 py-3 text-[14px] text-[#c0392b]"
           role="alert"
           tabindex="-1"
@@ -141,14 +144,18 @@
       {%- endif -%}
 
       {%- comment -%} Consumer / Business {%- endcomment -%}
-      <div class="mb-5 flex flex-wrap items-center gap-x-9 gap-y-2">
+      <div
+        class="mb-5 flex flex-wrap items-center gap-x-9 gap-y-2"
+        role="radiogroup"
+        aria-label="{{ s.audience_label | escape }}"
+      >
         <span class="inline-flex items-center gap-2">
           <input
             type="radio"
             id="{{ form_id }}-consumer"
             name="contact[Customer type]"
             value="{{ s.consumer_label | escape }}"
-            class="m-0 h-4 w-4"
+            class="m-0 h-[13px] w-[13px]"
             checked
             data-spy-audience="consumer"
           >
@@ -162,7 +169,7 @@
             id="{{ form_id }}-business"
             name="contact[Customer type]"
             value="{{ s.business_label | escape }}"
-            class="m-0 h-4 w-4"
+            class="m-0 h-[13px] w-[13px]"
             data-spy-audience="business"
           >
           <label class="text-[length:var(--cf-label-size)] text-[color:var(--cf-label-color)]" for="{{ form_id }}-business">
@@ -173,17 +180,24 @@
 
       {%- comment -%} Has a B2B account? Only for Business. {%- endcomment -%}
       <div class="mb-5" data-spy-b2b-account hidden>
-        <div class="mb-2 font-medium text-[length:var(--cf-label-size)] text-[color:var(--cf-label-color)]">
+        <div
+          id="{{ form_id }}-b2b-q"
+          class="mb-2 font-medium text-[length:var(--cf-label-size)] text-[color:var(--cf-label-color)]"
+        >
           {{ s.b2b_question_label }}
         </div>
-        <div class="flex flex-wrap items-center gap-x-9 gap-y-2">
+        <div
+          class="flex flex-wrap items-center gap-x-9 gap-y-2"
+          role="radiogroup"
+          aria-labelledby="{{ form_id }}-b2b-q"
+        >
           <span class="inline-flex items-center gap-2">
             <input
               type="radio"
               id="{{ form_id }}-b2b-no"
               name="contact[Has B2B account]"
               value="{{ s.b2b_no_label | escape }}"
-              class="m-0 h-4 w-4"
+              class="m-0 h-[13px] w-[13px]"
               checked
               data-spy-b2b="no"
             >
@@ -197,7 +211,7 @@
               id="{{ form_id }}-b2b-yes"
               name="contact[Has B2B account]"
               value="{{ s.b2b_yes_label | escape }}"
-              class="m-0 h-4 w-4"
+              class="m-0 h-[13px] w-[13px]"
               data-spy-b2b="yes"
             >
             <label class="text-[length:var(--cf-label-size)] text-[color:var(--cf-label-color)]" for="{{ form_id }}-b2b-yes">
@@ -216,9 +230,9 @@
         {{ s.b2b_message }}
       </div>
 
-      <fieldset class="m-0 border-0 p-0" data-spy-fields>
+      <div data-spy-fields>
         {%- comment -%} Name pair {%- endcomment -%}
-        <div class="mb-5 [display:grid] grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-2">
+        <div class="mb-4 [display:grid] grid-cols-1 gap-x-8 gap-y-4 min-[544px]:grid-cols-2">
           <div>
             <label class="{{ label_class }}" for="{{ form_id }}-first">{{ s.first_name_label }}{{ star }}</label>
             <input
@@ -252,7 +266,7 @@
         {%- comment -%} Shopify labels the sender from contact[name]; JS keeps it in sync. {%- endcomment -%}
         <input type="hidden" name="contact[name]" value="" data-spy-fullname>
 
-        <div class="mb-5">
+        <div class="mb-4">
           <label class="{{ label_class }}" for="{{ form_id }}-email">{{ s.email_label }}{{ star }}</label>
           <input
             type="email"
@@ -265,12 +279,13 @@
             maxlength="250"
             required
             aria-required="true"
-            value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+            {% if form.errors contains 'email' %}aria-invalid="true" aria-describedby="{{ form_id }}-errors"{% endif %}
+            value="{% if form.email %}{{ form.email | escape }}{% elsif customer %}{{ customer.email }}{% endif %}"
           >
         </div>
 
         {%- comment -%} Business only — no display utility, JS hides this. {%- endcomment -%}
-        <div class="mb-5" data-spy-b2b-only hidden>
+        <div class="mb-4" data-spy-b2b-only hidden>
           <label class="{{ label_class }}" for="{{ form_id }}-company">{{ s.company_label }}{{ star }}</label>
           <input
             type="text"
@@ -282,7 +297,7 @@
           >
         </div>
 
-        <div class="mb-5">
+        <div class="mb-4">
           <label class="{{ label_class }}" for="{{ form_id }}-phone">{{ s.phone_label }}</label>
           <input
             type="tel"
@@ -294,7 +309,7 @@
           >
         </div>
 
-        <div class="mb-5" data-spy-b2b-only hidden>
+        <div class="mb-4" data-spy-b2b-only hidden>
           <label class="{{ label_class }}" for="{{ form_id }}-country">{{ s.country_label }}{{ star }}</label>
           <div class="relative">
             <select
@@ -311,7 +326,7 @@
         </div>
 
         {%- comment -%} Topic {%- endcomment -%}
-        <div class="mb-5">
+        <div class="mb-4">
           <label class="{{ label_class }}" for="{{ form_id }}-topic">{{ s.question_label }}{{ star }}</label>
           <div class="relative">
             <select
@@ -342,7 +357,7 @@
         {%- comment -%} One follow-up panel per topic; JS reveals the matching one. {%- endcomment -%}
         {%- for child in section.blocks -%}
           {%- if child.type == 'topic' and child.settings.sub_options != blank -%}
-            <div class="mb-5" data-spy-sub="{{ child.id }}" hidden>
+            <div class="mb-4" data-spy-sub="{{ child.id }}" hidden>
               <label class="{{ label_class }}" for="{{ form_id }}-sub-{{ forloop.index }}">
                 {{ child.settings.sub_label | default: 'Your request' }}{{ star }}
               </label>
@@ -368,7 +383,7 @@
         {%- endfor -%}
 
         {%- comment -%} Only for topics flagged to ask for it {%- endcomment -%}
-        <div class="mb-5" data-spy-order hidden>
+        <div class="mb-4" data-spy-order hidden>
           <label class="{{ label_class }}" for="{{ form_id }}-order">{{ s.order_label }}</label>
           <input
             type="text"
@@ -379,7 +394,7 @@
           >
         </div>
 
-        <div class="mb-5">
+        <div class="mb-4">
           <label class="{{ label_class }}" for="{{ form_id }}-comment">{{ s.comment_label }}{{ star }}</label>
           <textarea
             id="{{ form_id }}-comment"
@@ -388,11 +403,11 @@
             rows="5"
             required
             aria-required="true"
-          >{{ form.body }}</textarea>
+          >{{ form.body | escape }}</textarea>
         </div>
 
         {%- if s.show_attachment -%}
-          <div class="mb-5">
+          <div class="mb-4">
             <label class="{{ label_class }}" for="{{ form_id }}-file">{{ s.attachment_label }}</label>
             <input
               type="file"
@@ -400,19 +415,23 @@
               class="{{ control_class }} py-1.5"
               name="contact[Attachment]"
               accept="{{ s.attachment_accept }}"
+              {% if s.attachment_note != blank %}aria-describedby="{{ form_id }}-file-note"{% endif %}
             >
             {%- if s.attachment_note != blank -%}
-              <div class="mt-1.5 text-right text-[11px] text-[color:var(--cf-note-color)]">{{ s.attachment_note }}</div>
+              <div
+                id="{{ form_id }}-file-note"
+                class="mt-1.5 text-right text-[11px] text-[color:var(--cf-note-color)]"
+              >{{ s.attachment_note }}</div>
             {%- endif -%}
           </div>
         {%- endif -%}
 
-        <div class="[display:grid] grid-cols-1 gap-x-8 md:grid-cols-2">
-          <div class="hidden md:block"></div>
+        <div class="[display:grid] grid-cols-1 gap-x-8 min-[544px]:grid-cols-2">
+          <div class="hidden min-[544px]:block"></div>
           <button
             type="submit"
             class="
-              w-full cursor-pointer border-0 px-4 font-bold uppercase tracking-[0.04em]
+              w-full cursor-pointer border-0 px-4 uppercase
               h-[var(--cf-btn-height)] rounded-[var(--cf-radius)]
               text-[length:var(--cf-btn-size)]
               bg-[color:var(--cf-btn-bg)] text-[color:var(--cf-btn-color)]
@@ -429,7 +448,7 @@
             {{ s.submit_label }}
           </button>
         </div>
-      </fieldset>
+      </div>
     {%- endform -%}
   </div>
 </div>
@@ -490,6 +509,12 @@
     {
       "type": "header",
       "content": "Audience switch"
+    },
+    {
+      "type": "text",
+      "id": "audience_label",
+      "label": "Customer type (screen readers only)",
+      "default": "Customer type"
     },
     {
       "type": "text",
@@ -654,7 +679,7 @@
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 32
+      "default": 8
     },
     {
       "type": "range",
@@ -664,7 +689,7 @@
       "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 84
+      "default": 16
     },
     {
       "type": "header",
@@ -688,9 +713,9 @@
       "label": "Padding",
       "min": 0,
       "max": 80,
-      "step": 2,
+      "step": 1,
       "unit": "px",
-      "default": 26
+      "default": 21
     },
     {
       "type": "range",
@@ -730,13 +755,13 @@
       "max": 22,
       "step": 1,
       "unit": "px",
-      "default": 15
+      "default": 16
     },
     {
       "type": "color",
       "id": "required_color",
       "label": "Required asterisk",
-      "default": "{{ settings.color_palette.color3 }}"
+      "default": "#df372b"
     },
     {
       "type": "header",
@@ -782,7 +807,7 @@
       "max": 20,
       "step": 1,
       "unit": "px",
-      "default": 15
+      "default": 13
     },
     {
       "type": "range",
@@ -792,7 +817,7 @@
       "max": 64,
       "step": 1,
       "unit": "px",
-      "default": 38
+      "default": 36
     },
     {
       "type": "header",
@@ -834,7 +859,7 @@
       "max": 20,
       "step": 1,
       "unit": "px",
-      "default": 13
+      "default": 12
     }
   ],
   "presets": [
