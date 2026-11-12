@@ -457,7 +457,7 @@
               "type": "spy-trust-badges",
               "name": "Trust Badges",
               "settings": {
-                "badge_1_text": "Free Shipping for any order over $100",
+                "badge_1_text": "Free Shipping for any order over $50",
                 "badge_1_icon": "",
                 "badge_1_link_text": "",
                 "badge_1_link_url": "",
