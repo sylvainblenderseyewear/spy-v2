@@ -81,7 +81,7 @@ the same kind of broken-in-the-middle layout we chose not to copy in the header 
 
 ---
 
-## Fixed on 11 Nov (not pushed yet)
+## Fixed — pushed as `ff3ed13`, verified live 12 Nov
 
 `sections/spy-contact-form.liquid`, `templates/page.contact.json`, `assets/tailwind.css`, `audit/redirect-urls.csv`
 
@@ -109,6 +109,25 @@ About 4 px of the old gap remains: our radio sits centred on its label line, the
 **Still open:** A1 attachment (needs a product decision), A2 recipient inbox (admin), A4 end-to-end test,
 B9/B10 title line box and intro paragraph margin (Horizon text block), D6 orange contrast, D7 Rebuy ids,
 E1/E2 page copy (admin).
+
+## Second pass, 12 Nov (after the fix shipped)
+
+No regressions: layout matches the source at 1440/768/390, the Consumer/Business/B2B flows still switch,
+the console is clean, tab order is 10 controls in source order with nothing hidden-but-focusable, and no
+duplicate ids come from our markup. The source also stars Company and Country, so our
+required-when-shown matches its intent. Our email field is `type=email` where the source uses `text`.
+
+New findings, none of them caused by the fix:
+
+| # | Issue | Evidence |
+|---|---|---|
+| P1 | **180 checkout-web chunks, 3.3 MB decoded, load on this page.** 220 preload/prefetch links in total, 180 for checkout. None of it is in the server HTML, so a script injects it at runtime — most likely Shopify/Shop Pay checkout prefetch, worth confirming before chasing. | `performance.getEntriesByType('resource')`, `fetch('/pages/contact')` has 0 `checkout-web` |
+| P2 | Page total: **359 requests, ~5.4 MB decoded**, of which theme assets are 65 req / 1,073 KB (`tailwind.css` 291 KB and Horizon's `styles.css` 325 KB decoded). | same run |
+| P3 | **Server HTML is 528 KB** for a form page — Rebuy's inline config alone appears 157 times. | `fetch` length |
+| P4 | **Apps with no job here still run**: Yotpo widgets, AMP Back in Stock, Rebuy, ExpertVoice (logs "Initializing discount functionality"), Clarity brand-agents. Content templates could opt out. | console + resource list |
+| P5 | **No structured data on the page — or on the homepage** (0 `ld+json` blocks). A `ContactPage` / `Organization` block belongs here. Cross-cutting SEO rule asks for it. | DOM + homepage HTML |
+| P6 | 13 px inputs with `initial-scale=1` make iOS Safari zoom on focus. The source has the same viewport and the same 13 px, so this is inherited, not a regression — but it is a real phone annoyance. | both viewport metas |
+| P7 | Country select carries all 239 options on a US store (the source has 242). Matches the source; worth asking whether it should. | option counts |
 
 ## Verified good
 
