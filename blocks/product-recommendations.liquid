@@ -353,6 +353,18 @@
       "visible_if": "{{ block.settings.icons_style != 'none' and block.settings.layout_type == 'carousel' or block.settings.carousel_on_mobile == true }}"
     },
     {
+      "type": "select",
+      "id": "fit_align",
+      "label": "Cards that fit in one row",
+      "info": "Where the cards sit when they all fit and the row doesn't scroll.",
+      "options": [
+        { "value": "center", "label": "Centre" },
+        { "value": "start", "label": "Left" }
+      ],
+      "default": "start",
+      "visible_if": "{{ block.settings.layout_type == 'carousel' or block.settings.carousel_on_mobile }}"
+    },
+    {
       "type": "header",
       "content": "t:content.layout"
     },

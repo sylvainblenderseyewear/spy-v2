@@ -35,29 +35,6 @@
   assign basis_lg = 'calc(100% / ' | append: c_lg | append: ')'
   assign basis_xl = 'calc(100% / ' | append: c_xl | append: ')'
 
-  # Each visibility flag resolves to a literal class string so Tailwind can see it
-  if section.settings.arrows_mobile
-    assign arrow_sm = '[display:flex]'
-  else
-    assign arrow_sm = 'hidden'
-  endif
-  if section.settings.arrows_tablet
-    assign arrow_md = 'min-[541px]:[display:flex]'
-  else
-    assign arrow_md = 'min-[541px]:hidden'
-  endif
-  if section.settings.arrows_desktop
-    assign arrow_xl = 'min-[1141px]:[display:flex]'
-  else
-    assign arrow_xl = 'min-[1141px]:hidden'
-  endif
-  assign arrow_classes = arrow_sm | append: ' ' | append: arrow_md | append: ' ' | append: arrow_xl
-
-  if section.settings.dots_mobile
-    assign dot_classes = '[display:flex] min-[541px]:hidden'
-  else
-    assign dot_classes = 'hidden'
-  endif
 -%}
 
 {%- comment -%} An empty collection falls back to placeholder cards: fine in the editor, never for shoppers {%- endcomment -%}
@@ -99,25 +76,42 @@
   {%- comment -%} Brings in the shared .resource-list__item rules the card leans on {%- endcomment -%}
   {%- render 'resource-list-styles' -%}
 
-  <spy-product-rail
-    class="block relative"
-    data-step-mobile="{{ section.settings.scroll_mobile }}"
-    data-step-small="{{ section.settings.scroll_small }}"
-    data-step-tablet="{{ section.settings.scroll_tablet }}"
-    data-step-desktop="{{ section.settings.scroll_desktop }}"
-    data-wrap-mobile="{{ section.settings.wrap_mobile }}"
-    data-speed="{{ section.settings.transition_speed }}"
-  >
-    <button
-      type="button"
-      data-prev
-      aria-label="Previous"
-      class="{{ arrow_classes }} absolute z-[2] top-[48%] left-[5px] -translate-y-1/2 h-[var(--spc-arrow)] w-[var(--spc-arrow)] items-center justify-center rounded-full bg-white text-spy-orange-ui shadow-[0_0_9px_0_rgba(119,119,119,0.35)] transition-shadow hover:shadow-[0_0_9px_0_rgba(119,119,119,0.6)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-spy-orange-ui"
-    >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
+    {%- liquid
+      # Per width, lowest first: ≤540, 541–720, 721–1140, above (the source's slick ladder)
+      assign s = section.settings
+      capture rail_opts
+        echo '{"speed":' | append: s.transition_speed
+        echo ',"step":[' | append: s.scroll_mobile | append: ',' | append: s.scroll_small | append: ',' | append: s.scroll_tablet | append: ',' | append: s.scroll_desktop | append: ']'
+        if s.wrap_mobile
+          echo ',"loop":[1,0,0,0]'
+        else
+          echo ',"loop":0'
+        endif
+        echo ',"arrows":['
+        if s.arrows_mobile
+          echo '1,'
+        else
+          echo '0,'
+        endif
+        if s.arrows_tablet
+          echo '1,1,'
+        else
+          echo '0,0,'
+        endif
+        if s.arrows_desktop
+          echo '1]'
+        else
+          echo '0]'
+        endif
+        if s.dots_mobile
+          echo ',"dots":[1,0,0,0]}'
+        else
+          echo ',"dots":0}'
+        endif
+      endcapture
+    -%}
+    <spy-slider class="block relative" data-opts="{{ rail_opts | strip | escape }}">
+      {%- render 'spy-slider-arrow', dir: 'prev', class: 'absolute z-[2] top-[48%] left-[5px] -translate-y-1/2' -%}
 
     <div
       data-track
@@ -185,16 +179,7 @@
       {%- endif -%}
     </div>
 
-    <button
-      type="button"
-      data-next
-      aria-label="Next"
-      class="{{ arrow_classes }} absolute z-[2] top-[48%] right-[5px] -translate-y-1/2 h-[var(--spc-arrow)] w-[var(--spc-arrow)] items-center justify-center rounded-full bg-white text-spy-orange-ui shadow-[0_0_9px_0_rgba(119,119,119,0.35)] transition-shadow hover:shadow-[0_0_9px_0_rgba(119,119,119,0.6)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-spy-orange-ui"
-    >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M9.5 5.5 16 12l-6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
+    {%- render 'spy-slider-arrow', dir: 'next', class: 'absolute z-[2] top-[48%] right-[5px] -translate-y-1/2' -%}
 
     {%- comment -%}
       Source dots: 10px solid ink circles, 4px apart, 16px off the bottom.
@@ -204,233 +189,15 @@
     <div
       data-dots
       data-dot-label="{{ 'accessibility.slide_status' | t: index: '[i]', length: '[n]' | escape }}"
-      class="{{ dot_classes }} absolute inset-x-0 bottom-4 items-center justify-center gap-2"
+      class="[display:flex] data-[off]:hidden absolute inset-x-0 bottom-4 items-center justify-center gap-2"
+      data-off
       role="group"
       aria-label="Choose a product"
     ></div>
-  </spy-product-rail>
+  </spy-slider>
 </div>
 
-<script>
-  // Product rail: native scroll-snap, arrows step one card, dots track the page.
-  if (!customElements.get('spy-product-rail')) {
-    customElements.define(
-      'spy-product-rail',
-      class SpyProductRail extends HTMLElement {
-        // A second rail on the page upgrades while it is still being parsed, so its
-        // children are not there yet. Wait for them before wiring anything up.
-        connectedCallback() {
-          if (this._ready) return;
-          const start = () => {
-            if (this._ready) return;
-            this._ready = true;
-            this.init();
-          };
-          if (this.querySelector('[data-track]')) start();
-          else if (document.readyState === 'loading')
-            document.addEventListener('DOMContentLoaded', start, { once: true });
-          else requestAnimationFrame(start);
-        }
-
-        init() {
-          this.track = this.querySelector('[data-track]');
-          if (!this.track) return;
-          this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          this.speed = parseInt(this.dataset.speed, 10) || 300;
-
-          this.querySelector('[data-prev]')?.addEventListener('click', () => this.step(-1));
-          this.querySelector('[data-next]')?.addEventListener('click', () => this.step(1));
-
-          this.dots = this.querySelector('[data-dots]');
-          this.buildDots();
-          this.setupDrag();
-          this.track.addEventListener('scroll', () => this.queueSync());
-          window.addEventListener('resize', () => this.queueSync());
-        }
-
-        // How many cards one arrow click moves, per the source's slidesToScroll
-        get stepSize() {
-          const w = window.innerWidth;
-          let key = 'desktop';
-          if (w <= 540) key = 'mobile';
-          else if (w <= 720) key = 'small';
-          else if (w <= 1140) key = 'tablet';
-          return parseInt(this.dataset['step' + key[0].toUpperCase() + key.slice(1)], 10) || 1;
-        }
-
-        // The source only wraps around at 540 and below
-        get wraps() {
-          return window.innerWidth <= 540 && this.dataset.wrapMobile === 'true';
-        }
-
-        // Mouse drag. Touch keeps the browser's own scrolling.
-        setupDrag() {
-          const track = this.track;
-          let down = false;
-          let startX = 0;
-          let startScroll = 0;
-          let moved = false;
-          let downX = 0;
-          let downY = 0;
-          let pressType = '';
-
-          track.addEventListener('pointerdown', (e) => {
-            // Note every press, touch and pen too, so the click check never measures
-            // from an old press (that cancelled every tap on phones and tablets)
-            pressType = e.pointerType;
-            downX = e.clientX;
-            downY = e.clientY;
-            moved = false;
-            if (e.pointerType !== 'mouse') return;
-            down = true;
-            startX = e.clientX;
-            startScroll = track.scrollLeft;
-            // Utilities compile !important, so inline styles need the priority flag
-            track.style.setProperty('cursor', 'grabbing', 'important');
-            track.style.setProperty('scroll-snap-type', 'none', 'important');
-            // No setPointerCapture: it retargets the click to the track, which kills
-            // Quick View and every card link inside the rail.
-          });
-
-          window.addEventListener('pointermove', (e) => {
-            if (!down) return;
-            const dx = e.clientX - startX;
-            // Past the threshold this is a drag, not a click. Flagging the track kills
-            // pointer events on the cards, so mouseup cannot land on a link or button.
-            if (Math.abs(dx) > 3) {
-              moved = true;
-              track.dataset.dragging = '';
-            }
-            track.scrollLeft = startScroll - dx;
-          });
-
-          const end = () => {
-            if (!down) return;
-            down = false;
-            setTimeout(() => delete track.dataset.dragging, 0);
-            track.style.removeProperty('cursor');
-            track.style.removeProperty('scroll-snap-type');
-          };
-          window.addEventListener('pointerup', end);
-          window.addEventListener('pointercancel', end);
-
-          // Swallow the click after a real mouse drag so the card link does not open.
-          // Taps, keyboard Enter and screen readers never drag the rail, so their clicks
-          // always go through (keyboard and screen reader clicks carry detail 0).
-          track.addEventListener(
-            'click',
-            (e) => {
-              const fromMouse = pressType === 'mouse' && e.detail > 0;
-              pressType = '';
-              if (!fromMouse) return;
-              // Compare against where the press started. pointermove can be swallowed
-              // by a native image drag, so `moved` alone is not reliable.
-              const travelled = Math.hypot(e.clientX - downX, e.clientY - downY);
-              if (moved || travelled > 5) {
-                e.preventDefault();
-                e.stopPropagation();
-              }
-              moved = false;
-            },
-            true
-          );
-
-          track.addEventListener('dragstart', (e) => e.preventDefault());
-        }
-
-        // Timed tween so the glide matches slick's speed instead of the browser's default
-        tween(to) {
-          const track = this.track;
-          const max = track.scrollWidth - track.clientWidth;
-          const target = Math.max(0, Math.min(to, max));
-          if (this.reduceMotion || this.speed <= 0) {
-            track.scrollLeft = target;
-            return;
-          }
-          const from = track.scrollLeft;
-          const dist = target - from;
-          if (!dist) return;
-          // Snap fights a scripted scroll, so it is parked for the duration
-          track.style.setProperty('scroll-snap-type', 'none', 'important');
-          const t0 = performance.now();
-          const ease = (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
-          const frame = (now) => {
-            const p = Math.min(1, (now - t0) / this.speed);
-            track.scrollLeft = from + dist * ease(p);
-            if (p < 1) requestAnimationFrame(frame);
-            else track.style.removeProperty('scroll-snap-type');
-          };
-          requestAnimationFrame(frame);
-        }
-
-        get slides() {
-          return Array.from(this.track.querySelectorAll('[data-slide]'));
-        }
-
-        buildDots() {
-          if (!this.dots) return;
-          this.dots.replaceChildren();
-          // "Slide 2 of 5" reads better than a bare "2"
-          const label = this.dots.dataset.dotLabel || 'Slide [i] of [n]';
-          const total = this.slides.length;
-          this.slides.forEach((_, i) => {
-            const b = document.createElement('button');
-            b.type = 'button';
-            b.setAttribute('aria-label', label.replace('[i]', i + 1).replace('[n]', total));
-            b.className = 'h-[10px] w-[10px] rounded-full bg-spy-ink border-0 p-0';
-            b.addEventListener('click', () => this.scrollToIndex(i));
-            this.dots.appendChild(b);
-          });
-        }
-
-        queueSync() {
-          clearTimeout(this._t);
-          this._t = setTimeout(() => this.sync(), 80);
-        }
-
-        // Keep the dots in step with whatever card is nearest the scroll position
-        sync() {
-          if (!this.dots) return;
-          const x = this.track.scrollLeft;
-          let best = 0;
-          let dist = Infinity;
-          this.slides.forEach((s, i) => {
-            const d = Math.abs(s.offsetLeft - this.track.offsetLeft - x);
-            if (d < dist) {
-              dist = d;
-              best = i;
-            }
-          });
-          Array.from(this.dots.children).forEach((d, i) => {
-            d.setAttribute('aria-current', i === best ? 'true' : 'false');
-          });
-        }
-
-        scrollToIndex(i) {
-          const s = this.slides[i];
-          if (!s) return;
-          this.tween(s.offsetLeft - this.track.offsetLeft);
-        }
-
-        // One page of cards per click, wrapping at the ends where the source wraps
-        step(dir) {
-          const s = this.slides[0];
-          if (!s) return;
-          const track = this.track;
-          const max = track.scrollWidth - track.clientWidth;
-          const amount = s.getBoundingClientRect().width * this.stepSize * dir;
-          const next = track.scrollLeft + amount;
-
-          if (this.wraps) {
-            if (next > max + 1) return this.tween(0);
-            if (next < -1) return this.tween(max);
-          }
-          this.tween(next);
-        }
-      }
-    );
-  }
-</script>
+<script src="{{ 'spy-slider.js' | asset_url }}" type="module"></script>
 {%- endunless -%}
 
 {% schema %}

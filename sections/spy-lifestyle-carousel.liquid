@@ -54,11 +54,14 @@
   {%- endcomment -%}
   <div
     class="spy-strip mt-16 mb-12 px-px min-[769px]:px-[17px] min-[1200px]:px-[41px] min-[1800px]:px-[57px]"
-    data-spy-strip
     {{ section.shopify_attributes }}
   >
     {%- comment -%} Arrows anchor to the track, not the padded shell — the source puts them at -1px {%- endcomment -%}
-    <div class="relative">
+    {%- liquid
+      # Endless at every width, arrows from 993px up. JSON lives in an assign: Shopify cuts {{ }} at the first brace
+      assign strip_opts = '{"speed":300,"step":1,"loop":1,"arrows":[0,0,1],"bp":[769,992]}'
+    -%}
+    <spy-slider class="relative block" data-opts="{{ strip_opts | escape }}">
       {%- comment -%}
         display via square brackets because Horizon's base.css owns the .flex class name and
         adds a 14.4px gap. px-[50px] is slick's centerPadding: it makes the peek, and it also
@@ -68,11 +71,11 @@
       {%- endcomment -%}
       <div
         class="spy-strip__track [display:flex] snap-x snap-mandatory overflow-x-auto px-[50px] pb-[7.4px] scroll-pl-[50px] [--spy-show:1.5] min-[770px]:[--spy-show:3] min-[993px]:[--spy-show:4] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        data-spy-strip-track
+        data-track
       >
         {%- for img in items limit: limit -%}
           {%- comment -%} 4px left / 20px right, the way the source's p-1 + padding-right stack up {%- endcomment -%}
-          <div class="spy-strip__cell shrink-0 basis-[calc(100%_/_var(--spy-show))] snap-start py-1 pl-1 pr-5" data-spy-strip-cell>
+          <div class="spy-strip__cell shrink-0 basis-[calc(100%_/_var(--spy-show))] snap-start py-1 pl-1 pr-5">
             <img
               src="{{ img | image_url: width: 800 }}"
               srcset="{{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 800 }} 800w, {{ img | image_url: width: 1200 }} 1200w"
@@ -91,26 +94,12 @@
         Site-wide carousel arrow (QA, 9 Nov): 40px white circle with an orange chevron,
         centred on the strip, in place of the source's full-height white bars.
       {%- endcomment -%}
-      <button
-        type="button"
-        class="absolute left-[5px] top-1/2 z-[2] -translate-y-1/2 [display:flex] h-10 w-10 cursor-pointer items-center justify-center rounded-full border-0 bg-white p-0 text-spy-orange-ui shadow-[0_0_9px_0_rgba(119,119,119,0.35)] transition-shadow hover:shadow-[0_0_9px_0_rgba(119,119,119,0.6)] disabled:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-spy-orange-ui"
-        data-spy-strip-prev
-        aria-label="{{ 'accessibility.slideshow_previous' | t }}"
-      >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <button
-        type="button"
-        class="absolute right-[5px] top-1/2 z-[2] -translate-y-1/2 [display:flex] h-10 w-10 cursor-pointer items-center justify-center rounded-full border-0 bg-white p-0 text-spy-orange-ui shadow-[0_0_9px_0_rgba(119,119,119,0.35)] transition-shadow hover:shadow-[0_0_9px_0_rgba(119,119,119,0.6)] disabled:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-spy-orange-ui"
-        data-spy-strip-next
-        aria-label="{{ 'accessibility.slideshow_next' | t }}"
-      >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
+      {%- render 'spy-slider-arrow', dir: 'prev', class: 'absolute left-[5px] top-1/2 z-[2] -translate-y-1/2' -%}
+      {%- render 'spy-slider-arrow', dir: 'next', class: 'absolute right-[5px] top-1/2 z-[2] -translate-y-1/2' -%}
+    </spy-slider>
   </div>
 
-  <script src="{{ 'spy-strip-carousel.js' | asset_url }}" defer></script>
+  <script src="{{ 'spy-slider.js' | asset_url }}" type="module"></script>
 {%- endif -%}
 
 {% schema %}

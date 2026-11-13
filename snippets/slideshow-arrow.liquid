@@ -41,13 +41,18 @@
   on:click="/{{ action }}"
   ref="{{ action }}"
 >
-  <span class="svg-wrapper icon-{{ icon_name }}">
-    {%- if icon_name == 'caret' -%}
-      {{- 'icon-caret.svg' | inline_asset_content -}}
-    {%- else -%}
+  {%- if icon_name == 'caret' -%}
+    {%- comment -%} SPY: our chevron, drawn dead centre (flip-x mirrors it for "previous") {%- endcomment -%}
+    <span class="svg-wrapper icon-spy-chevron">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+        <path d="M8.75 5.5 15.25 12l-6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+  {%- else -%}
+    <span class="svg-wrapper icon-{{ icon_name }}">
       {{- 'icon-arrow.svg' | inline_asset_content -}}
-    {%- endif -%}
-  </span>
+    </span>
+  {%- endif -%}
 </button>
 
 {% stylesheet %}

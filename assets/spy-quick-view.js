@@ -27,28 +27,6 @@
   const message = (text) =>
     `<p class="py-12 text-center text-[14px] text-[color:var(--color-spy-text-2)]">${text}</p>`;
 
-  /* ── gallery ─────────────────────────────────────────────────────────── */
-
-  const bindGallery = () => {
-    const gallery = body.querySelector('[data-spy-qv-gallery]');
-    if (!gallery) return;
-
-    const track = gallery.querySelector('[data-spy-qv-track]');
-    const slides = [...gallery.querySelectorAll('[data-spy-qv-slide]')];
-    if (!track || slides.length < 2) return;
-
-    // Arrows only — the source dialog has no thumbnail rail. Swipe handles touch.
-    const goTo = (index) => {
-      const slide = slides[Math.max(0, Math.min(index, slides.length - 1))];
-      if (slide) track.scrollTo({ left: slide.offsetLeft - track.offsetLeft, behavior: 'smooth' });
-    };
-
-    const current = () => Math.round(track.scrollLeft / track.clientWidth);
-
-    gallery.querySelector('[data-spy-qv-prev]')?.addEventListener('click', () => goTo(current() - 1));
-    gallery.querySelector('[data-spy-qv-next]')?.addEventListener('click', () => goTo(current() + 1));
-  };
-
   /* ── colourways ──────────────────────────────────────────────────────── */
 
   // Staging keeps one product per frame with lenses as variants, so a swatch points at
@@ -147,7 +125,6 @@
       if (id !== loadId) return;
       body.innerHTML = html;
       runScripts();
-      bindGallery();
       bindColorPicker();
       bindOptions(handle);
       if (picked) {

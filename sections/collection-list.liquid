@@ -35,6 +35,7 @@
     section-resource-list
     spacing-style
     gap-style
+    {{ section.settings.custom_class }}
   "
   style="
     {% render 'spacing-style', settings: section.settings %}
@@ -555,6 +556,18 @@
     },
     {
       "type": "select",
+      "id": "fit_align",
+      "label": "Cards that fit in one row",
+      "info": "Where the cards sit when they all fit and the row doesn't scroll.",
+      "options": [
+        { "value": "center", "label": "Centre" },
+        { "value": "start", "label": "Left" }
+      ],
+      "default": "center",
+      "visible_if": "{{ section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile }}"
+    },
+    {
+      "type": "select",
       "id": "carousel_scroll",
       "label": "Arrows scroll by",
       "options": [
@@ -648,6 +661,16 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Advanced"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "CSS class",
+      "info": "Extra class on the section wrapper, for styling a band that needs it. Survives duplicating or re-adding the section, unlike targeting its ID."
     }
   ],
   "presets": [

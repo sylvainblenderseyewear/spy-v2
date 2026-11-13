@@ -216,6 +216,8 @@ export class Slideshow extends Component {
   async select(input, event, options = {}) {
     if (this.#disabled || !this.refs.slides?.length) return;
     if (!this.#scroll) return;
+    // SPY: one move at a time, so a click during a glide is ignored
+    if (event && this.#scroll.gliding) return;
 
     // Store the actual current slide before any mutations
     const currentSlide = this.slides?.[this.current];

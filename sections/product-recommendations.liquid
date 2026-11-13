@@ -492,6 +492,18 @@
     },
     {
       "type": "select",
+      "id": "fit_align",
+      "label": "Cards that fit in one row",
+      "info": "Where the cards sit when they all fit and the row doesn't scroll.",
+      "options": [
+        { "value": "center", "label": "Centre" },
+        { "value": "start", "label": "Left" }
+      ],
+      "default": "start",
+      "visible_if": "{{ section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile }}"
+    },
+    {
+      "type": "select",
       "id": "carousel_scroll",
       "label": "Arrows scroll by",
       "options": [

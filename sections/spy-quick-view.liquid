@@ -61,6 +61,8 @@
 </div>
 
 <script src="{{ 'spy-quick-view.js' | asset_url }}" defer></script>
+{%- comment -%} The fetched photo gallery is a <spy-slider>, so its engine loads with the dialog {%- endcomment -%}
+<script src="{{ 'spy-slider.js' | asset_url }}" type="module"></script>
 
 {% schema %}
 {

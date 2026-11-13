@@ -17,6 +17,7 @@
     section-carousel
     spacing-style
     gap-style
+    {{ section.settings.custom_class }}
   "
   style="
     {% render 'spacing-style', settings: section.settings %}
@@ -147,6 +148,13 @@
       "visible_if": "{{ section.settings.icons_style != 'none' }}"
     },
     {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop back to the first slide",
+      "info": "The arrows keep going round instead of stopping at the ends.",
+      "default": false
+    },
+    {
       "type": "header",
       "content": "t:content.padding"
     },
@@ -169,6 +177,16 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Advanced"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "CSS class",
+      "info": "Extra class on the section wrapper, for styling a band that needs it. Survives duplicating or re-adding the section, unlike targeting its ID."
     }
   ],
   "presets": [

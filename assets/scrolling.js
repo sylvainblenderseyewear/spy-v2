@@ -6,6 +6,11 @@ import { debounce, throttle, prefersReducedMotion } from '@theme/utilities';
  */
 const SCROLL_END_TIMEOUT = 50;
 
+// SPY: the glide (assets/spy-slider.js), loaded once a [data-spy-glide] slider sets up,
+// so a click can start the glide in the same frame
+let spyGlide;
+const loadSpyGlide = () => import('@theme/spy-slider').then((m) => (spyGlide = m.glide));
+
 /**
  * Class representing a Scroller that handles smooth scrolling and detects scroll end events.
  *
@@ -72,6 +77,9 @@ export class Scroller {
    */
   #isScrolling = false;
 
+  /** Promise of a running SPY glide (sliders marked [data-spy-glide]), if any */
+  #glide = undefined;
+
   /**
    * Creates a Scroller instance.
    *
@@ -90,6 +98,7 @@ export class Scroller {
 
     this.element = element;
     this.element.addEventListener('scroll', this.#handleScroll);
+    if (!spyGlide && element.closest('[data-spy-glide]')) loadSpyGlide().catch(() => {});
   }
 
   /**
@@ -140,6 +149,28 @@ export class Scroller {
   #scroll(options) {
     const { method, value, instant = prefersReducedMotion() } = options;
 
+    // SPY: [data-spy-glide] sliders jump in one go, then glide the slides on the
+    // graphics card, so a busy page can't stall them (assets/spy-slider.js).
+    const host = instant ? null : this.element.closest('[data-spy-glide]');
+    if (host) {
+      const from = this.element[`scroll${this.#edge}`];
+      const speed = Number(host.getAttribute('data-spy-glide')) || 400;
+      const axis = this.axis;
+      const start = () => {
+        this.#scroll({ ...options, instant: true });
+        return spyGlide(this.element, from, { speed, axis });
+      };
+      // Loaded at setup, so this normally starts in the same frame as the click
+      const run = (spyGlide ? Promise.resolve().then(start) : loadSpyGlide().then(start))
+        // No engine? Just jump, never leave the slider stuck
+        .catch(() => this.#scroll({ ...options, instant: true }));
+      this.#glide = run;
+      run.then(() => {
+        if (this.#glide === run) this.#glide = undefined;
+      });
+      return;
+    }
+
     this.#reset();
     this.#ignore = instant;
     this.#userEvent = false;
@@ -177,7 +208,13 @@ export class Scroller {
    * @readonly
    */
   get finished() {
-    return this.#promise ?? Promise.resolve();
+    if (!this.#glide) return this.#promise ?? Promise.resolve();
+    return Promise.all([this.#promise, this.#glide]).then(() => {});
+  }
+
+  /** True while a SPY glide is moving the slides */
+  get gliding() {
+    return this.#glide !== undefined;
   }
 
   /**

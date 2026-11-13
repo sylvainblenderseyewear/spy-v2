@@ -5,8 +5,17 @@
   if section.settings.background_color != blank
     render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
   endif
+
+  # An empty collection shows placeholder cards: fine in the editor, never for shoppers
+  assign hide_section = false
+  if section.settings.collection == blank or section.settings.collection.products_count == 0
+    unless request.design_mode
+      assign hide_section = true
+    endunless
+  endif
 %}
 
+{%- unless hide_section -%}
 <div
   class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
@@ -19,6 +28,7 @@
     section-resource-list
     spacing-style
     gap-style
+    {{ section.settings.custom_class }}
   "
   style="
     {% render 'spacing-style', settings: section.settings %}
@@ -30,7 +40,45 @@
   </div>
 
   {% capture list_items %}
-    {% if section.settings.collection != blank and shop.products_count != 0 and section.settings.group_by_model_tag %}
+    {% if section.settings.collection != blank and shop.products_count != 0 and section.settings.card_unit == 'colourway' %}
+      {%- comment -%} Picked rails (homepage, gift guides): every product is its own colourway card {%- endcomment -%}
+      {% paginate section.settings.collection.products by max_items %}
+        {% for product in section.settings.collection.products limit: max_items %}
+          {% liquid
+            capture group_name
+              render 'spy-group-name', product: product
+            endcapture
+            assign group_name = group_name | strip
+            capture model_facts
+              render 'spy-model-collection-facts', product: product, group_name: group_name
+            endcapture
+            assign model_facts = model_facts | strip | split: '~^~'
+            assign group_count = model_facts[0] | plus: 0
+            if group_count < 1
+              assign group_count = 1
+            endif
+          %}
+          <div
+            class="resource-list__item"
+          >
+            {% content_for 'block',
+              type: '_spy-grouped-product-card',
+              id: 'static-product-card',
+              closest.product: product,
+              group_name: group_name,
+              group_count: group_count,
+              card_per: 'colourway',
+              image_sizes: '(min-width: 1141px) 20vw, (min-width: 721px) 33vw, (min-width: 541px) 50vw, 100vw',
+              product_view_context: 'recommendation'
+            %}
+          </div>
+
+          {% unless forloop.last %}
+            <!--@list/split-->
+          {% endunless %}
+        {% endfor %}
+      {% endpaginate %}
+    {% elsif section.settings.collection != blank and shop.products_count != 0 and section.settings.card_unit == 'model' %}
       {% liquid
         assign group_sep = '~|~'
         assign group_seen = group_sep
@@ -147,6 +195,7 @@
     {%- content_for 'blocks' -%}
   </div>
 </div>
+{%- endunless -%}
 
 {% schema %}
 {
@@ -173,11 +222,16 @@
       "label": "t:settings.collection"
     },
     {
-      "type": "checkbox",
-      "id": "group_by_model_tag",
-      "label": "Group colourways into one card",
-      "info": "One card per model instead of one per colourway. Matched on each product's collection:: tag; requires the _spy-grouped-product-card block.",
-      "default": false
+      "type": "select",
+      "id": "card_unit",
+      "label": "One card per",
+      "options": [
+        { "value": "product", "label": "Product (standard card)" },
+        { "value": "model", "label": "Model (colourways merged)" },
+        { "value": "colourway", "label": "Colourway (hand-picked rails)" }
+      ],
+      "default": "product",
+      "info": "Model and Colourway use the grouped card block. Model gives one card per model with its colour count, matched on the collection:: tag. Colourway gives every product its own card: model name as the title, the colour under the image."
     },
     {
       "type": "select",
@@ -338,6 +392,18 @@
     },
     {
       "type": "select",
+      "id": "fit_align",
+      "label": "Cards that fit in one row",
+      "info": "Where the cards sit when they all fit and the row doesn't scroll.",
+      "options": [
+        { "value": "center", "label": "Centre" },
+        { "value": "start", "label": "Left" }
+      ],
+      "default": "center",
+      "visible_if": "{{ section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile }}"
+    },
+    {
+      "type": "select",
       "id": "carousel_scroll",
       "label": "Arrows scroll by",
       "options": [
@@ -371,6 +437,25 @@
       "unit": "s",
       "default": 3,
       "visible_if": "{{ section.settings.carousel_autoplay }}"
+    },
+    {
+      "type": "range",
+      "id": "mobile_peek",
+      "label": "Phone: show the next cards",
+      "info": "Space on both sides of the centred card on phones, so a slice of the cards next to it shows.",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.layout_type == 'carousel' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_dots",
+      "label": "Phone: show dots",
+      "default": false,
+      "visible_if": "{{ section.settings.layout_type == 'carousel' }}"
     },
     {
       "type": "header",
@@ -451,6 +536,16 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Advanced"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "CSS class",
+      "info": "Extra class on the section wrapper, for styling a band that needs it. Survives duplicating or re-adding the section, unlike targeting its ID."
     }
   ],
   "presets": [

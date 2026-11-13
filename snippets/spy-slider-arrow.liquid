@@ -1,0 +1,32 @@
+{%- doc -%}
+  Arrow button for <spy-slider>: 40px white circle, orange chevron drawn dead centre.
+  Starts hidden (data-off); the engine shows it when the row can scroll.
+  Shadow and states live in src/tailwind.css (.spy-slider-arrow): hover, focus, dimmed end.
+  Hiding is a data-[off] variant: plain CSS can't beat the layered !important utilities.
+
+  @param {string} dir - 'prev' or 'next'
+  @param {string} [class] - position classes
+
+  @example
+  {%- render 'spy-slider-arrow', dir: 'prev', class: 'absolute left-[5px] top-1/2 -translate-y-1/2 z-[2]' -%}
+{%- enddoc -%}
+<button
+  type="button"
+  data-{{ dir }}
+  data-off
+  aria-disabled="false"
+  {% if dir == 'prev' %}
+    aria-label="{{ 'accessibility.slideshow_previous' | t }}"
+  {% else %}
+    aria-label="{{ 'accessibility.slideshow_next' | t }}"
+  {% endif %}
+  class="spy-slider-arrow {{ class }} [display:flex] data-[off]:hidden h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-white p-0 text-spy-orange-ui focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-spy-orange-ui"
+>
+  <svg class="pointer-events-none block h-5 w-5 max-w-none" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+    {%- if dir == 'prev' -%}
+      <path d="M15.25 5.5 8.75 12l6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    {%- else -%}
+      <path d="M8.75 5.5 15.25 12l-6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    {%- endif -%}
+  </svg>
+</button>

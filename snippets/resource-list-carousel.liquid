@@ -1,158 +1,87 @@
 {%- doc -%}
-  Renders a carousel of predictive search results cards
+  SPY card rail, used by every product and collection carousel. One behaviour, run by
+  <spy-slider> (assets/spy-slider.js):
+  - 1 card per arrow click in 300ms; arrows from 769px, outside the cards; swipe below
+  - loops when the rail plays by itself, or on phones when the centred card shows its neighbours
+  - cards that all fit sit centred or on the left (the section's "Cards that fit in one row")
 
-  @param {string} ref - The ref of the slideshow
   @param {object} slides - An array of HTML for the slides to display in the carousel
-  @param {number} slide_count - The number of slides to display in the carousel
   @param {object} settings - The block or sections settings from the parent block/section.
-  @param {string} [slide_width_max] - The maximum width of the slides in the carousel.
 
   @example
-  {% render 'resource-list-carousel', slides: slides, slide_count: slide_count, settings: block.settings %}
+  {% render 'resource-list-carousel', slides: slides, settings: section.settings %}
 {%- enddoc -%}
 
-{% liquid
-  assign slideshow_ref = ref | default: 'resourceListCarousel'
-
+{%- liquid
+  # Page-width rails line up with the page; full-width ones keep 16px off the screen edge from 992px
   if settings.section_width == 'page-width'
-    assign slideshow_gutters = 'start end'
-    assign gutter_style = '--gutter-slide-width: var(--util-page-margin-offset);'
+    assign rail_edge = '[--gutter-slide-width:var(--util-page-margin-offset)]'
   else
-    assign slideshow_gutters = null
-    assign gutter_style = '--gutter-slide-width: 0px;'
+    assign rail_edge = '[--gutter-slide-width:0px] min-[992px]:[--gutter-slide-width:16px]'
   endif
 
-  assign show_arrows = false
-  if settings.icons_style != 'none'
-    assign show_arrows = true
-  endif
-
-  # Source rails move one card per arrow click; 'page' keeps Horizon's screenful jump
-  assign slide_step = 1
-  if settings.carousel_scroll == 'page'
-    assign slide_step = blank
-  endif
-
-  assign autoplay = false
+  assign rail_cols = settings.columns | default: 4
+  assign rail_auto = 0
+  assign rail_loop = 0
   if settings.carousel_autoplay
-    assign autoplay = true
+    assign rail_auto = settings.carousel_autoplay_speed | default: 3 | times: 1000
+    assign rail_loop = 1
   endif
-  assign autoplay_speed = settings.carousel_autoplay_speed | default: 3
+  # A centred phone rail with peeks loops there, so a card always shows on both sides
+  assign rail_loop_phone = rail_loop
+  if settings.mobile_peek > 0 and slides.size > 1
+    assign rail_loop_phone = 1
+  endif
+  assign rail_dots = 0
+  if settings.mobile_dots
+    assign rail_dots = 1
+  endif
 
-  # An auto-advancing rail has to wrap, or it just parks on the last card
-  assign infinite = autoplay
-%}
+  # By window width: up to 540, 541-768, 769 and up. JSON lives in an assign: Shopify cuts {{ }} at the first brace
+  assign rail_opts = '{"speed":300,"step":1,"bp":[540,768],"loop":[' | append: rail_loop_phone | append: ',' | append: rail_loop | append: ',' | append: rail_loop | append: '],"arrows":[0,0,1],"dots":[' | append: rail_dots | append: ',0,0],"autoplay":' | append: rail_auto | append: '}'
 
-{% capture slides %}
-  {% for item in slides limit: slides.size %}
-    {% render 'slideshow-slide'
-      index : forloop.index0,
-      children : item,
-      class : 'resource-list__slide'
-    %}
-  {% endfor %}
-{% endcapture %}
+  # More cards than fit: 50px margins for the arrows. Set here for desktop, the engine keeps it right per width
+  assign rail_more = false
+  if slides.size > rail_cols
+    assign rail_more = true
+  elsif rail_loop == 1 and slides.size > 1
+    assign rail_more = true
+  endif
+-%}
 
-<div style="{{ gutter_style }} --slide-width-max: {{ slide_width_max | default: '300px' }};">
-  {% render 'slideshow',
-    ref: slideshow_ref,
-    class: 'resource-list__carousel',
-    slides: slides,
-    show_arrows: show_arrows,
-    icon_style: settings.icons_style,
-    icon_shape: settings.icons_shape,
-    auto_hide_controls: false,
-    infinite: infinite,
-    autoplay: autoplay,
-    autoplay_speed: autoplay_speed,
-    slide_step: slide_step,
-    initial_slide: 0,
-    slide_count: slide_count,
-    slideshow_gutters: slideshow_gutters
-  %}
+<div
+  class="{{ rail_edge }}"
+  style="--spy-peek: {{ settings.mobile_peek | default: 0 }}px; --spy-s1: 100%; --spy-s2: calc(100% / 2); --spy-s3: calc(100% / 3); --spy-s4: calc(100% / {{ rail_cols }});"
+>
+  {%- comment -%}
+    Whole cards only, edge to edge (a margin, not padding, so the loop's copies never peek in).
+    Arrows sit in that margin, off the cards. Phones can centre the card with a peek either side.
+  {%- endcomment -%}
+  <spy-slider
+    class="relative block [--spy-rail-edge:var(--gutter-slide-width)] min-[769px]:data-[arrows]:[--spy-rail-edge:max(var(--gutter-slide-width),50px)]"
+    {% if rail_more %}data-arrows{% endif %}
+    data-opts="{{ rail_opts | escape }}"
+  >
+    {%- render 'spy-slider-arrow', dir: 'prev', class: 'absolute left-[max(0px,calc(var(--spy-rail-edge)_-_50px))] top-1/2 z-[2] -translate-y-1/2' -%}
+    <div
+      data-track
+      class="[display:flex] overflow-x-auto snap-x snap-mandatory select-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&[data-dragging]_a]:pointer-events-none [&[data-dragging]_button]:pointer-events-none [&_img]:[-webkit-user-drag:none] mx-[var(--spy-rail-edge)] max-[541px]:px-[var(--spy-peek)] max-[541px]:scroll-px-[var(--spy-peek)]{% if settings.fit_align != 'start' %} justify-center-safe{% endif %}"
+    >
+      {%- for item in slides -%}
+        <div class="shrink-0 grow-0 min-w-0 snap-start max-[541px]:snap-center basis-[var(--spy-s1)] min-[541px]:basis-[var(--spy-s2)] min-[721px]:basis-[var(--spy-s3)] min-[1141px]:basis-[var(--spy-s4)] px-[calc(var(--resource-list-column-gap,0px)/2)]">
+          {{ item }}
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- render 'spy-slider-arrow', dir: 'next', class: 'absolute right-[max(0px,calc(var(--spy-rail-edge)_-_50px))] top-1/2 z-[2] -translate-y-1/2' -%}
+    <div
+      data-dots
+      data-off
+      data-dot-label="{{ 'accessibility.slide_status' | t: index: '[i]', length: '[n]' | escape }}"
+      class="[display:flex] data-[off]:hidden absolute inset-x-0 bottom-4 items-center justify-center gap-2"
+      role="group"
+      aria-label="{{ 'accessibility.slideshow' | t | escape }}"
+    ></div>
+  </spy-slider>
 </div>
-
-{% stylesheet %}
-  .resource-list__carousel {
-    --slide-width: 60vw;
-    width: 100%;
-    position: relative;
-    container-type: inline-size;
-    container-name: resource-list-carousel;
-
-    .slideshow-control[disabled] {
-      display: none;
-    }
-
-    .slideshow-control--next {
-      margin-inline-start: auto;
-    }
-
-    /* Product-card rails need always-visible nav, not the hover-reveal used on hero slideshows */
-    slideshow-arrows .slideshow-control {
-      opacity: 1;
-    }
-
-    .slideshow-control--shape-circle {
-      color: var(--color-spy-orange-ui);
-      box-shadow: 0 0 9px 0 rgb(0 0 0 / 10%);
-    }
-  }
-
-  @container resource-list-carousel (max-width: 749px) {
-    .resource-list__carousel .resource-list__slide {
-      --slide-width: clamp(150px, var(--mobile-card-size, 60cqw), var(--slide-width-max));
-    }
-  }
-
-  @container resource-list-carousel (min-width: 750px) {
-    .resource-list__carousel .resource-list__slide {
-      --section-slide-width: calc(
-        (100% - (var(--resource-list-column-gap) * (var(--column-count) - 1)) - var(--peek-next-slide-size)) /
-          var(--column-count)
-      );
-      --fallback-slide-width: clamp(150px, var(--mobile-card-size, 60cqw), var(--slide-width-max));
-      --slide-width: var(--section-slide-width, var(--fallback-slide-width));
-    }
-  }
-
-  .resource-list__carousel slideshow-slides {
-    gap: var(--resource-list-column-gap);
-
-    /* Add padding to prevent hover animations from being clipped in slideshow
-     15px accommodates:
-     - Scale effect (9px on each side from 1.03 scale)
-     - Lift effect (4px upward movement)
-     - Shadow (15px spread with -5px offset)
-     Using 16px for better alignment with our spacing scale */
-    margin-block: -16px;
-    padding-block: 16px;
-  }
-
-  .resource-list__carousel slideshow-arrows {
-    padding-inline: var(--util-page-margin-offset);
-  }
-
-  .resource-list__carousel .resource-list__slide {
-    width: var(--slide-width);
-    flex: 0 0 auto;
-    scroll-snap-align: start;
-    min-width: 0;
-  }
-
-  /*
-   * Resource list carousels have peeking slides on both sides.
-   * We try to kick load them beforehand (they are lazy loaded otherwise).
-   */
-  .resource-list__carousel
-    :is(
-      slideshow-slide:has(+ slideshow-slide[aria-hidden='false']),
-      slideshow-slide[aria-hidden='false'] + slideshow-slide
-    ) {
-    content-visibility: auto;
-
-    slideshow-component[actioned] & {
-      content-visibility: visible;
-    }
-  }
-{% endstylesheet %}
+<script src="{{ 'spy-slider.js' | asset_url }}" type="module"></script>

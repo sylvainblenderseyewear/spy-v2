@@ -487,6 +487,7 @@
 
     {%- comment -%} Focusable so keyboard users can arrow through the photos {%- endcomment -%}
     {%- assign gallery_label = 'accessibility.slideshow' | t -%}
+    {%- comment -%} SPY: arrow clicks glide on the graphics card in 400ms (assets/spy-slider.js) {%- endcomment -%}
     {% render 'slideshow',
       ref: 'slideshow',
       class: slideshow_class,
@@ -495,7 +496,8 @@
       slideshow_arrows: slideshow_arrows,
       arrows_position: icons_position,
       controls: controls,
-      scroller_label: gallery_label
+      scroller_label: gallery_label,
+      attributes: 'data-spy-glide="400"'
     %}
 
     {% if media_presentation == 'grid' %}

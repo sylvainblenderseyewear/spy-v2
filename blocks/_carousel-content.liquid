@@ -52,6 +52,8 @@
   class="force-full-width"
   style="{{ gutter_style }}"
 >
+  {%- comment -%} SPY: arrow clicks glide on the graphics card in 400ms (assets/spy-slider.js) {%- endcomment -%}
+  {%- assign carousel_attributes = block.shopify_attributes | append: ' data-spy-glide="400"' -%}
   {% render 'slideshow',
     class: slideshow_class,
     style: slideshow_style,
@@ -60,13 +62,13 @@
     icon_style: icons_style,
     icon_shape: section.settings.icons_shape,
     auto_hide_controls: false,
-    infinite: false,
+    infinite: section.settings.loop,
     initial_slide: 0,
     slide_count: slide_count,
     slide_position: slide_position,
     slideshow_gutters: slideshow_gutters,
     controls: carousel_controls,
-    attributes: block.shopify_attributes
+    attributes: carousel_attributes
   %}
 </div>
 
