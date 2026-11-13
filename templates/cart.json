@@ -6,11 +6,18 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "cart-section": {
       "type": "main-cart",
       "blocks": {
+        "govx_id_discounts_govx_id_button_pBUqDC": {
+          "type": "shopify://apps/govx-id-discounts/blocks/govx-id-button/2b41cbab-a2d3-48ab-85b4-09f16dcc4bf0",
+          "settings": {
+            "cta_prompt": "Discount available for Military, First Responders, Medical Workers and Teachers"
+          }
+        },
         "cart-page-title": {
           "type": "_cart-title",
           "static": true,
@@ -19,6 +26,7 @@
             "show_count": true,
             "type_preset": "spy",
             "alignment": "left",
+            "text_color": "",
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -34,16 +42,22 @@
             "image_ratio": "square",
             "dividers": true,
             "vendor": false,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0,
             "quantity_style": "dropdown",
             "quantity_max": 10,
             "image_max_width": 140,
             "title_case": "uppercase",
             "show_quantity_line": true,
-            "show_stock": true
+            "show_stock": true,
+            "input_style": "default",
+            "input_background_color": "{{ settings.color_palette.background }}",
+            "input_text_color": "{{ settings.color_palette.foreground }}",
+            "input_border_color": "{{ settings.color_palette.foreground }}",
+            "border_width": 1,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
           },
           "blocks": {}
         },
@@ -52,34 +66,47 @@
           "static": true,
           "settings": {
             "extend_summary": false,
+            "heading": "Order Summary",
+            "show_subtotal": false,
+            "shipping_estimate": true,
+            "shipping_select_label": "Shipping",
+            "shipping_label": "Shipping cost",
+            "shipping_value": "Calculated at checkout",
+            "estimate_country": "United States",
+            "estimate_province": "California",
+            "estimate_zip": "92008",
+            "checkout_label": "Checkout",
+            "background_color": "",
+            "text_color": "",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
-            "border_radius": 0,
-            "heading": "Order Summary",
-            "show_subtotal": false,
-            "shipping_label": "Shipping cost",
-            "shipping_value": "Calculated at checkout",
-            "checkout_label": "Checkout",
-            "shipping_estimate": true,
-            "shipping_select_label": "Shipping",
-            "estimate_country": "United States",
-            "estimate_province": "California",
-            "estimate_zip": "92008"
+            "border_color": "",
+            "border_radius": 0
           },
           "blocks": {}
         }
       },
+      "block_order": [
+        "govx_id_discounts_govx_id_button_pBUqDC"
+      ],
       "settings": {
         "section_width": "container",
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 24,
-        "padding-block-end": 0,
         "gutter": 15,
         "summary_columns": 5,
         "column_gap": 30,
         "show_continue_link": true,
-        "show_promo": true
+        "continue_label": "",
+        "continue_link": "",
+        "show_promo": true,
+        "promo_toggle_label": "",
+        "promo_label": "",
+        "promo_placeholder": "",
+        "promo_button": "",
+        "background_color": "{{ settings.color_palette.background }}",
+        "text_color": "",
+        "padding-block-start": 24,
+        "padding-block-end": 0
       }
     }
   },
