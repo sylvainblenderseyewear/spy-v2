@@ -241,7 +241,8 @@
         "gap": 16,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "custom_class": "spy-rail--contained"
       }
     },
     "content_rows": {
