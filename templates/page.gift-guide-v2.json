@@ -292,8 +292,8 @@
         }
       },
       "settings": {
-        "collection": "gift-guide-26-lifestyle",
         "card_unit": "colourway",
+        "collection": "gift-guide-26-lifestyle",
         "layout_type": "carousel",
         "max_products": 5,
         "columns": 5,
@@ -458,8 +458,8 @@
         }
       },
       "settings": {
-        "collection": "gift-guide-26-performance",
         "card_unit": "colourway",
+        "collection": "gift-guide-26-performance",
         "layout_type": "carousel",
         "max_products": 5,
         "columns": 5,

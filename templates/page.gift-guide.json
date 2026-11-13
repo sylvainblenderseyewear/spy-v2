@@ -328,8 +328,8 @@
         }
       },
       "settings": {
-        "collection": "gift-guide-sunglasses",
         "card_unit": "colourway",
+        "collection": "gift-guide-sunglasses",
         "layout_type": "carousel",
         "max_products": 5,
         "columns": 5,
@@ -570,8 +570,8 @@
         }
       },
       "settings": {
-        "collection": "gift-guide-goggles",
         "card_unit": "colourway",
+        "collection": "gift-guide-goggles",
         "layout_type": "carousel",
         "max_products": 5,
         "columns": 5,

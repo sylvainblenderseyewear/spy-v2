@@ -131,6 +131,7 @@
       ],
       "name": "Watermen — intro",
       "settings": {
+        "custom_class": "wm-band wm-band--intro",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -156,8 +157,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "wm-band wm-band--intro"
+        "padding-block-end": 0
       }
     },
     "frames": {
@@ -229,8 +229,9 @@
         }
       },
       "settings": {
-        "collection": "fishing-sunglasses",
+        "custom_class": "spy-rail--contained spy-rail--edge-mobile",
         "card_unit": "model",
+        "collection": "fishing-sunglasses",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 10,
@@ -252,8 +253,7 @@
         "gap": 16,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "spy-rail--contained spy-rail--edge-mobile"
+        "padding-block-end": 0
       }
     },
     "frames_cta": {
@@ -286,6 +286,7 @@
       ],
       "name": "Watermen — shop all CTA",
       "settings": {
+        "custom_class": "wm-band wm-band--cta",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -311,8 +312,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 40,
-        "padding-block-end": 63,
-        "custom_class": "wm-band wm-band--cta"
+        "padding-block-end": 63
       }
     },
     "our_tech": {
@@ -1132,6 +1132,7 @@
       ],
       "name": "Watermen — our tech",
       "settings": {
+        "custom_class": "wm-band wm-band--header wm-band--tech",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -1157,8 +1158,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 8,
-        "padding-block-end": 40,
-        "custom_class": "wm-band wm-band--header wm-band--tech"
+        "padding-block-end": 40
       }
     },
     "lens_overview": {
@@ -1339,6 +1339,7 @@
       ],
       "name": "Watermen — lens overview",
       "settings": {
+        "custom_class": "wm-band wm-band--header",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -1364,8 +1365,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 52,
-        "padding-block-end": 0,
-        "custom_class": "wm-band wm-band--header"
+        "padding-block-end": 0
       }
     },
     "lens_options": {
@@ -1553,6 +1553,7 @@
       ],
       "name": "Watermen — lens options",
       "settings": {
+        "custom_class": "wm-band",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -1578,8 +1579,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 30,
-        "padding-block-end": 30,
-        "custom_class": "wm-band"
+        "padding-block-end": 30
       }
     },
     "ice_blue": {
@@ -1675,8 +1675,9 @@
         }
       },
       "settings": {
-        "collection": "watermen-ice-blue",
+        "custom_class": "spy-rail--contained spy-rail--edge-mobile",
         "card_unit": "model",
+        "collection": "watermen-ice-blue",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 14,
@@ -1698,8 +1699,7 @@
         "gap": 48,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "spy-rail--contained spy-rail--edge-mobile"
+        "padding-block-end": 0
       }
     },
     "black_mirror": {
@@ -1795,8 +1795,9 @@
         }
       },
       "settings": {
-        "collection": "watermen-black-mirror",
+        "custom_class": "spy-rail--contained spy-rail--edge-mobile",
         "card_unit": "model",
+        "collection": "watermen-black-mirror",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 10,
@@ -1818,8 +1819,7 @@
         "gap": 48,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "spy-rail--contained spy-rail--edge-mobile"
+        "padding-block-end": 0
       }
     },
     "bronze": {
@@ -1915,8 +1915,9 @@
         }
       },
       "settings": {
-        "collection": "watermen-bronze",
+        "custom_class": "spy-rail--contained spy-rail--edge-mobile",
         "card_unit": "model",
+        "collection": "watermen-bronze",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
         "max_products": 1,
@@ -1938,8 +1939,7 @@
         "gap": 48,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "spy-rail--contained spy-rail--edge-mobile"
+        "padding-block-end": 0
       }
     },
     "lens_benefits_header": {
@@ -2043,6 +2043,7 @@
       ],
       "name": "Watermen — lens benefits header",
       "settings": {
+        "custom_class": "wm-band wm-band--header",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -2068,8 +2069,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 8,
-        "padding-block-end": 0,
-        "custom_class": "wm-band wm-band--header"
+        "padding-block-end": 0
       }
     },
     "lens_benefits": {
@@ -2781,6 +2781,8 @@
       },
       "name": "Watermen — lens benefits carousel",
       "settings": {
+        "custom_class": "wm-band--benefits",
+        "loop": true,
         "columns": 1,
         "mobile_columns": "1",
         "section_width": "full-width",
@@ -2789,9 +2791,7 @@
         "icons_style": "chevron",
         "icons_shape": "square",
         "padding-block-start": 20,
-        "padding-block-end": 25,
-        "custom_class": "wm-band--benefits",
-        "loop": true
+        "padding-block-end": 25
       }
     },
     "footer_banner": {

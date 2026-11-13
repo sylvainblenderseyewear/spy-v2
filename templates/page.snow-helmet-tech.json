@@ -39,6 +39,7 @@
       ],
       "name": "Snow helmet — intro",
       "settings": {
+        "custom_class": "sht-band sht-band--c8",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -64,8 +65,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 48,
-        "padding-block-end": 48,
-        "custom_class": "sht-band sht-band--c8"
+        "padding-block-end": 48
       }
     },
     "mips": {
@@ -123,6 +123,7 @@
       ],
       "name": "Snow helmet — Mips",
       "settings": {
+        "custom_class": "sht-band sht-band--c8n",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -148,8 +149,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 48,
-        "padding-block-end": 48,
-        "custom_class": "sht-band sht-band--c8n"
+        "padding-block-end": 48
       }
     },
     "video": {
@@ -191,6 +191,7 @@
       ],
       "name": "Snow helmet — Mips video",
       "settings": {
+        "custom_class": "sht-band sht-band--video",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -216,8 +217,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "sht-band sht-band--video"
+        "padding-block-end": 0
       }
     },
     "hero": {
@@ -253,6 +253,7 @@
       ],
       "name": "Snow helmet — hero image",
       "settings": {
+        "custom_class": "sht-band sht-band--c8",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -278,8 +279,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 48,
-        "padding-block-end": 48,
-        "custom_class": "sht-band sht-band--c8"
+        "padding-block-end": 48
       }
     },
     "fit": {
@@ -499,6 +499,7 @@
       ],
       "name": "Snow helmet — adjustable fit",
       "settings": {
+        "custom_class": "sht-band sht-band--rows sht-band--r26",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -524,8 +525,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 48,
-        "padding-block-end": 72,
-        "custom_class": "sht-band sht-band--rows sht-band--r26"
+        "padding-block-end": 72
       }
     },
     "ventilation": {
@@ -884,6 +884,7 @@
       ],
       "name": "Snow helmet — ventilation",
       "settings": {
+        "custom_class": "sht-band sht-band--rows sht-band--r44",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -909,8 +910,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "sht-band sht-band--rows sht-band--r44"
+        "padding-block-end": 0
       }
     },
     "construction": {
@@ -1108,6 +1108,7 @@
       ],
       "name": "Snow helmet — construction",
       "settings": {
+        "custom_class": "sht-band sht-band--rows sht-band--r26 sht-band--abs",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -1133,8 +1134,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "sht-band sht-band--rows sht-band--r26 sht-band--abs"
+        "padding-block-end": 0
       }
     },
     "features": {
@@ -1196,6 +1196,7 @@
       ],
       "name": "Snow helmet — additional features",
       "settings": {
+        "custom_class": "sht-band sht-band--icons",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -1221,8 +1222,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "sht-band sht-band--icons"
+        "padding-block-end": 0
       }
     },
     "shop_heading": {
@@ -1259,6 +1259,7 @@
       ],
       "name": "Snow helmet — shop heading",
       "settings": {
+        "custom_class": "sht-band sht-band--bleed",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "center",
@@ -1284,8 +1285,7 @@
         "border_color": "",
         "border_radius": 0,
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "sht-band sht-band--bleed"
+        "padding-block-end": 0
       }
     },
     "helmets": {
@@ -1457,6 +1457,7 @@
       },
       "name": "Snow helmet — shop carousel",
       "settings": {
+        "custom_class": "spy-rail--contained spy-rail--row-inset",
         "collection": "snow-helmets",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
@@ -1473,8 +1474,7 @@
         "gap": 16,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "spy-rail--contained spy-rail--row-inset"
+        "padding-block-end": 0
       }
     },
     "spy_quick_view_modal": {
