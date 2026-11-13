@@ -87,12 +87,25 @@ from the saved code, because the live site no longer has the bar.
    users see the same behaviour.
 3. **The old site no longer has the bar.** Goran decides whether to keep it on Shopify or switch the
    section off in the theme editor (no code).
-4. **Link target.** It still uses the `/collections/sunglasses` fallback. `/collections/sale` (the nav
-   SALE link) and `/collections/sale-sunglasses` still answer 404. No collection on production has
-   "sale" in its title or handle (0 of 192, Admin API, 5 Nov). A sale collection has to be created
-   and published first (catalog work, not theme), then set as the block's Link.
+4. **Link target (updated 13 Nov).** The link is now `/collections/sale`, set in the theme editor on
+   10 Nov at 18:01 UTC. The `sale` collection was created and put on the Online Store on 10 Nov at
+   00:33 UTC, but it has 0 products (Admin API, 13 Nov), so the bar opens an empty page. Adding
+   products is catalog work, not theme. `/collections/sale-sunglasses` still doesn't exist. Since
+   01a9c7f (6 Nov), a block with no link shows plain text instead of the `/collections/sunglasses`
+   fallback.
 
-## Fix: Back from the back/forward cache (5 Nov, uncommitted)
+## Update, 13 Nov: "the bar disappears when I click the link"
+
+- On 10 Nov, from about 01:05 to 18:01 UTC, the link was `/collection/sale`, with the "s" missing.
+  That path is always a 404.
+- The 404 page uses `header-404-group` (logo only), so it has no bar (`layout/theme.liquid`). The
+  click looked like "the page refreshes and the bar is gone", but it was not a dismiss. Nothing was
+  stored, so the bar was back on the next normal page.
+- The 18:01 UTC theme editor save fixed it. The live `sections/header-group.json` (`spy-v2/main`,
+  updated 18:01:47 UTC) was read through the Admin API on 13 Nov. The click was not re-tested live,
+  because the store password is on.
+
+## Fix: Back from the back/forward cache (5 Nov, committed in 8674aaf)
 
 - **Problem.** Shopify sends shoppers `Cache-Control: private, max-age=0, must-revalidate` (checked on
   Blenders, same platform; SPY is behind the password). With no `no-store`, browsers can keep a page
