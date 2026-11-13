@@ -1,9 +1,7 @@
 
 
 {% liquid
-  if section.settings.content_source == 'products'
-    assign max_items = section.settings.max_products | default: 10
-  elsif section.settings.collection_list != blank
+  if section.settings.collection_list != blank
     assign section_collections = section.settings.collection_list
     assign max_items = section.settings.collection_list.count
   elsif section.settings.layout_type == 'editorial'
@@ -47,168 +45,57 @@
     {%- content_for 'blocks' -%}
   </div>
 
-  {% if section.settings.content_source == 'products' and section.settings.heading != blank %}
-    {%- comment -%}
-      Source section header: 28px / 600 / uppercase, centred, margin 28px 0 14px.
-      The size is Bootstrap's RFS curve — calc(1.3rem + 0.6vw) until it hits the
-      1.75rem cap at a 1200px viewport, which min() expresses without a query.
-    {%- endcomment -%}
-    <div class="section-resource-list__header">
-      <h2
-        class="
-          type-h2 m-0 mt-7 mb-3.5 text-center uppercase font-semibold
-          leading-[1.2] tracking-normal
-          text-[length:min(1.75rem,calc(1.3rem_+_0.6vw))]
-        "
-      >
-        {{- section.settings.heading -}}
-      </h2>
-    </div>
+  {% if section_collections == null %}
+    {% for i in (1..max_items) %}
+      {% assign section_collections = section_collections | append: ', ' %}
+    {% endfor %}
+
+    {% assign section_collections = section_collections | split: ',' %}
   {% endif %}
 
-  {% if section.settings.content_source == 'products' %}
-    {%- liquid
-      # Pool products across every collection picked in "Collections", so the
-      # section can mix as many collections as the merchant wants.
-      assign product_pool = blank
-      for coll in section.settings.collection_list
-        if coll == blank
-          continue
-        endif
-        if product_pool == blank
-          assign product_pool = coll.products
-        else
-          assign product_pool = product_pool | concat: coll.products
-        endif
-      endfor
-
-      assign group_sep = '~|~'
-      assign group_seen = group_sep
-      assign group_card_count = 0
-    -%}
-    {% capture list_items %}
-      {% if product_pool != blank and product_pool.size > 0 %}
-        {%- capture groups -%}
-          {%- render 'spy-product-groups', products: product_pool -%}
-        {%- endcapture -%}
-        {%- liquid
-          assign groups = groups | strip | split: '~#~'
-          assign group_keys = groups[0] | split: group_sep
-          assign group_counts = groups[1] | split: group_sep
-        -%}
-        {% for product in product_pool %}
-          {% liquid
-            if group_card_count >= max_items
-              break
-            endif
-
-            capture group_name
-              render 'spy-group-name', product: product
-            endcapture
-            assign group_name = group_name | strip
-            if group_name == ''
-              assign group_key = 'ungrouped-' | append: product.id
-            else
-              assign group_key = group_name | handleize
-            endif
-            assign group_probe = group_sep | append: group_key | append: group_sep
+  {% capture list_items %}
+    {% for collection in section_collections limit: max_items %}
+      {%- assign card_product = collection.products.first -%}
+      <div class="resource-list__item">
+        {%- if card_product != blank -%}
+          {%- comment -%}
+            One card per collection, drawn as the PLP model card: the collection's first
+            product carries the image, the collection itself the name, colourway count,
+            price range and hover thumbnails.
+          {%- endcomment -%}
+          {% render 'spy-grouped-product-card',
+            product: card_product,
+            group_name: collection.title,
+            group_count: collection.all_products_count,
+            group_collection: collection,
+            block: section,
+            product_view_context: 'collection'
           %}
+        {%- else -%}
+          {%- comment -%} Empty collection, or an unset slot in the editor — keep the stock tile {%- endcomment -%}
+          {% content_for 'block', type: '_collection-card', id: 'static-collection-card', closest.collection: collection %}
+        {%- endif -%}
+      </div>
+      {% unless forloop.last %}
+        <!--@list/split-->
+      {% endunless %}
+    {% endfor %}
+  {% endcapture %}
 
-          {% unless group_seen contains group_probe %}
-            {% if group_card_count > 0 %}
-              <!--@list/split-->
-            {% endif %}
-            {% liquid
-              assign group_seen = group_seen | append: group_key | append: group_sep
-              assign group_count = 1
-              for candidate_key in group_keys
-                if candidate_key == group_key
-                  assign group_count = group_counts[forloop.index0] | plus: 0
-                  break
-                endif
-              endfor
-              assign group_card_count = group_card_count | plus: 1
-            %}
-            <div class="resource-list__item">
-              {% render 'spy-grouped-product-card',
-                product: product,
-                group_name: group_name,
-                group_count: group_count,
-                block: section,
-                product_view_context: 'collection'
-              %}
-            </div>
-          {% endunless %}
-        {% endfor %}
-      {% endif %}
-    {% endcapture %}
+  {% liquid
+    # Create an array from the list items to be used for different layout types
+    assign list_items_array = list_items | strip | split: '<!--@list/split-->'
+  %}
 
-    {% liquid
-      assign list_items_array = list_items | strip | split: '<!--@list/split-->'
-    %}
-
-    {% render 'resource-list',
-      list_items: list_items,
-      list_items_array: list_items_array,
-      settings: section.settings,
-      carousel_ref: 'collectionList',
-      slide_count: max_items,
-      content_type: 'products',
-      test_id: 'collections-list-grid'
-    %}
-  {% else %}
-    {% if section_collections == null %}
-      {% for i in (1..max_items) %}
-        {% assign section_collections = section_collections | append: ', ' %}
-      {% endfor %}
-
-      {% assign section_collections = section_collections | split: ',' %}
-    {% endif %}
-
-    {% capture list_items %}
-      {% for collection in section_collections limit: max_items %}
-        {%- assign card_product = collection.products.first -%}
-        <div class="resource-list__item">
-          {%- if card_product != blank -%}
-            {%- comment -%}
-              One card per collection, drawn as the PLP model card: the collection's first
-              product carries the image, the collection itself the name, colourway count,
-              price range and hover thumbnails.
-            {%- endcomment -%}
-            {% render 'spy-grouped-product-card',
-              product: card_product,
-              group_name: collection.title,
-              group_count: collection.all_products_count,
-              group_collection: collection,
-              block: section,
-              product_view_context: 'collection'
-            %}
-          {%- else -%}
-            {%- comment -%} Empty collection, or an unset slot in the editor — keep the stock tile {%- endcomment -%}
-            {% content_for 'block', type: '_collection-card', id: 'static-collection-card', closest.collection: collection %}
-          {%- endif -%}
-        </div>
-        {% unless forloop.last %}
-          <!--@list/split-->
-        {% endunless %}
-      {% endfor %}
-    {% endcapture %}
-
-    {% liquid
-      # Create an array from the list items to be used for different layout types
-      assign list_items_array = list_items | strip | split: '<!--@list/split-->'
-    %}
-
-    {% render 'resource-list',
-      list_items: list_items,
-      list_items_array: list_items_array,
-      settings: section.settings,
-      carousel_ref: 'collectionList',
-      slide_count: max_items,
-      content_type: 'collections',
-      test_id: 'collections-list-grid'
-    %}
-  {% endif %}
+  {% render 'resource-list',
+    list_items: list_items,
+    list_items_array: list_items_array,
+    settings: section.settings,
+    carousel_ref: 'collectionList',
+    slide_count: max_items,
+    content_type: 'collections',
+    test_id: 'collections-list-grid'
+  %}
 </div>
 
 {% schema %}
@@ -252,70 +139,32 @@
   },
   "settings": [
     {
-      "type": "select",
-      "id": "content_source",
-      "label": "Card content",
-      "options": [
-        {
-          "value": "collections",
-          "label": "Collections"
-        },
-        {
-          "value": "products",
-          "label": "Products (grouped by model)"
-        }
-      ],
-      "default": "collections",
-      "info": "Products mode reuses the grouped PLP card: one card per model, matched on the collection:: tag."
-    },
-    {
       "type": "collection_list",
       "id": "collection_list",
-      "label": "t:settings.collection_list",
-      "info": "In products mode, every product from every collection here is pooled together before grouping by model."
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "t:settings.heading",
-      "visible_if": "{{ section.settings.content_source == 'products' }}"
-    },
-    {
-      "type": "range",
-      "id": "max_products",
-      "label": "t:settings.product_count",
-      "min": 1,
-      "max": 24,
-      "step": 1,
-      "default": 10,
-      "visible_if": "{{ section.settings.content_source == 'products' }}"
+      "label": "t:settings.collection_list"
     },
     {
       "type": "header",
-      "content": "Product card",
-      "visible_if": "{{ section.settings.content_source == 'products' }}"
+      "content": "Product card"
     },
     {
       "type": "text",
       "id": "label_colors_one",
       "label": "Label — one colourway",
-      "default": "1 color available",
-      "visible_if": "{{ section.settings.content_source == 'products' }}"
+      "default": "1 color available"
     },
     {
       "type": "text",
       "id": "label_colors_many",
       "label": "Label — several colourways",
       "info": "Use [count] where the number goes.",
-      "default": "[count] colors available",
-      "visible_if": "{{ section.settings.content_source == 'products' }}"
+      "default": "[count] colors available"
     },
     {
       "type": "checkbox",
       "id": "show_swatches",
       "label": "Show colourway thumbnails on hover",
-      "default": true,
-      "visible_if": "{{ section.settings.content_source == 'products' }}"
+      "default": true
     },
     {
       "type": "range",
@@ -325,14 +174,13 @@
       "max": 6,
       "step": 1,
       "default": 4,
-      "visible_if": "{{ section.settings.content_source == 'products' and section.settings.show_swatches }}"
+      "visible_if": "{{ section.settings.show_swatches }}"
     },
     {
       "type": "checkbox",
       "id": "show_price",
       "label": "Show price",
-      "default": true,
-      "visible_if": "{{ section.settings.content_source == 'products' }}"
+      "default": true
     },
     {
       "type": "text",
@@ -340,7 +188,7 @@
       "label": "Label — price range",
       "info": "Printed before the price when the model's colourways differ.",
       "default": "Starting from",
-      "visible_if": "{{ section.settings.content_source == 'products' and section.settings.show_price }}"
+      "visible_if": "{{ section.settings.show_price }}"
     },
     {
       "type": "range",
@@ -350,32 +198,27 @@
       "max": 50,
       "step": 1,
       "unit": "px",
-      "default": 0,
-      "visible_if": "{{ section.settings.content_source == 'products' }}"
+      "default": 0
     },
     {
       "type": "image_picker",
       "id": "happy_boost_icon",
-      "label": "Happy Boost badge",
-      "visible_if": "{{ section.settings.content_source == 'products' }}"
+      "label": "Happy Boost badge"
     },
     {
       "type": "image_picker",
       "id": "mips_icon",
-      "label": "Mips badge",
-      "visible_if": "{{ section.settings.content_source == 'products' }}"
+      "label": "Mips badge"
     },
     {
       "type": "image_picker",
       "id": "bonus_lens_icon",
-      "label": "Bonus lens badge",
-      "visible_if": "{{ section.settings.content_source == 'products' }}"
+      "label": "Bonus lens badge"
     },
     {
       "type": "image_picker",
       "id": "deadbolt_icon",
-      "label": "Deadbolt badge",
-      "visible_if": "{{ section.settings.content_source == 'products' }}"
+      "label": "Deadbolt badge"
     },
     {
       "type": "header",
