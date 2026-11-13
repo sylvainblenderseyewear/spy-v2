@@ -1981,6 +1981,7 @@
       },
       "name": "Shop snow goggles",
       "settings": {
+        "custom_class": "spy-rail--contained",
         "collection": "snow-goggle-frames",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
@@ -1997,8 +1998,7 @@
         "gap": 16,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "spy-rail--contained"
+        "padding-block-end": 0
       }
     },
     "lenses_header": {
@@ -2233,6 +2233,7 @@
       },
       "name": "Shop snow lenses",
       "settings": {
+        "custom_class": "spy-rail--contained",
         "collection": "snow-replacement-lenses",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
@@ -2249,8 +2250,7 @@
         "gap": 16,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "custom_class": "spy-rail--contained"
+        "padding-block-end": 0
       }
     },
     "spy_quick_view_modal": {
