@@ -26,16 +26,27 @@
         endif
       %}
       <li class="group flex items-stretch [grid-column:var(--spy-nav-col)]" style="--spy-nav-col: {{ forloop.index | times: 2 }};">
-        <a
-          href="{{ link.url }}"
-          class="inline-flex items-center h-full px-[clamp(8px,calc(8px_+_(100vw_-_1200px)_*_8_/_279),16px)] border-b-2 border-transparent group-hover:border-black text-[14px] font-bold uppercase tracking-[0.5px] no-underline whitespace-nowrap transition-colors duration-200 {% if is_highlight %}text-spy-orange-ui{% else %}text-spy-ink{% endif %}"
-          style="font-family: var(--font-heading--family);"
-          {% if link.current %}
-            aria-current="page"
-          {% endif %}
-        >
-          {{- link.title -}}
-        </a>
+        {% comment %} A "#" link is a label only, like Collections on the source. Hover or focus still opens the panel. {% endcomment %}
+        {% if link.url == '#' or link.url == blank %}
+          <button
+            type="button"
+            class="button-unstyled inline-flex items-center h-full px-[clamp(8px,calc(8px_+_(100vw_-_1200px)_*_8_/_279),16px)] border-b-2 border-transparent group-hover:border-black text-[14px] font-bold uppercase tracking-[0.5px] whitespace-nowrap cursor-default transition-colors duration-200 {% if is_highlight %}text-spy-orange-ui{% else %}text-spy-ink{% endif %}"
+            style="font-family: var(--font-heading--family);"
+          >
+            {{- link.title -}}
+          </button>
+        {% else %}
+          <a
+            href="{{ link.url }}"
+            class="inline-flex items-center h-full px-[clamp(8px,calc(8px_+_(100vw_-_1200px)_*_8_/_279),16px)] border-b-2 border-transparent group-hover:border-black text-[14px] font-bold uppercase tracking-[0.5px] no-underline whitespace-nowrap transition-colors duration-200 {% if is_highlight %}text-spy-orange-ui{% else %}text-spy-ink{% endif %}"
+            style="font-family: var(--font-heading--family);"
+            {% if link.current %}
+              aria-current="page"
+            {% endif %}
+          >
+            {{- link.title -}}
+          </a>
+        {% endif %}
 
         {% if link.links != blank %}
           <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 absolute left-0 right-0 top-full z-40 bg-white border-t border-[#e5e5e5] shadow-lg transition-opacity duration-200">
@@ -47,7 +58,11 @@
                 <div class="col-span-4 xl:col-span-3 [display:grid] grid-cols-3 gap-x-6 lg:gap-x-10 gap-y-16 content-start pt-4">
                   {% for child in link.links %}
                     <div>
-                      <a href="{{ child.url }}" class="inline-block pb-2 text-[14px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline hover:text-spy-orange-ui" style="font-family: var(--font-heading--family);">{{ child.title }}</a>
+                      {% if child.url == '#' or child.url == blank %}
+                        <span class="inline-block pb-2 text-[14px] font-bold uppercase tracking-[0.5px] text-spy-ink" style="font-family: var(--font-heading--family);">{{ child.title }}</span>
+                      {% else %}
+                        <a href="{{ child.url }}" class="inline-block pb-2 text-[14px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline hover:text-spy-orange-ui" style="font-family: var(--font-heading--family);">{{ child.title }}</a>
+                      {% endif %}
                       {% if child.links != blank %}
                         <ul class="flex flex-col gap-0 list-none m-0 p-0">
                           {% for grandchild in child.links %}
@@ -167,7 +182,9 @@
               </button>
 
               <div class="spy-nav__body flex-auto">
-                <a href="{{ link.url }}" class="block px-5 py-3 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">See all {{ link.title }}</a>
+                {% unless link.url == '#' or link.url == blank %}
+                  <a href="{{ link.url }}" class="block px-5 py-3 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">See all {{ link.title }}</a>
+                {% endunless %}
 
                 {% for child in link.links %}
                   {% if child.links != blank %}
@@ -184,7 +201,9 @@
                         <span class="spy-caret block w-2.5 h-2.5 text-[#9a9a9a]">{{- 'spy-fa-angle.svg' | inline_asset_content -}}</span>
                       </summary>
                       <div class="spy-acc__wrap overflow-hidden transition-[height] duration-[350ms] ease-spy-nav [will-change:height] motion-reduce:transition-none"><div class="spy-acc__inner pb-2 opacity-0 transition-opacity duration-300 ease-spy-nav delay-[50ms] group-open/l2:opacity-100 motion-reduce:transition-none">
-                        <a href="{{ child.url }}" class="spy-acc__row block px-5 pt-1 pb-2.5 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">See all {{ child.title }}</a>
+                        {% unless child.url == '#' or child.url == blank %}
+                          <a href="{{ child.url }}" class="spy-acc__row block px-5 pt-1 pb-2.5 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">See all {{ child.title }}</a>
+                        {% endunless %}
                         {% for grandchild in child.links %}
                           <a href="{{ grandchild.url }}" class="spy-acc__row block px-5 py-2.5 text-[13px] font-bold uppercase tracking-[0.5px] text-spy-ink no-underline" style="font-family: var(--font-heading--family);">{{ grandchild.title }}</a>
                         {% endfor %}
@@ -208,10 +227,10 @@
   <script>
     /* Desktop panels open on hover/focus in CSS; this adds Esc to close and aria-expanded */
     document.querySelectorAll('.spy-mega-menu > ul > li').forEach((li) => {
-      const link = li.querySelector(':scope > a');
+      const trigger = li.querySelector(':scope > a, :scope > button');
       const panel = li.querySelector(':scope > div');
-      if (!link || !panel) return;
-      const setOpen = (v) => link.setAttribute('aria-expanded', String(v));
+      if (!trigger || !panel) return;
+      const setOpen = (v) => trigger.setAttribute('aria-expanded', String(v));
       const release = () => panel.style.removeProperty('visibility');
       setOpen(false);
       li.addEventListener('mouseenter', () => { release(); setOpen(true); });
@@ -227,7 +246,7 @@
         /* Utilities are !important, so the override has to be too */
         panel.style.setProperty('visibility', 'hidden', 'important');
         setOpen(false);
-        link.focus();
+        trigger.focus();
       });
     });
 
