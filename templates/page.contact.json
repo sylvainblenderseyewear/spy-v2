@@ -226,7 +226,7 @@
         "comment_label": "Comment",
         "submit_label": "Submit",
         "success_message": "Thanks — your message is on its way. We'll be in touch soon.",
-        "show_attachment": true,
+        "show_attachment": false,
         "attachment_label": "Attachment",
         "attachment_accept": ".gif,.heic,.jpg,.jpeg,.png,.doc,.docx,.pdf",
         "attachment_note": "Accepted file : .gif,.heic,.jpg,.jpeg,.png,.doc,.docx,.pdf.",
