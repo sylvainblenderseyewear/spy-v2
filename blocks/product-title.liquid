@@ -5,7 +5,10 @@
     SPY: cards can print the model name instead of the full title. Every colourway of
     a model carries the same `collection::MODEL` tag, so the tag is the model name.
   endcomment
-  assign title_text = closest.product.title
+  capture title_text
+    render 'spy-display-name', product: closest.product
+  endcapture
+  assign title_text = title_text | strip
 
   if block.settings.title_source == 'group'
     capture group_name

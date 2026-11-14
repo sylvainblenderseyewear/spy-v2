@@ -42,7 +42,10 @@
 
   assign title = group_name | strip
   if title == blank
-    assign title = product.title
+    capture title
+      render 'spy-display-name', product: product
+    endcapture
+    assign title = title | strip
   endif
 
   assign card_variant = variant | default: product.selected_or_first_available_variant

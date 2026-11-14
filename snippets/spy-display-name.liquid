@@ -1,0 +1,21 @@
+{%- doc -%}
+  Prints the name to show for a product: the `custom.display_name` metafield when
+  it is set, otherwise the Shopify product title.
+
+  The backend keeps one product per colourway with a full title ("Crosspoint MTN
+  Scape Dusk Orange") so admin, search and swatch labels stay unambiguous, while the
+  storefront shows the model name like spyoptic.com ("Crosspoint").
+
+  @param {product} product - product to read the name from
+
+  @example
+  {%- capture name -%}{%- render 'spy-display-name', product: product -%}{%- endcapture -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign spy_display_name = product.metafields.custom.display_name.value | strip
+  if spy_display_name == blank
+    assign spy_display_name = product.title
+  endif
+  echo spy_display_name
+-%}

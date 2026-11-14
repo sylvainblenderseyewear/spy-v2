@@ -16,10 +16,14 @@
 
 {%- liquid
   # The model name, like the column's title block and the source; colours sit in FRAME / LENS
-  capture title_text
-    render 'spy-group-name', product: product
-  endcapture
-  assign title_text = title_text | strip | default: product.title
+  # custom.display_name wins when set; then the model tag; then the product title
+  assign title_text = product.metafields.custom.display_name.value | strip
+  if title_text == blank
+    capture title_text
+      render 'spy-group-name', product: product
+    endcapture
+    assign title_text = title_text | strip | default: product.title
+  endif
 
   # Yotpo keys reviews to the old store's ids and wants an absolute image URL
   assign yotpo_id = product.metafields.yotpo.product_id.value | default: product.id
