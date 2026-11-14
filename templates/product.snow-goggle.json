@@ -109,10 +109,11 @@
               },
               "blocks": {
                 "text_xrnftG": {
-                  "type": "text",
+                  "type": "product-title",
                   "name": "Product title",
                   "settings": {
-                    "text": "<h1>{{ closest.product.title }}</h1>",
+                    "title_source": "group",
+                    "page_heading": true,
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",

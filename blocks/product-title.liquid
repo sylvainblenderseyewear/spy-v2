@@ -10,7 +10,9 @@
   endcapture
   assign title_text = title_text | strip
 
-  if block.settings.title_source == 'group'
+  # display_name metafield wins; the model tag is only the fallback
+  assign has_display_name = closest.product.metafields.custom.display_name.value | strip
+  if block.settings.title_source == 'group' and has_display_name == blank
     capture group_name
       render 'spy-group-name', product: closest.product
     endcapture
