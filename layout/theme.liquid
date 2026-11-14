@@ -46,9 +46,36 @@
     {% endif %}
 
     {{ content_for_header }}
-<!-- Ahrefs Analytics Begin -->
-<script src="https://analytics.ahrefs.com/analytics.js" data-key="SAVGMi56TvTVfNMCWwlYhg" async></script>
-<!-- Ahrefs Analytics End -->
+    {%- comment -%}
+      Ahrefs Analytics. It is not in the Pandectes rules, so it used to run before any
+      cookie choice. Now it loads only after a clear "yes" to analytics.
+    {%- endcomment -%}
+    <script>
+      (() => {
+        let loaded = false;
+        const load = () => {
+          if (loaded) return;
+          loaded = true;
+          const script = document.createElement('script');
+          script.src = 'https://analytics.ahrefs.com/analytics.js';
+          script.dataset.key = 'SAVGMi56TvTVfNMCWwlYhg';
+          script.async = true;
+          document.head.append(script);
+        };
+
+        // A choice made on this page
+        document.addEventListener('visitorConsentCollected', ({ detail }) => {
+          if (detail?.analyticsAllowed === true) load();
+        });
+
+        // A choice saved earlier. "" means the visitor wasn't asked yet, so wait.
+        window.Shopify?.loadFeatures?.([{ name: 'consent-tracking-api', version: '0.1' }], (error) => {
+          if (error) return;
+          const consent = window.Shopify.customerPrivacy?.currentVisitorConsent?.() || {};
+          if (consent.analytics === 'yes') load();
+        });
+      })();
+    </script>
   </head>
 
   {% comment %} Drawer width lives on body so the panel AND the page-push read the same value {% endcomment %}
