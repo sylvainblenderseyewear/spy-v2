@@ -108,7 +108,7 @@
                 "text_UFTYPw": {
                   "type": "text",
                   "settings": {
-                    "text": "<p><strong>Free Shipping</strong></p>",
+                    "text": "<p><strong>Free Standard Shipping</strong></p>",
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",
@@ -133,7 +133,7 @@
                 "text_qGMwRq": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>for any order over $50</p>",
+                    "text": "<p>on all orders</p>",
                     "width": "100%",
                     "max_width": "none",
                     "alignment": "center",

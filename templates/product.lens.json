@@ -334,8 +334,8 @@
               "type": "spy-trust-badges",
               "name": "Trust Badges",
               "settings": {
-                "badge_1_text": "Free shipping on orders $50+",
-                "badge_2_text": "30-day hassle-free returns",
+                "badge_1_text": "Free Standard Shipping on all orders",
+                "badge_2_text": "Easy Returns for 45 days",
                 "badge_3_text": "2-year warranty",
                 "badge_4_text": "Pay in 4 with PayPal",
                 "badge_5_text": "Lifetime warranty on frames"

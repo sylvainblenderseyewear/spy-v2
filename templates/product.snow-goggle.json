@@ -310,7 +310,7 @@
               "type": "spy-trust-badges",
               "name": "Trust Badges",
               "settings": {
-                "badge_1_text": "Free Shipping for any order over $100",
+                "badge_1_text": "Free Standard Shipping on all orders",
                 "badge_1_icon": "",
                 "badge_2_text": "Easy Returns for 45 days",
                 "badge_2_icon": "",
