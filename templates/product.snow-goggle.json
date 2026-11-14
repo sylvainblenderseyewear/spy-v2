@@ -385,7 +385,9 @@
             "spy_notify_A1": {
               "type": "spy-notify-me",
               "name": "Notify Me",
-              "settings": {},
+              "settings": {
+                "app_script_url": "https://backinstock.useamp.com/widget/285904.js"
+              },
               "blocks": {}
             }
           },

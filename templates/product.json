@@ -445,6 +445,7 @@
               "settings": {
                 "label": "Notify me when back in stock",
                 "use_app": true,
+                "app_script_url": "https://backinstock.useamp.com/widget/285904.js",
                 "intro": "We will send you an email when the product is back in stock",
                 "email_label": "Email",
                 "consent_text": "I agree to receive a notification by email.",

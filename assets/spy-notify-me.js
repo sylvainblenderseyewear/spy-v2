@@ -59,6 +59,26 @@ function colourways(toggle) {
   return list;
 }
 
+/**
+ * Loads the app's widget once, and only when a shopper heads for the button.
+ * No URL on the button means the app embed is in charge of loading it.
+ */
+let appRequested = false;
+function loadApp(toggle) {
+  const src = toggle.getAttribute('data-spy-notify-script');
+  if (appRequested || !src || typeof window.BIS?.Popover === 'function') return;
+  appRequested = true;
+  const script = document.createElement('script');
+  script.src = src;
+  script.async = true;
+  // A failed load can be tried again on the next hover or click
+  script.addEventListener('error', () => {
+    script.remove();
+    appRequested = false;
+  });
+  document.head.append(script);
+}
+
 /** Removes a popup we built, frame and all. */
 function destroy(popover) {
   if (!popover) return;
@@ -68,6 +88,7 @@ function destroy(popover) {
 
 /** Builds an app popup for our list. Resolves null if the app can't show it. */
 async function build(toggle, list) {
+  loadApp(toggle);
   const bis = await waitFor(() => (typeof window.BIS?.Popover === 'function' && window.BIS.Config ? window.BIS : null), APP_WAIT_MS);
   if (!bis || !list.length) return null;
 

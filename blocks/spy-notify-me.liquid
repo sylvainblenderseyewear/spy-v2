@@ -2,7 +2,8 @@
   "Notify me when back in stock" — shows only when the current variant is sold out.
 
   With "Open the Back in Stock app popup" on, the button opens the AMP Back in Stock
-  popup for this variant. Its list holds every sold-out colourway of the colour row
+  popup for this variant. The app's script is loaded on demand from the
+  "widget script URL" setting (spy-notify-me.js), not on every page. Its list holds every sold-out colourway of the colour row
   (data-spy-notify-variants, also on the swatches), so another colour can be picked
   there. The app keeps the list and sends the restock email.
   If the app hasn't loaded, the small email form below opens instead (Shopify's
@@ -59,6 +60,7 @@
       data-product-id="{{ p.id }}"
       {% if block.settings.use_app %}
         data-spy-notify-app
+        {% if block.settings.app_script_url != blank %}data-spy-notify-script="{{ block.settings.app_script_url | escape }}"{% endif %}
         aria-haspopup="dialog"
         data-model-name="{{ model_name | escape }}"
         {% capture own_item %}{% render 'spy-notify-variant', product: p, variant: variant, with_size: many_sizes %}{% endcapture %}
@@ -147,8 +149,14 @@
       "type": "checkbox",
       "id": "use_app",
       "label": "Open the Back in Stock app popup",
-      "info": "Needs the AMP Back in Stock app embed. If the app hasn't loaded, the email form below opens instead.",
+      "info": "If the app hasn't loaded, the email form below opens instead.",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "app_script_url",
+      "label": "Back in Stock widget script URL",
+      "info": "With a URL here the app loads only when a shopper heads for this button, so its app embed can stay off. Leave empty to rely on the app embed."
     },
     { "type": "header", "content": "Email form (when the app isn't used)" },
     { "type": "text", "id": "intro", "label": "Intro text", "default": "We will send you an email when the product is back in stock" },
