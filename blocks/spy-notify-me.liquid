@@ -44,6 +44,8 @@
   endif
 -%}
 
+{%- comment -%} Always rendered, so spy-variant-sync.js can swap it on a size or lens pick {%- endcomment -%}
+<div class="contents" data-spy-variant-sync="{{ block.id }}">
 {%- unless variant.available -%}
   <div class="spy-notify-me mt-2" {{ block.shopify_attributes }}>
     {%- comment -%} Source: white button, orange hairline + orange uppercase label {%- endcomment -%}
@@ -129,9 +131,11 @@
     </div>
   </div>
 {%- endunless -%}
+</div>
 
-{%- comment -%} Outside the unless: the colour switch can bring the button in later {%- endcomment -%}
+{%- comment -%} Outside the wrapper: the synced copy drops scripts, and the colour switch can bring the button in later {%- endcomment -%}
 <script src="{{ 'spy-notify-me.js' | asset_url }}" type="module"></script>
+<script src="{{ 'spy-variant-sync.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
