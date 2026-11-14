@@ -67,10 +67,8 @@
     endfor
   endif
 
-  # No lens type at all: use the first entry of the product's technology list
-  if tech == nil and tech_text == blank and ps.technologies.value != blank
-    assign tech = ps.technologies.value | first
-  endif
+  # No lens data means no panel, like the old site (e.g. Crosspoint). The product's
+  # technology list is not a lens type, so it no longer opens the panel on its own.
 
   if vlt == blank and lens_cat == blank and base_tint == blank and tech == nil
     assign skip_block = true

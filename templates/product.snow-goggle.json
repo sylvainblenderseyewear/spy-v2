@@ -354,7 +354,9 @@
             "spy_frame_summary_A1": {
               "type": "spy-frame-summary",
               "name": "Frame Summary",
-              "settings": {},
+              "settings": {
+                "color_label": "Color"
+              },
               "blocks": {}
             },
             "variant_picker_size_lens": {
