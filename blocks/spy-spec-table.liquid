@@ -71,8 +71,10 @@
     id is the target of the lens panel's "Read more" — a fragment link into a closed
     <details> makes the browser open it. Rows follow the source: body-m text (14/20,
     500 label / 400 value, 1% tracking), 16px padding, 50/50 split, rule underneath.
+    spy-variant-sync.js swaps the table (not the <details>) on a size or lens pick,
+    so the panel stays open and the lens rows follow the variant.
   {%- endcomment -%}
-  <table id="spy-spec-details" class="w-full border-collapse text-[14px] leading-5 tracking-[0.01em] [&_tr]:border-b [&_tr]:border-solid [&_tr]:border-b-[color:var(--color-spy-border)] [&_th]:text-left [&_th]:py-4 [&_th]:px-3 [&_th]:font-medium [&_th]:w-1/2 [&_th]:align-top [&_th]:text-[color:var(--color-spy-ink)] [&_td]:py-4 [&_td]:px-3 [&_td]:font-normal [&_td]:align-top [&_td]:text-[color:var(--color-spy-ink)]">
+  <table id="spy-spec-details" data-spy-variant-sync="{{ block.id }}" class="w-full border-collapse text-[14px] leading-5 tracking-[0.01em] [&_tr]:border-b [&_tr]:border-solid [&_tr]:border-b-[color:var(--color-spy-border)] [&_th]:text-left [&_th]:py-4 [&_th]:px-3 [&_th]:font-medium [&_th]:w-1/2 [&_th]:align-top [&_th]:text-[color:var(--color-spy-ink)] [&_td]:py-4 [&_td]:px-3 [&_td]:font-normal [&_td]:align-top [&_td]:text-[color:var(--color-spy-ink)]">
     <tbody>
 
       {%- comment -%}── Identification ─────────────────────────────{%- endcomment -%}
@@ -217,6 +219,7 @@
   </div>
 </details>
 <script type="module" src="{{ 'spy-product-panels.js' | asset_url }}"></script>
+<script src="{{ 'spy-variant-sync.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
