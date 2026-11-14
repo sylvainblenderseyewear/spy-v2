@@ -185,7 +185,7 @@
           "type": "text",
           "name": "first content",
           "settings": {
-            "text": "<p>You have a period of <strong>30 days</strong> following the delivery of your order to inform us if you would like to return part or all of your order.</p><p>You must return the items to us within <strong>30 days</strong> of registering your cancellation in your customer account.</p><p><em>Disclaimer: Please note that we do not provide a return label.</em></p>",
+            "text": "<p>You have a period of <strong>45 days</strong> following the delivery of your order to inform us if you would like to return part or all of your order.</p><p>You must return the items to us within <strong>45 days</strong> of registering your cancellation in your customer account.</p><p><em>Disclaimer: Please note that we do not provide a return label.</em></p>",
             "width": "fit-content",
             "max_width": "none",
             "alignment": "left",

@@ -52,7 +52,7 @@ Order top→bottom (matches source `.pdp-primary-info`):
 | 12 | Trust badges | `spy-trust-badges` *(custom, exists — restyle)* | bordered box `1px #E6E6E6`, pad `.75rem`, mt `2rem`, `#393939`, rows split by `hr`; 5 rows w/ inline SVG |
 
 **Copy for trust rows** (from source; free-shipping threshold pending Open-Decision #9 — kept as editable settings):
-1. Free Shipping for any order over **$100** 2. Easy Returns for 30 days 3. Discount calculated on the original price 4. Pay in 4 installments with no fees (PayPal) 5. Lifetime warranty on all sunglasses
+1. Free Shipping for any order over **$100** 2. Easy Returns for 45 days 3. Discount calculated on the original price 4. Pay in 4 installments with no fees (PayPal) 5. Lifetime warranty on all sunglasses
 
 ---
 

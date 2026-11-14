@@ -1349,7 +1349,7 @@
           "type": "spy-body-text",
           "name": "Term 9 text",
           "settings": {
-            "text": "<p>Items purchased under promotional discount programs are final sale. For non-promotional items, returns must be made within 30 days. Free gifts received with purchase must be returned along with the qualifying item(s) to receive a full refund. If a return causes your order total to fall below a promotion threshold, the value of the promotional item or discount may be deducted from your refund. You cannot modify or cancel an order already validated.</p>",
+            "text": "<p>Items purchased under promotional discount programs are final sale. For non-promotional items, returns must be made within 45 days. Free gifts received with purchase must be returned along with the qualifying item(s) to receive a full refund. If a return causes your order total to fall below a promotion threshold, the value of the promotional item or discount may be deducted from your refund. You cannot modify or cancel an order already validated.</p>",
             "highlight": "",
             "highlight_color": "{{ settings.color_palette.color3 }}",
             "size": 14,
