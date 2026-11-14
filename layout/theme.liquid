@@ -6,6 +6,25 @@
   lang="{{ request.locale.iso_code }}"
 >
   <head>
+    {%- if template.name == 'search' and search.performed and search.types.size > 1 -%}
+      {%- comment -%}
+        A plain /search?q= link searches everything, but the theme results are product-only
+        so filters work. Redirect here, first thing, so the page is not loaded twice.
+        Rebuy only reads q: when it draws the results (assets/spy-rebuy-search.js) stay put.
+      {%- endcomment -%}
+      <script>
+        (() => {
+          try {
+            const seen = Number(localStorage.getItem('spy-rebuy-search'));
+            if (seen && Date.now() - seen < 7 * 864e5) return;
+          } catch {}
+          const url = new URL(location.href);
+          url.searchParams.set('type', 'product');
+          if (!url.searchParams.has('options[prefix]')) url.searchParams.set('options[prefix]', 'last');
+          location.replace(url);
+        })();
+      </script>
+    {%- endif -%}
     {%- comment -%}
       Cookie blocker first, like Blenders. The app embed adds it async, so the Yotpo
       embeds ran before it and tracked before consent. Pandectes keeps this file synced.

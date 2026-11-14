@@ -53,7 +53,11 @@
   </script>
 
   {%- if search.types.size > 1 -%}
-    {%- comment -%} Old links search everything; the theme results are product-only so filters work. Rebuy only reads q {%- endcomment -%}
+    {%- comment -%}
+      Old links search everything; the theme results are product-only so filters work.
+      The same redirect runs first thing in layout/theme.liquid, so the page is not loaded
+      twice. This copy is only a safety net. Rebuy only reads q.
+    {%- endcomment -%}
     <script>
       (() => {
         if (document.documentElement.dataset.searchEngine === 'rebuy') return;
