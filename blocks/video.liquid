@@ -67,7 +67,143 @@
   One slot only unless a second asset is set. With two, the wrapper owns the editor
   handle and each slot keeps its own ratio, so no media query is needed for sizing.
 {%- endcomment -%}
-{%- if two_up -%}
+{%- comment -%}
+  WCAG 2.2.2: a background video loops forever, so it gets a pause/play button
+  (same one as spy-feature-link-banner). The wrapper is only added for it.
+{%- endcomment -%}
+{%- if block_settings.background -%}
+  <spy-video-toggle class="relative block w-full" {{ block.shopify_attributes }}>
+    {%- if two_up -%}
+      <div class="w-full {{ desktop_only }}">
+        {%- render 'video-slot',
+          source: block_settings.source,
+          video: block_settings.video,
+          video_url: block_settings.video_url,
+          cover_image: block_settings.cover_image,
+          alt: block_settings.alt,
+          video_style: video_style,
+          video_autoplay: video_autoplay,
+          video_loop: video_loop,
+          video_background: true
+        -%}
+      </div>
+      <div class="w-full {{ mobile_only }}">
+        {%- render 'video-slot',
+          source: block_settings.source_mobile,
+          video: block_settings.video_mobile,
+          video_url: block_settings.video_url_mobile,
+          cover_image: block_settings.cover_image_mobile,
+          alt: block_settings.alt,
+          video_style: video_style_mobile,
+          video_autoplay: video_autoplay,
+          video_loop: video_loop,
+          video_background: true
+        -%}
+      </div>
+    {%- else -%}
+      {%- render 'video-slot',
+        source: block_settings.source,
+        video: block_settings.video,
+        video_url: block_settings.video_url,
+        cover_image: block_settings.cover_image,
+        alt: block_settings.alt,
+        video_style: video_style,
+        video_autoplay: video_autoplay,
+        video_loop: video_loop,
+        video_background: true
+      -%}
+    {%- endif -%}
+    <button
+      type="button"
+      class="absolute bottom-4 right-4 z-10 flex items-center justify-center w-10 h-10 p-0 rounded-full border-0 bg-spy-ink opacity-75 text-white cursor-pointer hover:opacity-100 focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-white focus-visible:shadow-[0_0_0_4px_var(--color-spy-ink)]"
+      aria-label="{{ 'accessibility.pause_video' | t | escape }}"
+      data-label-pause="{{ 'accessibility.pause_video' | t | escape }}"
+      data-label-play="{{ 'accessibility.play_video' | t | escape }}"
+      data-spy-video-toggle
+    >
+      <span data-icon="pause">{{- 'icon-pause.svg' | inline_asset_content -}}</span>
+      <span data-icon="play" hidden>{{- 'icon-play.svg' | inline_asset_content -}}</span>
+    </button>
+  </spy-video-toggle>
+  <script>
+    // Pause/play for the background video(s) in the box. Runs right after the markup,
+    // so with reduced motion the players reload stopped before they get going.
+    if (!customElements.get('spy-video-toggle')) {
+      customElements.define(
+        'spy-video-toggle',
+        class SpyVideoToggle extends HTMLElement {
+          connectedCallback() {
+            if (this._ready) return;
+            // A second box upgrades before its children are parsed, so wait for them
+            if (!this.querySelector('[data-spy-video-toggle]')) {
+              if (!this._waiting) {
+                this._waiting = true;
+                const retry = () => this.connectedCallback();
+                if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', retry, { once: true });
+                else requestAnimationFrame(retry);
+              }
+              return;
+            }
+            this._ready = true;
+            this.btn = this.querySelector('[data-spy-video-toggle]');
+            this.paused = false;
+            this.btn.addEventListener('click', () => this.setPaused(!this.paused));
+            // A player that loads late gets told the current state once it is ready
+            this._onMsg = (e) => {
+              const f = this.frames().find((x) => x.contentWindow === e.source);
+              const data = typeof e.data === 'string' ? e.data : JSON.stringify(e.data ?? '');
+              if (f && this.paused && data.includes('ready')) this.send(f);
+            };
+            window.addEventListener('message', this._onMsg);
+            this.frames().forEach((f) => f.addEventListener('load', () => this.paused && this.send(f)));
+            const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+            if (motion.matches) this.setPaused(true, true);
+            motion.addEventListener('change', (e) => e.matches && this.setPaused(true));
+          }
+
+          disconnectedCallback() {
+            window.removeEventListener('message', this._onMsg);
+          }
+
+          frames() {
+            return [...this.querySelectorAll('iframe')];
+          }
+
+          // Vimeo and YouTube each take their own postMessage command; YouTube needs enablejsapi
+          send(f) {
+            const yt = f.src.includes('youtube');
+            if (yt && !f.src.includes('enablejsapi=1')) {
+              if (this.paused) f.src = f.src.replace('autoplay=1', 'autoplay=0') + '&enablejsapi=1';
+              return;
+            }
+            const msg = yt
+              ? { event: 'command', func: this.paused ? 'pauseVideo' : 'playVideo', args: [] }
+              : { method: this.paused ? 'pause' : 'play' };
+            f.contentWindow?.postMessage(JSON.stringify(msg), '*');
+          }
+
+          setPaused(paused, early = false) {
+            this.paused = paused;
+            this.frames().forEach((f) => {
+              // Before the first frame: reload without autoplay instead of stopping a running video
+              if (early && f.src.includes('autoplay=1')) {
+                f.src = f.src.replace('autoplay=1', 'autoplay=0') + (f.src.includes('youtube') ? '&enablejsapi=1' : '');
+              } else this.send(f);
+            });
+            this.querySelectorAll('video').forEach((v) => {
+              v.autoplay = !paused;
+              paused ? v.pause() : v.play().catch(() => {});
+            });
+            const b = this.btn;
+            b.setAttribute('aria-label', paused ? b.dataset.labelPlay : b.dataset.labelPause);
+            b.querySelector('[data-icon="pause"]').hidden = paused;
+            b.querySelector('[data-icon="play"]').hidden = !paused;
+          }
+        }
+      );
+    }
+  </script>
+{%- elsif two_up -%}
   <div class="w-full" {{ block.shopify_attributes }}>
     <div class="w-full {{ desktop_only }}">
       {%- render 'video-slot',
