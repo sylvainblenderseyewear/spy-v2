@@ -1,0 +1,15 @@
+{%- doc -%}
+  Moves the hero preload links into <head>.
+
+  The page body is rendered before the layout, so the hero section can leave its
+  preload links in an HTML comment (see spy-banner-picture, `preload: true`) and the
+  head copies them out here. In the head the browser finds the hero file in the first
+  bytes, instead of after the ~170 KB of header and menu markup. Only the first one is used.
+
+  @param {string} content - pass content_for_layout
+{%- enddoc -%}
+
+{%- if content contains '<!--spy-lcp-preload' -%}
+  {%- assign lcp_links = content | split: '<!--spy-lcp-preload' | slice: 1 | first | split: 'spy-lcp-preload-->' | first -%}
+  {{- lcp_links | strip -}}
+{%- endif -%}

@@ -15,6 +15,7 @@
   @param {string} [class] - classes for the <img>
   @param {string} [loading] - lazy (default) or eager
   @param {string} [fetchpriority] - pass 'high' for an above-the-fold banner
+  @param {boolean} [preload] - true on the hero only: also prints preload links that the layout moves into <head>
 
   @example
   {%- render 'spy-banner-picture', desktop: img_d, mobile: img_m, alt: 'Region XL' -%}
@@ -27,40 +28,57 @@
   assign img_loading = loading | default: 'lazy'
 -%}
 
+{%- comment -%} Built once, so the <source> tags and the preload links ask for the very same files {%- endcomment -%}
+{%- capture srcset_desktop -%}
+  {%- if desktop != blank -%}
+    {{ desktop | image_url: width: 750 }} 750w, {{ desktop | image_url: width: 1100 }} 1100w, {{ desktop | image_url: width: 1500 }} 1500w, {{ desktop | image_url: width: 2000 }} 2000w
+  {%- endif -%}
+{%- endcapture -%}
+{%- capture srcset_small -%}
+  {%- if small != blank -%}
+    {{ small | image_url: width: 390 }} 390w, {{ small | image_url: width: 550 }} 550w, {{ small | image_url: width: 800 }} 800w, {{ small | image_url: width: 1000 }} 1000w
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- liquid
+  # Lazy art keeps its real files in data-* until spy-lazy-picture lets it load.
+  # Meanwhile an empty SVG of the same size holds the box, per breakpoint.
+  # No spaces or commas in it: it has to survive inside a srcset.
+  assign defer = false
+  if img_loading == 'lazy'
+    assign defer = true
+  endif
+  assign fallback = desktop | default: small
+  assign svg_open = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='"
+-%}
+
 {%- if desktop != blank or small != blank -%}
+  {%- if defer -%}<spy-lazy-picture class="contents">{%- endif -%}
   <picture>
     {%- if desktop != blank -%}
+      {%- capture ph_desktop -%}{{ svg_open }}{{ desktop.width }}'%20height='{{ desktop.height }}'/%3E{%- endcapture -%}
       <source
         media="(min-width: 992px)"
-        srcset="
-          {{ desktop | image_url: width: 750 }} 750w,
-          {{ desktop | image_url: width: 1100 }} 1100w,
-          {{ desktop | image_url: width: 1500 }} 1500w,
-          {{ desktop | image_url: width: 2000 }} 2000w
-        "
+        {% if defer %}srcset="{{ ph_desktop }}" data-srcset="{{ srcset_desktop }}"{% else %}srcset="{{ srcset_desktop }}"{% endif %}
         sizes="{{ img_sizes }}"
         width="{{ desktop.width }}"
         height="{{ desktop.height }}"
       >
     {%- endif -%}
     {%- if small != blank -%}
+      {%- capture ph_small -%}{{ svg_open }}{{ small.width }}'%20height='{{ small.height }}'/%3E{%- endcapture -%}
       <source
         media="(min-width: 320px)"
-        srcset="
-          {{ small | image_url: width: 390 }} 390w,
-          {{ small | image_url: width: 550 }} 550w,
-          {{ small | image_url: width: 800 }} 800w,
-          {{ small | image_url: width: 1000 }} 1000w
-        "
+        {% if defer %}srcset="{{ ph_small }}" data-srcset="{{ srcset_small }}"{% else %}srcset="{{ srcset_small }}"{% endif %}
         sizes="{{ img_sizes }}"
         width="{{ small.width }}"
         height="{{ small.height }}"
       >
     {%- endif -%}
-    {%- assign fallback = desktop | default: small -%}
+    {%- capture ph_fallback -%}{{ svg_open }}{{ fallback.width }}'%20height='{{ fallback.height }}'/%3E{%- endcapture -%}
     {%- comment -%} width/height per source let the browser hold the right box for each crop (no layout shift) {%- endcomment -%}
     <img
-      src="{{ fallback | image_url: width: 1500 }}"
+      {% if defer %}src="{{ ph_fallback }}" data-src="{{ fallback | image_url: width: 1500 }}"{% else %}src="{{ fallback | image_url: width: 1500 }}"{% endif %}
       alt="{{ alt }}"
       width="{{ fallback.width }}"
       height="{{ fallback.height }}"
@@ -70,4 +88,25 @@
       class="{{ img_class }}"
     >
   </picture>
+  {%- if defer -%}
+    </spy-lazy-picture>
+    <script src="{{ 'spy-lazy-picture.js' | asset_url }}" type="module"></script>
+  {%- endif %}
+
+  {%- if preload -%}
+    {%- comment -%}
+      Preload links for the hero, one per breakpoint, so a phone only fetches the phone file.
+      They sit inside an HTML comment, so they do nothing here: snippets/spy-lcp-preload.liquid
+      copies them into <head>, where the browser finds them in the first bytes of the page.
+      The media queries match the <source> tags above.
+    {%- endcomment -%}
+    <!--spy-lcp-preload
+    {%- if desktop != blank %}
+    <link rel="preload" as="image" media="(min-width: 992px)" imagesrcset="{{ srcset_desktop }}" imagesizes="{{ img_sizes }}" fetchpriority="high">
+    {%- endif -%}
+    {%- if small != blank %}
+    <link rel="preload" as="image" media="(min-width: 320px){% if desktop != blank %} and (max-width: 991.98px){% endif %}" imagesrcset="{{ srcset_small }}" imagesizes="{{ img_sizes }}" fetchpriority="high">
+    {%- endif %}
+    spy-lcp-preload-->
+  {%- endif -%}
 {%- endif -%}

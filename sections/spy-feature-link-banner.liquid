@@ -53,9 +53,14 @@
   # Top-of-page banners are the LCP image, so never lazy-load them
   assign flb_loading = 'lazy'
   assign flb_priority = ''
+  assign flb_preload = false
   if section.index <= 2
     assign flb_loading = 'eager'
     assign flb_priority = 'high'
+  endif
+  # Only the very first section is the hero: preload it from <head>
+  if section.index == 1
+    assign flb_preload = true
   endif
 
   comment
@@ -218,7 +223,8 @@
               alt: banner_alt,
               class: 'absolute inset-0 w-full h-full object-cover',
               loading: flb_loading,
-              fetchpriority: flb_priority
+              fetchpriority: flb_priority,
+              preload: flb_preload
             -%}
           {%- endif -%}
         </div>
@@ -229,7 +235,7 @@
       One <picture> with media-scoped sources, like the source. Two <img> tags toggled
       by classes render the same but download both crops.
     {%- endcomment -%}
-    {%- render 'spy-banner-picture', desktop: desktop_img, mobile: mobile_img, alt: banner_alt, loading: flb_loading, fetchpriority: flb_priority -%}
+    {%- render 'spy-banner-picture', desktop: desktop_img, mobile: mobile_img, alt: banner_alt, loading: flb_loading, fetchpriority: flb_priority, preload: flb_preload -%}
     {%- endif -%}
 
     {%- if section.settings.eyebrow != blank

@@ -37,6 +37,11 @@
   if section.index <= 3
     assign bg_loading = 'eager'
   endif
+  # Near the top, but never the hero: start early, yet let the hero image go first (PERF-01)
+  assign tile_priority = 'auto'
+  if section.index > 1
+    assign tile_priority = 'low'
+  endif
 -%}
 <div
   class="spy-category-tiles{% if bg_image != blank %} relative overflow-hidden{% endif %} pt-[calc(var(--spy-tile-h-sm)*var(--spy-tile-pad))] min-[769px]:pt-[calc(var(--spy-tile-h-md)*var(--spy-tile-pad))] min-[992px]:pt-[calc(var(--spy-tile-h-lg)*var(--spy-tile-pad))]"
@@ -59,6 +64,7 @@
       | image_url: width: 2400
       | image_tag:
         loading: bg_loading,
+        fetchpriority: tile_priority,
         alt: '',
         sizes: '100vw',
         widths: '800, 1200, 1600, 2000, 2400',
@@ -119,6 +125,7 @@
                 | image_url: width: 1200
                 | image_tag:
                   loading: tile_loading,
+                  fetchpriority: tile_priority,
                   alt: tile_alt,
                   sizes: sizes,
                   widths: '300, 450, 600, 800, 1000, 1200',

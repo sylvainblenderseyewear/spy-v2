@@ -25,6 +25,8 @@
         })();
       </script>
     {%- endif -%}
+    {%- comment -%} Hero image preload, as early as possible (PERF-01) {%- endcomment -%}
+    {%- render 'spy-lcp-preload', content: content_for_layout -%}
     {%- comment -%}
       Cookie blocker first, like Blenders. The app embed adds it async, so the Yotpo
       embeds ran before it and tracked before consent. Pandectes keeps this file synced.
