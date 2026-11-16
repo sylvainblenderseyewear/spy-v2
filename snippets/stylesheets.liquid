@@ -1,3 +1,17 @@
 {{ 'overflow-list.css' | asset_url | preload_tag: as: 'style' }}
 {{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
 {{ 'tailwind.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Rebuy cart + search rules (src/rebuy.css). media="print" keeps them off the first
+  paint, then onload turns them on. The window load event waits for this file, and
+  Rebuy only starts after that event, so its cart and search are always styled.
+  Keep it right after tailwind.css: the cascade order follows the tag order.
+{%- endcomment -%}
+<link
+  rel="stylesheet"
+  href="{{ 'spy-rebuy.css' | asset_url }}"
+  media="print"
+  onload="this.media='all'"
+  data-spy-rebuy-css
+>
+<noscript>{{ 'spy-rebuy.css' | asset_url | stylesheet_tag }}</noscript>

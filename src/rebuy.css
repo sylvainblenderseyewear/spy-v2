@@ -1,0 +1,2256 @@
+/* Rebuy Smart Cart + Smart Search rules, moved out of src/tailwind.css (PERF-04).
+   `npm run build:css` builds it to assets/spy-rebuy.css. It loads after first paint
+   (snippets/stylesheets.liquid). Rebuy only starts on window load, and the load
+   event waits for this file, so its cart and search never show without it.
+   Same layer order as tailwind.css, so the `@layer components` fixes below
+   still beat the !important utilities. */
+@layer theme, base, components, utilities;
+
+/* Brand tokens only, nothing printed: lets the build add plain-colour fallbacks */
+@reference "./tailwind.css";
+
+/* ── Rebuy Smart Cart: rules both carts need ───────────────────────────────
+   Two carts exist in Rebuy: the old source copy and the Figma redesign. Each
+   block below is scoped to its own cart, so the theme and the Rebuy Live switch
+   can go out in either order. Delete the old block once the old cart is retired. */
+
+/* Off-screen alone left the closed panel's buttons in the Tab order, and
+   Rebuy's global.css forces its carousels back to visible
+   (.rebuy-widget .splide.is-initialized), so they need it too */
+#rebuy-cart:not(.is-visible) .rebuy-cart__flyout .splide {
+  visibility: hidden !important;
+  transition: visibility 0s linear 426ms !important;
+}
+
+/* Rebuy locks body with `.rebuy-cart-visible { overflow: hidden }` while open.
+   Never touch .page-wrapper: from 990px it IS the page scroller, and making
+   it overflow: visible froze every desktop page. */
+:root[data-cart-engine='rebuy'] body.rebuy-cart-visible {
+  overflow: visible !important;
+}
+
+/* Rebuy hides an unused Checkout button with an inline style, but it also puts
+   a literal `block` class on it, and our Tailwind `.block` is !important inside
+   a layer, which beats the inline style. For !important, layer order reverses,
+   so `components` wins over `utilities`. */
+@layer components {
+  #rebuy-cart .rebuy-cart__checkout-button[style*='display: none'] {
+    display: none !important;
+  }
+}
+
+/* ── Rebuy Smart Cart: OLD source cart (37798) ─────────────────────────────
+   Rebuy owns the mini-cart markup on Smart Cart v2, so the only lever we have
+   is CSS. Its stylesheets load after ours (idx 14-16 vs 1), hence !important.
+   Target: audit/page-spec-cart-drawer.md §10 — the measured spyoptic.com cart.
+   Scoped to #rebuy-cart so the theme drawer fallback is untouched.
+   Applies only while the old cart is the one on the page. */
+
+/* Panel: 320, flush right and full height at every width, like the source.
+   Rebuy floats it 10px off the edges, and under 480px turns it into a
+   full-width bottom sheet, which our 320 then pinned to the LEFT. So pin it
+   ourselves and slide it with the source's transform instead of Rebuy's right/top. */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__flyout {
+  inset: 0 0 0 auto !important;
+  margin: 0 !important;
+  width: 320px !important;
+  max-width: 320px !important;
+  height: auto !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  border-left: 0 !important;
+  transform: translateX(100%) !important;
+  /* Off-screen alone left its buttons in the Tab order on every page, and
+     Rebuy never hides them. Hide the panel once the slide-out has played. */
+  visibility: hidden !important;
+  transition:
+    transform 426ms cubic-bezier(0.5, 0.25, 0, 1),
+    visibility 0s linear 426ms !important;
+}
+
+#rebuy-cart.is-visible:not(:has(.spy-mc)) .rebuy-cart__flyout {
+  transform: none !important;
+  visibility: visible !important;
+  transition: transform 426ms cubic-bezier(0.5, 0.25, 0, 1) !important;
+}
+
+/* Source never dims the page behind the cart */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__background {
+  background: transparent !important;
+}
+
+/* Header: 41px tall with a hairline rule */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__title {
+  font-size: 13px !important;
+  line-height: 18.2px !important;
+  font-weight: 600 !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__flyout-close {
+  width: 46px !important;
+  height: 40px !important;
+}
+
+/* The items wrapper pads 16px and so does each row, which halves the details
+   column. Only the row should inset. */
+#rebuy-cart:not(:has(.spy-mc)) div:has(> ul[data-smartcart-items]) {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Line items sit flush against each other, 16px inset.
+   Rebuy ships flex-wrap with a 10px gap, which wraps the image onto its own row
+   once the panel is 320. An explicit grid keeps image and details side by side. */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__flyout-item {
+  display: grid !important;
+  grid-template-columns: 95px minmax(0, 1fr) !important;
+  column-gap: 15px !important;
+  row-gap: 0 !important;
+  align-items: start !important;
+  padding: 16px !important;
+  border-bottom: 0 !important;
+  position: relative !important;
+}
+
+/* Rebuy stacks the details in a ROW, so at 320 the title collapses to one word
+   per line. The source stacks them: name, colour, quantity, price. */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__flyout-item-info {
+  display: flex !important;
+  flex-direction: column !important;
+  flex-wrap: nowrap !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__flyout-item-media {
+  width: 95px !important;
+  height: 95px !important;
+  max-width: none !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__flyout-item-media img {
+  width: 95px !important;
+  height: 95px !important;
+  max-width: none !important;
+  object-fit: contain !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__flyout-item-product-title {
+  font-size: 15px !important;
+  line-height: 18px !important;
+  font-weight: 700 !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__flyout-item-variant-title {
+  font-size: 13px !important;
+  line-height: 18.2px !important;
+  font-weight: 400 !important;
+}
+
+/* Read-only quantity — the markup comes from our Rebuy custom template.
+   Rebuy makes this a flex container, which stacks our label and value; block
+   keeps the two spans inline as "Quantity : 1". */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__flyout-item-quantity {
+  display: block !important;
+  width: 100% !important;
+  font-size: 13px !important;
+  line-height: 18.2px !important;
+  text-align: right !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .spy-qty-label {
+  font-weight: 600 !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .spy-qty-value {
+  font-weight: 400 !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__flyout-item-price {
+  font-size: 16px !important;
+  line-height: 22.4px !important;
+  color: #222 !important;
+  text-align: right !important;
+}
+
+/* Remove sits in the corner so it cannot stretch the row */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__flyout-item-remove {
+  position: absolute !important;
+  top: 8px !important;
+  right: 16px !important;
+  color: #ccc !important;
+}
+
+/* Footer: one total row, one solid orange bar */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__flyout-subtotal-label,
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__flyout-subtotal-amount {
+  font-size: 16px !important;
+  line-height: 22.4px !important;
+  font-weight: 600 !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__view-cart-button {
+  height: 51px !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background: var(--color-spy-orange-ui) !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  line-height: 16.8px !important;
+  text-transform: uppercase !important;
+}
+
+/* Header bar: 41px with the source's hairline rule. Rebuy leaves these
+   wrappers unclassed, so reach them through the title. The rule goes on the
+   full-width row, so it runs under the close button too (spec: 319x41). */
+#rebuy-cart:not(:has(.spy-mc)) div:has(> div > .rebuy-cart__title) {
+  border-bottom: 1px solid #e6e6e6 !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) div:has(> .rebuy-cart__title) {
+  min-height: 40px !important;
+  padding: 8px 16px !important;
+  align-items: center !important;
+}
+
+/* Rebuy ships a visually-hidden "Cart subtotal" label that doubles the row */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__flyout-subtotal {
+  align-items: baseline !important;
+}
+
+/* Cross-sell rail (Widget 314347). Rebuy's card is a 3-column flex row and at
+   320 the Add button starves the title, so it wraps one word per line.
+   Spec treatment: compact rows — 56px thumb, title/price, small action. */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-product-block {
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-product-media {
+  flex: 0 0 56px !important;
+  width: 56px !important;
+  max-width: 56px !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-product-media img {
+  width: 56px !important;
+  height: 56px !important;
+  object-fit: contain !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-product-info {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-product-title {
+  font-size: 13px !important;
+  line-height: 18.2px !important;
+}
+
+/* The action button must not take a third of the row */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-product-actions {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  max-width: 84px !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-product-actions .rebuy-button {
+  padding: 6px 10px !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  white-space: nowrap !important;
+}
+
+/* ── Rebuy Smart Cart: brand colours ──────────────────────────────────────
+   Rebuy ships its own blue (#2491c4) on every button. Swap it for SPY's
+   palette: orange for the primary action, slate outline for the rail. */
+
+/* Primary CTA — solid orange bar, no leftover blue outline */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__view-cart-button {
+  border: 0 !important;
+  background: var(--color-spy-orange-ui) !important;
+  color: #fff !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__view-cart-button:hover,
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__view-cart-button:focus-visible {
+  background: var(--color-spy-cta-hover) !important;
+  color: #fff !important;
+}
+
+/* Rail actions are secondary. The source's own secondary button is
+   `.btn-outline-primary`: white ground, 1px orange border, orange text,
+   radius 0, 12px, uppercase — measured live on spyoptic.com. */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-product-actions .rebuy-button {
+  background: #fff !important;
+  border: 1px solid var(--color-spy-orange-ui) !important;
+  color: var(--color-spy-orange-ui) !important;
+  border-radius: 0 !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-product-actions .rebuy-button:hover,
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-product-actions .rebuy-button:focus-visible {
+  background: var(--color-spy-orange-ui) !important;
+  color: #fff !important;
+}
+
+/* Prices and headings in the rail follow the brand, not Rebuy's blue */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-widget-content .primary-title,
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-product-title {
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-product-price,
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-money {
+  color: var(--color-spy-price-reco) !important;
+}
+
+/* Any remaining Rebuy blue link */
+#rebuy-cart:not(:has(.spy-mc)) a:not(.rebuy-button) {
+  color: var(--color-spy-ink) !important;
+}
+
+/* Header bag icon. Rebuy's markup is fixed, so draw it as a decorative
+   ::before on the title and mask the theme's own FA bag asset — same folder
+   on the CDN, so the relative url resolves. Source: 16x14 at rx17 / y13. */
+#rebuy-cart:not(:has(.spy-mc)) .rebuy-cart__title::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 14px;
+  margin-right: 9px;
+  vertical-align: -2px;
+  background-color: currentColor;
+  -webkit-mask: url('spy-fa-bag.svg') no-repeat center / contain;
+  mask: url('spy-fa-bag.svg') no-repeat center / contain;
+}
+
+/* ── Rebuy Smart Cart: NEW Figma cart (38089) ──────────────────────────────
+   The mini-cart from the Figma file "SPY + Mini Cart"
+   (audit/page-spec-mini-cart-figma.md). Rebuy owns the markup; our component
+   templates are kept in src/rebuy/ and pasted into the Rebuy admin.
+   Rebuy's stylesheets load after ours, hence !important.
+   Scoped to #rebuy-cart so the theme drawer fallback is untouched.
+   Applies only to the cart whose Cart Items template carries .spy-mc. */
+
+/* Panel: 375, flush right and full height. Rebuy floats it 10px off the edges
+   and under 480px turns it into a bottom sheet, so pin and slide it ourselves. */
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout {
+  inset: 0 0 0 auto !important;
+  margin: 0 !important;
+  width: 375px !important;
+  max-width: 100vw !important;
+  height: auto !important;
+  max-height: none !important;
+  gap: 0 !important;
+  border-radius: 0 !important;
+  border-left: 0 !important;
+  background: var(--color-white) !important;
+  font-family: var(--font-spy) !important;
+  transform: translateX(100%) !important;
+  /* Off-screen alone left its buttons in the Tab order on every page, and
+     Rebuy never hides them. Hide the panel once the slide-out has played. */
+  visibility: hidden !important;
+  transition:
+    transform 426ms cubic-bezier(0.5, 0.25, 0, 1),
+    visibility 0s linear 426ms !important;
+}
+
+/* The design is drawn at phone width, so a phone gets the whole screen */
+@media screen and (max-width: 480px) {
+  #rebuy-cart:has(.spy-mc) .rebuy-cart__flyout {
+    width: 100vw !important;
+  }
+
+  /* The floating cookie button (Pandectes, top z-index) would sit on the
+     trust row of a full-screen cart. It comes back when the cart closes. */
+  body.rebuy-cart-visible:has(.spy-mc) pandectes-cmp {
+    visibility: hidden !important;
+  }
+}
+
+#rebuy-cart.is-visible:has(.spy-mc) .rebuy-cart__flyout {
+  transform: none !important;
+  visibility: visible !important;
+  transition: transform 426ms cubic-bezier(0.5, 0.25, 0, 1) !important;
+}
+
+/* Page behind the cart: 20% black and blurred. The blur you see in Figma is the
+   picture's layer blur 24 (measured 10px); the overlay's blur 44 hides under its
+   solid fill. */
+#rebuy-cart:has(.spy-mc) .rebuy-cart__background {
+  background: rgb(0 0 0 / 0.2) !important;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Body: no scrollbar, as drawn. A Windows scrollbar took 15px off every row
+   and wrapped the trust row. Wheel, touch and keys still scroll it, and the
+   scroll stops here instead of moving the page behind. */
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-scroll-area] {
+  scrollbar-width: none !important;
+  overscroll-behavior: contain !important;
+}
+
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-scroll-area]::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* A swipe on the fixed parts scrolled the page behind the cart, out of sight
+   on a phone. Taps and pinch zoom still work there. */
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-anchor='header'],
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-anchor='goalBox'],
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-anchor='footer'] {
+  touch-action: pinch-zoom !important;
+}
+
+/* Header: 48px bar with a soft shadow over the scrolling body */
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-anchor='header'] {
+  position: relative !important;
+  z-index: 2 !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  background: var(--color-white) !important;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 0.05) !important;
+}
+
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-header-top] {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  box-sizing: border-box !important;
+  height: 48px !important;
+  padding: 12px 13px 0 16px !important;
+  border: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-header-top-inner] {
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__title {
+  margin: 2px 0 0 !important;
+  font-size: 16px !important;
+  line-height: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--color-spy-mc-ink) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-close {
+  width: 24px !important;
+  height: 24px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  color: var(--color-black) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-close .rebuy-icon {
+  width: 24px !important;
+  height: 24px !important;
+  max-width: none !important;
+}
+
+/* Free-shipping line. The design has text only, so the bar and its step
+   marker go; the prompt keeps the message for screen readers too. */
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-anchor='goalBox'] {
+  gap: 0 !important;
+  padding: 24px 16px 0 !important;
+  background: var(--color-white) !important;
+}
+
+#rebuy-cart:has(.spy-mc) [data-rebuy-component='progress-bar'] {
+  padding: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__progress-step-wrapper,
+#rebuy-cart:has(.spy-mc) .rebuy-cart__progress-bar-meter {
+  display: none !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__progress-bar-wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__progress-bar-prompt {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+  font-weight: 400 !important;
+  text-align: left !important;
+  color: var(--color-black) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__progress-bar-prompt b {
+  font-weight: 700 !important;
+}
+
+/* Unlocked reads a step heavier (500 falls back to Regular until DIN Medium is loaded) */
+#rebuy-cart:has(.spy-mc) [data-rebuy-component='progress-bar']:has(.rebuy-cart__progress-step.complete) .rebuy-cart__progress-bar-prompt {
+  font-weight: 500 !important;
+}
+
+/* Body: the scroll area. Blocks carry their own spacing. */
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-anchor='body'] {
+  gap: 0 !important;
+  padding: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) [data-rebuy-component='cart-items'] {
+  gap: 0 !important;
+  padding: 8px 16px 0 !important;
+  border: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) ul[data-smartcart-items] {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+/* Line item: 121x97 image left, text column right, hairline under all but the last */
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 15px !important;
+  box-sizing: border-box !important;
+  min-height: 97px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--color-spy-mc-line) !important;
+}
+
+#rebuy-cart:has(.spy-mc) ul[data-smartcart-items] > .rebuy-cart__flyout-item:last-child {
+  border-bottom: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-media {
+  flex: 0 0 121px !important;
+  width: 121px !important;
+  max-width: none !important;
+  height: 96px !important;
+  overflow: hidden !important;
+  border-radius: 4px !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-media a {
+  display: block !important;
+  height: 100% !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-media img {
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+  object-fit: cover !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-info {
+  display: flex !important;
+  flex: 1 1 0 !important;
+  flex-direction: column !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  text-align: left !important;
+  width: auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .spy-mc-item__head {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+#rebuy-cart:has(.spy-mc) .spy-mc-item__model {
+  font-size: 12px !important;
+  line-height: 12px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  color: var(--color-spy-muted) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-product-title {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  color: var(--color-black) !important;
+}
+
+/* Only printed for products with a real choice (size, lens) */
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-variant-title {
+  margin: -4px 0 0 !important;
+  font-size: 12px !important;
+  line-height: 14px !important;
+  font-weight: 400 !important;
+  color: var(--color-spy-muted) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .spy-mc-item__foot {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  min-height: 30px !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-price {
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+  font-weight: 400 !important;
+  text-align: left !important;
+  color: var(--color-spy-mc-ink) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-price .rebuy-money {
+  font-size: inherit !important;
+  line-height: inherit !important;
+  font-weight: inherit !important;
+  color: inherit !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-price .rebuy-money.sale {
+  color: var(--color-black) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-price .rebuy-money.compare-at {
+  margin-left: 4px !important;
+  text-decoration: line-through !important;
+  color: var(--color-spy-strike) !important;
+}
+
+/* Stepper: 64x30 box, minus at 1 removes the line (there is no separate remove) */
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-quantity {
+  display: block !important;
+  flex: none !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-quantity-widget {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  box-sizing: border-box !important;
+  width: 64px !important;
+  height: 30px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 1.2px solid var(--color-spy-mc-line) !important;
+  border-radius: 2px !important;
+  background: var(--color-white) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-quantity-widget-button {
+  position: relative !important;
+  display: flex !important;
+  flex: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 16px !important;
+  min-width: 0 !important;
+  height: 16px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  color: var(--color-black) !important;
+}
+
+/* The drawn buttons are 16px; this keeps a 24px-plus tap target around them */
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-quantity-widget-button::after {
+  content: '';
+  position: absolute;
+  inset: -7px -4px;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-quantity-widget-button .rebuy-icon {
+  width: 16px !important;
+  height: 16px !important;
+  max-width: none !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-quantity-widget-label {
+  flex: none !important;
+  width: auto !important;
+  min-width: 8px !important;
+  height: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  font-size: 14px !important;
+  line-height: 12px !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+  color: var(--color-spy-mc-charcoal) !important;
+}
+
+/* Gift lines have no stepper, so they keep a small remove button */
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-remove {
+  position: static !important;
+  width: 24px !important;
+  height: 24px !important;
+  padding: 0 !important;
+  color: var(--color-spy-muted) !important;
+}
+
+/* Widgets. The two cross-sells are told apart by their Rebuy layout, not by
+   widget id: "line" is the accessory bundle, "grid" is You Might Also Like. */
+#rebuy-cart:has(.spy-mc) [data-rebuy-component='cross-sell-widget'] {
+  padding: 0 !important;
+}
+
+/* Nothing to offer = no empty box or band */
+#rebuy-cart:has(.spy-mc) [data-rebuy-component='cross-sell-widget']:not(:has(.rebuy-product-block)) {
+  display: none !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-widget,
+#rebuy-cart:has(.spy-mc) .rebuy-widget-container,
+#rebuy-cart:has(.spy-mc) .rebuy-widget-content {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-widget .powered-by-rebuy,
+#rebuy-cart:has(.spy-mc) .rebuy-widget .rebuy-modal-close {
+  display: none !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-block {
+  margin: 0 !important;
+  border: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-media,
+#rebuy-cart:has(.spy-mc) .rebuy-product-info,
+#rebuy-cart:has(.spy-mc) .rebuy-product-actions,
+#rebuy-cart:has(.spy-mc) .rebuy-product-options {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-title,
+#rebuy-cart:has(.spy-mc) .rebuy-product-title-link {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 16px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  color: var(--color-black) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-price {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+  font-weight: 400 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-price .rebuy-money {
+  font-size: inherit !important;
+  line-height: inherit !important;
+  font-weight: inherit !important;
+  color: inherit !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-price .rebuy-money.sale {
+  color: var(--color-black) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-price .rebuy-money.compare-at {
+  margin-left: 4px !important;
+  text-decoration: line-through !important;
+  color: var(--color-spy-strike) !important;
+}
+
+/* Products with a size or lens choice keep a small picker above the button.
+   One option is no choice, so that picker is dropped. */
+#rebuy-cart:has(.spy-mc) .rebuy-product-options:not(:has(option:nth-child(2))) {
+  display: none !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-options .rebuy-select {
+  width: 100% !important;
+  height: 30px !important;
+  margin: 0 !important;
+  padding: 0 34px 0 8px !important; /* clears Rebuy's drawn arrow */
+  border: 1px solid var(--color-spy-mc-line) !important;
+  border-radius: 2px !important;
+  font-size: 12px !important;
+  line-height: 14px !important;
+  text-overflow: ellipsis !important;
+  color: var(--color-black) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-actions .rebuy-button {
+  padding: 0 !important;
+  border-radius: 2px !important;
+  background: var(--color-white) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  color: var(--color-spy-orange-ui) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-actions .rebuy-button:hover,
+#rebuy-cart:has(.spy-mc) .rebuy-product-actions .rebuy-button:focus-visible {
+  border-color: var(--color-spy-orange-ui) !important;
+  background: var(--color-spy-orange-ui) !important;
+  color: var(--color-white) !important;
+}
+
+/* Accessory bundle: bordered box of 56px rows */
+#rebuy-cart:has(.spy-mc) [data-rebuy-component='cross-sell-widget']:has(.large-style-line) {
+  margin: 8px 16px 0 !important;
+  padding: 15px !important; /* 16 with the border, as drawn */
+  border: 1px solid var(--color-spy-mc-line) !important;
+  border-radius: 4px !important;
+  background: var(--color-white) !important;
+}
+
+#rebuy-cart:has(.spy-mc) [data-rebuy-component='cross-sell-widget']:has(.large-style-line) .primary-title {
+  margin: 0 0 10px !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+  font-weight: 400 !important;
+  text-align: left !important;
+  color: var(--color-black) !important;
+}
+
+#rebuy-cart:has(.spy-mc) [data-rebuy-component='cross-sell-widget']:has(.large-style-line) .primary-title b,
+#rebuy-cart:has(.spy-mc) [data-rebuy-component='cross-sell-widget']:has(.large-style-line) .primary-title strong {
+  font-weight: 700 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-line,
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-line .splide__track {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-line .splide__list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-line .rebuy-product-block {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-height: 56px !important;
+  padding: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-line .rebuy-product-media {
+  flex: 0 0 56px !important;
+  width: 56px !important;
+  max-width: 56px !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-line .rebuy-product-media img {
+  width: 56px !important;
+  height: 56px !important;
+  object-fit: contain !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-line .rebuy-product-info {
+  display: flex !important;
+  flex: 1 1 0 !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-line .rebuy-product-price {
+  color: var(--color-black) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-line .rebuy-product-options {
+  flex: 0 0 84px !important;
+  width: 84px !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-line .rebuy-product-actions {
+  flex: none !important;
+  width: auto !important;
+  max-width: none !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-line .rebuy-button {
+  width: 62px !important;
+  height: 30px !important;
+  border: 1px solid var(--color-spy-mc-line) !important;
+  font-size: 13px !important;
+  line-height: 12px !important;
+}
+
+/* You Might Also Like: grey band, 2x2 white cards */
+#rebuy-cart:has(.spy-mc) [data-rebuy-component='cross-sell-widget']:has(.large-style-grid) {
+  margin: 32px 0 0 !important;
+  padding: 24px 20px !important;
+  background: var(--color-spy-mc-band) !important;
+}
+
+#rebuy-cart:has(.spy-mc) [data-rebuy-component='cross-sell-widget']:has(.large-style-grid) .primary-title {
+  margin: 0 0 14px !important;
+  padding: 0 !important;
+  font-size: 16px !important;
+  line-height: 19.2px !important;
+  font-weight: 700 !important;
+  text-align: left !important;
+  color: var(--color-black) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid,
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid .splide__track {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid .splide__list {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 4px 7px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Rebuy sizes the cards with an inline width; the grid track does it here */
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid .rebuy-product-block {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  padding: 10px !important;
+  background: var(--color-white) !important;
+  text-align: center !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid .rebuy-product-media {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 80px !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid .rebuy-product-media img {
+  width: 119px !important;
+  max-width: 100% !important;
+  height: 80px !important;
+  object-fit: cover !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid .rebuy-product-info {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid .rebuy-product-title,
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid .rebuy-product-title-link {
+  line-height: 14px !important;
+  text-transform: uppercase !important;
+}
+
+/* Product name from snippets/spy-rebuy-widget-templates.liquid: colour over model */
+#rebuy-cart:has(.spy-mc) .spy-mc-card__name {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+}
+
+#rebuy-cart:has(.spy-mc) .spy-mc-card__colour {
+  font-size: 12px !important;
+  line-height: 12px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--color-spy-muted) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid .rebuy-product-price {
+  color: var(--color-spy-mc-ink) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid .rebuy-product-options,
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid .rebuy-product-actions {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* The picker sits 4px over its button, so the pair reads as one control */
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid .rebuy-product-options {
+  margin-bottom: -8px !important;
+}
+
+/* Cards in one row share the button line, whatever the text above needs */
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid .rebuy-product-actions {
+  margin-top: auto !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-product-grid.large-style-grid .rebuy-button {
+  width: 100% !important;
+  height: 32px !important;
+  border: 1px solid var(--color-spy-orange-ui) !important;
+  border-radius: 0 !important;
+  font-size: 12px !important;
+  line-height: 12px !important;
+}
+
+/* Footer: total row, checkout bar, trust row. It stays put; the body scrolls. */
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-anchor='footer'] {
+  gap: 12px !important;
+  padding: 19px 16px 16px !important;
+  border: 0 !important;
+  background: var(--color-white) !important;
+  box-shadow: inset 0 1px 0 var(--color-spy-mc-footline) !important;
+}
+
+#rebuy-cart:has(.spy-mc) [data-rebuy-cart-anchor='footer'] > * {
+  gap: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-subtotal {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 24px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-subtotal-label {
+  margin-right: auto !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+  font-weight: 400 !important;
+  text-transform: none !important;
+  color: var(--color-black) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .spy-mc-saving {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  height: 24px !important;
+  padding: 0 10px !important;
+  background: var(--color-spy-mc-band) !important;
+  font-size: 11px !important;
+  line-height: 14px !important;
+  font-weight: 400 !important;
+  white-space: nowrap !important;
+  color: var(--color-black) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .spy-mc-saving__icon {
+  flex: none !important;
+  width: 12px !important;
+  max-width: none !important;
+  height: 12px !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-subtotal-amount {
+  font-size: 16px !important;
+  line-height: 16px !important;
+  font-weight: 500 !important;
+  text-align: right !important;
+  color: var(--color-black) !important;
+}
+
+/* Rebuy puts a literal `block` class on this button, and our Tailwind `.block`
+   utility is !important inside a layer, so a plain rule can't make it flex.
+   An earlier layer can (layer order reverses for !important). The hidden
+   state is in the shared block at the top. */
+@layer components {
+  #rebuy-cart:has(.spy-mc) .rebuy-cart__checkout-button:not([style*='display: none']) {
+    display: flex !important;
+  }
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__checkout-button {
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  height: 48px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: var(--color-spy-orange-ui) !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  color: var(--color-white) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-cart__checkout-button:hover,
+#rebuy-cart:has(.spy-mc) .rebuy-cart__checkout-button:focus-visible {
+  background: var(--color-spy-cta-hover) !important;
+  color: var(--color-white) !important;
+}
+
+/* Lock icon. Rebuy's label is plain text, so mask the theme's own asset —
+   same folder on the CDN, so the relative url resolves. */
+#rebuy-cart:has(.spy-mc) .rebuy-cart__checkout-button::before {
+  content: '';
+  flex: none;
+  width: 16px;
+  height: 16px;
+  background-color: currentColor;
+  -webkit-mask: url('spy-icon-lock.svg') no-repeat center / contain;
+  mask: url('spy-icon-lock.svg') no-repeat center / contain;
+}
+
+/* Trust row: in the footer, and again under the empty-cart message */
+/* The three items measure 314px. The gaps give way (12 down to 4) before the
+   row wraps, so it stays on one line down to 322px, a 360px phone included. */
+#rebuy-cart:has(.spy-mc) .spy-mc-trust {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  row-gap: 4px !important;
+  column-gap: clamp(4px, calc((100% - 314px) / 2), 12px) !important;
+  min-height: 20px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+#rebuy-cart:has(.spy-mc) .spy-mc-trust__item {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 2px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  font-weight: 500 !important;
+  color: rgb(0 0 0 / 0.8) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .spy-mc-trust__item svg {
+  flex: none !important;
+  width: 17px !important;
+  max-width: none !important;
+  height: 16px !important;
+}
+
+/* Empty cart: message, trust row, then category tabs with best sellers.
+   No shipping line, no bundle, no recommendations band, no checkout. */
+#rebuy-cart:not(.has-items):has(.spy-mc) [data-rebuy-cart-anchor='goalBox'],
+#rebuy-cart:not(.has-items):has(.spy-mc) [data-rebuy-cart-anchor='footer'],
+#rebuy-cart:not(.has-items):has(.spy-mc) [data-rebuy-component='cross-sell-widget']:has(.large-style-line),
+#rebuy-cart:not(.has-items):has(.spy-mc) [data-rebuy-component='cross-sell-widget']:has(.large-style-grid) {
+  display: none !important;
+}
+
+/* The tabbed widget belongs to the empty cart only */
+#rebuy-cart.has-items:has(.spy-mc) [data-rebuy-component='cross-sell-widget']:has(.rebuy-tabbed-widget) {
+  display: none !important;
+}
+
+#rebuy-cart:not(.has-items):has(.spy-mc) [data-rebuy-component='cart-items'] {
+  padding-top: 24px !important;
+}
+
+#rebuy-cart:has(.spy-mc) .spy-mc-empty {
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+#rebuy-cart:has(.spy-mc) .spy-mc-empty__copy h4 {
+  margin: 0 !important;
+  font-size: 16px !important;
+  line-height: 16px !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  color: var(--color-black) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .spy-mc-empty__copy p {
+  margin: 4px 0 0 !important;
+  font-size: 14px !important;
+  line-height: 16.8px !important;
+  font-weight: 300 !important;
+  text-align: center !important;
+  color: var(--color-black) !important;
+}
+
+/* The Rebuy editor leaves an empty paragraph behind the copy */
+#rebuy-cart:has(.spy-mc) .spy-mc-empty__copy p:has(> br:only-child) {
+  display: none !important;
+}
+
+#rebuy-cart:has(.spy-mc) .spy-mc-empty .spy-mc-trust {
+  margin-top: 10px !important;
+}
+
+#rebuy-cart:has(.spy-mc) .spy-mc-empty .spy-mc-trust__item {
+  font-weight: 400 !important;
+}
+
+/* Empty-cart tabs (Rebuy tabbed widget): four 80x32 tabs over 88px rows */
+#rebuy-cart:has(.spy-mc) [data-rebuy-component='cross-sell-widget']:has(.rebuy-tabbed-widget) {
+  margin: 16px 16px 0 !important;
+  padding: 0 0 16px !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget__tabs {
+  display: flex !important;
+  gap: 8px !important;
+  margin: 0 0 8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget__tab {
+  display: flex !important;
+  flex: 1 1 0 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  height: 32px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 1px solid var(--color-spy-mc-line) !important;
+  border-radius: 0 !important;
+  background: var(--color-white) !important;
+  font-size: 12px !important;
+  line-height: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  text-transform: uppercase !important;
+  color: var(--color-black) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget__tab.active {
+  border-color: var(--color-spy-orange-ui) !important;
+  background: var(--color-spy-orange-ui) !important;
+  color: var(--color-white) !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget__panel {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget .rebuy-product-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* A row with a size or lens choice wraps: the picker takes a second line */
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget .rebuy-product-block {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 8px 20px !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-height: 88px !important;
+  padding: 12px 10px !important;
+  border-bottom: 1px solid var(--color-spy-mc-line) !important;
+  background: none !important;
+  text-align: left !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget .rebuy-product-block:last-child {
+  border-bottom: 0 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget .rebuy-product-media {
+  flex: 0 0 81px !important;
+  width: 81px !important;
+  max-width: none !important;
+  height: 64px !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget .rebuy-product-media img {
+  width: 81px !important;
+  max-width: none !important;
+  height: 64px !important;
+  object-fit: cover !important;
+}
+
+/* No hover swap in a 64px thumbnail */
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget .rebuy-tabbed-widget__hover-image {
+  display: none !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget .rebuy-product-info {
+  display: flex !important;
+  flex: 1 1 0 !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget .rebuy-product-title,
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget .rebuy-product-title-link {
+  line-height: 14px !important;
+  text-transform: uppercase !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget .spy-mc-card__colour {
+  font-weight: 500 !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget .rebuy-product-price {
+  color: var(--color-spy-mc-ink) !important;
+}
+
+/* Rebuy orders the row itself (media 1, info 2, picker 3, button 4) */
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget .rebuy-product-options {
+  order: 5 !important;
+  flex: 0 0 100% !important;
+  box-sizing: border-box !important;
+  padding-left: 101px !important; /* lines up with the text column */
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget .rebuy-product-actions {
+  order: 3 !important;
+  flex: none !important;
+  width: auto !important;
+  max-width: none !important;
+}
+
+#rebuy-cart:has(.spy-mc) .rebuy-tabbed-widget .rebuy-button {
+  width: 62px !important;
+  height: 30px !important;
+  border: 1px solid var(--color-spy-mc-line) !important;
+  font-size: 13px !important;
+  line-height: 12px !important;
+}
+
+/* Keyboard focus: the theme's ring, in ink instead of Rebuy's blue. A ring in
+   the orange text colour would be 2.7:1, under the 3:1 a focus ring needs. */
+#rebuy-cart:has(.spy-mc) :is(a, button, select, input, [tabindex]):focus-visible {
+  outline: var(--focus-outline-width) solid var(--color-spy-ink) !important;
+  outline-offset: var(--focus-outline-offset) !important;
+}
+
+/* The image box clips its overflow (rounded corners), so draw this one inside */
+#rebuy-cart:has(.spy-mc) .rebuy-cart__flyout-item-media a:focus-visible {
+  outline-offset: calc(var(--focus-outline-width) * -2) !important;
+}
+
+/* ── Rebuy Smart Search: search box ────────────────────────────────────────
+   Rebuy draws the box (its "Quick View") and mounts it inside the header.
+   The PM asked for the Blenders layout, so this mirrors their box with our
+   fonts and colours. Rebuy's stylesheets load after ours, hence !important.
+   Reference: audit/search-rebuy-research.md §2.3.
+   Scoped to Rebuy's own id so the theme search bar fallback is untouched. */
+
+/* Our header is 50px, shorter than the 58px field, so let the bar grow */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__container {
+  height: auto !important;
+  min-height: 100% !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__input-container {
+  height: auto !important;
+  padding: 12px 20px !important;
+}
+
+/* Field: hairline ink outline, 8px corners, up to 1300 wide */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__search-input {
+  align-items: center !important;
+  gap: 24px !important;
+  width: 100% !important;
+  max-width: 1300px !important;
+  border: 1px solid var(--color-spy-ink) !important;
+  border-radius: 8px !important;
+  padding: 16px 24px !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__search-input i {
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__search-input input {
+  color: var(--color-spy-ink) !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__search-input input::placeholder {
+  color: var(--color-spy-gray) !important;
+  opacity: 1 !important;
+}
+
+/* Close: Rebuy's glyph is 13px wide, too small to tap */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__close {
+  flex: none !important;
+  width: 44px !important;
+  height: 44px !important;
+  margin-left: 4px !important;
+  color: var(--color-spy-ink) !important;
+}
+
+/* Results panel: flat, full width, content capped like the field */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__overlay {
+  box-shadow: none !important;
+}
+
+/* More results are loading (assets/spy-rebuy-search.js): a spinner under the tiles */
+html[data-spy-search-more='loading'] #rebuy-quick-view-dropdown-search .rebuy-quick-view__product-section::after {
+  content: '' !important;
+  display: block !important;
+  width: 28px !important;
+  height: 28px !important;
+  margin: 24px auto 8px !important;
+  border: 2px solid var(--color-spy-tile) !important;
+  border-top-color: var(--color-spy-ink) !important;
+  border-radius: 50% !important;
+  animation: spy-search-more 0.8s linear infinite !important;
+}
+
+@keyframes spy-search-more {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-spy-search-more='loading'] #rebuy-quick-view-dropdown-search .rebuy-quick-view__product-section::after {
+    animation: none !important;
+  }
+}
+
+/* Rebuy shows "Powered by Rebuy" only in its admin preview; shoppers never
+   see it, and Blenders' box has none, so the preview matches them too */
+#rebuy-quick-view-dropdown-search .powered-by-rebuy,
+#rebuy-search-result-container .powered-by-rebuy {
+  display: none !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__overlay--wide .rebuy-quick-view__overlay-body {
+  max-width: 1300px !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__container {
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__body-right,
+#rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__results {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 32px !important;
+}
+
+/* Group headings: "Most Searched", "Matching Products" */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__title {
+  font-family: var(--font-heading--family) !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__no-results p {
+  color: var(--color-spy-ink) !important;
+}
+
+/* Collection and page links as chips */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__collection-list,
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__content-list {
+  row-gap: 10px !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__collection,
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__content {
+  border-radius: 8px !important;
+  background-color: var(--color-spy-tile) !important;
+  padding: 14px 16px !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-quick-view-dropdown-search button.see-more {
+  color: var(--color-spy-gray) !important;
+}
+
+/* Product tile: square grey tile, model and colourway top-left, price bottom-right */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__product {
+  position: relative !important;
+  min-width: 0 !important;
+  border-radius: 10px !important;
+  background-color: var(--color-spy-tile) !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__product img.rebuy-quick-view_image {
+  object-fit: contain !important;
+  mix-blend-mode: darken !important;
+}
+
+/* The text sits on the tile, so anchor it to the tile, not to its own box */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__product .rebuy-product-info {
+  position: static !important;
+}
+
+/* The name arrives as "MODEL\nColourway" (assets/spy-rebuy-search.js):
+   keep the break, no wrapping, one ellipsis per line, bold model on line one */
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__product .rebuy-product-title {
+  position: absolute !important;
+  top: 20px !important;
+  right: 20px !important;
+  left: 20px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-align: left !important;
+  text-overflow: ellipsis !important;
+  white-space: pre-line !important;
+  text-wrap-mode: nowrap !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  color: var(--color-spy-gray) !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__product .rebuy-product-title::first-line {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-spy-ink);
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-quick-view__product .price {
+  position: absolute !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  flex-direction: row-reverse !important;
+  gap: 8px !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-money {
+  font-weight: 700 !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-money.sale {
+  margin: 0 !important;
+  color: var(--color-spy-sale) !important;
+}
+
+#rebuy-quick-view-dropdown-search .rebuy-money.compare-at {
+  font-weight: 400 !important;
+  color: var(--color-spy-strike) !important;
+}
+
+@media (max-width: 480px) {
+  #rebuy-quick-view-dropdown-search .rebuy-quick-view-dropdown__grid-gap-default {
+    gap: 12px !important;
+  }
+
+  #rebuy-quick-view-dropdown-search .rebuy-quick-view__product img.rebuy-quick-view_image {
+    padding: 10% !important;
+  }
+
+  /* 20px insets leave no room for the text on a 160px tile */
+  #rebuy-quick-view-dropdown-search .rebuy-quick-view__product .rebuy-product-title {
+    top: 12px !important;
+    right: 12px !important;
+    left: 12px !important;
+  }
+
+  #rebuy-quick-view-dropdown-search .rebuy-quick-view__product .price {
+    right: 12px !important;
+    bottom: 12px !important;
+  }
+}
+
+/* Dim the page behind the open box. Rebuy puts this class on the header while
+   the box is open; a click on the dimmed page lands here, and Rebuy closes. */
+.spy-header-section.rebuy-position-relative::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2147483634; /* one below Rebuy's box */
+  background-color: color-mix(in srgb, var(--color-spy-ink) 90%, transparent);
+}
+
+/* ── Rebuy Smart Search: results page ──────────────────────────────────────
+   Rebuy draws /search into #rebuy-search-result-container (search-header).
+   Mirrors the Blenders results page in our fonts and colours: input, "You
+   searched for" + sort, 220px filter sidebar, three grey tiles a row.
+   Reference: audit/search-rebuy/blenders-results-*, research §2.4. */
+
+#rebuy-search-result-container :is(button, input, h2, h3, h4) {
+  font-family: inherit !important;
+}
+
+/* Rebuy caps its root at 1200px with 20/50px sides and a 20px margin; the container owns all three */
+#rebuy-search-result-container #rebuy-smart-search-results-sidebar,
+#rebuy-search-result-container #rebuy-smart-search-results-sidebar-flyout-filter {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Input and context line, with a hairline under them */
+#rebuy-search-result-container .rebuy-smart-search-results-page__header-section {
+  margin-bottom: 24px !important;
+  border-bottom: 1px solid var(--color-spy-border) !important;
+  padding: 24px 0 16px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__input {
+  width: 100% !important;
+  height: auto !important;
+  border: 1px solid var(--color-spy-input-border) !important;
+  border-radius: 5px !important;
+  background-color: var(--color-background) !important;
+  padding: 12px 16px !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__input:focus {
+  border-color: var(--color-spy-ink) !important;
+  outline: 1px solid var(--color-spy-ink) !important;
+  outline-offset: 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__context-section {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  margin-top: 16px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__context-left {
+  flex: 1 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__context-right {
+  display: flex !important;
+  flex-shrink: 0 !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  margin-left: auto !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__result-title {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 24px !important;
+  font-weight: 400 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  color: var(--color-spy-gray) !important;
+}
+
+/* Sort: outlined box, menu drops below its right edge */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-container {
+  position: relative !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-trigger {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  border: 1px solid var(--color-spy-border) !important;
+  border-radius: 8px !important;
+  background-color: var(--color-background) !important;
+  padding: 10px 16px !important;
+  font-size: 13px !important;
+  line-height: 20.8px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  color: var(--color-spy-ink) !important;
+  cursor: pointer;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-trigger:hover {
+  border-color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-trigger i {
+  font-size: 10px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu {
+  top: calc(100% + 6px) !important;
+  right: 0 !important;
+  z-index: 10 !important;
+  min-width: 220px !important;
+  margin: 0 !important;
+  border: 1px solid var(--color-spy-border) !important;
+  border-radius: 8px !important;
+  background-color: var(--color-background) !important;
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--color-spy-ink) 8%, transparent) !important;
+  padding: 8px 0 !important;
+  list-style: none !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 5px 20px !important;
+  font-size: 14px !important;
+  line-height: 22.4px !important;
+  color: var(--color-spy-text-2) !important;
+  cursor: pointer;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item:hover,
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item--active {
+  background-color: var(--color-spy-tile) !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item--active {
+  font-weight: 700 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__dropdown-menu-list-item--active::before {
+  content: '✓';
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Filters sidebar + products */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__main-section {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 40px !important;
+}
+
+/* The filter column sticks under the sticky header group and is never taller than
+   the screen, so a long list scrolls inside it. Same 220px footprint as before;
+   spy-rebuy-search.js §7 scrolls the list back to this same 20px gap */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-section {
+  position: sticky !important;
+  top: calc(var(--spy-header-offset, 0px) + 20px) !important;
+  flex: 0 0 210px !important;
+  max-height: calc(100dvh - var(--spy-header-offset, 0px) - 40px) !important;
+  overflow-y: auto !important;
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
+  margin-right: 10px !important;
+  padding: 0 8px 0 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-section-title {
+  margin: 0 0 16px !important;
+  border-bottom: 2px solid var(--color-spy-ink) !important;
+  padding: 0 0 12px !important;
+  font-size: 18px !important;
+  line-height: 19.8px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-container,
+#rebuy-search-result-container .rebuy-smart-search-results-page__filter-option {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-list-header {
+  border-top: 0 !important;
+  padding: 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-list-toggle {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--color-spy-border) !important;
+  background: none !important;
+  padding: 12px 0 !important;
+  color: var(--color-spy-ink) !important;
+  cursor: pointer;
+}
+
+/* DIN ships 400 and 700 only, so 700 where Blenders uses 600 */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-list-title {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  color: var(--color-spy-text-2) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-list-body {
+  padding: 0 !important;
+}
+
+/* A shut group is max-height 0 but its list still spills out, unseen. In the scrolling
+   filter column and phone panel that spill was blank space to scroll through */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-list-body:not(.active) {
+  overflow: hidden !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__filter-option-list {
+  padding: 4px 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__filter-option-checkbox-label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 13px !important;
+  color: var(--color-spy-text-2) !important;
+  cursor: pointer;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__filter-label {
+  font-size: 12px !important;
+  color: var(--color-spy-muted) !important;
+}
+
+/* No results under the other ticks: the value stays in the list, greyed (spy-rebuy-search.js §6) */
+#rebuy-search-result-container [data-spy-empty] {
+  opacity: 0.45;
+}
+
+#rebuy-search-result-container [data-spy-empty] .rebuy-smart-search-results-page__filter-option-checkbox-label {
+  cursor: default;
+}
+
+#rebuy-search-result-container .rebuy-checkbox {
+  border-color: var(--color-spy-border) !important;
+  background-color: var(--color-background) !important;
+}
+
+#rebuy-search-result-container .rebuy-checkbox:focus-visible {
+  outline: 2px solid var(--color-spy-ink) !important;
+  outline-offset: 2px !important;
+}
+
+#rebuy-search-result-container .rebuy-checkbox:checked {
+  border-color: var(--color-spy-ink) !important;
+  background-color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__filter-price {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 4px 0 !important;
+}
+
+/* The two boxes share the column, however narrow (the To box ran past it) */
+#rebuy-search-result-container .rebuy-smart-search-results-page__filter-price-block {
+  display: flex !important;
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__filter-price-input {
+  width: 100% !important;
+  min-width: 0 !important;
+  border: 1px solid var(--color-spy-input-border) !important;
+  border-radius: 3px !important;
+  padding: 6px 8px !important;
+  font-size: 13px !important;
+  color: var(--color-spy-ink) !important;
+}
+
+/* Ticked filters as pills, with a Reset link */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filters {
+  margin-bottom: 16px !important;
+  border-bottom: 1px solid var(--color-spy-border) !important;
+  padding-bottom: 12px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filters-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 10px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filters-reset {
+  border: 0 !important;
+  background: none !important;
+  padding: 0 !important;
+  font-size: 13px !important;
+  text-decoration: underline !important;
+  color: var(--color-spy-gray) !important;
+  cursor: pointer;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filters-reset:hover,
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filter-tag-remove:hover {
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filters-body {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filter-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  border: 1px solid var(--color-spy-input-border) !important;
+  border-radius: 30px !important;
+  background-color: var(--color-spy-cta-ground) !important;
+  padding: 6px 12px !important;
+  font-size: 13px !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__selected-filter-tag-remove {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 0 !important;
+  background: none !important;
+  padding: 0 !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  color: var(--color-spy-gray) !important;
+  cursor: pointer;
+}
+
+/* Products */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__result-section {
+  flex: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__result-section-title {
+  margin: 0 0 20px !important;
+  font-size: 20px !important;
+  line-height: 22px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__container.gap-default {
+  gap: 12px !important;
+}
+
+/* No hits: Rebuy prints a bare <p> under PRODUCTS */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__result-section p:not([class]) {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 22.4px !important;
+  color: var(--color-spy-ink) !important;
+}
+
+/* Tile: the details lie over the square grey image box */
+#rebuy-search-result-container .rebuy-smart-search-results-page__product {
+  position: relative !important;
+  min-width: 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product-media {
+  overflow: hidden !important;
+  border-radius: 10px !important;
+  background-color: var(--color-spy-tile) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product-image {
+  object-fit: contain !important;
+  mix-blend-mode: darken !important;
+  padding: 10% !important;
+  transition: transform 0.3s ease !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product-media:hover .rebuy-smart-search-results-page__product-image {
+  transform: scale(1.05) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product-detail {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 2 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Only the name and the price take clicks; the rest of the tile is the image link */
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-info {
+  position: static !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-title,
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-price {
+  pointer-events: auto !important;
+}
+
+/* Same two-line name as the search box: "MODEL\nColourway" */
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-title {
+  position: absolute !important;
+  top: 20px !important;
+  right: 20px !important;
+  left: 20px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-align: left !important;
+  text-decoration: none !important;
+  text-overflow: ellipsis !important;
+  white-space: pre-line !important;
+  text-wrap-mode: nowrap !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  font-weight: 400 !important;
+  text-transform: none !important;
+  color: var(--color-spy-gray) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-title::first-line {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-spy-ink);
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-review {
+  display: none !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-price {
+  position: absolute !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 22px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-price > div {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  gap: 8px !important;
+}
+
+#rebuy-search-result-container .rebuy-money {
+  font-weight: 700 !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-money.sale {
+  color: var(--color-spy-sale) !important;
+}
+
+#rebuy-search-result-container .rebuy-money.compare-at {
+  font-weight: 400 !important;
+  color: var(--color-spy-strike) !important;
+}
+
+/* Rebuy's spinners in our ink instead of its blue */
+#rebuy-search-result-container .rebuy-smart-search-results-page__loader,
+#rebuy-search-result-container .rebuy-smart-search-results-page__continuous-scroll-loader {
+  border-color: var(--color-spy-border) !important;
+  border-top-color: var(--color-spy-ink) !important;
+}
+
+/* Mobile "Filter and sort" panel */
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-mobile-facets {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  border: 0 !important;
+  background: none !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  line-height: 25px !important;
+  white-space: nowrap !important;
+  color: var(--color-spy-ink) !important;
+  cursor: pointer;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-mobile-facets-label {
+  margin: 0 !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__flyout-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  border-bottom: 1px solid var(--color-spy-border) !important;
+  padding: 16px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__flyout-header-title {
+  margin: 0 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  color: var(--color-spy-ink) !important;
+}
+
+/* Rebuy's ✕ is 30px and drops its focus ring; Rebuy still centres it absolutely */
+#rebuy-search-result-container .rebuy-smart-search-results-page__flyout-close {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  right: 4px !important;
+  width: 44px !important;
+  height: 44px !important;
+  font-size: 20px !important;
+  color: var(--color-spy-ink) !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__flyout-close:focus-visible {
+  outline: 2px solid var(--color-spy-ink) !important;
+  outline-offset: -4px !important;
+}
+
+#rebuy-search-result-container .rebuy-smart-search-results-page__background.is-visible {
+  background-color: color-mix(in srgb, var(--color-spy-ink) 70%, transparent) !important;
+}
+
+/* Closed, the panel only slid off screen and Tab still walked through its ~70
+   controls. Hide it once Rebuy's 0.3s slide-out is over; Rebuy sets open filter
+   groups visible itself, so they need it too */
+#rebuy-search-result-container .rebuy-smart-search-results-page__flyout:not(.is-visible),
+#rebuy-search-result-container .rebuy-smart-search-results-page__flyout:not(.is-visible) [class*='__filter-list-body'].active {
+  visibility: hidden !important;
+  transition:
+    left 0.3s ease-in-out,
+    visibility 0s linear 0.3s !important;
+}
+
+@media (max-width: 1024px) {
+  #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__main-section {
+    gap: 24px !important;
+  }
+
+  #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-section {
+    flex-basis: 170px !important;
+  }
+}
+
+/* Blenders folds the sidebar at 768 inclusive; Rebuy alone would wait for 767 */
+@media (max-width: 768px) {
+  #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__main-section {
+    flex-direction: column !important;
+  }
+
+  #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-section {
+    display: none !important;
+  }
+
+  #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__filter-trigger--mobile {
+    display: block !important;
+  }
+
+  #rebuy-search-result-container .rebuy-smart-search-results-page__container.col-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  #rebuy-search-result-container .rebuy-smart-search-results-page-sidebar__result-section-title {
+    margin-bottom: 14px !important;
+    font-size: 16px !important;
+    line-height: 17.6px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  #rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-title {
+    top: 12px !important;
+    right: 12px !important;
+    left: 12px !important;
+  }
+
+  #rebuy-search-result-container .rebuy-smart-search-results-page__product .rebuy-product-price {
+    right: 12px !important;
+    bottom: 12px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #rebuy-search-result-container .rebuy-smart-search-results-page__product-image {
+    transition: none !important;
+  }
+
+  #rebuy-search-result-container .rebuy-smart-search-results-page__product-media:hover .rebuy-smart-search-results-page__product-image {
+    transform: none !important;
+  }
+}

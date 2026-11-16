@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node scripts/dev-start.js",
-    "build:css": "tailwindcss -i src/tailwind.css -o assets/tailwind.css --minify",
+    "build:css": "tailwindcss -i src/tailwind.css -o assets/tailwind.css --minify && tailwindcss -i src/rebuy.css -o assets/spy-rebuy.css --minify",
     "watch:css": "tailwindcss -i src/tailwind.css -o assets/tailwind.css --minify --watch",
     "dev": "npm run watch:css",
     "build": "npm run build:css"

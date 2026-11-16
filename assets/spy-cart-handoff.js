@@ -32,9 +32,22 @@ function smartCartReady() {
   return Boolean(cart && typeof cart.show === 'function');
 }
 
+/**
+ * Our Rebuy cart styles (assets/spy-rebuy.css) load after first paint. Rebuy
+ * boots after them anyway, but never hand over before they are on, so the
+ * cart can't open unstyled. No tag on the page = nothing to wait for.
+ */
+function rebuyStylesReady() {
+  const link = document.querySelector('link[data-spy-rebuy-css]');
+  if (!link) return true;
+  // Loaded but its onload didn't run (blocked inline handler): turn it on here
+  if (link.sheet && link.media !== 'all') link.media = 'all';
+  return Boolean(link.sheet) && link.media === 'all';
+}
+
 /** Hand over to Rebuy, once. Returns true when Rebuy owns the cart. */
 function claim() {
-  if (!smartCartReady()) return false;
+  if (!smartCartReady() || !rebuyStylesReady()) return false;
   if (HTML.getAttribute('data-cart-engine') === 'rebuy') return true;
 
   HTML.setAttribute('data-cart-engine', 'rebuy');
