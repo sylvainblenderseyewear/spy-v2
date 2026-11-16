@@ -35,6 +35,22 @@
     assign lens_val = lens_opt
   endif
   assign extra_val = extra_opt
+
+  # The import writes "No Lens Reference" / "No Colour Reference" when a product has
+  # no lens or colour (helmets, gear, snow lenses). That is no data, so skip the row.
+  assign check = color_val | downcase
+  if check == 'no colour reference' or check == 'no color reference'
+    assign color_val = ''
+  endif
+  assign check = lens_val | downcase
+  if check == 'no lens reference'
+    assign lens_val = ''
+  endif
+  assign check = extra_val | downcase
+  if check == 'no lens reference'
+    assign extra_val = ''
+  endif
+
   assign ref_val = variant.metafields.spec.sku_ref.value
   if ref_val == blank
     assign ref_val = p.metafields.spec.reference.value

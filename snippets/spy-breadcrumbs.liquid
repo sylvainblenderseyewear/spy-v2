@@ -5,6 +5,8 @@
 
   @param {string} [shopify_attributes] - editor attributes from the calling block/section
   @param {string} [variant] - 'pdp' for the product page trail (category + line, small caps)
+  @param {product} [product] - product to build the trail for, when not on closest
+  @param {collection} [fallback_category] - PDP category crumb when the product is in no main category collection
 
   @example
   {%- render 'spy-breadcrumbs', shopify_attributes: block.shopify_attributes -%}
@@ -55,6 +57,11 @@
         endif
       endif
     endfor
+    # No main category on the product (helmets, snow lenses, cases): use the
+    # template's own pick, so the trail never shows the model name alone
+    if cat_col == null and fallback_category != blank
+      assign cat_col = fallback_category
+    endif
     if cat_col != null
       assign crumb_titles = crumb_titles | append: cat_col.title | append: sep
       assign crumb_links = crumb_links | append: cat_col.url | append: sep

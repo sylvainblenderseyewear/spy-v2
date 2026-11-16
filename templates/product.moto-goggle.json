@@ -51,7 +51,7 @@
             "custom_width_mobile": 100,
             "height": "fit",
             "details_position": "flex-start",
-            "gap": 20,
+            "gap": 0,
             "sticky_details_desktop": true,
             "background_media": "none",
             "background_color": "",
@@ -62,9 +62,9 @@
             "border_opacity": 100,
             "border_color": "",
             "border_radius": 0,
-            "padding-block-start": 24,
-            "padding-block-end": 24,
-            "padding-inline-start": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 48,
+            "padding-inline-start": 24,
             "padding-inline-end": 0
           },
           "blocks": {
@@ -324,10 +324,10 @@
                   "type": "add-to-cart",
                   "static": true,
                   "settings": {
-                    "style_class": "button",
-                    "custom_button_background": "",
-                    "custom_button_text": "",
-                    "custom_button_border": ""
+                    "style_class": "button-custom",
+                    "custom_button_background": "{{ settings.color_palette.color3 }}",
+                    "custom_button_text": "{{ settings.color_palette.background }}",
+                    "custom_button_border": "{{ settings.color_palette.color3 }}"
                   },
                   "blocks": {}
                 },
@@ -345,37 +345,31 @@
               "name": "Trust Badges",
               "settings": {
                 "badge_1_text": "Free Standard Shipping on all orders",
+                "badge_1_icon": "",
+                "badge_1_link_text": "",
+                "badge_1_link_url": "",
+                "badge_1_logo": "none",
                 "badge_2_text": "Easy Returns for 45 days",
-                "badge_3_text": "2-year warranty",
-                "badge_4_text": "Pay in 4 with PayPal",
-                "badge_5_text": "Lifetime warranty on frames"
+                "badge_2_icon": "",
+                "badge_2_link_text": "",
+                "badge_2_link_url": "",
+                "badge_2_logo": "none",
+                "badge_3_text": "Discount calculated on the original price.",
+                "badge_3_icon": "",
+                "badge_3_link_text": "See conditions",
+                "badge_3_link_url": "/pages/offers-and-conditions",
+                "badge_3_logo": "none",
+                "badge_4_text": "Pay in 4 installments with no fees using",
+                "badge_4_icon": "",
+                "badge_4_link_text": "",
+                "badge_4_link_url": "",
+                "badge_4_logo": "paypal",
+                "badge_5_text": "Lifetime warranty on all sunglasses",
+                "badge_5_icon": "",
+                "badge_5_link_text": "",
+                "badge_5_link_url": "",
+                "badge_5_logo": "none"
               }
-            },
-            "text_aEtTtq": {
-              "type": "text",
-              "name": "Product description",
-              "settings": {
-                "text": "{{ closest.product.description }}",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-primary--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
             },
             "spy_spec_table_A1": {
               "type": "spy-spec-table",
@@ -384,15 +378,37 @@
                 "heading": "Technical Information"
               }
             },
-            "breadcrumbs_pdp": {
-              "type": "spy-breadcrumbs",
-              "settings": {}
+            "spy_frame_summary_A1": {
+              "type": "spy-frame-summary",
+              "name": "Frame Summary",
+              "settings": {
+                "color_label": "Color"
+              },
+              "blocks": {}
+            },
+            "spy_swatches_A1": {
+              "type": "spy-swatches",
+              "name": "Color Preview",
+              "settings": {
+                "display": "pdp"
+              },
+              "blocks": {}
+            },
+            "spy_description_A1": {
+              "type": "spy-description",
+              "name": "Description",
+              "settings": {
+                "heading": "Description",
+                "open_default": false
+              },
+              "blocks": {}
             }
           },
           "block_order": [
-            "breadcrumbs_pdp",
             "group_icgrde",
             "divider_VJhene",
+            "spy_swatches_A1",
+            "spy_frame_summary_A1",
             "variant_picker_R3rGDr",
             "spy_frame_fit_guide_A1",
             "spy_goggle_fit_A1",
@@ -400,7 +416,7 @@
             "divider_after_lens",
             "buy_buttons_eYQEYi",
             "spy_trust_badges_A1",
-            "text_aEtTtq",
+            "spy_description_A1",
             "spy_spec_table_A1"
           ]
         }
@@ -414,7 +430,8 @@
         "enable_sticky_add_to_cart": false,
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "breadcrumb_category": "moto-goggles"
       }
     },
     "spy_feature_banner_A1": {
