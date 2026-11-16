@@ -179,6 +179,8 @@
     "cart_promo_prompt": "Have a promo code?",
     "cart_promo_placeholder": "Enter Promo code",
     "cart_promo_toggle": "Enter promo code (optional)",
+    "cart_promo_empty": "No coupon code entered",
+    "cart_promo_error": "This promo code is not valid for your cart",
     "cart_total": "Cart total",
     "checkout": "Check out",
     "collection_placeholder": "Collection title",

@@ -1,21 +1,24 @@
 {%- doc -%}
   Promo code entry for the cart page.
 
-  Shopify has no cart-page discount API, so this posts nowhere: the JS turns the
-  typed code into a visit to `/discount/{code}?redirect=/cart`, which applies it and
-  comes straight back.
+  Applies the typed code through the Ajax cart (`POST /cart/update.js` with a
+  `discount` parameter) and reads `discount_codes[].applicable` back, so an
+  invalid code gets an inline error instead of a silent cart reload.
 
   Sits under the line items, where the source puts it. Under 544px the source adds
   a collapsible "Enter promo code (optional)" header, so the box is a <details>
   whose summary only shows on phones.
 
+  @param {string} [section_id] - Section id to re-render after a code applies.
   @param {string} [toggle_label] - Mobile header text. Blank uses the translation.
   @param {string} [label] - Field label. Blank uses the translation.
   @param {string} [placeholder] - Field placeholder. Blank uses the translation.
   @param {string} [button_label] - Button text. Blank uses the translation.
+  @param {string} [empty_message] - Shown when the field is empty. Blank uses the translation.
+  @param {string} [error_message] - Shown when the code is rejected. Blank uses the translation.
 
   @example
-  {%- render 'spy-cart-promo' -%}
+  {%- render 'spy-cart-promo', section_id: section.id -%}
 {%- enddoc -%}
 
 {%- liquid
@@ -31,12 +34,27 @@
   if button_label == blank
     assign button_label = 'actions.apply' | t
   endif
+  if empty_message == blank
+    assign empty_message = 'content.cart_promo_empty' | t
+  endif
+  if error_message == blank
+    assign error_message = 'content.cart_promo_error' | t
+  endif
+
+  assign applied_codes = cart.cart_level_discount_applications | where: 'type', 'discount_code' | map: 'title'
+  for item in cart.items
+    for allocation in item.line_level_discount_allocations
+      if allocation.discount_application.type == 'discount_code'
+        assign applied_codes = item.line_level_discount_allocations | slice: forloop.index0 | map: 'discount_application' | map: 'title' | concat: applied_codes
+      endif
+    endfor
+  endfor
+  assign applied_codes = applied_codes | uniq | join: ','
 -%}
 
 <details class="spy-cart-promo-wrap group mt-0 min-[544px]:mt-6" open>
   <summary class="[display:flex] items-center justify-between gap-0 m-0 mb-6 p-0 pt-6 text-[16px] leading-[22.4px] text-spy-ink cursor-pointer list-none min-[544px]:hidden [&::-webkit-details-marker]:hidden">
     {{ toggle_label }}
-    {%- comment -%} Source toggle: a 10px minus that grows a vertical bar when closed {%- endcomment -%}
     <span class="relative size-[10px] mt-2 mr-2 shrink-0" aria-hidden="true">
       <span class="absolute left-0 bottom-1 w-[10px] border-b-2 border-black"></span>
       <span class="absolute left-0 bottom-1 w-[10px] border-b-2 border-black rotate-90 transition-transform duration-300 group-open:rotate-0"></span>
@@ -46,8 +64,13 @@
   <form
     class="spy-cart-promo mb-6 border border-spy-border p-4 min-[1200px]:grid min-[1200px]:grid-cols-2 min-[1200px]:gap-x-[30px]"
     data-spy-cart-promo
+    data-section-id="{{ section_id }}"
+    data-applied-codes="{{ applied_codes | escape }}"
+    data-empty-message="{{ empty_message | escape }}"
+    data-error-message="{{ error_message | escape }}"
     action="{{ routes.cart_url }}"
-    method="get"
+    method="post"
+    novalidate
   >
     <label class="spy-cart-promo__label block mb-2 min-[1200px]:pt-2 text-[16px] font-normal leading-[22.4px] text-spy-ink" for="spy-promo-code">
       {{- label -}}
@@ -55,27 +78,27 @@
 
     <div class="spy-cart-promo__row [display:flex] gap-0">
       <input
-        class="spy-cart-promo__input flex-1 min-w-0 h-9 mr-4 py-2 px-1 border border-spy-input-border rounded-none bg-transparent shadow-none text-[13px] leading-[18.2px] text-spy-ink placeholder:text-spy-strike focus:border-black focus:outline-none"
+        class="spy-cart-promo__input flex-1 min-w-0 h-9 mr-4 py-2 px-1 border border-spy-input-border rounded-none bg-transparent shadow-none text-[13px] leading-[18.2px] text-spy-ink placeholder:text-spy-strike focus:border-black focus:outline-none aria-[invalid=true]:border-spy-negative"
         id="spy-promo-code"
-        name="promo"
+        name="discount"
         type="text"
         autocomplete="off"
         autocapitalize="characters"
         spellcheck="false"
         placeholder="{{ placeholder | escape }}"
         aria-describedby="spy-promo-error"
+        data-skip-node-update
       >
       <button
-        class="spy-cart-promo__apply shrink-0 h-9 min-h-0 py-2 px-3 border border-spy-cta-ground rounded-none bg-spy-cta-ground text-black text-[12px] font-normal leading-[16.8px] uppercase cursor-pointer transition-colors duration-150 ease-[ease-in-out] hover:bg-spy-cta-hover hover:border-spy-cta-hover hover:text-white min-[1200px]:h-[38.4px]"
+        class="spy-cart-promo__apply shrink-0 h-9 min-h-0 py-2 px-3 border border-spy-cta-ground rounded-none bg-spy-cta-ground text-black text-[12px] font-normal leading-[16.8px] uppercase cursor-pointer transition-colors duration-150 ease-[ease-in-out] hover:bg-spy-cta-hover hover:border-spy-cta-hover hover:text-white aria-busy:opacity-60 aria-busy:cursor-progress min-[1200px]:h-[38.4px]"
         type="submit"
       >
         {{- button_label -}}
       </button>
     </div>
 
-    {%- comment -%} Filled by the script when the field is empty; also the aria live region {%- endcomment -%}
-    <p class="spy-cart-promo__error m-0 mt-1 text-[13px] leading-[18.2px] text-spy-gray min-[1200px]:col-start-2" id="spy-promo-error" role="status" hidden></p>
+    <p class="spy-cart-promo__error m-0 mt-1 text-[13px] leading-[18.2px] text-spy-negative min-[1200px]:col-start-2" id="spy-promo-error" role="alert" hidden></p>
   </form>
 </details>
 
-<script src="{{ 'spy-cart-promo.js' | asset_url }}" defer></script>
+<script src="{{ 'spy-cart-promo.js' | asset_url }}" type="module"></script>

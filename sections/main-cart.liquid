@@ -82,17 +82,16 @@
       <div class="cart-page__items min-w-0{% if cart.empty? %} mt-[var(--margin-lg)]{% else %} row-3 col-1 mt-0{% endif %}">
         {%- content_for 'block', id: 'cart-page-items', type: '_cart-products' %}
 
-        {%- comment -%}
-          Promo code — Shopify has no cart-page discount API, so this hands off to
-          /discount/{code}, which applies it and redirects back here.
-        {%- endcomment -%}
         {%- if section.settings.show_promo != false -%}
           {%- unless cart.empty? -%}
             {%- render 'spy-cart-promo',
+              section_id: section.id,
               toggle_label: section.settings.promo_toggle_label,
               label: section.settings.promo_label,
               placeholder: section.settings.promo_placeholder,
-              button_label: section.settings.promo_button
+              button_label: section.settings.promo_button,
+              empty_message: section.settings.promo_empty_message,
+              error_message: section.settings.promo_error_message
             -%}
           {%- endunless -%}
         {%- endif -%}
@@ -258,6 +257,20 @@
       "type": "text",
       "id": "promo_button",
       "label": "Button label",
+      "visible_if": "{{ section.settings.show_promo }}"
+    },
+    {
+      "type": "text",
+      "id": "promo_empty_message",
+      "label": "Empty field message",
+      "info": "Leave blank to use the translation.",
+      "visible_if": "{{ section.settings.show_promo }}"
+    },
+    {
+      "type": "text",
+      "id": "promo_error_message",
+      "label": "Invalid code message",
+      "info": "Leave blank to use the translation.",
       "visible_if": "{{ section.settings.show_promo }}"
     },
     {

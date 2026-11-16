@@ -99,8 +99,15 @@ Styling is Tailwind utilities in the markup, page-guarded, so the drawer is unaf
 ## Deviations from the source (deliberate)
 
 1. **Shipping / tax rows dropped.** Shopify cannot compute either on the cart page.
-2. **Promo code** posts to `/discount/{CODE}?redirect=/cart` — Shopify has no cart-page
-   discount API, but that route applies a code and returns.
+2. **Promo code** applies through the Ajax cart (`POST /cart/update.js` with a `discount`
+   parameter, supported since May 2025) and reads `discount_codes[].applicable` back, so a
+   rejected code gets an inline error instead of the silent reload the old
+   `/discount/{CODE}?redirect=/cart` hand-off gave (THM-08). A valid code re-renders the
+   section through the Section Rendering API, so the discount row and total update without
+   a page load. Known gap: a valid **free-shipping** code reports `applicable: true` but
+   shows nothing on the cart page, because Shopify only resolves shipping discounts at
+   checkout — the field clears and no error shows, which is the correct outcome but gives
+   the shopper no confirmation until checkout.
 3. **One orange.** `--color-spy-orange #f57f29` for the checkout button, not the source's
    `#F27E37` (≤14/255 on one channel), per CLAUDE.md rule 3b.
 4. **Recommendations band removed** — the source cart has none.
