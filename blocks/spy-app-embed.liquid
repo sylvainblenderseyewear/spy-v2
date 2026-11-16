@@ -41,7 +41,8 @@
     assign yp_img = shop.url | append: yp_img
   endif
 
-  # reviews were collected against the old store's ids, so allow a mapping
+  # The store's Yotpo account files reviews under the Shopify id, so that is the default.
+  # The metafield only matters if Yotpo is ever linked to an account keyed by other ids.
   if block.settings.legacy_id_metafield != blank
     assign mf = block.settings.legacy_id_metafield | split: '.'
     assign legacy = yp.metafields[mf[0]][mf[1]].value
@@ -188,7 +189,7 @@
       "type": "text",
       "id": "legacy_id_metafield",
       "label": "Product ID metafield",
-      "info": "Yotpo keys reviews to its own product IDs, not Shopify's. Point this at the metafield that holds it: yotpo.product_id. Leave empty and the widget sends the Shopify ID, which matches nothing.",
+      "info": "Optional. The store's Yotpo account files reviews under the Shopify product ID, which is sent when this is empty or the metafield has no value. Only fill it if Yotpo is linked to an account that uses other IDs.",
       "visible_if": "{{ block.settings.embed == 'yotpo_bottomline' or block.settings.embed == 'yotpo_reviews' }}"
     },
     {
