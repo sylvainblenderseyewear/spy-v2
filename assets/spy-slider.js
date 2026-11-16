@@ -73,9 +73,13 @@ export const finishGlide = (scroller) => glides.get(scroller)?.finish();
  * lowest first, cut at `bp` (slick's breakpoints by default: 540 / 720 / 1140):
  *   speed (ms, 300), ease (soft ease-in-out), step (cards per click, 1),
  *   loop (0/1, endless with clones), arrows (0/1, 1), dots (0/1, 0),
- *   autoplay (ms, 0 = off; pauses on hover and focus like slick).
+ *   autoplay (ms, 0 = off; pauses on hover and focus like slick, and on an optional
+ *   [data-autoplay-toggle] button with data-label-pause / data-label-play).
  */
 class SpySlider extends HTMLElement {
+  dir = 1;
+  paused = true;
+
   connectedCallback() {
     if (this._ready) return;
     this.track = this.querySelector('[data-track]');
@@ -115,6 +119,7 @@ class SpySlider extends HTMLElement {
   disconnectedCallback() {
     window.removeEventListener('resize', this._onResize);
     clearInterval(this._auto);
+    this._motion?.removeEventListener('change', this._onMotion);
   }
 
   // Settings for the current window width
@@ -404,21 +409,47 @@ class SpySlider extends HTMLElement {
     t.addEventListener('dragstart', (e) => e.preventDefault());
   }
 
-  // Like slick: moves on its own, pauses on hover and focus, ping-pongs when it doesn't loop
+  // Like slick: moves on its own, pauses on hover and focus, ping-pongs when it doesn't loop.
+  // WCAG 2.2.2: a [data-autoplay-toggle] button stops and restarts it, and reduced
+  // motion starts it stopped.
   startAutoplay() {
     const ms = Number(this.o.autoplay) || 0;
-    if (!ms || reduced()) return;
-    let dir = 1;
-    this._auto = setInterval(() => {
-      if (document.hidden || this.matches(':hover') || this.contains(document.activeElement)) return;
-      const t = this.track;
-      const max = t.scrollWidth - t.clientWidth;
-      if (!this.looping) {
-        if (dir > 0 && t.scrollLeft >= max - 1) dir = -1;
-        else if (dir < 0 && t.scrollLeft <= 1) dir = 1;
-      }
-      this.step(dir);
-    }, ms);
+    if (!ms) return;
+    this.autoMs = ms;
+    this.toggleBtn = this.querySelector('[data-autoplay-toggle]');
+    this.toggleBtn?.addEventListener('click', () => this.setPaused(!this.paused));
+    this.setPaused(reduced());
+    // Turning on reduced motion while here stops it too
+    this._motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    this._onMotion = (e) => e.matches && this.setPaused(true);
+    this._motion.addEventListener('change', this._onMotion);
+  }
+
+  setPaused(paused) {
+    this.paused = paused;
+    clearInterval(this._auto);
+    if (!paused) this._auto = setInterval(() => this.tick(), this.autoMs);
+    const b = this.toggleBtn;
+    if (!b) return;
+    const label = paused ? b.dataset.labelPlay : b.dataset.labelPause;
+    if (label) b.setAttribute('aria-label', label);
+    b.querySelector('[data-icon="pause"]')?.toggleAttribute('hidden', paused);
+    b.querySelector('[data-icon="play"]')?.toggleAttribute('hidden', !paused);
+  }
+
+  tick() {
+    // The pause button itself doesn't count as hover or focus, or Play would do nothing
+    const b = this.toggleBtn;
+    const hovered = this.matches(':hover') && !b?.matches(':hover');
+    const focused = this.contains(document.activeElement) && document.activeElement !== b;
+    if (this.paused || document.hidden || hovered || focused) return;
+    const t = this.track;
+    const max = t.scrollWidth - t.clientWidth;
+    if (!this.looping) {
+      if (this.dir > 0 && t.scrollLeft >= max - 1) this.dir = -1;
+      else if (this.dir < 0 && t.scrollLeft <= 1) this.dir = 1;
+    }
+    this.step(this.dir);
   }
 }
 
