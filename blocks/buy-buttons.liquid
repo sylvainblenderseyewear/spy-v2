@@ -114,8 +114,6 @@
             </div>
           {%- endif -%}
 
-          {%- comment -%} Quantity counter not used in this project {%- endcomment -%}
-
           {%- if has_quantity_rules -%}
             <div
               class="quantity-rules"
@@ -225,12 +223,77 @@
               </div>
             </volume-pricing>
           {%- endif -%}
-          {% content_for 'block',
-            type: 'add-to-cart',
-            id: 'add-to-cart',
-            can_add_to_cart: can_add_to_cart,
-            add_to_cart_text: add_to_cart_text
-          %}
+          {%- capture add_to_cart_control -%}
+            {% content_for 'block',
+              type: 'add-to-cart',
+              id: 'add-to-cart',
+              can_add_to_cart: can_add_to_cart,
+              add_to_cart_text: add_to_cart_text
+            %}
+          {%- endcapture -%}
+
+          {%- if block_settings.show_quantity -%}
+            {%- liquid
+              assign quantity_min = variant.quantity_rule.min | default: 1
+              assign quantity_max = variant.quantity_rule.max | default: block_settings.max_quantity
+              assign quantity_step = variant.quantity_rule.increment | default: 1
+            -%}
+            <div
+              class="flex basis-full items-stretch gap-3"
+              ref="quantitySelectorWrapper"
+            >
+              <quantity-selector-component
+                class="flex w-[7.5rem] shrink-0 grow-0 items-stretch gap-0 border border-spy-input-border bg-white"
+                data-variant-id="{{ variant.id }}"
+                ref="quantitySelector"
+              >
+                <button
+                  type="button"
+                  name="minus"
+                  class="flex w-10 shrink-0 cursor-pointer items-center justify-center border-0 bg-transparent p-0 text-spy-text disabled:cursor-not-allowed disabled:opacity-40 [&_svg]:h-3 [&_svg]:w-3"
+                  on:click="/decreaseQuantity"
+                  ref="minusButton"
+                >
+                  <span class="sr-only">{{ 'accessibility.decrease_quantity' | t }}</span>
+                  <span class="svg-wrapper">{{- 'icon-minus.svg' | inline_asset_content -}}</span>
+                </button>
+                <input
+                  type="number"
+                  name="quantity"
+                  value="{{ quantity_min }}"
+                  data-cart-quantity="{{ cart | item_count_for_variant: variant.id }}"
+                  min="{{ quantity_min }}"
+                  data-min="{{ quantity_min }}"
+                  {% if quantity_max != blank %}
+                    max="{{ quantity_max }}"
+                  {% endif %}
+                  step="{{ quantity_step }}"
+                  on:blur="/setQuantity"
+                  on:focus="/selectInputValue"
+                  ref="quantityInput"
+                  aria-live="polite"
+                  aria-label="{{ 'accessibility.quantity' | t }}"
+                  class="min-w-0 flex-1 appearance-none border-0 bg-transparent p-0 text-center text-[0.875rem] font-medium text-spy-text focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  {% if variant.available == false %}
+                    disabled
+                  {% endif %}
+                >
+                <button
+                  type="button"
+                  name="plus"
+                  class="flex w-10 shrink-0 cursor-pointer items-center justify-center border-0 bg-transparent p-0 text-spy-text disabled:cursor-not-allowed disabled:opacity-40 [&_svg]:h-3 [&_svg]:w-3"
+                  on:click="/increaseQuantity"
+                  ref="plusButton"
+                >
+                  <span class="sr-only">{{ 'accessibility.increase_quantity' | t }}</span>
+                  <span class="svg-wrapper">{{- 'icon-plus.svg' | inline_asset_content -}}</span>
+                </button>
+              </quantity-selector-component>
+              <div class="min-w-0 flex-1">{{ add_to_cart_control }}</div>
+            </div>
+          {%- else -%}
+            {{ add_to_cart_control }}
+          {%- endif -%}
 
           {%- comment -%} Buy-it-now (dynamic checkout) not used in this project {%- endcomment -%}
         </div>
@@ -392,6 +455,23 @@
       "id": "stacking",
       "label": "t:settings.always_stack_buttons",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity",
+      "label": "Show quantity selector",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "max_quantity",
+      "label": "Maximum quantity",
+      "info": "Used when the variant has no quantity rule of its own.",
+      "min": 1,
+      "max": 50,
+      "step": 1,
+      "default": 10,
+      "visible_if": "{{ block.settings.show_quantity }}"
     },
     {
       "type": "color",
