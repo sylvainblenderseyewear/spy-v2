@@ -33,6 +33,35 @@
       endif
     endfor
   endif
+
+  # Bold one category only. Shopify's link.child_active is true for every parent
+  # holding this page, so "Collections" (Sun, Snow, Moto) lit up next to the real one.
+  # Rule: the link that is this page wins; else the first parent with this page under it.
+  assign current_path = request.path | downcase
+  assign current_title = nil
+  assign current_is_page = false
+  for link in menu.links
+    assign link_path = link.url | split: '?' | first | downcase
+    if link_path == current_path
+      assign current_title = link.title
+      assign current_is_page = true
+      break
+    endif
+  endfor
+  if current_title == nil
+    for link in menu.links
+      for child in link.links
+        assign child_path = child.url | split: '?' | first | downcase
+        if child_path == current_path
+          assign current_title = link.title
+          break
+        endif
+      endfor
+      if current_title != nil
+        break
+      endif
+    endfor
+  endif
 -%}
 
 {% if menu != blank and menu.links.size > 0 and kept_titles != '~|~' %}
@@ -68,7 +97,7 @@
           endif
 
           assign is_current = false
-          if link.active or link.child_active
+          if current_title != nil and link.title == current_title
             assign is_current = true
           endif
         %}
@@ -80,7 +109,7 @@
             "
             href="{{ link.url }}"
             {% if is_current %}
-              aria-current="page"
+              aria-current="{% if current_is_page %}page{% else %}true{% endif %}"
             {% endif %}
           >
             {{- link.title -}}

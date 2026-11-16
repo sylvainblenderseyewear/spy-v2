@@ -19,33 +19,45 @@
     assign is_vertical = true
   endif
 
-  # Source shows one range row instead of min/max fields. Shopify exposes no
-  # collection price floor in Liquid, so the low end reads 0.
-  assign price_range_min = 0 | money_without_currency
-  assign price_range_max = filter.range_max | money_without_currency
+  # Slider works in whole currency units: 0 to the top price, rounded up.
+  # Shopify exposes no collection price floor in Liquid, so the low end is 0.
+  assign slider_top = filter.range_max | divided_by: 100.0 | ceil
+  if slider_top < 1
+    assign slider_top = 1
+  endif
+
+  assign slider_low = 0
+  if filter.min_value.value != null
+    assign slider_low = filter.min_value.value | divided_by: 100
+  endif
+  assign slider_high = slider_top
+  if filter.max_value.value != null
+    assign slider_high = filter.max_value.value | divided_by: 100.0 | ceil
+  endif
+  if slider_high > slider_top
+    assign slider_high = slider_top
+  endif
+  if slider_low > slider_high
+    assign slider_low = slider_high
+  endif
+
+  # Track fill, as a 0-1 share of the track
+  assign slider_low_share = slider_low | times: 1.0 | divided_by: slider_top
+  assign slider_high_share = slider_high | times: 1.0 | divided_by: slider_top
+  assign slider_low_cents = slider_low | times: 100
+  assign slider_high_cents = slider_high | times: 100
 
   # Stable key so the open/closed state survives a section re-render
   assign filter_param_name = filter.param_name | escape | replace: '.', '-'
 
-  assign is_range_active = false
-  if filter.min_value.value != null or filter.max_value.value != null
-    assign is_range_active = true
-  endif
-
+  # Hidden gte/lte fields: empty means "no bound", so the full range sends nothing
+  assign min_input_value = ''
   if filter.min_value.value != null
-    assign min_input_value = filter.min_value.value | money_without_currency
-  elsif is_range_active
-    assign min_input_value = price_range_min
-  else
-    assign min_input_value = ''
+    assign min_input_value = slider_low
   endif
-
+  assign max_input_value = ''
   if filter.max_value.value != null
-    assign max_input_value = filter.max_value.value | money_without_currency
-  elsif is_range_active
-    assign max_input_value = price_range_max
-  else
-    assign max_input_value = ''
+    assign max_input_value = slider_high
   endif
 -%}
 {% capture accordion_children %}
@@ -130,40 +142,84 @@
         id="facet-inputs-{{ filter.param_name | escape | replace: '.', '-' }}"
         data-money-format="{{ shop.money_format | strip_html }}"
         data-currency="{{ localization.country.currency.iso_code }}"
-        on:change="{% if is_vertical %}/togglePriceRange{% else %}/updatePriceFilterAndResults{% endif %}"
+        {% unless is_vertical %}
+          on:change="/updatePriceFilterAndResults"
+        {% endunless %}
       >
         {% if is_vertical %}
-          {% comment %} One range row; the real gte/lte fields ride along hidden {% endcomment %}
+          {%- liquid
+            # Same thumb on both sliders; they sit on top of each other
+            capture range_input_class
+              echo 'pointer-events-none absolute inset-0 m-0 h-6 w-full cursor-pointer appearance-none bg-transparent p-0 focus-visible:outline-none'
+              echo ' [&::-webkit-slider-runnable-track]:bg-transparent [&::-moz-range-track]:bg-transparent'
+              echo ' [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-solid [&::-webkit-slider-thumb]:border-spy-ink [&::-webkit-slider-thumb]:bg-white'
+              echo ' [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-solid [&::-moz-range-thumb]:border-spy-ink [&::-moz-range-thumb]:bg-white'
+              echo ' focus-visible:[&::-webkit-slider-thumb]:outline-2 focus-visible:[&::-webkit-slider-thumb]:outline-offset-2 focus-visible:[&::-webkit-slider-thumb]:outline-spy-ink'
+              echo ' focus-visible:[&::-moz-range-thumb]:outline-2 focus-visible:[&::-moz-range-thumb]:outline-offset-2 focus-visible:[&::-moz-range-thumb]:outline-spy-ink'
+            endcapture
+          -%}
+          {% comment %} Two-thumb slider; the real gte/lte fields ride along hidden {% endcomment %}
           <div class="facets__inputs-wrapper my-0 py-0">
-            <label class="flex cursor-pointer items-center gap-[7px] text-[16px] leading-[22.4px] text-spy-ink">
+            <div
+              class="relative h-6"
+              ref="rangeTrack"
+              style="--lo: {{ slider_low_share }}; --hi: {{ slider_high_share }};"
+            >
+              <span
+                class="absolute inset-x-2 top-1/2 block h-0.5 -translate-y-1/2 bg-spy-border"
+                aria-hidden="true"
+              ></span>
+              <span
+                class="absolute top-1/2 block h-0.5 -translate-y-1/2 bg-spy-ink left-[calc(0.5rem_+_(100%_-_1rem)_*_var(--lo))] right-[calc(0.5rem_+_(100%_-_1rem)_*_(1_-_var(--hi)))]"
+                aria-hidden="true"
+              ></span>
+
               <input
-                type="checkbox"
-                class="m-0 h-[13px] w-[13px] shrink-0 cursor-pointer appearance-none rounded-full border border-solid border-[#767676] bg-white checked:border-spy-text checked:bg-spy-text checked:shadow-[inset_0_0_0_2.5px_#fff] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2"
-                ref="rangeToggle"
-                {% if is_range_active %}
-                  checked
-                {% endif %}
+                type="range"
+                class="{{ range_input_class }}"
+                min="0"
+                max="{{ slider_top }}"
+                step="1"
+                value="{{ slider_low }}"
                 aria-label="{{ 'accessibility.price_filter_low' | t }}"
+                aria-valuetext="{{ slider_low_cents | money | strip_html | escape }}"
+                ref="minRange"
+                on:input="/previewPriceRange"
+                on:change="/commitPriceRange"
               >
-              <span>{{ price_range_min }} - {{ price_range_max }}</span>
-            </label>
+              <input
+                type="range"
+                class="{{ range_input_class }}"
+                min="0"
+                max="{{ slider_top }}"
+                step="1"
+                value="{{ slider_high }}"
+                aria-label="{{ 'accessibility.price_filter_high' | t }}"
+                aria-valuetext="{{ slider_high_cents | money | strip_html | escape }}"
+                ref="maxRange"
+                on:input="/previewPriceRange"
+                on:change="/commitPriceRange"
+              >
+            </div>
+
+            {% comment %} Source prints the range as "25.00 - 340.01" {% endcomment %}
+            <p
+              class="m-0 mt-1 text-[16px] leading-[22.4px] text-spy-ink"
+              ref="rangeLabel"
+            >
+              {{- slider_low_cents | money_without_currency }} - {{ slider_high_cents | money_without_currency -}}
+            </p>
 
             <input
               type="hidden"
               name="{{ filter.min_value.param_name }}"
               value="{{ min_input_value }}"
-              data-min="0"
-              data-max="{{ price_range_max }}"
-              data-range-value="{{ price_range_min }}"
               ref="minInput"
             >
             <input
               type="hidden"
               name="{{ filter.max_value.param_name }}"
               value="{{ max_input_value }}"
-              data-min="0"
-              data-max="{{ price_range_max }}"
-              data-range-value="{{ price_range_max }}"
               ref="maxInput"
             >
           </div>

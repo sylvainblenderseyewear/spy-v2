@@ -71,7 +71,8 @@
                 on:keydown="/removeFilter?form="
               >
                 {% if value.swatch %}
-                  {% render 'swatch', swatch: value.swatch, mode: 'pill' %}
+                  {% comment %} Chip shows only the colour, so name it for screen readers {% endcomment %}
+                  {% render 'swatch', swatch: value.swatch, mode: 'pill', label: value.label %}
                 {% else %}
                   {{ value.label | escape }}
                 {% endif %}

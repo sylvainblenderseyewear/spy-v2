@@ -160,6 +160,17 @@ class FacetsFormComponent extends Component {
         .filter(Boolean)
     );
 
+    // The morph can move the focused control, which drops focus to <body>.
+    // Keyboard users then lose their place, so put it back.
+    const focused = document.activeElement;
+    const keepFocus = focused instanceof HTMLElement && section?.contains(focused) ? focused : null;
+
+    const restoreFocus = () => {
+      if (keepFocus?.isConnected && document.activeElement !== keepFocus) {
+        keepFocus.focus({ preventScroll: true });
+      }
+    };
+
     return () => {
       if (panelWasVisible) {
         const panel = document.getElementById(VERTICAL_PANEL_ID);
@@ -169,16 +180,17 @@ class FacetsFormComponent extends Component {
           ?.setAttribute('aria-expanded', 'true');
       }
 
-      if (!wasOpen.size || !sectionDomId) return;
-
-      const root = document.getElementById(sectionDomId);
-      if (!root) return;
-
-      for (const el of root.querySelectorAll('accordion-custom.facets__item')) {
-        if (!wasOpen.has(keyOf(el))) continue;
-        const details = el.querySelector('details');
-        if (details instanceof HTMLDetailsElement) details.open = true;
+      const root = sectionDomId ? document.getElementById(sectionDomId) : null;
+      if (root && wasOpen.size) {
+        for (const el of root.querySelectorAll('accordion-custom.facets__item')) {
+          if (!wasOpen.has(keyOf(el))) continue;
+          const details = el.querySelector('details');
+          if (details instanceof HTMLDetailsElement) details.open = true;
+        }
       }
+
+      // Last, once the panel and groups are open again
+      restoreFocus();
     };
   }
 
@@ -385,7 +397,10 @@ if (!customElements.get('facet-inputs-component')) {
  * @typedef {Object} PriceFacetRefs
  * @property {HTMLInputElement} minInput - The minimum price input
  * @property {HTMLInputElement} maxInput - The maximum price input
- * @property {HTMLInputElement} [rangeToggle] - The single range row used by the vertical panel
+ * @property {HTMLInputElement} [minRange] - Low thumb of the vertical panel slider
+ * @property {HTMLInputElement} [maxRange] - High thumb of the vertical panel slider
+ * @property {HTMLElement} [rangeTrack] - Slider track, holds the --lo / --hi fill shares
+ * @property {HTMLElement} [rangeLabel] - The "25.00 - 340.00" line under the slider
  */
 
 /**
@@ -408,6 +423,7 @@ class PriceFacetComponent extends Component {
   disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('keydown', this.#onKeyDown);
+    this.#commitRange.cancel();
   }
 
   /**
@@ -426,6 +442,8 @@ class PriceFacetComponent extends Component {
    */
   #onKeyDown = (event) => {
     if (event.metaKey) return;
+    // Sliders need Home, End and Page keys too
+    if (event.target instanceof HTMLInputElement && event.target.type === 'range') return;
 
     const pattern = /[0-9]|\.|,|'| |Tab|Backspace|Enter|ArrowUp|ArrowDown|ArrowLeft|ArrowRight|Delete|Escape/;
     if (!event.key.match(pattern)) event.preventDefault();
@@ -449,21 +467,70 @@ class PriceFacetComponent extends Component {
   }
 
   /**
-   * Vertical panel swaps the min/max fields for a single range row, so mirror that
-   * row's checked state onto the hidden gte/lte inputs and reuse the normal update path.
+   * Slider moved: keep the thumbs from crossing, then redraw the fill, the
+   * "25.00 - 340.00" line and what screen readers hear. Nothing is sent yet.
+   * @param {Event} [event]
    */
-  togglePriceRange() {
-    const { minInput, maxInput, rangeToggle } = this.refs;
+  previewPriceRange(event) {
+    const { minRange, maxRange, rangeTrack, rangeLabel } = this.refs;
+    if (!(minRange instanceof HTMLInputElement) || !(maxRange instanceof HTMLInputElement)) return;
 
-    if (!(rangeToggle instanceof HTMLInputElement)) return;
-    if (!(minInput instanceof HTMLInputElement) || !(maxInput instanceof HTMLInputElement)) return;
-
-    for (const input of [minInput, maxInput]) {
-      input.value = rangeToggle.checked ? input.dataset.rangeValue ?? '' : '';
+    let low = minRange.valueAsNumber;
+    let high = maxRange.valueAsNumber;
+    if (low > high) {
+      // The thumb being dragged stops at the other one
+      if (event?.target === minRange) low = high;
+      else high = low;
+      minRange.value = String(low);
+      maxRange.value = String(high);
     }
 
-    this.updatePriceFilterAndResults();
+    const top = Number(maxRange.max) || 1;
+    rangeTrack?.style.setProperty('--lo', String(low / top));
+    rangeTrack?.style.setProperty('--hi', String(high / top));
+
+    // Both thumbs at the far right: lift the low one so it can still be grabbed
+    minRange.style.zIndex = low >= top ? '2' : '';
+
+    // Slider steps are whole units; money helpers want minor units
+    const lowMinor = convertMoneyToMinorUnits(String(low), this.currency) ?? 0;
+    const highMinor = convertMoneyToMinorUnits(String(high), this.currency) ?? 0;
+    const fullFormat = this.dataset.moneyFormat ?? '{{amount}}';
+    minRange.setAttribute('aria-valuetext', formatMoney(lowMinor, fullFormat, this.currency));
+    maxRange.setAttribute('aria-valuetext', formatMoney(highMinor, fullFormat, this.currency));
+
+    if (rangeLabel) {
+      const lowText = formatMoney(lowMinor, this.moneyFormat, this.currency);
+      const highText = formatMoney(highMinor, this.moneyFormat, this.currency);
+      rangeLabel.textContent = `${lowText} - ${highText}`;
+    }
   }
+
+  /**
+   * Slider let go (or a key press): write the bounds into the hidden gte/lte
+   * fields and reload the grid. A thumb at its end means "no bound".
+   * @param {Event} [event]
+   */
+  commitPriceRange(event) {
+    const { minRange, maxRange, minInput, maxInput } = this.refs;
+    if (!(minRange instanceof HTMLInputElement) || !(maxRange instanceof HTMLInputElement)) return;
+
+    this.previewPriceRange(event);
+
+    const low = minRange.valueAsNumber;
+    const high = maxRange.valueAsNumber;
+    minInput.value = low > Number(minRange.min) ? String(low) : '';
+    maxInput.value = high < Number(maxRange.max) ? String(high) : '';
+
+    this.#commitRange();
+  }
+
+  // Arrow keys fire one change per press, so wait for the last one
+  #commitRange = debounce(() => {
+    const facetsForm = this.closest('facets-form-component');
+    if (!(facetsForm instanceof FacetsFormComponent)) return;
+    facetsForm.updateFilters();
+  }, 400);
 
   /**
    * Parses a formatted money value into minor units

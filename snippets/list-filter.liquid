@@ -311,6 +311,80 @@
                       {{- value.label }}
                     </label>
                   </fieldset>
+                {% elsif is_swatch and is_vertical %}
+                  {%- liquid
+                    # Colour comes from the filter value (admin data), never from the theme
+                    assign swatch_fill = nil
+                    if value.swatch.image
+                      assign swatch_image_url = value.swatch.image | image_url: width: 80
+                      assign swatch_fill = 'url(' | append: swatch_image_url | append: ') center / cover no-repeat'
+                    elsif value.swatch.color
+                      assign swatch_fill = 'rgb(' | append: value.swatch.color.rgb | append: ')'
+                    endif
+                  -%}
+                  {% comment %} Source colour facet: 32x30 round chip, tick when picked, faded and struck when empty {% endcomment %}
+                  <label
+                    class="
+                      [display:flex] items-center gap-2 text-[16px] leading-[22.4px] text-spy-ink
+                      {%- if is_disabled %} cursor-not-allowed{% else %} cursor-pointer{% endif %}
+                    "
+                    title="{{ value.label | escape }}"
+                    on:pointerenter="/prefetchPage"
+                    on:pointerleave="/cancelPrefetchPage"
+                    on:pointerdown="/prefetchPageImmediate"
+                  >
+                    <input
+                      type="checkbox"
+                      class="peer sr-only"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      id="{{ input_id }}"
+                      {% if value.active %}
+                        checked
+                      {% endif %}
+                      {% if is_disabled %}
+                        disabled
+                      {% endif %}
+                      ref="facetInputs[]"
+                    >
+                    <span
+                      class="
+                        relative flex h-[30px] w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-solid border-spy-border text-white
+                        peer-checked:outline peer-checked:outline-1 peer-checked:outline-offset-2 peer-checked:outline-spy-ink
+                        peer-focus-visible:ring-2 peer-focus-visible:ring-spy-ink peer-focus-visible:ring-offset-2
+                        peer-checked:[&>.spy-swatch-tick]:block
+                        {%- if swatch_fill == nil %} bg-spy-tile{% endif %}
+                        {%- if is_disabled %} opacity-20{% endif %}
+                      "
+                      {% if swatch_fill != nil %}
+                        style="background: {{ swatch_fill }};"
+                      {% endif %}
+                      aria-hidden="true"
+                    >
+                      <svg
+                        class="spy-swatch-tick hidden h-3.5 w-3.5 drop-shadow"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                      >
+                        <path d="M3 8.5l3 3 7-7" />
+                      </svg>
+                      {% if is_disabled %}
+                        <svg
+                          class="absolute inset-0 h-full w-full text-spy-border"
+                          viewBox="0 0 100 100"
+                          preserveAspectRatio="none"
+                        >
+                          <line x1="100" y1="0" x2="0" y2="100" stroke="currentColor" vector-effect="non-scaling-stroke" />
+                        </svg>
+                      {% endif %}
+                    </span>
+                    {% comment %} Name stays readable for screen readers; shown when there is no colour to see {% endcomment %}
+                    <span class="{% if show_swatch_label or swatch_fill == nil %}block{% else %}sr-only{% endif %}">
+                      {{- value.label -}}
+                    </span>
+                  </label>
                 {% elsif is_swatch %}
                   <fieldset
                     class="variant-option variant-option--buttons variant-option--swatches {% if is_disabled %}variant-option--swatches-disabled{% endif %}"
