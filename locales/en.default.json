@@ -284,6 +284,12 @@
       "starting_from": "Starting from",
       "no_results": "No products found for {{ terms }}"
     },
+    "spy_contact": {
+      "field_required": "This field is required.",
+      "email_invalid": "Please enter a valid email address.",
+      "sending": "Sending…",
+      "send_failed": "Your message could not be sent. Please try again."
+    },
     "total_items": "Total items",
     "variant": "Variant",
     "variant_total": "Variant total",

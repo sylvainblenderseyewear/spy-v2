@@ -23,7 +23,12 @@
   is where the old site goes two columns.
 
   Hidden groups get their inputs disabled, not just hidden: a hidden `required`
-  field blocks submission and its value would otherwise still post.
+  field blocks submission and its value would otherwise still post. They start
+  disabled here too, so a page without JS posts only what the shopper can see.
+
+  Errors show under each field (JS turns the browser bubble off). Shopify's
+  reply lands on the form's #id, so the form keeps a scroll margin for the
+  sticky header and JS moves focus to the thanks/error box.
 {%- endcomment -%}
 
 {%- liquid
@@ -37,6 +42,31 @@
       render 'util-palette-hover-shift', color: s.button_background
     endcapture
   endif
+
+  # Empty border follows the theme's Input border setting
+  assign input_border = s.input_border_color | default: 'var(--color-input-border)'
+
+  # Drop the province data (only address forms use it): ~10 KB instead of 68 KB
+  assign country_parts = all_country_option_tags | split: ' data-provinces="'
+  capture country_options
+    for part in country_parts
+      if forloop.first
+        echo part
+      else
+        assign provinces = part | split: '"' | first
+        assign cut = provinces.size | plus: 1
+        echo part | slice: cut, part.size
+      endif
+    endfor
+  endcapture
+
+  # Shopify's "---" row can be picked and passes required. Put the shopper's own country there.
+  assign home_country = localization.country.name | escape
+  assign country_top = ''
+  if home_country != blank
+    assign country_top = '<option value="' | append: home_country | append: '">' | append: home_country | append: '</option><option value="" disabled>---</option>'
+  endif
+  assign country_options = country_options | replace: '<option value="---">---</option>', country_top
 -%}
 
 {%- capture label_class -%}
@@ -53,8 +83,14 @@
   border border-solid border-[color:var(--cf-input-border)]
   rounded-[var(--cf-radius)]
   focus:border-[color:var(--cf-focus-border)]
+  aria-invalid:border-[color:var(--color-error)]
   focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1
   focus-visible:outline-[color:var(--cf-focus-border)]
+{%- endcapture -%}
+
+{%- comment -%} One per checked field; JS fills it in place of the browser bubble {%- endcomment -%}
+{%- capture error_class -%}
+  mt-1 text-[12px] leading-4 text-[color:var(--color-error)]
 {%- endcapture -%}
 
 {%- capture input_class -%}
@@ -93,7 +129,7 @@
     --cf-star-color: {{ s.required_color }};
     --cf-input-bg: {{ s.input_background }};
     --cf-input-color: {{ s.input_color }};
-    --cf-input-border: {{ s.input_border_color }};
+    --cf-input-border: {{ input_border }};
     --cf-focus-border: {{ s.focus_border_color }};
     --cf-note-color: {{ s.note_color }};
     --cf-input-size: {{ s.input_size }}px;
@@ -101,6 +137,9 @@
     --cf-radius: {{ s.corner_radius }}px;
   "
   data-spy-contact-form
+  data-msg-required="{{ 'content.spy_contact.field_required' | t | escape }}"
+  data-msg-email="{{ 'content.spy_contact.email_invalid' | t | escape }}"
+  data-msg-failed="{{ 'content.spy_contact.send_failed' | t | escape }}"
 >
   <div
     class="border border-solid p-[var(--cf-card-pad)] rounded-[var(--cf-radius)]"
@@ -110,7 +149,8 @@
       --cf-card-pad: {{ s.card_padding }}px;
     "
   >
-    {%- form 'contact', id: form_id, class: 'spy-contact-form__form' -%}
+    {%- comment -%} The scroll margin keeps Shopify's #form jump clear of the sticky header {%- endcomment -%}
+    {%- form 'contact', id: form_id, class: 'spy-contact-form__form [scroll-margin-top:calc(var(--spy-header-offset,0px)_+_16px)]' -%}
 
       {%- liquid
         assign form_matches = false
@@ -119,13 +159,15 @@
         endif
       -%}
 
+      {%- comment -%} The tint is a faint layer behind the text. A color-mix tint would turn into a full-strength fill in browsers without color-mix. {%- endcomment -%}
       {%- if form.errors and form_matches -%}
         <div
           id="{{ form_id }}-errors"
-          class="mb-5 border border-solid border-[#c0392b] bg-[#fdeceb] px-4 py-3 text-[14px] text-[#c0392b]"
+          class="relative [isolation:isolate] mb-5 border border-solid border-[color:var(--color-error)] px-4 py-3 text-[14px] text-[color:var(--color-error)] focus:outline-none before:absolute before:inset-0 before:-z-10 before:bg-[color:var(--color-error)] before:opacity-[0.06]"
           role="alert"
           tabindex="-1"
           autofocus
+          data-spy-contact-status="error"
         >
           {%- comment -%} List every failed field, not only the email {%- endcomment -%}
           {{ form.errors | default_errors }}
@@ -134,10 +176,11 @@
 
       {%- if form.posted_successfully? and form_matches -%}
         <div
-          class="mb-5 border border-solid border-[#2e7d32] bg-[#edf7ed] px-4 py-3 text-[14px] text-[#2e7d32]"
+          class="relative [isolation:isolate] mb-5 border border-solid border-[color:var(--color-success)] px-4 py-3 text-[14px] text-[color:var(--color-success)] focus:outline-none before:absolute before:inset-0 before:-z-10 before:bg-[color:var(--color-success)] before:opacity-[0.06]"
           role="status"
           tabindex="-1"
           autofocus
+          data-spy-contact-status="success"
         >
           {{ s.success_message }}
         </div>
@@ -199,6 +242,7 @@
               value="{{ s.b2b_no_label | escape }}"
               class="m-0 h-[13px] w-[13px]"
               checked
+              disabled
               data-spy-b2b="no"
             >
             <label class="text-[length:var(--cf-label-size)] text-[color:var(--cf-label-color)]" for="{{ form_id }}-b2b-no">
@@ -212,6 +256,7 @@
               name="contact[Has B2B account]"
               value="{{ s.b2b_yes_label | escape }}"
               class="m-0 h-[13px] w-[13px]"
+              disabled
               data-spy-b2b="yes"
             >
             <label class="text-[length:var(--cf-label-size)] text-[color:var(--cf-label-color)]" for="{{ form_id }}-b2b-yes">
@@ -246,6 +291,7 @@
               aria-required="true"
               data-spy-first
             >
+            <p id="{{ form_id }}-first-error" class="{{ error_class }}" hidden></p>
           </div>
           <div>
             <label class="{{ label_class }}" for="{{ form_id }}-last">{{ s.last_name_label }}{{ star }}</label>
@@ -260,6 +306,7 @@
               aria-required="true"
               data-spy-last
             >
+            <p id="{{ form_id }}-last-error" class="{{ error_class }}" hidden></p>
           </div>
         </div>
 
@@ -268,6 +315,7 @@
 
         <div class="mb-4">
           <label class="{{ label_class }}" for="{{ form_id }}-email">{{ s.email_label }}{{ star }}</label>
+          {%- comment -%} type=email alone takes "name@gmail"; the old site wants a dot and a 2+ letter ending {%- endcomment -%}
           <input
             type="email"
             id="{{ form_id }}-email"
@@ -277,11 +325,13 @@
             spellcheck="false"
             autocapitalize="off"
             maxlength="250"
+            pattern="[^@\s]+@[^@\s]+\.[^@\s]{2,}"
             required
             aria-required="true"
             {% if form.errors contains 'email' %}aria-invalid="true" aria-describedby="{{ form_id }}-errors"{% endif %}
             value="{% if form.email %}{{ form.email | escape }}{% elsif customer %}{{ customer.email }}{% endif %}"
           >
+          <p id="{{ form_id }}-email-error" class="{{ error_class }}" hidden></p>
         </div>
 
         {%- comment -%} Business only — no display utility, JS hides this. {%- endcomment -%}
@@ -293,8 +343,10 @@
             class="{{ input_class }}"
             name="contact[Company]"
             autocomplete="organization"
+            disabled
             data-spy-require-when-shown
           >
+          <p id="{{ form_id }}-company-error" class="{{ error_class }}" hidden></p>
         </div>
 
         <div class="mb-4">
@@ -316,13 +368,16 @@
               id="{{ form_id }}-country"
               class="{{ select_class }}"
               name="contact[Country]"
+              autocomplete="country-name"
+              disabled
               data-spy-require-when-shown
             >
               <option value=""></option>
-              {{ all_country_option_tags }}
+              {{ country_options }}
             </select>
             {{ chevron }}
           </div>
+          <p id="{{ form_id }}-country-error" class="{{ error_class }}" hidden></p>
         </div>
 
         {%- comment -%} Topic {%- endcomment -%}
@@ -352,20 +407,23 @@
             </select>
             {{ chevron }}
           </div>
+          <p id="{{ form_id }}-topic-error" class="{{ error_class }}" hidden></p>
         </div>
 
         {%- comment -%} One follow-up panel per topic; JS reveals the matching one. {%- endcomment -%}
         {%- for child in section.blocks -%}
           {%- if child.type == 'topic' and child.settings.sub_options != blank -%}
             <div class="mb-4" data-spy-sub="{{ child.id }}" hidden>
+              {%- comment -%} No star: a choice is always picked, and the old site shows none {%- endcomment -%}
               <label class="{{ label_class }}" for="{{ form_id }}-sub-{{ forloop.index }}">
-                {{ child.settings.sub_label | default: 'Your request' }}{{ star }}
+                {{ child.settings.sub_label | default: 'Your request' }}
               </label>
               <div class="relative">
                 <select
                   id="{{ form_id }}-sub-{{ forloop.index }}"
                   class="{{ select_class }}"
                   name="contact[Your request]"
+                  disabled
                   data-spy-require-when-shown
                 >
                   {%- assign opts = child.settings.sub_options | strip | newline_to_br | split: '<br />' -%}
@@ -391,6 +449,7 @@
             class="{{ input_class }}"
             name="contact[Order number]"
             maxlength="50"
+            disabled
           >
         </div>
 
@@ -404,6 +463,7 @@
             required
             aria-required="true"
           >{{ form.body | escape }}</textarea>
+          <p id="{{ form_id }}-comment-error" class="{{ error_class }}" hidden></p>
         </div>
 
         {%- if s.show_attachment -%}
@@ -428,25 +488,35 @@
 
         <div class="[display:grid] grid-cols-1 gap-x-8 min-[544px]:grid-cols-2">
           <div class="hidden min-[544px]:block"></div>
-          <button
-            type="submit"
-            class="
-              w-full cursor-pointer border-0 px-4 uppercase
-              h-[var(--cf-btn-height)] rounded-[var(--cf-radius)]
-              text-[length:var(--cf-btn-size)]
-              bg-[color:var(--cf-btn-bg)] text-[color:var(--cf-btn-color)]
-              hover:bg-[color:var(--cf-btn-bg-hover)]
-            "
-            style="
-              --cf-btn-bg: {{ s.button_background }};
-              --cf-btn-bg-hover: {{ button_hover | strip }};
-              --cf-btn-color: {{ s.button_text_color }};
-              --cf-btn-height: {{ s.button_height }}px;
-              --cf-btn-size: {{ s.button_size }}px;
-            "
-          >
-            {{ s.submit_label }}
-          </button>
+          <div>
+            {%- comment -%} Busy is aria-only, not disabled, so focus stays on the button while it sends {%- endcomment -%}
+            <button
+              type="submit"
+              class="
+                w-full cursor-pointer border-0 px-4 uppercase
+                h-[var(--cf-btn-height)] rounded-[var(--cf-radius)]
+                text-[length:var(--cf-btn-size)]
+                bg-[color:var(--cf-btn-bg)] text-[color:var(--cf-btn-color)]
+                hover:bg-[color:var(--cf-btn-bg-hover)]
+                focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+                focus-visible:outline-[color:var(--cf-focus-border)]
+                aria-busy:cursor-progress aria-busy:opacity-70
+              "
+              style="
+                --cf-btn-bg: {{ s.button_background }};
+                --cf-btn-bg-hover: {{ button_hover | strip }};
+                --cf-btn-color: {{ s.button_text_color }};
+                --cf-btn-height: {{ s.button_height }}px;
+                --cf-btn-size: {{ s.button_size }}px;
+              "
+              data-spy-submit
+              data-busy-label="{{ 'content.spy_contact.sending' | t | escape }}"
+            >
+              <span data-spy-submit-label>{{ s.submit_label }}</span>
+            </button>
+            {%- comment -%} Stays in the page empty, so screen readers hear it when JS fills it {%- endcomment -%}
+            <p class="{{ error_class }} empty:mt-0" role="alert" data-spy-send-error></p>
+          </div>
         </div>
       </div>
     {%- endform -%}
@@ -783,8 +853,7 @@
       "type": "color",
       "id": "input_border_color",
       "label": "Border",
-      "info": "Keep it 3:1 on the background, so the field can be seen.",
-      "default": "#8a8a8a"
+      "info": "Leave empty to use the theme's Input border. Keep it 3:1 on the background, so the field can be seen."
     },
     {
       "type": "color",

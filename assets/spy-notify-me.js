@@ -212,5 +212,21 @@ document.addEventListener('touchstart', warm, { passive: true });
 // Back from a send (thanks or error): keep the form open
 document.querySelectorAll('.spy-notify-me [data-spy-notify-open]').forEach((mark) => {
   const toggle = mark.closest('.spy-notify-me')?.querySelector('[data-spy-notify-toggle]');
-  if (toggle) openForm(toggle, { focus: false });
+  if (!toggle) return;
+  openForm(toggle, { focus: false });
+  // The reply lands on the form's #id. The browser's own jump to it moves focus
+  // to the page when parsing ends, so take it back once.
+  const form = mark.closest('form');
+  const status = form?.querySelector('[data-spy-notify-status]');
+  form?.scrollIntoView({ block: 'start' });
+  if (!status) return;
+  status.focus({ preventScroll: true });
+  const until = Date.now() + 3000;
+  status.addEventListener(
+    'focusout',
+    (e) => {
+      if (!e.relatedTarget && Date.now() < until) setTimeout(() => status.focus({ preventScroll: true }), 0);
+    },
+    { once: true }
+  );
 });
