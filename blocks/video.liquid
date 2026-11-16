@@ -72,7 +72,13 @@
   (same one as spy-feature-link-banner). The wrapper is only added for it.
 {%- endcomment -%}
 {%- if block_settings.background -%}
-  <spy-video-toggle class="relative block w-full" {{ block.shopify_attributes }}>
+  <spy-video-toggle
+    class="relative block w-full"
+    {% if block_settings.force_autoplay %}
+      data-force-autoplay
+    {% endif %}
+    {{ block.shopify_attributes }}
+  >
     {%- if two_up -%}
       <div class="w-full {{ desktop_only }}">
         {%- render 'video-slot',
@@ -156,6 +162,8 @@
             };
             window.addEventListener('message', this._onMsg);
             this.frames().forEach((f) => f.addEventListener('load', () => this.paused && this.send(f)));
+            // "Always autoplay" setting: keep playing even with reduced motion. The button stays.
+            if (this.hasAttribute('data-force-autoplay')) return;
             const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
             if (motion.matches) this.setPaused(true, true);
             motion.addEventListener('change', (e) => e.matches && this.setPaused(true));
@@ -307,6 +315,14 @@
       "label": "Background video",
       "info": "Hides every player control for a decorative hero. Forces autoplay, loop and mute.",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "force_autoplay",
+      "label": "Always autoplay",
+      "info": "Plays the background video even when the visitor's device asks for reduced motion. The pause button stays.",
+      "default": false,
+      "visible_if": "{{ block.settings.background }}"
     },
     {
       "type": "image_picker",

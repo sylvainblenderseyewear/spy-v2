@@ -21,6 +21,7 @@
             "video_autoplay": true,
             "video_loop": true,
             "background": true,
+            "force_autoplay": true,
             "alt": "ANSI Photochromic",
             "custom_width": 100,
             "custom_width_mobile": 100,
