@@ -14,10 +14,12 @@
       {%- endcomment -%}
       <script>
         (() => {
+          // Only the theme results need this; Rebuy draws the page unless it failed in this tab
           try {
-            const seen = Number(localStorage.getItem('spy-rebuy-search'));
-            if (seen && Date.now() - seen < 7 * 864e5) return;
-          } catch {}
+            if (sessionStorage.getItem('spy-rebuy-search-off') !== '1') return;
+          } catch {
+            return;
+          }
           const url = new URL(location.href);
           url.searchParams.set('type', 'product');
           if (!url.searchParams.has('options[prefix]')) url.searchParams.set('options[prefix]', 'last');

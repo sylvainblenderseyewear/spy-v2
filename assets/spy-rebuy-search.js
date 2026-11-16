@@ -4,8 +4,9 @@
  * because Rebuy boots late and may not load at all (blockers, an outage).
  *
  * 1. Tiles show the model name over the colourway, like Blenders.
- * 2. /search waits for Rebuy only if Rebuy search ran for this shopper lately,
- *    and gives the page back to the theme results if Rebuy does not show up.
+ * 2. Rebuy is the only search in use: /search always waits for it, and the header
+ *    search button holds an early click until Rebuy's box is ready. The theme search
+ *    only steps in when Rebuy does not show up, and then for the rest of the visit.
  * 3. More products load on scroll, in the box and on the results page (like Blenders).
  * 4. Filters show names, their lists stay put when a value is ticked, and colours
  *    Rebuy's value cap left out still show.
@@ -13,11 +14,14 @@
  *    filters that find nothing say so, and a ticked row stays under the pointer.
  *
  * The /search decision itself is inline in sections/search-header.liquid, so it
- * lands before the first paint. It reads the same SEEN_KEY.
+ * lands before the first paint. It reads the same OFF_KEY.
  */
 
 const HTML = document.documentElement;
-const SEEN_KEY = 'spy-rebuy-search';
+// Set when Rebuy search failed in this tab (blocked, down, switched off)
+const OFF_KEY = 'spy-rebuy-search-off';
+// A click on the search button before Rebuy's box is ready waits this long for it
+const BOX_TIMEOUT_MS = 6000;
 // Shopify's script-tag loader starts rebuy.js on the window load event, and its
 // results page was ready 2-5s after that in live tests. Past this, the theme results.
 const RESULTS_TIMEOUT_MS = 10000;
@@ -112,21 +116,80 @@ document.addEventListener('rebuy:smartsearch.quickview.open', watchBox);
 
 /* ── 2. Which engine draws /search ──────────────────────────────────────── */
 
+const rebuyOff = () => {
+  try {
+    return sessionStorage.getItem(OFF_KEY) === '1';
+  } catch {
+    return false;
+  }
+};
+
+// Rebuy search works (again): searches wait for it
 const remember = () => {
   try {
-    localStorage.setItem(SEEN_KEY, String(Date.now()));
+    sessionStorage.removeItem(OFF_KEY);
   } catch {}
 };
 
+// Rebuy search did not come: the theme search takes over until the tab closes
 const forget = () => {
   try {
-    localStorage.removeItem(SEEN_KEY);
+    sessionStorage.setItem(OFF_KEY, '1');
   } catch {}
 };
 
-// Rebuy search is live for this shopper, so the next /search can wait for it
 document.addEventListener('rebuy:smartsearch.quickview.ready', remember);
 document.addEventListener('rebuy:smartsearch.resultsPage.ready', remember);
+
+/* ── 2b. The search button opens Rebuy's box only ───────────────────────── */
+
+let boxReady = Boolean(window.Rebuy?.SmartSearch?.quickView?.view);
+let boxGaveUp = false;
+let heldButton = null;
+let heldTimer = 0;
+let replaying = false;
+
+const releaseHeld = () => {
+  clearTimeout(heldTimer);
+  const button = heldButton;
+  heldButton = null;
+  button?.removeAttribute('aria-busy');
+  return button;
+};
+
+// Click again once somebody can answer: Rebuy when it is ready, the theme box when it is not
+const replay = (button) => {
+  if (!button?.isConnected) return;
+  replaying = true;
+  button.click();
+  replaying = false;
+};
+
+document.addEventListener('rebuy:smartsearch.quickview.ready', () => {
+  boxReady = true;
+  replay(releaseHeld());
+});
+
+// On window, before the theme's own click handling on document
+window.addEventListener(
+  'click',
+  (event) => {
+    const button = event.target instanceof Element ? event.target.closest('[on\\:click="#search-modal/showDialog"]') : null;
+    if (!button || replaying || boxReady || boxGaveUp || rebuyOff()) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (heldButton) return;
+
+    heldButton = button;
+    button.setAttribute('aria-busy', 'true');
+    heldTimer = setTimeout(() => {
+      boxGaveUp = true; // this page stops waiting; Rebuy still takes over if it turns up
+      replay(releaseHeld());
+    }, BOX_TIMEOUT_MS);
+  },
+  { capture: true }
+);
 
 let resultsReady = false;
 document.addEventListener('rebuy:smartsearch.resultsPage.ready', () => (resultsReady = true), { once: true });

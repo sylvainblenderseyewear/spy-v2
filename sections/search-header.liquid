@@ -43,12 +43,12 @@
   </div>
 {%- elsif search.performed -%}
   <script>
-    // Rebuy draws the results when its search ran for this shopper lately (assets/spy-rebuy-search.js)
+    // Rebuy draws the results, unless it failed earlier in this tab (assets/spy-rebuy-search.js)
     (() => {
       try {
-        const seen = Number(localStorage.getItem('spy-rebuy-search'));
-        if (seen && Date.now() - seen < 7 * 864e5) document.documentElement.dataset.searchEngine = 'rebuy';
+        if (sessionStorage.getItem('spy-rebuy-search-off') === '1') return;
       } catch {}
+      document.documentElement.dataset.searchEngine = 'rebuy';
     })();
   </script>
 

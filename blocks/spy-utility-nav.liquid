@@ -38,7 +38,7 @@
       <search-button class="block">
         <button
           on:click="#search-modal/showDialog"
-          class="button-unstyled flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange-ui transition-colors"
+          class="button-unstyled flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange-ui transition-colors aria-busy:cursor-progress aria-busy:opacity-60"
           aria-label="{{ 'content.search_input_label' | t }}"
           aria-haspopup="dialog"
         >
