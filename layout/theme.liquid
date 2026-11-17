@@ -332,6 +332,23 @@
         event.preventDefault();
       });
     </script>
+
+    <script>
+      // From 990px only .page-wrapper scrolls. A #jump or focus() can still scroll <html> when
+      // something escapes the wrapper (an app tooltip, a hidden label), which leaves a white band
+      // nobody can scroll away. So put <html> straight back. Phones scroll the window: hands off.
+      (() => {
+        const desktop = matchMedia('(min-width: 990px)');
+        const fix = () => {
+          const root = document.documentElement;
+          if (!root || !desktop.matches || !(root.scrollTop || root.scrollLeft) || !document.querySelector('.page-wrapper')) return;
+          root.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        };
+        addEventListener('scroll', fix, { passive: true });
+        addEventListener('load', fix);
+        fix();
+      })();
+    </script>
 <!-- Accessibe Begin -->
 <script>
     (function(){
