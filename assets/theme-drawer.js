@@ -85,6 +85,7 @@ export class ThemeDrawer extends Component {
     document.addEventListener('keydown', this.#onKeyDown);
     panel.addEventListener('click', this.#onBackdropClick);
     document.addEventListener('pointerdown', this.#onDocumentPointerDown);
+    // A click inside an iframe only shows up here as a window blur
     window.addEventListener('blur', this.#onWindowBlur);
   }
 

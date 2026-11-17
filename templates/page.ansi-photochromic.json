@@ -211,14 +211,12 @@
       "name": "ANSI — frames carousel",
       "settings": {
         "custom_class": "spy-rail--contained",
-        "content_source": "collections",
         "collection_list": [
           "rebar-ansi",
           "rebar-se-ansi",
           "logan",
           "dirk"
         ],
-        "max_products": 4,
         "label_colors_one": "1 color available",
         "label_colors_many": "[count] colors available",
         "show_swatches": true,

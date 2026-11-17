@@ -118,6 +118,7 @@ class SpySlider extends HTMLElement {
 
   disconnectedCallback() {
     window.removeEventListener('resize', this._onResize);
+    // Autoplay and the reduced-motion watch end with the rail
     clearInterval(this._auto);
     this._motion?.removeEventListener('change', this._onMotion);
   }

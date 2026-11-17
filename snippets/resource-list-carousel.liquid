@@ -22,6 +22,7 @@
   endif
 
   assign rail_cols = settings.columns | default: 4
+  # Autoplay in ms, 0 = off. A rail that plays by itself also gets a pause button
   assign rail_auto = 0
   assign rail_loop = 0
   if settings.carousel_autoplay
