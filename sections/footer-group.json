@@ -904,16 +904,6 @@
             "menu": "footer-services"
           },
           "blocks": {
-            "spy_footer_link_CDEJLp": {
-              "type": "spy-footer-link",
-              "name": "SPY Footer Link",
-              "settings": {
-                "label": "Link",
-                "link": "",
-                "show": true
-              },
-              "blocks": {}
-            },
             "link_services_1": {
               "type": "spy-footer-link",
               "settings": {
@@ -941,10 +931,20 @@
               },
               "blocks": {}
             },
+            "spy_footer_link_CDEJLp": {
+              "type": "spy-footer-link",
+              "name": "SPY Footer Link",
+              "settings": {
+                "label": "Track My Order",
+                "link": "shopify://pages/tracking",
+                "show": true
+              },
+              "blocks": {}
+            },
             "link_services_4": {
               "type": "spy-footer-link",
               "settings": {
-                "label": "FAQ",
+                "label": "FAQs",
                 "link": "/pages/faq",
                 "show": true
               },
@@ -955,6 +955,16 @@
               "settings": {
                 "label": "Warranty",
                 "link": "/pages/warranty",
+                "show": true
+              },
+              "blocks": {}
+            },
+            "spy_footer_link_qTUzcM": {
+              "type": "spy-footer-link",
+              "name": "SPY Footer Link",
+              "settings": {
+                "label": "Right of Withdrawal",
+                "link": "https://spyoptic-com.loopreturns.com/withdrawal",
                 "show": true
               },
               "blocks": {}
@@ -971,12 +981,13 @@
             }
           },
           "block_order": [
-            "spy_footer_link_CDEJLp",
             "link_services_1",
             "link_services_2",
             "link_services_3",
+            "spy_footer_link_CDEJLp",
             "link_services_4",
             "link_services_5",
+            "spy_footer_link_qTUzcM",
             "link_services_6"
           ]
         },
