@@ -941,6 +941,16 @@
               },
               "blocks": {}
             },
+            "spy_footer_link_93xYH8": {
+              "type": "spy-footer-link",
+              "name": "SPY Footer Link",
+              "settings": {
+                "label": "Start a Return",
+                "link": "https://www.spyoptic.com/apps/returns",
+                "show": true
+              },
+              "blocks": {}
+            },
             "link_services_4": {
               "type": "spy-footer-link",
               "settings": {
@@ -985,6 +995,7 @@
             "link_services_2",
             "link_services_3",
             "spy_footer_link_CDEJLp",
+            "spy_footer_link_93xYH8",
             "link_services_4",
             "link_services_5",
             "spy_footer_link_qTUzcM",
