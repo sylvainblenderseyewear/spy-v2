@@ -112,6 +112,15 @@ function announce(text) {
   liveRegion.textContent = text;
 }
 
+// A swatch swaps the whole product in place, so nothing reconnects and Horizon's
+// view-event element never re-fires. Ask it to publish the new product itself.
+function announceProductView() {
+  const component = /** @type {HTMLElement & { dispatchViewEvent?: () => void } | null} */ (
+    document.querySelector('main product-component[view-event-payload]')
+  );
+  component?.dispatchViewEvent?.();
+}
+
 /** @param {HTMLAnchorElement} link */
 async function switchTo(link) {
   const url = new URL(link.href, window.location.href);
@@ -151,6 +160,7 @@ async function switchTo(link) {
     shownTitle = toTitle;
 
     document.dispatchEvent(new CustomEvent('spy:product:switched', { detail: { url: target, title: toTitle } }));
+    announceProductView();
     // @ts-ignore Yotpo's classic widget re-reads the product ids it was given
     window.yotpo?.refreshWidgets?.();
 

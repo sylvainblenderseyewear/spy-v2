@@ -163,7 +163,7 @@
       + '</div>';
 
     if (l.city) {
-      html += '<span class="spy-loc-card__sub">' + esc('{{ section.settings.card_subtitle_prefix }}') + ' ' + esc(l.city) + '</span>';
+      html += '<span class="spy-loc-card__sub">' + esc({{ section.settings.card_subtitle_prefix | json }}) + ' ' + esc(l.city) + '</span>';
     }
     if (locality) {
       html += '<address class="spy-loc-card__addr">' + esc(locality) + '</address>';
@@ -177,15 +177,15 @@
     html += '<div class="spy-loc-card__actions">';
     if (tel) {
       html += '<a class="spy-loc-card__btn spy-loc-card__btn--ghost" href="tel:' + esc(tel) + '">'
-        + esc('{{ section.settings.label_call }}') + '</a>';
+        + esc({{ section.settings.label_call | json }}) + '</a>';
     }
     if (l.website) {
       html += '<a class="spy-loc-card__btn spy-loc-card__btn--solid" href="' + esc(l.website) + '" target="_blank" rel="noopener">'
-        + esc('{{ section.settings.label_more }}') + '</a>';
+        + esc({{ section.settings.label_more | json }}) + '</a>';
     } else if (l.latitude && l.longitude) {
       html += '<a class="spy-loc-card__btn spy-loc-card__btn--solid" target="_blank" rel="noopener"'
         + ' href="https://www.google.com/maps/dir/?api=1&destination=' + esc(l.latitude) + ',' + esc(l.longitude) + '">'
-        + esc('{{ section.settings.label_directions }}') + '</a>';
+        + esc({{ section.settings.label_directions | json }}) + '</a>';
     }
     html += '</div></div>';
 
