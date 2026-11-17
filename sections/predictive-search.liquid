@@ -12,7 +12,12 @@
     assign pages = predictive_search.resources.pages
     assign articles = predictive_search.resources.articles
     assign content_count = pages.size | plus: articles.size
-    assign search_results_count = products.size | plus: collections.size | plus: content_count
+    assign shown_collections = collections.size | at_most: 4
+    assign shown_pages = pages.size | at_most: 4
+    assign shown_articles_limit = 4 | minus: pages.size | at_least: 0
+    assign shown_articles = articles.size | at_most: shown_articles_limit
+    assign shown_products = products.size | at_most: 4
+    assign search_results_count = shown_products | plus: shown_collections | plus: shown_pages | plus: shown_articles
     assign encoded_terms = terms | url_encode
     assign see_all_url = routes.search_url | append: '?q=' | append: encoded_terms | append: '&type=product&options%5Bprefix%5D=last'
   -%}
