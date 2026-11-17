@@ -732,9 +732,12 @@
         "button_width": 76,
         "button_radius": 6,
         "button_text_size": 14,
+        "button_text_weight": "400",
         "button_background": "#ffffff",
         "button_text_color": "#1d2a2b",
-        "button_text_weight": "400",
+        "show_consent": false,
+        "consent_text": "<p>By signing up, you agree to receive marketing emails from SPY and accept our <a href=\"/pages/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a>. You can unsubscribe at any time.</p>",
+        "consent_text_size": 12,
         "padding_top": 16,
         "padding_bottom": 16
       }
@@ -901,10 +904,20 @@
             "menu": "footer-services"
           },
           "blocks": {
+            "spy_footer_link_CDEJLp": {
+              "type": "spy-footer-link",
+              "name": "SPY Footer Link",
+              "settings": {
+                "label": "Link",
+                "link": "",
+                "show": true
+              },
+              "blocks": {}
+            },
             "link_services_1": {
               "type": "spy-footer-link",
               "settings": {
-                "label": "Contact us",
+                "label": "Contact Us",
                 "link": "/pages/contact",
                 "show": true
               },
@@ -958,6 +971,7 @@
             }
           },
           "block_order": [
+            "spy_footer_link_CDEJLp",
             "link_services_1",
             "link_services_2",
             "link_services_3",
