@@ -27,7 +27,8 @@
   {%- form 'customer', class: 'email-signup__form spacing-style' %}
     {% comment %} --- Input group classes --- {% endcomment %}
     {%- liquid
-      assign input_group_classes = 'email-signup__input-group'
+      # relative: keeps the hidden label inside .page-wrapper, else html scrolls and leaves a white gap
+      assign input_group_classes = 'email-signup__input-group relative'
       if block_settings.integrated_button and block_settings.border_style != 'underline'
         assign input_group_classes = input_group_classes | append: ' email-signup__input-group--integrated'
       endif
@@ -96,10 +97,11 @@
       </button>
     </div>
 
+    {%- comment -%} Icons take the text colour: the stock dark green/red vanish on a dark band {%- endcomment -%}
     {%- if form.errors and form.id == blank -%}
       <div
         id="Email-signup__message-error-{{ block.id }}"
-        class="email-signup__message"
+        class="email-signup__message justify-center"
         tabindex="-1"
       >
         <svg
@@ -107,7 +109,7 @@
           xmlns="http://www.w3.org/2000/svg"
           focusable="false"
           aria-hidden="true"
-          class="icon-error"
+          class="icon-error icon-default"
         >
           {%- render 'icon', icon: 'error'  -%}
         </svg>
@@ -119,10 +121,10 @@
     {%- if form.posted_successfully? and form.id == blank -%}
       <div
         id="Email-signup__message-success-{{ block.id }}"
-        class="email-signup__message"
+        class="email-signup__message justify-center"
         tabindex="-1"
       >
-        <span class="svg-wrapper icon-success">
+        <span class="svg-wrapper icon-success text-inherit">
           {{ 'icon-checkmark.svg' | inline_asset_content }}
         </span>
         <p class="email-signup__message-text">{{ 'blocks.email_signup.success' | t }}</p>
