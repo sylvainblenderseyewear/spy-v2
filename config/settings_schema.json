@@ -1824,8 +1824,50 @@
         "id": "cart_drawer_quantity_editable",
         "label": "Let shoppers change quantity here",
         "info": "Off shows a read-only quantity line, like the old site.",
-        "default": false,
+        "default": true,
         "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_free_shipping",
+        "label": "Show the free-shipping bar",
+        "info": "Prints how much is left to spend, then the unlocked message.",
+        "default": true,
+        "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },
+      {
+        "type": "number",
+        "id": "cart_free_shipping_threshold",
+        "label": "Free shipping over",
+        "info": "In the store currency. Matches the Rebuy cart goal.",
+        "default": 50,
+        "visible_if": "{{ settings.cart_type == 'drawer' and settings.cart_drawer_free_shipping }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_upsells",
+        "label": "Show \"You Might Also Like\"",
+        "info": "Fallback cart only. Rebuy serves its own widget when it loads.",
+        "default": true,
+        "visible_if": "{{ settings.cart_type == 'drawer' }}"
+      },
+      {
+        "type": "text",
+        "id": "cart_drawer_upsell_collections",
+        "label": "Upsell categories",
+        "info": "Collection handles, comma-separated. The first one that has products feeds the cards.",
+        "default": "sunglass-cases, gear",
+        "visible_if": "{{ settings.cart_type == 'drawer' and settings.cart_drawer_upsells }}"
+      },
+      {
+        "type": "range",
+        "id": "cart_drawer_upsell_count",
+        "label": "Upsell cards",
+        "min": 2,
+        "max": 6,
+        "step": 1,
+        "default": 4,
+        "visible_if": "{{ settings.cart_type == 'drawer' and settings.cart_drawer_upsells }}"
       },
       {
         "type": "checkbox",

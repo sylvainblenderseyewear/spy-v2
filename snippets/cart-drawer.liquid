@@ -40,12 +40,20 @@
   {% comment %} Overlay drawers close on an outside click and never survive a page load; pushed ones stay put {% endcomment %}
   <theme-drawer
     id="cart-drawer"
+    class="group"
     data-skip-node-update
     {% unless settings.cart_drawer_push_page %}light-dismiss no-persist{% endunless %}
   >
+    {%- unless settings.cart_drawer_push_page -%}
+      <div
+        class="pointer-events-none fixed inset-0 z-50 hidden bg-black/20 opacity-0 backdrop-blur-[10px] transition-opacity duration-300 ease-out group-[&[open]]:opacity-100 min-[990px]:block"
+        aria-hidden="true"
+      ></div>
+    {%- endunless -%}
+
     <dialog
       ref="panel"
-      class="theme-drawer__dialog color-custom-drawer cart-drawer__panel border-l-0 z-[51] [--animation-speed:426ms] [--animation-timing-fade-in:cubic-bezier(0.5,0.25,0,1)]"
+      class="theme-drawer__dialog color-custom-drawer cart-drawer__panel border-l-0 z-[51] [--animation-speed:426ms] [--animation-timing-fade-in:cubic-bezier(0.5,0.25,0,1)]{% unless settings.cart_drawer_push_page %} [&::backdrop]:bg-black/20 [&::backdrop]:backdrop-blur-[10px]{% endunless %}"
       aria-labelledby="cart-drawer-heading"
       cart-summary-sticky="true"
       {% if settings.cart_drawer_push_page %}data-push-page{% endif %}
@@ -93,6 +101,8 @@
             close_class: 'w-[46px] h-10 min-w-0 min-h-0 px-4 py-2 border-0 rounded-none bg-transparent shadow-none text-spy-ink [&_svg]:w-[13px] [&_svg]:h-[13px] [&_svg]:max-w-none'
           %}
 
+          {% render 'cart-drawer-free-shipping' %}
+
           {% capture cart_items_children %}
             <scroll-hint
               class="cart-drawer__content h-auto flex-auto min-h-0 items-stretch justify-start"
@@ -101,6 +111,7 @@
             >
               <scroll-hint class="cart-drawer__items flex-auto px-0">
                 {% render 'cart-products', context: 'drawer' %}
+                {% render 'cart-drawer-upsells' %}
               </scroll-hint>
 
               <div class="cart-drawer__summary gap-0 items-stretch pt-0 px-4 pb-4 [mask-image:none]">

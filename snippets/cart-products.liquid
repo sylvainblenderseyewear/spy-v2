@@ -453,12 +453,21 @@
                         <span class="cart-items__quantity-static-value font-normal">{{ item.quantity }}</span>
                       </div>
                     {%- else -%}
+                      {%- liquid
+                        assign qty_class = 'cart-primary-typography'
+                        assign qty_wrapper_class = ''
+                        if context == 'drawer'
+                          assign qty_class = qty_class | append: ' w-16 h-[30px] min-w-0 flex-none justify-between rounded-[2px] border-[1.2px] border-spy-mc-line bg-transparent [&_button]:w-5 [&_button]:h-[28px] [&_button]:min-w-0 [&_button]:min-h-0 [&_button]:shrink-0 [&_svg]:w-[9px] [&_svg]:h-[9px] [&_svg]:max-w-none [&_input]:w-6 [&_input]:max-w-none [&_input]:p-0 [&_input]:h-[28px] [&_input]:text-[14px] [&_input]:leading-[12px] [&_input]:font-normal [&_input]:text-spy-mc-charcoal'
+                          assign qty_wrapper_class = '[grid-area:quantity] justify-self-end mt-[10px] gap-0'
+                        endif
+                      -%}
                       {% render 'quantity-selector',
                         product: item.product,
                         variant: item.variant,
                         in_cart_quantity: item.quantity,
                         line_index: item.index,
-                        class: 'cart-primary-typography',
+                        class: qty_class,
+                        wrapper_class: qty_wrapper_class,
                         can_update_quantity: can_update_quantity
                       %}
                     {%- endif -%}

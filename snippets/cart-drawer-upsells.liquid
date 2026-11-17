@@ -1,0 +1,162 @@
+{% doc %}
+  Renders the cart drawer "You Might Also Like" band for the fallback cart.
+
+  Picks the first configured collection that still has products the cart does not
+  hold, then falls back to a cart product's own category.
+
+  @example
+  {% render 'cart-drawer-upsells' %}
+{% enddoc %}
+
+{%- liquid
+  assign show_upsells = true
+  if settings.cart_drawer_upsells == false or cart.item_count == 0
+    assign show_upsells = false
+  endif
+
+  assign card_limit = settings.cart_drawer_upsell_count | default: 4
+
+  assign in_cart = '~|~'
+  for line in cart.items
+    assign in_cart = in_cart | append: line.product.id | append: '~|~'
+  endfor
+
+  assign pool = empty
+  assign has_pool = false
+  assign handles = settings.cart_drawer_upsell_collections | split: ','
+  for handle in handles
+    assign wanted = handle | strip
+    if wanted == blank
+      continue
+    endif
+    assign candidate = collections[wanted].products
+    if candidate.size > 0
+      assign pool = candidate
+      assign has_pool = true
+      break
+    endif
+  endfor
+
+  unless has_pool
+    assign own_handles = cart.items.first.product.collections | map: 'handle'
+    for own_handle in own_handles
+      assign candidate = collections[own_handle].products
+      if candidate.size > 0
+        assign pool = candidate
+        assign has_pool = true
+        break
+      endif
+    endfor
+  endunless
+-%}
+
+{%- if show_upsells and has_pool -%}
+  {%- capture upsell_cards -%}
+    {%- assign card_count = 0 -%}
+    {%- for item in pool -%}
+      {%- liquid
+        if card_count >= card_limit
+          break
+        endif
+        assign probe = '~|~' | append: item.id | append: '~|~'
+        if in_cart contains probe
+          continue
+        endif
+        assign upsell_variant = item.selected_or_first_available_variant
+        unless upsell_variant.available
+          continue
+        endunless
+        assign card_count = card_count | plus: 1
+        assign upsell_form_id = 'CartDrawerUpsell-' | append: item.id
+      -%}
+      <li class="[display:flex] flex-col items-center gap-2 bg-white px-[10px] py-[10px]">
+        <a
+          href="{{ item.url }}"
+          class="block w-full no-underline"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          {%- if item.featured_media -%}
+            {{
+              item.featured_media.preview_image
+              | image_url: width: 300
+              | image_tag: loading: 'lazy', class: 'mx-auto h-[70px] w-auto max-w-full object-contain', alt: ''
+            }}
+          {%- else -%}
+            <span class="block h-[70px] w-full bg-spy-mc-band"></span>
+          {%- endif -%}
+        </a>
+
+        {%- capture upsell_colourway -%}{%- render 'spy-colourway-name', product: item -%}{%- endcapture -%}
+        {%- assign upsell_colourway = upsell_colourway | strip -%}
+        {%- if upsell_colourway != blank -%}
+          <span class="w-full text-center font-spy text-[12px] font-normal leading-[14px] text-spy-muted">
+            {{- upsell_colourway -}}
+          </span>
+        {%- endif -%}
+
+        <a
+          href="{{ item.url }}"
+          class="w-full text-center font-spy text-[14px] font-bold uppercase leading-[16px] text-spy-ink no-underline"
+        >
+          {%- render 'spy-display-name', product: item -%}
+        </a>
+
+        <span class="w-full text-center font-spy text-[14px] font-normal leading-[16px] text-spy-mc-ink">
+          {%- if item.compare_at_price > item.price -%}
+            {{ item.price | money }}
+            <s class="ml-1 text-spy-strike">{{ item.compare_at_price | money }}</s>
+          {%- else -%}
+            {{ item.price | money }}
+          {%- endif -%}
+        </span>
+
+        <product-form-component
+          data-section-id="cart-drawer-section"
+          data-product-id="{{ item.id }}"
+          on:submit="/handleSubmit"
+          class="mt-auto block w-full"
+        >
+          <div
+            class="visually-hidden"
+            aria-live="assertive"
+            role="status"
+            aria-atomic="true"
+            ref="liveRegion"
+          ></div>
+          {%- form 'product', item, id: upsell_form_id, novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+            <input
+              type="hidden"
+              name="id"
+              ref="variantId"
+              value="{{ upsell_variant.id }}"
+            >
+            <input type="hidden" name="quantity" value="1">
+            <button
+              type="submit"
+              name="add"
+              ref="addToCartButton"
+              class="[display:flex] h-8 w-full items-center justify-center rounded-none border border-spy-orange-ui bg-transparent p-0 font-spy text-[12px] font-bold uppercase leading-[14px] tracking-normal text-spy-orange-ui shadow-none hover:bg-spy-orange-ui hover:text-white"
+            >
+              {{ 'actions.cart_drawer_upsell_add' | t }}
+              <span class="visually-hidden">
+                {%- render 'spy-display-name', product: item -%}
+              </span>
+            </button>
+          {%- endform -%}
+        </product-form-component>
+      </li>
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if upsell_cards != blank -%}
+    <div class="cart-drawer__upsells shrink-0 bg-spy-mc-band px-5 py-6">
+      <h3 class="m-0 mb-[14px] font-spy text-[16px] font-bold leading-[19px] text-spy-ink">
+        {{ 'content.cart_drawer_upsells_title' | t }}
+      </h3>
+      <ul class="m-0 list-none gap-x-[7px] gap-y-1 p-0 [display:grid] [grid-template-columns:repeat(2,minmax(0,1fr))]">
+        {{ upsell_cards }}
+      </ul>
+    </div>
+  {%- endif -%}
+{%- endif -%}

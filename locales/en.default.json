@@ -69,6 +69,7 @@
   },
   "actions": {
     "add": "Add",
+    "cart_drawer_upsell_add": "+ Add",
     "add_to_cart": "Add to cart",
     "added": "Added",
     "apply": "Apply",
@@ -173,6 +174,9 @@
     "cart_drawer_title": "Your Cart",
     "cart_drawer_empty": "Your Shopping Cart is Empty",
     "cart_drawer_cta": "Go to cart",
+    "cart_drawer_upsells_title": "You Might Also Like",
+    "cart_free_shipping_remaining_html": "You're <b>{{ amount }} away</b> from Free Shipping!",
+    "cart_free_shipping_unlocked": "You unlocked Free Shipping!",
     "cart_subtotal": "Subtotal",
     "cart_in_stock": "In Stock",
     "cart_order_summary": "Order Summary",
