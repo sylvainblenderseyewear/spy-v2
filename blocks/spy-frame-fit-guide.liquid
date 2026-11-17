@@ -250,7 +250,7 @@
       </div>
 
       {%- comment -%} Source modal body keeps 16px around the widget, so it never touches the panel edge {%- endcomment -%}
-      <div class="min-h-0 flex-1 overflow-y-auto p-4">
+      <div class="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain p-4 [scrollbar-color:#ddd_#fff] [scrollbar-width:thin] [touch-action:pan-y] [&::-webkit-scrollbar-thumb]:rounded-[2px] [&::-webkit-scrollbar-thumb]:bg-[#ddd] [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar]:w-1">
       {%- liquid
         comment
           Bare drawings, for "drawings only" and the fit card. Rebar SE has its own
@@ -318,11 +318,10 @@
 
         {%- else -%}
       {%- comment -%}
-        Source sets the widget's own base type (13px/1.5, #111) and a thin grey
-        scrollbar, so inner copy does not inherit the page scale. It also caps
-        itself at 70vh and scrolls inside that, leaving the panel white below.
+        Source sets the widget's own base type (13px/1.5, #111), so inner copy
+        does not inherit the page scale.
       {%- endcomment -%}
-      <div class="max-h-[70vh] overflow-y-auto overflow-x-hidden overscroll-contain text-[13px] leading-[1.5] text-[#111] [font-family:var(--spy-fg-text)] [scrollbar-color:#ddd_#fff] [scrollbar-width:thin] [touch-action:pan-y] [&::-webkit-scrollbar-thumb]:rounded-[2px] [&::-webkit-scrollbar-thumb]:bg-[#ddd] [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar]:w-1">
+      <div class="text-[13px] leading-[1.5] text-[#111] [font-family:var(--spy-fg-text)]">
         {%- comment -%} Header: 3px orange rule, eyebrow, condensed title, grey sub.
         No top padding — the close bar above already supplies it. {%- endcomment -%}
         <div class="border-b border-[#ebebeb] px-5 pb-[18px]">
@@ -681,7 +680,7 @@
       syncPageInert();
       trigger()?.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
-      modal.querySelector('[data-spy-fit-guide-close]')?.focus();
+      modal.querySelector('button[data-spy-fit-guide-close]')?.focus();
     };
     const close = () => {
       if (!modal) return;
@@ -722,7 +721,11 @@
       if (e.target instanceof Element && e.target.closest('[data-spy-fit-guide-open]')) open();
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal?.dataset.open !== undefined) close();
+      if (e.key !== 'Escape') return;
+      const live = document.querySelector('[data-spy-fit-guide-modal][data-open]');
+      if (!live || (live !== modal && live.id !== modal?.id)) return;
+      modal = live;
+      close();
     });
   })();
 </script>
