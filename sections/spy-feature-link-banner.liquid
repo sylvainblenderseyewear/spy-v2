@@ -28,20 +28,6 @@
   assign ratio = section.settings.ratio_w | append: ' / ' | append: section.settings.ratio_h
   assign ratio_mobile = section.settings.ratio_w_mobile | append: ' / ' | append: section.settings.ratio_h_mobile
 
-  comment
-    The video's own shape. A player in a box of another shape shows bars, so
-    "fill" scales the player up to cover the box and crops the edges, and
-    "native" gives the box the video's shape instead.
-  endcomment
-  assign video_shape = section.settings.video_shape_w | append: ' / ' | append: section.settings.video_shape_h
-  assign video_shape_mobile = video_shape
-  if section.settings.video_url_mobile != blank
-    assign video_shape_mobile = section.settings.video_shape_w_mobile | append: ' / ' | append: section.settings.video_shape_h_mobile
-  endif
-  if is_video and section.settings.video_fit == 'native'
-    assign ratio = video_shape
-    assign ratio_mobile = video_shape_mobile
-  endif
 
   # Filters can't run inside a render tag, so the style strings are built here
   assign video_style = '--size-style-aspect-ratio: ' | append: ratio | append: ';'
@@ -199,8 +185,6 @@
       --flb-mb-d: {{ section.settings.margin_bottom | default: 0 }}px;
       --flb-ratio-d: {{ ratio }};
       --flb-ratio-m: {{ ratio_mobile }};
-      --flb-vr-d: calc({{ video_shape }});
-      --flb-vr-m: calc({{ video_shape_mobile }});
       {% if section.settings.heading_color != blank %}--flb-heading-color: {{ section.settings.heading_color }};{% endif %}
     "
     {{ section.shopify_attributes }}
@@ -226,11 +210,14 @@
       {%- assign poster_mobile = cover_mobile -%}
 
       {%- liquid
-        # Fill: cover the box like object-fit: cover, sized off the box with container units
+        # Fill: cover the box like object-fit: cover, sized off the box with container units.
+        # Follow: the box takes the video's shape. The script reads that shape from Vimeo.
         if section.settings.video_fit == 'native'
           assign frame_class = 'absolute inset-0 w-full h-full border-0'
+          assign box_ratio = 'aspect-[var(--flb-vr)]'
         else
-          assign frame_class = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-none border-0 w-[max(100cqw,calc(100cqh*var(--flb-vr)))] h-[max(100cqh,calc(100cqw/var(--flb-vr)))]'
+          assign frame_class = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-none border-0 w-[calc(max(100cqw,100cqh*var(--flb-vr))+2px)] h-[calc(max(100cqh,100cqw/var(--flb-vr))+2px)]'
+          assign box_ratio = 'aspect-[var(--flb-ratio-m)] min-[992px]:aspect-[var(--flb-ratio-d)]'
         endif
       -%}
       <spy-bg-video
@@ -241,7 +228,7 @@
         data-swap="992"
         data-title="{{ section.settings.video_title | default: section.settings.cta_label | escape }}"
       >
-        <div class="relative w-full overflow-hidden [container-type:size] [--flb-vr:var(--flb-vr-m)] min-[992px]:[--flb-vr:var(--flb-vr-d)] aspect-[var(--flb-ratio-m)] min-[992px]:aspect-[var(--flb-ratio-d)]">
+        <div class="relative w-full overflow-hidden bg-black [container-type:size] {{ box_ratio }}" style="--flb-vr: 1.7778;">
           {%- if poster != blank or poster_mobile != blank -%}
             {%- render 'spy-banner-picture',
               desktop: poster,
@@ -402,6 +389,25 @@
               f.setAttribute('aria-hidden', 'true');
               f.className = this.dataset.frameClass || 'absolute inset-0 w-full h-full border-0';
               this.box.appendChild(f);
+              this.readShape(src).then((r) => {
+                if (this._src === src) this.box.style.setProperty('--flb-vr', r);
+              });
+            }
+
+            // The video's real shape, from Vimeo's oEmbed. YouTube has no CORS there, so it stays 16:9
+            readShape(src) {
+              const cache = (SpyBgVideo.shapes ||= {});
+              if (cache[src]) return cache[src];
+              let url;
+              try { url = new URL(src); } catch (e) { return Promise.resolve(16 / 9); }
+              if (!url.hostname.includes('vimeo')) return Promise.resolve(16 / 9);
+              const id = url.pathname.split('/').pop();
+              const hash = url.searchParams.get('h');
+              const page = 'https://vimeo.com/' + id + (hash ? '/' + hash : '');
+              return (cache[src] = fetch('https://vimeo.com/api/oembed.json?url=' + encodeURIComponent(page))
+                .then((res) => res.json())
+                .then((j) => (j.width && j.height ? j.width / j.height : 16 / 9))
+                .catch(() => 16 / 9));
             }
 
             setPaused(paused) {
@@ -505,49 +511,8 @@
         { "value": "native", "label": "Follow the video's shape" }
       ],
       "default": "fill",
-      "info": "Fill keeps the banner ratio below and never shows bars. Follow sizes the banner to the video.",
+      "info": "Fill keeps the banner ratio below and crops the video to it. Follow sizes the banner to the video automatically.",
       "visible_if": "{{ section.settings.media_type == 'video' }}"
-    },
-    {
-      "type": "range",
-      "id": "video_shape_w",
-      "label": "Desktop video shape — width",
-      "min": 1,
-      "max": 32,
-      "step": 1,
-      "default": 16,
-      "info": "The video file's own ratio, e.g. 16 × 9 or 21 × 9.",
-      "visible_if": "{{ section.settings.media_type == 'video' }}"
-    },
-    {
-      "type": "range",
-      "id": "video_shape_h",
-      "label": "Desktop video shape — height",
-      "min": 1,
-      "max": 32,
-      "step": 1,
-      "default": 9,
-      "visible_if": "{{ section.settings.media_type == 'video' }}"
-    },
-    {
-      "type": "range",
-      "id": "video_shape_w_mobile",
-      "label": "Mobile video shape — width",
-      "min": 1,
-      "max": 32,
-      "step": 1,
-      "default": 9,
-      "visible_if": "{{ section.settings.media_type == 'video' and section.settings.video_url_mobile != blank }}"
-    },
-    {
-      "type": "range",
-      "id": "video_shape_h_mobile",
-      "label": "Mobile video shape — height",
-      "min": 1,
-      "max": 32,
-      "step": 1,
-      "default": 16,
-      "visible_if": "{{ section.settings.media_type == 'video' and section.settings.video_url_mobile != blank }}"
     },
     {
       "type": "range",
