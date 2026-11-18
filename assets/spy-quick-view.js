@@ -186,23 +186,73 @@
     root.querySelector('button[data-spy-qv-close]')?.focus();
   };
 
-  const close = () => {
+  // Back to the Quick View button. It is hidden again once its card loses hover,
+  // so go through the card link: keyboard focus on it shows the button again.
+  const focusTrigger = (trigger) => {
+    trigger.focus();
+    if (document.activeElement === trigger) return;
+    trigger.closest('product-card')?.querySelector('a.product-card__link')?.focus();
+    trigger.focus();
+  };
+
+  // Set when a cart opened before Quick View closed: focus goes back once that cart shuts
+  let backToCard = null;
+
+  const close = ({ afterAdd = false } = {}) => {
     if (!('open' in root.dataset)) return;
     delete root.dataset.open;
     syncPageInert();
     layer?.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
 
-    // Back to the Quick View button. It is hidden again once its card loses hover,
-    // so go through the card link: keyboard focus on it shows the button again.
     const trigger = lastTrigger;
     lastTrigger = null;
     if (!trigger) return;
-    trigger.focus();
-    if (document.activeElement === trigger) return;
-    trigger.closest('product-card')?.querySelector('a.product-card__link')?.focus();
-    trigger.focus();
+    // A cart that is already open holds focus: leave it there for now
+    if (afterAdd && document.querySelector('#rebuy-cart.is-visible, theme-drawer#cart-drawer[open]')) {
+      backToCard = trigger;
+      return;
+    }
+    focusTrigger(trigger);
   };
+
+  // Like the source (it hides #quickViewModal on product:afterAddToCart), a good add
+  // closes Quick View, so it isn't left open under the cart. Window capture runs before
+  // the cart drawer's own listener, so we close first and the cart opens on top.
+  window.addEventListener(
+    'shopify:cart:lines-update',
+    (event) => {
+      if (event.action !== 'add' || !('open' in root.dataset) || !root.contains(event.target)) return;
+      event.promise?.then(
+        (result) => {
+          if (!result?.detail?.didError) close({ afterAdd: true });
+        },
+        () => {}
+      );
+    },
+    true
+  );
+
+  // Focus on <body>, on a hidden node, in the closing cart or in the shut dialog is lost
+  const focusLost = () => {
+    const el = document.activeElement;
+    if (!el || el === document.body) return true;
+    return !el.getClientRects().length || root.contains(el) || !!el.closest('#rebuy-cart, theme-drawer#cart-drawer');
+  };
+
+  // That cart tries to hand focus back to the add button, which is hidden now. Check
+  // after its slide-out, then send focus to the card.
+  const onCartClosed = (event) => {
+    if (event.type === 'theme-drawer:close' && event.target.id !== 'cart-drawer') return;
+    const trigger = backToCard;
+    backToCard = null;
+    if (!trigger) return;
+    setTimeout(() => {
+      if (focusLost()) focusTrigger(trigger);
+    }, 500);
+  };
+  document.addEventListener('rebuy:smartcart.hide', onCartClosed);
+  document.addEventListener('theme-drawer:close', onCartClosed);
 
   document.addEventListener('click', (event) => {
     const trigger = event.target.closest('[data-spy-qv]');
