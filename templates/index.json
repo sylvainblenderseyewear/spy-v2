@@ -16,7 +16,7 @@
         "video_url": "https://vimeo.com/1242905252",
         "video_url_mobile": "https://vimeo.com/1242905044",
         "video_title": "",
-        "video_fit": "fill",
+        "video_fit": "native",
         "ratio_w": 32,
         "ratio_h": 10,
         "ratio_w_mobile": 2,
