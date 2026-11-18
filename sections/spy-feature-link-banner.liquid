@@ -28,6 +28,21 @@
   assign ratio = section.settings.ratio_w | append: ' / ' | append: section.settings.ratio_h
   assign ratio_mobile = section.settings.ratio_w_mobile | append: ' / ' | append: section.settings.ratio_h_mobile
 
+  comment
+    The video's own shape. A player in a box of another shape shows bars, so
+    "fill" scales the player up to cover the box and crops the edges, and
+    "native" gives the box the video's shape instead.
+  endcomment
+  assign video_shape = section.settings.video_shape_w | append: ' / ' | append: section.settings.video_shape_h
+  assign video_shape_mobile = video_shape
+  if section.settings.video_url_mobile != blank
+    assign video_shape_mobile = section.settings.video_shape_w_mobile | append: ' / ' | append: section.settings.video_shape_h_mobile
+  endif
+  if is_video and section.settings.video_fit == 'native'
+    assign ratio = video_shape
+    assign ratio_mobile = video_shape_mobile
+  endif
+
   # Filters can't run inside a render tag, so the style strings are built here
   assign video_style = '--size-style-aspect-ratio: ' | append: ratio | append: ';'
   assign video_style_mobile = '--size-style-aspect-ratio: ' | append: ratio_mobile | append: ';'
@@ -184,6 +199,8 @@
       --flb-mb-d: {{ section.settings.margin_bottom | default: 0 }}px;
       --flb-ratio-d: {{ ratio }};
       --flb-ratio-m: {{ ratio_mobile }};
+      --flb-vr-d: calc({{ video_shape }});
+      --flb-vr-m: calc({{ video_shape_mobile }});
       {% if section.settings.heading_color != blank %}--flb-heading-color: {{ section.settings.heading_color }};{% endif %}
     "
     {{ section.shopify_attributes }}
@@ -208,14 +225,23 @@
       {%- assign poster = section.settings.cover_image -%}
       {%- assign poster_mobile = cover_mobile -%}
 
+      {%- liquid
+        # Fill: cover the box like object-fit: cover, sized off the box with container units
+        if section.settings.video_fit == 'native'
+          assign frame_class = 'absolute inset-0 w-full h-full border-0'
+        else
+          assign frame_class = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-none border-0 w-[max(100cqw,calc(100cqh*var(--flb-vr)))] h-[max(100cqh,calc(100cqw/var(--flb-vr)))]'
+        endif
+      -%}
       <spy-bg-video
         class="block w-full"
+        data-frame-class="{{ frame_class }}"
         data-src-desktop="{{ src_desktop | strip | escape }}"
         data-src-mobile="{{ src_mobile | strip | escape }}"
         data-swap="992"
         data-title="{{ section.settings.video_title | default: section.settings.cta_label | escape }}"
       >
-        <div class="relative w-full aspect-[var(--flb-ratio-m)] min-[992px]:aspect-[var(--flb-ratio-d)]">
+        <div class="relative w-full overflow-hidden [container-type:size] [--flb-vr:var(--flb-vr-m)] min-[992px]:[--flb-vr:var(--flb-vr-d)] aspect-[var(--flb-ratio-m)] min-[992px]:aspect-[var(--flb-ratio-d)]">
           {%- if poster != blank or poster_mobile != blank -%}
             {%- render 'spy-banner-picture',
               desktop: poster,
@@ -374,7 +400,7 @@
               f.setAttribute('frameborder', '0');
               f.setAttribute('tabindex', '-1');
               f.setAttribute('aria-hidden', 'true');
-              f.className = 'absolute inset-0 w-full h-full border-0';
+              f.className = this.dataset.frameClass || 'absolute inset-0 w-full h-full border-0';
               this.box.appendChild(f);
             }
 
@@ -471,44 +497,97 @@
       "visible_if": "{{ section.settings.media_type == 'video' }}"
     },
     {
+      "type": "select",
+      "id": "video_fit",
+      "label": "Video sizing",
+      "options": [
+        { "value": "fill", "label": "Fill the banner (crops the edges)" },
+        { "value": "native", "label": "Follow the video's shape" }
+      ],
+      "default": "fill",
+      "info": "Fill keeps the banner ratio below and never shows bars. Follow sizes the banner to the video.",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "range",
+      "id": "video_shape_w",
+      "label": "Desktop video shape — width",
+      "min": 1,
+      "max": 32,
+      "step": 1,
+      "default": 16,
+      "info": "The video file's own ratio, e.g. 16 × 9 or 21 × 9.",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "range",
+      "id": "video_shape_h",
+      "label": "Desktop video shape — height",
+      "min": 1,
+      "max": 32,
+      "step": 1,
+      "default": 9,
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "range",
+      "id": "video_shape_w_mobile",
+      "label": "Mobile video shape — width",
+      "min": 1,
+      "max": 32,
+      "step": 1,
+      "default": 9,
+      "visible_if": "{{ section.settings.media_type == 'video' and section.settings.video_url_mobile != blank }}"
+    },
+    {
+      "type": "range",
+      "id": "video_shape_h_mobile",
+      "label": "Mobile video shape — height",
+      "min": 1,
+      "max": 32,
+      "step": 1,
+      "default": 16,
+      "visible_if": "{{ section.settings.media_type == 'video' and section.settings.video_url_mobile != blank }}"
+    },
+    {
       "type": "range",
       "id": "ratio_w",
-      "label": "Desktop video ratio — width",
+      "label": "Desktop banner ratio — width",
       "min": 1,
       "max": 100,
       "step": 1,
       "default": 32,
-      "visible_if": "{{ section.settings.media_type == 'video' }}"
+      "visible_if": "{{ section.settings.media_type == 'video' and section.settings.video_fit != 'native' }}"
     },
     {
       "type": "range",
       "id": "ratio_h",
-      "label": "Desktop video ratio — height",
+      "label": "Desktop banner ratio — height",
       "min": 1,
       "max": 100,
       "step": 1,
       "default": 10,
-      "visible_if": "{{ section.settings.media_type == 'video' }}"
+      "visible_if": "{{ section.settings.media_type == 'video' and section.settings.video_fit != 'native' }}"
     },
     {
       "type": "range",
       "id": "ratio_w_mobile",
-      "label": "Mobile video ratio — width",
+      "label": "Mobile banner ratio — width",
       "min": 1,
       "max": 100,
       "step": 1,
       "default": 2,
-      "visible_if": "{{ section.settings.media_type == 'video' }}"
+      "visible_if": "{{ section.settings.media_type == 'video' and section.settings.video_fit != 'native' }}"
     },
     {
       "type": "range",
       "id": "ratio_h_mobile",
-      "label": "Mobile video ratio — height",
+      "label": "Mobile banner ratio — height",
       "min": 1,
       "max": 100,
       "step": 1,
       "default": 3,
-      "visible_if": "{{ section.settings.media_type == 'video' }}"
+      "visible_if": "{{ section.settings.media_type == 'video' and section.settings.video_fit != 'native' }}"
     },
     {
       "type": "image_picker",
