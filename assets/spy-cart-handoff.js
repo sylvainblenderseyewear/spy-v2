@@ -231,6 +231,17 @@ function patchCart() {
   }
 }
 
+/**
+ * Removing the last line deletes the − button that had focus, so focus fell to
+ * <body> while the cart stayed open. Keep it in the cart, on its × button.
+ */
+function keepFocusInCart(cart) {
+  if (!cart.classList.contains('is-visible')) return;
+  const active = document.activeElement;
+  if (active && active !== document.body && active !== document.documentElement) return;
+  cart.querySelector('.rebuy-cart__flyout-close')?.focus();
+}
+
 function watchCart() {
   const cart = document.querySelector('#rebuy-cart');
   if (!cart || cart.spyCentsWatch) return;
@@ -245,6 +256,7 @@ function watchCart() {
     requestAnimationFrame(() => {
       queued = false;
       patchCart();
+      keepFocusInCart(cart);
     });
   }).observe(cart, { childList: true, subtree: true });
 }
