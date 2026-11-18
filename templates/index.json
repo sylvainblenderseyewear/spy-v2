@@ -12,23 +12,32 @@
     "gg_crosspoint": {
       "type": "spy-feature-link-banner",
       "settings": {
-        "media_type": "image",
-        "video_url": "",
-        "video_url_mobile": "",
+        "media_type": "video",
+        "video_url": "https://vimeo.com/1242905252",
+        "video_url_mobile": "https://vimeo.com/1242905044",
         "video_title": "",
+        "video_fit": "fill",
+        "video_shape_w": 16,
+        "video_shape_h": 9,
+        "video_shape_w_mobile": 9,
+        "video_shape_h_mobile": 16,
         "ratio_w": 32,
         "ratio_h": 10,
         "ratio_w_mobile": 2,
         "ratio_h_mobile": 3,
+        "image_desktop": "shopify://shop_images/00-Desktop-CrosspointLaunch-FullBanner-1920x800.jpg",
+        "image_mobile": "shopify://shop_images/00-SPYHGG26-Mobile-FullBanner-CrosspointLaunch-800x1200.jpg",
         "eyebrow": "",
         "heading": "",
         "cta_label": "",
         "link": "shopify://products/spy-crosspoint-everblack-happy-boost-bronze-with-ice-blue-mirror-happy-boost-ll-coral-snow-goggles",
         "link_scope": "banner",
         "cta_style": "solid",
+        "promotion_name": "",
         "heading_size": 28,
         "heading_fluid": true,
         "heading_size_mobile": 26,
+        "heading_color": "",
         "content_align": "center",
         "content_valign": "center",
         "text_align": "",
@@ -41,9 +50,7 @@
         "margin_top_mobile": 0,
         "margin_bottom_mobile": 0,
         "margin_top": 0,
-        "margin_bottom": 0,
-        "image_desktop": "shopify://shop_images/00-Desktop-CrosspointLaunch-FullBanner-1920x800.jpg",
-        "image_mobile": "shopify://shop_images/00-SPYHGG26-Mobile-FullBanner-CrosspointLaunch-800x1200.jpg"
+        "margin_bottom": 0
       }
     },
     "gg_rail": {
@@ -126,6 +133,8 @@
         "card_height_desktop": "35.972",
         "image_width": 88,
         "image_height": 90,
+        "background_image": "shopify://shop_images/SPYHGG26-CategoryCarousel-Background-1920x1080.png",
+        "padding_top_ratio": 10,
         "margin_top": 0,
         "margin_bottom": 0,
         "transition_speed": 200,
@@ -133,9 +142,7 @@
         "title_font": "var(--font-heading--family)",
         "title_font_weight": "600",
         "title_font_size": 30,
-        "title_font_size_desktop": "2.083",
-        "background_image": "shopify://shop_images/SPYHGG26-CategoryCarousel-Background-1920x1080.png",
-        "padding_top_ratio": 10
+        "title_font_size_desktop": "2.083"
       }
     },
     "gg_sun_snow": {
@@ -145,26 +152,28 @@
           "type": "banner",
           "settings": {
             "image_desktop": "shopify://shop_images/1-SPYHGG26-Desktop-HalfBanner-Sun-1000x800.jpg",
+            "image_mobile": "shopify://shop_images/1-SPYHGG26-Mobile-HalfBanner-Sun-1000x800.jpg",
             "image_alt": "Sunglasses. Shop now",
             "heading": "",
             "heading_size": 48,
             "heading_size_mobile": 26,
             "cta_label": "",
             "link": "shopify://collections/sunglasses",
-            "image_mobile": "shopify://shop_images/1-SPYHGG26-Mobile-HalfBanner-Sun-1000x800.jpg"
+            "promotion_name": ""
           }
         },
         "banner_snow": {
           "type": "banner",
           "settings": {
             "image_desktop": "shopify://shop_images/2-SPYHGG26-Desktop-HalfBanner-Snow-1000x800.jpg",
+            "image_mobile": "shopify://shop_images/2-SPYHGG26-Mobile-HalfBanner-Snow-1000x800.jpg",
             "image_alt": "Snow. Shop now",
             "heading": "",
             "heading_size": 48,
             "heading_size_mobile": 26,
             "cta_label": "",
             "link": "shopify://collections/snow-goggles",
-            "image_mobile": "shopify://shop_images/2-SPYHGG26-Mobile-HalfBanner-Snow-1000x800.jpg"
+            "promotion_name": ""
           }
         }
       },
@@ -186,19 +195,28 @@
         "video_url": "",
         "video_url_mobile": "",
         "video_title": "",
+        "video_fit": "fill",
+        "video_shape_w": 16,
+        "video_shape_h": 9,
+        "video_shape_w_mobile": 9,
+        "video_shape_h_mobile": 16,
         "ratio_w": 32,
         "ratio_h": 10,
         "ratio_w_mobile": 2,
         "ratio_h_mobile": 3,
+        "image_desktop": "shopify://shop_images/3-Desktop-MurdrdOut-FullBanner-1920x600.jpg",
+        "image_mobile": "shopify://shop_images/3-SPYHGG26-Mobile-FullBanner-MurdrdOut-800x1200.jpg",
         "eyebrow": "",
         "heading": "",
         "cta_label": "",
         "link": "/collections/murdered-out-collection",
         "link_scope": "banner",
         "cta_style": "solid",
+        "promotion_name": "",
         "heading_size": 28,
         "heading_fluid": true,
         "heading_size_mobile": 26,
+        "heading_color": "",
         "content_align": "center",
         "content_valign": "center",
         "text_align": "",
@@ -211,14 +229,11 @@
         "margin_top_mobile": 0,
         "margin_bottom_mobile": 0,
         "margin_top": 0,
-        "margin_bottom": 0,
-        "image_desktop": "shopify://shop_images/3-Desktop-MurdrdOut-FullBanner-1920x600.jpg",
-        "image_mobile": "shopify://shop_images/3-SPYHGG26-Mobile-FullBanner-MurdrdOut-800x1200.jpg"
+        "margin_bottom": 0
       }
     },
     "gg_picks_lifestyle": {
       "type": "product-list",
-      "name": "t:names.products_carousel",
       "blocks": {
         "static-header": {
           "type": "_product-list-content",
@@ -256,16 +271,9 @@
           "blocks": {}
         },
         "static-product-card": {
-          "type": "_spy-grouped-product-card",
+          "type": "_product-card",
           "static": true,
           "settings": {
-            "card_per": "colourway",
-            "label_colors_one": "1 color available",
-            "label_colors_many": "[count] colors available",
-            "show_swatches": true,
-            "swatch_count": 4,
-            "show_price": true,
-            "label_price_from": "Starting from",
             "product_card_gap": 0,
             "background_color": "",
             "border": "none",
@@ -281,13 +289,18 @@
           "blocks": {}
         }
       },
+      "name": "t:names.products_carousel",
       "settings": {
-        "card_unit": "colourway",
         "collection": "gift-guide-26-lifestyle",
+        "card_unit": "colourway",
         "layout_type": "carousel",
+        "carousel_on_mobile": false,
         "max_products": 5,
         "columns": 5,
+        "mobile_columns": "2",
+        "mobile_card_size": "60cqw",
         "columns_gap": 16,
+        "rows_gap": 8,
         "icons_style": "chevron",
         "icons_shape": "circle",
         "fit_align": "center",
@@ -301,7 +314,8 @@
         "gap": 0,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "custom_class": ""
       }
     },
     "gg_discord_cyrus": {
@@ -311,26 +325,28 @@
           "type": "banner",
           "settings": {
             "image_desktop": "shopify://shop_images/4-Desktop-Discord-HalfBanner-1000x800.jpg",
+            "image_mobile": "shopify://shop_images/4-SPYHGG26-Mobile-HalfBanner-Discord-1000x800.jpg",
             "image_alt": "Discord. Shop now",
             "heading": "",
             "heading_size": 48,
             "heading_size_mobile": 26,
             "cta_label": "",
             "link": "shopify://products/spy-discord-soft-matte-black-happy-boost-polar-with-black-mirror-sunglasses",
-            "image_mobile": "shopify://shop_images/4-SPYHGG26-Mobile-HalfBanner-Discord-1000x800.jpg"
+            "promotion_name": ""
           }
         },
         "banner_cyrus": {
           "type": "banner",
           "settings": {
             "image_desktop": "shopify://shop_images/5-Desktop-Cyrus-HalfBanner-1000x800.jpg",
+            "image_mobile": "shopify://shop_images/5-SPYHGG26-Mobile-HalfBanner-Cyrus-1000x800.jpg",
             "image_alt": "Cyrus. Shop now",
             "heading": "",
             "heading_size": 48,
             "heading_size_mobile": 26,
             "cta_label": "",
             "link": "shopify://products/spy-cyrus-soft-matte-black-happy-boost-polar-with-black-mirror-sunglasses",
-            "image_mobile": "shopify://shop_images/5-SPYHGG26-Mobile-HalfBanner-Cyrus-1000x800.jpg"
+            "promotion_name": ""
           }
         }
       },
@@ -352,19 +368,28 @@
         "video_url": "",
         "video_url_mobile": "",
         "video_title": "",
+        "video_fit": "fill",
+        "video_shape_w": 16,
+        "video_shape_h": 9,
+        "video_shape_w_mobile": 9,
+        "video_shape_h_mobile": 16,
         "ratio_w": 32,
         "ratio_h": 10,
         "ratio_w_mobile": 2,
         "ratio_h_mobile": 3,
+        "image_desktop": "shopify://shop_images/6-Desktop-Waypoint-FullBanner-1920x600.jpg",
+        "image_mobile": "shopify://shop_images/6-SPYHGG26-Mobile-FullBanner-Waypoint-800x1200.jpg",
         "eyebrow": "",
         "heading": "",
         "cta_label": "",
         "link": "shopify://products/spy-waypoint-everblack-happy-boost-bronze-with-ice-blue-mirror-and-happy-boost-ll-coral-snow-goggles",
         "link_scope": "banner",
         "cta_style": "solid",
+        "promotion_name": "",
         "heading_size": 28,
         "heading_fluid": true,
         "heading_size_mobile": 26,
+        "heading_color": "",
         "content_align": "center",
         "content_valign": "center",
         "text_align": "",
@@ -377,14 +402,11 @@
         "margin_top_mobile": 0,
         "margin_bottom_mobile": 0,
         "margin_top": 0,
-        "margin_bottom": 0,
-        "image_desktop": "shopify://shop_images/6-Desktop-Waypoint-FullBanner-1920x600.jpg",
-        "image_mobile": "shopify://shop_images/6-SPYHGG26-Mobile-FullBanner-Waypoint-800x1200.jpg"
+        "margin_bottom": 0
       }
     },
     "gg_picks_performance": {
       "type": "product-list",
-      "name": "t:names.products_carousel",
       "blocks": {
         "static-header": {
           "type": "_product-list-content",
@@ -422,16 +444,9 @@
           "blocks": {}
         },
         "static-product-card": {
-          "type": "_spy-grouped-product-card",
+          "type": "_product-card",
           "static": true,
           "settings": {
-            "card_per": "colourway",
-            "label_colors_one": "1 color available",
-            "label_colors_many": "[count] colors available",
-            "show_swatches": true,
-            "swatch_count": 4,
-            "show_price": true,
-            "label_price_from": "Starting from",
             "product_card_gap": 0,
             "background_color": "",
             "border": "none",
@@ -447,13 +462,18 @@
           "blocks": {}
         }
       },
+      "name": "t:names.products_carousel",
       "settings": {
-        "card_unit": "colourway",
         "collection": "gift-guide-26-performance",
+        "card_unit": "colourway",
         "layout_type": "carousel",
+        "carousel_on_mobile": false,
         "max_products": 5,
         "columns": 5,
+        "mobile_columns": "2",
+        "mobile_card_size": "60cqw",
         "columns_gap": 16,
+        "rows_gap": 8,
         "icons_style": "chevron",
         "icons_shape": "circle",
         "fit_align": "center",
@@ -467,7 +487,8 @@
         "gap": 0,
         "background_color": "",
         "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-end": 0,
+        "custom_class": ""
       }
     },
     "gg_megalith_helmets": {
@@ -477,13 +498,14 @@
           "type": "banner",
           "settings": {
             "image_desktop": "shopify://shop_images/7-SPYHGG26-Desktop-HalfBanner-Megalith-1000x800.jpg",
+            "image_mobile": "shopify://shop_images/7-SPYHGG26-Mobile-HalfBanner-Megalith-1000x800.jpg",
             "image_alt": "Megalith. Shop now",
             "heading": "",
             "heading_size": 48,
             "heading_size_mobile": 26,
             "cta_label": "",
             "link": "/collections/megalith",
-            "image_mobile": "shopify://shop_images/7-SPYHGG26-Mobile-HalfBanner-Megalith-1000x800.jpg"
+            "promotion_name": ""
           }
         },
         "banner_helmets": {
@@ -495,7 +517,8 @@
             "heading_size": 48,
             "heading_size_mobile": 26,
             "cta_label": "",
-            "link": "/collections/snow-helmets"
+            "link": "/collections/snow-helmets",
+            "promotion_name": ""
           }
         }
       },
@@ -517,19 +540,28 @@
         "video_url": "",
         "video_url_mobile": "",
         "video_title": "",
+        "video_fit": "fill",
+        "video_shape_w": 16,
+        "video_shape_h": 9,
+        "video_shape_w_mobile": 9,
+        "video_shape_h_mobile": 16,
         "ratio_w": 32,
         "ratio_h": 10,
         "ratio_w_mobile": 2,
         "ratio_h_mobile": 3,
+        "image_desktop": "shopify://shop_images/9-SPYHGG26-Desktop-FullBanner-Sale-1920x600.jpg",
+        "image_mobile": "shopify://shop_images/9-SPYHGG26-Mobile-FullBanner-Sale-800x1200.jpg",
         "eyebrow": "",
         "heading": "",
         "cta_label": "",
         "link": "/collections/sale-sunglasses",
         "link_scope": "banner",
         "cta_style": "solid",
+        "promotion_name": "",
         "heading_size": 28,
         "heading_fluid": true,
         "heading_size_mobile": 26,
+        "heading_color": "",
         "content_align": "center",
         "content_valign": "center",
         "text_align": "",
@@ -542,9 +574,7 @@
         "margin_top_mobile": 0,
         "margin_bottom_mobile": 0,
         "margin_top": 0,
-        "margin_bottom": 0,
-        "image_desktop": "shopify://shop_images/9-SPYHGG26-Desktop-FullBanner-Sale-1920x600.jpg",
-        "image_mobile": "shopify://shop_images/9-SPYHGG26-Mobile-FullBanner-Sale-800x1200.jpg"
+        "margin_bottom": 0
       }
     },
     "spy_quick_view_modal": {
