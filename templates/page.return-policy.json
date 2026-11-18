@@ -212,7 +212,7 @@
           "name": "t:names.button",
           "settings": {
             "label": "START A RETURN",
-            "link": "shopify://collections/all",
+            "link": "https://www.spyoptic.com/apps/returns",
             "open_in_new_tab": false,
             "style_class": "button-custom",
             "custom_button_background": "{{ settings.color_palette.color3 }}",
@@ -248,8 +248,26 @@
         "full_width": false,
         "gap": 15,
         "background_color": "{{ settings.color_palette.background }}",
+        "content_max_width": 0,
+        "content_gutter": 20,
+        "content_gutter_mobile": 15,
         "padding-block-start": 20,
-        "padding-block-end": 80
+        "padding-block-end": 80,
+        "padding_left": 0,
+        "padding_right": 0,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_left": 0,
+        "margin_right": 0,
+        "mobile_override": false,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "margin_top_mobile": 0,
+        "margin_bottom_mobile": 0,
+        "margin_left_mobile": 0,
+        "margin_right_mobile": 0
       }
     }
   },
