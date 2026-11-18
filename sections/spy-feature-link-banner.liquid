@@ -207,16 +207,25 @@
       {%- capture src_desktop %}{% render 'spy-video-embed-src', video_url: section.settings.video_url %}{% endcapture -%}
       {%- capture src_mobile %}{% render 'spy-video-embed-src', video_url: small_video %}{% endcapture -%}
       {%- assign poster = section.settings.cover_image -%}
-      {%- assign poster_mobile = cover_mobile -%}
+      {%- liquid
+        assign poster_mobile = cover_mobile
+        # The thumbnail sets the box shape before the video loads, so nothing jumps
+        assign vr_d = poster.aspect_ratio | default: poster_mobile.aspect_ratio | default: 1.7778
+        assign vr_m = poster_mobile.aspect_ratio | default: vr_d
+        assign has_poster = false
+        if poster != blank or poster_mobile != blank
+          assign has_poster = true
+        endif
+      -%}
 
       {%- liquid
         # Fill: cover the box like object-fit: cover, sized off the box with container units.
         # Follow: the box takes the video's shape. The script reads that shape from Vimeo.
         if section.settings.video_fit == 'native'
           assign frame_class = 'absolute inset-0 w-full h-full border-0'
-          assign box_ratio = 'aspect-[var(--flb-vr)]'
+          assign box_ratio = 'aspect-[var(--flb-vr-live,var(--flb-vr))]'
         else
-          assign frame_class = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-none border-0 w-[calc(max(100cqw,100cqh*var(--flb-vr))+2px)] h-[calc(max(100cqh,100cqw/var(--flb-vr))+2px)]'
+          assign frame_class = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-none border-0 w-[calc(max(100cqw,100cqh*var(--flb-vr-live,var(--flb-vr)))+2px)] h-[calc(max(100cqh,100cqw/var(--flb-vr-live,var(--flb-vr)))+2px)]'
           assign box_ratio = 'aspect-[var(--flb-ratio-m)] min-[992px]:aspect-[var(--flb-ratio-d)]'
         endif
       -%}
@@ -226,9 +235,10 @@
         data-src-desktop="{{ src_desktop | strip | escape }}"
         data-src-mobile="{{ src_mobile | strip | escape }}"
         data-swap="992"
+        {% if has_poster %}data-poster{% endif %}
         data-title="{{ section.settings.video_title | default: section.settings.cta_label | escape }}"
       >
-        <div class="relative w-full overflow-hidden bg-black [container-type:size] {{ box_ratio }}" style="--flb-vr: 1.7778;">
+        <div class="relative w-full overflow-hidden bg-black [container-type:size] [--flb-vr:var(--flb-vr-m)] min-[992px]:[--flb-vr:var(--flb-vr-d)] {{ box_ratio }}" style="--flb-vr-d: {{ vr_d }}; --flb-vr-m: {{ vr_m }};">
           {%- if poster != blank or poster_mobile != blank -%}
             {%- render 'spy-banner-picture',
               desktop: poster,
@@ -363,6 +373,7 @@
                 this.paused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
                 this.toggle = this.closest('.spy-feature-link-banner')?.querySelector('[data-spy-video-toggle]');
                 this.toggle?.addEventListener('click', () => this.setPaused(!this.paused));
+                window.addEventListener('message', (e) => this.onPlayerMessage(e));
                 this.render();
                 this.syncToggle();
                 this.mq.addEventListener('change', () => this.render());
@@ -388,10 +399,48 @@
               f.setAttribute('tabindex', '-1');
               f.setAttribute('aria-hidden', 'true');
               f.className = this.dataset.frameClass || 'absolute inset-0 w-full h-full border-0';
+              // Keep the thumbnail on top until the video really plays, not just loads
+              if (this.hasAttribute('data-poster')) {
+                f.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                clearTimeout(this._fallback);
+                if (!this.paused) this._fallback = setTimeout(() => this.reveal(f), 8000);
+              }
+              f.addEventListener('load', () => this.listen(f));
               this.box.appendChild(f);
               this.readShape(src).then((r) => {
-                if (this._src === src) this.box.style.setProperty('--flb-vr', r);
+                if (this._src === src) this.box.style.setProperty('--flb-vr-live', r);
               });
+            }
+
+            // Ask the player to tell us when playback starts
+            listen(f) {
+              const msg = f.src.includes('youtube')
+                ? { event: 'listening', id: 1, channel: 'widget' }
+                : { method: 'addEventListener', value: 'play' };
+              f.contentWindow?.postMessage(JSON.stringify(msg), '*');
+            }
+
+            onPlayerMessage(e) {
+              const f = this.box?.querySelector('iframe');
+              if (!f || e.source !== f.contentWindow) return;
+              let d = e.data;
+              if (typeof d === 'string') {
+                try { d = JSON.parse(d); } catch (err) { return; }
+              }
+              if (!d) return;
+              // Vimeo wants the subscription again once it is ready
+              if (d.event === 'ready') this.listen(f);
+              const playing =
+                d.event === 'play' ||
+                d.event === 'playProgress' ||
+                (d.event === 'onStateChange' && d.info === 1) ||
+                (d.event === 'infoDelivery' && d.info?.playerState === 1);
+              if (playing) this.reveal(f);
+            }
+
+            reveal(f) {
+              clearTimeout(this._fallback);
+              f.classList.remove('opacity-0');
             }
 
             // The video's real shape, from Vimeo's oEmbed. YouTube has no CORS there, so it stays 16:9
@@ -492,14 +541,15 @@
     {
       "type": "image_picker",
       "id": "cover_image",
-      "label": "Desktop poster",
-      "info": "Shows until the video starts.",
+      "label": "Desktop thumbnail",
+      "info": "Shows until the video starts playing and sets the banner shape, so the page doesn't jump. Use a frame from the video.",
       "visible_if": "{{ section.settings.media_type == 'video' }}"
     },
     {
       "type": "image_picker",
       "id": "cover_image_mobile",
-      "label": "Mobile poster",
+      "label": "Mobile thumbnail",
+      "info": "Falls back to the desktop thumbnail.",
       "visible_if": "{{ section.settings.media_type == 'video' }}"
     },
     {
