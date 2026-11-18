@@ -34,6 +34,7 @@
             "zoom": true,
             "video_loop": false,
             "hide_variants": true,
+            "show_stickers": true,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -99,6 +100,7 @@
                 "border_opacity": 100,
                 "border_color": "",
                 "border_radius": 0,
+                "link": "",
                 "open_in_new_tab": false,
                 "placeholder": "",
                 "padding-block-start": 0,
@@ -201,10 +203,23 @@
                       "name": "Star Rating",
                       "settings": {
                         "embed": "yotpo_bottomline",
-                        "legacy_id_metafield": "yotpo.product_id",
+                        "code": "",
+                        "extra_class": "",
                         "element_id": "",
-                        "extra_class": ""
-                      }
+                        "legacy_id_metafield": "yotpo.product_id",
+                        "legacy_id_preview": "",
+                        "gallery_id": "",
+                        "source": "site",
+                        "product": "",
+                        "mode": "top_rated",
+                        "count": 9,
+                        "background_color": "transparent",
+                        "show_bottomline": true,
+                        "show_navigation": true,
+                        "autoplay": true,
+                        "autoplay_speed": 3000
+                      },
+                      "blocks": {}
                     }
                   },
                   "block_order": [
@@ -228,6 +243,22 @@
                 "width_percent": 100,
                 "padding-block-start": 0,
                 "padding-block-end": 0
+              },
+              "blocks": {}
+            },
+            "spy_frame_summary_A1": {
+              "type": "spy-frame-summary",
+              "name": "Frame Summary",
+              "settings": {
+                "color_label": "Color"
+              },
+              "blocks": {}
+            },
+            "spy_swatches_3tXrh7": {
+              "type": "spy-swatches",
+              "name": "Color Preview",
+              "settings": {
+                "display": "pdp"
               },
               "blocks": {}
             },
@@ -256,7 +287,93 @@
             "spy_frame_fit_guide_A1": {
               "type": "spy-frame-fit-guide",
               "name": "Size Chart",
-              "settings": {}
+              "settings": {
+                "fallback_label": "Size Chart",
+                "drawings_models": "discord, cyrus, montana, bowery, overhaul, overhaul-xl, region, region-xl",
+                "specs_models": "rebar-ansi",
+                "card_models": "rebar-se-ansi",
+                "label_font": "barlow_condensed_n6",
+                "text_font": "barlow_n4",
+                "eyebrow": "SPY Optic",
+                "title": "Frame Fit\nGuide",
+                "subtitle": "Find your fit using frame specs or learn to measure at home.",
+                "tab_frame_label": "This Frame",
+                "tab_howto_label": "How to Measure",
+                "default_tab": "frame",
+                "diagrams_label": "Frame Diagrams",
+                "front_caption": "Front View",
+                "profile_caption": "Profile View",
+                "measurements_label": "Frame Measurements",
+                "temple_width_label": "Temple Width",
+                "temple_length_label": "Temple Length",
+                "lens_height_label": "Lens Height",
+                "fit_label": "Frame Fit",
+                "fit_desc": "Temple pressure & nose bridge snugness.",
+                "size_label": "Frame Size",
+                "size_desc": "Overall frame footprint from temple end to end.",
+                "howto_intro": "<p>All you need is a <strong>flexible measuring tape</strong> or a <strong>piece of string and a ruler.</strong> Take measurements on bare skin for best accuracy.</p>",
+                "steps_label": "3 Key Measurements",
+                "step_1_title": "Temple Width",
+                "step_1_text": "Wrap a tape around your head just above your brows and ears. Divide that number by 2 for your half-head width. Match to Temple Width for a pressure-free fit.",
+                "step_2_title": "Temple Length",
+                "step_2_text": "Measure from the hinge of an existing pair to the tip of the arm. Most adults need 135–150mm. Shorter arms sit forward; longer arms hook further behind the ear.",
+                "step_3_title": "Lens Height",
+                "step_3_text": "Measure vertically from your brow bone to your cheekbone. Smaller faces fit 35–42mm; larger faces 44mm+.",
+                "ref_label": "Quick Size Reference",
+                "ref_heads": "Size | Temple Width | Temple Arm",
+                "ref_rows": "SM | 125 – 132mm | 130 – 135mm\nMD | 133 – 140mm | 135 – 140mm\nLG | 141 – 148mm | 140 – 145mm\nXL | 149mm+ | 145mm+",
+                "tip_label": "Pro Tip",
+                "tip_text": "If you're between sizes, go up — a slightly wider frame is easier to adjust than one that pinches. Our lenses are surfaced for optical clarity edge-to-edge, so coverage won't suffer.",
+                "footer_note": "<p>Measurements may vary slightly by colorway. Questions? <a href=\"/pages/contact\">Chat with our team.</a></p>"
+              },
+              "blocks": {
+                "fit-spec-sheet": {
+                  "type": "_spy-fit-spec-sheet",
+                  "static": true,
+                  "settings": {
+                    "title": "Frame Specifications",
+                    "fit_heading": "Frame Fit",
+                    "fit_text": "<p>The Rebar features a <strong>wide fit profile</strong> engineered for large to extra-large faces, providing optimal coverage and comfort during extended wear.</p>",
+                    "size_heading": "Frame Size",
+                    "size_text": "<p>With a temple length of <strong>147mm</strong>, the Rebar is classified as a large frame, delivering substantial coverage and bold presence.</p>",
+                    "measures_label": "Precise Measurements",
+                    "rows": "Temple Width | 147 | mm\nBridge Width | 18 | mm\nLens Width | 62 | mm",
+                    "tip_label": "Pro Tip:",
+                    "tip_text": "Frame measurements can be found printed on the inside of the temples for easy reference."
+                  },
+                  "blocks": {}
+                },
+                "fit-card": {
+                  "type": "_spy-fit-card",
+                  "static": true,
+                  "settings": {
+                    "title": "Sunglasses Fit Guide",
+                    "fit_heading": "Fit",
+                    "fit_text": "The Rebar SE tends to fit medium to large faces.",
+                    "size_heading": "Size",
+                    "size_text": "With a temple length of 135mm, the Rebar SE is a medium frame.",
+                    "guide_heading": "Size Guide",
+                    "guide_text": "Glasses measurements can be found on the inside of the temples. Check your current shades to compare.",
+                    "rows": "Temple Width | 135mm\nBridge Width | 18mm\nLens Width | 60mm"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": []
+            },
+            "spy_lens_info_A1": {
+              "type": "spy-lens-info",
+              "name": "Lens Info",
+              "settings": {
+                "read_more_url": "",
+                "read_more_label": "Read more",
+                "drawer_eyebrow": "Lens Technology",
+                "drawer_title": "Happy Lens Tech",
+                "drawer_blurb": "<p>SPY's patented spectrally-selective filter technology blocks harmful UV and HEV light while preserving the beneficial wavelengths that keep your mind and eyes performing at their best.</p>",
+                "drawer_benefits": "<ul><li><strong>Mood-Boosting Light Science</strong> Lets in long-wave blue light that studies show can boost alertness, improve mood, and keep you feeling sharp longer.</li><li><strong>100% UV Protection</strong> Blocks all UVA and UVB rays completely — full protection from harmful sun exposure in every condition.</li><li><strong>Enhanced Color &amp; Contrast</strong> Richer color and sharper edge definition so the world looks the way it's supposed to — vivid and clear.</li></ul>",
+                "drawer_note": "<p>The lens engineered to work with your brain, not just your eyes, letting in the light that makes you feel better all day long.</p>"
+              },
+              "blocks": {}
             },
             "buy_buttons_eYQEYi": {
               "type": "buy-buttons",
@@ -285,19 +402,6 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "quantity": {
-                  "type": "quantity",
-                  "static": true,
-                  "settings": {
-                    "input_style": "default",
-                    "input_background_color": "{{ settings.color_palette.background }}",
-                    "input_text_color": "{{ settings.color_palette.foreground }}",
-                    "input_border_color": "{{ settings.color_palette.foreground }}",
-                    "border_width": 1,
-                    "border_radius": 0
-                  },
-                  "blocks": {}
-                },
                 "add-to-cart": {
                   "type": "add-to-cart",
                   "static": true,
@@ -307,12 +411,6 @@
                     "custom_button_text": "{{ settings.color_palette.background }}",
                     "custom_button_border": "{{ settings.color_palette.color3 }}"
                   },
-                  "blocks": {}
-                },
-                "accelerated-checkout": {
-                  "type": "accelerated-checkout",
-                  "static": true,
-                  "settings": {},
                   "blocks": {}
                 }
               },
@@ -347,27 +445,7 @@
                 "badge_5_link_text": "",
                 "badge_5_link_url": "",
                 "badge_5_logo": "none"
-              }
-            },
-            "spy_spec_table_A1": {
-              "type": "spy-spec-table",
-              "name": "Technical Information",
-              "settings": {
-                "heading": "Technical Information"
-              }
-            },
-            "spy_frame_summary_A1": {
-              "type": "spy-frame-summary",
-              "name": "Frame Summary",
-              "settings": {
-                "color_label": "Color"
               },
-              "blocks": {}
-            },
-            "spy_lens_info_A1": {
-              "type": "spy-lens-info",
-              "name": "Lens Info",
-              "settings": {},
               "blocks": {}
             },
             "spy_description_A1": {
@@ -378,12 +456,21 @@
                 "open_default": false
               },
               "blocks": {}
+            },
+            "spy_spec_table_A1": {
+              "type": "spy-spec-table",
+              "name": "Technical Information",
+              "settings": {
+                "heading": "Technical Information"
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "group_icgrde",
             "divider_VJhene",
             "spy_frame_summary_A1",
+            "spy_swatches_3tXrh7",
             "variant_picker_R3rGDr",
             "spy_frame_fit_guide_A1",
             "spy_lens_info_A1",
@@ -402,14 +489,77 @@
         "gap": 48,
         "enable_sticky_add_to_cart": false,
         "background_color": "{{ settings.color_palette.background }}",
+        "breadcrumb_category": "snow-helmets",
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "breadcrumb_category": "snow-helmets"
+        "padding-block-end": 0
       }
     },
     "spy_feature_banner_A1": {
       "type": "spy-feature-banner",
-      "settings": {}
+      "settings": {
+        "heading": "",
+        "alt": ""
+      }
+    },
+    "yotpo_reviews_section": {
+      "type": "_blocks",
+      "blocks": {
+        "yotpo_reviews_widget": {
+          "type": "spy-app-embed",
+          "name": "Yotpo Reviews",
+          "settings": {
+            "embed": "custom",
+            "code": "{%- assign yotpo_img = product.featured_image | image_url: width: 600 -%}{%- assign yotpo_img_head = yotpo_img | slice: 0, 2 -%}{%- if yotpo_img_head == '//' -%}{%- assign yotpo_img = 'https:' | append: yotpo_img -%}{%- elsif yotpo_img != blank -%}{%- assign yotpo_img = shop.url | append: yotpo_img -%}{%- endif -%}<div id=\"spy-reviews\" class=\"w-full [scroll-margin-top:calc(var(--header-height,100px)+24px)]\"><div class=\"yotpo yotpo-main-widget\" data-product-id=\"{{ product.metafields.yotpo.product_id.value | default: product.id }}\" data-name=\"{{ product.title | escape }}\" data-url=\"{{ shop.url }}{{ product.url }}\" data-price=\"{{ product.selected_or_first_available_variant.price | money_without_currency }}\" data-currency=\"{{ cart.currency.iso_code }}\" data-image-url=\"{{ yotpo_img }}\" data-description=\"{{ product.description | strip_html | truncate: 300 | escape }}\"></div></div>",
+            "extra_class": "w-full",
+            "element_id": "",
+            "legacy_id_metafield": "",
+            "legacy_id_preview": "",
+            "gallery_id": "",
+            "source": "site",
+            "product": "",
+            "mode": "top_rated",
+            "count": 9,
+            "background_color": "transparent",
+            "show_bottomline": true,
+            "show_navigation": true,
+            "autoplay": true,
+            "autoplay_speed": 3000
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "yotpo_reviews_widget"
+      ],
+      "name": "Yotpo Reviews",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     },
     "product_recommendations_qggXJq": {
       "type": "product-recommendations",
@@ -433,6 +583,31 @@
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "grouped-product-card": {
+          "type": "_spy-grouped-product-card",
+          "static": true,
+          "settings": {
+            "card_per": "model",
+            "label_colors_one": "1 color available",
+            "label_colors_many": "[count] colors available",
+            "show_swatches": true,
+            "swatch_count": 4,
+            "show_price": true,
+            "label_price_from": "Starting from",
+            "product_card_gap": 0,
+            "background_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -511,6 +686,8 @@
               "type": "product-title",
               "name": "t:names.product_title",
               "settings": {
+                "title_source": "group",
+                "page_heading": false,
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
@@ -528,8 +705,7 @@
                 "padding-block-start": 4,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0,
-                "title_source": "group"
+                "padding-inline-end": 0
               },
               "blocks": {}
             },
@@ -566,30 +742,6 @@
             "product_title_M7MJkb",
             "price_gLWgA6"
           ]
-        },
-        "grouped-product-card": {
-          "type": "_spy-grouped-product-card",
-          "static": true,
-          "settings": {
-            "label_colors_one": "1 color available",
-            "label_colors_many": "[count] colors available",
-            "show_swatches": true,
-            "swatch_count": 4,
-            "show_price": true,
-            "label_price_from": "Starting from",
-            "product_card_gap": 0,
-            "background_color": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
         }
       },
       "block_order": [
@@ -599,6 +751,8 @@
       "settings": {
         "product": "{{ closest.product }}",
         "recommendation_type": "related",
+        "group_by_model_tag": true,
+        "fallback_collections": "sunglasses, eyeglasses, snow-goggles, moto-goggles, snow-helmets, replacement-lenses, sunglass-cases, gear",
         "layout_type": "grid",
         "carousel_on_mobile": false,
         "max_products": 4,
@@ -608,58 +762,15 @@
         "rows_gap": 24,
         "icons_style": "chevron",
         "icons_shape": "none",
+        "fit_align": "start",
+        "carousel_scroll": "card",
+        "carousel_autoplay": false,
+        "carousel_autoplay_speed": 3,
         "section_width": "page-width",
         "gap": 28,
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 48,
-        "padding-block-end": 48,
-        "group_by_model_tag": true
-      }
-    },
-    "yotpo_reviews_section": {
-      "type": "_blocks",
-      "blocks": {
-        "yotpo_reviews_widget": {
-          "type": "spy-app-embed",
-          "name": "Yotpo Reviews",
-          "settings": {
-            "embed": "custom",
-            "code": "{%- assign yotpo_img = product.featured_image | image_url: width: 600 -%}{%- assign yotpo_img_head = yotpo_img | slice: 0, 2 -%}{%- if yotpo_img_head == '//' -%}{%- assign yotpo_img = 'https:' | append: yotpo_img -%}{%- elsif yotpo_img != blank -%}{%- assign yotpo_img = shop.url | append: yotpo_img -%}{%- endif -%}<div id=\"spy-reviews\" class=\"w-full [scroll-margin-top:calc(var(--header-height,100px)+24px)]\"><div class=\"yotpo yotpo-main-widget\" data-product-id=\"{{ product.metafields.yotpo.product_id.value | default: product.id }}\" data-name=\"{{ product.title | escape }}\" data-url=\"{{ shop.url }}{{ product.url }}\" data-price=\"{{ product.selected_or_first_available_variant.price | money_without_currency }}\" data-currency=\"{{ cart.currency.iso_code }}\" data-image-url=\"{{ yotpo_img }}\" data-description=\"{{ product.description | strip_html | truncate: 300 | escape }}\"></div></div>",
-            "extra_class": "w-full"
-          }
-        }
-      },
-      "block_order": [
-        "yotpo_reviews_widget"
-      ],
-      "name": "Yotpo Reviews",
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "background_media": "none",
-        "background_color": "",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_color": "",
-        "border_radius": 0,
-        "padding-block-start": 0,
-        "padding-block-end": 0
+        "padding-block-end": 48
       }
     },
     "spy_quick_view_modal": {
