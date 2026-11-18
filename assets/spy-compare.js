@@ -15,6 +15,15 @@
 
   if (!bar) return;
 
+  const text = bar.dataset;
+  const fill = (template, values) =>
+    (template || '').replace(/__(\w+)__/g, (_, key) => values[key] ?? '');
+
+  const money = (cents) => {
+    const amount = (cents / 100).toFixed(2).replace(/\.00$/, '');
+    return (text.moneyFormat || '${{amount}}').replace(/\{\{\s*amount[\w_]*\s*\}\}/g, amount);
+  };
+
   // ── State ──────────────────────────────────────────────────────────
   let items = readState();
 
@@ -32,7 +41,7 @@
     bar.style.transform = count > 0 ? 'translateY(0)' : 'translateY(100%)';
     bar.setAttribute('aria-hidden', count > 0 ? 'false' : 'true');
 
-    countEl.textContent = count > 0 ? `${count} of ${MAX} selected` : '';
+    countEl.textContent = count > 0 ? fill(text.textCount, { count, max: MAX }) : '';
     submitBtn.disabled = count < 2;
 
     slots.innerHTML = items.map(item => `
@@ -43,7 +52,7 @@
           type="button"
           class="text-white/60 hover:text-white flex-shrink-0 text-sm leading-none ml-1"
           data-spy-compare-remove="${item.handle}"
-          aria-label="Remove ${item.title} from comparison"
+          aria-label="${fill(text.textRemove, { title: item.title })}"
         >×</button>
       </div>
     `).join('');
@@ -114,7 +123,7 @@
   }
 
   async function buildModal() {
-    modalBody.innerHTML = '<p class="text-sm text-spy-gray text-center py-8">Loading…</p>';
+    modalBody.innerHTML = `<p class="text-sm text-spy-gray text-center py-8">${text.textLoading || ''}</p>`;
     const cols = items.length;
 
     const fetches = items.map(item =>
@@ -123,10 +132,10 @@
     const products = await Promise.all(fetches);
 
     const rows = [
-      { label: 'Product',     render: p => `<a href="${p.url}" class="font-bold text-spy-slate text-sm hover:text-spy-orange-ui">${p.title}</a>` },
-      { label: 'Price',       render: p => `<span class="font-semibold text-sm">$${(p.price / 100).toFixed(2).replace(/\.00$/, '')}</span>` },
-      { label: 'Variants',    render: p => `<span class="text-sm">${p.variants.length} option${p.variants.length !== 1 ? 's' : ''}</span>` },
-      { label: '',            render: p => `<a href="${p.url}" class="inline-block bg-spy-orange-ui text-white text-xs font-bold uppercase tracking-widest px-4 py-2 hover:opacity-90">View Product</a>` },
+      { label: text.textRowProduct || '',  render: p => `<a href="${p.url}" class="font-bold text-spy-slate text-sm hover:text-spy-orange-ui">${p.title}</a>` },
+      { label: text.textRowPrice || '',    render: p => `<span class="font-semibold text-sm">${money(p.price)}</span>` },
+      { label: text.textRowVariants || '', render: p => `<span class="text-sm">${fill(p.variants.length === 1 ? text.textVariantOne : text.textVariantOther, { count: p.variants.length })}</span>` },
+      { label: '',                         render: p => `<a href="${p.url}" class="inline-block bg-spy-orange-ui text-white text-xs font-bold uppercase tracking-widest px-4 py-2 hover:opacity-90">${text.textView || ''}</a>` },
     ];
 
     modalBody.innerHTML = `

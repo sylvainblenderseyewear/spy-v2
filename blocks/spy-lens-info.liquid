@@ -318,10 +318,10 @@
         >
       {%- elsif drawer_title != blank -%}
         {%- comment -%} No logo uploaded — the name carries the heading {%- endcomment -%}
-        <p class="mb-3.5 text-[22px] font-bold uppercase leading-none tracking-[0.04em] text-[#111]" style="font-family: var(--font-heading--family);">{{ drawer_title }}</p>
+        <p class="mb-3.5 text-[22px] font-bold uppercase leading-none tracking-[0.04em] text-spy-ink-900" style="font-family: var(--font-heading--family);">{{ drawer_title }}</p>
       {%- endif -%}
       {%- if drawer_blurb != blank -%}
-        <div class="border-b border-[#e5e5e5] pb-[18px] text-[13px] font-normal italic leading-[1.65] text-[#666] max-[768px]:text-[14px] [&_p]:m-0">{{ drawer_blurb }}</div>
+        <div class="border-b border-spy-border pb-[18px] text-[13px] font-normal italic leading-[1.65] text-spy-ink-500 max-[768px]:text-[14px] [&_p]:m-0">{{ drawer_blurb }}</div>
       {%- endif -%}
     </div>
 
@@ -330,11 +330,11 @@
         Editor's rich text becomes the benefit list: each list item gets the orange
         dot, a bold lead-in reads as the benefit name.
       {%- endcomment -%}
-      <div class="px-6 pt-[18px] text-[12px] leading-[1.65] text-[#888] max-[768px]:text-[13px]
+      <div class="px-6 pt-[18px] text-[12px] leading-[1.65] text-spy-muted max-[768px]:text-[13px]
         [&_ul]:m-0 [&_ul]:flex [&_ul]:list-none [&_ul]:flex-col [&_ul]:gap-4 [&_ul]:p-0
         [&_li]:relative [&_li]:pl-[21px]
         [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-[5px] [&_li]:before:h-2 [&_li]:before:w-2 [&_li]:before:rounded-full [&_li]:before:bg-spy-orange [&_li]:before:content-['']
-        [&_strong]:mb-[3px] [&_strong]:block [&_strong]:text-[13px] [&_strong]:font-bold [&_strong]:text-[#111] [&_strong]:max-[768px]:text-[14px]
+        [&_strong]:mb-[3px] [&_strong]:block [&_strong]:text-[13px] [&_strong]:font-bold [&_strong]:text-spy-ink-900 [&_strong]:max-[768px]:text-[14px]
         [&_p]:m-0 [&_p:not(:last-child)]:mb-4
         [&_a]:text-spy-orange-ui [&_a]:underline [&_a]:decoration-current">
         {{ drawer_benefits }}
@@ -343,8 +343,8 @@
 
     {%- if drawer_note != blank -%}
       {%- comment -%} Grey callout with the orange rule down its left edge {%- endcomment -%}
-      <div class="mx-6 mb-7 mt-5 rounded-r-[2px] border-l-[3px] border-spy-orange bg-[#f7f7f7] px-[15px] py-[13px]">
-        <div class="text-[12px] leading-[1.7] text-[#999] max-[768px]:text-[13px] [&_p]:m-0">{{ drawer_note }}</div>
+      <div class="mx-6 mb-7 mt-5 rounded-r-[2px] border-l-[3px] border-spy-orange bg-spy-haze px-[15px] py-[13px]">
+        <div class="text-[12px] leading-[1.7] text-spy-muted max-[768px]:text-[13px] [&_p]:m-0">{{ drawer_note }}</div>
       </div>
     {%- endif -%}
     </div>

@@ -1,8 +1,26 @@
+{%- liquid
+  assign money_format = shop.money_format
+  assign ph_count = '__count__'
+  assign ph_max = '__max__'
+  assign ph_title = '__title__'
+  assign variant_one = 'content.compare_variant_count.one' | t: count: ph_count
+  assign variant_other = 'content.compare_variant_count.other' | t: count: ph_count
+-%}
 <div
   class="spy-compare-bar fixed bottom-0 inset-x-0 z-50 bg-spy-slate text-white translate-y-full transition-transform duration-300 ease-in-out"
   id="spy-compare-bar"
   aria-hidden="true"
   aria-live="polite"
+  data-text-count="{{ 'actions.compare_count' | t: count: ph_count, max: ph_max | escape }}"
+  data-text-remove="{{ 'actions.compare_remove' | t: title: ph_title | escape }}"
+  data-text-loading="{{ 'content.loading' | t | escape }}"
+  data-text-row-product="{{ 'actions.compare_row_product' | t | escape }}"
+  data-text-row-price="{{ 'actions.compare_row_price' | t | escape }}"
+  data-text-row-variants="{{ 'actions.compare_row_variants' | t | escape }}"
+  data-text-view="{{ 'actions.compare_view' | t | escape }}"
+  data-text-variant-one="{{ variant_one | escape }}"
+  data-text-variant-other="{{ variant_other | escape }}"
+  data-money-format="{{ money_format | escape }}"
 >
   <div class="page-width flex items-center justify-between gap-4 py-3 flex-wrap">
     <div class="spy-compare-bar__slots flex gap-3 flex-wrap" id="spy-compare-slots"></div>
@@ -13,12 +31,12 @@
         class="bg-spy-orange-ui text-white text-xs font-bold uppercase tracking-widest px-5 py-2.5 hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
         id="spy-compare-submit"
         disabled
-      >Compare</button>
+      >{{ 'actions.compare' | t }}</button>
       <button
         type="button"
         class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-wide transition-colors"
         id="spy-compare-clear"
-      >Clear</button>
+      >{{ 'actions.clear' | t }}</button>
     </div>
   </div>
 </div>
@@ -28,18 +46,18 @@
   id="spy-compare-modal"
   role="dialog"
   aria-modal="true"
-  aria-label="Product Comparison"
+  aria-label="{{ 'actions.compare_label' | t }}"
   aria-hidden="true"
 >
   <div class="spy-compare-modal__overlay absolute inset-0 bg-black/60" id="spy-compare-modal-overlay"></div>
   <div class="spy-compare-modal__panel absolute inset-x-0 bottom-0 top-16 md:top-12 bg-white overflow-y-auto flex flex-col">
     <div class="flex items-center justify-between px-6 py-4 border-b border-spy-border flex-shrink-0">
-      <h2 class="text-sm font-bold uppercase tracking-widest text-spy-slate m-0">Compare Products</h2>
+      <h2 class="text-sm font-bold uppercase tracking-widest text-spy-slate m-0">{{ 'actions.compare_heading' | t }}</h2>
       <button
         type="button"
         class="text-spy-gray hover:text-spy-orange-ui transition-colors p-1"
         id="spy-compare-modal-close"
-        aria-label="Close comparison"
+        aria-label="{{ 'actions.compare_close' | t }}"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
           <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>

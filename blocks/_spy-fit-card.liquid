@@ -12,7 +12,7 @@
 {%- endcomment -%}
 <div class="mt-6 px-[15px] text-[16px] leading-[1.4] text-[color:var(--color-spy-ink)]" style="font-family: var(--font-body--family);" {{ block.shopify_attributes }}>
   <h2 class="m-0 mb-4 text-[28px] font-bold uppercase leading-[36px] tracking-[0.01em] text-[color:var(--color-spy-ink)] min-[992px]:text-[38px] min-[992px]:leading-[44px]" style="font-family: var(--font-heading--family);">{{ block.settings.title }}</h2>
-  <div class="mb-4 border border-[#e6e6e6] bg-white p-5">
+  <div class="mb-4 border border-spy-border bg-white p-5">
     <div class="-mx-[15px] flex flex-wrap">
       <div class="w-full px-[15px] min-[769px]:w-2/3">
         {%- for n in (1..3) -%}
@@ -42,8 +42,8 @@
           {%- assign cells = row | strip | split: '|' -%}
           {%- if cells.size > 1 -%}
             <tr>
-              <th scope="row" class="border-t border-[#e6e6e6] p-3 text-left align-top text-[16px] font-bold leading-[1.4]">{{ cells[0] | strip }}</th>
-              <td class="border-t border-[#e6e6e6] p-3 align-top text-[16px] font-normal leading-[1.4]">{{ cells[1] | strip }}</td>
+              <th scope="row" class="border-t border-spy-border p-3 text-left align-top text-[16px] font-bold leading-[1.4]">{{ cells[0] | strip }}</th>
+              <td class="border-t border-spy-border p-3 align-top text-[16px] font-normal leading-[1.4]">{{ cells[1] | strip }}</td>
             </tr>
           {%- endif -%}
         {%- endfor -%}

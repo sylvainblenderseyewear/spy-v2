@@ -28,7 +28,7 @@
   data-spy-drawer
 >
   <div
-    class="absolute inset-0 bg-[#e6e6e6] opacity-0 transition-opacity duration-300 ease-out group-data-[open]:opacity-60 motion-reduce:transition-none"
+    class="absolute inset-0 bg-spy-border opacity-0 transition-opacity duration-300 ease-out group-data-[open]:opacity-60 motion-reduce:transition-none"
     data-spy-drawer-close
   ></div>
 
@@ -44,7 +44,7 @@
     <div class="flex shrink-0 items-start justify-end">
       <button
         type="button"
-        class="cursor-pointer border-none bg-transparent p-4 text-[calc(1.3rem_+_0.6vw)] font-extralight leading-none text-black opacity-50 [text-shadow:0_1px_0_#fff] hover:opacity-75"
+        class="cursor-pointer border-none bg-transparent p-4 text-[calc(1.3rem_+_0.6vw)] font-extralight leading-none text-black opacity-50 [text-shadow:0_1px_0_var(--color-background)] hover:opacity-75"
         aria-label="{{ 'actions.close' | t }}"
         data-spy-drawer-close
       >
@@ -54,7 +54,7 @@
 
     {%- comment -%} Source body keeps 16px around the content, and sets the panel's
     own base type so copy ignores the page scale {%- endcomment -%}
-    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 text-[13px] leading-[1.5] text-[#111] [scrollbar-color:#ddd_#fff] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-[2px] [&::-webkit-scrollbar-thumb]:bg-[#ddd] [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar]:w-1">
+    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 text-[13px] leading-[1.5] text-spy-ink-900 [scrollbar-color:var(--color-spy-rule)_var(--color-background)] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-[2px] [&::-webkit-scrollbar-thumb]:bg-spy-rule [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar]:w-1">
       {%- if show_accent -%}
         <div class="h-[3px] shrink-0 bg-spy-orange"></div>
       {%- endif -%}

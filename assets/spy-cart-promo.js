@@ -85,7 +85,7 @@ const apply = async (form) => {
       showError(form, form.dataset.errorMessage || '');
       input?.select();
       form.dispatchEvent(
-        new CartErrorEvent({ error: form.dataset.errorMessage || 'Invalid discount code', code: 'VALIDATION_CUSTOM' })
+        new CartErrorEvent({ error: form.dataset.errorMessage || '', code: 'VALIDATION_CUSTOM' })
       );
       return;
     }
@@ -102,7 +102,7 @@ const apply = async (form) => {
     deferred.reject(error);
     showError(form, form.dataset.errorMessage || '');
     form.dispatchEvent(
-      new CartErrorEvent({ error: error?.message || 'Failed to apply discount', code: 'SERVICE_UNAVAILABLE' })
+      new CartErrorEvent({ error: error?.message || form.dataset.errorMessage || '', code: 'SERVICE_UNAVAILABLE' })
     );
   } finally {
     setBusy(form, false);

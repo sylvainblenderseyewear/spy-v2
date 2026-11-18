@@ -77,6 +77,16 @@
     "back_to": "Back to {{ title }}",
     "choose": "Choose",
     "clear": "Clear",
+    "compare": "Compare",
+    "compare_close": "Close comparison",
+    "compare_count": "{{ count }} of {{ max }} selected",
+    "compare_heading": "Compare Products",
+    "compare_label": "Product Comparison",
+    "compare_remove": "Remove {{ title }} from comparison",
+    "compare_row_price": "Price",
+    "compare_row_product": "Product",
+    "compare_row_variants": "Variants",
+    "compare_view": "View Product",
     "clear_all": "Clear all",
     "close": "Close",
     "open": "Open",
@@ -163,6 +173,11 @@
   "content": {
     "cancel": "Cancel",
     "discount": "Discount",
+    "loading": "Loading…",
+    "compare_variant_count": {
+      "one": "{{ count }} option",
+      "other": "{{ count }} options"
+    },
     "account_title": "Account",
     "terms_and_policies": "Terms and Policies",
     "account_title_personalized": "Hi {{ first_name }}",
