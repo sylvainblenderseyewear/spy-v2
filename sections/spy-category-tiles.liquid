@@ -93,7 +93,25 @@
         {%- assign link = block.settings.link -%}
         {%- if img == blank and label == blank -%}{%- continue -%}{%- endif -%}
         {%- comment -%} The label is already read out, so the art is decorative when there is one {%- endcomment -%}
-        {%- if label != blank -%}{%- assign tile_alt = '' -%}{%- else -%}{%- assign tile_alt = img.alt | escape -%}{%- endif -%}
+        {%- liquid
+          if label != blank
+            assign tile_alt = ''
+          else
+            assign tile_alt = img.alt | escape
+            # No label and no alt text: name the tile after where it goes, or the link reads as empty
+            if tile_alt == blank and link != blank
+              assign link_path = link | split: '?' | first
+              assign link_handle = link_path | split: '/' | last | url_decode
+              if link_path contains '/collections/'
+                assign tile_alt = collections[link_handle].title | escape
+              elsif link_path contains '/pages/'
+                assign tile_alt = pages[link_handle].title | escape
+              elsif link_path contains '/products/'
+                assign tile_alt = all_products[link_handle].title | escape
+              endif
+            endif
+          endif
+        -%}
         {%- comment -%} First tiles sit in the first screen under the hero, so don't lazy-load them {%- endcomment -%}
         {%- assign tile_loading = 'lazy' -%}
         {%- if section.index <= 3 and forloop.index <= 4 -%}{%- assign tile_loading = 'eager' -%}{%- endif -%}

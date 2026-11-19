@@ -107,6 +107,12 @@
       </cart-icon>
     {% endcapture %}
 
+    {%- comment -%} The bubble number is aria-hidden, so the count lives in the bag's name {%- endcomment -%}
+    {%- capture cart_label -%}
+      {{- 'accessibility.cart' | t -}}
+      {%- if cart.item_count > 0 %}, {{ 'accessibility.cart_count' | t }}: {{ cart.item_count }}{% endif -%}
+    {%- endcapture -%}
+
     {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
       <button
         class="button-unstyled overflow-visible flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange-ui transition-colors"
@@ -114,7 +120,7 @@
         aria-haspopup="dialog"
         aria-expanded="false"
         aria-controls="cart-drawer"
-        aria-label="{{ 'accessibility.cart' | t }}"
+        aria-label="{{ cart_label | escape }}"
         data-testid="cart-drawer-trigger"
       >
         {{ cart_icon }}
@@ -123,11 +129,28 @@
       <a
         href="{{ routes.cart_url }}"
         class="overflow-visible flex items-center justify-center w-9 h-11 text-spy-ink hover:text-spy-orange-ui transition-colors"
-        aria-label="{{ 'accessibility.cart' | t }}"
+        aria-label="{{ cart_label | escape }}"
       >
         {{ cart_icon }}
       </a>
     {% endif %}
+    <script>
+      (() => {
+        // Keep the count in the name when the cart changes (theme drawer or Rebuy)
+        const bag = document.currentScript.previousElementSibling;
+        if (!bag) return;
+        const base = {{ 'accessibility.cart' | t | json }};
+        const countLabel = {{ 'accessibility.cart_count' | t | json }};
+        const sync = () => {
+          const count = bag.querySelector('[ref="cartBubbleCount"]');
+          if (!count || count.classList.contains('hidden')) return bag.setAttribute('aria-label', base);
+          // The bubble shows no number from 100 up
+          const n = count.textContent.trim() || '99+';
+          bag.setAttribute('aria-label', n === '0' ? base : `${base}, ${countLabel}: ${n}`);
+        };
+        new MutationObserver(sync).observe(bag, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+      })();
+    </script>
 
     {% comment %}
       Country selector is intentionally NOT in this icon row. The live site keeps
