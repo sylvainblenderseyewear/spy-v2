@@ -121,3 +121,43 @@
     content="{{ page_description | escape }}"
   >
 {% endif %}
+
+{%- comment -%} Search results change with every query, so keep them out of search engines. {%- endcomment -%}
+{%- if request.page_type == 'search' -%}
+  <meta
+    name="robots"
+    content="noindex"
+  >
+{%- endif -%}
+
+{%- comment -%} Google reads the brand and site name from the homepage, so they only go there. {%- endcomment -%}
+{%- if request.page_type == 'index' -%}
+  {%- liquid
+    assign home_url = request.origin | append: routes.root_url
+    assign search_target = request.origin | append: routes.search_url | append: '?q={search_term_string}'
+  -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": {{ shop.name | json }},
+      {%- if settings.logo != blank %}
+        "logo": {{ settings.logo | image_url: width: 600 | prepend: 'https:' | json }},
+      {%- endif %}
+      "url": {{ home_url | json }}
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "url": {{ home_url | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ search_target | json }},
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
+{%- endif -%}
